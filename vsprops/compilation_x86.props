@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <LibraryPath>$(BOOST_LIB_Win32);$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(BOOST_LIB_x86);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
