@@ -5,10 +5,6 @@
   <PropertyGroup>
     <IntDir>$(ProjectDir)obj.test\$(Configuration).$(Platform)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <PreprocessorDefinitions>BOOST_TEST_DYN_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
+  <ItemDefinitionGroup />
   <ItemGroup />
 </Project>
