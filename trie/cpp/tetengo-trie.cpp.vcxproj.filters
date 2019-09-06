@@ -20,7 +20,7 @@
     <ClInclude Include="..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="include\double_array.h">
+    <ClInclude Include="include\tetengo\trie\double_array.h">
       <Filter>header\tetengo\trie</Filter>
     </ClInclude>
   </ItemGroup>
@@ -33,7 +33,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\0namespace.dox">
+    <None Include="include\tetengo\trie\0namespace.dox">
       <Filter>header\tetengo\trie</Filter>
     </None>
   </ItemGroup>

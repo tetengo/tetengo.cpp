@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{A755F6BF-9964-4608-A0C8-9F7557D14A09}</ProjectGuid>
-    <RootNamespace>tetengotriecpplib</RootNamespace>
+    <RootNamespace>tetengotriecpp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -96,7 +96,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h" />
-    <ClInclude Include="include\double_array.h" />
+    <ClInclude Include="include\tetengo\trie\double_array.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\precompiled\precompiled.cpp">
@@ -106,7 +106,7 @@
     <ClCompile Include="src\tetengo.trie.double_array.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\0namespace.dox" />
+    <None Include="include\tetengo\trie\0namespace.dox" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
