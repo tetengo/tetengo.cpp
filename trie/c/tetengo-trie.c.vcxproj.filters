@@ -29,4 +29,9 @@
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\dll_exports.def">
+      <Filter>src</Filter>
+    </None>
+  </ItemGroup>
 </Project>
