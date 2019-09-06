@@ -10,8 +10,16 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="header\tetengo::trie">
-      <UniqueIdentifier>{948d10b7-4eb4-4705-b914-da4ac4bba7b2}</UniqueIdentifier>
+      <UniqueIdentifier>{81734cb3-2759-43ff-9ffd-ec5cb2fa82bf}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\tetengo\trie\double_array.h">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\precompiled\precompiled.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo.trie.double_array.cpp">
@@ -20,18 +28,5 @@
     <ClCompile Include="..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\precompiled\precompiled.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tetengo\trie\double_array.hpp">
-      <Filter>header\tetengo::trie</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="include\tetengo\trie\0namespace.dox">
-      <Filter>header\tetengo::trie</Filter>
-    </None>
   </ItemGroup>
 </Project>
