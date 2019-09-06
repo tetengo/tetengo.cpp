@@ -3,8 +3,6 @@
     \brief A double array.
 
     Copyright (C) 2019 kaorut
-
-    $Id$
 */
 
 

@@ -2,8 +2,6 @@
     \brief A double array.
 
     Copyright (C) 2019 kaorut
-
-    $Id$
 */
 
 #if !defined(TETENGO_TRIE_DOUBLEARRAY_H)
