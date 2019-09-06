@@ -4,8 +4,8 @@
     Copyright (C) 2019 kaorut
 */
 
-#if !defined(TETENGO_TRIE_DOUBLEARRAY_H)
-#define TETENGO_TRIE_DOUBLEARRAY_H
+#if !defined(TETENGO_TRIE_DOUBLEARRAY_HPP)
+#define TETENGO_TRIE_DOUBLEARRAY_HPP
 
 
 namespace tetengo::trie

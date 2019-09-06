@@ -17,14 +17,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\precompiled\precompiled.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tetengo\trie\double_array.h">
-      <Filter>header\tetengo\trie</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\tetengo.trie.double_array.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -36,5 +28,13 @@
     <None Include="include\tetengo\trie\0namespace.dox">
       <Filter>header\tetengo\trie</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\precompiled\precompiled.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\trie\double_array.hpp">
+      <Filter>header\tetengo\trie</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

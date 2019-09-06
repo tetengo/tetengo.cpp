@@ -1,4 +1,3 @@
-#include "precompiled.h"
 /*! \file
     \brief A double array.
 
@@ -6,7 +5,7 @@
 */
 
 
-#include <tetengo/trie/double_array.h>
+#include <tetengo/trie/double_array.hpp>
 
 
 namespace tetengo::trie
