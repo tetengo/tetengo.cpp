@@ -9,5 +9,32 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="header\tetengo">
+      <UniqueIdentifier>{948d10b7-4eb4-4705-b914-da4ac4bba7b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header\tetengo\trie">
+      <UniqueIdentifier>{cc21c1aa-a781-44bc-b359-c53f5e7cf8af}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\precompiled\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\double_array.h">
+      <Filter>header\tetengo\trie</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\tetengo.trie.double_array.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\precompiled\precompiled.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\0namespace.dox">
+      <Filter>header\tetengo\trie</Filter>
+    </None>
   </ItemGroup>
 </Project>

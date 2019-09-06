@@ -1,0 +1,11 @@
+/*! \file
+    \brief Document for Doxygen.
+
+    Copyright (C) 2019 kaorut
+
+    $Id$
+*/
+
+/*! \namespace tetengo::trie
+    \brief A trie library.
+*/
