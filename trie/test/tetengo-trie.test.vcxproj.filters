@@ -13,7 +13,7 @@
     <ClCompile Include="src\master.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test.tetengo.trie.double_array.cpp">
+    <ClCompile Include="src\test_tetengo.trie.double_array.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

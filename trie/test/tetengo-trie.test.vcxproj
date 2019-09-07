@@ -116,7 +116,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
-    <ClCompile Include="src\test.tetengo.trie.double_array.cpp" />
+    <ClCompile Include="src\test_tetengo.trie.double_array.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.hpp" />
