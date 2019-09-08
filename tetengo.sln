@@ -3,9 +3,54 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo-trie.cpp", "trie\cpp\tetengo-trie.cpp.vcxproj", "{A755F6BF-9964-4608-A0C8-9F7557D14A09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "trie", "trie", "{61A0CE42-96A0-4578-A035-17D62CE4A691}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo-trie.c", "trie\c\tetengo-trie.c.vcxproj", "{E14D072F-631B-4E87-BC03-57437306CD34}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo-trie.test", "trie\test\tetengo-trie.test.vcxproj", "{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Debug|x64.ActiveCfg = Debug|x64
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Debug|x64.Build.0 = Debug|x64
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Debug|x86.ActiveCfg = Debug|Win32
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Debug|x86.Build.0 = Debug|Win32
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Release|x64.ActiveCfg = Release|x64
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Release|x64.Build.0 = Release|x64
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Release|x86.ActiveCfg = Release|Win32
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09}.Release|x86.Build.0 = Release|Win32
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Debug|x64.ActiveCfg = Debug|x64
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Debug|x64.Build.0 = Debug|x64
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Debug|x86.ActiveCfg = Debug|Win32
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Debug|x86.Build.0 = Debug|Win32
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Release|x64.ActiveCfg = Release|x64
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Release|x64.Build.0 = Release|x64
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Release|x86.ActiveCfg = Release|Win32
+		{E14D072F-631B-4E87-BC03-57437306CD34}.Release|x86.Build.0 = Release|Win32
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Debug|x64.ActiveCfg = Debug|x64
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Debug|x64.Build.0 = Debug|x64
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Debug|x86.ActiveCfg = Debug|Win32
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Debug|x86.Build.0 = Debug|Win32
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x64.ActiveCfg = Release|x64
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x64.Build.0 = Release|x64
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x86.ActiveCfg = Release|Win32
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A755F6BF-9964-4608-A0C8-9F7557D14A09} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
+		{E14D072F-631B-4E87-BC03-57437306CD34} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
+		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1FDB91A-BB78-49E0-8D13-17726804EA86}
