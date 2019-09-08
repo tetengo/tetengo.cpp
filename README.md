@@ -1,7 +1,7 @@
 tetengo
 =======
 
-Copyright (C) 2019 kaorut  https://www.tetengo.org/
+Copyright (C) 2019 kaoru  https://www.tetengo.org/
 
 A multipurpose library set.
 
