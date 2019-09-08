@@ -1,7 +1,7 @@
 /*!
     \brief A double array.
 
-    Copyright (C) 2019 kaorut
+    Copyright (C) 2019 kaoru
  */
 
 #include <boost/scope_exit.hpp>
