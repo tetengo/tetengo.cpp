@@ -11,6 +11,10 @@ AC_CONFIG_FILES([
     Makefile
     precompiled/Makefile
     trie/Makefile
+    trie/c/Makefile
+    trie/c/include/Makefile
+    trie/c/include/tetengo/Makefile
+    trie/c/src/Makefile
     trie/cpp/Makefile
     trie/cpp/include/Makefile
     trie/cpp/include/tetengo/Makefile
