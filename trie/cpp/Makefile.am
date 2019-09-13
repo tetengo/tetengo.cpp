@@ -4,3 +4,7 @@
 SUBDIRS = \
     include \
     src
+
+EXTRA_DIST = \
+    tetengo-trie.cpp.vcxproj \
+    tetengo-trie.cpp.vcxproj.filters

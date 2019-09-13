@@ -7,4 +7,5 @@ pkg_headers = \
 extra_headers =
 
 nobase_pkginclude_HEADERS = ${pkg_headers}
+
 EXTRA_DIST = ${extra_headers}

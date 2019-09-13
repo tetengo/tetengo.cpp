@@ -3,3 +3,7 @@
 
 SUBDIRS = \
     src
+
+EXTRA_DIST = \
+    tetengo-trie.test.vcxproj \
+    tetengo-trie.test.vcxproj.filters

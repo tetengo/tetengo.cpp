@@ -12,3 +12,6 @@ libtetengo_trie_c_a_CPPFLAGS = \
     -I${top_srcdir}/trie/c/include \
     -I${top_srcdir}/trie/cpp/include
 libtetengo_trie_c_a_SOURCES = ${sources}
+
+EXTRA_DIST = \
+    dll_exports.def

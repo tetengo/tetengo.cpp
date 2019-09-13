@@ -2,5 +2,5 @@
 # Copyright (C) 2019 kaoru
 
 EXTRA_DIST = \
-    precompiled.hpp \
-    precompiled.cpp
+    precompiled.cpp \
+    precompiled.hpp
