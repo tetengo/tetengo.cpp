@@ -1,4 +1,5 @@
 .deps/
+.vs/
 aclocal.m4
 autom4te.cache/
 bin/
@@ -17,7 +18,11 @@ Makefile.in
 missing
 obj/
 stamp-h1
+test-driver
 *~
 *.a
+*.log
 *.o
+*.trs
 *.user
+trie/test/src/test_tetengo.trie

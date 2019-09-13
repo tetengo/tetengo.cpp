@@ -3,4 +3,10 @@
 
 SUBDIRS = \
     precompiled \
-    trie
+    trie \
+    vsprops
+
+EXTRA_DIST = \
+    bootstrap.sh \
+    README.md \
+    tetengo.sln
