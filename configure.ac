@@ -21,6 +21,7 @@ AC_CONFIG_FILES([
     trie/cpp/src/Makefile
     trie/test/Makefile
     trie/test/src/Makefile
+    vsprops/Makefile
 ])
 
 AC_LANG([C++])

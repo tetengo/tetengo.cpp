@@ -3,4 +3,5 @@
 
 SUBDIRS = \
     precompiled \
-    trie
+    trie \
+    vsprops
