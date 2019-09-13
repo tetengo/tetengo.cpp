@@ -19,6 +19,8 @@ AC_CONFIG_FILES([
     trie/cpp/include/Makefile
     trie/cpp/include/tetengo/Makefile
     trie/cpp/src/Makefile
+    trie/test/Makefile
+    trie/test/src/Makefile
 ])
 
 AC_LANG([C++])
@@ -34,9 +36,7 @@ AC_PROG_RANLIB
 AX_BOOST_BASE([1.71.0])
 AX_BOOST_UNIT_TEST_FRAMEWORK
 AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
-#AC_SUBST([UNITTEST_LIBS] "${BOOST_UNIT_TEST_FRAMEWORK_LIB}")
-
-AC_SUBST([LIBS], "${LIBS} -lstdc++fs -stdc++")
+AC_SUBST([LIBS], "${LIBS} -lstdc++fs -lstdc++")
 
 #### Header Checks ####
 AC_CXX_HAVE_STD
