@@ -9,6 +9,7 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([
     Makefile
+    docsrc/Makefile
     precompiled/Makefile
     trie/Makefile
     trie/c/Makefile
@@ -32,6 +33,15 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_RANLIB
+
+AC_ARG_WITH(
+    doxygen,
+    AS_HELP_STRING([--with-doxygen=COMMAND], [Specify the Doxygen command. Or uses `doxygen'.]),
+    DOXYGEN=$withval
+)
+AC_CHECK_PROG(DOXYGEN, doxygen, doxygen)
+test -z $DOXYGEN && \
+    AC_MSG_ERROR([You cannot generate documents for lack of Doxygen.])
 
 #### Library Checks ####
 AX_BOOST_BASE([1.71.0])
