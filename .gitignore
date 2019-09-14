@@ -12,6 +12,7 @@ config.status
 config.sub
 configure
 depcomp
+doc/
 install-sh
 Makefile
 Makefile.in
