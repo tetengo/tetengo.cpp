@@ -2,6 +2,7 @@
 # Copyright (C) 2019 kaoru
 
 SUBDIRS = \
+    docsrc \
     precompiled \
     trie \
     vsprops

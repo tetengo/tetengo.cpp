@@ -9,6 +9,7 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([
     Makefile
+    docsrc/Makefile
     precompiled/Makefile
     trie/Makefile
     trie/c/Makefile
