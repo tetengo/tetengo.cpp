@@ -34,6 +34,15 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_RANLIB
 
+AC_ARG_WITH(
+    doxygen,
+    AS_HELP_STRING([--with-doxygen=COMMAND], [Specify the Doxygen command. Or uses `doxygen'.]),
+    DOXYGEN=$withval
+)
+AC_CHECK_PROG(DOXYGEN, doxygen, doxygen)
+test -z $DOXYGEN && \
+    AC_MSG_ERROR([You cannot generate documents for lack of Doxygen.])
+
 #### Library Checks ####
 AX_BOOST_BASE([1.71.0])
 AX_BOOST_UNIT_TEST_FRAMEWORK
