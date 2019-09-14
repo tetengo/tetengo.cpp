@@ -26,7 +26,7 @@ extern "C"
     /*!
         \brief Destroys a double array.
 
-        \param A pointer to a double array.
+        \param p_double_array A pointer to a double array.
     */
     void tetengo_trie_doublearray_destroy(tetengo_trie_doublearray* p_double_array);
 
