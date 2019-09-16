@@ -1,10 +1,14 @@
 # Automake Settings
 # Copyright (C) 2019 kaoru
 
+SOURCE_SUBDIRS = \
+    trie
+
 SUBDIRS = \
+    ${SOURCE_SUBDIRS} \
     docsrc \
     precompiled \
-    trie \
+    tools \
     vsprops
 
 EXTRA_DIST = \
@@ -12,6 +16,7 @@ EXTRA_DIST = \
     Doxyfile \
     README.md \
     tetengo.sln
+
 
 .PHONY: doc
 doc:
@@ -27,3 +32,13 @@ clean-doc:
 	-rm -rf $(top_builddir)/doc
 
 distclean-local: clean-doc
+
+
+.PHONY: format
+format:
+	for d in ${SOURCE_SUBDIRS}; \
+	do \
+	    cd $$d; \
+	    ${MAKE} format; \
+	    cd ..; \
+	done

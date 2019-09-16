@@ -8,3 +8,13 @@ SUBDIRS = \
 EXTRA_DIST = \
     tetengo-trie.c.vcxproj \
     tetengo-trie.c.vcxproj.filters
+
+
+.PHONY: format
+format:
+	for d in ${SUBDIRS}; \
+	do \
+	    cd $$d; \
+	    ${MAKE} format; \
+	    cd ..; \
+	done

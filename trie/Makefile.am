@@ -5,3 +5,13 @@ SUBDIRS = \
     c \
     cpp \
     test
+
+
+.PHONY: format
+format:
+	for d in ${SUBDIRS}; \
+	do \
+	    cd $$d; \
+	    ${MAKE} format; \
+	    cd ..; \
+	done

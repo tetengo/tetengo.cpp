@@ -22,3 +22,11 @@ test_tetengo_trie_LDADD = \
 test_tetengo_trie_SOURCES = ${sources}
 
 TESTS = ${check_PROGRAMS}
+
+
+.PHONY: format
+format:
+	for f in ${headers} ${sources}; \
+	do \
+	    ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; \
+	done
