@@ -12,10 +12,6 @@ libtetengo_trie_cpp_a_CPPFLAGS = \
     -I${top_srcdir}/trie/cpp/include
 libtetengo_trie_cpp_a_SOURCES = ${sources}
 
-
 .PHONY: format
 format:
-	for f in ${headers} ${sources}; \
-	do \
-	    ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; \
-	done
+	for f in ${headers} ${sources}; do ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; done

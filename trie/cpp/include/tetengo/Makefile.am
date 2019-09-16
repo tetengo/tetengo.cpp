@@ -14,7 +14,4 @@ EXTRA_DIST = ${extra_headers}
 
 .PHONY: format
 format:
-	for f in ${pkg_headers} ${extra_headers}; \
-	do \
-	    ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; \
-	done
+	for f in ${pkg_headers} ${extra_headers}; do ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; done

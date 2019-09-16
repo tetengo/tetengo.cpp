@@ -34,11 +34,5 @@ clean-doc:
 distclean-local: clean-doc
 
 
-.PHONY: format
 format:
-	for d in ${SOURCE_SUBDIRS}; \
-	do \
-	    cd $$d; \
-	    ${MAKE} format; \
-	    cd ..; \
-	done
+	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done

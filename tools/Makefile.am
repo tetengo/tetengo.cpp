@@ -1,4 +1,5 @@
 # Automake Settings
 # Copyright (C) 2019 kaoru
 
-EXTRA_DIST =
+EXTRA_DIST = \
+    call_clang-format.sh
