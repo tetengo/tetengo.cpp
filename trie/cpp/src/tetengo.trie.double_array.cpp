@@ -10,8 +10,7 @@
 
 namespace tetengo::trie
 {
-    double_array::double_array()
-    {}
+    double_array::double_array() {}
 
 
 }
