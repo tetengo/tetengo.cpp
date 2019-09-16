@@ -4,6 +4,7 @@
 SUBDIRS = \
     docsrc \
     precompiled \
+    tools \
     trie \
     vsprops
 

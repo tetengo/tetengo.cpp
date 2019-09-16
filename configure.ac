@@ -11,6 +11,7 @@ AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
     precompiled/Makefile
+    tools/Makefile
     trie/Makefile
     trie/c/Makefile
     trie/c/include/Makefile
