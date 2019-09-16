@@ -34,5 +34,9 @@ clean-doc:
 distclean-local: clean-doc
 
 
+iwyu:
+	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
+
+
 format:
 	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done

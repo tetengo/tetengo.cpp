@@ -6,7 +6,7 @@ AC_PREREQ([2.69])
 AC_INIT([tetengo], [0.0.0], [kaorut@mc.pikara.ne.jp])
 AC_CONFIG_SRCDIR([precompiled/precompiled.hpp])
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([--warnings=no-portability])
 AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
@@ -34,6 +34,19 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_RANLIB
+
+AC_ARG_WITH(
+    iwyu,
+    AS_HELP_STRING(
+        [--with-iwyu=COMMAND], [Specify the include-what-you-use command. Or uses `include-what-you-use'.]
+    ),
+    IWYU=$withval
+)
+AC_CHECK_PROG(IWYU, include-what-you-use, include-what-you-use)
+test -z $IWYU && \
+    AC_MSG_ERROR([You cannot check the includes for lack of include-what-you-use.])
+AC_SUBST([IWYU_OPTS], "-Xiwyu --max_line_length=1024 -x c++ -std=c++17 -DIWYU")
+AC_SUBST([IWYU_IMP_PATH], "tools/iwyu_mappings.imp")
 
 AC_ARG_WITH(
     unix2dos,
