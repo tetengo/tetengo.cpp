@@ -15,3 +15,11 @@ libtetengo_trie_c_a_SOURCES = ${sources}
 
 EXTRA_DIST = \
     dll_exports.def
+
+
+.PHONY: format
+format:
+	for f in ${headers} ${sources}; \
+	do \
+	    ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; \
+	done
