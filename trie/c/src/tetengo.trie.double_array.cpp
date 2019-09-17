@@ -5,7 +5,8 @@
 */
 
 #include <tetengo/trie/double_array.h>
-#include <tetengo/trie/double_array.hpp>
+
+struct tetengo_trie_doublearray;
 
 
 tetengo_trie_doublearray* tetengo_trie_doublearray_create()

@@ -5,4 +5,4 @@
  */
 
 #define BOOST_TEST_MODULE "tetengo-trie.test"
-#include <boost/test/unit_test.hpp>
+#include <boost/test/unit_test.hpp> // IWYU pragma: keep
