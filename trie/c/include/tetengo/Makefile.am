@@ -18,11 +18,12 @@ iwyu_CPPFLAGS = \
 iwyu: ${addsuffix .iwyuout, ${pkg_headers} ${extra_headers}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${iwyu_CPPFLAGS} ${CXXFLAGS} $< 2> ${srcdir}/${addsuffix .tmp, $@} || true
-	mv -f ${srcdir}/${addsuffix .tmp, $@} ${srcdir}/$@
+	mkdir -p ${dir $@}
+	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${iwyu_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	mv -f ${addsuffix .tmp, $@} $@
 
 clean-local:
-	-find ${srcdir} -name *.iwyuout | xargs rm -f
+	-find -name "*.iwyuout" | xargs rm -f
 
 
 .PHONY: format

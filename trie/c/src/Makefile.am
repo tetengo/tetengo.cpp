@@ -22,11 +22,11 @@ IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${libtetengo_trie_c_a_CPPFLAGS} ${CXXFLAGS} $< 2> ${srcdir}/${addsuffix .tmp, $@} || true
-	mv -f ${srcdir}/${addsuffix .tmp, $@} ${srcdir}/$@
+	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${libtetengo_trie_c_a_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	mv -f ${addsuffix .tmp, $@} $@
 
 clean-local:
-	-find ${srcdir} -name *.iwyuout | xargs rm -f
+	-find -name "*.iwyuout" | xargs rm -f
 
 
 .PHONY: format
