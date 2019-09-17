@@ -3,4 +3,5 @@
 
 EXTRA_DIST = \
     call_clang-format.sh \
+    filter_iwyuout.py \
     iwyu_mappings.imp
