@@ -24,6 +24,18 @@ test_tetengo_trie_SOURCES = ${sources}
 TESTS = ${check_PROGRAMS}
 
 
+IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
+
+iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
+
+%.iwyuout: %
+	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${test_tetengo_trie_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	mv -f ${addsuffix .tmp, $@} $@
+
+clean-local:
+	-find -name "*.iwyuout" | xargs rm -f
+
+
 .PHONY: format
 format:
 	for f in ${headers} ${sources}; do ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; done

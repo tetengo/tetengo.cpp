@@ -34,5 +34,10 @@ clean-doc:
 distclean-local: clean-doc
 
 
+iwyu:
+	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
+	for f in ${shell find -name "*.iwyuout"}; do ${top_srcdir}/tools/filter_iwyuout.py < $$f; done
+
+
 format:
 	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done
