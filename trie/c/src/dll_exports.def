@@ -1,4 +1,4 @@
-LIBRARY tetengo-trie.c.dll
+LIBRARY tetengo.trie.dll
 EXPORTS
     tetengo_trie_doublearray_create  @1
     tetengo_trie_doublearray_destroy @2

@@ -4,5 +4,5 @@
     Copyright (C) 2019 kaoru
  */
 
-#define BOOST_TEST_MODULE tetengo-trie.test
-#include <boost/test/unit_test.hpp>
+#define BOOST_TEST_MODULE "tetengo-trie.test"
+#include <boost/test/unit_test.hpp> // IWYU pragma: keep

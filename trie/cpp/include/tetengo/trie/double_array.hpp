@@ -5,7 +5,7 @@
 */
 
 #if !defined(TETENGO_TRIE_DOUBLEARRAY_HPP)
-#define TETENGO_TRIE_DOUBLEARRAY_HPP
+#    define TETENGO_TRIE_DOUBLEARRAY_HPP
 
 
 namespace tetengo::trie
@@ -22,8 +22,6 @@ namespace tetengo::trie
             \brief Creates a double array.
         */
         double_array();
-
-
     };
 
 

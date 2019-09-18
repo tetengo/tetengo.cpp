@@ -4,11 +4,15 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/double_array.h>
 #include <tetengo/trie/double_array.hpp>
+
+struct tetengo_trie_doublearray;
+
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(trie)
@@ -27,7 +31,8 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT(p_double_array)
         {
             tetengo_trie_doublearray_destroy(p_double_array);
-        } BOOST_SCOPE_EXIT_END;
+        }
+        BOOST_SCOPE_EXIT_END;
     }
 }
 
