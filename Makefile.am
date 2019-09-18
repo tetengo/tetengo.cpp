@@ -1,6 +1,8 @@
 # Automake Settings
 # Copyright (C) 2019 kaoru
 
+ACLOCAL_AMFLAGS = -I m4
+
 SOURCE_SUBDIRS = \
     trie
 
