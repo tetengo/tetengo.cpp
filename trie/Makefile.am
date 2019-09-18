@@ -2,8 +2,8 @@
 # Copyright (C) 2019 kaoru
 
 SUBDIRS = \
-    c \
     cpp \
+    c \
     test
 
 

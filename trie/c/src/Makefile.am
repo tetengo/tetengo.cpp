@@ -6,12 +6,14 @@ headers =
 sources = \
     tetengo.trie.double_array.cpp
 
-lib_LIBRARIES = libtetengo.trie.c.a
+lib_LTLIBRARIES = libtetengo.trie.la
 
-libtetengo_trie_c_a_CPPFLAGS = \
+libtetengo_trie_la_CPPFLAGS = \
     -I${top_srcdir}/trie/c/include \
     -I${top_srcdir}/trie/cpp/include
-libtetengo_trie_c_a_SOURCES = ${sources}
+libtetengo_trie_la_LIBADD = \
+    ${top_builddir}/trie/cpp/src/libtetengo.trie.noinst.la
+libtetengo_trie_la_SOURCES = ${sources}
 
 EXTRA_DIST = \
     dll_exports.def
