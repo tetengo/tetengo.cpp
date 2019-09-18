@@ -1,5 +1,6 @@
 .deps/
 .vs/
+.*/
 aclocal.m4
 autom4te.cache/
 bin/
@@ -14,8 +15,10 @@ configure
 depcomp
 doc/
 install-sh
+ltmain.sh
 Makefile
 Makefile.in
+m4/*.m4
 missing
 obj/
 stamp-h1

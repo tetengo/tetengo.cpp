@@ -12,6 +12,12 @@ libtetengo_trie_cpp_a_CPPFLAGS = \
     -I${top_srcdir}/trie/cpp/include
 libtetengo_trie_cpp_a_SOURCES = ${sources}
 
+noinst_LTLIBRARIES = libtetengo.trie.noinst.la
+
+libtetengo_trie_noinst_la_CPPFLAGS = ${libtetengo_trie_cpp_a_CPPFLAGS}
+libtetengo_trie_noinst_la_LDFLAGS = -static
+libtetengo_trie_noinst_la_SOURCES = ${libtetengo_trie_cpp_a_SOURCES}
+
 
 IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 

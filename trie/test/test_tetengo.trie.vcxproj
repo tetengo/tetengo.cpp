@@ -122,10 +122,10 @@
     <ClInclude Include="..\..\precompiled\precompiled.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cpp\tetengo-trie.cpp.vcxproj">
+    <ProjectReference Include="..\cpp\tetengo.trie.cpp.vcxproj">
       <Project>{a755f6bf-9964-4608-a0c8-9f7557d14a09}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\c\tetengo-trie.c.vcxproj">
+    <ProjectReference Include="..\c\tetengo.trie.vcxproj">
       <Project>{e14d072f-631b-4e87-bc03-57437306cd34}</Project>
     </ProjectReference>
   </ItemGroup>

@@ -13,11 +13,9 @@ test_tetengo_trie_CPPFLAGS = \
     -I${top_srcdir}/trie/c/include \
     -I${top_srcdir}/trie/cpp/include
 test_tetengo_trie_LDFLAGS = \
-    -L${top_srcdir}/trie/c/src \
-    -L${top_srcdir}/trie/cpp/src
+    -L${top_builddir}/trie/c/src
 test_tetengo_trie_LDADD = \
-    -ltetengo.trie.c \
-    -ltetengo.trie.cpp \
+    -ltetengo.trie \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_trie_SOURCES = ${sources}
 

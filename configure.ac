@@ -7,6 +7,7 @@ AC_INIT([tetengo], [0.0.0], [kaorut@mc.pikara.ne.jp])
 AC_CONFIG_SRCDIR([precompiled/precompiled.hpp])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([--warnings=no-portability])
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
@@ -33,7 +34,8 @@ AX_CXX_COMPILE_STDCXX_17([noext], [mandatory])
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_RANLIB
+AC_PROG_LIBTOOL
+LT_INIT
 
 AC_ARG_WITH(
     iwyu,
