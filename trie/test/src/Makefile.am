@@ -13,8 +13,8 @@ test_tetengo_trie_CPPFLAGS = \
     -I${top_srcdir}/trie/c/include \
     -I${top_srcdir}/trie/cpp/include
 test_tetengo_trie_LDFLAGS = \
-    -L${top_srcdir}/trie/c/src \
-    -L${top_srcdir}/trie/cpp/src
+    -L${top_builddir}/trie/c/src \
+    -L${top_builddir}/trie/cpp/src
 test_tetengo_trie_LDADD = \
     -ltetengo.trie.c \
     -ltetengo.trie.cpp \
