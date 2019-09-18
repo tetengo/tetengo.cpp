@@ -6,8 +6,8 @@ SUBDIRS = \
     src
 
 EXTRA_DIST = \
-    tetengo-trie.c.vcxproj \
-    tetengo-trie.c.vcxproj.filters
+    tetengo.trie.vcxproj \
+    tetengo.trie.vcxproj.filters
 
 
 iwyu:
