@@ -4,6 +4,12 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <cstdint>
+#include <initializer_list>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -12,6 +18,46 @@
 #include <tetengo/trie/double_array.hpp>
 
 struct tetengo_trie_doublearray;
+
+
+namespace
+{
+    /*
+              S       E       T       A       \0
+        [ 0]+---[ 1]----[ 2]----[ 4]----[ 5]----[ 6]
+            |
+            | U       T       I       G       O       S       I       \0
+            +---[ 3]----[ 7]+---[ 8]----[ 9]----[10]----[11]----[12]----[13]
+                            |
+                            | O       \0
+                            +---[14]----[15]
+    */
+
+    const std::initializer_list<std::pair<std::string, std::int32_t>> values{ { "UTIGOSI", 24 },
+                                                                              { "UTO", 2424 },
+                                                                              { "SETA", 42 } };
+
+    const std::vector<std::uint32_t> base_check_array{
+        //                  BASE  CHECK  BYTECHECK
+        0xFFFFAEFF, // [ 0]  -82,    -1,        -1
+        0xFFFFBD53, // [ 1]  -67,     0,        83
+        0xFFFFB045, // [ 2]  -80,     1,        69
+        0xFFFFB355, // [ 3]  -77,     0,        85
+        0xFFFFC454, // [ 4]  -60,     2,        84
+        0x00000641, // [ 5]    6,     4,        65
+        0x00002A00, // [ 6]   42,     5,         0
+        0xFFFFBF54, // [ 7]  -65,     3,        84
+        0xFFFFC249, // [ 8]  -62,     7,        73
+        0xFFFFBB47, // [ 9]  -69,     8,        71
+        0xFFFFB84F, // [10]  -72,     9,        79
+        0xFFFFC353, // [11]  -61,    10,        83
+        0x00000D49, // [12]   13,    11,        73
+        0x00001800, // [13]   24,    12,         0
+        0x00000F4F, // [14]   15,     7,        79
+        0x00097800, // [15] 2424,    14,         0
+    };
+
+}
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -33,6 +79,13 @@ BOOST_AUTO_TEST_CASE(construction)
             tetengo_trie_doublearray_destroy(p_double_array);
         }
         BOOST_SCOPE_EXIT_END;
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ values };
+    }
+    {
+        // TODO: C style API
     }
 }
 
