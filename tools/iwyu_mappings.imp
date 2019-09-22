@@ -1,6 +1,4 @@
 [
-  { include: ["@<bits/stdint-.+>", "private", "<cstdint>", "public"] },
-  
   { include: ["@<boost/preprocessor/.+>", "private", "<boost/preprocessor.hpp>",   "public"] },
   { include: ["@<boost/test/.+>",         "private", "<boost/test/unit_test.hpp>", "public"] },
   

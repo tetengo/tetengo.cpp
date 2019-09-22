@@ -37,7 +37,6 @@ distclean-local: clean-doc
 
 
 iwyu:
-	find -name "*.iwyuout" -print0 | xargs -0 rm -f
 	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
 	for f in ${shell find -name "*.iwyuout"}; do ${top_srcdir}/tools/filter_iwyuout.py < $$f; done
 
