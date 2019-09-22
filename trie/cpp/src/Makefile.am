@@ -15,6 +15,7 @@ libtetengo_trie_cpp_a_SOURCES = ${sources}
 noinst_LTLIBRARIES = libtetengo.trie.noinst.la
 
 libtetengo_trie_noinst_la_CPPFLAGS = ${libtetengo_trie_cpp_a_CPPFLAGS}
+libtetengo_trie_noinst_la_CXXFLAGS = -fPIC
 libtetengo_trie_noinst_la_LDFLAGS = -static
 libtetengo_trie_noinst_la_SOURCES = ${libtetengo_trie_cpp_a_SOURCES}
 

@@ -44,7 +44,7 @@ namespace tetengo::trie
 
             \return The base check array.
         */
-        const std::vector<std::uint32_t> base_check_array() const;
+        const std::vector<std::uint32_t>& base_check_array() const;
 
 
     private:

@@ -33,11 +33,16 @@ namespace
                             +---[14]----[15]
     */
 
-    const std::initializer_list<std::pair<std::string, std::int32_t>> values{ { "UTIGOSI", 24 },
-                                                                              { "UTO", 2424 },
-                                                                              { "SETA", 42 } };
+    const std::initializer_list<std::pair<std::string, std::int32_t>> expected_values{ { "UTIGOSI", 24 },
+                                                                                       { "UTO", 2424 },
+                                                                                       { "SETA", 42 } };
 
-    const std::vector<std::uint32_t> base_check_array{
+    const std::vector<std::uint32_t> expected_empty_base_check_array{
+        //                  BASE  CHECK  BYTECHECK
+        0x000000FF, // [ 0]    0,    -1,        -1
+    };
+
+    const std::vector<std::uint32_t> expected_base_check_array{
         //                  BASE  CHECK  BYTECHECK
         0xFFFFAEFF, // [ 0]  -82,    -1,        -1
         0xFFFFBD53, // [ 1]  -67,     0,        83
@@ -82,7 +87,34 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo::trie::double_array double_array_{ values };
+        const tetengo::trie::double_array double_array_{ expected_values };
+    }
+    {
+        // TODO: C style API
+    }
+}
+
+BOOST_AUTO_TEST_CASE(base_check_array)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::double_array double_array_{};
+
+        const auto& base_check_array = double_array_.base_check_array();
+
+        BOOST_TEST(base_check_array == expected_empty_base_check_array);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values };
+
+        const auto& base_check_array = double_array_.base_check_array();
+
+        BOOST_TEST(base_check_array == expected_base_check_array);
     }
     {
         // TODO: C style API
