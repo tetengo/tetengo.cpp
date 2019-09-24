@@ -6,9 +6,10 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <cstdint>
 #include <initializer_list>
-#include <stdexcept>
+#include <iterator>
 #include <string>
 #include <utility>
 #include <vector>
@@ -47,11 +48,11 @@ namespace tetengo::trie
             return firsts;
         }
 
-        std::int32_t base_at(const std::vector<std::uint32_t>& base_check_array, const std::size_t index)
-        {
-            const auto value = index < base_check_array.size() ? static_cast<std::int32_t>(base_check_array[index]) : 0;
-            return value >> 8;
-        }
+        //std::int32_t base_at(const std::vector<std::uint32_t>& base_check_array, const std::size_t index)
+        //{
+        //    const auto value = index < base_check_array.size() ? static_cast<std::int32_t>(base_check_array[index]) : 0;
+        //    return value >> 8;
+        //}
 
         void
         set_base_at(std::vector<std::uint32_t>& base_check_array, const std::size_t index, const std::int32_t value)
