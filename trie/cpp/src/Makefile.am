@@ -4,7 +4,9 @@
 headers =
 
 sources = \
-    tetengo.trie.double_array.cpp
+    tetengo.trie.double_array.cpp \
+    tetengo.trie.double_array_builder.cpp \
+    tetengo.trie.double_array_builder.hpp
 
 lib_LIBRARIES = libtetengo.trie.cpp.a
 

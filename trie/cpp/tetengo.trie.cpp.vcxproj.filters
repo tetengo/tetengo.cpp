@@ -20,6 +20,9 @@
     <ClCompile Include="..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.trie.double_array_builder.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.hpp">
@@ -27,6 +30,9 @@
     </ClInclude>
     <ClInclude Include="include\tetengo\trie\double_array.hpp">
       <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tetengo.trie.double_array_builder.hpp">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
