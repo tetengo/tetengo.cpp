@@ -21,7 +21,7 @@ namespace tetengo::trie
 {
     namespace
     {
-        using element_vector_type = std::vector<std::pair<std::string, std::int32_t>>;
+        using element_vector_type = std::vector<const std::pair<std::string, std::int32_t>*>;
 
         using element_iterator_type = element_vector_type::const_iterator;
 
@@ -37,7 +37,7 @@ namespace tetengo::trie
             for (auto child_first = first; child_first != last;)
             {
                 auto child_last = std::find_if(child_first, last, [child_first, offset](const auto& e) {
-                    return char_code_at(e.first, offset) != char_code_at(child_first->first, offset);
+                    return char_code_at(e->first, offset) != char_code_at((*child_first)->first, offset);
                 });
 
                 firsts.push_back(child_last);
@@ -89,12 +89,12 @@ namespace tetengo::trie
             const std::size_t                         offset,
             const std::vector<std::uint32_t>&         base_check_array)
         {
-            for (auto base = -char_code_at(firsts[0]->first, offset) + 1;; ++base)
+            for (auto base = -char_code_at((*firsts[0])->first, offset) + 1;; ++base)
             {
                 bool vacant = 1;
                 for (auto i = firsts.begin(); std::next(i) != firsts.end(); ++i)
                 {
-                    const auto next_index = base + char_code_at((*i)->first, offset);
+                    const auto next_index = base + char_code_at((**i)->first, offset);
                     if (check_at(base_check_array, next_index) != 0xFF)
                     {
                         vacant = false;
@@ -123,17 +123,17 @@ namespace tetengo::trie
 
             for (auto i = children_firsts_.begin(); std::next(i) != children_firsts_.end(); ++i)
             {
-                const auto char_code = char_code_at((*i)->first, offset);
+                const auto char_code = char_code_at((**i)->first, offset);
                 const auto next_base_check_array_index = base + char_code;
                 set_check_at(base_check_array, next_base_check_array_index, char_code);
             }
             for (auto i = children_firsts_.begin(); std::next(i) != children_firsts_.end(); ++i)
             {
-                const auto char_code = char_code_at((*i)->first, offset);
+                const auto char_code = char_code_at((**i)->first, offset);
                 const auto next_base_check_array_index = base + char_code;
                 if (char_code == '\0')
                 {
-                    set_base_at(base_check_array, next_base_check_array_index, (*i)->second);
+                    set_base_at(base_check_array, next_base_check_array_index, (**i)->second);
                     continue;
                 }
                 build_base_check_array_iter(
@@ -146,9 +146,12 @@ namespace tetengo::trie
         {
             std::vector<std::uint32_t> base_check_array{ 0x000000FF };
 
-            element_vector_type element_vector{ std::move(elements) };
+            element_vector_type element_vector{};
+            element_vector.reserve(elements.size());
+            std::transform(
+                elements.begin(), elements.end(), std::back_inserter(element_vector), [](const auto& e) { return &e; });
             std::stable_sort(element_vector.begin(), element_vector.end(), [](const auto& e1, const auto& e2) {
-                return e1.first < e2.first;
+                return e1->first < e2->first;
             });
 
             if (!element_vector.empty())
