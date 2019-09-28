@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <iterator>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -70,6 +71,15 @@ namespace tetengo::trie
             \return The base check array.
         */
         const std::vector<std::uint32_t>& base_check_array() const;
+
+        /*!
+            \brief Finds the value correspoinding the given key.
+
+            \param key A key.
+
+            \return The value. Or std::nullpot when the double array does not have the given key.
+        */
+        std::optional<std::int32_t> find(const std::string& key) const;
 
 
     private:

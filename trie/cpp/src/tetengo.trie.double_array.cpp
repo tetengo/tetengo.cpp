@@ -4,7 +4,9 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,6 +18,20 @@
 
 namespace tetengo::trie
 {
+    namespace
+    {
+        std::int32_t base_at(const std::vector<std::uint32_t>& base_check_array, const std::size_t index)
+        {
+            return static_cast<std::int32_t>(base_check_array[index]) >> 8;
+        }
+
+        std::uint8_t check_at(const std::vector<std::uint32_t>& base_check_array, const std::size_t index)
+        {
+            return base_check_array[index] & 0xFF;
+        }
+
+    }
+
     double_array::double_array() :
     m_base_check_array{ double_array_builder::build(std::vector<const std::pair<std::string, std::int32_t>*>{}) }
     {}
@@ -32,4 +48,21 @@ namespace tetengo::trie
     {
         return m_base_check_array;
     }
+
+    std::optional<std::int32_t> double_array::find(const std::string& key) const
+    {
+        std::size_t index = 0;
+        for (const auto c: key + '\0')
+        {
+            const auto next_index = static_cast<std::size_t>(base_at(m_base_check_array, index)) + c;
+            if (next_index >= m_base_check_array.size() || check_at(m_base_check_array, next_index) != c)
+            {
+                return std::nullopt;
+            }
+            index = next_index;
+        }
+
+        return std::make_optional(base_at(m_base_check_array, index));
+    }
+
 }

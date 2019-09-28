@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <iterator>
 #include <list>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -154,6 +155,38 @@ BOOST_AUTO_TEST_CASE(base_check_array)
         const auto& base_check_array = double_array_.base_check_array();
 
         BOOST_TEST(base_check_array == expected_base_check_array);
+    }
+    {
+        // TODO: C style API
+    }
+}
+
+BOOST_AUTO_TEST_CASE(find)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values };
+
+        {
+            const auto found = double_array_.find("SETA");
+            BOOST_REQUIRE(found);
+            BOOST_TEST(*found == 42);
+        }
+        {
+            const auto found = double_array_.find("UTIGOSI");
+            BOOST_REQUIRE(found);
+            BOOST_TEST(*found == 24);
+        }
+        {
+            const auto found = double_array_.find("UTO");
+            BOOST_REQUIRE(found);
+            BOOST_TEST(*found == 2424);
+        }
+        {
+            const auto found = double_array_.find("SUIZENJI");
+            BOOST_CHECK(!found);
+        }
     }
     {
         // TODO: C style API
