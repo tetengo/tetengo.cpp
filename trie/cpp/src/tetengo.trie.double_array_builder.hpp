@@ -41,30 +41,30 @@ namespace tetengo::trie
         // static functions
 
         static void build_iter(
-            const element_iterator_type first,
-            const element_iterator_type last,
-            const std::size_t           offset,
+            element_iterator_type       first,
+            element_iterator_type       last,
+            std::size_t                 key_offset,
             std::vector<std::uint32_t>& base_check_array,
-            const std::size_t           base_check_array_index);
+            std::size_t                 base_check_array_index);
 
         static std::int32_t calc_base(
             const std::vector<element_iterator_type>& firsts,
-            const std::size_t                         offset,
+            std::size_t                               key_offset,
             const std::vector<std::uint32_t>&         base_check_array,
-            const std::size_t                         base_check_array_index);
+            std::size_t                               base_check_array_index);
 
-        static void
-        set_base_at(std::vector<std::uint32_t>& base_check_array, const std::size_t index, const std::int32_t value);
+        static void set_base_at(std::vector<std::uint32_t>& base_check_array, std::size_t index, std::int32_t value);
 
-        static std::uint8_t check_at(const std::vector<std::uint32_t>& base_check_array, const std::size_t index);
+        static std::uint8_t check_at(const std::vector<std::uint32_t>& base_check_array, std::size_t index);
 
-        static void
-        set_check_at(std::vector<std::uint32_t>& base_check_array, const std::size_t index, const std::uint8_t value);
+        static void set_check_at(std::vector<std::uint32_t>& base_check_array, std::size_t index, std::uint8_t value);
+
+        static void ensure_base_check_array_size(std::vector<std::uint32_t>& base_check_array, std::size_t size);
 
         static std::vector<element_iterator_type>
-        children_firsts(const element_iterator_type first, const element_iterator_type last, const std::size_t offset);
+        children_firsts(element_iterator_type first, element_iterator_type last, std::size_t key_offset);
 
-        static char char_code_at(const std::string& string, const std::size_t index);
+        static char char_code_at(const std::string& string, std::size_t index);
     };
 
 
