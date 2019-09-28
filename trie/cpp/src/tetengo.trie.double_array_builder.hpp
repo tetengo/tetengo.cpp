@@ -21,6 +21,9 @@ namespace tetengo::trie
     public:
         // static functions
 
+        static std::vector<std::uint32_t>
+        build(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers);
+
         static std::vector<std::uint32_t> build(const std::vector<std::pair<std::string, std::int32_t>>& elements);
 
 

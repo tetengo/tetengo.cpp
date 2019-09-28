@@ -16,10 +16,16 @@
 
 namespace tetengo::trie
 {
-    double_array::double_array() : m_base_check_array{ double_array_builder::build({}) } {}
+    double_array::double_array() :
+    m_base_check_array{ double_array_builder::build(std::vector<const std::pair<std::string, std::int32_t>*>{}) }
+    {}
+
+    double_array::double_array(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers) :
+    m_base_check_array{ double_array_builder::build(std::move(element_pointers)) }
+    {}
 
     double_array::double_array(const std::vector<std::pair<std::string, std::int32_t>>& elements) :
-    m_base_check_array{ double_array_builder::build(std::move(elements)) }
+    m_base_check_array{ double_array_builder::build(elements) }
     {}
 
     const std::vector<std::uint32_t>& double_array::base_check_array() const

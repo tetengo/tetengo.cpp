@@ -7,7 +7,9 @@
 #if !defined(TETENGO_TRIE_DOUBLEARRAY_HPP)
 #define TETENGO_TRIE_DOUBLEARRAY_HPP
 
+#include <algorithm>
 #include <cstdint>
+#include <iterator>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,6 +29,30 @@ namespace tetengo::trie
             \brief Creates a double array.
         */
         double_array();
+
+        /*!
+            \brief Creates a double array.
+
+            \param element_pointers Pointers to initial elements.
+        */
+        explicit double_array(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers);
+
+        /*!
+            \brief Creates a double array.
+
+            \tparam InputIterator An input iterator type.
+
+            \param first An iterator to the first element.
+            \param last  An iterator to the last element.
+        */
+        template <typename InputIterator>
+        double_array(InputIterator first, InputIterator last) :
+        double_array{ [first, last]() {
+            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers;
+            std::transform(first, last, std::back_inserter(element_pointers), [](const auto& e) { return &e; });
+            return element_pointers;
+        }() }
+        {}
 
         /*!
             \brief Creates a double array.

@@ -4,7 +4,10 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <algorithm>
 #include <cstdint>
+#include <iterator>
+#include <list>
 #include <string>
 #include <utility>
 #include <vector>
@@ -75,6 +78,8 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{};
+
+        BOOST_TEST(double_array_.base_check_array() == expected_empty_base_check_array);
     }
     {
         tetengo_trie_doublearray* const p_double_array = tetengo_trie_doublearray_create();
@@ -86,7 +91,42 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
+        std::list<std::pair<std::string, std::int32_t>> expected_values_as_list{ expected_values.begin(),
+                                                                                 expected_values.end() };
+
+        std::vector<const std::pair<std::string, std::int32_t>*> expected_values_as_ptr_vector{};
+        expected_values_as_ptr_vector.reserve(expected_values_as_list.size());
+        std::transform(
+            expected_values_as_list.begin(),
+            expected_values_as_list.end(),
+            std::back_inserter(expected_values_as_ptr_vector),
+            [](const auto& e) { return &e; });
+
+        const tetengo::trie::double_array double_array_{ std::move(expected_values_as_ptr_vector) };
+
+        BOOST_TEST(double_array_.base_check_array() == expected_base_check_array);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        std::list<std::pair<std::string, std::int32_t>> expected_values_as_list{ expected_values.begin(),
+                                                                                 expected_values.end() };
+
+        const tetengo::trie::double_array double_array_{ expected_values_as_list.begin(),
+                                                         expected_values_as_list.end() };
+
+        BOOST_TEST(double_array_.base_check_array() == expected_base_check_array);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
         const tetengo::trie::double_array double_array_{ expected_values };
+
+        BOOST_TEST(double_array_.base_check_array() == expected_base_check_array);
     }
     {
         // TODO: C style API

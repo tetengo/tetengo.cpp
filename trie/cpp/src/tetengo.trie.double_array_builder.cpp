@@ -14,24 +14,31 @@
 namespace tetengo::trie
 {
     std::vector<std::uint32_t>
-    double_array_builder::build(const std::vector<std::pair<std::string, std::int32_t>>& elements)
+    double_array_builder::build(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers)
     {
         std::vector<std::uint32_t> base_check_array{ 0x000000FF };
 
-        element_vector_type element_vector{};
-        element_vector.reserve(elements.size());
-        std::transform(
-            elements.begin(), elements.end(), std::back_inserter(element_vector), [](const auto& e) { return &e; });
-        std::stable_sort(element_vector.begin(), element_vector.end(), [](const auto& e1, const auto& e2) {
+        std::stable_sort(element_pointers.begin(), element_pointers.end(), [](const auto& e1, const auto& e2) {
             return e1->first < e2->first;
         });
 
-        if (!element_vector.empty())
+        if (!element_pointers.empty())
         {
-            build_iter(element_vector.begin(), element_vector.end(), 0, base_check_array, 0);
+            build_iter(element_pointers.begin(), element_pointers.end(), 0, base_check_array, 0);
         }
 
         return base_check_array;
+    }
+
+    std::vector<std::uint32_t>
+    double_array_builder::build(const std::vector<std::pair<std::string, std::int32_t>>& elements)
+    {
+        element_vector_type element_pointers{};
+        element_pointers.reserve(elements.size());
+        std::transform(
+            elements.begin(), elements.end(), std::back_inserter(element_pointers), [](const auto& e) { return &e; });
+
+        return build(std::move(element_pointers));
     }
 
     void double_array_builder::build_iter(
