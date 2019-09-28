@@ -9,7 +9,6 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <initializer_list>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,7 +21,7 @@ namespace tetengo::trie
     public:
         // static functions
 
-        static std::vector<std::uint32_t> build(std::initializer_list<std::pair<std::string, std::int32_t>> elements);
+        static std::vector<std::uint32_t> build(const std::vector<std::pair<std::string, std::int32_t>>& elements);
 
 
         // constructors

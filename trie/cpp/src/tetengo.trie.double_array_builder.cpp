@@ -14,7 +14,7 @@
 namespace tetengo::trie
 {
     std::vector<std::uint32_t>
-    double_array_builder::build(std::initializer_list<std::pair<std::string, std::int32_t>> elements)
+    double_array_builder::build(const std::vector<std::pair<std::string, std::int32_t>>& elements)
     {
         std::vector<std::uint32_t> base_check_array{ 0x000000FF };
 

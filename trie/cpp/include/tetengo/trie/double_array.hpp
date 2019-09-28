@@ -8,7 +8,6 @@
 #define TETENGO_TRIE_DOUBLEARRAY_HPP
 
 #include <cstdint>
-#include <initializer_list>
 #include <string>
 #include <utility>
 #include <vector>
@@ -34,7 +33,7 @@ namespace tetengo::trie
 
             \param elements Initial elements.
         */
-        explicit double_array(std::initializer_list<std::pair<std::string, std::int32_t>> elements);
+        explicit double_array(const std::vector<std::pair<std::string, std::int32_t>>& elements);
 
 
         // functions

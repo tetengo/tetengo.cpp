@@ -5,7 +5,6 @@
 */
 
 #include <cstdint>
-#include <initializer_list>
 #include <string>
 #include <utility>
 #include <vector>
@@ -19,7 +18,7 @@ namespace tetengo::trie
 {
     double_array::double_array() : m_base_check_array{ double_array_builder::build({}) } {}
 
-    double_array::double_array(std::initializer_list<std::pair<std::string, std::int32_t>> elements) :
+    double_array::double_array(const std::vector<std::pair<std::string, std::int32_t>>& elements) :
     m_base_check_array{ double_array_builder::build(std::move(elements)) }
     {}
 

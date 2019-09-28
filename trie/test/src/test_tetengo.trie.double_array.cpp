@@ -5,7 +5,6 @@
  */
 
 #include <cstdint>
-#include <initializer_list>
 #include <string>
 #include <utility>
 #include <vector>
@@ -23,7 +22,7 @@ struct tetengo_trie_doublearray;
 namespace
 {
     /*
-              S       E       T       A       \0
+        in      S       E       T       A       \0
         [ 0]+---[ 1]----[ 2]----[ 4]----[ 5]----[ 6]
             |
             | U       T       I       G       O       S       I       \0
@@ -33,9 +32,9 @@ namespace
                             +---[14]----[15]
     */
 
-    const std::initializer_list<std::pair<std::string, std::int32_t>> expected_values{ { "UTIGOSI", 24 },
-                                                                                       { "UTO", 2424 },
-                                                                                       { "SETA", 42 } };
+    const std::vector<std::pair<std::string, std::int32_t>> expected_values{ { "UTIGOSI", 24 },
+                                                                             { "UTO", 2424 },
+                                                                             { "SETA", 42 } };
 
     const std::vector<std::uint32_t> expected_empty_base_check_array{
         //                  BASE  CHECK  BYTECHECK
