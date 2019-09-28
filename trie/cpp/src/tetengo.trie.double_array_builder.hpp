@@ -50,7 +50,8 @@ namespace tetengo::trie
         static std::int32_t calc_base(
             const std::vector<element_iterator_type>& firsts,
             const std::size_t                         offset,
-            const std::vector<std::uint32_t>&         base_check_array);
+            const std::vector<std::uint32_t>&         base_check_array,
+            const std::size_t                         base_check_array_index);
 
         static void
         set_base_at(std::vector<std::uint32_t>& base_check_array, const std::size_t index, const std::int32_t value);

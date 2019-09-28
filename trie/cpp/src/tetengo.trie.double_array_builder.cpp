@@ -43,7 +43,7 @@ namespace tetengo::trie
     {
         const auto children_firsts_ = children_firsts(first, last, offset);
 
-        const auto base = calc_base(children_firsts_, offset, base_check_array);
+        const auto base = calc_base(children_firsts_, offset, base_check_array, base_check_array_index);
         set_base_at(base_check_array, base_check_array_index, base);
 
         for (auto i = children_firsts_.begin(); std::next(i) != children_firsts_.end(); ++i)
@@ -68,9 +68,13 @@ namespace tetengo::trie
     std::int32_t double_array_builder::calc_base(
         const std::vector<element_iterator_type>& firsts,
         const std::size_t                         offset,
-        const std::vector<std::uint32_t>&         base_check_array)
+        const std::vector<std::uint32_t>&         base_check_array,
+        const std::size_t                         base_check_array_index)
     {
-        for (auto base = -char_code_at((*firsts[0])->first, offset) + 1;; ++base)
+        for (auto base =
+                 -char_code_at((*firsts[0])->first, offset) + static_cast<std::int32_t>(base_check_array_index) + 1;
+             ;
+             ++base)
         {
             bool vacant = 1;
             for (auto i = firsts.begin(); std::next(i) != firsts.end(); ++i)
