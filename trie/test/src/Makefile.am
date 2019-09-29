@@ -5,7 +5,8 @@ headers =
 
 sources = \
     master.cpp \
-    test_tetengo.trie.double_array.cpp
+    test_tetengo.trie.double_array.cpp \
+    test_tetengo.trie.storage.cpp
 
 check_PROGRAMS = test_tetengo.trie
 

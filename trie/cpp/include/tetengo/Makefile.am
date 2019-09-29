@@ -2,7 +2,8 @@
 # Copyright (C) 2019 kaoru
 
 pkg_headers = \
-    trie/double_array.hpp
+    trie/double_array.hpp \
+    trie/storage.hpp
 
 extra_headers = \
     trie/0namespace.dox
