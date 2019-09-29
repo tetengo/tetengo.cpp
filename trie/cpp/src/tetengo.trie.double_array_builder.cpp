@@ -8,6 +8,8 @@
 #include <cassert>
 #include <iterator>
 
+#include <tetengo/trie/double_array.hpp>
+
 #include "tetengo.trie.double_array_builder.hpp"
 
 
@@ -16,7 +18,7 @@ namespace tetengo::trie
     std::vector<std::uint32_t>
     double_array_builder::build(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers)
     {
-        std::vector<std::uint32_t> base_check_array{ 0x000000FF };
+        std::vector<std::uint32_t> base_check_array{ 0x00000000U | double_array::vacant_check_value() };
 
         std::stable_sort(element_pointers.begin(), element_pointers.end(), [](const auto& e1, const auto& e2) {
             return e1->first < e2->first;
@@ -87,7 +89,7 @@ namespace tetengo::trie
             const auto occupied =
                 std::find_if(firsts.begin(), first_last, [key_offset, &base_check_array, base](const auto& first) {
                     const auto next_index = base + char_code_at((*first)->first, key_offset);
-                    return check_at(base_check_array, next_index) != 0xFF;
+                    return check_at(base_check_array, next_index) != double_array::vacant_check_value();
                 });
             if (occupied == first_last)
             {
@@ -103,14 +105,15 @@ namespace tetengo::trie
     {
         ensure_base_check_array_size(base_check_array, index + 1);
         const uint32_t array_value = value << 8;
-        base_check_array[index] &= 0x000000FF;
+        base_check_array[index] &= (0x00000000U | double_array::vacant_check_value());
         base_check_array[index] |= array_value;
     }
 
     std::uint8_t
     double_array_builder::check_at(const std::vector<std::uint32_t>& base_check_array, const std::size_t index)
     {
-        const auto value = index < base_check_array.size() ? base_check_array[index] : 0xFF;
+        const auto value =
+            index < base_check_array.size() ? base_check_array[index] : double_array::vacant_check_value();
         return value & 0xFF;
     }
 
@@ -131,7 +134,7 @@ namespace tetengo::trie
     {
         if (size > base_check_array.size())
         {
-            base_check_array.resize(size, 0x000000FF);
+            base_check_array.resize(size, 0x00000000U | double_array::vacant_check_value());
         }
     }
 

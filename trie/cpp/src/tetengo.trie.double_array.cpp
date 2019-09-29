@@ -82,7 +82,7 @@ namespace tetengo::trie
         }
         else
         {
-            if (check_at(m_base_check_array, index) == 0xFF)
+            if (check_at(m_base_check_array, index) == double_array::vacant_check_value())
             {
                 return std::nullopt;
             }
@@ -131,4 +131,6 @@ namespace tetengo::trie
     {
         return double_array_enumerator{ m_base_check_array };
     }
+
+
 }

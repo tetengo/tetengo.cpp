@@ -61,6 +61,19 @@ namespace tetengo::trie
     class double_array
     {
     public:
+        // static functions
+
+        /*!
+            \brief Returns the check value for a vacant element.
+
+            \return The check value for a vacant element.
+        */
+        static constexpr std::uint8_t vacant_check_value()
+        {
+            return 0xFF;
+        }
+
+
         // constructors and destructor
 
         /*!
