@@ -163,6 +163,24 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(double_array)
 
 
+BOOST_AUTO_TEST_CASE(key_terminator)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_TEST(tetengo::trie::double_array::key_terminator() == '\0');
+
+    // TODO: C style API
+}
+
+BOOST_AUTO_TEST_CASE(vacant_check_value)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_TEST(tetengo::trie::double_array::vacant_check_value() == 0xFF);
+
+    // TODO: C style API
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();

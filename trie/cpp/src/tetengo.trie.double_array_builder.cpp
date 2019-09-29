@@ -65,7 +65,7 @@ namespace tetengo::trie
         {
             const auto char_code = char_code_at((**i)->first, key_offset);
             const auto next_base_check_array_index = base + char_code;
-            if (char_code == '\0')
+            if (char_code == double_array::key_terminator())
             {
                 set_base_at(base_check_array, next_base_check_array_index, (**i)->second);
                 continue;
@@ -160,6 +160,6 @@ namespace tetengo::trie
 
     char double_array_builder::char_code_at(const std::string& string, const std::size_t index)
     {
-        return index < string.length() ? string[index] : '\0';
+        return index < string.length() ? string[index] : double_array::key_terminator();
     }
 }

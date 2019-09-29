@@ -67,8 +67,9 @@ namespace tetengo::trie
             const auto next_index_to_check = base + char_code;
             if (next_index_to_check == next_index)
             {
-                const auto next_key_tail =
-                    char_code != '\0' ? std::string{ static_cast<char>(char_code) } : std::string{};
+                const auto next_key_tail = char_code != double_array::key_terminator() ?
+                                               std::string{ static_cast<char>(char_code) } :
+                                               std::string{};
                 children_indexes_and_keys.push_back(std::make_pair(next_index, key + next_key_tail));
             }
         }
@@ -88,7 +89,7 @@ namespace tetengo::trie
             }
             else
             {
-                assert(check_at(m_base_check_array, index) == '\0');
+                assert(check_at(m_base_check_array, index) == double_array::key_terminator());
                 return std::make_optional(std::make_pair(key, base));
             }
         }
@@ -114,7 +115,7 @@ namespace tetengo::trie
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
         std::size_t index = 0;
-        for (const auto c: key + '\0')
+        for (const auto c: key + double_array::key_terminator())
         {
             const auto next_index = static_cast<std::size_t>(base_at(m_base_check_array, index)) + c;
             if (next_index >= m_base_check_array.size() || check_at(m_base_check_array, next_index) != c)

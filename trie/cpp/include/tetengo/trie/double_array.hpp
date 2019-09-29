@@ -64,6 +64,16 @@ namespace tetengo::trie
         // static functions
 
         /*!
+            \brief Returns the key terminator.
+
+            \return The key terminator.
+        */
+        static constexpr char key_terminator()
+        {
+            return '\0';
+        }
+
+        /*!
             \brief Returns the check value for a vacant element.
 
             \return The check value for a vacant element.
