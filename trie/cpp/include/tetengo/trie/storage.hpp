@@ -7,8 +7,8 @@
 #if !defined(TETENGO_TRIE_STORAGE_HPP)
 #define TETENGO_TRIE_STORAGE_HPP
 
-#include <cstddef>
 #include <cstdint>
+#include <istream>
 #include <vector>
 
 
@@ -24,6 +24,13 @@ namespace tetengo::trie
             \brief Creates a storage.
         */
         storage();
+
+        /*!
+            \brief Creates a storage.
+
+            \param input_stream An input stream.
+        */
+        explicit storage(std::istream& input_stream);
 
 
         // functions

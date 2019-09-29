@@ -5,6 +5,9 @@
  */
 
 #include <cstdint>
+#include <memory>
+#include <sstream>
+#include <string>
 #include <vector>
 
 #include <boost/cstdint.hpp>
@@ -13,6 +16,37 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/storage.hpp>
+
+
+namespace
+{
+    char to_c(unsigned char uc)
+    {
+        return uc;
+    }
+
+    const std::vector<char> serialized{
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x01), to_c(0x23),
+        to_c(0x45), to_c(0x67), to_c(0x89), to_c(0xAB), to_c(0xCD), to_c(0xEF),
+    };
+
+    const std::vector<uint32_t> values{ 0x01234567, 0x89ABCDEF };
+
+    std::unique_ptr<std::istream> create_input_stream()
+    {
+        return std::make_unique<std::stringstream>(std::string{ serialized.begin(), serialized.end() });
+    }
+
+    const std::vector<char> serialized_broken{
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), to_c(0x89),
+    };
+
+    std::unique_ptr<std::istream> create_broken_input_stream()
+    {
+        return std::make_unique<std::stringstream>(std::string{ serialized_broken.begin(), serialized_broken.end() });
+    }
+
+}
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -24,7 +58,21 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::trie::storage storage_{};
+    {
+        const tetengo::trie::storage storage_{};
+    }
+
+    {
+        const auto                   p_input_stream = create_input_stream();
+        const tetengo::trie::storage storage_{ *p_input_stream };
+
+        BOOST_TEST(storage_.values() == values);
+    }
+    {
+        const auto p_input_stream = create_broken_input_stream();
+
+        BOOST_CHECK_THROW(const tetengo::trie::storage storage_{ *p_input_stream }, std::ios_base::failure);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(base_at)
