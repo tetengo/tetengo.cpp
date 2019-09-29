@@ -65,4 +65,10 @@ namespace tetengo::trie
         return std::make_optional(base_at(m_base_check_array, index));
     }
 
+    double_array_enumerator double_array::enumerator() const
+    {
+        return double_array_enumerator{};
+    }
+
+
 }

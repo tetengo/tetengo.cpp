@@ -166,6 +166,18 @@ BOOST_AUTO_TEST_CASE(find)
     BOOST_TEST_PASSPOINT();
 
     {
+        const tetengo::trie::double_array double_array_{};
+
+        {
+            const auto found = double_array_.find("SETA");
+            BOOST_CHECK(!found);
+        }
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
         const tetengo::trie::double_array double_array_{ expected_values };
 
         {
@@ -187,6 +199,29 @@ BOOST_AUTO_TEST_CASE(find)
             const auto found = double_array_.find("SUIZENJI");
             BOOST_CHECK(!found);
         }
+    }
+    {
+        // TODO: C style API
+    }
+}
+
+BOOST_AUTO_TEST_CASE(enumerator)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::double_array double_array_{};
+
+        double_array_.enumerator();
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values };
+
+        double_array_.enumerator();
     }
     {
         // TODO: C style API

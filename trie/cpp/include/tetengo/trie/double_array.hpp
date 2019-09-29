@@ -19,6 +19,13 @@
 namespace tetengo::trie
 {
     /*!
+        \brief A double array enumerator.
+    */
+    class double_array_enumerator
+    {};
+
+
+    /*!
         \brief A double array.
     */
     class double_array
@@ -80,6 +87,13 @@ namespace tetengo::trie
             \return The value. Or std::nullpot when the double array does not have the given key.
         */
         std::optional<std::int32_t> find(const std::string& key) const;
+
+        /*!
+            \brief Returns an enumerator.
+
+            \return An enumerator.
+        */
+        double_array_enumerator enumerator() const;
 
 
     private:
