@@ -9,9 +9,8 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <memory>
-
-#include <boost/core/noncopyable.hpp>
+#include <utility>
+#include <vector>
 
 
 namespace tetengo::trie
@@ -19,18 +18,13 @@ namespace tetengo::trie
     /*!
         \brief A storage.
     */
-    class storage : private boost::noncopyable
+    class storage
     {
     public:
         /*!
             \brief Creates a storage.
         */
-        storage() = default;
-
-        /*!
-            \brief Destroys the storage.
-        */
-        virtual ~storage() = default;
+        storage();
 
 
         // functions
@@ -76,26 +70,11 @@ namespace tetengo::trie
         */
         std::size_t size() const;
 
-        /*!
-            \brief Clones the storage.
-        */
-        std::unique_ptr<storage> clone() const;
-
 
     private:
-        // virtual functions
+        // variables
 
-        virtual std::int32_t base_at_impl(std::size_t index) const = 0;
-
-        virtual void set_base_at_impl(std::size_t index, std::int32_t value) = 0;
-
-        virtual std::uint8_t check_at_impl(std::size_t index) const = 0;
-
-        virtual void set_check_at_impl(std::size_t index, std::uint8_t value) = 0;
-
-        virtual std::size_t size_impl() const = 0;
-
-        virtual std::unique_ptr<storage> clone_impl() const = 0;
+        mutable std::vector<std::pair<std::int32_t, std::uint8_t>> m_values;
     };
 
 

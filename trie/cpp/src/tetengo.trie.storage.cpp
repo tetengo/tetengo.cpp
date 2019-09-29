@@ -7,40 +7,57 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <utility>
+#include <vector>
 
 #include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
+    namespace
+    {
+        void ensure_size(std::vector<std::pair<std::int32_t, std::uint8_t>>& values, const std::size_t size)
+        {
+            if (size > values.size())
+            {
+                values.resize(size);
+            }
+        }
+
+
+    }
+
+
+    storage::storage() : m_values{} {}
+
     std::int32_t storage::base_at(const std::size_t index) const
     {
-        return base_at_impl(index);
+        ensure_size(m_values, index + 1);
+        return m_values[index].first;
     }
 
     void storage::set_base_at(const std::size_t index, const std::int32_t value)
     {
-        set_base_at_impl(index, value);
+        ensure_size(m_values, index + 1);
+        m_values[index].first = value;
     }
 
     std::uint8_t storage::check_at(const std::size_t index) const
     {
-        return check_at_impl(index);
+        ensure_size(m_values, index + 1);
+        return m_values[index].second;
     }
 
     void storage::set_check_at(const std::size_t index, const std::uint8_t value)
     {
-        set_check_at_impl(index, value);
+        ensure_size(m_values, index + 1);
+        m_values[index].second = value;
     }
 
     std::size_t storage::size() const
     {
-        return size_impl();
-    }
-
-    std::unique_ptr<storage> storage::clone() const
-    {
-        return clone_impl();
+        return m_values.size();
     }
 
 
