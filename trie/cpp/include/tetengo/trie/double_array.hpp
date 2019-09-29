@@ -50,9 +50,8 @@ namespace tetengo::trie
 
         const std::vector<std::uint32_t>& m_base_check_array;
 
-        mutable std::stack<std::size_t, std::vector<std::size_t>> m_index_stack;
-
-        mutable std::stack<std::string, std::vector<std::string>> m_key_stack;
+        mutable std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
+            m_index_key_stack;
     };
 
 
