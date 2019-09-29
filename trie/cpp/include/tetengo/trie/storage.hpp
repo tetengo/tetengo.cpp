@@ -70,11 +70,18 @@ namespace tetengo::trie
         */
         std::size_t size() const;
 
+        /*!
+            \brief Returns the all values.
+
+            \return The all values.
+        */
+        const std::vector<std::uint32_t>& values() const;
+
 
     private:
         // variables
 
-        mutable std::vector<std::pair<std::int32_t, std::uint8_t>> m_values;
+        mutable std::vector<std::uint32_t> m_values;
     };
 
 

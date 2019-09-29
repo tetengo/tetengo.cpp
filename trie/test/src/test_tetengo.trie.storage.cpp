@@ -7,6 +7,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/storage.hpp>
 
 
@@ -28,7 +29,7 @@ BOOST_AUTO_TEST_CASE(base_at)
 
     const tetengo::trie::storage storage_{};
 
-    storage_.base_at(42);
+    BOOST_TEST(storage_.base_at(42) == 0);
 }
 
 BOOST_AUTO_TEST_CASE(set_base_at)
@@ -48,7 +49,7 @@ BOOST_AUTO_TEST_CASE(check_at)
 
     const tetengo::trie::storage storage_{};
 
-    storage_.check_at(24);
+    BOOST_TEST(storage_.check_at(24) == tetengo::trie::double_array::vacant_check_value());
 }
 
 BOOST_AUTO_TEST_CASE(set_check_at)
@@ -73,6 +74,21 @@ BOOST_AUTO_TEST_CASE(size)
     storage_.base_at(42);
 
     BOOST_TEST(storage_.size() == 43);
+}
+
+BOOST_AUTO_TEST_CASE(values)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::storage storage_{};
+
+    storage_.set_base_at(0, 42);
+    storage_.set_check_at(1, 24);
+
+    const auto values = storage_.values();
+
+    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
+    BOOST_TEST(values == expected);
 }
 
 
