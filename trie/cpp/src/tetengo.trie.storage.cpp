@@ -30,6 +30,15 @@ namespace tetengo::trie
                    (static_cast<std::uint8_t>(buffer[2]) << 8) | static_cast<std::uint8_t>(buffer[3]);
         }
 
+        void write_uint32(std::ostream& output_stream, const std::uint32_t value)
+        {
+            const std::array<char, 4> buffer{ static_cast<char>((value & 0xFF000000) >> 24),
+                                              static_cast<char>((value & 0x00FF0000) >> 16),
+                                              static_cast<char>((value & 0x0000FF00) >> 8),
+                                              static_cast<char>(value & 0x00FF00FF) };
+            output_stream.write(buffer.data(), buffer.size());
+        }
+
         std::vector<std::uint32_t> deserialize(std::istream& input_stream)
         {
             const auto size = read_uint32(input_stream);
@@ -95,6 +104,15 @@ namespace tetengo::trie
     const std::vector<std::uint32_t>& storage::values() const
     {
         return m_values;
+    }
+
+    void storage::serialize(std::ostream& output_stream) const
+    {
+        write_uint32(output_stream, static_cast<std::uint32_t>(m_values.size()));
+        for (const auto& v: m_values)
+        {
+            write_uint32(output_stream, v);
+        }
     }
 
 

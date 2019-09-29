@@ -83,6 +83,13 @@ namespace tetengo::trie
         */
         const std::vector<std::uint32_t>& values() const;
 
+        /*!
+            \brief Serializes this storage.
+            
+            \param output_stream An output stream.
+        */
+        void serialize(std::ostream& output_stream) const;
+
 
     private:
         // variables

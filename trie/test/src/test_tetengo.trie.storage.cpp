@@ -143,6 +143,23 @@ BOOST_AUTO_TEST_CASE(values)
     BOOST_TEST(values == expected);
 }
 
+BOOST_AUTO_TEST_CASE(serialize)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::storage storage_{};
+
+    storage_.set_base_at(0, 42);
+    storage_.set_check_at(1, 24);
+
+    std::ostringstream output_stream{};
+    storage_.serialize(output_stream);
+
+    static const std::string expected{ to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00),
+                                       to_c(0x2A), to_c(0xFF), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18) };
+    BOOST_TEST(output_stream.str() == expected);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
