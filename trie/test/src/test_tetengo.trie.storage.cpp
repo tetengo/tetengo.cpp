@@ -4,6 +4,10 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <cstdint>
+#include <vector>
+
+#include <boost/cstdint.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
