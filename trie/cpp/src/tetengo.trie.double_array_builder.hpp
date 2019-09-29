@@ -13,6 +13,8 @@
 #include <utility>
 #include <vector>
 
+#include <tetengo/trie/storage.hpp>
+
 
 namespace tetengo::trie
 {
@@ -21,10 +23,9 @@ namespace tetengo::trie
     public:
         // static functions
 
-        static std::vector<std::uint32_t>
-        build(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers);
+        static storage build(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers);
 
-        static std::vector<std::uint32_t> build(const std::vector<std::pair<std::string, std::int32_t>>& elements);
+        static storage build(const std::vector<std::pair<std::string, std::int32_t>>& elements);
 
 
         // constructors
@@ -43,25 +44,17 @@ namespace tetengo::trie
         // static functions
 
         static void build_iter(
-            element_iterator_type       first,
-            element_iterator_type       last,
-            std::size_t                 key_offset,
-            std::vector<std::uint32_t>& base_check_array,
-            std::size_t                 base_check_array_index);
+            element_iterator_type first,
+            element_iterator_type last,
+            std::size_t           key_offset,
+            storage&              storage_,
+            std::size_t           storage_index);
 
         static std::int32_t calc_base(
             const std::vector<element_iterator_type>& firsts,
             std::size_t                               key_offset,
-            const std::vector<std::uint32_t>&         base_check_array,
-            std::size_t                               base_check_array_index);
-
-        static void set_base_at(std::vector<std::uint32_t>& base_check_array, std::size_t index, std::int32_t value);
-
-        static std::uint8_t check_at(const std::vector<std::uint32_t>& base_check_array, std::size_t index);
-
-        static void set_check_at(std::vector<std::uint32_t>& base_check_array, std::size_t index, std::uint8_t value);
-
-        static void ensure_base_check_array_size(std::vector<std::uint32_t>& base_check_array, std::size_t size);
+            const storage&                            storage_,
+            std::size_t                               storage_index);
 
         static std::vector<element_iterator_type>
         children_firsts(element_iterator_type first, element_iterator_type last, std::size_t key_offset);

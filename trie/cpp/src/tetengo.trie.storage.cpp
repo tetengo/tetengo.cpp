@@ -28,7 +28,7 @@ namespace tetengo::trie
     }
 
 
-    storage::storage() : m_values{} {}
+    storage::storage() : m_values{ 0x00000000U | double_array::vacant_check_value() } {}
 
     std::int32_t storage::base_at(const std::size_t index) const
     {

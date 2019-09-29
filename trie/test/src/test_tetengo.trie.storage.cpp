@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(size)
 
     tetengo::trie::storage storage_{};
 
-    BOOST_TEST(storage_.size() == 0);
+    BOOST_TEST(storage_.size() == 1);
 
     storage_.base_at(42);
 

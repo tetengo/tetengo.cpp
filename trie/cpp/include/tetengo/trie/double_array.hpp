@@ -17,6 +17,9 @@
 #include <utility>
 #include <vector>
 
+#include <tetengo/trie/storage.hpp>
+
+
 namespace tetengo::trie
 {
     /*!
@@ -30,9 +33,9 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array enumerator.
 
-            \param base_check_array A base check array.
+            \param storage_ A storage.
         */
-        explicit double_array_enumerator(const std::vector<std::uint32_t>& base_check_array);
+        explicit double_array_enumerator(const storage& storage_);
 
 
         // functions
@@ -48,7 +51,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        const std::vector<std::uint32_t>& m_base_check_array;
+        const storage& m_storage;
 
         mutable std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
             m_index_key_stack;
@@ -152,7 +155,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        std::vector<std::uint32_t> m_base_check_array;
+        storage m_storage;
     };
 
 
