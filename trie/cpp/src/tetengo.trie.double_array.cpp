@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <stack>
@@ -53,11 +54,17 @@ namespace tetengo::trie
         const auto key = m_index_key_stack.top().second;
         m_index_key_stack.pop();
 
+        const auto base = base_at(m_base_check_array, index);
+
         std::vector<std::pair<std::size_t, std::string>> children_indexes_and_keys{};
-        for (auto next_index = index + 1; next_index < m_base_check_array.size(); ++next_index)
+        for (auto next_index = std::max(0, base);
+             next_index <
+             std::min(
+                 base + std::numeric_limits<std::uint8_t>::max(), static_cast<std::int32_t>(m_base_check_array.size()));
+             ++next_index)
         {
             const auto char_code = check_at(m_base_check_array, next_index);
-            const auto next_index_to_check = static_cast<std::size_t>(base_at(m_base_check_array, index)) + char_code;
+            const auto next_index_to_check = base + char_code;
             if (next_index_to_check == next_index)
             {
                 const auto next_key_tail =
@@ -82,7 +89,7 @@ namespace tetengo::trie
             else
             {
                 assert(check_at(m_base_check_array, index) == '\0');
-                return std::make_optional(std::make_pair(key, base_at(m_base_check_array, index)));
+                return std::make_optional(std::make_pair(key, base));
             }
         }
     }
