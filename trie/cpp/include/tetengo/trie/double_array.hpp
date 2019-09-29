@@ -8,13 +8,14 @@
 #define TETENGO_TRIE_DOUBLEARRAY_HPP
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <iterator>
 #include <optional>
+#include <stack>
 #include <string>
 #include <utility>
 #include <vector>
-
 
 namespace tetengo::trie
 {
@@ -22,7 +23,37 @@ namespace tetengo::trie
         \brief A double array enumerator.
     */
     class double_array_enumerator
-    {};
+    {
+    public:
+        // constructors and destructor
+
+        /*!
+            \brief Creates a double array enumerator.
+
+            \param base_check_array A base check array.
+        */
+        explicit double_array_enumerator(const std::vector<std::uint32_t>& base_check_array);
+
+
+        // functions
+
+        /*!
+            \brief Returns the next element.
+
+            \return The next element. Or std::nullopt when no next element.
+        */
+        std::optional<std::pair<std::string, std::int32_t>> next() const;
+
+
+    private:
+        // variables
+
+        const std::vector<std::uint32_t>& m_base_check_array;
+
+        mutable std::stack<std::size_t, std::vector<std::size_t>> m_index_stack;
+
+        mutable std::stack<std::string, std::vector<std::string>> m_key_stack;
+    };
 
 
     /*!
