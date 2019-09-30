@@ -5,10 +5,10 @@
 */
 
 #if !defined(TETENGO_TRIE_DOUBLEARRAY_H)
-#    define TETENGO_TRIE_DOUBLEARRAY_H
-#    if defined(__cplusplus)
+#define TETENGO_TRIE_DOUBLEARRAY_H
+#if defined(__cplusplus)
 extern "C" {
-#    endif
+#endif
 
 /*!
     \brief A double array.
@@ -30,7 +30,7 @@ tetengo_trie_doublearray* tetengo_trie_doublearray_create();
 void tetengo_trie_doublearray_destroy(tetengo_trie_doublearray* p_double_array);
 
 
-#    if defined(__cplusplus)
+#if defined(__cplusplus)
 }
-#    endif
+#endif
 #endif

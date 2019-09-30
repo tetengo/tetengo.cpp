@@ -99,7 +99,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.trie.double_array_builder.cpp" />
     <ClCompile Include="src\tetengo.trie.double_array.cpp" />
+    <ClCompile Include="src\tetengo.trie.storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\tetengo\trie\0namespace.dox" />
@@ -107,6 +109,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.hpp" />
     <ClInclude Include="include\tetengo\trie\double_array.hpp" />
+    <ClInclude Include="include\tetengo\trie\storage.hpp" />
+    <ClInclude Include="src\tetengo.trie.double_array_builder.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
