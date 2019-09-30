@@ -85,7 +85,7 @@ namespace tetengo::trie
 
         /*!
             \brief Serializes this storage.
-            
+            
             \param output_stream An output stream.
         */
         void serialize(std::ostream& output_stream) const;

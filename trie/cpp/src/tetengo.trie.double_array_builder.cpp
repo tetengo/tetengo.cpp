@@ -4,6 +4,8 @@
     Copyright (C) 2019 kaoru
 */
 
+#if !defined(DOCUMENTATION)
+
 #include <algorithm>
 #include <cassert>
 #include <iterator>
@@ -120,3 +122,5 @@ namespace tetengo::trie
         return index < string.length() ? string[index] : double_array::key_terminator();
     }
 }
+
+#endif

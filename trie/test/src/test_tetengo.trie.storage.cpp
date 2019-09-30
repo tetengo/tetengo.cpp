@@ -1,5 +1,5 @@
 /*!
-    \brief A storage_.
+    \brief A storage.
 
     Copyright (C) 2019 kaoru
  */
