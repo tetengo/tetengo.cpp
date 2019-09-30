@@ -4,6 +4,8 @@
     Copyright (C) 2019 kaoru
 */
 
+#if !defined(DOCUMENTATION)
+
 #if !defined(TETENGO_TRIE_DOUBLEARRAYBUILDER_HPP)
 #define TETENGO_TRIE_DOUBLEARRAYBUILDER_HPP
 
@@ -65,5 +67,7 @@ namespace tetengo::trie
 
 }
 
+
+#endif
 
 #endif
