@@ -70,96 +70,6 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(trie)
-BOOST_AUTO_TEST_SUITE(double_array_enumerator)
-
-
-BOOST_AUTO_TEST_CASE(construction)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        const tetengo::trie::double_array double_array_{};
-        const auto                        enumerator = double_array_.enumerator();
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        const tetengo::trie::double_array double_array_{ expected_values };
-        const auto                        enumerator = double_array_.enumerator();
-    }
-    {
-        // TODO: C style API
-    }
-}
-
-BOOST_AUTO_TEST_CASE(next)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        const tetengo::trie::double_array double_array_{};
-        const auto                        enumerator = double_array_.enumerator();
-
-        {
-            const auto element = enumerator.next();
-
-            BOOST_CHECK(!element);
-        }
-        {
-            const auto element = enumerator.next();
-
-            BOOST_CHECK(!element);
-        }
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        const tetengo::trie::double_array double_array_{ expected_values };
-        const auto                        enumerator = double_array_.enumerator();
-
-        {
-            const auto element = enumerator.next();
-
-            BOOST_REQUIRE(element);
-            BOOST_TEST(element->first == "SETA");
-            BOOST_TEST(element->second == 42);
-        }
-        {
-            const auto element = enumerator.next();
-
-            BOOST_REQUIRE(element);
-            BOOST_TEST(element->first == "UTIGOSI");
-            BOOST_TEST(element->second == 24);
-        }
-        {
-            const auto element = enumerator.next();
-
-            BOOST_REQUIRE(element);
-            BOOST_TEST(element->first == "UTO");
-            BOOST_TEST(element->second == 2424);
-        }
-        {
-            const auto element = enumerator.next();
-
-            BOOST_CHECK(!element);
-        }
-        {
-            const auto element = enumerator.next();
-
-            BOOST_CHECK(!element);
-        }
-    }
-    {
-        // TODO: C style API
-    }
-}
-
-
-BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(double_array)
 
 
@@ -313,14 +223,14 @@ BOOST_AUTO_TEST_CASE(find)
     }
 }
 
-BOOST_AUTO_TEST_CASE(enumerator)
+BOOST_AUTO_TEST_CASE(get_enumerator)
 {
     BOOST_TEST_PASSPOINT();
 
     {
         const tetengo::trie::double_array double_array_{};
 
-        double_array_.enumerator();
+        const auto enumerator = double_array_.get_enumerator();
     }
     {
         // TODO: C style API
@@ -329,7 +239,7 @@ BOOST_AUTO_TEST_CASE(enumerator)
     {
         const tetengo::trie::double_array double_array_{ expected_values };
 
-        double_array_.enumerator();
+        const auto enumerator = double_array_.get_enumerator();
     }
     {
         // TODO: C style API

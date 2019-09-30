@@ -8,56 +8,19 @@
 #define TETENGO_TRIE_DOUBLEARRAY_HPP
 
 #include <algorithm>
-#include <cstddef>
 #include <cstdint>
 #include <iterator>
 #include <optional>
-#include <stack>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include <tetengo/trie/enumerator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
-    /*!
-        \brief A double array enumerator.
-    */
-    class double_array_enumerator
-    {
-    public:
-        // constructors and destructor
-
-        /*!
-            \brief Creates a double array enumerator.
-
-            \param storage_ A storage.
-        */
-        explicit double_array_enumerator(const storage& storage_);
-
-
-        // functions
-
-        /*!
-            \brief Returns the next element.
-
-            \return The next element. Or std::nullopt when no next element.
-        */
-        std::optional<std::pair<std::string, std::int32_t>> next() const;
-
-
-    private:
-        // variables
-
-        const storage& m_storage;
-
-        mutable std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
-            m_index_key_stack;
-    };
-
-
     /*!
         \brief A double array.
     */
@@ -149,7 +112,7 @@ namespace tetengo::trie
 
             \return An enumerator.
         */
-        double_array_enumerator enumerator() const;
+        enumerator get_enumerator() const;
 
 
     private:
