@@ -2,10 +2,11 @@
 # Copyright (C) 2019 kaoru
 
 SUBDIRS = \
-    cpp \
-    c \
-    make_double_array \
-    test
+    src
+
+EXTRA_DIST = \
+    make_double_array.vcxproj \
+    make_double_array.vcxproj.filters
 
 
 iwyu:
