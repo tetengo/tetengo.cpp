@@ -6,11 +6,11 @@
 
 #include <algorithm>
 #include <filesystem>
-#include <fstream>
+#include <fstream> // IWYU pragma: keep
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
