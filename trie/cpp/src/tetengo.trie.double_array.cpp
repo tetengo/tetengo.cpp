@@ -20,16 +20,28 @@
 
 namespace tetengo::trie
 {
+    const double_array::building_observer_type& double_array::null_building_observer()
+    {
+        static const building_observer_type singleton{ [](const std::string&) {}, []() {} };
+        return singleton;
+    }
+
     double_array::double_array() :
-    m_storage{ double_array_builder::build(std::vector<const std::pair<std::string, std::int32_t>*>{}) }
+    m_storage{ double_array_builder::build(
+        std::vector<const std::pair<std::string, std::int32_t>*>{},
+        null_building_observer()) }
     {}
 
-    double_array::double_array(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers) :
-    m_storage{ double_array_builder::build(std::move(element_pointers)) }
+    double_array::double_array(
+        std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
+        const building_observer_type&                            building_observer /*= null_building_observer()*/) :
+    m_storage{ double_array_builder::build(std::move(element_pointers), building_observer) }
     {}
 
-    double_array::double_array(const std::vector<std::pair<std::string, std::int32_t>>& elements) :
-    m_storage{ double_array_builder::build(elements) }
+    double_array::double_array(
+        const std::vector<std::pair<std::string, std::int32_t>>& elements,
+        const building_observer_type&                            building_observer /*= null_building_observer()*/) :
+    m_storage{ double_array_builder::build(elements, building_observer) }
     {}
 
     const std::vector<std::uint32_t>& double_array::base_check_array() const

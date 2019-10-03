@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/storage.hpp>
 
 
@@ -25,9 +26,13 @@ namespace tetengo::trie
     public:
         // static functions
 
-        static storage build(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers);
+        static storage build(
+            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
+            const double_array::building_observer_type&              observer);
 
-        static storage build(const std::vector<std::pair<std::string, std::int32_t>>& elements);
+        static storage build(
+            const std::vector<std::pair<std::string, std::int32_t>>& elements,
+            const double_array::building_observer_type&              observer);
 
 
         // constructors
@@ -46,11 +51,12 @@ namespace tetengo::trie
         // static functions
 
         static void build_iter(
-            element_iterator_type first,
-            element_iterator_type last,
-            std::size_t           key_offset,
-            storage&              storage_,
-            std::size_t           storage_index);
+            element_iterator_type                       first,
+            element_iterator_type                       last,
+            std::size_t                                 key_offset,
+            storage&                                    storage_,
+            std::size_t                                 storage_index,
+            const double_array::building_observer_type& observer);
 
         static std::int32_t calc_base(
             const std::vector<element_iterator_type>& firsts,
