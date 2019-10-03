@@ -117,7 +117,7 @@ namespace tetengo::trie
         return firsts;
     }
 
-    char double_array_builder::char_code_at(const std::string& string, const std::size_t index)
+    std::uint8_t double_array_builder::char_code_at(const std::string& string, const std::size_t index)
     {
         return index < string.length() ? string[index] : double_array::key_terminator();
     }

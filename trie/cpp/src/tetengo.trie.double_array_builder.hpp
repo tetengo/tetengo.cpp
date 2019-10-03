@@ -61,7 +61,7 @@ namespace tetengo::trie
         static std::vector<element_iterator_type>
         children_firsts(element_iterator_type first, element_iterator_type last, std::size_t key_offset);
 
-        static char char_code_at(const std::string& string, std::size_t index);
+        static std::uint8_t char_code_at(const std::string& string, std::size_t index);
     };
 
 
