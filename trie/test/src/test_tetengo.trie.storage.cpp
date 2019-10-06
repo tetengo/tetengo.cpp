@@ -46,6 +46,7 @@ namespace
         return std::make_unique<std::stringstream>(std::string{ serialized_broken.begin(), serialized_broken.end() });
     }
 
+
 }
 
 
@@ -126,6 +127,29 @@ BOOST_AUTO_TEST_CASE(size)
     storage_.base_at(42);
 
     BOOST_TEST(storage_.size() == 43U);
+}
+
+BOOST_AUTO_TEST_CASE(filling_rate)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::storage storage_{};
+
+    for (auto i = static_cast<std::size_t>(0); i < 9; ++i)
+    {
+        if (i % 3 == 0)
+        {
+            storage_.set_base_at(i, static_cast<std::int32_t>(i * i));
+            storage_.set_check_at(i, static_cast<std::uint8_t>(i));
+        }
+        else
+        {
+            storage_.set_base_at(i, storage_.base_at(i));
+            storage_.set_check_at(i, storage_.check_at(i));
+        }
+    }
+
+    BOOST_CHECK_CLOSE(storage_.filling_rate(), 3.0 / 9.0, 0.1);
 }
 
 BOOST_AUTO_TEST_CASE(values)

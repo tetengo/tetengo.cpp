@@ -5,6 +5,7 @@
  */
 
 #include <algorithm>
+#include <exception>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
 #include <functional>
@@ -17,6 +18,7 @@
 #include <boost/format.hpp>
 
 #include <tetengo/trie/double_array.hpp>
+#include <tetengo/trie/storage.hpp>
 
 
 namespace
@@ -49,7 +51,7 @@ namespace
             if (m_count % 5000 == 0)
             {
                 const auto percentage = (100 * m_count / m_size) * (100 * m_count / m_size) / 100;
-                std::cout << boost::format("%8d/%8d (%3d%%) %s    \r") % m_count % m_size % percentage % key
+                std::cout << boost::format{ "%8d/%8d (%3d%%) %s    \r" } % m_count % m_size % percentage % key
                           << std::flush;
             }
             ++m_count;
@@ -102,6 +104,8 @@ int main(const int argc, char** const argv)
         const tetengo::trie::double_array double_array_{
             p_input->begin(), p_input->end(), { adding_observer_type{ p_input->size() }, done_observer_type{} }
         };
+        std::cerr << boost::format{ "Filling rate: %3.1f%%" } % (double_array_.get_storage().filling_rate() * 100.0)
+                  << std::endl;
 
         std::cerr << "Writing double array to file..." << std::flush;
         save_double_array(double_array_, argv[2]);

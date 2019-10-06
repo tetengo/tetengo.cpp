@@ -77,6 +77,13 @@ namespace tetengo::trie
         std::size_t size() const;
 
         /*!
+            \brief Returns the filling rate.
+
+            \return The filling rate.
+        */
+        double filling_rate() const;
+
+        /*!
             \brief Returns the all values.
 
             \return The all values.

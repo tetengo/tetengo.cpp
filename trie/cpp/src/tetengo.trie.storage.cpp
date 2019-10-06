@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <istream>
@@ -99,6 +100,12 @@ namespace tetengo::trie
     std::size_t storage::size() const
     {
         return m_values.size();
+    }
+
+    double storage::filling_rate() const
+    {
+        const auto empty_count = std::count(m_values.begin(), m_values.end(), 0x000000FFU);
+        return 1.0 - static_cast<double>(empty_count) / m_values.size();
     }
 
     const std::vector<std::uint32_t>& storage::values() const
