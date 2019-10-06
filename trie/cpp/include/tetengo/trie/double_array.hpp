@@ -131,13 +131,6 @@ namespace tetengo::trie
         // functions
 
         /*!
-            \brief Returns the base check array.
-
-            \return The base check array.
-        */
-        const std::vector<std::uint32_t>& base_check_array() const;
-
-        /*!
             \brief Finds the value correspoinding the given key.
 
             \param key A key.
@@ -152,6 +145,13 @@ namespace tetengo::trie
             \return An enumerator.
         */
         enumerator get_enumerator() const;
+
+        /*!
+            \brief Returns the storage.
+
+            \return The storage.
+        */
+        const storage& get_storage() const;
 
 
     private:

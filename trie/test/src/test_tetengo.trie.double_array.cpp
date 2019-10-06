@@ -19,6 +19,7 @@
 
 #include <tetengo/trie/double_array.h>
 #include <tetengo/trie/double_array.hpp>
+#include <tetengo/trie/storage.hpp>
 
 struct tetengo_trie_doublearray;
 
@@ -147,7 +148,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::double_array double_array_{};
 
-        BOOST_TEST(double_array_.base_check_array() == expected_empty_base_check_array_empty);
+        BOOST_TEST(double_array_.get_storage().values() == expected_empty_base_check_array_empty);
     }
     {
         tetengo_trie_doublearray* const p_double_array = tetengo_trie_doublearray_create();
@@ -161,7 +162,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::double_array double_array_{ expected_values0 };
 
-        BOOST_TEST(double_array_.base_check_array() == expected_base_check_array0);
+        BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array0);
     }
     {
         // TODO: C style API
@@ -181,7 +182,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         const tetengo::trie::double_array double_array_{ std::move(expected_values3_as_ptr_vector) };
 
-        BOOST_TEST(double_array_.base_check_array() == expected_base_check_array3);
+        BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array3);
     }
     {
         // TODO: C style API
@@ -194,7 +195,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::double_array double_array_{ expected_values3_as_list.begin(),
                                                          expected_values3_as_list.end() };
 
-        BOOST_TEST(double_array_.base_check_array() == expected_base_check_array3);
+        BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array3);
     }
     {
         // TODO: C style API
@@ -203,34 +204,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
-        BOOST_TEST(double_array_.base_check_array() == expected_base_check_array3);
-    }
-    {
-        // TODO: C style API
-    }
-}
-
-BOOST_AUTO_TEST_CASE(base_check_array)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        const tetengo::trie::double_array double_array_{};
-
-        const auto& base_check_array = double_array_.base_check_array();
-
-        BOOST_TEST(base_check_array == expected_empty_base_check_array_empty);
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        const tetengo::trie::double_array double_array_{ expected_values3 };
-
-        const auto& base_check_array = double_array_.base_check_array();
-
-        BOOST_TEST(base_check_array == expected_base_check_array3);
+        BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array3);
     }
     {
         // TODO: C style API
@@ -298,6 +272,33 @@ BOOST_AUTO_TEST_CASE(get_enumerator)
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
         const auto enumerator = double_array_.get_enumerator();
+    }
+    {
+        // TODO: C style API
+    }
+}
+
+BOOST_AUTO_TEST_CASE(storage)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::double_array double_array_{};
+
+        const auto& base_check_array = double_array_.get_storage().values();
+
+        BOOST_TEST(base_check_array == expected_empty_base_check_array_empty);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values3 };
+
+        const auto& base_check_array = double_array_.get_storage().values();
+
+        BOOST_TEST(base_check_array == expected_base_check_array3);
     }
     {
         // TODO: C style API

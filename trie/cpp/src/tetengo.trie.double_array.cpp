@@ -45,11 +45,6 @@ namespace tetengo::trie
     m_storage{ double_array_builder::build(elements, building_observer) }
     {}
 
-    const std::vector<std::uint32_t>& double_array::base_check_array() const
-    {
-        return m_storage.values();
-    }
-
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
         std::size_t index = 0;
@@ -69,6 +64,11 @@ namespace tetengo::trie
     enumerator double_array::get_enumerator() const
     {
         return enumerator{ m_storage };
+    }
+
+    const storage& double_array::get_storage() const
+    {
+        return m_storage;
     }
 
 
