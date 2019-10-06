@@ -48,8 +48,8 @@ namespace
         {
             if (m_count % 5000 == 0)
             {
-                std::cout << boost::format("%8d/%8d (%3d%%) %s    \r") % m_count % m_size % (100 * m_count / m_size) %
-                                 key
+                const auto percentage = (100 * m_count / m_size) * (100 * m_count / m_size) / 100;
+                std::cout << boost::format("%8d/%8d (%3d%%) %s    \r") % m_count % m_size % percentage % key
                           << std::flush;
             }
             ++m_count;
@@ -69,26 +69,54 @@ namespace
         }
     };
 
+    void save_double_array(const tetengo::trie::double_array& double_array_, const std::filesystem::path& path)
+    {
+        std::ofstream output_stream{ path.c_str(), std::ios_base::binary };
+        if (!output_stream.is_open())
+        {
+            throw std::ios_base::failure{ "Can't open the output file." };
+        }
+
+        double_array_.get_storage().serialize(output_stream);
+    }
+
 
 }
 
 
 int main(const int argc, char** const argv)
 {
-    if (argc < 2)
+    try
     {
-        std::cout << "Usage: make_double_array input.txt output.bin" << std::endl;
+        if (argc < 2)
+        {
+            std::cout << "Usage: make_double_array input.txt output.bin" << std::endl;
+            return 0;
+        }
+
+        std::cerr << "Loading input file..." << std::flush;
+        const auto p_input = load_input(argv[1]);
+        std::cerr << "done." << std::endl;
+
+        std::cout << "Building double array..." << std::endl;
+        const tetengo::trie::double_array double_array_{
+            p_input->begin(), p_input->end(), { adding_observer_type{ p_input->size() }, done_observer_type{} }
+        };
+
+        std::cerr << "Writing double array to file..." << std::flush;
+        save_double_array(double_array_, argv[2]);
+        std::cerr << "done." << std::endl;
+
         return 0;
     }
-
-    std::cout << "Loading input file..." << std::flush;
-    const auto p_input = load_input(argv[1]);
-    std::cout << "done." << std::endl;
-
-    std::cout << "Building double array..." << std::endl;
-    tetengo::trie::double_array double_array_{ p_input->begin(),
-                                               p_input->end(),
-                                               { adding_observer_type{ p_input->size() }, done_observer_type{} } };
-
-    return 0;
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+    catch (...)
+    {
+        std::cerr << "Error: unknown error." << std::endl;
+        return 1;
+    }
 }
