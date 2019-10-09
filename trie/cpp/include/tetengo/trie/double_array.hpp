@@ -99,8 +99,8 @@ namespace tetengo::trie
 
             \tparam InputIterator An input iterator type.
 
-            \param first An iterator to the first element.
-            \param last  An iterator to the last element.
+            \param first             An iterator to the first element.
+            \param last              An iterator to the last element.
             \param building_observer A building observer.
         */
         template <typename InputIterator>
@@ -120,12 +120,19 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param elements Initial elements.
+            \param elements          Initial elements.
             \param building_observer A building observer.
         */
         explicit double_array(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_type&                            building_observer = null_building_observer());
+
+        /*!
+            \brief Creates a double array.
+
+            \param storage_ A storage.
+        */
+        explicit double_array(storage&& storage_);
 
 
         // functions

@@ -209,6 +209,18 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         // TODO: C style API
     }
+
+    {
+        const tetengo::trie::double_array double_array0{ expected_values3 };
+        auto                              storage = double_array0.get_storage();
+
+        const tetengo::trie::double_array double_array1{ std::move(storage) };
+
+        BOOST_TEST(double_array1.get_storage().values() == expected_base_check_array3);
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 BOOST_AUTO_TEST_CASE(find)

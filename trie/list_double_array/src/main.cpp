@@ -6,7 +6,7 @@
 
 #include <exception>
 #include <filesystem>
-#include <fstream>
+#include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <memory>
 

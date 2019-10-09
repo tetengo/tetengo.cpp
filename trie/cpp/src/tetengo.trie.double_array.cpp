@@ -45,6 +45,8 @@ namespace tetengo::trie
     m_storage{ double_array_builder::build(elements, building_observer) }
     {}
 
+    double_array::double_array(storage&& storage_) : m_storage{ std::move(storage_) } {}
+
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
         std::size_t index = 0;
