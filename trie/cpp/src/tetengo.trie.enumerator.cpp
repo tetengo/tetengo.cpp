@@ -41,43 +41,30 @@ namespace tetengo::trie
         m_index_key_stack.pop();
 
         const auto base = m_storage.base_at(index);
+        const auto check = m_storage.check_at(index);
 
-        std::vector<std::pair<std::size_t, std::string>> children_indexes_and_keys{};
-        for (auto next_index = std::max(0, base);
-             next_index <
-             std::min(base + std::numeric_limits<std::uint8_t>::max(), static_cast<std::int32_t>(m_storage.size()));
-             ++next_index)
+        if (check == double_array::key_terminator())
         {
-            const auto char_code = m_storage.check_at(next_index);
-            const auto next_index_to_check = base + char_code;
-            if (next_index_to_check == next_index)
+            return std::make_optional(std::make_pair(key, base));
+        }
+
+        for (auto char_code = static_cast<std::int32_t>(0xFE); char_code >= 0; --char_code)
+        {
+            const auto next_index = base + char_code;
+            if (next_index < 0 || index + 0xFF <= next_index)
+            {
+                continue;
+            }
+            if (m_storage.check_at(next_index) == char_code)
             {
                 const auto next_key_tail = char_code != double_array::key_terminator() ?
                                                std::string{ static_cast<char>(char_code) } :
                                                std::string{};
-                children_indexes_and_keys.push_back(std::make_pair(next_index, key + next_key_tail));
+                m_index_key_stack.push(std::make_pair(next_index, key + next_key_tail));
             }
         }
 
-        if (!children_indexes_and_keys.empty())
-        {
-            std::for_each(children_indexes_and_keys.rbegin(), children_indexes_and_keys.rend(), [this](auto& e) {
-                m_index_key_stack.push(std::move(e));
-            });
-            return next();
-        }
-        else
-        {
-            if (m_storage.check_at(index) == double_array::vacant_check_value())
-            {
-                return std::nullopt;
-            }
-            else
-            {
-                assert(m_storage.check_at(index) == double_array::key_terminator());
-                return std::make_optional(std::make_pair(key, base));
-            }
-        }
+        return next();
     }
 
 
