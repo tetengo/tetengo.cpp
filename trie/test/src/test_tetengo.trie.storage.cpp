@@ -20,7 +20,7 @@
 
 namespace
 {
-    char to_c(unsigned char uc)
+    constexpr char to_c(unsigned char uc)
     {
         return uc;
     }

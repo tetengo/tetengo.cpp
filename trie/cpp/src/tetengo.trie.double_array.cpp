@@ -52,8 +52,8 @@ namespace tetengo::trie
         std::size_t index = 0;
         for (const auto c: key + double_array::key_terminator())
         {
-            const auto next_index = static_cast<std::size_t>(m_storage.base_at(index)) + c;
-            if (next_index >= m_storage.size() || m_storage.check_at(next_index) != c)
+            const auto next_index = static_cast<std::size_t>(m_storage.base_at(index)) + static_cast<std::uint8_t>(c);
+            if (next_index >= m_storage.size() || m_storage.check_at(next_index) != static_cast<std::uint8_t>(c))
             {
                 return std::nullopt;
             }

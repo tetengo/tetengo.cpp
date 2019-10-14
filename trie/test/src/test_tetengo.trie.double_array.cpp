@@ -115,6 +115,40 @@ namespace
         0x00097800, // [15] 2424,    14,         0
     };
 
+    /*
+            0xE8    0xB5    0xA4    0xE7    0x80    0xAC      \0
+        [ 0]----[ 1]----[ 2]----[ 3]+---[ 5]----[ 9]----[10]----[11]
+                                    |
+                                    |0xE6   0xB0    0xB4      \0
+                                    +---[ 4]----[ 6]----[ 7]----[ 8]
+    */
+
+    constexpr char to_c(const unsigned char uc)
+    {
+        return static_cast<char>(uc);
+    }
+
+    const std::vector<std::pair<std::string, std::int32_t>> expected_values4{
+        { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) }, 24 }, // "Akase" in Kanji
+        { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) }, 42 }, // "Akamizu" in Kanji
+    };
+
+    const std::vector<std::uint32_t> expected_base_check_array4{
+        //                  BASE  CHECK  BYTECHECK
+        0xffff19ff, // [ 0] -231,    -1,        -1
+        0xffff4de8, // [ 1] -179,     0,       232
+        0xffff5fb5, // [ 2] -161,     1,       181
+        0xffff1ea4, // [ 3] -226,     2,       164
+        0xffff56e6, // [ 4] -170,     3,       230
+        0xffff89e7, // [ 5] -119,     3,       231
+        0xffff53b0, // [ 6] -173,     4,       176
+        0x000008b4, // [ 7]    8,     6,       180
+        0x00002a00, // [ 8]   42,     7,         0
+        0xffff5e80, // [ 9] -162,     5,       128
+        0x00000bac, // [10]   11,     9,       172
+        0x00001800, // [11]   24,    10,         0
+    };
+
 }
 
 
@@ -221,6 +255,15 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         // TODO: C style API
     }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values4 };
+
+        BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array4);
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 BOOST_AUTO_TEST_CASE(find)
@@ -256,6 +299,30 @@ BOOST_AUTO_TEST_CASE(find)
             const auto found = double_array_.find("UTO");
             BOOST_REQUIRE(found);
             BOOST_TEST(*found == 2424);
+        }
+        {
+            const auto found = double_array_.find("SUIZENJI");
+            BOOST_CHECK(!found);
+        }
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values4 };
+
+        {
+            const auto found = double_array_.find(
+                std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) });
+            BOOST_REQUIRE(found);
+            BOOST_TEST(*found == 24);
+        }
+        {
+            const auto found = double_array_.find(
+                std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) });
+            BOOST_REQUIRE(found);
+            BOOST_TEST(*found == 42);
         }
         {
             const auto found = double_array_.find("SUIZENJI");
