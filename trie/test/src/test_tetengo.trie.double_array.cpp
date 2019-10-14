@@ -26,6 +26,11 @@ struct tetengo_trie_doublearray;
 
 namespace
 {
+    constexpr char to_c(const unsigned char uc)
+    {
+        return static_cast<char>(uc);
+    }
+
     const std::vector<std::uint32_t> expected_empty_base_check_array_empty{
         //                  BASE  CHECK  BYTECHECK
         0x000000FF, // [ 0]    0,    -1,        -1
@@ -122,11 +127,6 @@ namespace
                                     |0xE6   0xB0    0xB4      \0
                                     +---[ 4]----[ 6]----[ 7]----[ 8]
     */
-
-    constexpr char to_c(const unsigned char uc)
-    {
-        return static_cast<char>(uc);
-    }
 
     const std::vector<std::pair<std::string, std::int32_t>> expected_values4{
         { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) }, 24 }, // "Akase" in Kanji
