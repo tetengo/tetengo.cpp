@@ -5,10 +5,8 @@
 */
 
 #include <algorithm>
-#include <cassert>
 #include <cstddef>
 #include <cstdint>
-#include <limits>
 #include <memory>
 #include <optional>
 #include <stack>
@@ -50,15 +48,16 @@ namespace tetengo::trie
 
         for (auto char_code = static_cast<std::int32_t>(0xFE); char_code >= 0; --char_code)
         {
-            const auto next_index = base + char_code;
-            if (next_index < 0 || index + 0xFF <= next_index)
+            const auto char_code_as_uint8 = static_cast<std::uint8_t>(static_cast<char>(char_code));
+            const auto next_index = base + char_code_as_uint8;
+            if (next_index < 0 || static_cast<std::int32_t>(index + 0xFF) <= next_index)
             {
                 continue;
             }
-            if (m_storage.check_at(next_index) == char_code)
+            if (m_storage.check_at(next_index) == char_code_as_uint8)
             {
-                const auto next_key_tail = char_code != double_array::key_terminator() ?
-                                               std::string{ static_cast<char>(char_code) } :
+                const auto next_key_tail = char_code_as_uint8 != double_array::key_terminator() ?
+                                               std::string{ static_cast<char>(char_code_as_uint8) } :
                                                std::string{};
                 m_index_key_stack.push(std::make_pair(next_index, key + next_key_tail));
             }

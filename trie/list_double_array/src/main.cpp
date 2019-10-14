@@ -9,8 +9,12 @@
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <memory>
+#include <optional>
+#include <string>
+#include <utility>
 
 #include <tetengo/trie/double_array.hpp>
+#include <tetengo/trie/enumerator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 
