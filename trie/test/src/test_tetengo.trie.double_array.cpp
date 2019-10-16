@@ -325,7 +325,16 @@ BOOST_AUTO_TEST_CASE(find)
             BOOST_TEST(*found == 42);
         }
         {
-            const auto found = double_array_.find("SUIZENJI");
+            const std::string key{ { to_c(0xE6),
+                                     to_c(0xB0),
+                                     to_c(0xB4),
+                                     to_c(0xE5),
+                                     to_c(0x89),
+                                     to_c(0x8D),
+                                     to_c(0xE5),
+                                     to_c(0xAF),
+                                     to_c(0xBA) } }; // "Suizenji" in Kanji
+            const auto        found = double_array_.find(key);
             BOOST_CHECK(!found);
         }
     }
@@ -355,6 +364,15 @@ BOOST_AUTO_TEST_CASE(get_enumerator)
     {
         // TODO: C style API
     }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values4 };
+
+        const auto enumerator = double_array_.get_enumerator();
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 BOOST_AUTO_TEST_CASE(storage)
@@ -378,6 +396,17 @@ BOOST_AUTO_TEST_CASE(storage)
         const auto& base_check_array = double_array_.get_storage().values();
 
         BOOST_TEST(base_check_array == expected_base_check_array3);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values4 };
+
+        const auto& base_check_array = double_array_.get_storage().values();
+
+        BOOST_TEST(base_check_array == expected_base_check_array4);
     }
     {
         // TODO: C style API

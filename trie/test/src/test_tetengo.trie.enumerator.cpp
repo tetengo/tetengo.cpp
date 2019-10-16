@@ -141,7 +141,9 @@ BOOST_AUTO_TEST_CASE(next)
             const auto element = enumerator.next();
 
             BOOST_REQUIRE(element);
-            const std::string expected_key{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) };
+            const std::string expected_key{
+                to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4)
+            }; // "Akamizu" in Kanji
             BOOST_TEST(element->first == expected_key);
             BOOST_TEST(element->second == 42);
         }
@@ -149,7 +151,9 @@ BOOST_AUTO_TEST_CASE(next)
             const auto element = enumerator.next();
 
             BOOST_REQUIRE(element);
-            const std::string expected_key{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) };
+            const std::string expected_key{
+                to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC)
+            }; // "Akase" in Kanji
             BOOST_TEST(element->first == expected_key);
             BOOST_TEST(element->second == 24);
         }
