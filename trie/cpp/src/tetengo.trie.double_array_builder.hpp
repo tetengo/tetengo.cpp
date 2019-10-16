@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -56,13 +57,15 @@ namespace tetengo::trie
             std::size_t                                 key_offset,
             storage&                                    storage_,
             std::size_t                                 storage_index,
+            std::unordered_set<std::int32_t>&           base_uniquer,
             const double_array::building_observer_type& observer);
 
         static std::int32_t calc_base(
             const std::vector<element_iterator_type>& firsts,
             std::size_t                               key_offset,
             const storage&                            storage_,
-            std::size_t                               storage_index);
+            std::size_t                               storage_index,
+            std::unordered_set<std::int32_t>&         base_uniquer);
 
         static std::vector<element_iterator_type>
         children_firsts(element_iterator_type first, element_iterator_type last, std::size_t key_offset);

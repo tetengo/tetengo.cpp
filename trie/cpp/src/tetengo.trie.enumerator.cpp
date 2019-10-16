@@ -50,7 +50,7 @@ namespace tetengo::trie
         {
             const auto char_code_as_uint8 = static_cast<std::uint8_t>(static_cast<char>(char_code));
             const auto next_index = base + char_code_as_uint8;
-            if (next_index < 0 || static_cast<std::int32_t>(index + 0xFF) <= next_index)
+            if (next_index < 0)
             {
                 continue;
             }
