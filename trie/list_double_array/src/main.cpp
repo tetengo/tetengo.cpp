@@ -34,7 +34,7 @@ int main(const int argc, char** const argv)
 {
     try
     {
-        if (argc < 2)
+        if (argc <= 1)
         {
             std::cout << "Usage: list_double_array input.bin" << std::endl;
             return 0;
