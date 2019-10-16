@@ -8,7 +8,9 @@
 
 #include <algorithm>
 #include <cassert>
+#include <functional>
 #include <iterator>
+#include <unordered_set>
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/storage.hpp>
@@ -18,7 +20,9 @@
 
 namespace tetengo::trie
 {
-    storage double_array_builder::build(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers)
+    storage double_array_builder::build(
+        std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
+        const double_array::building_observer_type&              observer)
     {
         std::stable_sort(element_pointers.begin(), element_pointers.end(), [](const auto& e1, const auto& e2) {
             return e1->first < e2->first;
@@ -28,32 +32,38 @@ namespace tetengo::trie
 
         if (!element_pointers.empty())
         {
-            build_iter(element_pointers.begin(), element_pointers.end(), 0, storage_, 0);
+            std::unordered_set<std::int32_t> base_uniquer{};
+            build_iter(element_pointers.begin(), element_pointers.end(), 0, storage_, 0, base_uniquer, observer);
         }
 
+        observer.done();
         return storage_;
     }
 
-    storage double_array_builder::build(const std::vector<std::pair<std::string, std::int32_t>>& elements)
+    storage double_array_builder::build(
+        const std::vector<std::pair<std::string, std::int32_t>>& elements,
+        const double_array::building_observer_type&              observer)
     {
         element_vector_type element_pointers{};
         element_pointers.reserve(elements.size());
         std::transform(
             elements.begin(), elements.end(), std::back_inserter(element_pointers), [](const auto& e) { return &e; });
 
-        return build(std::move(element_pointers));
+        return build(std::move(element_pointers), observer);
     }
 
     void double_array_builder::build_iter(
-        const element_iterator_type first,
-        const element_iterator_type last,
-        const std::size_t           key_offset,
-        storage&                    storage_,
-        const std::size_t           storage_index)
+        const element_iterator_type                 first,
+        const element_iterator_type                 last,
+        const std::size_t                           key_offset,
+        storage&                                    storage_,
+        const std::size_t                           storage_index,
+        std::unordered_set<std::int32_t>&           base_uniquer,
+        const double_array::building_observer_type& observer)
     {
         const auto children_firsts_ = children_firsts(first, last, key_offset);
 
-        const auto base = calc_base(children_firsts_, key_offset, storage_, storage_index);
+        const auto base = calc_base(children_firsts_, key_offset, storage_, storage_index, base_uniquer);
         storage_.set_base_at(storage_index, base);
 
         for (auto i = children_firsts_.begin(); i != std::prev(children_firsts_.end()); ++i)
@@ -68,10 +78,11 @@ namespace tetengo::trie
             const auto next_storage_index = base + char_code;
             if (char_code == double_array::key_terminator())
             {
+                observer.adding((**i)->first);
                 storage_.set_base_at(next_storage_index, (**i)->second);
                 continue;
             }
-            build_iter(*i, *std::next(i), key_offset + 1, storage_, next_storage_index);
+            build_iter(*i, *std::next(i), key_offset + 1, storage_, next_storage_index, base_uniquer, observer);
         }
     }
 
@@ -79,7 +90,8 @@ namespace tetengo::trie
         const std::vector<element_iterator_type>& firsts,
         const std::size_t                         key_offset,
         const storage&                            storage_,
-        const std::size_t                         storage_index)
+        const std::size_t                         storage_index,
+        std::unordered_set<std::int32_t>&         base_uniquer)
     {
         for (auto base = -char_code_at((*firsts[0])->first, key_offset) + static_cast<std::int32_t>(storage_index) + 1;;
              ++base)
@@ -90,8 +102,9 @@ namespace tetengo::trie
                     const auto next_index = base + char_code_at((*first)->first, key_offset);
                     return storage_.check_at(next_index) != double_array::vacant_check_value();
                 });
-            if (occupied == first_last)
+            if (occupied == first_last && base_uniquer.find(base) == base_uniquer.end())
             {
+                base_uniquer.insert(base);
                 return base;
             }
         }
@@ -117,7 +130,7 @@ namespace tetengo::trie
         return firsts;
     }
 
-    char double_array_builder::char_code_at(const std::string& string, const std::size_t index)
+    std::uint8_t double_array_builder::char_code_at(const std::string& string, const std::size_t index)
     {
         return index < string.length() ? string[index] : double_array::key_terminator();
     }

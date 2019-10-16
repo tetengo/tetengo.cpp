@@ -6,6 +6,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <optional>
 #include <string>
 #include <utility>
@@ -20,30 +21,39 @@
 
 namespace tetengo::trie
 {
-    double_array::double_array() :
-    m_storage{ double_array_builder::build(std::vector<const std::pair<std::string, std::int32_t>*>{}) }
-    {}
-
-    double_array::double_array(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers) :
-    m_storage{ double_array_builder::build(std::move(element_pointers)) }
-    {}
-
-    double_array::double_array(const std::vector<std::pair<std::string, std::int32_t>>& elements) :
-    m_storage{ double_array_builder::build(elements) }
-    {}
-
-    const std::vector<std::uint32_t>& double_array::base_check_array() const
+    const double_array::building_observer_type& double_array::null_building_observer()
     {
-        return m_storage.values();
+        static const building_observer_type singleton{ [](const std::string&) {}, []() {} };
+        return singleton;
     }
+
+    double_array::double_array() :
+    m_storage{ double_array_builder::build(
+        std::vector<const std::pair<std::string, std::int32_t>*>{},
+        null_building_observer()) }
+    {}
+
+    double_array::double_array(
+        std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
+        const building_observer_type&                            building_observer /*= null_building_observer()*/) :
+    m_storage{ double_array_builder::build(std::move(element_pointers), building_observer) }
+    {}
+
+    double_array::double_array(
+        const std::vector<std::pair<std::string, std::int32_t>>& elements,
+        const building_observer_type&                            building_observer /*= null_building_observer()*/) :
+    m_storage{ double_array_builder::build(elements, building_observer) }
+    {}
+
+    double_array::double_array(storage&& storage_) : m_storage{ std::move(storage_) } {}
 
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
         std::size_t index = 0;
         for (const auto c: key + double_array::key_terminator())
         {
-            const auto next_index = static_cast<std::size_t>(m_storage.base_at(index)) + c;
-            if (next_index >= m_storage.size() || m_storage.check_at(next_index) != c)
+            const auto next_index = static_cast<std::size_t>(m_storage.base_at(index)) + static_cast<std::uint8_t>(c);
+            if (next_index >= m_storage.size() || m_storage.check_at(next_index) != static_cast<std::uint8_t>(c))
             {
                 return std::nullopt;
             }
@@ -56,6 +66,11 @@ namespace tetengo::trie
     enumerator double_array::get_enumerator() const
     {
         return enumerator{ m_storage };
+    }
+
+    const storage& double_array::get_storage() const
+    {
+        return m_storage;
     }
 
 

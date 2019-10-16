@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <functional>
 #include <iterator>
 #include <optional>
 #include <string>
@@ -27,7 +28,33 @@ namespace tetengo::trie
     class double_array
     {
     public:
+        // tyes
+
+        //! The building observer type.
+        struct building_observer_type
+        {
+            /*!
+                \brief Called when a key is adding.
+
+                \param key A key.
+            */
+            std::function<void(const std::string& key)> adding;
+
+            /*!
+                \brief Called when the building is done.
+            */
+            std::function<void()> done;
+        };
+
+
         // static functions
+
+        /*!
+            \brief Returns the null building observer.
+
+            \return The null bulding observer.
+        */
+        static const building_observer_type& null_building_observer();
 
         /*!
             \brief Returns the key terminator.
@@ -60,43 +87,55 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param element_pointers Pointers to initial elements.
+            \param element_pointers  Pointers to initial elements.
+            \param building_observer A building observer.
         */
-        explicit double_array(std::vector<const std::pair<std::string, std::int32_t>*> element_pointers);
+        explicit double_array(
+            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
+            const building_observer_type&                            building_observer = null_building_observer());
 
         /*!
             \brief Creates a double array.
 
             \tparam InputIterator An input iterator type.
 
-            \param first An iterator to the first element.
-            \param last  An iterator to the last element.
+            \param first             An iterator to the first element.
+            \param last              An iterator to the last element.
+            \param building_observer A building observer.
         */
         template <typename InputIterator>
-        double_array(InputIterator first, InputIterator last) :
+        double_array(
+            InputIterator                 first,
+            InputIterator                 last,
+            const building_observer_type& building_observer = null_building_observer()) :
         double_array{ [first, last]() {
-            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers;
-            std::transform(first, last, std::back_inserter(element_pointers), [](const auto& e) { return &e; });
-            return element_pointers;
-        }() }
+                         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers;
+                         std::transform(
+                             first, last, std::back_inserter(element_pointers), [](const auto& e) { return &e; });
+                         return element_pointers;
+                     }(),
+                      building_observer }
         {}
 
         /*!
             \brief Creates a double array.
 
-            \param elements Initial elements.
+            \param elements          Initial elements.
+            \param building_observer A building observer.
         */
-        explicit double_array(const std::vector<std::pair<std::string, std::int32_t>>& elements);
+        explicit double_array(
+            const std::vector<std::pair<std::string, std::int32_t>>& elements,
+            const building_observer_type&                            building_observer = null_building_observer());
+
+        /*!
+            \brief Creates a double array.
+
+            \param storage_ A storage.
+        */
+        explicit double_array(storage&& storage_);
 
 
         // functions
-
-        /*!
-            \brief Returns the base check array.
-
-            \return The base check array.
-        */
-        const std::vector<std::uint32_t>& base_check_array() const;
 
         /*!
             \brief Finds the value correspoinding the given key.
@@ -113,6 +152,13 @@ namespace tetengo::trie
             \return An enumerator.
         */
         enumerator get_enumerator() const;
+
+        /*!
+            \brief Returns the storage.
+
+            \return The storage.
+        */
+        const storage& get_storage() const;
 
 
     private:

@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo-trie.cpp", "trie\cpp\tetengo.trie.cpp.vcxproj", "{A755F6BF-9964-4608-A0C8-9F7557D14A09}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.trie.cpp", "trie\cpp\tetengo.trie.cpp.vcxproj", "{A755F6BF-9964-4608-A0C8-9F7557D14A09}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "trie", "trie", "{61A0CE42-96A0-4578-A035-17D62CE4A691}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo-trie.c", "trie\c\tetengo.trie.vcxproj", "{E14D072F-631B-4E87-BC03-57437306CD34}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.trie", "trie\c\tetengo.trie.vcxproj", "{E14D072F-631B-4E87-BC03-57437306CD34}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo-trie.test", "trie\test\test_tetengo.trie.vcxproj", "{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tetengo.trie", "trie\test\test_tetengo.trie.vcxproj", "{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "make_double_array", "trie\make_double_array\make_double_array.vcxproj", "{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "list_double_array", "trie\list_double_array\list_double_array.vcxproj", "{15803B5C-8845-4325-819B-B09E40B8826E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +47,22 @@ Global
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x64.Build.0 = Release|x64
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x86.ActiveCfg = Release|Win32
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x86.Build.0 = Release|Win32
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Debug|x64.ActiveCfg = Debug|x64
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Debug|x64.Build.0 = Debug|x64
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Debug|x86.ActiveCfg = Debug|Win32
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Debug|x86.Build.0 = Debug|Win32
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Release|x64.ActiveCfg = Release|x64
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Release|x64.Build.0 = Release|x64
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Release|x86.ActiveCfg = Release|Win32
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}.Release|x86.Build.0 = Release|Win32
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Debug|x64.ActiveCfg = Debug|x64
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Debug|x64.Build.0 = Debug|x64
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Debug|x86.ActiveCfg = Debug|Win32
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Debug|x86.Build.0 = Debug|Win32
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Release|x64.ActiveCfg = Release|x64
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Release|x64.Build.0 = Release|x64
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Release|x86.ActiveCfg = Release|Win32
+		{15803B5C-8845-4325-819B-B09E40B8826E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +71,8 @@ Global
 		{A755F6BF-9964-4608-A0C8-9F7557D14A09} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
 		{E14D072F-631B-4E87-BC03-57437306CD34} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
+		{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
+		{15803B5C-8845-4325-819B-B09E40B8826E} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1FDB91A-BB78-49E0-8D13-17726804EA86}

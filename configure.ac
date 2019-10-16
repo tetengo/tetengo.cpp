@@ -22,6 +22,10 @@ AC_CONFIG_FILES([
     trie/cpp/include/Makefile
     trie/cpp/include/tetengo/Makefile
     trie/cpp/src/Makefile
+    trie/list_double_array/Makefile
+    trie/list_double_array/src/Makefile
+    trie/make_double_array/Makefile
+    trie/make_double_array/src/Makefile
     trie/test/Makefile
     trie/test/src/Makefile
     vsprops/Makefile
