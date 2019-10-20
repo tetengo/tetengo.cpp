@@ -27,6 +27,8 @@ namespace tetengo::trie
     public:
         // static functions
 
+        static std::int32_t default_density_factor();
+
         static storage build(
             std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
             const double_array::building_observer_type&              observer,

@@ -29,7 +29,7 @@ namespace tetengo::trie
 
     std::int32_t double_array::default_density_factor()
     {
-        return 1000;
+        return double_array_builder::default_density_factor();
     }
 
     double_array::double_array() :

@@ -20,6 +20,11 @@
 
 namespace tetengo::trie
 {
+    std::int32_t double_array_builder::default_density_factor()
+    {
+        return 1000;
+    }
+
     storage double_array_builder::build(
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
         const double_array::building_observer_type&              observer,
