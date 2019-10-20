@@ -157,6 +157,24 @@ BOOST_AUTO_TEST_SUITE(trie)
 BOOST_AUTO_TEST_SUITE(double_array)
 
 
+BOOST_AUTO_TEST_CASE(null_building_observer)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::double_array::null_building_observer();
+
+    // TODO: C style API
+}
+
+BOOST_AUTO_TEST_CASE(default_density_factor)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_TEST(tetengo::trie::double_array::default_density_factor() > 0);
+
+    // TODO: C style API
+}
+
 BOOST_AUTO_TEST_CASE(key_terminator)
 {
     BOOST_TEST_PASSPOINT();
@@ -260,6 +278,16 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
         BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array4);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        BOOST_CHECK_THROW(
+            const tetengo::trie::double_array double_array_(
+                expected_values0, tetengo::trie::double_array::null_building_observer(), 0),
+            std::invalid_argument);
     }
     {
         // TODO: C style API
