@@ -116,11 +116,12 @@ namespace tetengo::trie
         const std::size_t                         key_offset,
         const storage&                            storage_,
         const std::size_t                         storage_index,
-        const std::int32_t /*density_factor*/,
-        std::unordered_set<std::int32_t>& base_uniquer)
+        const std::int32_t                        density_factor,
+        std::unordered_set<std::int32_t>&         base_uniquer)
     {
-        for (auto base = -char_code_at((*firsts[0])->first, key_offset) + static_cast<std::int32_t>(storage_index) + 1;;
-             ++base)
+        const auto base_first = static_cast<std::int32_t>(storage_index - storage_index / density_factor) -
+                                char_code_at((*firsts[0])->first, key_offset) + 1;
+        for (auto base = base_first;; ++base)
         {
             const auto first_last = std::prev(firsts.end());
             const auto occupied =
