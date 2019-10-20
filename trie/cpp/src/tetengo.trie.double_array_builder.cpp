@@ -10,6 +10,7 @@
 #include <cassert>
 #include <functional>
 #include <iterator>
+#include <stdexcept>
 #include <unordered_set>
 
 #include <tetengo/trie/double_array.hpp>
@@ -20,10 +21,21 @@
 
 namespace tetengo::trie
 {
+    std::int32_t double_array_builder::default_density_factor()
+    {
+        return 1000;
+    }
+
     storage double_array_builder::build(
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-        const double_array::building_observer_type&              observer)
+        const double_array::building_observer_type&              observer,
+        const std::int32_t                                       density_factor)
     {
+        if (density_factor <= 0)
+        {
+            throw std::invalid_argument{ "density_factor must be greater than 0." };
+        }
+
         std::stable_sort(element_pointers.begin(), element_pointers.end(), [](const auto& e1, const auto& e2) {
             return e1->first < e2->first;
         });
@@ -33,7 +45,15 @@ namespace tetengo::trie
         if (!element_pointers.empty())
         {
             std::unordered_set<std::int32_t> base_uniquer{};
-            build_iter(element_pointers.begin(), element_pointers.end(), 0, storage_, 0, base_uniquer, observer);
+            build_iter(
+                element_pointers.begin(),
+                element_pointers.end(),
+                0,
+                storage_,
+                0,
+                base_uniquer,
+                observer,
+                density_factor);
         }
 
         observer.done();
@@ -42,14 +62,15 @@ namespace tetengo::trie
 
     storage double_array_builder::build(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
-        const double_array::building_observer_type&              observer)
+        const double_array::building_observer_type&              observer,
+        const std::int32_t                                       density_factor)
     {
         element_vector_type element_pointers{};
         element_pointers.reserve(elements.size());
         std::transform(
             elements.begin(), elements.end(), std::back_inserter(element_pointers), [](const auto& e) { return &e; });
 
-        return build(std::move(element_pointers), observer);
+        return build(std::move(element_pointers), observer, density_factor);
     }
 
     void double_array_builder::build_iter(
@@ -59,11 +80,13 @@ namespace tetengo::trie
         storage&                                    storage_,
         const std::size_t                           storage_index,
         std::unordered_set<std::int32_t>&           base_uniquer,
-        const double_array::building_observer_type& observer)
+        const double_array::building_observer_type& observer,
+        const std::int32_t                          density_factor)
     {
         const auto children_firsts_ = children_firsts(first, last, key_offset);
 
-        const auto base = calc_base(children_firsts_, key_offset, storage_, storage_index, base_uniquer);
+        const auto base =
+            calc_base(children_firsts_, key_offset, storage_, storage_index, density_factor, base_uniquer);
         storage_.set_base_at(storage_index, base);
 
         for (auto i = children_firsts_.begin(); i != std::prev(children_firsts_.end()); ++i)
@@ -82,7 +105,15 @@ namespace tetengo::trie
                 storage_.set_base_at(next_storage_index, (**i)->second);
                 continue;
             }
-            build_iter(*i, *std::next(i), key_offset + 1, storage_, next_storage_index, base_uniquer, observer);
+            build_iter(
+                *i,
+                *std::next(i),
+                key_offset + 1,
+                storage_,
+                next_storage_index,
+                base_uniquer,
+                observer,
+                density_factor);
         }
     }
 
@@ -91,10 +122,12 @@ namespace tetengo::trie
         const std::size_t                         key_offset,
         const storage&                            storage_,
         const std::size_t                         storage_index,
+        const std::int32_t                        density_factor,
         std::unordered_set<std::int32_t>&         base_uniquer)
     {
-        for (auto base = -char_code_at((*firsts[0])->first, key_offset) + static_cast<std::int32_t>(storage_index) + 1;;
-             ++base)
+        const auto base_first = static_cast<std::int32_t>(storage_index - storage_index / density_factor) -
+                                char_code_at((*firsts[0])->first, key_offset) + 1;
+        for (auto base = base_first;; ++base)
         {
             const auto first_last = std::prev(firsts.end());
             const auto occupied =

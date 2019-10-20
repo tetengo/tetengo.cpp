@@ -57,6 +57,13 @@ namespace tetengo::trie
         static const building_observer_type& null_building_observer();
 
         /*!
+            \brief Returns the default density factor.
+
+            \return The default density factor.
+        */
+        static std::int32_t default_density_factor();
+
+        /*!
             \brief Returns the key terminator.
 
             \return The key terminator.
@@ -89,10 +96,14 @@ namespace tetengo::trie
 
             \param element_pointers  Pointers to initial elements.
             \param building_observer A building observer.
+            \param density_factor    A density factor. Must be greater than 0.
+
+            \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         explicit double_array(
             std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-            const building_observer_type&                            building_observer = null_building_observer());
+            const building_observer_type&                            building_observer = null_building_observer(),
+            std::int32_t                                             density_factor = default_density_factor());
 
         /*!
             \brief Creates a double array.
@@ -102,19 +113,24 @@ namespace tetengo::trie
             \param first             An iterator to the first element.
             \param last              An iterator to the last element.
             \param building_observer A building observer.
+            \param density_factor    A density factor. Must be greater than 0.
+
+            \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         template <typename InputIterator>
         double_array(
             InputIterator                 first,
             InputIterator                 last,
-            const building_observer_type& building_observer = null_building_observer()) :
+            const building_observer_type& building_observer = null_building_observer(),
+            std::int32_t                  density_factor = default_density_factor()) :
         double_array{ [first, last]() {
                          std::vector<const std::pair<std::string, std::int32_t>*> element_pointers;
                          std::transform(
                              first, last, std::back_inserter(element_pointers), [](const auto& e) { return &e; });
                          return element_pointers;
                      }(),
-                      building_observer }
+                      building_observer,
+                      density_factor }
         {}
 
         /*!
@@ -122,10 +138,14 @@ namespace tetengo::trie
 
             \param elements          Initial elements.
             \param building_observer A building observer.
+            \param density_factor    A density factor. Must be greater than 0.
+
+            \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         explicit double_array(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
-            const building_observer_type&                            building_observer = null_building_observer());
+            const building_observer_type&                            building_observer = null_building_observer(),
+            std::int32_t                                             density_factor = default_density_factor());
 
         /*!
             \brief Creates a double array.

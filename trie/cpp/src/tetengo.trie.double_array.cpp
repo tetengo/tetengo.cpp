@@ -27,22 +27,30 @@ namespace tetengo::trie
         return singleton;
     }
 
+    std::int32_t double_array::default_density_factor()
+    {
+        return double_array_builder::default_density_factor();
+    }
+
     double_array::double_array() :
     m_storage{ double_array_builder::build(
         std::vector<const std::pair<std::string, std::int32_t>*>{},
-        null_building_observer()) }
+        null_building_observer(),
+        default_density_factor()) }
     {}
 
     double_array::double_array(
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-        const building_observer_type&                            building_observer /*= null_building_observer()*/) :
-    m_storage{ double_array_builder::build(std::move(element_pointers), building_observer) }
+        const building_observer_type&                            building_observer /*= null_building_observer()*/,
+        std::int32_t                                             density_factor /*= default_density_factor()*/) :
+    m_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) }
     {}
 
     double_array::double_array(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
-        const building_observer_type&                            building_observer /*= null_building_observer()*/) :
-    m_storage{ double_array_builder::build(elements, building_observer) }
+        const building_observer_type&                            building_observer /*= null_building_observer()*/,
+        std::int32_t                                             density_factor /*= default_density_factor()*/) :
+    m_storage{ double_array_builder::build(elements, building_observer, density_factor) }
     {}
 
     double_array::double_array(storage&& storage_) : m_storage{ std::move(storage_) } {}
