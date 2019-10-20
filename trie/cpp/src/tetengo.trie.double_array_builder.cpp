@@ -10,6 +10,7 @@
 #include <cassert>
 #include <functional>
 #include <iterator>
+#include <stdexcept>
 #include <unordered_set>
 
 #include <tetengo/trie/double_array.hpp>
