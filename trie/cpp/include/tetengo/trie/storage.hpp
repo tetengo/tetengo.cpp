@@ -20,6 +20,8 @@ namespace tetengo::trie
     class storage
     {
     public:
+        // constructors and destructor
+
         /*!
             \brief Creates a storage.
         */
