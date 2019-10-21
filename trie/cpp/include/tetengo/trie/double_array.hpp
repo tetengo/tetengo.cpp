@@ -18,7 +18,7 @@
 #include <vector>
 
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/memory_storage.hpp>
 
 
 namespace tetengo::trie
@@ -153,7 +153,7 @@ namespace tetengo::trie
 
             \param storage_ A storage.
         */
-        explicit double_array(storage&& storage_);
+        explicit double_array(memory_storage&& storage_);
 
 
         // functions
@@ -188,20 +188,20 @@ namespace tetengo::trie
 
             \return The storage.
         */
-        const storage& get_storage() const;
+        const memory_storage& get_storage() const;
 
 
     private:
         // variables
 
-        storage m_storage;
+        memory_storage m_storage;
 
         std::size_t m_root_index;
 
 
         // constructors
 
-        double_array(const storage& storage_, std::size_t root_index);
+        double_array(const memory_storage& storage_, std::size_t root_index);
     };
 
 

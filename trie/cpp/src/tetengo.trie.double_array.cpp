@@ -14,7 +14,7 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/memory_storage.hpp>
 
 #include "tetengo.trie.double_array_builder.hpp"
 
@@ -24,13 +24,14 @@ namespace tetengo::trie
     namespace
     {
         std::optional<std::size_t>
-        traverse(const storage& storage, const std::size_t root_index, const std::string& key)
+        traverse(const memory_storage& storage_, const std::size_t root_index, const std::string& key)
         {
             std::size_t index = root_index;
             for (const auto c: key)
             {
-                const auto next_index = static_cast<std::size_t>(storage.base_at(index)) + static_cast<std::uint8_t>(c);
-                if (next_index >= storage.size() || storage.check_at(next_index) != static_cast<std::uint8_t>(c))
+                const auto next_index =
+                    static_cast<std::size_t>(storage_.base_at(index)) + static_cast<std::uint8_t>(c);
+                if (next_index >= storage_.size() || storage_.check_at(next_index) != static_cast<std::uint8_t>(c))
                 {
                     return std::nullopt;
                 }
@@ -77,7 +78,7 @@ namespace tetengo::trie
         m_root_index{ 0 }
     {}
 
-    double_array::double_array(storage&& storage_) : m_storage{ std::move(storage_) }, m_root_index{ 0 } {}
+    double_array::double_array(memory_storage&& storage_) : m_storage{ std::move(storage_) }, m_root_index{ 0 } {}
 
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
@@ -96,12 +97,12 @@ namespace tetengo::trie
         return o_index ? std::make_optional(double_array{ m_storage, *o_index }) : std::nullopt;
     }
 
-    const storage& double_array::get_storage() const
+    const memory_storage& double_array::get_storage() const
     {
         return m_storage;
     }
 
-    double_array::double_array(const storage& storage_, std::size_t root_index) :
+    double_array::double_array(const memory_storage& storage_, std::size_t root_index) :
     m_storage{ storage_ },
         m_root_index{ root_index }
     {}

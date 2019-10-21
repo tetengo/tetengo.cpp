@@ -15,15 +15,15 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/memory_storage.hpp>
 
 
 namespace
 {
-    std::unique_ptr<tetengo::trie::storage> create_storage(const std::filesystem::path& path_)
+    std::unique_ptr<tetengo::trie::memory_storage> create_storage(const std::filesystem::path& path_)
     {
         std::ifstream input_stream{ path_.c_str(), std::ios_base::binary };
-        return std::make_unique<tetengo::trie::storage>(input_stream);
+        return std::make_unique<tetengo::trie::memory_storage>(input_stream);
     }
 
 

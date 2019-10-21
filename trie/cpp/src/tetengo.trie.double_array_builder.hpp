@@ -17,7 +17,7 @@
 #include <vector>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/memory_storage.hpp>
 
 
 namespace tetengo::trie
@@ -29,12 +29,12 @@ namespace tetengo::trie
 
         static std::int32_t default_density_factor();
 
-        static storage build(
+        static memory_storage build(
             std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
             const double_array::building_observer_type&              observer,
             std::int32_t                                             density_factor);
 
-        static storage build(
+        static memory_storage build(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const double_array::building_observer_type&              observer,
             std::int32_t                                             density_factor);
@@ -59,7 +59,7 @@ namespace tetengo::trie
             element_iterator_type                       first,
             element_iterator_type                       last,
             std::size_t                                 key_offset,
-            storage&                                    storage_,
+            memory_storage&                             storage_,
             std::size_t                                 storage_index,
             std::unordered_set<std::int32_t>&           base_uniquer,
             const double_array::building_observer_type& observer,
@@ -68,7 +68,7 @@ namespace tetengo::trie
         static std::int32_t calc_base(
             const std::vector<element_iterator_type>& firsts,
             std::size_t                               key_offset,
-            const storage&                            storage_,
+            const memory_storage&                     storage_,
             std::size_t                               storage_index,
             std::int32_t                              density_factor,
             std::unordered_set<std::int32_t>&         base_uniquer);

@@ -14,7 +14,7 @@
 #include <unordered_set>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/memory_storage.hpp>
 
 #include "tetengo.trie.double_array_builder.hpp"
 
@@ -26,7 +26,7 @@ namespace tetengo::trie
         return 1000;
     }
 
-    storage double_array_builder::build(
+    memory_storage double_array_builder::build(
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
         const double_array::building_observer_type&              observer,
         const std::int32_t                                       density_factor)
@@ -40,7 +40,7 @@ namespace tetengo::trie
             return e1->first < e2->first;
         });
 
-        storage storage_{};
+        memory_storage storage_{};
 
         if (!element_pointers.empty())
         {
@@ -60,7 +60,7 @@ namespace tetengo::trie
         return storage_;
     }
 
-    storage double_array_builder::build(
+    memory_storage double_array_builder::build(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
         const double_array::building_observer_type&              observer,
         const std::int32_t                                       density_factor)
@@ -77,7 +77,7 @@ namespace tetengo::trie
         const element_iterator_type                 first,
         const element_iterator_type                 last,
         const std::size_t                           key_offset,
-        storage&                                    storage_,
+        memory_storage&                             storage_,
         const std::size_t                           storage_index,
         std::unordered_set<std::int32_t>&           base_uniquer,
         const double_array::building_observer_type& observer,
@@ -120,7 +120,7 @@ namespace tetengo::trie
     std::int32_t double_array_builder::calc_base(
         const std::vector<element_iterator_type>& firsts,
         const std::size_t                         key_offset,
-        const storage&                            storage_,
+        const memory_storage&                     storage_,
         const std::size_t                         storage_index,
         const std::int32_t                        density_factor,
         std::unordered_set<std::int32_t>&         base_uniquer)

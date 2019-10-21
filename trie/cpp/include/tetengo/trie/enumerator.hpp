@@ -18,7 +18,7 @@
 
 namespace tetengo::trie
 {
-    class storage;
+    class memory_storage;
 
 
     /*!
@@ -35,7 +35,7 @@ namespace tetengo::trie
             \param storage_   A storage.
             \param root_index A root index.
         */
-        enumerator(const storage& storage_, std::size_t root_index);
+        enumerator(const memory_storage& storage_, std::size_t root_index);
 
 
         // functions
@@ -51,7 +51,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        const storage& m_storage;
+        const memory_storage& m_storage;
 
         mutable std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
             m_index_key_stack;

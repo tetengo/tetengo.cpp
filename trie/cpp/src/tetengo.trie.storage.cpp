@@ -4,6 +4,8 @@
     Copyright (C) 2019 kaoru
 */
 
+#if 0
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
@@ -124,3 +126,5 @@ namespace tetengo::trie
 
 
 }
+
+#endif

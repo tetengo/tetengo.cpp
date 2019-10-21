@@ -4,6 +4,8 @@
     Copyright (C) 2019 kaoru
  */
 
+#if 0
+
 #include <cstdint>
 #include <memory>
 #include <sstream>
@@ -188,3 +190,5 @@ BOOST_AUTO_TEST_CASE(serialize)
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif
