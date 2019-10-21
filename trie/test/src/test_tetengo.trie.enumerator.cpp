@@ -79,14 +79,14 @@ BOOST_AUTO_TEST_CASE(next)
         const auto                        enumerator = double_array_.get_enumerator();
 
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_CHECK(!element);
+            BOOST_CHECK(!o_element);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_CHECK(!element);
+            BOOST_CHECK(!o_element);
         }
     }
     {
@@ -98,35 +98,35 @@ BOOST_AUTO_TEST_CASE(next)
         const auto                        enumerator = double_array_.get_enumerator();
 
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_REQUIRE(element);
-            BOOST_TEST(element->first == "SETA");
-            BOOST_TEST(element->second == 42);
+            BOOST_REQUIRE(o_element);
+            BOOST_TEST(o_element->first == "SETA");
+            BOOST_TEST(o_element->second == 42);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_REQUIRE(element);
-            BOOST_TEST(element->first == "UTIGOSI");
-            BOOST_TEST(element->second == 24);
+            BOOST_REQUIRE(o_element);
+            BOOST_TEST(o_element->first == "UTIGOSI");
+            BOOST_TEST(o_element->second == 24);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_REQUIRE(element);
-            BOOST_TEST(element->first == "UTO");
-            BOOST_TEST(element->second == 2424);
+            BOOST_REQUIRE(o_element);
+            BOOST_TEST(o_element->first == "UTO");
+            BOOST_TEST(o_element->second == 2424);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_CHECK(!element);
+            BOOST_CHECK(!o_element);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_CHECK(!element);
+            BOOST_CHECK(!o_element);
         }
     }
     {
@@ -138,34 +138,34 @@ BOOST_AUTO_TEST_CASE(next)
         const auto                        enumerator = double_array_.get_enumerator();
 
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_REQUIRE(element);
+            BOOST_REQUIRE(o_element);
             const std::string expected_key{
                 to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4)
             }; // "Akamizu" in Kanji
-            BOOST_TEST(element->first == expected_key);
-            BOOST_TEST(element->second == 42);
+            BOOST_TEST(o_element->first == expected_key);
+            BOOST_TEST(o_element->second == 42);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_REQUIRE(element);
+            BOOST_REQUIRE(o_element);
             const std::string expected_key{
                 to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC)
             }; // "Akase" in Kanji
-            BOOST_TEST(element->first == expected_key);
-            BOOST_TEST(element->second == 24);
+            BOOST_TEST(o_element->first == expected_key);
+            BOOST_TEST(o_element->second == 24);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_CHECK(!element);
+            BOOST_CHECK(!o_element);
         }
         {
-            const auto element = enumerator.next();
+            const auto o_element = enumerator.next();
 
-            BOOST_CHECK(!element);
+            BOOST_CHECK(!o_element);
         }
     }
     {

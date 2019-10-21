@@ -8,6 +8,7 @@
 #define TETENGO_TRIE_DOUBLEARRAY_HPP
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <iterator>
@@ -174,6 +175,15 @@ namespace tetengo::trie
         enumerator get_enumerator() const;
 
         /*!
+            \brief Returns a subtrie.
+
+            \param key_prefix A key prefix.
+
+            \return A subtrie. Or std::nullpot when the double array does not have the given key prefix.
+        */
+        std::optional<double_array> subtrie(const std::string& key_prefix) const;
+
+        /*!
             \brief Returns the storage.
 
             \return The storage.
@@ -185,6 +195,13 @@ namespace tetengo::trie
         // variables
 
         storage m_storage;
+
+        std::size_t m_root_index;
+
+
+        // constructors
+
+        double_array(const storage& storage_, std::size_t root_index);
     };
 
 
