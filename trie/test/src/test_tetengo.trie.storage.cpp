@@ -5,6 +5,7 @@
  */
 
 #include <cstdint>
+#include <memory>
 #include <sstream>
 #include <vector>
 
@@ -52,6 +53,11 @@ namespace
         }
 
         virtual void serialize_impl(std::ostream& /*output_stream*/) const override {}
+
+        std::unique_ptr<storage> clone_impl() const override
+        {
+            return std::make_unique<concrete_storage>();
+        }
     };
 
 
@@ -142,6 +148,15 @@ BOOST_AUTO_TEST_CASE(serialize)
 
     std::ostringstream output_stream{};
     storage_.serialize(output_stream);
+}
+
+BOOST_AUTO_TEST_CASE(clone)
+{
+    BOOST_TEST_PASSPOINT();
+
+    concrete_storage storage_{};
+
+    const auto p_clone = storage_.clone();
 }
 
 

@@ -6,6 +6,7 @@
 
 #include <cstdint>
 #include <istream>
+#include <memory>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
@@ -51,6 +52,11 @@ namespace tetengo::trie
     void storage::serialize(std::ostream& output_stream) const
     {
         serialize_impl(output_stream);
+    }
+
+    std::unique_ptr<storage> storage::clone() const
+    {
+        return clone_impl();
     }
 
 

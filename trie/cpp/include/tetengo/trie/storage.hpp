@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <istream>
+#include <memory>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -99,6 +100,13 @@ namespace tetengo::trie
         */
         void serialize(std::ostream& output_stream) const;
 
+        /*!
+            \brief Clones this storage.
+
+            \return A unique pointer to a clone of this storage.
+        */
+        std::unique_ptr<storage> clone() const;
+
 
     private:
         // virtual functions
@@ -118,6 +126,8 @@ namespace tetengo::trie
         virtual const std::vector<std::uint32_t>& values_impl() const = 0;
 
         virtual void serialize_impl(std::ostream& output_stream) const = 0;
+
+        virtual std::unique_ptr<storage> clone_impl() const = 0;
     };
 
 
