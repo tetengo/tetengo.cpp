@@ -32,9 +32,10 @@ namespace tetengo::trie
         /*!
             \brief Creates an enumerator.
 
-            \param storage_ A storage.
+            \param storage_   A storage.
+            \param root_index A root index.
         */
-        explicit enumerator(const storage& storage_);
+        enumerator(const storage& storage_, std::size_t root_index);
 
 
         // functions

@@ -21,6 +21,27 @@
 
 namespace tetengo::trie
 {
+    namespace
+    {
+        std::optional<std::size_t>
+        traverse(const storage& storage, const std::size_t root_index, const std::string& key)
+        {
+            std::size_t index = root_index;
+            for (const auto c: key)
+            {
+                const auto next_index = static_cast<std::size_t>(storage.base_at(index)) + static_cast<std::uint8_t>(c);
+                if (next_index >= storage.size() || storage.check_at(next_index) != static_cast<std::uint8_t>(c))
+                {
+                    return std::nullopt;
+                }
+                index = next_index;
+            }
+
+            return std::make_optional(index);
+        }
+
+    }
+
     const double_array::building_observer_type& double_array::null_building_observer()
     {
         static const building_observer_type singleton{ [](const std::string&) {}, []() {} };
@@ -36,55 +57,54 @@ namespace tetengo::trie
     m_storage{ double_array_builder::build(
         std::vector<const std::pair<std::string, std::int32_t>*>{},
         null_building_observer(),
-        default_density_factor()) }
+        default_density_factor()) },
+        m_root_index{ 0 }
     {}
 
     double_array::double_array(
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
         const building_observer_type&                            building_observer /*= null_building_observer()*/,
         std::int32_t                                             density_factor /*= default_density_factor()*/) :
-    m_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) }
+    m_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) },
+        m_root_index{ 0 }
     {}
 
     double_array::double_array(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
         const building_observer_type&                            building_observer /*= null_building_observer()*/,
         std::int32_t                                             density_factor /*= default_density_factor()*/) :
-    m_storage{ double_array_builder::build(elements, building_observer, density_factor) }
+    m_storage{ double_array_builder::build(elements, building_observer, density_factor) },
+        m_root_index{ 0 }
     {}
 
-    double_array::double_array(storage&& storage_) : m_storage{ std::move(storage_) } {}
+    double_array::double_array(storage&& storage_) : m_storage{ std::move(storage_) }, m_root_index{ 0 } {}
 
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
-        std::size_t index = 0;
-        for (const auto c: key + double_array::key_terminator())
-        {
-            const auto next_index = static_cast<std::size_t>(m_storage.base_at(index)) + static_cast<std::uint8_t>(c);
-            if (next_index >= m_storage.size() || m_storage.check_at(next_index) != static_cast<std::uint8_t>(c))
-            {
-                return std::nullopt;
-            }
-            index = next_index;
-        }
-
-        return std::make_optional(m_storage.base_at(index));
+        const auto o_index = traverse(m_storage, m_root_index, key + double_array::key_terminator());
+        return o_index ? std::make_optional(m_storage.base_at(*o_index)) : std::nullopt;
     }
 
     enumerator double_array::get_enumerator() const
     {
-        return enumerator{ m_storage };
+        return enumerator{ m_storage, m_root_index };
     }
 
-    double_array double_array::subtrie(const std::string& /*key_prefix*/) const
+    std::optional<double_array> double_array::subtrie(const std::string& key_prefix) const
     {
-        return double_array{};
+        const auto o_index = traverse(m_storage, m_root_index, key_prefix);
+        return o_index ? std::make_optional(double_array{ m_storage, *o_index }) : std::nullopt;
     }
 
     const storage& double_array::get_storage() const
     {
         return m_storage;
     }
+
+    double_array::double_array(const storage& storage_, std::size_t root_index) :
+    m_storage{ storage_ },
+        m_root_index{ root_index }
+    {}
 
 
 }

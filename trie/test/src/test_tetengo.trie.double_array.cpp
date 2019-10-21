@@ -20,6 +20,7 @@
 
 #include <tetengo/trie/double_array.h>
 #include <tetengo/trie/double_array.hpp>
+#include <tetengo/trie/enumerator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 struct tetengo_trie_doublearray;
@@ -303,8 +304,8 @@ BOOST_AUTO_TEST_CASE(find)
         const tetengo::trie::double_array double_array_{};
 
         {
-            const auto found = double_array_.find("SETA");
-            BOOST_CHECK(!found);
+            const auto o_found = double_array_.find("SETA");
+            BOOST_CHECK(!o_found);
         }
     }
     {
@@ -315,23 +316,23 @@ BOOST_AUTO_TEST_CASE(find)
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
         {
-            const auto found = double_array_.find("SETA");
-            BOOST_REQUIRE(found);
-            BOOST_TEST(*found == 42);
+            const auto o_found = double_array_.find("SETA");
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == 42);
         }
         {
-            const auto found = double_array_.find("UTIGOSI");
-            BOOST_REQUIRE(found);
-            BOOST_TEST(*found == 24);
+            const auto o_found = double_array_.find("UTIGOSI");
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == 24);
         }
         {
-            const auto found = double_array_.find("UTO");
-            BOOST_REQUIRE(found);
-            BOOST_TEST(*found == 2424);
+            const auto o_found = double_array_.find("UTO");
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == 2424);
         }
         {
-            const auto found = double_array_.find("SUIZENJI");
-            BOOST_CHECK(!found);
+            const auto o_found = double_array_.find("SUIZENJI");
+            BOOST_CHECK(!o_found);
         }
     }
     {
@@ -342,16 +343,16 @@ BOOST_AUTO_TEST_CASE(find)
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
         {
-            const auto found = double_array_.find(
+            const auto o_found = double_array_.find(
                 std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) });
-            BOOST_REQUIRE(found);
-            BOOST_TEST(*found == 24);
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == 24);
         }
         {
-            const auto found = double_array_.find(
+            const auto o_found = double_array_.find(
                 std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) });
-            BOOST_REQUIRE(found);
-            BOOST_TEST(*found == 42);
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == 42);
         }
         {
             const std::string key{ { to_c(0xE6),
@@ -363,8 +364,8 @@ BOOST_AUTO_TEST_CASE(find)
                                      to_c(0xE5),
                                      to_c(0xAF),
                                      to_c(0xBA) } }; // "Suizenji" in Kanji
-            const auto        found = double_array_.find(key);
-            BOOST_CHECK(!found);
+            const auto        o_found = double_array_.find(key);
+            BOOST_CHECK(!o_found);
         }
     }
     {
@@ -408,6 +409,62 @@ BOOST_AUTO_TEST_CASE(subtrie)
 {
     BOOST_TEST_PASSPOINT();
 
+    {
+        const tetengo::trie::double_array double_array_{ expected_values3 };
+
+        {
+            const auto o_subtrie = double_array_.subtrie("U");
+            BOOST_CHECK(o_subtrie);
+            {
+                const auto o_found = o_subtrie->find("TIGOSI");
+                BOOST_REQUIRE(o_found);
+                BOOST_TEST(*o_found == 24);
+            }
+            {
+                const auto o_found = o_subtrie->find("TO");
+                BOOST_REQUIRE(o_found);
+                BOOST_TEST(*o_found == 2424);
+            }
+            {
+                const auto o_found = o_subtrie->find("SETA");
+                BOOST_CHECK(!o_found);
+            }
+            {
+                const auto o_found = o_subtrie->find("UTIGOSI");
+                BOOST_CHECK(!o_found);
+            }
+            {
+                auto enumerator = o_subtrie->get_enumerator();
+
+                const auto o_element1 = enumerator.next();
+                BOOST_REQUIRE(o_element1);
+                BOOST_TEST(o_element1->first == "TIGOSI");
+                BOOST_TEST(o_element1->second == 24);
+
+                const auto o_element2 = enumerator.next();
+                BOOST_REQUIRE(o_element2);
+                BOOST_TEST(o_element2->first == "TO");
+                BOOST_TEST(o_element2->second == 2424);
+
+                const auto o_element3 = enumerator.next();
+                BOOST_CHECK(!o_element3);
+            }
+
+            const auto o_subtrie2 = o_subtrie->subtrie("TI");
+            {
+                const auto o_found = o_subtrie2->find("GOSI");
+                BOOST_REQUIRE(o_found);
+                BOOST_TEST(*o_found == 24);
+            }
+        }
+        {
+            const auto o_subtrie = double_array_.subtrie("T");
+            BOOST_CHECK(!o_subtrie);
+        }
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 BOOST_AUTO_TEST_CASE(storage)
