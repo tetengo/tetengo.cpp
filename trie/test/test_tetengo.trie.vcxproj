@@ -118,6 +118,7 @@
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.trie.double_array.cpp" />
     <ClCompile Include="src\test_tetengo.trie.enumerator.cpp" />
+    <ClCompile Include="src\test_tetengo.trie.memory_storage.cpp" />
     <ClCompile Include="src\test_tetengo.trie.storage.cpp" />
   </ItemGroup>
   <ItemGroup>

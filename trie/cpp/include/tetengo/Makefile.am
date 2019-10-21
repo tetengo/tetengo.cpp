@@ -4,6 +4,7 @@
 pkg_headers = \
     trie/double_array.hpp \
     trie/enumerator.hpp \
+    trie/memory_storage.hpp \
     trie/storage.hpp
 
 extra_headers = \
