@@ -465,6 +465,21 @@ BOOST_AUTO_TEST_CASE(subtrie)
     {
         // TODO: C style API
     }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values4 };
+
+        const auto o_subtrie = double_array_.subtrie(std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6) });
+        BOOST_CHECK(o_subtrie);
+        {
+            const auto o_found = o_subtrie->find(std::string{ to_c(0xB0), to_c(0xB4) });
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == 42);
+        }
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 BOOST_AUTO_TEST_CASE(storage)
