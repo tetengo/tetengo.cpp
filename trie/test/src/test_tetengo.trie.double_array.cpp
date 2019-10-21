@@ -404,6 +404,12 @@ BOOST_AUTO_TEST_CASE(get_enumerator)
     }
 }
 
+BOOST_AUTO_TEST_CASE(subtrie)
+{
+    BOOST_TEST_PASSPOINT();
+
+}
+
 BOOST_AUTO_TEST_CASE(storage)
 {
     BOOST_TEST_PASSPOINT();

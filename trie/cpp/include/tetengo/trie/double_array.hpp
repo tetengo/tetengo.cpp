@@ -174,6 +174,13 @@ namespace tetengo::trie
         enumerator get_enumerator() const;
 
         /*!
+            \brief Returns a subtrie.
+
+            \return A subtrie.
+        */
+        double_array subtrie(const std::string& key_prefix) const;
+
+        /*!
             \brief Returns the storage.
 
             \return The storage.

@@ -76,6 +76,11 @@ namespace tetengo::trie
         return enumerator{ m_storage };
     }
 
+    double_array double_array::subtrie(const std::string& /*key_prefix*/) const
+    {
+        return double_array{};
+    }
+
     const storage& double_array::get_storage() const
     {
         return m_storage;
