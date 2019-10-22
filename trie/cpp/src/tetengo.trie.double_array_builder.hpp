@@ -11,6 +11,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -29,12 +30,12 @@ namespace tetengo::trie
 
         static std::int32_t default_density_factor();
 
-        static memory_storage build(
+        static std::unique_ptr<memory_storage> build(
             std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
             const double_array::building_observer_type&              observer,
             std::int32_t                                             density_factor);
 
-        static memory_storage build(
+        static std::unique_ptr<memory_storage> build(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const double_array::building_observer_type&              observer,
             std::int32_t                                             density_factor);

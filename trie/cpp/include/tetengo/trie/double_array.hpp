@@ -12,13 +12,14 @@
 #include <cstdint>
 #include <functional>
 #include <iterator>
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
@@ -151,9 +152,9 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param storage_ A storage.
+            \param p_storage A unique pointer to a storage.
         */
-        explicit double_array(memory_storage&& storage_);
+        explicit double_array(std::unique_ptr<storage>&& p_storage);
 
 
         // functions
@@ -188,20 +189,20 @@ namespace tetengo::trie
 
             \return The storage.
         */
-        const memory_storage& get_storage() const;
+        const storage& get_storage() const;
 
 
     private:
         // variables
 
-        memory_storage m_storage;
+        std::unique_ptr<storage> m_p_storage;
 
         std::size_t m_root_index;
 
 
         // constructors
 
-        double_array(const memory_storage& storage_, std::size_t root_index);
+        double_array(const storage& storage_, std::size_t root_index);
     };
 
 

@@ -26,7 +26,7 @@ namespace tetengo::trie
         return 1000;
     }
 
-    memory_storage double_array_builder::build(
+    std::unique_ptr<memory_storage> double_array_builder::build(
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
         const double_array::building_observer_type&              observer,
         const std::int32_t                                       density_factor)
@@ -40,7 +40,7 @@ namespace tetengo::trie
             return e1->first < e2->first;
         });
 
-        memory_storage storage_{};
+        auto p_storage = std::make_unique<memory_storage>();
 
         if (!element_pointers.empty())
         {
@@ -49,7 +49,7 @@ namespace tetengo::trie
                 element_pointers.begin(),
                 element_pointers.end(),
                 0,
-                storage_,
+                *p_storage,
                 0,
                 base_uniquer,
                 observer,
@@ -57,10 +57,10 @@ namespace tetengo::trie
         }
 
         observer.done();
-        return storage_;
+        return p_storage;
     }
 
-    memory_storage double_array_builder::build(
+    std::unique_ptr<memory_storage> double_array_builder::build(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
         const double_array::building_observer_type&              observer,
         const std::int32_t                                       density_factor)

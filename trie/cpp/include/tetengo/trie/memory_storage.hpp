@@ -11,13 +11,15 @@
 #include <istream>
 #include <vector>
 
+#include <tetengo/trie/storage.hpp>
+
 
 namespace tetengo::trie
 {
     /*!
         \brief A memory storage.
     */
-    class memory_storage
+    class memory_storage : public storage
     {
     public:
         // constructors and destructor
@@ -35,75 +37,31 @@ namespace tetengo::trie
         explicit memory_storage(std::istream& input_stream);
 
 
-        // functions
-
-        /*!
-            \brief Returns the base value.
-
-            \param index An index.
-
-            \return The base value.
-        */
-        std::int32_t base_at(std::size_t index) const;
-
-        /*!
-            \brief Sets a base value.
-
-            \param index An index.
-            \param value A value.
-        */
-        void set_base_at(std::size_t index, std::int32_t value);
-
-        /*!
-            \brief Returns the check value.
-
-            \param index An index.
-
-            \return The check value.
-        */
-        std::uint8_t check_at(std::size_t index) const;
-
-        /*!
-            \brief Sets a check value.
-
-            \param index An index.
-            \param value A value.
-        */
-        void set_check_at(std::size_t index, std::uint8_t value);
-
-        /*!
-            \brief Returns the size of this storage.
-
-            \return The size.
-        */
-        std::size_t size() const;
-
-        /*!
-            \brief Returns the filling rate.
-
-            \return The filling rate.
-        */
-        double filling_rate() const;
-
-        /*!
-            \brief Returns the all values.
-
-            \return The all values.
-        */
-        const std::vector<std::uint32_t>& values() const;
-
-        /*!
-            \brief Serializes this storage.
-
-            \param output_stream An output stream.
-        */
-        void serialize(std::ostream& output_stream) const;
-
-
     private:
         // variables
 
         mutable std::vector<std::uint32_t> m_values;
+
+
+        // virtual functions
+
+        virtual std::int32_t base_at_impl(std::size_t index) const override;
+
+        virtual void set_base_at_impl(std::size_t index, std::int32_t value) override;
+
+        virtual std::uint8_t check_at_impl(std::size_t index) const override;
+
+        virtual void set_check_at_impl(std::size_t index, std::uint8_t value) override;
+
+        virtual std::size_t size_impl() const override;
+
+        virtual double filling_rate_impl() const override;
+
+        virtual const std::vector<std::uint32_t>& values_impl() const override;
+
+        virtual void serialize_impl(std::ostream& output_stream) const override;
+
+        virtual std::unique_ptr<storage> clone_impl() const override;
     };
 
 

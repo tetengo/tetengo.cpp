@@ -40,8 +40,8 @@ int main(const int argc, char** const argv)
             return 0;
         }
 
-        const auto                  p_storage = create_storage(argv[1]);
-        tetengo::trie::double_array double_array_{ std::move(*p_storage) };
+        auto                        p_storage = create_storage(argv[1]);
+        tetengo::trie::double_array double_array_{ std::move(p_storage) };
 
 
         for (auto enumerator = double_array_.get_enumerator();;)

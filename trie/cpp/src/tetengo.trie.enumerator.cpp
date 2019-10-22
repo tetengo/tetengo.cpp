@@ -17,12 +17,12 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
-    enumerator::enumerator(const memory_storage& storage_, std::size_t root_index) :
+    enumerator::enumerator(const storage& storage_, std::size_t root_index) :
     m_storage{ storage_ },
         m_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
             std::make_pair(root_index, std::string{}) } }

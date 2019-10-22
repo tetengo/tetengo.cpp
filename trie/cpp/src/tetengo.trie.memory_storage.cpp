@@ -6,8 +6,10 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstdint>
 #include <istream>
+#include <stdexcept>
 #include <vector>
 
 #include <tetengo/trie/double_array.hpp>
@@ -71,55 +73,62 @@ namespace tetengo::trie
 
     memory_storage::memory_storage(std::istream& input_stream) : m_values{ deserialize(input_stream) } {}
 
-    std::int32_t memory_storage::base_at(const std::size_t index) const
+    std::int32_t memory_storage::base_at_impl(const std::size_t index) const
     {
         ensure_size(m_values, index + 1);
         return static_cast<std::int32_t>(m_values[index]) >> 8;
     }
 
-    void memory_storage::set_base_at(const std::size_t index, const std::int32_t value)
+    void memory_storage::set_base_at_impl(const std::size_t index, const std::int32_t value)
     {
         ensure_size(m_values, index + 1);
         m_values[index] &= 0x000000FF;
         m_values[index] |= static_cast<std::uint32_t>(value << 8);
     }
 
-    std::uint8_t memory_storage::check_at(const std::size_t index) const
+    std::uint8_t memory_storage::check_at_impl(const std::size_t index) const
     {
         ensure_size(m_values, index + 1);
         return m_values[index] & 0xFF;
     }
 
-    void memory_storage::set_check_at(const std::size_t index, const std::uint8_t value)
+    void memory_storage::set_check_at_impl(const std::size_t index, const std::uint8_t value)
     {
         ensure_size(m_values, index + 1);
         m_values[index] &= 0xFFFFFF00;
         m_values[index] |= value;
     }
 
-    std::size_t memory_storage::size() const
+    std::size_t memory_storage::size_impl() const
     {
         return m_values.size();
     }
 
-    double memory_storage::filling_rate() const
+    double memory_storage::filling_rate_impl() const
     {
         const auto empty_count = std::count(m_values.begin(), m_values.end(), 0x000000FFU);
         return 1.0 - static_cast<double>(empty_count) / m_values.size();
     }
 
-    const std::vector<std::uint32_t>& memory_storage::values() const
+    const std::vector<std::uint32_t>& memory_storage::values_impl() const
     {
         return m_values;
     }
 
-    void memory_storage::serialize(std::ostream& output_stream) const
+    void memory_storage::serialize_impl(std::ostream& output_stream) const
     {
         write_uint32(output_stream, static_cast<std::uint32_t>(m_values.size()));
         for (const auto& v: m_values)
         {
             write_uint32(output_stream, v);
         }
+    }
+
+    std::unique_ptr<storage> memory_storage::clone_impl() const
+    {
+        auto p_clone = std::make_unique<memory_storage>();
+        p_clone->m_values = m_values;
+        return p_clone;
     }
 
 

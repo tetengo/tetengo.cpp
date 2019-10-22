@@ -14,7 +14,7 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 
 #include "tetengo.trie.double_array_builder.hpp"
 
@@ -24,7 +24,7 @@ namespace tetengo::trie
     namespace
     {
         std::optional<std::size_t>
-        traverse(const memory_storage& storage_, const std::size_t root_index, const std::string& key)
+        traverse(const storage& storage_, const std::size_t root_index, const std::string& key)
         {
             std::size_t index = root_index;
             for (const auto c: key)
@@ -55,7 +55,7 @@ namespace tetengo::trie
     }
 
     double_array::double_array() :
-    m_storage{ double_array_builder::build(
+    m_p_storage{ double_array_builder::build(
         std::vector<const std::pair<std::string, std::int32_t>*>{},
         null_building_observer(),
         default_density_factor()) },
@@ -66,7 +66,7 @@ namespace tetengo::trie
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
         const building_observer_type&                            building_observer /*= null_building_observer()*/,
         std::int32_t                                             density_factor /*= default_density_factor()*/) :
-    m_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) },
+    m_p_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) },
         m_root_index{ 0 }
     {}
 
@@ -74,36 +74,39 @@ namespace tetengo::trie
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
         const building_observer_type&                            building_observer /*= null_building_observer()*/,
         std::int32_t                                             density_factor /*= default_density_factor()*/) :
-    m_storage{ double_array_builder::build(elements, building_observer, density_factor) },
+    m_p_storage{ double_array_builder::build(elements, building_observer, density_factor) },
         m_root_index{ 0 }
     {}
 
-    double_array::double_array(memory_storage&& storage_) : m_storage{ std::move(storage_) }, m_root_index{ 0 } {}
+    double_array::double_array(std::unique_ptr<storage>&& p_storage) :
+    m_p_storage{ std::move(p_storage) },
+        m_root_index{ 0 }
+    {}
 
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
-        const auto o_index = traverse(m_storage, m_root_index, key + double_array::key_terminator());
-        return o_index ? std::make_optional(m_storage.base_at(*o_index)) : std::nullopt;
+        const auto o_index = traverse(*m_p_storage, m_root_index, key + double_array::key_terminator());
+        return o_index ? std::make_optional(m_p_storage->base_at(*o_index)) : std::nullopt;
     }
 
     enumerator double_array::get_enumerator() const
     {
-        return enumerator{ m_storage, m_root_index };
+        return enumerator{ *m_p_storage, m_root_index };
     }
 
     std::optional<double_array> double_array::subtrie(const std::string& key_prefix) const
     {
-        const auto o_index = traverse(m_storage, m_root_index, key_prefix);
-        return o_index ? std::make_optional(double_array{ m_storage, *o_index }) : std::nullopt;
+        const auto o_index = traverse(*m_p_storage, m_root_index, key_prefix);
+        return o_index ? std::make_optional(double_array{ *m_p_storage, *o_index }) : std::nullopt;
     }
 
-    const memory_storage& double_array::get_storage() const
+    const storage& double_array::get_storage() const
     {
-        return m_storage;
+        return *m_p_storage;
     }
 
-    double_array::double_array(const memory_storage& storage_, std::size_t root_index) :
-    m_storage{ storage_ },
+    double_array::double_array(const storage& storage_, std::size_t root_index) :
+    m_p_storage{ storage_.clone() },
         m_root_index{ root_index }
     {}
 
