@@ -18,7 +18,7 @@
 #include <boost/format.hpp>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 
 
 namespace

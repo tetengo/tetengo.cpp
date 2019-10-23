@@ -21,7 +21,7 @@
 #include <tetengo/trie/double_array.h>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 
 struct tetengo_trie_doublearray;
 

@@ -6,14 +6,14 @@
 
 #include <algorithm>
 #include <array>
-#include <cassert>
 #include <cstdint>
 #include <istream>
-#include <stdexcept>
+#include <memory>
 #include <vector>
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie

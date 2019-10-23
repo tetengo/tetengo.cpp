@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <istream>
+#include <memory>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
