@@ -37,11 +37,21 @@ namespace tetengo::trie
         */
         explicit memory_storage(std::istream& input_stream);
 
+        /*!
+            \brief Destroys the memory storage.
+        */
+        virtual ~memory_storage();
+
 
     private:
+        // types
+
+        class impl;
+
+
         // variables
 
-        mutable std::vector<std::uint32_t> m_values;
+        const std::unique_ptr<impl> m_p_impl;
 
 
         // virtual functions
