@@ -12,6 +12,7 @@
 #include <cstdint>
 #include <functional>
 #include <iterator>
+#include <memory>
 #include <optional>
 #include <string>
 #include <utility>
@@ -151,9 +152,9 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param storage_ A storage.
+            \param p_storage A unique pointer to a storage.
         */
-        explicit double_array(storage&& storage_);
+        explicit double_array(std::unique_ptr<storage>&& p_storage);
 
 
         // functions
@@ -194,7 +195,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        storage m_storage;
+        std::unique_ptr<storage> m_p_storage;
 
         std::size_t m_root_index;
 

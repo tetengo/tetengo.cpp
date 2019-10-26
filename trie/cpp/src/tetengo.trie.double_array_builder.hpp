@@ -11,17 +11,20 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
+    class storage;
+
+
     class double_array_builder
     {
     public:
@@ -29,12 +32,12 @@ namespace tetengo::trie
 
         static std::int32_t default_density_factor();
 
-        static storage build(
+        static std::unique_ptr<storage> build(
             std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
             const double_array::building_observer_type&              observer,
             std::int32_t                                             density_factor);
 
-        static storage build(
+        static std::unique_ptr<storage> build(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const double_array::building_observer_type&              observer,
             std::int32_t                                             density_factor);

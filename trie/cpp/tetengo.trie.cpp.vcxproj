@@ -102,6 +102,8 @@
     <ClCompile Include="src\tetengo.trie.double_array_builder.cpp" />
     <ClCompile Include="src\tetengo.trie.double_array.cpp" />
     <ClCompile Include="src\tetengo.trie.enumerator.cpp" />
+    <ClCompile Include="src\tetengo.trie.memory_storage.cpp" />
+    <ClCompile Include="src\tetengo.trie.shared_storage.cpp" />
     <ClCompile Include="src\tetengo.trie.storage.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +113,8 @@
     <ClInclude Include="..\..\precompiled\precompiled.hpp" />
     <ClInclude Include="include\tetengo\trie\double_array.hpp" />
     <ClInclude Include="include\tetengo\trie\enumerator.hpp" />
+    <ClInclude Include="include\tetengo\trie\memory_storage.hpp" />
+    <ClInclude Include="include\tetengo\trie\shared_storage.hpp" />
     <ClInclude Include="include\tetengo\trie\storage.hpp" />
     <ClInclude Include="src\tetengo.trie.double_array_builder.hpp" />
   </ItemGroup>

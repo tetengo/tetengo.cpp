@@ -15,6 +15,7 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.hpp>
 
 
@@ -23,7 +24,7 @@ namespace
     std::unique_ptr<tetengo::trie::storage> create_storage(const std::filesystem::path& path_)
     {
         std::ifstream input_stream{ path_.c_str(), std::ios_base::binary };
-        return std::make_unique<tetengo::trie::storage>(input_stream);
+        return std::make_unique<tetengo::trie::memory_storage>(input_stream);
     }
 
 
@@ -40,8 +41,8 @@ int main(const int argc, char** const argv)
             return 0;
         }
 
-        const auto                  p_storage = create_storage(argv[1]);
-        tetengo::trie::double_array double_array_{ std::move(*p_storage) };
+        auto                        p_storage = create_storage(argv[1]);
+        tetengo::trie::double_array double_array_{ std::move(p_storage) };
 
 
         for (auto enumerator = double_array_.get_enumerator();;)

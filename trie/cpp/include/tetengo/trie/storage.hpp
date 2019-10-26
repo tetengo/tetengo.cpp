@@ -9,7 +9,10 @@
 
 #include <cstdint>
 #include <istream>
+#include <memory>
 #include <vector>
+
+#include <boost/core/noncopyable.hpp>
 
 
 namespace tetengo::trie
@@ -17,7 +20,7 @@ namespace tetengo::trie
     /*!
         \brief A storage.
     */
-    class storage
+    class storage : private boost::noncopyable
     {
     public:
         // constructors and destructor
@@ -25,14 +28,12 @@ namespace tetengo::trie
         /*!
             \brief Creates a storage.
         */
-        storage();
+        storage() = default;
 
         /*!
-            \brief Creates a storage.
-
-            \param input_stream An input stream.
+            \brief Destroys the storage.
         */
-        explicit storage(std::istream& input_stream);
+        virtual ~storage() = default;
 
 
         // functions
@@ -99,11 +100,34 @@ namespace tetengo::trie
         */
         void serialize(std::ostream& output_stream) const;
 
+        /*!
+            \brief Clones this storage.
+
+            \return A unique pointer to a clone of this storage.
+        */
+        std::unique_ptr<storage> clone() const;
+
 
     private:
-        // variables
+        // virtual functions
 
-        mutable std::vector<std::uint32_t> m_values;
+        virtual std::int32_t base_at_impl(std::size_t index) const = 0;
+
+        virtual void set_base_at_impl(std::size_t index, std::int32_t value) = 0;
+
+        virtual std::uint8_t check_at_impl(std::size_t index) const = 0;
+
+        virtual void set_check_at_impl(std::size_t index, std::uint8_t value) = 0;
+
+        virtual std::size_t size_impl() const = 0;
+
+        virtual double filling_rate_impl() const = 0;
+
+        virtual const std::vector<std::uint32_t>& values_impl() const = 0;
+
+        virtual void serialize_impl(std::ostream& output_stream) const = 0;
+
+        virtual std::unique_ptr<storage> clone_impl() const = 0;
     };
 
 

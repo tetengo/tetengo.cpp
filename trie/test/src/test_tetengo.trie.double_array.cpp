@@ -266,9 +266,9 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array0{ expected_values3 };
-        auto                              storage = double_array0.get_storage();
+        const auto&                       storage = double_array0.get_storage();
 
-        const tetengo::trie::double_array double_array1{ std::move(storage) };
+        const tetengo::trie::double_array double_array1{ storage.clone() };
 
         BOOST_TEST(double_array1.get_storage().values() == expected_base_check_array3);
     }
