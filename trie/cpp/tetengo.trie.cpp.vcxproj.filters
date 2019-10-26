@@ -58,6 +58,9 @@
     <ClInclude Include="include\tetengo\trie\shared_storage.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\trie\trie_set.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\tetengo\trie\0namespace.dox">

@@ -121,6 +121,7 @@
     <ClCompile Include="src\test_tetengo.trie.memory_storage.cpp" />
     <ClCompile Include="src\test_tetengo.trie.shared_storage.cpp" />
     <ClCompile Include="src\test_tetengo.trie.storage.cpp" />
+    <ClCompile Include="src\test_tetengo.trie.trie_set.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.hpp" />
