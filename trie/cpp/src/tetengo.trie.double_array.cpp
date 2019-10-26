@@ -84,6 +84,29 @@ namespace tetengo::trie
         m_root_index{ 0 }
     {}
 
+    double_array::double_array(double_array&& another) :
+    m_p_storage{ std::move(another.m_p_storage) },
+        m_root_index{ another.m_root_index }
+    {}
+
+    double_array::double_array(const double_array& another) :
+    m_p_storage{ another.m_p_storage->clone() },
+        m_root_index{ another.m_root_index }
+    {}
+
+    double_array& double_array::operator=(double_array&& another)
+    {
+        m_p_storage = std::move(another).m_p_storage;
+        m_root_index = another.m_root_index;
+        return *this;
+    }
+
+    double_array& double_array::operator=(const double_array& another)
+    {
+        *this = double_array{ another };
+        return *this;
+    }
+
     std::optional<std::int32_t> double_array::find(const std::string& key) const
     {
         const auto o_index = traverse(*m_p_storage, m_root_index, key + double_array::key_terminator());
