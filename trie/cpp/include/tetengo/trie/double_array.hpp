@@ -174,6 +174,24 @@ namespace tetengo::trie
         // functions
 
         /*!
+            \brief Assigns a double array.
+
+            \param another Another double array.
+
+            \return This double array.
+        */
+        double_array& operator=(double_array&& another);
+
+        /*!
+            \brief Assigns a double array.
+
+            \param another Another double array.
+
+            \return This double array.
+        */
+        double_array& operator=(const double_array& another);
+
+        /*!
             \brief Finds the value correspoinding the given key.
 
             \param key A key.
