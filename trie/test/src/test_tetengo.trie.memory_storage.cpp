@@ -16,6 +16,7 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 
 
 namespace
@@ -182,6 +183,23 @@ BOOST_AUTO_TEST_CASE(serialize)
     static const std::string expected{ to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00),
                                        to_c(0x2A), to_c(0xFF), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18) };
     BOOST_TEST(output_stream.str() == expected);
+}
+
+BOOST_AUTO_TEST_CASE(clone)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::memory_storage storage_{};
+
+    storage_.set_base_at(0, 42);
+    storage_.set_check_at(1, 24);
+
+    const auto p_clone = storage_.clone();
+
+    const auto values = p_clone->values();
+
+    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
+    BOOST_TEST(values == expected);
 }
 
 
