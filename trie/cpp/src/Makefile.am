@@ -9,6 +9,7 @@ sources = \
     tetengo.trie.double_array_builder.hpp \
     tetengo.trie.enumerator.cpp \
     tetengo.trie.memory_storage.cpp \
+    tetengo.trie.shared_storage.cpp \
     tetengo.trie.storage.cpp
 
 lib_LIBRARIES = libtetengo.trie.cpp.a

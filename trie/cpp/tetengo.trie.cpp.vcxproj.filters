@@ -32,6 +32,9 @@
     <ClCompile Include="src\tetengo.trie.memory_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.trie.shared_storage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.hpp">
@@ -50,6 +53,9 @@
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\trie\memory_storage.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\trie\shared_storage.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
   </ItemGroup>
