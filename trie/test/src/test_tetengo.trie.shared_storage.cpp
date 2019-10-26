@@ -200,6 +200,15 @@ BOOST_AUTO_TEST_CASE(clone)
 
     static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
     BOOST_TEST(values == expected);
+
+    p_clone->set_base_at(0, 2424);
+    p_clone->set_check_at(5, 42);
+
+    BOOST_TEST(p_clone->base_at(0) == 2424);
+    BOOST_TEST(p_clone->check_at(5) == 42);
+
+    BOOST_TEST(storage_.base_at(0) == 2424);
+    BOOST_TEST(storage_.check_at(5) == 42);
 }
 
 
