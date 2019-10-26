@@ -294,6 +294,26 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         // TODO: C style API
     }
+
+    {
+        tetengo::trie::double_array double_array1{ expected_values3 };
+        const tetengo::trie::double_array double_array2{ std::move(double_array1) };
+
+        BOOST_TEST(double_array2.get_storage().values() == expected_base_check_array3);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array1{ expected_values3 };
+        const tetengo::trie::double_array double_array2{ double_array1 };
+
+        BOOST_TEST(double_array2.get_storage().values() == expected_base_check_array3);
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 BOOST_AUTO_TEST_CASE(find)

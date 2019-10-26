@@ -156,6 +156,20 @@ namespace tetengo::trie
         */
         explicit double_array(std::unique_ptr<storage>&& p_storage);
 
+        /*!
+            \brief Moves a double array.
+
+            \param another Another double array.
+        */
+        double_array(double_array&& another);
+
+        /*!
+            \brief Copies a double array.
+
+            \param another Another double array.
+        */
+        double_array(const double_array& another);
+
 
         // functions
 
