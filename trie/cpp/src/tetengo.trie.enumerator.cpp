@@ -1,5 +1,5 @@
 /*! \file
-    \brief A double array.
+    \brief An enumerator.
 
     Copyright (C) 2019 kaoru
 */

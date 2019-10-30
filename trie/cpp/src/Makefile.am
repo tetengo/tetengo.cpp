@@ -4,6 +4,7 @@
 headers =
 
 sources = \
+    tetengo.trie.default_key_serializer.cpp \
     tetengo.trie.double_array.cpp \
     tetengo.trie.double_array_builder.cpp \
     tetengo.trie.double_array_builder.hpp \
