@@ -67,6 +67,9 @@
     <ClInclude Include="include\tetengo\trie\default_key_serializer.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\trie\trie_set_iterator.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\tetengo\trie\0namespace.dox">
