@@ -7,10 +7,14 @@
 #if !defined(TETENGO_TRIE_TRIESET_HPP)
 #define TETENGO_TRIE_TRIESET_HPP
 
+#include <algorithm>
 #include <cstddef>
 #include <initializer_list>
-
-#include <boost/iterator/transform_iterator.hpp>
+#include <iterator>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <tetengo/trie/default_key_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
@@ -20,7 +24,7 @@
 namespace tetengo::trie
 {
     /*!
-        \brief An enumerator.
+        \brief A trie set.
 
         \tparam Key           A key type.
         \tparam Storage       A storage type.
@@ -74,7 +78,7 @@ namespace tetengo::trie
         /*!
             \brief Creates a trie set.
         */
-        trie_set() : m_double_array{} {}
+        trie_set() : m_p_double_array{ std::make_unique<double_array>() }, m_values{} {}
 
         /*!
             \brief Creates a trie set.
@@ -85,17 +89,32 @@ namespace tetengo::trie
             \param last  A last element to insert.
         */
         template <typename InputIterator>
-        trie_set(InputIterator first, InputIterator last) :
-        m_double_array{ boost::make_transform_iterator(first, to_double_array_iterator),
-                        boost::make_transform_iterator(last, to_double_array_iterator) }
-        {}
+        trie_set(InputIterator first, InputIterator last) : m_p_double_array{}, m_values{ first, last }
+        {
+            std::vector<std::pair<std::string, int>> elements;
+            elements.reserve(std::distance(first, last));
+            std::transform(
+                first, last, std::back_inserter(elements), [](const auto& e) { return std::make_pair(e, 0); });
+            m_p_double_array = std::make_unique<double_array>(elements);
+        }
 
         /*!
             \brief Creates a trie set.
 
             \param initial_values Initial values.
         */
-        trie_set(std::initializer_list<value_type> /*initial_values*/) : m_double_array{} {}
+        trie_set(std::initializer_list<value_type> initial_values) :
+        m_p_double_array{},
+            m_values{ std::begin(initial_values), std::end(initial_values) }
+        {
+            std::vector<std::pair<std::string, int>> elements;
+            elements.reserve(initial_values.size());
+            std::transform(
+                std::begin(initial_values), std::end(initial_values), std::back_inserter(elements), [](const auto& e) {
+                    return std::make_pair(e, 0);
+                });
+            m_p_double_array = std::make_unique<double_array>(elements);
+        }
 
 
         // functions
@@ -107,7 +126,10 @@ namespace tetengo::trie
         */
         size_type size() const noexcept
         {
-            return 42;
+            return std::count_if(
+                std::begin(m_p_double_array->get_storage().values()),
+                std::end(m_p_double_array->get_storage().values()),
+                [](const auto& e) { return (e & 0x000000FF) == 0x00; });
         }
 
         /*!
@@ -119,22 +141,16 @@ namespace tetengo::trie
         */
         const_iterator find(const key_type& /*key*/) const
         {
-            return const_iterator{};
+            return &m_values[0];
         }
 
 
     private:
-        // static functions
-
-        static std::pair<std::string, std::int32_t> to_double_array_iterator(const std::string& element)
-        {
-            return std::make_pair(element, 0);
-        }
-
-
         // variables
 
-        double_array m_double_array;
+        std::unique_ptr<double_array> m_p_double_array;
+
+        std::vector<value_type> m_values;
     };
 
 
