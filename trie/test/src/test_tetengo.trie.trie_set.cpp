@@ -17,8 +17,6 @@ namespace
 {
     const std::vector<std::string> expected_values_string{ "UTIGOSI", "UTO", "SETA", "SETA" };
 
-    const std::vector<int> expected_values_int{ 123, 456, 789 };
-
 }
 
 
@@ -50,14 +48,6 @@ BOOST_AUTO_TEST_CASE(construction)
         // BOOST_TEST(*set_.find(expected_values_string[1]) == expected_values_string[1]);
         // BOOST_TEST(*set_.find(expected_values_string[2]) == expected_values_string[2]);
     }
-    {
-        const tetengo::trie::trie_set<int> set_{ expected_values_int.begin(), expected_values_int.end() };
-
-        // BOOST_TEST_REQUIRE(set_.size() == 3);
-        // BOOST_TEST(*set_.find(expected_values_int[0]) == expected_values_int[0]);
-        // BOOST_TEST(*set_.find(expected_values_int[1]) == expected_values_int[1]);
-        // BOOST_TEST(*set_.find(expected_values_int[2]) == expected_values_int[2]);
-    }
 
     {
         const tetengo::trie::trie_set<std::string> set_{ expected_values_string[0],
@@ -68,16 +58,6 @@ BOOST_AUTO_TEST_CASE(construction)
         // BOOST_TEST(*set_.find(expected_values_string[0]) == expected_values_string[0]);
         // BOOST_TEST(*set_.find(expected_values_string[1]) == expected_values_string[1]);
         // BOOST_TEST(*set_.find(expected_values_string[2]) == expected_values_string[2]);
-    }
-    {
-        const tetengo::trie::trie_set<int> set_{ expected_values_int[0],
-                                                 expected_values_int[1],
-                                                 expected_values_int[2] };
-
-        // BOOST_TEST_REQUIRE(set_.size() == 3);
-        // BOOST_TEST(*set_.find(expected_values_int[0]) == expected_values_int[0]);
-        // BOOST_TEST(*set_.find(expected_values_int[1]) == expected_values_int[1]);
-        // BOOST_TEST(*set_.find(expected_values_int[2]) == expected_values_int[2]);
     }
 }
 

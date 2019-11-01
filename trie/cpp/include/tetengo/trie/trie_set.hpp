@@ -10,6 +10,9 @@
 #include <cstddef>
 #include <initializer_list>
 
+#include <boost/iterator/transform_iterator.hpp>
+
+#include <tetengo/trie/default_key_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 
@@ -23,7 +26,7 @@ namespace tetengo::trie
         \tparam Storage       A storage type.
         \tparam KeySerializer A key serializer type.
     */
-    template <typename Key, typename Storage = memory_storage, typename KeySerializer = int>
+    template <typename Key, typename Storage = memory_storage, typename KeySerializer = default_key_serializer<Key>>
     class trie_set
     {
     public:
@@ -37,6 +40,9 @@ namespace tetengo::trie
 
         //! The storage type.
         using storage_type = Storage;
+
+        //! The key serializer type.
+        using key_serializer = KeySerializer;
 
         //! The pointer type.
         using pointer = value_type*;
@@ -79,7 +85,9 @@ namespace tetengo::trie
             \param last  A last element to insert.
         */
         template <typename InputIterator>
-        trie_set(InputIterator /*first*/, InputIterator /*last*/) : m_double_array{}
+        trie_set(InputIterator first, InputIterator last) :
+        m_double_array{ boost::make_transform_iterator(first, to_double_array_iterator),
+                        boost::make_transform_iterator(last, to_double_array_iterator) }
         {}
 
         /*!
@@ -116,6 +124,14 @@ namespace tetengo::trie
 
 
     private:
+        // static functions
+
+        static std::pair<std::string, std::int32_t> to_double_array_iterator(const std::string& element)
+        {
+            return std::make_pair(element, 0);
+        }
+
+
         // variables
 
         double_array m_double_array;
