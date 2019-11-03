@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{};
-        const auto                        enumerator = double_array_.get_enumerator();
+        auto                              enumerator = double_array_.get_enumerator();
     }
     {
         // TODO: C style API
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{ expected_values };
-        const auto                        enumerator = double_array_.get_enumerator();
+        auto                              enumerator = double_array_.get_enumerator();
     }
     {
         // TODO: C style API
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{ expected_values2 };
-        const auto                        enumerator = double_array_.get_enumerator();
+        auto                              enumerator = double_array_.get_enumerator();
     }
     {
         // TODO: C style API
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(next)
 
     {
         const tetengo::trie::double_array double_array_{};
-        const auto                        enumerator = double_array_.get_enumerator();
+        auto                              enumerator = double_array_.get_enumerator();
 
         {
             const auto o_element = enumerator.next();
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(next)
 
     {
         const tetengo::trie::double_array double_array_{ expected_values };
-        const auto                        enumerator = double_array_.get_enumerator();
+        auto                              enumerator = double_array_.get_enumerator();
 
         {
             const auto o_element = enumerator.next();
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(next)
 
     {
         const tetengo::trie::double_array double_array_{ expected_values2 };
-        const auto                        enumerator = double_array_.get_enumerator();
+        auto                              enumerator = double_array_.get_enumerator();
 
         {
             const auto o_element = enumerator.next();

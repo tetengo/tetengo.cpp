@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(operator_assign)
     }
 
     {
-        tetengo::trie::double_array double_array1{ expected_values0 };
+        tetengo::trie::double_array       double_array1{ expected_values0 };
         const tetengo::trie::double_array double_array2{ expected_values3 };
 
         double_array1 = double_array2;

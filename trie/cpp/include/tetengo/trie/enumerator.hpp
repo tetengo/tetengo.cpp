@@ -45,7 +45,7 @@ namespace tetengo::trie
 
             \return The next element. Or std::nullopt when no next element.
         */
-        std::optional<std::pair<std::string, std::int32_t>> next() const;
+        std::optional<std::pair<std::string, std::int32_t>> next();
 
 
     private:
@@ -53,7 +53,7 @@ namespace tetengo::trie
 
         const storage& m_storage;
 
-        mutable std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
+        std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
             m_index_key_stack;
     };
 
