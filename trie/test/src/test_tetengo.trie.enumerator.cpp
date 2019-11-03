@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -64,6 +65,26 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::double_array double_array_{ expected_values2 };
         auto                              enumerator = double_array_.get_enumerator();
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_values };
+        auto                              enumerator = double_array_.get_enumerator();
+
+        boost::ignore_unused(enumerator.next());
+
+        auto enumerator2 = enumerator;
+
+        boost::ignore_unused(enumerator.next());
+
+        const auto o_element = enumerator2.next();
+
+        BOOST_REQUIRE(o_element);
+        BOOST_TEST(o_element->first == "UTIGOSI");
+        BOOST_TEST(o_element->second == 24);
     }
     {
         // TODO: C style API
