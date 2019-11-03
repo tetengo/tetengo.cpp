@@ -67,7 +67,7 @@ namespace tetengo::trie
     double_array::double_array(
         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
         const building_observer_type&                            building_observer /*= null_building_observer()*/,
-        std::int32_t                                             density_factor /*= default_density_factor()*/) :
+        const std::int32_t                                       density_factor /*= default_density_factor()*/) :
     m_p_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) },
         m_root_index{ 0 }
     {}
@@ -75,7 +75,7 @@ namespace tetengo::trie
     double_array::double_array(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
         const building_observer_type&                            building_observer /*= null_building_observer()*/,
-        std::int32_t                                             density_factor /*= default_density_factor()*/) :
+        const std::int32_t                                       density_factor /*= default_density_factor()*/) :
     m_p_storage{ double_array_builder::build(elements, building_observer, density_factor) },
         m_root_index{ 0 }
     {}
@@ -116,7 +116,7 @@ namespace tetengo::trie
 
     enumerator double_array::get_enumerator() const
     {
-        return enumerator{ *m_p_storage, m_root_index };
+        return enumerator{ *m_p_storage, m_root_index, m_root_index };
     }
 
     std::optional<double_array> double_array::subtrie(const std::string& key_prefix) const
@@ -130,7 +130,7 @@ namespace tetengo::trie
         return *m_p_storage;
     }
 
-    double_array::double_array(const storage& storage_, std::size_t root_index) :
+    double_array::double_array(const storage& storage_, const std::size_t root_index) :
     m_p_storage{ storage_.clone() },
         m_root_index{ root_index }
     {}
