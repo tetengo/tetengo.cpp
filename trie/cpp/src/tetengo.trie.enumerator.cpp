@@ -22,7 +22,7 @@
 
 namespace tetengo::trie
 {
-    enumerator::enumerator(const storage& storage_, const std::size_t root_index, const std::size_t /*initial_index*/) :
+    enumerator::enumerator(const storage& storage_, std::size_t root_index) :
     m_storage{ storage_ },
         m_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
             std::make_pair(root_index, std::string{}) } }
