@@ -90,13 +90,9 @@ namespace tetengo::trie
             \param last  A last element to insert.
         */
         template <typename InputIterator>
-        trie_set(InputIterator first, InputIterator last) : m_p_double_array{}, m_values{ first, last }
+        trie_set(InputIterator first, InputIterator last) : m_p_double_array{}, m_values{}
         {
-            std::vector<std::pair<std::string, int>> elements;
-            elements.reserve(std::distance(first, last));
-            std::transform(
-                first, last, std::back_inserter(elements), [](const auto& e) { return std::make_pair(e, 0); });
-            m_p_double_array = std::make_unique<double_array>(elements);
+            make_double_array_and_values(first, last, m_p_double_array, m_values);
         }
 
         /*!
@@ -106,15 +102,8 @@ namespace tetengo::trie
         */
         trie_set(std::initializer_list<value_type> initial_values) : m_p_double_array{}, m_values{}
         {
-            std::vector<std::pair<std::string, int>> elements;
-            elements.reserve(initial_values.size());
-            auto index = 0;
-            for (auto& e: initial_values)
-            {
-                elements.emplace_back(std::move(e), index);
-                ++index;
-            }
-            m_p_double_array = std::make_unique<double_array>(elements);
+            make_double_array_and_values(
+                std::begin(initial_values), std::end(initial_values), m_p_double_array, m_values);
         }
 
 
@@ -169,6 +158,24 @@ namespace tetengo::trie
 
 
     private:
+        // static functions
+
+        template <typename InputIterator>
+        static void make_double_array_and_values(
+            InputIterator                  first,
+            InputIterator                  last,
+            std::unique_ptr<double_array>& p_double_array,
+            std::vector<value_type>&       values)
+        {
+            std::vector<std::pair<std::string, int>> elements;
+            elements.reserve(std::distance(first, last));
+            std::transform(
+                first, last, std::back_inserter(elements), [](const auto& e) { return std::make_pair(e, 0); });
+            p_double_array = std::make_unique<double_array>(elements);
+            values.assign(first, last);
+        }
+
+
         // variables
 
         std::unique_ptr<double_array> m_p_double_array;
