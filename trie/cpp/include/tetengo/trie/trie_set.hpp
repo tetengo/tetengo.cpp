@@ -24,6 +24,9 @@
 
 namespace tetengo::trie
 {
+    class enumerator;
+
+
     /*!
         \brief A trie set.
 
@@ -149,7 +152,9 @@ namespace tetengo::trie
         */
         const_iterator begin() const
         {
-            return const_iterator{ nullptr, m_p_double_array.get() };
+            return const_iterator{ nullptr,
+                                   std::make_unique<enumerator>(m_p_double_array->get_enumerator()),
+                                   &m_values };
         }
 
         /*!
@@ -159,7 +164,7 @@ namespace tetengo::trie
         */
         const_iterator end() const
         {
-            return const_iterator{ nullptr, nullptr };
+            return const_iterator{ nullptr, nullptr, nullptr };
         }
 
 
