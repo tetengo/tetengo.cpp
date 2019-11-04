@@ -5,6 +5,7 @@
  */
 
 #include <algorithm>
+#include <cstdint>
 #include <exception>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
@@ -46,12 +47,12 @@ namespace
     public:
         explicit adding_observer_type(const std::size_t size) : m_size{ size }, m_count{ 0 } {}
 
-        void operator()(const std::string& key)
+        void operator()(const std::pair<std::string, std::int32_t>& element)
         {
             if (m_count % 5000 == 0)
             {
                 const auto percentage = (100 * m_count / m_size) * (100 * m_count / m_size) / 100;
-                std::cout << boost::format{ "%8d/%8d (%3d%%) %s    \r" } % m_count % m_size % percentage % key
+                std::cout << boost::format{ "%8d/%8d (%3d%%) %s    \r" } % m_count % m_size % percentage % element.first
                           << std::flush;
             }
             ++m_count;

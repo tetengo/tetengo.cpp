@@ -102,7 +102,7 @@ namespace tetengo::trie
             const auto next_storage_index = base + char_code;
             if (char_code == double_array::key_terminator())
             {
-                observer.adding((**i)->first);
+                observer.adding(***i);
                 storage_.set_base_at(next_storage_index, (**i)->second);
                 continue;
             }

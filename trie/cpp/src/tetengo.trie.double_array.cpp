@@ -47,7 +47,7 @@ namespace tetengo::trie
 
     const double_array::building_observer_type& double_array::null_building_observer()
     {
-        static const building_observer_type singleton{ [](const std::string&) {}, []() {} };
+        static const building_observer_type singleton{ [](const std::pair<std::string, std::int32_t>&) {}, []() {} };
         return singleton;
     }
 

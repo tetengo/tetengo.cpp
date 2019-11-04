@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <initializer_list>
 #include <string>
 #include <vector>
 

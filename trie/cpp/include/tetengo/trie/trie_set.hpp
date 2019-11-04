@@ -104,16 +104,16 @@ namespace tetengo::trie
 
             \param initial_values Initial values.
         */
-        trie_set(std::initializer_list<value_type> initial_values) :
-        m_p_double_array{},
-            m_values{ std::begin(initial_values), std::end(initial_values) }
+        trie_set(std::initializer_list<value_type> initial_values) : m_p_double_array{}, m_values{}
         {
             std::vector<std::pair<std::string, int>> elements;
             elements.reserve(initial_values.size());
-            std::transform(
-                std::begin(initial_values), std::end(initial_values), std::back_inserter(elements), [](const auto& e) {
-                    return std::make_pair(e, 0);
-                });
+            auto index = 0;
+            for (auto& e: initial_values)
+            {
+                elements.emplace_back(std::move(e), index);
+                ++index;
+            }
             m_p_double_array = std::make_unique<double_array>(elements);
         }
 
