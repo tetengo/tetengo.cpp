@@ -43,10 +43,10 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::trie_set<std::string> set_{ expected_values_string.begin(), expected_values_string.end() };
 
-         BOOST_TEST_REQUIRE(set_.size() == 3);
-         //BOOST_TEST(*set_.find(expected_values_string[0]) == expected_values_string[0]);
-         //BOOST_TEST(*set_.find(expected_values_string[1]) == expected_values_string[1]);
-         //BOOST_TEST(*set_.find(expected_values_string[2]) == expected_values_string[2]);
+        BOOST_TEST_REQUIRE(set_.size() == 3);
+        // BOOST_TEST(*set_.find(expected_values_string[0]) == expected_values_string[0]);
+        // BOOST_TEST(*set_.find(expected_values_string[1]) == expected_values_string[1]);
+        // BOOST_TEST(*set_.find(expected_values_string[2]) == expected_values_string[2]);
     }
 
     {
@@ -54,10 +54,40 @@ BOOST_AUTO_TEST_CASE(construction)
                                                          expected_values_string[1],
                                                          expected_values_string[2] };
 
-         BOOST_TEST_REQUIRE(set_.size() == 3);
-         //BOOST_TEST(*set_.find(expected_values_string[0]) == expected_values_string[0]);
-         //BOOST_TEST(*set_.find(expected_values_string[1]) == expected_values_string[1]);
-         //BOOST_TEST(*set_.find(expected_values_string[2]) == expected_values_string[2]);
+        BOOST_TEST_REQUIRE(set_.size() == 3);
+        // BOOST_TEST(*set_.find(expected_values_string[0]) == expected_values_string[0]);
+        // BOOST_TEST(*set_.find(expected_values_string[1]) == expected_values_string[1]);
+        // BOOST_TEST(*set_.find(expected_values_string[2]) == expected_values_string[2]);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(find)
+{
+    BOOST_TEST_PASSPOINT();
+    {
+        const tetengo::trie::trie_set<std::string> set_{};
+
+        set_.find("SETA");
+    }
+}
+
+BOOST_AUTO_TEST_CASE(begin)
+{
+    BOOST_TEST_PASSPOINT();
+    {
+        const tetengo::trie::trie_set<std::string> set_{};
+
+        set_.begin();
+    }
+}
+
+BOOST_AUTO_TEST_CASE(end)
+{
+    BOOST_TEST_PASSPOINT();
+    {
+        const tetengo::trie::trie_set<std::string> set_{};
+
+        set_.end();
     }
 }
 

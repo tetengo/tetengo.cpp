@@ -19,6 +19,7 @@
 #include <tetengo/trie/default_key_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/trie_set_iterator.hpp>
 
 
 namespace tetengo::trie
@@ -66,11 +67,8 @@ namespace tetengo::trie
         //! The difference type.
         using difference_type = std::ptrdiff_t;
 
-        //! The iterator type.
-        using iterator = pointer; // TODO Create a class iterator.
-
         //! The const iterator type.
-        using const_iterator = const_pointer; // TODO Create a class iterator.
+        using const_iterator = trie_set_iterator<value_type>;
 
 
         // constructors and destructor
@@ -141,7 +139,27 @@ namespace tetengo::trie
         */
         const_iterator find(const key_type& /*key*/) const
         {
-            return &m_values[0];
+            return begin();
+        }
+
+        /*!
+            \brief Returns the first iterator.
+
+            \return The first iterator.
+        */
+        const_iterator begin() const
+        {
+            return const_iterator{ nullptr, m_p_double_array.get() };
+        }
+
+        /*!
+            \brief Returns the last iterator.
+
+            \return The last iterator.
+        */
+        const_iterator end() const
+        {
+            return const_iterator{ nullptr, nullptr };
         }
 
 
