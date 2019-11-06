@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(construction)
         // BOOST_TEST(set_.size() == 0);
     }
     {
-        const tetengo::trie::trie_set<int> set_{};
+        const tetengo::trie::trie_set<std::wstring> set_{};
 
         // BOOST_TEST(set_.size() == 0);
     }
