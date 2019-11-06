@@ -29,7 +29,7 @@ namespace tetengo::trie
     /*!
         \brief A trie set iterator.
 
-        \taparam Value A value type.
+        \tparam Value A value type.
     */
     template <typename Value>
     class trie_set_iterator :

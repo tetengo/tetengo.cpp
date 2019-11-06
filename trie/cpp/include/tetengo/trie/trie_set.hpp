@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <initializer_list>
 #include <iterator>
 #include <memory>
@@ -50,7 +51,7 @@ namespace tetengo::trie
         using storage_type = Storage;
 
         //! The key serializer type.
-        using key_serializer = KeySerializer;
+        using key_serializer_type = KeySerializer;
 
         //! The pointer type.
         using pointer = value_type*;
@@ -79,31 +80,50 @@ namespace tetengo::trie
         /*!
             \brief Creates a trie set.
         */
-        trie_set() : m_p_double_array{ std::make_unique<double_array>() }, m_values{} {}
+        trie_set() : m_p_double_array{ std::make_unique<double_array>() }, m_values{}, m_stored_value_indexes{} {}
 
         /*!
             \brief Creates a trie set.
 
             \tparam InputIterator An input iterator type.
 
-            \param first A first element to insert.
-            \param last  A last element to insert.
+            \param first          A first element to insert.
+            \param last           A last element to insert.
+            \param key_serializer A key serializer.
         */
         template <typename InputIterator>
-        trie_set(InputIterator first, InputIterator last) : m_p_double_array{}, m_values{}
+        trie_set(
+            InputIterator              first,
+            InputIterator              last,
+            const key_serializer_type& key_serializer = key_serializer_type{}) :
+        m_p_double_array{},
+            m_values{},
+            m_stored_value_indexes{}
         {
-            make_double_array_and_values(first, last, m_p_double_array, m_values);
+            make_double_array_and_values(
+                first, last, key_serializer, m_p_double_array, m_values, m_stored_value_indexes);
         }
 
         /*!
             \brief Creates a trie set.
 
             \param initial_values Initial values.
+            \param key_serializer A key serializer.
         */
-        trie_set(std::initializer_list<value_type> initial_values) : m_p_double_array{}, m_values{}
+        trie_set(
+            std::initializer_list<value_type> initial_values,
+            const key_serializer_type&        key_serializer = key_serializer_type{}) :
+        m_p_double_array{},
+            m_values{},
+            m_stored_value_indexes{}
         {
             make_double_array_and_values(
-                std::begin(initial_values), std::end(initial_values), m_p_double_array, m_values);
+                std::begin(initial_values),
+                std::end(initial_values),
+                key_serializer,
+                m_p_double_array,
+                m_values,
+                m_stored_value_indexes);
         }
 
 
@@ -125,7 +145,7 @@ namespace tetengo::trie
         /*!
             \brief Finds an element.
 
-            \param key A key.
+            param key A key.
 
             \return A const iterator to an element.
         */
@@ -164,15 +184,45 @@ namespace tetengo::trie
         static void make_double_array_and_values(
             InputIterator                  first,
             InputIterator                  last,
+            const key_serializer_type&     key_serializer,
             std::unique_ptr<double_array>& p_double_array,
-            std::vector<value_type>&       values)
+            std::vector<value_type>&       values,
+            std::vector<std::int32_t>&     stored_value_indexes)
         {
+            if (first == last)
+            {
+                return;
+            }
+
             std::vector<std::pair<std::string, int>> elements;
             elements.reserve(std::distance(first, last));
-            std::transform(
-                first, last, std::back_inserter(elements), [](const auto& e) { return std::make_pair(e, 0); });
-            p_double_array = std::make_unique<double_array>(elements);
-            values.assign(first, last);
+            auto index = 0;
+            for (auto iter = first; iter != last; ++iter)
+            {
+                elements.emplace_back(key_serializer(*iter), index);
+                ++index;
+            }
+
+            stored_value_indexes.resize(elements.size(), -1);
+            std::int32_t                         storage_index = 0;
+            double_array::building_observer_type observer{ [&stored_value_indexes, &storage_index](
+                                                               const std::pair<std::string, std::int32_t>& element) {
+                                                              stored_value_indexes[element.second] = storage_index;
+                                                              ++storage_index;
+                                                          },
+                                                           []() {} };
+
+            p_double_array = std::make_unique<double_array>(elements, observer);
+            values.resize(*std::max_element(stored_value_indexes.begin(), stored_value_indexes.end()) + 1, *first);
+            for (auto i = static_cast<std::size_t>(0); i < elements.size(); ++i)
+            {
+                const auto svi = stored_value_indexes[i];
+                if (svi < 0)
+                {
+                    continue;
+                }
+                values[svi] = *std::next(first, i);
+            }
         }
 
 
@@ -181,9 +231,9 @@ namespace tetengo::trie
         std::unique_ptr<double_array> m_p_double_array;
 
         std::vector<value_type> m_values;
+
+        std::vector<std::int32_t> m_stored_value_indexes;
     };
-
-
 }
 
 

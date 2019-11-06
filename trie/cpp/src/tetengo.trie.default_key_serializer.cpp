@@ -12,6 +12,7 @@
 
 namespace tetengo::trie
 {
+#if !defined(DOCUMENTATION)
     template <typename Char>
     std::string default_key_serializer<std::basic_string<Char>>::operator()(const std::basic_string<Char>& key) const
     {
@@ -38,6 +39,7 @@ namespace tetengo::trie
 
     template std::string default_key_serializer<std::basic_string<char32_t>>::
                          operator()(const std::basic_string<char32_t>& key) const;
+#endif
 
 
 }
