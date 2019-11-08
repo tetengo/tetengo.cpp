@@ -118,8 +118,6 @@
     <ClInclude Include="include\tetengo\trie\memory_storage.hpp" />
     <ClInclude Include="include\tetengo\trie\shared_storage.hpp" />
     <ClInclude Include="include\tetengo\trie\storage.hpp" />
-    <ClInclude Include="include\tetengo\trie\trie_set.hpp" />
-    <ClInclude Include="include\tetengo\trie\trie_set_iterator.hpp" />
     <ClInclude Include="src\tetengo.trie.double_array_builder.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
