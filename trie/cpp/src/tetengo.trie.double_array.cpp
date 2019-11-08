@@ -47,7 +47,7 @@ namespace tetengo::trie
 
     const double_array::building_observer_type& double_array::null_building_observer()
     {
-        static const building_observer_type singleton{ [](const std::string&) {}, []() {} };
+        static const building_observer_type singleton{ [](const std::pair<std::string, std::int32_t>&) {}, []() {} };
         return singleton;
     }
 
@@ -130,7 +130,7 @@ namespace tetengo::trie
         return *m_p_storage;
     }
 
-    double_array::double_array(const storage& storage_, std::size_t root_index) :
+    double_array::double_array(const storage& storage_, const std::size_t root_index) :
     m_p_storage{ storage_.clone() },
         m_root_index{ root_index }
     {}

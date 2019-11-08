@@ -40,7 +40,7 @@ namespace tetengo::trie
 
                 \param key A key.
             */
-            std::function<void(const std::string& key)> adding;
+            std::function<void(const std::pair<std::string, std::int32_t>& element)> adding;
 
             /*!
                 \brief Called when the building is done.

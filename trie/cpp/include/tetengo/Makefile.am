@@ -2,6 +2,7 @@
 # Copyright (C) 2019 kaoru
 
 pkg_headers = \
+    trie/default_key_serializer.hpp \
     trie/double_array.hpp \
     trie/enumerator.hpp \
     trie/memory_storage.hpp \
