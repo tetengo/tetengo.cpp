@@ -37,7 +37,7 @@ namespace tetengo::trie
             throw std::invalid_argument{ "density_factor must be greater than 0." };
         }
 
-        std::stable_sort(element_pointers.begin(), element_pointers.end(), [](const auto& e1, const auto& e2) {
+        std::stable_sort(std::begin(element_pointers), std::end(element_pointers), [](const auto& e1, const auto& e2) {
             return e1->first < e2->first;
         });
 
@@ -47,8 +47,8 @@ namespace tetengo::trie
         {
             std::unordered_set<std::int32_t> base_uniquer{};
             build_iter(
-                element_pointers.begin(),
-                element_pointers.end(),
+                std::begin(element_pointers),
+                std::end(element_pointers),
                 0,
                 *p_storage,
                 0,
@@ -69,7 +69,9 @@ namespace tetengo::trie
         element_vector_type element_pointers{};
         element_pointers.reserve(elements.size());
         std::transform(
-            elements.begin(), elements.end(), std::back_inserter(element_pointers), [](const auto& e) { return &e; });
+            std::begin(elements), std::end(elements), std::back_inserter(element_pointers), [](const auto& e) {
+                return &e;
+            });
 
         return build(std::move(element_pointers), observer, density_factor);
     }
@@ -90,13 +92,13 @@ namespace tetengo::trie
             calc_base(children_firsts_, key_offset, storage_, storage_index, density_factor, base_uniquer);
         storage_.set_base_at(storage_index, base);
 
-        for (auto i = children_firsts_.begin(); i != std::prev(children_firsts_.end()); ++i)
+        for (auto i = std::begin(children_firsts_); i != std::prev(std::end(children_firsts_)); ++i)
         {
             const auto char_code = char_code_at((**i)->first, key_offset);
             const auto next_storage_index = base + char_code;
             storage_.set_check_at(next_storage_index, char_code);
         }
-        for (auto i = children_firsts_.begin(); i != std::prev(children_firsts_.end()); ++i)
+        for (auto i = std::begin(children_firsts_); i != std::prev(std::end(children_firsts_)); ++i)
         {
             const auto char_code = char_code_at((**i)->first, key_offset);
             const auto next_storage_index = base + char_code;
@@ -130,13 +132,13 @@ namespace tetengo::trie
                                 char_code_at((*firsts[0])->first, key_offset) + 1;
         for (auto base = base_first;; ++base)
         {
-            const auto first_last = std::prev(firsts.end());
+            const auto first_last = std::prev(std::end(firsts));
             const auto occupied =
-                std::find_if(firsts.begin(), first_last, [key_offset, &storage_, base](const auto& first) {
+                std::find_if(std::begin(firsts), first_last, [key_offset, &storage_, base](const auto& first) {
                     const auto next_index = base + char_code_at((*first)->first, key_offset);
                     return storage_.check_at(next_index) != double_array::vacant_check_value();
                 });
-            if (occupied == first_last && base_uniquer.find(base) == base_uniquer.end())
+            if (occupied == first_last && base_uniquer.find(base) == std::end(base_uniquer))
             {
                 base_uniquer.insert(base);
                 return base;

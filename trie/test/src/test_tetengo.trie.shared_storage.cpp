@@ -5,6 +5,7 @@
  */
 
 #include <cstdint>
+#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -35,7 +36,7 @@ namespace
 
     std::unique_ptr<std::istream> create_input_stream()
     {
-        return std::make_unique<std::stringstream>(std::string{ serialized.begin(), serialized.end() });
+        return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
 
     const std::vector<char> serialized_broken{
@@ -44,7 +45,8 @@ namespace
 
     std::unique_ptr<std::istream> create_broken_input_stream()
     {
-        return std::make_unique<std::stringstream>(std::string{ serialized_broken.begin(), serialized_broken.end() });
+        return std::make_unique<std::stringstream>(
+            std::string{ std::begin(serialized_broken), std::end(serialized_broken) });
     }
 
 

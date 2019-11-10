@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -26,7 +27,7 @@ namespace tetengo::trie
 
         std::string operator()(const std::vector<Char>& key) const
         {
-            return std::string{ key.begin(), key.end() };
+            return std::string{ std::begin(key), std::end(key) };
         }
     };
 
