@@ -19,11 +19,13 @@
 #include <vector>
 
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
+    class storage;
+
+
     /*!
         \brief A double array.
     */
@@ -156,6 +158,11 @@ namespace tetengo::trie
         */
         explicit double_array(std::unique_ptr<storage>&& p_storage);
 
+        /*!
+            \brief Destroys the double array.
+        */
+        ~double_array();
+
 
         // functions
 
@@ -180,9 +187,10 @@ namespace tetengo::trie
 
             \param key_prefix A key prefix.
 
-            \return A subtrie. Or std::nullpot when the double array does not have the given key prefix.
+            \return A unique pointer to a double array of the subtrie.
+                    Or nullptr when the double array does not have the given key prefix.
         */
-        std::optional<double_array> subtrie(const std::string& key_prefix) const;
+        std::unique_ptr<double_array> subtrie(const std::string& key_prefix) const;
 
         /*!
             \brief Returns the storage.
@@ -193,11 +201,14 @@ namespace tetengo::trie
 
 
     private:
+        // types
+
+        class impl;
+
+
         // variables
 
-        std::unique_ptr<storage> m_p_storage;
-
-        std::size_t m_root_index;
+        const std::unique_ptr<impl> m_p_impl;
 
 
         // constructors

@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <iterator>
 #include <list>
+#include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>
