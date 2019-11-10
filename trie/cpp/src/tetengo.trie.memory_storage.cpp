@@ -8,6 +8,7 @@
 #include <array>
 #include <cstdint>
 #include <istream>
+#include <iterator>
 #include <memory>
 #include <vector>
 
@@ -65,7 +66,7 @@ namespace tetengo::trie
 
         double filling_rate_impl() const
         {
-            const auto empty_count = std::count(m_values.begin(), m_values.end(), 0x000000FFU);
+            const auto empty_count = std::count(std::begin(m_values), std::end(m_values), 0x000000FFU);
             return 1.0 - static_cast<double>(empty_count) / m_values.size();
         }
 

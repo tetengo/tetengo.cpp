@@ -11,6 +11,7 @@
 #include <fstream> // IWYU pragma: keep
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <utility>
@@ -34,8 +35,8 @@ namespace
             std::string line;
             std::getline(input_stream, line);
 
-            const auto  split_position = std::find(line.begin(), line.end(), '\t');
-            std::string key{ line.begin(), split_position };
+            const auto  split_position = std::find(std::begin(line), std::end(line), '\t');
+            std::string key{ std::begin(line), split_position };
             p_input->emplace_back(std::move(key), i);
         }
 
