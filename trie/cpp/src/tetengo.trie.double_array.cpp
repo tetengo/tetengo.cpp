@@ -104,10 +104,8 @@ namespace tetengo::trie
             m_root_index{ 0 }
         {}
 
-        explicit impl(std::unique_ptr<storage>&& p_storage) : m_p_storage{ std::move(p_storage) }, m_root_index{ 0 } {}
-
-        impl(const storage& storage_, const std::size_t root_index) :
-        m_p_storage{ storage_.clone() },
+        impl(std::unique_ptr<storage>&& p_storage, std::size_t root_index) :
+        m_p_storage{ std::move(p_storage) },
             m_root_index{ root_index }
         {}
 
@@ -128,7 +126,7 @@ namespace tetengo::trie
         std::unique_ptr<double_array> subtrie(const std::string& key_prefix) const
         {
             const auto o_index = traverse(*m_p_storage, m_root_index, key_prefix);
-            return o_index ? std::unique_ptr<double_array>(new double_array{ *m_p_storage, *o_index }) :
+            return o_index ? std::make_unique<double_array>(m_p_storage->clone(), *o_index) :
                              std::unique_ptr<double_array>{};
         }
 
@@ -173,8 +171,8 @@ namespace tetengo::trie
     m_p_impl{ std::make_unique<impl>(elements, building_observer, density_factor) }
     {}
 
-    double_array::double_array(std::unique_ptr<storage>&& p_storage) :
-    m_p_impl{ std::make_unique<impl>(std::move(p_storage)) }
+    double_array::double_array(std::unique_ptr<storage>&& p_storage, const std::size_t root_index) :
+    m_p_impl{ std::make_unique<impl>(std::move(p_storage), root_index) }
     {}
 
     double_array::~double_array() = default;
@@ -198,10 +196,6 @@ namespace tetengo::trie
     {
         return m_p_impl->get_storage();
     }
-
-    double_array::double_array(const storage& storage_, const std::size_t root_index) :
-    m_p_impl{ std::make_unique<impl>(storage_, root_index) }
-    {}
 
 
 }

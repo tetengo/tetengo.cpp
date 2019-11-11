@@ -42,7 +42,7 @@ int main(const int argc, char** const argv)
         }
 
         auto                        p_storage = create_storage(argv[1]);
-        tetengo::trie::double_array double_array_{ std::move(p_storage) };
+        tetengo::trie::double_array double_array_{ std::move(p_storage), 0 };
 
 
         for (auto enumerator = double_array_.get_enumerator();;)
