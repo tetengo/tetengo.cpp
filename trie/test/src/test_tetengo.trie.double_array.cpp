@@ -224,18 +224,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        std::list<std::pair<std::string, std::int32_t>> expected_values3_as_list{ std::begin(expected_values3),
-                                                                                  std::end(expected_values3) };
-
-        std::vector<const std::pair<std::string, std::int32_t>*> expected_values3_as_ptr_vector{};
-        expected_values3_as_ptr_vector.reserve(expected_values3_as_list.size());
-        std::transform(
-            std::begin(expected_values3_as_list),
-            std::end(expected_values3_as_list),
-            std::back_inserter(expected_values3_as_ptr_vector),
-            [](const auto& e) { return &e; });
-
-        const tetengo::trie::double_array double_array_{ std::move(expected_values3_as_ptr_vector) };
+        const tetengo::trie::double_array double_array_{ expected_values3 };
 
         BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array3);
     }
@@ -249,15 +238,6 @@ BOOST_AUTO_TEST_CASE(construction)
 
         const tetengo::trie::double_array double_array_{ std::begin(expected_values3_as_list),
                                                          std::end(expected_values3_as_list) };
-
-        BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array3);
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        const tetengo::trie::double_array double_array_{ expected_values3 };
 
         BOOST_TEST(double_array_.get_storage().values() == expected_base_check_array3);
     }

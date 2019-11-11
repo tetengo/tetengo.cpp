@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -25,7 +26,7 @@ namespace tetengo::trie
     namespace
     {
         std::optional<std::size_t>
-        traverse(const storage& storage_, const std::size_t root_index, const std::string& key)
+        traverse(const storage& storage_, const std::size_t root_index, const std::string_view& key)
         {
             std::size_t index = root_index;
             for (const auto c: key)
@@ -57,7 +58,7 @@ namespace tetengo::trie
 
         static const building_observer_type& null_building_observer()
         {
-            static const building_observer_type singleton{ [](const std::pair<std::string, std::int32_t>&) {},
+            static const building_observer_type singleton{ [](const std::pair<std::string_view, std::int32_t>&) {},
                                                            []() {} };
             return singleton;
         }
@@ -82,17 +83,17 @@ namespace tetengo::trie
 
         impl() :
         m_p_storage{ double_array_builder::build(
-            std::vector<const std::pair<std::string, std::int32_t>*>{},
+            std::vector<std::pair<std::string_view, std::int32_t>>{},
             null_building_observer(),
             default_density_factor()) },
             m_root_index{ 0 }
         {}
 
         impl(
-            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-            const building_observer_type&                            building_observer,
-            const std::int32_t                                       density_factor) :
-        m_p_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) },
+            const std::vector<std::pair<std::string_view, std::int32_t>>& elements,
+            const building_observer_type&                                 building_observer,
+            const std::int32_t                                            density_factor) :
+        m_p_storage{ double_array_builder::build(elements, building_observer, density_factor) },
             m_root_index{ 0 }
         {}
 
@@ -100,8 +101,9 @@ namespace tetengo::trie
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_type&                            building_observer,
             const std::int32_t                                       density_factor) :
-        m_p_storage{ double_array_builder::build(elements, building_observer, density_factor) },
-            m_root_index{ 0 }
+        impl{ std::vector<std::pair<std::string_view, std::int32_t>>{ elements.begin(), elements.end() },
+              building_observer,
+              density_factor }
         {}
 
         impl(std::unique_ptr<storage>&& p_storage, std::size_t root_index) :
@@ -112,9 +114,10 @@ namespace tetengo::trie
 
         // functions
 
-        std::optional<std::int32_t> find(const std::string& key) const
+        std::optional<std::int32_t> find(const std::string_view& key) const
         {
-            const auto o_index = traverse(*m_p_storage, m_root_index, key + double_array::key_terminator());
+            const auto o_index =
+                traverse(*m_p_storage, m_root_index, std::string{ key } + double_array::key_terminator());
             return o_index ? std::make_optional(m_p_storage->base_at(*o_index)) : std::nullopt;
         }
 
@@ -123,7 +126,7 @@ namespace tetengo::trie
             return enumerator{ *m_p_storage, m_root_index };
         }
 
-        std::unique_ptr<double_array> subtrie(const std::string& key_prefix) const
+        std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const
         {
             const auto o_index = traverse(*m_p_storage, m_root_index, key_prefix);
             return o_index ? std::make_unique<double_array>(m_p_storage->clone(), *o_index) :
@@ -158,10 +161,10 @@ namespace tetengo::trie
     double_array::double_array() : m_p_impl{ std::make_unique<impl>() } {}
 
     double_array::double_array(
-        std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-        const building_observer_type&                            building_observer /*= null_building_observer()*/,
-        const std::int32_t                                       density_factor /*= default_density_factor()*/) :
-    m_p_impl{ std::make_unique<impl>(std::move(element_pointers), building_observer, density_factor) }
+        const std::vector<std::pair<std::string_view, std::int32_t>>& elements,
+        const building_observer_type&                                 building_observer /*= null_building_observer()*/,
+        std::int32_t                                                  density_factor /*= default_density_factor()*/) :
+    m_p_impl{ std::make_unique<impl>(elements, building_observer, density_factor) }
     {}
 
     double_array::double_array(
@@ -177,7 +180,7 @@ namespace tetengo::trie
 
     double_array::~double_array() = default;
 
-    std::optional<std::int32_t> double_array::find(const std::string& key) const
+    std::optional<std::int32_t> double_array::find(const std::string_view& key) const
     {
         return m_p_impl->find(key);
     }
@@ -187,7 +190,7 @@ namespace tetengo::trie
         return m_p_impl->get_enumerator();
     }
 
-    std::unique_ptr<double_array> double_array::subtrie(const std::string& key_prefix) const
+    std::unique_ptr<double_array> double_array::subtrie(const std::string_view& key_prefix) const
     {
         return m_p_impl->subtrie(key_prefix);
     }

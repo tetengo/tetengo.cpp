@@ -14,6 +14,7 @@
 #include <iterator>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -48,7 +49,7 @@ namespace
     public:
         explicit adding_observer_type(const std::size_t size) : m_size{ size }, m_count{ 0 } {}
 
-        void operator()(const std::pair<std::string, std::int32_t>& element)
+        void operator()(const std::pair<std::string_view, std::int32_t>& element)
         {
             if (m_count % 5000 == 0)
             {
