@@ -19,11 +19,13 @@
 #include <vector>
 
 #include <tetengo/trie/enumerator.hpp>
-#include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
+    class storage;
+
+
     /*!
         \brief A double array.
     */
@@ -152,44 +154,18 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param p_storage A unique pointer to a storage.
+            \param p_storage  A unique pointer to a storage.
+            \param root_index A root index.
         */
-        explicit double_array(std::unique_ptr<storage>&& p_storage);
+        double_array(std::unique_ptr<storage>&& p_storage, std::size_t root_index);
 
         /*!
-            \brief Moves a double array.
-
-            \param another Another double array.
+            \brief Destroys the double array.
         */
-        double_array(double_array&& another);
-
-        /*!
-            \brief Copies a double array.
-
-            \param another Another double array.
-        */
-        double_array(const double_array& another);
+        ~double_array();
 
 
         // functions
-
-        /*!
-            \brief Assigns a double array.
-
-            \param another Another double array.
-
-            \return This double array.
-        */
-        double_array& operator=(double_array&& another);
-
-        /*!
-            \brief Assigns a double array.
-
-            \param another Another double array.
-
-            \return This double array.
-        */
-        double_array& operator=(const double_array& another);
 
         /*!
             \brief Finds the value correspoinding the given key.
@@ -212,9 +188,10 @@ namespace tetengo::trie
 
             \param key_prefix A key prefix.
 
-            \return A subtrie. Or std::nullpot when the double array does not have the given key prefix.
+            \return A unique pointer to a double array of the subtrie.
+                    Or nullptr when the double array does not have the given key prefix.
         */
-        std::optional<double_array> subtrie(const std::string& key_prefix) const;
+        std::unique_ptr<double_array> subtrie(const std::string& key_prefix) const;
 
         /*!
             \brief Returns the storage.
@@ -225,16 +202,14 @@ namespace tetengo::trie
 
 
     private:
+        // types
+
+        class impl;
+
+
         // variables
 
-        std::unique_ptr<storage> m_p_storage;
-
-        std::size_t m_root_index;
-
-
-        // constructors
-
-        double_array(const storage& storage_, std::size_t root_index);
+        const std::unique_ptr<impl> m_p_impl;
     };
 
 

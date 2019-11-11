@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <iterator>
 #include <list>
+#include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -268,9 +269,25 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::double_array double_array0{ expected_values3 };
         const auto&                       storage = double_array0.get_storage();
 
-        const tetengo::trie::double_array double_array1{ storage.clone() };
+        const tetengo::trie::double_array double_array1{ storage.clone(), 0 };
 
         BOOST_TEST(double_array1.get_storage().values() == expected_base_check_array3);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array0{ expected_values3 };
+        const auto&                       storage = double_array0.get_storage();
+
+        const tetengo::trie::double_array double_array1{ storage.clone(), 8 };
+
+        BOOST_TEST(double_array1.get_storage().values() == expected_base_check_array3);
+
+        const auto o_found = double_array1.find("GOSI");
+        BOOST_REQUIRE(o_found);
+        BOOST_TEST(*o_found == 24);
     }
     {
         // TODO: C style API
@@ -290,55 +307,6 @@ BOOST_AUTO_TEST_CASE(construction)
             const tetengo::trie::double_array double_array_(
                 expected_values0, tetengo::trie::double_array::null_building_observer(), 0),
             std::invalid_argument);
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        tetengo::trie::double_array       double_array1{ expected_values3 };
-        const tetengo::trie::double_array double_array2{ std::move(double_array1) };
-
-        BOOST_TEST(double_array2.get_storage().values() == expected_base_check_array3);
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        const tetengo::trie::double_array double_array1{ expected_values3 };
-        const tetengo::trie::double_array double_array2{ double_array1 };
-
-        BOOST_TEST(double_array2.get_storage().values() == expected_base_check_array3);
-    }
-    {
-        // TODO: C style API
-    }
-}
-
-BOOST_AUTO_TEST_CASE(operator_assign)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        tetengo::trie::double_array double_array1{ expected_values0 };
-        tetengo::trie::double_array double_array2{ expected_values3 };
-
-        double_array1 = std::move(double_array2);
-
-        BOOST_TEST(double_array1.get_storage().values() == expected_base_check_array3);
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        tetengo::trie::double_array       double_array1{ expected_values0 };
-        const tetengo::trie::double_array double_array2{ expected_values3 };
-
-        double_array1 = double_array2;
-
-        BOOST_TEST(double_array1.get_storage().values() == expected_base_check_array3);
     }
     {
         // TODO: C style API
