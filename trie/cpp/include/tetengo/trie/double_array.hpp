@@ -7,11 +7,9 @@
 #if !defined(TETENGO_TRIE_DOUBLEARRAY_HPP)
 #define TETENGO_TRIE_DOUBLEARRAY_HPP
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
-#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -98,14 +96,14 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param element_pointers  Pointers to initial elements.
+            \param elements          Initial elements.
             \param building_observer A building observer.
             \param density_factor    A density factor. Must be greater than 0.
 
             \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         explicit double_array(
-            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
+            const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_type&                            building_observer = null_building_observer(),
             std::int32_t                                             density_factor = default_density_factor());
 
@@ -127,29 +125,10 @@ namespace tetengo::trie
             InputIterator                 last,
             const building_observer_type& building_observer = null_building_observer(),
             std::int32_t                  density_factor = default_density_factor()) :
-        double_array{ [first, last]() {
-                         std::vector<const std::pair<std::string, std::int32_t>*> element_pointers;
-                         std::transform(
-                             first, last, std::back_inserter(element_pointers), [](const auto& e) { return &e; });
-                         return element_pointers;
-                     }(),
+        double_array{ std::vector<std::pair<std::string, std::int32_t>>{ first, last },
                       building_observer,
                       density_factor }
         {}
-
-        /*!
-            \brief Creates a double array.
-
-            \param elements          Initial elements.
-            \param building_observer A building observer.
-            \param density_factor    A density factor. Must be greater than 0.
-
-            \throw std::invalid_argument When density_factor is 0 or less than 0.
-        */
-        explicit double_array(
-            const std::vector<std::pair<std::string, std::int32_t>>& elements,
-            const building_observer_type&                            building_observer = null_building_observer(),
-            std::int32_t                                             density_factor = default_density_factor());
 
         /*!
             \brief Creates a double array.

@@ -89,14 +89,6 @@ namespace tetengo::trie
         {}
 
         impl(
-            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-            const building_observer_type&                            building_observer,
-            const std::int32_t                                       density_factor) :
-        m_p_storage{ double_array_builder::build(std::move(element_pointers), building_observer, density_factor) },
-            m_root_index{ 0 }
-        {}
-
-        impl(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_type&                            building_observer,
             const std::int32_t                                       density_factor) :
@@ -156,13 +148,6 @@ namespace tetengo::trie
     }
 
     double_array::double_array() : m_p_impl{ std::make_unique<impl>() } {}
-
-    double_array::double_array(
-        std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-        const building_observer_type&                            building_observer /*= null_building_observer()*/,
-        const std::int32_t                                       density_factor /*= default_density_factor()*/) :
-    m_p_impl{ std::make_unique<impl>(std::move(element_pointers), building_observer, density_factor) }
-    {}
 
     double_array::double_array(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
