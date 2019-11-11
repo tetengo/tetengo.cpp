@@ -168,7 +168,7 @@ namespace tetengo::trie
 
             \return The value. Or std::nullpot when the double array does not have the given key.
         */
-        std::optional<std::int32_t> find(const std::string& key) const;
+        std::optional<std::int32_t> find(const std::string_view& key) const;
 
         /*!
             \brief Returns an enumerator.
@@ -185,7 +185,7 @@ namespace tetengo::trie
             \return A unique pointer to a double array of the subtrie.
                     Or nullptr when the double array does not have the given key prefix.
         */
-        std::unique_ptr<double_array> subtrie(const std::string& key_prefix) const;
+        std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const;
 
         /*!
             \brief Returns the storage.

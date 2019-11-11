@@ -26,7 +26,7 @@ namespace tetengo::trie
     namespace
     {
         std::optional<std::size_t>
-        traverse(const storage& storage_, const std::size_t root_index, const std::string& key)
+        traverse(const storage& storage_, const std::size_t root_index, const std::string_view& key)
         {
             std::size_t index = root_index;
             for (const auto c: key)
@@ -114,9 +114,10 @@ namespace tetengo::trie
 
         // functions
 
-        std::optional<std::int32_t> find(const std::string& key) const
+        std::optional<std::int32_t> find(const std::string_view& key) const
         {
-            const auto o_index = traverse(*m_p_storage, m_root_index, key + double_array::key_terminator());
+            const auto o_index =
+                traverse(*m_p_storage, m_root_index, std::string{ key } + double_array::key_terminator());
             return o_index ? std::make_optional(m_p_storage->base_at(*o_index)) : std::nullopt;
         }
 
@@ -125,7 +126,7 @@ namespace tetengo::trie
             return enumerator{ *m_p_storage, m_root_index };
         }
 
-        std::unique_ptr<double_array> subtrie(const std::string& key_prefix) const
+        std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const
         {
             const auto o_index = traverse(*m_p_storage, m_root_index, key_prefix);
             return o_index ? std::make_unique<double_array>(m_p_storage->clone(), *o_index) :
@@ -179,7 +180,7 @@ namespace tetengo::trie
 
     double_array::~double_array() = default;
 
-    std::optional<std::int32_t> double_array::find(const std::string& key) const
+    std::optional<std::int32_t> double_array::find(const std::string_view& key) const
     {
         return m_p_impl->find(key);
     }
@@ -189,7 +190,7 @@ namespace tetengo::trie
         return m_p_impl->get_enumerator();
     }
 
-    std::unique_ptr<double_array> double_array::subtrie(const std::string& key_prefix) const
+    std::unique_ptr<double_array> double_array::subtrie(const std::string_view& key_prefix) const
     {
         return m_p_impl->subtrie(key_prefix);
     }
