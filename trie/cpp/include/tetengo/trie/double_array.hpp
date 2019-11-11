@@ -13,6 +13,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -40,7 +41,7 @@ namespace tetengo::trie
 
                 \param key A key.
             */
-            std::function<void(const std::pair<std::string, std::int32_t>& element)> adding;
+            std::function<void(const std::pair<std::string_view, std::int32_t>& element)> adding;
 
             /*!
                 \brief Called when the building is done.
@@ -103,6 +104,20 @@ namespace tetengo::trie
             \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         explicit double_array(
+            const std::vector<std::pair<std::string_view, std::int32_t>>& elements,
+            const building_observer_type&                                 building_observer = null_building_observer(),
+            std::int32_t                                                  density_factor = default_density_factor());
+
+        /*!
+            \brief Creates a double array.
+
+            \param elements          Initial elements.
+            \param building_observer A building observer.
+            \param density_factor    A density factor. Must be greater than 0.
+
+            \throw std::invalid_argument When density_factor is 0 or less than 0.
+        */
+        explicit double_array(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_type&                            building_observer = null_building_observer(),
             std::int32_t                                             density_factor = default_density_factor());
@@ -125,7 +140,7 @@ namespace tetengo::trie
             InputIterator                 last,
             const building_observer_type& building_observer = null_building_observer(),
             std::int32_t                  density_factor = default_density_factor()) :
-        double_array{ std::vector<std::pair<std::string, std::int32_t>>{ first, last },
+        double_array{ std::vector<typename InputIterator::value_type>{ first, last },
                       building_observer,
                       density_factor }
         {}

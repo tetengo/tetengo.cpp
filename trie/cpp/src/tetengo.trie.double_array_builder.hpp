@@ -12,7 +12,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <string>
+#include <string_view>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -33,14 +33,9 @@ namespace tetengo::trie
         static std::int32_t default_density_factor();
 
         static std::unique_ptr<storage> build(
-            std::vector<const std::pair<std::string, std::int32_t>*> element_pointers,
-            const double_array::building_observer_type&              observer,
-            std::int32_t                                             density_factor);
-
-        static std::unique_ptr<storage> build(
-            const std::vector<std::pair<std::string, std::int32_t>>& elements,
-            const double_array::building_observer_type&              observer,
-            std::int32_t                                             density_factor);
+            std::vector<std::pair<std::string_view, std::int32_t>> elements,
+            const double_array::building_observer_type&            observer,
+            std::int32_t                                           density_factor);
 
 
         // constructors
@@ -51,7 +46,7 @@ namespace tetengo::trie
     private:
         // types
 
-        using element_vector_type = std::vector<const std::pair<std::string, std::int32_t>*>;
+        using element_vector_type = std::vector<std::pair<std::string_view, std::int32_t>>;
 
         using element_iterator_type = element_vector_type::const_iterator;
 
@@ -79,7 +74,7 @@ namespace tetengo::trie
         static std::vector<element_iterator_type>
         children_firsts(element_iterator_type first, element_iterator_type last, std::size_t key_offset);
 
-        static std::uint8_t char_code_at(const std::string& string, std::size_t index);
+        static std::uint8_t char_code_at(const std::string_view& string, std::size_t index);
     };
 
 
