@@ -22,29 +22,6 @@
 
 namespace tetengo::trie
 {
-    namespace
-    {
-        std::optional<std::size_t>
-        traverse(const storage& storage_, const std::size_t root_index, const std::string& key)
-        {
-            std::size_t index = root_index;
-            for (const auto c: key)
-            {
-                const auto next_index =
-                    static_cast<std::size_t>(storage_.base_at(index)) + static_cast<std::uint8_t>(c);
-                if (next_index >= storage_.size() || storage_.check_at(next_index) != static_cast<std::uint8_t>(c))
-                {
-                    return std::nullopt;
-                }
-                index = next_index;
-            }
-
-            return std::make_optional(index);
-        }
-
-    }
-
-
     class double_array::impl
     {
     public:
@@ -114,7 +91,7 @@ namespace tetengo::trie
 
         std::optional<std::int32_t> find(const std::string& key) const
         {
-            const auto o_index = traverse(*m_p_storage, m_root_index, key + double_array::key_terminator());
+            const auto o_index = traverse(key + double_array::key_terminator());
             return o_index ? std::make_optional(m_p_storage->base_at(*o_index)) : std::nullopt;
         }
 
@@ -125,7 +102,7 @@ namespace tetengo::trie
 
         std::unique_ptr<double_array> subtrie(const std::string& key_prefix) const
         {
-            const auto o_index = traverse(*m_p_storage, m_root_index, key_prefix);
+            const auto o_index = traverse(key_prefix);
             return o_index ? std::make_unique<double_array>(m_p_storage->clone(), *o_index) :
                              std::unique_ptr<double_array>{};
         }
@@ -142,6 +119,27 @@ namespace tetengo::trie
         std::unique_ptr<storage> m_p_storage;
 
         std::size_t m_root_index;
+
+
+        // functions
+
+        std::optional<std::size_t> traverse(const std::string& key) const
+        {
+            auto index = m_root_index;
+            for (const auto c: key)
+            {
+                const auto next_index =
+                    static_cast<std::size_t>(m_p_storage->base_at(index)) + static_cast<std::uint8_t>(c);
+                if (next_index >= m_p_storage->size() ||
+                    m_p_storage->check_at(next_index) != static_cast<std::uint8_t>(c))
+                {
+                    return std::nullopt;
+                }
+                index = next_index;
+            }
+
+            return std::make_optional(index);
+        }
     };
 
 
