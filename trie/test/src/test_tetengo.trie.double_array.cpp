@@ -160,11 +160,11 @@ BOOST_AUTO_TEST_SUITE(trie)
 BOOST_AUTO_TEST_SUITE(double_array)
 
 
-BOOST_AUTO_TEST_CASE(null_building_observer)
+BOOST_AUTO_TEST_CASE(null_building_observer_set)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::double_array::null_building_observer();
+    tetengo::trie::double_array::null_building_observer_set();
 
     // TODO: C style API
 }
@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         BOOST_CHECK_THROW(
             const tetengo::trie::double_array double_array_(
-                expected_values0, tetengo::trie::double_array::null_building_observer(), 0),
+                expected_values0, tetengo::trie::double_array::null_building_observer_set(), 0),
             std::invalid_argument);
     }
     {

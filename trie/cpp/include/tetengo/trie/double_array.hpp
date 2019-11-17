@@ -33,8 +33,8 @@ namespace tetengo::trie
     public:
         // tyes
 
-        //! The building observer type.
-        struct building_observer_type
+        //! The building observer set type.
+        struct building_observer_set_type
         {
             /*!
                 \brief Called when a key is adding.
@@ -53,11 +53,11 @@ namespace tetengo::trie
         // static functions
 
         /*!
-            \brief Returns the null building observer.
+            \brief Returns the null building observer set.
 
-            \return The null bulding observer.
+            \return The null bulding observer set.
         */
-        static const building_observer_type& null_building_observer();
+        static const building_observer_set_type& null_building_observer_set();
 
         /*!
             \brief Returns the default density factor.
@@ -97,51 +97,51 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param elements          Initial elements.
-            \param building_observer A building observer.
-            \param density_factor    A density factor. Must be greater than 0.
+            \param elements              Initial elements.
+            \param building_observer_set A building observer set.
+            \param density_factor        A density factor. Must be greater than 0.
 
             \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         explicit double_array(
             const std::vector<std::pair<std::string_view, std::int32_t>>& elements,
-            const building_observer_type&                                 building_observer = null_building_observer(),
-            std::int32_t                                                  density_factor = default_density_factor());
+            const building_observer_set_type& building_observer_set = null_building_observer_set(),
+            std::int32_t                      density_factor = default_density_factor());
 
         /*!
             \brief Creates a double array.
 
-            \param elements          Initial elements.
-            \param building_observer A building observer.
-            \param density_factor    A density factor. Must be greater than 0.
+            \param elements              Initial elements.
+            \param building_observer_set A building observer set.
+            \param density_factor        A density factor. Must be greater than 0.
 
             \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         explicit double_array(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
-            const building_observer_type&                            building_observer = null_building_observer(),
-            std::int32_t                                             density_factor = default_density_factor());
+            const building_observer_set_type& building_observer_set = null_building_observer_set(),
+            std::int32_t                      density_factor = default_density_factor());
 
         /*!
             \brief Creates a double array.
 
             \tparam InputIterator An input iterator type.
 
-            \param first             An iterator to the first element.
-            \param last              An iterator to the last element.
-            \param building_observer A building observer.
-            \param density_factor    A density factor. Must be greater than 0.
+            \param first                 An iterator to the first element.
+            \param last                  An iterator to the last element.
+            \param building_observer_set A building observer set.
+            \param density_factor        A density factor. Must be greater than 0.
 
             \throw std::invalid_argument When density_factor is 0 or less than 0.
         */
         template <typename InputIterator>
         double_array(
-            InputIterator                 first,
-            InputIterator                 last,
-            const building_observer_type& building_observer = null_building_observer(),
-            std::int32_t                  density_factor = default_density_factor()) :
+            InputIterator                     first,
+            InputIterator                     last,
+            const building_observer_set_type& building_observer_set = null_building_observer_set(),
+            std::int32_t                      density_factor = default_density_factor()) :
         double_array{ std::vector<typename InputIterator::value_type>{ first, last },
-                      building_observer,
+                      building_observer_set,
                       density_factor }
         {}
 
