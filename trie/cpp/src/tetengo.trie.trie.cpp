@@ -13,7 +13,7 @@
 
 namespace tetengo::trie
 {
-    class trie::impl : private boost::noncopyable
+    class trie_impl::impl : private boost::noncopyable
     {
     public:
         // constructors and destructor
@@ -26,9 +26,9 @@ namespace tetengo::trie
     };
 
 
-    trie::trie() : m_p_impl{ std::make_unique<impl>() } {}
+    trie_impl::trie_impl() : m_p_impl{ std::make_unique<impl>() } {}
 
-    trie::~trie() = default;
+    trie_impl::~trie_impl() = default;
 
 
 }

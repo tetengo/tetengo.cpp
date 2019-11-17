@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::trie::trie trie_{};
+    const tetengo::trie::trie<int, int> trie_{};
 }
 
 
