@@ -38,6 +38,9 @@
     <ClCompile Include="src\tetengo.trie.default_key_serializer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.trie.trie.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.hpp">
@@ -62,6 +65,9 @@
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\trie\default_key_serializer.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\trie\trie.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
   </ItemGroup>
