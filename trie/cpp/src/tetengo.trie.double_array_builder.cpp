@@ -29,7 +29,7 @@ namespace tetengo::trie
 
     std::unique_ptr<storage> double_array_builder::build(
         std::vector<std::pair<std::string_view, std::int32_t>> elements,
-        const double_array::building_observer_type&            observer,
+        const double_array::building_observer_set_type&        observer,
         const std::int32_t                                     density_factor)
     {
         if (density_factor <= 0)
@@ -55,14 +55,14 @@ namespace tetengo::trie
     }
 
     void double_array_builder::build_iter(
-        const element_iterator_type                 first,
-        const element_iterator_type                 last,
-        const std::size_t                           key_offset,
-        storage&                                    storage_,
-        const std::size_t                           storage_index,
-        std::unordered_set<std::int32_t>&           base_uniquer,
-        const double_array::building_observer_type& observer,
-        const std::int32_t                          density_factor)
+        const element_iterator_type                     first,
+        const element_iterator_type                     last,
+        const std::size_t                               key_offset,
+        storage&                                        storage_,
+        const std::size_t                               storage_index,
+        std::unordered_set<std::int32_t>&               base_uniquer,
+        const double_array::building_observer_set_type& observer,
+        const std::int32_t                              density_factor)
     {
         const auto children_firsts_ = children_firsts(first, last, key_offset);
 
