@@ -5,6 +5,8 @@
 */
 
 #include <memory>
+#include <utility>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -18,15 +20,21 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        impl(){};
+        impl() : m_elements{} {};
+
+        explicit impl(std::vector<value_type> elements) : m_elements{ std::move(elements) } {}
 
 
     private:
         // variables
+
+        const std::vector<value_type> m_elements;
     };
 
 
     trie_impl::trie_impl() : m_p_impl{ std::make_unique<impl>() } {}
+
+    trie_impl::trie_impl(std::vector<value_type> elements) : m_p_impl{ std::make_unique<impl>(std::move(elements)) } {}
 
     trie_impl::~trie_impl() = default;
 
