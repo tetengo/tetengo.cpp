@@ -13,6 +13,11 @@
 namespace tetengo::trie
 {
 #if !defined(DOCUMENTATION)
+    const std::string& default_key_serializer<std::string>::operator()(const std::string& key) const
+    {
+        return key;
+    }
+
     template <typename Char>
     std::string default_key_serializer<std::basic_string<Char>>::operator()(const std::basic_string<Char>& key) const
     {

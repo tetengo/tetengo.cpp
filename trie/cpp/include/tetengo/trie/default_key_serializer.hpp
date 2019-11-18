@@ -28,10 +28,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        const std::string& operator()(const std::string& key) const
-        {
-            return key;
-        }
+        const std::string& operator()(const std::string& key) const;
     };
 
 
