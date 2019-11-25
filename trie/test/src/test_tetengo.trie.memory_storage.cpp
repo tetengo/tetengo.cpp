@@ -119,19 +119,6 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     BOOST_TEST(storage_.check_at(24) == 124);
 }
 
-BOOST_AUTO_TEST_CASE(size)
-{
-    BOOST_TEST_PASSPOINT();
-
-    tetengo::trie::memory_storage storage_{};
-
-    BOOST_TEST(storage_.size() == 1U);
-
-    storage_.base_at(42);
-
-    BOOST_TEST(storage_.size() == 43U);
-}
-
 BOOST_AUTO_TEST_CASE(filling_rate)
 {
     BOOST_TEST_PASSPOINT();

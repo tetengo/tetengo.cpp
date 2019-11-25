@@ -36,11 +36,6 @@ namespace
 
         virtual void set_check_at_impl(std::size_t /*base_check_index*/, std::uint8_t /*value*/) override {}
 
-        virtual std::size_t size_impl() const override
-        {
-            return 2424;
-        }
-
         virtual double filling_rate_impl() const override
         {
             return 0.9;
@@ -110,15 +105,6 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     concrete_storage storage_{};
 
     storage_.set_check_at(24, 124);
-}
-
-BOOST_AUTO_TEST_CASE(size)
-{
-    BOOST_TEST_PASSPOINT();
-
-    concrete_storage storage_{};
-
-    BOOST_TEST(storage_.size() == 2424U);
 }
 
 BOOST_AUTO_TEST_CASE(filling_rate)

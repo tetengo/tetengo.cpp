@@ -73,13 +73,6 @@ namespace tetengo::trie
         void set_check_at(std::size_t base_check_index, std::uint8_t value);
 
         /*!
-            \brief Returns the size of this storage.
-
-            \return The size.
-        */
-        std::size_t size() const;
-
-        /*!
             \brief Returns the filling rate.
 
             \return The filling rate.
@@ -118,8 +111,6 @@ namespace tetengo::trie
         virtual std::uint8_t check_at_impl(std::size_t base_check_index) const = 0;
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t value) = 0;
-
-        virtual std::size_t size_impl() const = 0;
 
         virtual double filling_rate_impl() const = 0;
 
