@@ -61,7 +61,8 @@ namespace tetengo::trie
 
         double filling_rate_impl() const
         {
-            const auto empty_count = std::count(std::begin(m_base_check_array), std::end(m_base_check_array), 0x000000FFU);
+            const auto empty_count =
+                std::count(std::begin(m_base_check_array), std::end(m_base_check_array), 0x000000FFU);
             return 1.0 - static_cast<double>(empty_count) / m_base_check_array.size();
         }
 
@@ -69,6 +70,14 @@ namespace tetengo::trie
         {
             return m_base_check_array;
         }
+
+        std::size_t mapped_storage_index_impl(const std::size_t /*mapped_index*/) const
+        {
+            return 0;
+        }
+
+        void add_mapped_storage_index_impl(const std::size_t /*mapped_index*/) const
+        {}
 
         void serialize_impl(std::ostream& output_stream) const
         {
@@ -179,6 +188,16 @@ namespace tetengo::trie
     const std::vector<std::uint32_t>& memory_storage::base_check_array_impl() const
     {
         return m_p_impl->base_check_array_impl();
+    }
+
+    std::size_t memory_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    {
+        return m_p_impl->mapped_storage_index_impl(mapped_index);
+    }
+
+    void memory_storage::add_mapped_storage_index_impl(const std::size_t mapped_index) const
+    {
+        return m_p_impl->add_mapped_storage_index_impl(mapped_index);
     }
 
     void memory_storage::serialize_impl(std::ostream& output_stream) const

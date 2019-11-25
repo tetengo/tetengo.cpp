@@ -44,6 +44,16 @@ namespace tetengo::trie
         return base_check_array_impl();
     }
 
+    std::size_t storage::mapped_storage_index(const std::size_t mapped_index) const
+    {
+        return mapped_storage_index_impl(mapped_index);
+    }
+
+    void storage::add_mapped_storage_index(const std::size_t mapped_index) const
+    {
+        add_mapped_storage_index_impl(mapped_index);
+    }
+
     void storage::serialize(std::ostream& output_stream) const
     {
         serialize_impl(output_stream);

@@ -47,6 +47,13 @@ namespace
             return singleton;
         }
 
+        virtual std::size_t mapped_storage_index_impl(std::size_t /*mapped_index*/) const override
+        {
+            return 0;
+        }
+
+        virtual void add_mapped_storage_index_impl(std::size_t /*mapped_index*/) const override {}
+
         virtual void serialize_impl(std::ostream& /*output_stream*/) const override {}
 
         std::unique_ptr<storage> clone_impl() const override

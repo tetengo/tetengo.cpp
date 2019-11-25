@@ -87,6 +87,24 @@ namespace tetengo::trie
         const std::vector<std::uint32_t>& base_check_array() const;
 
         /*!
+            \brief Returns the mapped storage index.
+
+            \param mapped_index A mapped index.
+
+            \return The mapped storage index.
+        */
+        std::size_t mapped_storage_index(std::size_t mapped_index) const;
+
+        /*!
+            \brief Adds a mapped storage index mapping.
+
+            A mapped storage index is automatically assigned.
+
+            \param mapped_index A mapped index.
+        */
+        void add_mapped_storage_index(std::size_t mapped_index) const;
+
+        /*!
             \brief Serializes this storage.
 
             \param output_stream An output stream.
@@ -115,6 +133,10 @@ namespace tetengo::trie
         virtual double filling_rate_impl() const = 0;
 
         virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
+
+        virtual std::size_t mapped_storage_index_impl(std::size_t mapped_index) const = 0;
+
+        virtual void add_mapped_storage_index_impl(std::size_t mapped_index) const = 0;
 
         virtual void serialize_impl(std::ostream& output_stream) const = 0;
 

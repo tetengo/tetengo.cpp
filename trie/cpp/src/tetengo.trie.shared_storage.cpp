@@ -60,6 +60,16 @@ namespace tetengo::trie
             return m_p_entity->base_check_array();
         }
 
+        std::size_t mapped_storage_index_impl(const std::size_t mapped_index) const
+        {
+            return m_p_entity->mapped_storage_index(mapped_index);
+        }
+
+        void add_mapped_storage_index_impl(const std::size_t mapped_index) const
+        {
+            m_p_entity->add_mapped_storage_index(mapped_index);
+        }
+
         void serialize_impl(std::ostream& output_stream) const
         {
             m_p_entity->serialize(output_stream);
@@ -114,6 +124,16 @@ namespace tetengo::trie
     const std::vector<std::uint32_t>& shared_storage::base_check_array_impl() const
     {
         return m_p_impl->base_check_array_impl();
+    }
+
+    std::size_t shared_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    {
+        return m_p_impl->mapped_storage_index_impl(mapped_index);
+    }
+
+    void shared_storage::add_mapped_storage_index_impl(const std::size_t mapped_index) const
+    {
+        return m_p_impl->add_mapped_storage_index_impl(mapped_index);
     }
 
     void shared_storage::serialize_impl(std::ostream& output_stream) const
