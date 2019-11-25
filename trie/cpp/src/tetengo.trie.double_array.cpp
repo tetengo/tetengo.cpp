@@ -63,7 +63,7 @@ namespace tetengo::trie
             std::vector<std::pair<std::string_view, std::int32_t>>{},
             null_building_observer_set(),
             default_density_factor()) },
-            m_root_index{ 0 }
+            m_root_base_check_index{ 0 }
         {}
 
         impl(
@@ -71,7 +71,7 @@ namespace tetengo::trie
             const building_observer_set_type&                             building_observer_set,
             const std::int32_t                                            density_factor) :
         m_p_storage{ double_array_builder::build(elements, building_observer_set, density_factor) },
-            m_root_index{ 0 }
+            m_root_base_check_index{ 0 }
         {}
 
         impl(
@@ -83,9 +83,9 @@ namespace tetengo::trie
               density_factor }
         {}
 
-        impl(std::unique_ptr<storage>&& p_storage, std::size_t root_index) :
+        impl(std::unique_ptr<storage>&& p_storage, std::size_t root_base_check_index) :
         m_p_storage{ std::move(p_storage) },
-            m_root_index{ root_index }
+            m_root_base_check_index{ root_base_check_index }
         {}
 
 
@@ -99,7 +99,7 @@ namespace tetengo::trie
 
         enumerator get_enumerator() const
         {
-            return enumerator{ *m_p_storage, m_root_index };
+            return enumerator{ *m_p_storage, m_root_base_check_index };
         }
 
         std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const
@@ -120,27 +120,27 @@ namespace tetengo::trie
 
         std::unique_ptr<storage> m_p_storage;
 
-        std::size_t m_root_index;
+        std::size_t m_root_base_check_index;
 
 
         // functions
 
         std::optional<std::size_t> traverse(const std::string_view& key) const
         {
-            auto index = m_root_index;
+            auto base_check_index = m_root_base_check_index;
             for (const auto c: key)
             {
-                const auto next_index =
-                    static_cast<std::size_t>(m_p_storage->base_at(index)) + static_cast<std::uint8_t>(c);
-                if (next_index >= m_p_storage->size() ||
-                    m_p_storage->check_at(next_index) != static_cast<std::uint8_t>(c))
+                const auto next_base_check_index =
+                    static_cast<std::size_t>(m_p_storage->base_at(base_check_index)) + static_cast<std::uint8_t>(c);
+                if (next_base_check_index >= m_p_storage->size() ||
+                    m_p_storage->check_at(next_base_check_index) != static_cast<std::uint8_t>(c))
                 {
                     return std::nullopt;
                 }
-                index = next_index;
+                base_check_index = next_base_check_index;
             }
 
-            return std::make_optional(index);
+            return std::make_optional(base_check_index);
         }
     };
 
@@ -171,8 +171,8 @@ namespace tetengo::trie
     m_p_impl{ std::make_unique<impl>(elements, building_observer_set, density_factor) }
     {}
 
-    double_array::double_array(std::unique_ptr<storage>&& p_storage, const std::size_t root_index) :
-    m_p_impl{ std::make_unique<impl>(std::move(p_storage), root_index) }
+    double_array::double_array(std::unique_ptr<storage>&& p_storage, const std::size_t root_base_check_index) :
+    m_p_impl{ std::make_unique<impl>(std::move(p_storage), root_base_check_index) }
     {}
 
     double_array::~double_array() = default;

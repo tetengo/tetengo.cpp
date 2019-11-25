@@ -148,10 +148,10 @@ namespace tetengo::trie
         /*!
             \brief Creates a double array.
 
-            \param p_storage  A unique pointer to a storage.
-            \param root_index A root index.
+            \param p_storage             A unique pointer to a storage.
+            \param root_base_check_index A root base-check index.
         */
-        double_array(std::unique_ptr<storage>&& p_storage, std::size_t root_index);
+        double_array(std::unique_ptr<storage>&& p_storage, std::size_t root_base_check_index);
 
         /*!
             \brief Destroys the double array.

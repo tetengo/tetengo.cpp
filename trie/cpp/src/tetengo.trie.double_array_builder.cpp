@@ -59,7 +59,7 @@ namespace tetengo::trie
         const element_iterator_type                     last,
         const std::size_t                               key_offset,
         storage&                                        storage_,
-        const std::size_t                               storage_index,
+        const std::size_t                               base_check_index,
         std::unordered_set<std::int32_t>&               base_uniquer,
         const double_array::building_observer_set_type& observer,
         const std::int32_t                              density_factor)
@@ -67,23 +67,23 @@ namespace tetengo::trie
         const auto children_firsts_ = children_firsts(first, last, key_offset);
 
         const auto base =
-            calc_base(children_firsts_, key_offset, storage_, storage_index, density_factor, base_uniquer);
-        storage_.set_base_at(storage_index, base);
+            calc_base(children_firsts_, key_offset, storage_, base_check_index, density_factor, base_uniquer);
+        storage_.set_base_at(base_check_index, base);
 
         for (auto i = std::begin(children_firsts_); i != std::prev(std::end(children_firsts_)); ++i)
         {
             const auto char_code = char_code_at((*i)->first, key_offset);
-            const auto next_storage_index = base + char_code;
-            storage_.set_check_at(next_storage_index, char_code);
+            const auto next_base_check_index = base + char_code;
+            storage_.set_check_at(next_base_check_index, char_code);
         }
         for (auto i = std::begin(children_firsts_); i != std::prev(std::end(children_firsts_)); ++i)
         {
             const auto char_code = char_code_at((*i)->first, key_offset);
-            const auto next_storage_index = base + char_code;
+            const auto next_base_check_index = base + char_code;
             if (char_code == double_array::key_terminator())
             {
                 observer.adding(**i);
-                storage_.set_base_at(next_storage_index, (*i)->second);
+                storage_.set_base_at(next_base_check_index, (*i)->second);
                 continue;
             }
             build_iter(
@@ -91,7 +91,7 @@ namespace tetengo::trie
                 *std::next(i),
                 key_offset + 1,
                 storage_,
-                next_storage_index,
+                next_base_check_index,
                 base_uniquer,
                 observer,
                 density_factor);
@@ -102,19 +102,19 @@ namespace tetengo::trie
         const std::vector<element_iterator_type>& firsts,
         const std::size_t                         key_offset,
         const storage&                            storage_,
-        const std::size_t                         storage_index,
+        const std::size_t                         base_check_index,
         const std::int32_t                        density_factor,
         std::unordered_set<std::int32_t>&         base_uniquer)
     {
-        const auto base_first = static_cast<std::int32_t>(storage_index - storage_index / density_factor) -
+        const auto base_first = static_cast<std::int32_t>(base_check_index - base_check_index / density_factor) -
                                 char_code_at(firsts[0]->first, key_offset) + 1;
         for (auto base = base_first;; ++base)
         {
             const auto first_last = std::prev(std::end(firsts));
             const auto occupied =
                 std::find_if(std::begin(firsts), first_last, [key_offset, &storage_, base](const auto& first) {
-                    const auto next_index = base + char_code_at(first->first, key_offset);
-                    return storage_.check_at(next_index) != double_array::vacant_check_value();
+                    const auto next_base_check_index = base + char_code_at(first->first, key_offset);
+                    return storage_.check_at(next_base_check_index) != double_array::vacant_check_value();
                 });
             if (occupied == first_last && base_uniquer.find(base) == std::end(base_uniquer))
             {

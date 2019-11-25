@@ -25,11 +25,11 @@ namespace
         return static_cast<char>(uc);
     }
 
-    const std::vector<std::pair<std::string, std::int32_t>> expected_values{ { "UTIGOSI", 24 },
-                                                                             { "UTO", 2424 },
-                                                                             { "SETA", 42 } };
+    const std::vector<std::pair<std::string, std::int32_t>> expected_base_values{ { "UTIGOSI", 24 },
+                                                                                  { "UTO", 2424 },
+                                                                                  { "SETA", 42 } };
 
-    const std::vector<std::pair<std::string, std::int32_t>> expected_values2{
+    const std::vector<std::pair<std::string, std::int32_t>> expected_base_values2{
         { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) }, 24 }, // "Akase" in Kanji
         { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) }, 42 }, // "Akamizu" in Kanji
     };
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo::trie::double_array double_array_{ expected_values };
+        const tetengo::trie::double_array double_array_{ expected_base_values };
         auto                              enumerator = double_array_.get_enumerator();
     }
     {
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo::trie::double_array double_array_{ expected_values2 };
+        const tetengo::trie::double_array double_array_{ expected_base_values2 };
         auto                              enumerator = double_array_.get_enumerator();
     }
     {
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo::trie::double_array double_array_{ expected_values };
+        const tetengo::trie::double_array double_array_{ expected_base_values };
         auto                              enumerator = double_array_.get_enumerator();
 
         boost::ignore_unused(enumerator.next());
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(next)
     }
 
     {
-        const tetengo::trie::double_array double_array_{ expected_values };
+        const tetengo::trie::double_array double_array_{ expected_base_values };
         auto                              enumerator = double_array_.get_enumerator();
 
         {
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(next)
     }
 
     {
-        const tetengo::trie::double_array double_array_{ expected_values2 };
+        const tetengo::trie::double_array double_array_{ expected_base_values2 };
         auto                              enumerator = double_array_.get_enumerator();
 
         {

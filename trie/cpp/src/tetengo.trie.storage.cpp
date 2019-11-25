@@ -14,24 +14,24 @@
 
 namespace tetengo::trie
 {
-    std::int32_t storage::base_at(const std::size_t index) const
+    std::int32_t storage::base_at(const std::size_t base_check_index) const
     {
-        return base_at_impl(index);
+        return base_at_impl(base_check_index);
     }
 
-    void storage::set_base_at(const std::size_t index, const std::int32_t value)
+    void storage::set_base_at(const std::size_t base_check_index, const std::int32_t value)
     {
-        set_base_at_impl(index, value);
+        set_base_at_impl(base_check_index, value);
     }
 
-    std::uint8_t storage::check_at(const std::size_t index) const
+    std::uint8_t storage::check_at(const std::size_t base_check_index) const
     {
-        return check_at_impl(index);
+        return check_at_impl(base_check_index);
     }
 
-    void storage::set_check_at(const std::size_t index, const std::uint8_t value)
+    void storage::set_check_at(const std::size_t base_check_index, const std::uint8_t value)
     {
-        set_check_at_impl(index, value);
+        set_check_at_impl(base_check_index, value);
     }
 
     std::size_t storage::size() const
@@ -44,9 +44,9 @@ namespace tetengo::trie
         return filling_rate_impl();
     }
 
-    const std::vector<std::uint32_t>& storage::values() const
+    const std::vector<std::uint32_t>& storage::base_check_array() const
     {
-        return values_impl();
+        return base_check_array_impl();
     }
 
     void storage::serialize(std::ostream& output_stream) const

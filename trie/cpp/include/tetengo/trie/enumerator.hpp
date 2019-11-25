@@ -32,10 +32,10 @@ namespace tetengo::trie
         /*!
             \brief Creates an enumerator.
 
-            \param storage_   A storage.
-            \param root_index A root index.
+            \param storage_              A storage.
+            \param root_base_check_index A root base-check index.
         */
-        enumerator(const storage& storage_, std::size_t root_index);
+        enumerator(const storage& storage_, std::size_t root_base_check_index);
 
 
         // functions
@@ -54,7 +54,7 @@ namespace tetengo::trie
         const storage& m_storage;
 
         std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
-            m_index_key_stack;
+            m_base_check_index_key_stack;
     };
 
 
