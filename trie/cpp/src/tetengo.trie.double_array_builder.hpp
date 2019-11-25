@@ -30,12 +30,12 @@ namespace tetengo::trie
     public:
         // static functions
 
-        static std::int32_t default_density_factor();
+        static std::size_t default_density_factor();
 
         static std::unique_ptr<storage> build(
             std::vector<std::pair<std::string_view, std::int32_t>> elements,
             const double_array::building_observer_set_type&        observer,
-            std::int32_t                                           density_factor);
+            std::size_t                                            density_factor);
 
 
         // constructors
@@ -58,17 +58,17 @@ namespace tetengo::trie
             element_iterator_type                           last,
             std::size_t                                     key_offset,
             storage&                                        storage_,
-            std::size_t                                     storage_index,
+            std::size_t                                     base_check_index,
             std::unordered_set<std::int32_t>&               base_uniquer,
             const double_array::building_observer_set_type& observer,
-            std::int32_t                                    density_factor);
+            std::size_t                                     density_factor);
 
         static std::int32_t calc_base(
             const std::vector<element_iterator_type>& firsts,
             std::size_t                               key_offset,
             const storage&                            storage_,
-            std::size_t                               storage_index,
-            std::int32_t                              density_factor,
+            std::size_t                               base_check_index,
+            std::size_t                               density_factor,
             std::unordered_set<std::int32_t>&         base_uniquer);
 
         static std::vector<element_iterator_type>

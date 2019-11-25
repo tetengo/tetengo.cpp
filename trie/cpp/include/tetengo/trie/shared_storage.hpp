@@ -56,19 +56,19 @@ namespace tetengo::trie
 
         // virtual functions
 
-        virtual std::int32_t base_at_impl(std::size_t index) const override;
+        virtual std::int32_t base_at_impl(std::size_t base_check_index) const override;
 
-        virtual void set_base_at_impl(std::size_t index, std::int32_t value) override;
+        virtual void set_base_at_impl(std::size_t base_check_index, std::int32_t value) override;
 
-        virtual std::uint8_t check_at_impl(std::size_t index) const override;
+        virtual std::uint8_t check_at_impl(std::size_t base_check_index) const override;
 
-        virtual void set_check_at_impl(std::size_t index, std::uint8_t value) override;
+        virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t value) override;
 
         virtual std::size_t size_impl() const override;
 
         virtual double filling_rate_impl() const override;
 
-        virtual const std::vector<std::uint32_t>& values_impl() const override;
+        virtual const std::vector<std::uint32_t>& base_check_array_impl() const override;
 
         virtual void serialize_impl(std::ostream& output_stream) const override;
 

@@ -30,24 +30,24 @@ namespace tetengo::trie
 
         // functions
 
-        std::int32_t base_at_impl(const std::size_t index) const
+        std::int32_t base_at_impl(const std::size_t base_check_index) const
         {
-            return m_p_entity->base_at(index);
+            return m_p_entity->base_at(base_check_index);
         }
 
-        void set_base_at_impl(const std::size_t index, const std::int32_t value)
+        void set_base_at_impl(const std::size_t base_check_index, const std::int32_t value)
         {
-            m_p_entity->set_base_at(index, value);
+            m_p_entity->set_base_at(base_check_index, value);
         }
 
-        std::uint8_t check_at_impl(const std::size_t index) const
+        std::uint8_t check_at_impl(const std::size_t base_check_index) const
         {
-            return m_p_entity->check_at(index);
+            return m_p_entity->check_at(base_check_index);
         }
 
-        void set_check_at_impl(const std::size_t index, const std::uint8_t value)
+        void set_check_at_impl(const std::size_t base_check_index, const std::uint8_t value)
         {
-            m_p_entity->set_check_at(index, value);
+            m_p_entity->set_check_at(base_check_index, value);
         }
 
         std::size_t size_impl() const
@@ -60,9 +60,9 @@ namespace tetengo::trie
             return m_p_entity->filling_rate();
         }
 
-        const std::vector<std::uint32_t>& values_impl() const
+        const std::vector<std::uint32_t>& base_check_array_impl() const
         {
-            return m_p_entity->values();
+            return m_p_entity->base_check_array();
         }
 
         void serialize_impl(std::ostream& output_stream) const
@@ -91,24 +91,24 @@ namespace tetengo::trie
 
     shared_storage::~shared_storage() = default;
 
-    std::int32_t shared_storage::base_at_impl(const std::size_t index) const
+    std::int32_t shared_storage::base_at_impl(const std::size_t base_check_index) const
     {
-        return m_p_impl->base_at_impl(index);
+        return m_p_impl->base_at_impl(base_check_index);
     }
 
-    void shared_storage::set_base_at_impl(const std::size_t index, const std::int32_t value)
+    void shared_storage::set_base_at_impl(const std::size_t base_check_index, const std::int32_t value)
     {
-        m_p_impl->set_base_at_impl(index, value);
+        m_p_impl->set_base_at_impl(base_check_index, value);
     }
 
-    std::uint8_t shared_storage::check_at_impl(const std::size_t index) const
+    std::uint8_t shared_storage::check_at_impl(const std::size_t base_check_index) const
     {
-        return m_p_impl->check_at_impl(index);
+        return m_p_impl->check_at_impl(base_check_index);
     }
 
-    void shared_storage::set_check_at_impl(const std::size_t index, const std::uint8_t value)
+    void shared_storage::set_check_at_impl(const std::size_t base_check_index, const std::uint8_t value)
     {
-        m_p_impl->set_check_at_impl(index, value);
+        m_p_impl->set_check_at_impl(base_check_index, value);
     }
 
     std::size_t shared_storage::size_impl() const
@@ -121,9 +121,9 @@ namespace tetengo::trie
         return m_p_impl->filling_rate_impl();
     }
 
-    const std::vector<std::uint32_t>& shared_storage::values_impl() const
+    const std::vector<std::uint32_t>& shared_storage::base_check_array_impl() const
     {
-        return m_p_impl->values_impl();
+        return m_p_impl->base_check_array_impl();
     }
 
     void shared_storage::serialize_impl(std::ostream& output_stream) const
