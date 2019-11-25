@@ -39,7 +39,7 @@ namespace tetengo::trie
             /*!
                 \brief Called when a key is adding.
 
-                \param key A key.
+                \param element An element.
             */
             std::function<void(const std::pair<std::string_view, std::int32_t>& element)> adding;
 
