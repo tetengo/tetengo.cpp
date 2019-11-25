@@ -40,7 +40,7 @@ namespace tetengo::trie
             return singleton;
         }
 
-        static std::int32_t default_density_factor()
+        static std::size_t default_density_factor()
         {
             return double_array_builder::default_density_factor();
         }
@@ -69,7 +69,7 @@ namespace tetengo::trie
         impl(
             const std::vector<std::pair<std::string_view, std::int32_t>>& elements,
             const building_observer_set_type&                             building_observer_set,
-            const std::int32_t                                            density_factor) :
+            const std::size_t                                             density_factor) :
         m_p_storage{ double_array_builder::build(elements, building_observer_set, density_factor) },
             m_root_base_check_index{ 0 }
         {}
@@ -77,7 +77,7 @@ namespace tetengo::trie
         impl(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_set_type&                        building_observer_set,
-            const std::int32_t                                       density_factor) :
+            const std::size_t                                        density_factor) :
         impl{ std::vector<std::pair<std::string_view, std::int32_t>>{ elements.begin(), elements.end() },
               building_observer_set,
               density_factor }
@@ -150,7 +150,7 @@ namespace tetengo::trie
         return impl::null_building_observer_set();
     }
 
-    std::int32_t double_array::default_density_factor()
+    std::size_t double_array::default_density_factor()
     {
         return impl::default_density_factor();
     }
@@ -160,14 +160,14 @@ namespace tetengo::trie
     double_array::double_array(
         const std::vector<std::pair<std::string_view, std::int32_t>>& elements,
         const building_observer_set_type& building_observer_set /*= null_building_observer_set()*/,
-        std::int32_t                      density_factor /*= default_density_factor()*/) :
+        std::size_t                       density_factor /*= default_density_factor()*/) :
     m_p_impl{ std::make_unique<impl>(elements, building_observer_set, density_factor) }
     {}
 
     double_array::double_array(
         const std::vector<std::pair<std::string, std::int32_t>>& elements,
         const building_observer_set_type& building_observer_set /*= null_building_observer_set()*/,
-        std::int32_t                      density_factor /*= default_density_factor()*/) :
+        std::size_t                       density_factor /*= default_density_factor()*/) :
     m_p_impl{ std::make_unique<impl>(elements, building_observer_set, density_factor) }
     {}
 

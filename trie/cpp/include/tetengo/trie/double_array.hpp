@@ -64,7 +64,7 @@ namespace tetengo::trie
 
             \return The default density factor.
         */
-        static std::int32_t default_density_factor();
+        static std::size_t default_density_factor();
 
         /*!
             \brief Returns the key terminator.
@@ -101,12 +101,12 @@ namespace tetengo::trie
             \param building_observer_set A building observer set.
             \param density_factor        A density factor. Must be greater than 0.
 
-            \throw std::invalid_argument When density_factor is 0 or less than 0.
+            \throw std::invalid_argument When density_factor is 0.
         */
         explicit double_array(
             const std::vector<std::pair<std::string_view, std::int32_t>>& elements,
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
-            std::int32_t                      density_factor = default_density_factor());
+            std::size_t                       density_factor = default_density_factor());
 
         /*!
             \brief Creates a double array.
@@ -115,12 +115,12 @@ namespace tetengo::trie
             \param building_observer_set A building observer set.
             \param density_factor        A density factor. Must be greater than 0.
 
-            \throw std::invalid_argument When density_factor is 0 or less than 0.
+            \throw std::invalid_argument When density_factor is 0.
         */
         explicit double_array(
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
-            std::int32_t                      density_factor = default_density_factor());
+            std::size_t                       density_factor = default_density_factor());
 
         /*!
             \brief Creates a double array.
@@ -132,14 +132,14 @@ namespace tetengo::trie
             \param building_observer_set A building observer set.
             \param density_factor        A density factor. Must be greater than 0.
 
-            \throw std::invalid_argument When density_factor is 0 or less than 0.
+            \throw std::invalid_argument When density_factor is 0.
         */
         template <typename InputIterator>
         double_array(
             InputIterator                     first,
             InputIterator                     last,
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
-            std::int32_t                      density_factor = default_density_factor()) :
+            std::size_t                       density_factor = default_density_factor()) :
         double_array{ std::vector<typename InputIterator::value_type>{ first, last },
                       building_observer_set,
                       density_factor }
