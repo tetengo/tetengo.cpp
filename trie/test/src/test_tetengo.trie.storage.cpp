@@ -22,19 +22,19 @@ namespace
     private:
         // virtual functions
 
-        virtual std::int32_t base_at_impl(std::size_t /*index*/) const override
+        virtual std::int32_t base_at_impl(std::size_t /*base_check_index*/) const override
         {
             return 42;
         }
 
-        virtual void set_base_at_impl(std::size_t /*index*/, std::int32_t /*value*/) override {}
+        virtual void set_base_at_impl(std::size_t /*base_check_index*/, std::int32_t /*value*/) override {}
 
-        virtual std::uint8_t check_at_impl(std::size_t /*index*/) const override
+        virtual std::uint8_t check_at_impl(std::size_t /*base_check_index*/) const override
         {
             return 24;
         }
 
-        virtual void set_check_at_impl(std::size_t /*index*/, std::uint8_t /*value*/) override {}
+        virtual void set_check_at_impl(std::size_t /*base_check_index*/, std::uint8_t /*value*/) override {}
 
         virtual std::size_t size_impl() const override
         {
@@ -46,7 +46,7 @@ namespace
             return 0.9;
         }
 
-        virtual const std::vector<std::uint32_t>& values_impl() const override
+        virtual const std::vector<std::uint32_t>& base_check_array_impl() const override
         {
             static const std::vector<std::uint32_t> singleton(3, 4242);
             return singleton;
@@ -130,14 +130,14 @@ BOOST_AUTO_TEST_CASE(filling_rate)
     BOOST_CHECK_CLOSE(storage_.filling_rate(), 0.9, 0.01);
 }
 
-BOOST_AUTO_TEST_CASE(values)
+BOOST_AUTO_TEST_CASE(base_check_array)
 {
     concrete_storage storage_{};
 
-    const auto values = storage_.values();
+    const auto base_check_array = storage_.base_check_array();
 
     static const std::vector<std::uint32_t> expected(3, 4242);
-    BOOST_TEST(values == expected);
+    BOOST_TEST(base_check_array == expected);
 }
 
 BOOST_AUTO_TEST_CASE(serialize)

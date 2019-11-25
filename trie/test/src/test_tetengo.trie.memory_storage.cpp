@@ -32,7 +32,7 @@ namespace
         to_c(0x45), to_c(0x67), to_c(0x89), to_c(0xAB), to_c(0xCD), to_c(0xEF),
     };
 
-    const std::vector<uint32_t> values{ 0x01234567, 0x89ABCDEF };
+    const std::vector<uint32_t> base_check_array{ 0x01234567, 0x89ABCDEF };
 
     std::unique_ptr<std::istream> create_input_stream()
     {
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto                          p_input_stream = create_input_stream();
         const tetengo::trie::memory_storage storage_{ *p_input_stream };
 
-        BOOST_TEST(storage_.values() == values);
+        BOOST_TEST(storage_.base_check_array() == base_check_array);
     }
     {
         const auto p_input_stream = create_broken_input_stream();
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(filling_rate)
     BOOST_CHECK_CLOSE(storage_.filling_rate(), 3.0 / 9.0, 0.1);
 }
 
-BOOST_AUTO_TEST_CASE(values)
+BOOST_AUTO_TEST_CASE(base_check_array)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -164,10 +164,10 @@ BOOST_AUTO_TEST_CASE(values)
     storage_.set_base_at(0, 42);
     storage_.set_check_at(1, 24);
 
-    const auto values = storage_.values();
+    const auto base_check_array = storage_.base_check_array();
 
     static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
-    BOOST_TEST(values == expected);
+    BOOST_TEST(base_check_array == expected);
 }
 
 BOOST_AUTO_TEST_CASE(serialize)
@@ -198,10 +198,10 @@ BOOST_AUTO_TEST_CASE(clone)
 
     const auto p_clone = storage_.clone();
 
-    const auto values = p_clone->values();
+    const auto base_check_array = p_clone->base_check_array();
 
     static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
-    BOOST_TEST(values == expected);
+    BOOST_TEST(base_check_array == expected);
 }
 
 

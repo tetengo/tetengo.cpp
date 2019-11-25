@@ -41,36 +41,36 @@ namespace tetengo::trie
         /*!
             \brief Returns the base value.
 
-            \param index An index.
+            \param base_check_index A base-check index.
 
             \return The base value.
         */
-        std::int32_t base_at(std::size_t index) const;
+        std::int32_t base_at(std::size_t base_check_index) const;
 
         /*!
             \brief Sets a base value.
 
-            \param index An index.
-            \param value A value.
+            \param base_check_index A base-check index.
+            \param value            A value.
         */
-        void set_base_at(std::size_t index, std::int32_t value);
+        void set_base_at(std::size_t base_check_index, std::int32_t value);
 
         /*!
             \brief Returns the check value.
 
-            \param index An index.
+            \param base_check_index A base-check index.
 
             \return The check value.
         */
-        std::uint8_t check_at(std::size_t index) const;
+        std::uint8_t check_at(std::size_t base_check_index) const;
 
         /*!
             \brief Sets a check value.
 
-            \param index An index.
-            \param value A value.
+            \param base_check_index A base-check index.
+            \param value            A value.
         */
-        void set_check_at(std::size_t index, std::uint8_t value);
+        void set_check_at(std::size_t base_check_index, std::uint8_t value);
 
         /*!
             \brief Returns the size of this storage.
@@ -87,11 +87,11 @@ namespace tetengo::trie
         double filling_rate() const;
 
         /*!
-            \brief Returns the all values.
+            \brief Returns the base-check array.
 
-            \return The all values.
+            \return The base-check array.
         */
-        const std::vector<std::uint32_t>& values() const;
+        const std::vector<std::uint32_t>& base_check_array() const;
 
         /*!
             \brief Serializes this storage.
@@ -111,19 +111,19 @@ namespace tetengo::trie
     private:
         // virtual functions
 
-        virtual std::int32_t base_at_impl(std::size_t index) const = 0;
+        virtual std::int32_t base_at_impl(std::size_t base_check_index) const = 0;
 
-        virtual void set_base_at_impl(std::size_t index, std::int32_t value) = 0;
+        virtual void set_base_at_impl(std::size_t base_check_index, std::int32_t value) = 0;
 
-        virtual std::uint8_t check_at_impl(std::size_t index) const = 0;
+        virtual std::uint8_t check_at_impl(std::size_t base_check_index) const = 0;
 
-        virtual void set_check_at_impl(std::size_t index, std::uint8_t value) = 0;
+        virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t value) = 0;
 
         virtual std::size_t size_impl() const = 0;
 
         virtual double filling_rate_impl() const = 0;
 
-        virtual const std::vector<std::uint32_t>& values_impl() const = 0;
+        virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
 
         virtual void serialize_impl(std::ostream& output_stream) const = 0;
 

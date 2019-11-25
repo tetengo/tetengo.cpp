@@ -22,25 +22,25 @@
 
 namespace tetengo::trie
 {
-    enumerator::enumerator(const storage& storage_, const std::size_t root_index) :
+    enumerator::enumerator(const storage& storage_, const std::size_t root_base_check_index) :
     m_storage{ storage_ },
-        m_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
-            std::make_pair(root_index, std::string{}) } }
+        m_base_check_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
+            std::make_pair(root_base_check_index, std::string{}) } }
     {}
 
     std::optional<std::pair<std::string, std::int32_t>> enumerator::next()
     {
-        if (m_index_key_stack.empty())
+        if (m_base_check_index_key_stack.empty())
         {
             return std::nullopt;
         }
 
-        const auto index = m_index_key_stack.top().first;
-        const auto key = m_index_key_stack.top().second;
-        m_index_key_stack.pop();
+        const auto base_check_index = m_base_check_index_key_stack.top().first;
+        const auto key = m_base_check_index_key_stack.top().second;
+        m_base_check_index_key_stack.pop();
 
-        const auto base = m_storage.base_at(index);
-        const auto check = m_storage.check_at(index);
+        const auto base = m_storage.base_at(base_check_index);
+        const auto check = m_storage.check_at(base_check_index);
 
         if (check == double_array::key_terminator())
         {
@@ -60,7 +60,7 @@ namespace tetengo::trie
                 const auto next_key_tail = char_code_as_uint8 != double_array::key_terminator() ?
                                                std::string{ static_cast<char>(char_code_as_uint8) } :
                                                std::string{};
-                m_index_key_stack.push(std::make_pair(next_index, key + next_key_tail));
+                m_base_check_index_key_stack.push(std::make_pair(next_index, key + next_key_tail));
             }
         }
 
