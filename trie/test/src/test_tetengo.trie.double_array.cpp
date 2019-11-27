@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(default_density_factor)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_TEST(tetengo::trie::double_array::default_density_factor() > 0);
+    BOOST_TEST(tetengo::trie::double_array::default_density_factor() > 0U);
 
     // TODO: C style API
 }
