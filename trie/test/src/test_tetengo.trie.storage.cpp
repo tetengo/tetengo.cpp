@@ -133,6 +133,16 @@ BOOST_AUTO_TEST_CASE(base_check_array)
     BOOST_TEST(base_check_array == expected);
 }
 
+BOOST_AUTO_TEST_CASE(mapped_storage_index)
+{
+    BOOST_TEST_PASSPOINT();
+}
+
+BOOST_AUTO_TEST_CASE(add_mapped_storage_index)
+{
+    BOOST_TEST_PASSPOINT();
+}
+
 BOOST_AUTO_TEST_CASE(serialize)
 {
     BOOST_TEST_PASSPOINT();
