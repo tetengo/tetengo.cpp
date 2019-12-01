@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -73,13 +74,6 @@ namespace tetengo::trie
         void set_check_at(std::size_t base_check_index, std::uint8_t value);
 
         /*!
-            \brief Returns the size of this storage.
-
-            \return The size.
-        */
-        std::size_t size() const;
-
-        /*!
             \brief Returns the filling rate.
 
             \return The filling rate.
@@ -92,6 +86,24 @@ namespace tetengo::trie
             \return The base-check array.
         */
         const std::vector<std::uint32_t>& base_check_array() const;
+
+        /*!
+            \brief Returns the mapped storage index.
+
+            \param mapped_index A mapped index.
+
+            \return The mapped storage index. Or std::nullopt when there is no corresponding mapped storage index.
+        */
+        std::optional<std::size_t> mapped_storage_index(std::size_t mapped_index) const;
+
+        /*!
+            \brief Adds a mapped storage index mapping.
+
+            A mapped storage index is automatically assigned.
+
+            \param mapped_index A mapped index.
+        */
+        void add_mapped_storage_index(std::size_t mapped_index);
 
         /*!
             \brief Serializes this storage.
@@ -119,11 +131,13 @@ namespace tetengo::trie
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t value) = 0;
 
-        virtual std::size_t size_impl() const = 0;
-
         virtual double filling_rate_impl() const = 0;
 
         virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
+
+        virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const = 0;
+
+        virtual void add_mapped_storage_index_impl(std::size_t mapped_index) = 0;
 
         virtual void serialize_impl(std::ostream& output_stream) const = 0;
 

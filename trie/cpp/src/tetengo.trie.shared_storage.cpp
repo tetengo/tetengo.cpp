@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -50,11 +51,6 @@ namespace tetengo::trie
             m_p_entity->set_check_at(base_check_index, value);
         }
 
-        std::size_t size_impl() const
-        {
-            return m_p_entity->size();
-        }
-
         double filling_rate_impl() const
         {
             return m_p_entity->filling_rate();
@@ -63,6 +59,16 @@ namespace tetengo::trie
         const std::vector<std::uint32_t>& base_check_array_impl() const
         {
             return m_p_entity->base_check_array();
+        }
+
+        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t mapped_index) const
+        {
+            return m_p_entity->mapped_storage_index(mapped_index);
+        }
+
+        void add_mapped_storage_index_impl(const std::size_t mapped_index)
+        {
+            m_p_entity->add_mapped_storage_index(mapped_index);
         }
 
         void serialize_impl(std::ostream& output_stream) const
@@ -111,11 +117,6 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, value);
     }
 
-    std::size_t shared_storage::size_impl() const
-    {
-        return m_p_impl->size_impl();
-    }
-
     double shared_storage::filling_rate_impl() const
     {
         return m_p_impl->filling_rate_impl();
@@ -124,6 +125,16 @@ namespace tetengo::trie
     const std::vector<std::uint32_t>& shared_storage::base_check_array_impl() const
     {
         return m_p_impl->base_check_array_impl();
+    }
+
+    std::optional<std::size_t> shared_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    {
+        return m_p_impl->mapped_storage_index_impl(mapped_index);
+    }
+
+    void shared_storage::add_mapped_storage_index_impl(const std::size_t mapped_index)
+    {
+        return m_p_impl->add_mapped_storage_index_impl(mapped_index);
     }
 
     void shared_storage::serialize_impl(std::ostream& output_stream) const

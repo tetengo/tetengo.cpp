@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -119,19 +120,6 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     BOOST_TEST(storage_.check_at(24) == 124);
 }
 
-BOOST_AUTO_TEST_CASE(size)
-{
-    BOOST_TEST_PASSPOINT();
-
-    tetengo::trie::shared_storage storage_{};
-
-    BOOST_TEST(storage_.size() == 1U);
-
-    storage_.base_at(42);
-
-    BOOST_TEST(storage_.size() == 43U);
-}
-
 BOOST_AUTO_TEST_CASE(filling_rate)
 {
     BOOST_TEST_PASSPOINT();
@@ -168,6 +156,42 @@ BOOST_AUTO_TEST_CASE(base_check_array)
 
     static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
     BOOST_TEST(base_check_array == expected);
+}
+
+BOOST_AUTO_TEST_CASE(mapped_storage_index)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::trie::shared_storage storage_{};
+
+    BOOST_TEST(!storage_.mapped_storage_index(42));
+}
+
+BOOST_AUTO_TEST_CASE(add_mapped_storage_index)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::shared_storage storage_{};
+
+    storage_.add_mapped_storage_index(24);
+
+    BOOST_TEST(!storage_.mapped_storage_index(0));
+    BOOST_REQUIRE(storage_.mapped_storage_index(24));
+    BOOST_TEST(*storage_.mapped_storage_index(24) == 0U);
+    BOOST_TEST(!storage_.mapped_storage_index(42));
+
+    storage_.add_mapped_storage_index(42);
+
+    BOOST_REQUIRE(storage_.mapped_storage_index(42));
+    BOOST_TEST(*storage_.mapped_storage_index(42) == 1U);
+    BOOST_TEST(!storage_.mapped_storage_index(4242));
+
+    storage_.add_mapped_storage_index(0);
+
+    BOOST_REQUIRE(storage_.mapped_storage_index(0));
+    BOOST_TEST(*storage_.mapped_storage_index(0) == 2U);
+    BOOST_REQUIRE(storage_.mapped_storage_index(42));
+    BOOST_TEST(*storage_.mapped_storage_index(42) == 1U);
 }
 
 BOOST_AUTO_TEST_CASE(serialize)

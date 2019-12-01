@@ -6,10 +6,13 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <istream>
 #include <iterator>
+#include <limits>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -26,9 +29,15 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        impl() : m_base_check_array{ 0x00000000U | double_array::vacant_check_value() } {};
+        impl() :
+        m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
+            m_mapped_storage_mappings{},
+            m_next_mapped_storage_index{ 0 } {};
 
-        explicit impl(std::istream& input_stream) : m_base_check_array{ deserialize(input_stream) } {};
+        explicit impl(std::istream& input_stream) :
+        m_base_check_array{ deserialize(input_stream) },
+            m_mapped_storage_mappings{},
+            m_next_mapped_storage_index{ 0 } {};
 
 
         // functions
@@ -59,20 +68,36 @@ namespace tetengo::trie
             m_base_check_array[base_check_index] |= value;
         }
 
-        std::size_t size_impl() const
-        {
-            return m_base_check_array.size();
-        }
-
         double filling_rate_impl() const
         {
-            const auto empty_count = std::count(std::begin(m_base_check_array), std::end(m_base_check_array), 0x000000FFU);
+            const auto empty_count =
+                std::count(std::begin(m_base_check_array), std::end(m_base_check_array), 0x000000FFU);
             return 1.0 - static_cast<double>(empty_count) / m_base_check_array.size();
         }
 
         const std::vector<std::uint32_t>& base_check_array_impl() const
         {
             return m_base_check_array;
+        }
+
+        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t mapped_index) const
+        {
+            if (mapped_index >= m_mapped_storage_mappings.size() ||
+                m_mapped_storage_mappings[mapped_index] == std::numeric_limits<std::size_t>::max())
+            {
+                return std::nullopt;
+            }
+            return m_mapped_storage_mappings[mapped_index];
+        }
+
+        void add_mapped_storage_index_impl(const std::size_t mapped_index)
+        {
+            if (mapped_index >= m_mapped_storage_mappings.size())
+            {
+                m_mapped_storage_mappings.resize(mapped_index + 1, std::numeric_limits<std::size_t>::max());
+            }
+            m_mapped_storage_mappings[mapped_index] = m_next_mapped_storage_index;
+            ++m_next_mapped_storage_index;
         }
 
         void serialize_impl(std::ostream& output_stream) const
@@ -137,6 +162,10 @@ namespace tetengo::trie
 
         mutable std::vector<std::uint32_t> m_base_check_array;
 
+        std::vector<std::size_t> m_mapped_storage_mappings;
+
+        std::size_t m_next_mapped_storage_index;
+
 
         // functions
 
@@ -176,11 +205,6 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, value);
     }
 
-    std::size_t memory_storage::size_impl() const
-    {
-        return m_p_impl->size_impl();
-    }
-
     double memory_storage::filling_rate_impl() const
     {
         return m_p_impl->filling_rate_impl();
@@ -189,6 +213,16 @@ namespace tetengo::trie
     const std::vector<std::uint32_t>& memory_storage::base_check_array_impl() const
     {
         return m_p_impl->base_check_array_impl();
+    }
+
+    std::optional<std::size_t> memory_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    {
+        return m_p_impl->mapped_storage_index_impl(mapped_index);
+    }
+
+    void memory_storage::add_mapped_storage_index_impl(const std::size_t mapped_index)
+    {
+        return m_p_impl->add_mapped_storage_index_impl(mapped_index);
     }
 
     void memory_storage::serialize_impl(std::ostream& output_stream) const

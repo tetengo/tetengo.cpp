@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
@@ -64,11 +65,13 @@ namespace tetengo::trie
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t value) override;
 
-        virtual std::size_t size_impl() const override;
-
         virtual double filling_rate_impl() const override;
 
         virtual const std::vector<std::uint32_t>& base_check_array_impl() const override;
+
+        virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const override;
+
+        virtual void add_mapped_storage_index_impl(std::size_t mapped_index) override;
 
         virtual void serialize_impl(std::ostream& output_stream) const override;
 
