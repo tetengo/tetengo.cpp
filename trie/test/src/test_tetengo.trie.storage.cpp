@@ -53,7 +53,7 @@ namespace
             return std::nullopt;
         }
 
-        virtual void add_mapped_storage_index_impl(std::size_t /*mapped_index*/) const override {}
+        virtual void add_mapped_storage_index_impl(std::size_t /*mapped_index*/) override {}
 
         virtual void serialize_impl(std::ostream& /*output_stream*/) const override {}
 
@@ -126,7 +126,9 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 
 BOOST_AUTO_TEST_CASE(base_check_array)
 {
-    concrete_storage storage_{};
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage_{};
 
     const auto base_check_array = storage_.base_check_array();
 
@@ -137,18 +139,26 @@ BOOST_AUTO_TEST_CASE(base_check_array)
 BOOST_AUTO_TEST_CASE(mapped_storage_index)
 {
     BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage_{};
+
+    BOOST_TEST(!storage_.mapped_storage_index(42));
 }
 
 BOOST_AUTO_TEST_CASE(add_mapped_storage_index)
 {
     BOOST_TEST_PASSPOINT();
+
+    concrete_storage storage_{};
+
+    storage_.add_mapped_storage_index(42);
 }
 
 BOOST_AUTO_TEST_CASE(serialize)
 {
     BOOST_TEST_PASSPOINT();
 
-    concrete_storage storage_{};
+    const concrete_storage storage_{};
 
     std::ostringstream output_stream{};
     storage_.serialize(output_stream);
@@ -158,7 +168,7 @@ BOOST_AUTO_TEST_CASE(clone)
 {
     BOOST_TEST_PASSPOINT();
 
-    concrete_storage storage_{};
+    const concrete_storage storage_{};
 
     const auto p_clone = storage_.clone();
 }

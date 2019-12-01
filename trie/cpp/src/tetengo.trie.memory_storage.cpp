@@ -77,7 +77,7 @@ namespace tetengo::trie
             return std::nullopt;
         }
 
-        void add_mapped_storage_index_impl(const std::size_t /*mapped_index*/) const {}
+        void add_mapped_storage_index_impl(const std::size_t /*mapped_index*/) {}
 
         void serialize_impl(std::ostream& output_stream) const
         {
@@ -195,7 +195,7 @@ namespace tetengo::trie
         return m_p_impl->mapped_storage_index_impl(mapped_index);
     }
 
-    void memory_storage::add_mapped_storage_index_impl(const std::size_t mapped_index) const
+    void memory_storage::add_mapped_storage_index_impl(const std::size_t mapped_index)
     {
         return m_p_impl->add_mapped_storage_index_impl(mapped_index);
     }

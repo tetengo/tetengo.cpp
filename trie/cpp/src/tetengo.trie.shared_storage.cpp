@@ -66,7 +66,7 @@ namespace tetengo::trie
             return m_p_entity->mapped_storage_index(mapped_index);
         }
 
-        void add_mapped_storage_index_impl(const std::size_t mapped_index) const
+        void add_mapped_storage_index_impl(const std::size_t mapped_index)
         {
             m_p_entity->add_mapped_storage_index(mapped_index);
         }
@@ -132,7 +132,7 @@ namespace tetengo::trie
         return m_p_impl->mapped_storage_index_impl(mapped_index);
     }
 
-    void shared_storage::add_mapped_storage_index_impl(const std::size_t mapped_index) const
+    void shared_storage::add_mapped_storage_index_impl(const std::size_t mapped_index)
     {
         return m_p_impl->add_mapped_storage_index_impl(mapped_index);
     }
