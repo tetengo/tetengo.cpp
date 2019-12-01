@@ -10,6 +10,7 @@
 #include <istream>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -71,13 +72,12 @@ namespace tetengo::trie
             return m_base_check_array;
         }
 
-        std::size_t mapped_storage_index_impl(const std::size_t /*mapped_index*/) const
+        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t /*mapped_index*/) const
         {
-            return 0;
+            return std::nullopt;
         }
 
-        void add_mapped_storage_index_impl(const std::size_t /*mapped_index*/) const
-        {}
+        void add_mapped_storage_index_impl(const std::size_t /*mapped_index*/) const {}
 
         void serialize_impl(std::ostream& output_stream) const
         {
@@ -190,7 +190,7 @@ namespace tetengo::trie
         return m_p_impl->base_check_array_impl();
     }
 
-    std::size_t memory_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    std::optional<std::size_t> memory_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
     {
         return m_p_impl->mapped_storage_index_impl(mapped_index);
     }

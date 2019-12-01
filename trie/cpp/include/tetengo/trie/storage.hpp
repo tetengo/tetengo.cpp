@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -91,9 +92,9 @@ namespace tetengo::trie
 
             \param mapped_index A mapped index.
 
-            \return The mapped storage index.
+            \return The mapped storage index. Or std::nullopt when there is no corresponding mapped storage index.
         */
-        std::size_t mapped_storage_index(std::size_t mapped_index) const;
+        std::optional<std::size_t> mapped_storage_index(std::size_t mapped_index) const;
 
         /*!
             \brief Adds a mapped storage index mapping.
@@ -134,7 +135,7 @@ namespace tetengo::trie
 
         virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
 
-        virtual std::size_t mapped_storage_index_impl(std::size_t mapped_index) const = 0;
+        virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const = 0;
 
         virtual void add_mapped_storage_index_impl(std::size_t mapped_index) const = 0;
 

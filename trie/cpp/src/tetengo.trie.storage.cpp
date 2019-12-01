@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
@@ -44,7 +45,7 @@ namespace tetengo::trie
         return base_check_array_impl();
     }
 
-    std::size_t storage::mapped_storage_index(const std::size_t mapped_index) const
+    std::optional<std::size_t> storage::mapped_storage_index(const std::size_t mapped_index) const
     {
         return mapped_storage_index_impl(mapped_index);
     }

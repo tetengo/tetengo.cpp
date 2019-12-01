@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -60,7 +61,7 @@ namespace tetengo::trie
             return m_p_entity->base_check_array();
         }
 
-        std::size_t mapped_storage_index_impl(const std::size_t mapped_index) const
+        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t mapped_index) const
         {
             return m_p_entity->mapped_storage_index(mapped_index);
         }
@@ -126,7 +127,7 @@ namespace tetengo::trie
         return m_p_impl->base_check_array_impl();
     }
 
-    std::size_t shared_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    std::optional<std::size_t> shared_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
     {
         return m_p_impl->mapped_storage_index_impl(mapped_index);
     }

@@ -6,6 +6,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <vector>
 
@@ -47,9 +48,9 @@ namespace
             return singleton;
         }
 
-        virtual std::size_t mapped_storage_index_impl(std::size_t /*mapped_index*/) const override
+        virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t /*mapped_index*/) const override
         {
-            return 0;
+            return std::nullopt;
         }
 
         virtual void add_mapped_storage_index_impl(std::size_t /*mapped_index*/) const override {}
