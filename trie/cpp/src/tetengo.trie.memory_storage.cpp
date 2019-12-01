@@ -6,9 +6,11 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <istream>
 #include <iterator>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -27,9 +29,15 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        impl() : m_base_check_array{ 0x00000000U | double_array::vacant_check_value() } {};
+        impl() :
+        m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
+            m_mapped_storage_mappings{},
+            m_next_mapped_storage_index{ 0 } {};
 
-        explicit impl(std::istream& input_stream) : m_base_check_array{ deserialize(input_stream) } {};
+        explicit impl(std::istream& input_stream) :
+        m_base_check_array{ deserialize(input_stream) },
+            m_mapped_storage_mappings{},
+            m_next_mapped_storage_index{ 0 } {};
 
 
         // functions
@@ -72,12 +80,25 @@ namespace tetengo::trie
             return m_base_check_array;
         }
 
-        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t /*mapped_index*/) const
+        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t mapped_index) const
         {
-            return std::nullopt;
+            if (mapped_index >= m_mapped_storage_mappings.size() ||
+                m_mapped_storage_mappings[mapped_index] == std::numeric_limits<std::size_t>::max())
+            {
+                return std::nullopt;
+            }
+            return m_mapped_storage_mappings[mapped_index];
         }
 
-        void add_mapped_storage_index_impl(const std::size_t /*mapped_index*/) {}
+        void add_mapped_storage_index_impl(const std::size_t mapped_index)
+        {
+            if (mapped_index >= m_mapped_storage_mappings.size())
+            {
+                m_mapped_storage_mappings.resize(mapped_index + 1, std::numeric_limits<std::size_t>::max());
+            }
+            m_mapped_storage_mappings[mapped_index] = m_next_mapped_storage_index;
+            ++m_next_mapped_storage_index;
+        }
 
         void serialize_impl(std::ostream& output_stream) const
         {
@@ -140,6 +161,10 @@ namespace tetengo::trie
         // variables
 
         mutable std::vector<std::uint32_t> m_base_check_array;
+
+        std::vector<std::size_t> m_mapped_storage_mappings;
+
+        std::size_t m_next_mapped_storage_index;
 
 
         // functions
