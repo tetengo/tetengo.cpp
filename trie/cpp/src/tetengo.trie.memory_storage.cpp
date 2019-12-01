@@ -35,9 +35,12 @@ namespace tetengo::trie
             m_next_mapped_storage_index{ 0 } {};
 
         explicit impl(std::istream& input_stream) :
-        m_base_check_array{ deserialize(input_stream) },
+        m_base_check_array{},
             m_mapped_storage_mappings{},
-            m_next_mapped_storage_index{ 0 } {};
+            m_next_mapped_storage_index{ 0 }
+        {
+            deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_next_mapped_storage_index);
+        };
 
 
         // functions
@@ -142,19 +145,20 @@ namespace tetengo::trie
             output_stream.write(buffer.data(), buffer.size());
         }
 
-        static std::vector<std::uint32_t> deserialize(std::istream& input_stream)
+        static void deserialize(
+            std::istream&               input_stream,
+            std::vector<std::uint32_t>& base_check_array,
+            std::vector<std::size_t>& /*mapped_storage_mappings*/,
+            std::size_t& /*next_mapped_storage_index*/)
         {
             const auto size = read_uint32(input_stream);
 
-            std::vector<std::uint32_t> base_check_array;
             base_check_array.reserve(size);
 
             for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
             {
                 base_check_array.push_back(read_uint32(input_stream));
             }
-
-            return base_check_array;
         }
 
 
