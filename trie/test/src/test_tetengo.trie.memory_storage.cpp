@@ -29,8 +29,10 @@ namespace
     }
 
     const std::vector<char> serialized{
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x01), to_c(0x23),
-        to_c(0x45), to_c(0x67), to_c(0x89), to_c(0xAB), to_c(0xCD), to_c(0xEF),
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x01), to_c(0x23), to_c(0x45),
+        to_c(0x67), to_c(0x89), to_c(0xAB), to_c(0xCD), to_c(0xEF), to_c(0x00), to_c(0x00),
+        to_c(0x00), to_c(0x03), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), to_c(0x00),
+        to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01),
     };
 
     const std::vector<uint32_t> base_check_array{ 0x01234567, 0x89ABCDEF };
@@ -66,12 +68,17 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::memory_storage storage_{};
     }
-
     {
         const auto                          p_input_stream = create_input_stream();
         const tetengo::trie::memory_storage storage_{ *p_input_stream };
 
         BOOST_TEST(storage_.base_check_array() == base_check_array);
+        BOOST_REQUIRE(storage_.mapped_storage_index(4));
+        BOOST_TEST(*storage_.mapped_storage_index(4) == 0U);
+        BOOST_REQUIRE(storage_.mapped_storage_index(2));
+        BOOST_TEST(*storage_.mapped_storage_index(2) == 1U);
+        BOOST_REQUIRE(storage_.mapped_storage_index(1));
+        BOOST_TEST(*storage_.mapped_storage_index(1) == 2U);
     }
     {
         const auto p_input_stream = create_broken_input_stream();
@@ -203,12 +210,21 @@ BOOST_AUTO_TEST_CASE(serialize)
     storage_.set_base_at(0, 42);
     storage_.set_check_at(1, 24);
 
+    storage_.add_mapped_storage_index(4);
+    storage_.add_mapped_storage_index(2);
+    storage_.add_mapped_storage_index(1);
+
     std::ostringstream output_stream{};
     storage_.serialize(output_stream);
 
-    static const std::string expected{ to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00),
-                                       to_c(0x2A), to_c(0xFF), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18) };
-    BOOST_TEST(output_stream.str() == expected);
+    static const std::string expected{
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x2A),
+        to_c(0xFF), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18), to_c(0x00), to_c(0x00),
+        to_c(0x00), to_c(0x03), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), to_c(0x00),
+        to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01),
+    };
+    const std::string serialized = output_stream.str();
+    BOOST_CHECK_EQUAL_COLLECTIONS(serialized.begin(), serialized.end(), expected.begin(), expected.end());
 }
 
 BOOST_AUTO_TEST_CASE(clone)

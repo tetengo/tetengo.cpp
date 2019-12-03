@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <istream>
@@ -35,9 +36,12 @@ namespace tetengo::trie
             m_next_mapped_storage_index{ 0 } {};
 
         explicit impl(std::istream& input_stream) :
-        m_base_check_array{ deserialize(input_stream) },
+        m_base_check_array{},
             m_mapped_storage_mappings{},
-            m_next_mapped_storage_index{ 0 } {};
+            m_next_mapped_storage_index{ 0 }
+        {
+            deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_next_mapped_storage_index);
+        };
 
 
         // functions
@@ -102,10 +106,36 @@ namespace tetengo::trie
 
         void serialize_impl(std::ostream& output_stream) const
         {
-            write_uint32(output_stream, static_cast<std::uint32_t>(m_base_check_array.size()));
-            for (const auto& v: m_base_check_array)
             {
-                write_uint32(output_stream, v);
+                write_uint32(output_stream, static_cast<std::uint32_t>(m_base_check_array.size()));
+                for (const auto v: m_base_check_array)
+                {
+                    write_uint32(output_stream, v);
+                }
+            }
+            {
+                std::vector<std::uint32_t> values{};
+                for (auto i = static_cast<std::uint32_t>(0); i < m_mapped_storage_mappings.size(); ++i)
+                {
+                    if (m_mapped_storage_mappings[i] == std::numeric_limits<std::size_t>::max())
+                    {
+                        continue;
+                    }
+
+                    if (m_mapped_storage_mappings[i] >= values.size())
+                    {
+                        values.resize(m_mapped_storage_mappings[i] + 1, std::numeric_limits<std::uint32_t>::max());
+                    }
+                    values[m_mapped_storage_mappings[i]] = i;
+                }
+                assert(
+                    std::find(values.begin(), values.end(), std::numeric_limits<std::uint32_t>::max()) == values.end());
+
+                write_uint32(output_stream, static_cast<std::uint32_t>(values.size()));
+                for (const auto v: values)
+                {
+                    write_uint32(output_stream, v);
+                }
             }
         }
 
@@ -142,19 +172,33 @@ namespace tetengo::trie
             output_stream.write(buffer.data(), buffer.size());
         }
 
-        static std::vector<std::uint32_t> deserialize(std::istream& input_stream)
+        static void deserialize(
+            std::istream&               input_stream,
+            std::vector<std::uint32_t>& base_check_array,
+            std::vector<std::size_t>&   mapped_storage_mappings,
+            std::size_t&                next_mapped_storage_index)
         {
-            const auto size = read_uint32(input_stream);
-
-            std::vector<std::uint32_t> base_check_array;
-            base_check_array.reserve(size);
-
-            for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
             {
-                base_check_array.push_back(read_uint32(input_stream));
+                const auto size = read_uint32(input_stream);
+                base_check_array.reserve(size);
+                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+                {
+                    base_check_array.push_back(read_uint32(input_stream));
+                }
             }
-
-            return base_check_array;
+            {
+                const auto size = read_uint32(input_stream);
+                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+                {
+                    const auto value = read_uint32(input_stream);
+                    if (value >= mapped_storage_mappings.size())
+                    {
+                        mapped_storage_mappings.resize(value + 1, std::numeric_limits<std::size_t>::max());
+                    }
+                    mapped_storage_mappings[value] = i;
+                }
+                next_mapped_storage_index = size;
+            }
         }
 
 
