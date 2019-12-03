@@ -175,16 +175,29 @@ namespace tetengo::trie
         static void deserialize(
             std::istream&               input_stream,
             std::vector<std::uint32_t>& base_check_array,
-            std::vector<std::size_t>& /*mapped_storage_mappings*/,
-            std::size_t& /*next_mapped_storage_index*/)
+            std::vector<std::size_t>&   mapped_storage_mappings,
+            std::size_t&                next_mapped_storage_index)
         {
-            const auto size = read_uint32(input_stream);
-
-            base_check_array.reserve(size);
-
-            for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
             {
-                base_check_array.push_back(read_uint32(input_stream));
+                const auto size = read_uint32(input_stream);
+                base_check_array.reserve(size);
+                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+                {
+                    base_check_array.push_back(read_uint32(input_stream));
+                }
+            }
+            {
+                const auto size = read_uint32(input_stream);
+                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+                {
+                    const auto value = read_uint32(input_stream);
+                    if (value >= mapped_storage_mappings.size())
+                    {
+                        mapped_storage_mappings.resize(value + 1, std::numeric_limits<std::size_t>::max());
+                    }
+                    mapped_storage_mappings[value] = i;
+                }
+                next_mapped_storage_index = size;
             }
         }
 
