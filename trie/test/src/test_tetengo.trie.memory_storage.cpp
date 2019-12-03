@@ -66,7 +66,6 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::memory_storage storage_{};
     }
-
     {
         const auto                          p_input_stream = create_input_stream();
         const tetengo::trie::memory_storage storage_{ *p_input_stream };
@@ -203,12 +202,21 @@ BOOST_AUTO_TEST_CASE(serialize)
     storage_.set_base_at(0, 42);
     storage_.set_check_at(1, 24);
 
+    storage_.add_mapped_storage_index(4);
+    storage_.add_mapped_storage_index(2);
+    storage_.add_mapped_storage_index(1);
+
     std::ostringstream output_stream{};
     storage_.serialize(output_stream);
 
-    static const std::string expected{ to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00),
-                                       to_c(0x2A), to_c(0xFF), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18) };
-    BOOST_TEST(output_stream.str() == expected);
+    static const std::string expected{
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x2A),
+        to_c(0xFF), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18), to_c(0x00), to_c(0x00),
+        to_c(0x00), to_c(0x03), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), to_c(0x00),
+        to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01),
+    };
+    const std::string serialized = output_stream.str();
+    BOOST_CHECK_EQUAL_COLLECTIONS(serialized.begin(), serialized.end(), expected.begin(), expected.end());
 }
 
 BOOST_AUTO_TEST_CASE(clone)

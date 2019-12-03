@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <istream>
@@ -105,10 +106,36 @@ namespace tetengo::trie
 
         void serialize_impl(std::ostream& output_stream) const
         {
-            write_uint32(output_stream, static_cast<std::uint32_t>(m_base_check_array.size()));
-            for (const auto& v: m_base_check_array)
             {
-                write_uint32(output_stream, v);
+                write_uint32(output_stream, static_cast<std::uint32_t>(m_base_check_array.size()));
+                for (const auto v: m_base_check_array)
+                {
+                    write_uint32(output_stream, v);
+                }
+            }
+            {
+                std::vector<std::uint32_t> values{};
+                for (auto i = static_cast<std::uint32_t>(0); i < m_mapped_storage_mappings.size(); ++i)
+                {
+                    if (m_mapped_storage_mappings[i] == std::numeric_limits<std::size_t>::max())
+                    {
+                        continue;
+                    }
+
+                    if (m_mapped_storage_mappings[i] >= values.size())
+                    {
+                        values.resize(m_mapped_storage_mappings[i] + 1, std::numeric_limits<std::uint32_t>::max());
+                    }
+                    values[m_mapped_storage_mappings[i]] = i;
+                }
+                assert(
+                    std::find(values.begin(), values.end(), std::numeric_limits<std::uint32_t>::max()) == values.end());
+
+                write_uint32(output_stream, static_cast<std::uint32_t>(values.size()));
+                for (const auto v: values)
+                {
+                    write_uint32(output_stream, v);
+                }
             }
         }
 
