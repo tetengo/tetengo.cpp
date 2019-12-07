@@ -4,10 +4,12 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <any>
 #include <cstdint>
 #include <istream>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
@@ -50,9 +52,9 @@ namespace tetengo::trie
         return mapped_storage_index_impl(mapped_index);
     }
 
-    void storage::add_mapped_storage_index(const std::size_t mapped_index)
+    void storage::add_mapped(const std::size_t index, std::any mapped)
     {
-        add_mapped_storage_index_impl(mapped_index);
+        add_mapped_impl(index, std::move(mapped));
     }
 
     void storage::serialize(std::ostream& output_stream) const

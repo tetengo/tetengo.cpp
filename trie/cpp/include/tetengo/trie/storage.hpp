@@ -12,6 +12,7 @@
 #include <memory>
 #include <optional>
 #include <vector>
+#include <any>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -99,11 +100,10 @@ namespace tetengo::trie
         /*!
             \brief Adds a mapped storage index mapping.
 
-            A mapped storage index is automatically assigned.
-
-            \param mapped_index A mapped index.
+            \param index  An index.
+            \param mapped A mapped object.
         */
-        void add_mapped_storage_index(std::size_t mapped_index);
+        void add_mapped(std::size_t index, std::any mapped);
 
         /*!
             \brief Serializes this storage.
@@ -137,7 +137,7 @@ namespace tetengo::trie
 
         virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const = 0;
 
-        virtual void add_mapped_storage_index_impl(std::size_t mapped_index) = 0;
+        virtual void add_mapped_impl(std::size_t index, std::any mapped) = 0;
 
         virtual void serialize_impl(std::ostream& output_stream) const = 0;
 

@@ -7,6 +7,7 @@
 #if !defined(TETENGO_TRIE_MEMORYSTORAGE_HPP)
 #define TETENGO_TRIE_MEMORYSTORAGE_HPP
 
+#include <any>
 #include <cstdint>
 #include <istream>
 #include <memory>
@@ -71,7 +72,7 @@ namespace tetengo::trie
 
         virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const override;
 
-        virtual void add_mapped_storage_index_impl(std::size_t mapped_index) override;
+        virtual void add_mapped_impl(std::size_t index, std::any mapped) override;
 
         virtual void serialize_impl(std::ostream& output_stream) const override;
 

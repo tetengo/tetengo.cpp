@@ -4,10 +4,12 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <any>
 #include <cstdint>
 #include <memory>
 #include <optional>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -23,19 +25,19 @@ namespace
     private:
         // virtual functions
 
-        virtual std::int32_t base_at_impl(std::size_t /*base_check_index*/) const override
+        virtual std::int32_t base_at_impl(const std::size_t /*base_check_index*/) const override
         {
             return 42;
         }
 
-        virtual void set_base_at_impl(std::size_t /*base_check_index*/, std::int32_t /*value*/) override {}
+        virtual void set_base_at_impl(const std::size_t /*base_check_index*/, const std::int32_t /*value*/) override {}
 
-        virtual std::uint8_t check_at_impl(std::size_t /*base_check_index*/) const override
+        virtual std::uint8_t check_at_impl(const std::size_t /*base_check_index*/) const override
         {
             return 24;
         }
 
-        virtual void set_check_at_impl(std::size_t /*base_check_index*/, std::uint8_t /*value*/) override {}
+        virtual void set_check_at_impl(const std::size_t /*base_check_index*/, const std::uint8_t /*value*/) override {}
 
         virtual double filling_rate_impl() const override
         {
@@ -48,12 +50,12 @@ namespace
             return singleton;
         }
 
-        virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t /*mapped_index*/) const override
+        virtual std::optional<std::size_t> mapped_storage_index_impl(const std::size_t /*mapped_index*/) const override
         {
             return std::nullopt;
         }
 
-        virtual void add_mapped_storage_index_impl(std::size_t /*mapped_index*/) override {}
+        virtual void add_mapped_impl(const std::size_t /*index*/, std::any /*mapped*/) override {}
 
         virtual void serialize_impl(std::ostream& /*output_stream*/) const override {}
 
@@ -145,13 +147,13 @@ BOOST_AUTO_TEST_CASE(mapped_storage_index)
     BOOST_TEST(!storage_.mapped_storage_index(42));
 }
 
-BOOST_AUTO_TEST_CASE(add_mapped_storage_index)
+BOOST_AUTO_TEST_CASE(add_mapped)
 {
     BOOST_TEST_PASSPOINT();
 
     concrete_storage storage_{};
 
-    storage_.add_mapped_storage_index(42);
+    storage_.add_mapped(42, std::make_any<std::string>("hoge"));
 }
 
 BOOST_AUTO_TEST_CASE(serialize)

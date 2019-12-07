@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <any>
 #include <array>
 #include <cassert>
 #include <cstddef>
@@ -14,6 +15,7 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -32,13 +34,11 @@ namespace tetengo::trie
 
         impl() :
         m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
-            m_mapped_storage_mappings{},
-            m_next_mapped_storage_index{ 0 } {};
+        m_mapped_storage_mappings{},
+        m_next_mapped_storage_index{ 0 } {};
 
         explicit impl(std::istream& input_stream) :
-        m_base_check_array{},
-            m_mapped_storage_mappings{},
-            m_next_mapped_storage_index{ 0 }
+        m_base_check_array{}, m_mapped_storage_mappings{}, m_next_mapped_storage_index{ 0 }
         {
             deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_next_mapped_storage_index);
         };
@@ -94,13 +94,13 @@ namespace tetengo::trie
             return m_mapped_storage_mappings[mapped_index];
         }
 
-        void add_mapped_storage_index_impl(const std::size_t mapped_index)
+        void add_mapped_impl(const std::size_t index, std::any /*mapped*/)
         {
-            if (mapped_index >= m_mapped_storage_mappings.size())
+            if (index >= m_mapped_storage_mappings.size())
             {
-                m_mapped_storage_mappings.resize(mapped_index + 1, std::numeric_limits<std::size_t>::max());
+                m_mapped_storage_mappings.resize(index + 1, std::numeric_limits<std::size_t>::max());
             }
-            m_mapped_storage_mappings[mapped_index] = m_next_mapped_storage_index;
+            m_mapped_storage_mappings[index] = m_next_mapped_storage_index;
             ++m_next_mapped_storage_index;
         }
 
@@ -264,9 +264,9 @@ namespace tetengo::trie
         return m_p_impl->mapped_storage_index_impl(mapped_index);
     }
 
-    void memory_storage::add_mapped_storage_index_impl(const std::size_t mapped_index)
+    void memory_storage::add_mapped_impl(const std::size_t index, std::any mapped)
     {
-        return m_p_impl->add_mapped_storage_index_impl(mapped_index);
+        return m_p_impl->add_mapped_impl(index, std::move(mapped));
     }
 
     void memory_storage::serialize_impl(std::ostream& output_stream) const
