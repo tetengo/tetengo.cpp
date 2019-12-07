@@ -52,9 +52,9 @@ namespace tetengo::trie
         return mapped_storage_index_impl(mapped_index);
     }
 
-    void storage::add_mapped(const std::size_t index, std::any mapped)
+    void storage::add_mapped(const std::size_t mapped_index, std::any mapped)
     {
-        add_mapped_impl(index, std::move(mapped));
+        add_mapped_impl(mapped_index, std::move(mapped));
     }
 
     void storage::serialize(std::ostream& output_stream) const
