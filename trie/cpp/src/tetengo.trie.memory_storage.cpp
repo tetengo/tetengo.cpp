@@ -33,15 +33,12 @@ namespace tetengo::trie
 
         impl() :
         m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
-            m_mapped_storage_mappings{},
-            m_next_mapped_at{ 0 } {};
+        m_mapped_storage_mappings{},
+        m_mapped_array{} {};
 
-        explicit impl(std::istream& input_stream) :
-        m_base_check_array{},
-            m_mapped_storage_mappings{},
-            m_next_mapped_at{ 0 }
+        explicit impl(std::istream& input_stream) : m_base_check_array{}, m_mapped_storage_mappings{}, m_mapped_array{}
         {
-            deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_next_mapped_at);
+            deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_mapped_array);
         };
 
 
@@ -92,18 +89,18 @@ namespace tetengo::trie
             {
                 return nullptr;
             }
-            // return m_mapped_storage_mappings[mapped_index];
-            return nullptr;
+            assert(m_mapped_storage_mappings[mapped_index] < m_mapped_array.size());
+            return &m_mapped_array[m_mapped_storage_mappings[mapped_index]];
         }
 
-        void add_mapped_at_impl(const std::size_t mapped_index, std::any /*mapped*/)
+        void add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)
         {
             if (mapped_index >= m_mapped_storage_mappings.size())
             {
                 m_mapped_storage_mappings.resize(mapped_index + 1, std::numeric_limits<std::size_t>::max());
             }
-            m_mapped_storage_mappings[mapped_index] = m_next_mapped_at;
-            ++m_next_mapped_at;
+            m_mapped_storage_mappings[mapped_index] = m_mapped_array.size();
+            m_mapped_array.push_back(std::move(mapped));
         }
 
         void serialize_impl(std::ostream& output_stream) const
@@ -178,7 +175,7 @@ namespace tetengo::trie
             std::istream&               input_stream,
             std::vector<std::uint32_t>& base_check_array,
             std::vector<std::size_t>&   mapped_storage_mappings,
-            std::size_t&                next_mapped_at)
+            std::vector<std::any>&      /*mapped_array*/)
         {
             {
                 const auto size = read_uint32(input_stream);
@@ -199,7 +196,6 @@ namespace tetengo::trie
                     }
                     mapped_storage_mappings[value] = i;
                 }
-                next_mapped_at = size;
             }
         }
 
@@ -210,7 +206,7 @@ namespace tetengo::trie
 
         std::vector<std::size_t> m_mapped_storage_mappings;
 
-        std::size_t m_next_mapped_at;
+        std::vector<std::any> m_mapped_array;
 
 
         // functions

@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(mapped_at)
 
     const tetengo::trie::shared_storage storage_{};
 
-    // BOOST_TEST(!storage_.mapped_at(42));
+    BOOST_TEST(!storage_.mapped_at(42));
 }
 
 BOOST_AUTO_TEST_CASE(add_mapped_at)
@@ -182,23 +182,23 @@ BOOST_AUTO_TEST_CASE(add_mapped_at)
 
     storage_.add_mapped_at(24, std::make_any<std::string>("hoge"));
 
-    // BOOST_TEST(!storage_.mapped_at(0));
-    // BOOST_REQUIRE(storage_.mapped_at(24));
-    // BOOST_TEST(*storage_.mapped_at(24) == 0U);
-    // BOOST_TEST(!storage_.mapped_at(42));
+    BOOST_TEST(!storage_.mapped_at(0));
+    BOOST_REQUIRE(storage_.mapped_at(24));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(24)) == "hoge");
+    BOOST_TEST(!storage_.mapped_at(42));
 
     storage_.add_mapped_at(42, std::make_any<std::string>("fuga"));
 
-    // BOOST_REQUIRE(storage_.mapped_at(42));
-    // BOOST_TEST(*storage_.mapped_at(42) == 1U);
-    // BOOST_TEST(!storage_.mapped_at(4242));
+    BOOST_REQUIRE(storage_.mapped_at(42));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(42)) == "fuga");
+    BOOST_TEST(!storage_.mapped_at(4242));
 
     storage_.add_mapped_at(0, std::make_any<std::string>("piyo"));
 
-    // BOOST_REQUIRE(storage_.mapped_at(0));
-    // BOOST_TEST(*storage_.mapped_at(0) == 2U);
-    // BOOST_REQUIRE(storage_.mapped_at(42));
-    // BOOST_TEST(*storage_.mapped_at(42) == 1U);
+    BOOST_REQUIRE(storage_.mapped_at(0));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(0)) == "piyo");
+    BOOST_REQUIRE(storage_.mapped_at(42));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(42)) == "fuga");
 }
 
 BOOST_AUTO_TEST_CASE(serialize)
