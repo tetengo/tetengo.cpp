@@ -55,7 +55,7 @@ namespace
             return std::nullopt;
         }
 
-        virtual void add_mapped_impl(const std::size_t /*index*/, std::any /*mapped*/) override {}
+        virtual void add_mapped_at_impl(const std::size_t /*index*/, std::any /*mapped*/) override {}
 
         virtual void serialize_impl(std::ostream& /*output_stream*/) const override {}
 
@@ -147,13 +147,13 @@ BOOST_AUTO_TEST_CASE(mapped_storage_index)
     BOOST_TEST(!storage_.mapped_storage_index(42));
 }
 
-BOOST_AUTO_TEST_CASE(add_mapped)
+BOOST_AUTO_TEST_CASE(add_mapped_at)
 {
     BOOST_TEST_PASSPOINT();
 
     concrete_storage storage_{};
 
-    storage_.add_mapped(42, std::make_any<std::string>("hoge"));
+    storage_.add_mapped_at(42, std::make_any<std::string>("hoge"));
 }
 
 BOOST_AUTO_TEST_CASE(serialize)

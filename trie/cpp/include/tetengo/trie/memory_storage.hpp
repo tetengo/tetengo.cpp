@@ -72,7 +72,7 @@ namespace tetengo::trie
 
         virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const override;
 
-        virtual void add_mapped_impl(std::size_t mapped_index, std::any mapped) override;
+        virtual void add_mapped_at_impl(std::size_t mapped_index, std::any mapped) override;
 
         virtual void serialize_impl(std::ostream& output_stream) const override;
 

@@ -175,26 +175,26 @@ BOOST_AUTO_TEST_CASE(mapped_storage_index)
     BOOST_TEST(!storage_.mapped_storage_index(42));
 }
 
-BOOST_AUTO_TEST_CASE(add_mapped)
+BOOST_AUTO_TEST_CASE(add_mapped_at)
 {
     BOOST_TEST_PASSPOINT();
 
     tetengo::trie::memory_storage storage_{};
 
-    storage_.add_mapped(24, std::make_any<std::string>("hoge"));
+    storage_.add_mapped_at(24, std::make_any<std::string>("hoge"));
 
     BOOST_TEST(!storage_.mapped_storage_index(0));
     BOOST_REQUIRE(storage_.mapped_storage_index(24));
     BOOST_TEST(*storage_.mapped_storage_index(24) == 0U);
     BOOST_TEST(!storage_.mapped_storage_index(42));
 
-    storage_.add_mapped(42, std::make_any<std::string>("fuga"));
+    storage_.add_mapped_at(42, std::make_any<std::string>("fuga"));
 
     BOOST_REQUIRE(storage_.mapped_storage_index(42));
     BOOST_TEST(*storage_.mapped_storage_index(42) == 1U);
     BOOST_TEST(!storage_.mapped_storage_index(4242));
 
-    storage_.add_mapped(0, std::make_any<std::string>("piyo"));
+    storage_.add_mapped_at(0, std::make_any<std::string>("piyo"));
 
     BOOST_REQUIRE(storage_.mapped_storage_index(0));
     BOOST_TEST(*storage_.mapped_storage_index(0) == 2U);
@@ -211,9 +211,9 @@ BOOST_AUTO_TEST_CASE(serialize)
     storage_.set_base_at(0, 42);
     storage_.set_check_at(1, 24);
 
-    storage_.add_mapped(4, std::make_any<std::string>("hoge"));
-    storage_.add_mapped(2, std::make_any<std::string>("fuga"));
-    storage_.add_mapped(1, std::make_any<std::string>("piyo"));
+    storage_.add_mapped_at(4, std::make_any<std::string>("hoge"));
+    storage_.add_mapped_at(2, std::make_any<std::string>("fuga"));
+    storage_.add_mapped_at(1, std::make_any<std::string>("piyo"));
 
     std::ostringstream output_stream{};
     storage_.serialize(output_stream);

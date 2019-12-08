@@ -94,7 +94,7 @@ namespace tetengo::trie
             return m_mapped_storage_mappings[mapped_index];
         }
 
-        void add_mapped_impl(const std::size_t mapped_index, std::any /*mapped*/)
+        void add_mapped_at_impl(const std::size_t mapped_index, std::any /*mapped*/)
         {
             if (mapped_index >= m_mapped_storage_mappings.size())
             {
@@ -264,9 +264,9 @@ namespace tetengo::trie
         return m_p_impl->mapped_storage_index_impl(mapped_index);
     }
 
-    void memory_storage::add_mapped_impl(const std::size_t mapped_index, std::any mapped)
+    void memory_storage::add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)
     {
-        return m_p_impl->add_mapped_impl(mapped_index, std::move(mapped));
+        return m_p_impl->add_mapped_at_impl(mapped_index, std::move(mapped));
     }
 
     void memory_storage::serialize_impl(std::ostream& output_stream) const
