@@ -33,12 +33,12 @@ namespace tetengo::trie
 
         impl() :
         m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
-        m_mapped_storage_mappings{},
+        m_mapped_index_mappings{},
         m_mapped_array{} {};
 
-        explicit impl(std::istream& input_stream) : m_base_check_array{}, m_mapped_storage_mappings{}, m_mapped_array{}
+        explicit impl(std::istream& input_stream) : m_base_check_array{}, m_mapped_index_mappings{}, m_mapped_array{}
         {
-            deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_mapped_array);
+            deserialize(input_stream, m_base_check_array, m_mapped_index_mappings, m_mapped_array);
         };
 
 
@@ -84,22 +84,22 @@ namespace tetengo::trie
 
         const std::any* mapped_at_impl(const std::size_t mapped_index) const
         {
-            if (mapped_index >= m_mapped_storage_mappings.size() ||
-                m_mapped_storage_mappings[mapped_index] == std::numeric_limits<std::size_t>::max())
+            if (mapped_index >= m_mapped_index_mappings.size() ||
+                m_mapped_index_mappings[mapped_index] == std::numeric_limits<std::size_t>::max())
             {
                 return nullptr;
             }
-            assert(m_mapped_storage_mappings[mapped_index] < m_mapped_array.size());
-            return &m_mapped_array[m_mapped_storage_mappings[mapped_index]];
+            assert(m_mapped_index_mappings[mapped_index] < m_mapped_array.size());
+            return &m_mapped_array[m_mapped_index_mappings[mapped_index]];
         }
 
         void add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)
         {
-            if (mapped_index >= m_mapped_storage_mappings.size())
+            if (mapped_index >= m_mapped_index_mappings.size())
             {
-                m_mapped_storage_mappings.resize(mapped_index + 1, std::numeric_limits<std::size_t>::max());
+                m_mapped_index_mappings.resize(mapped_index + 1, std::numeric_limits<std::size_t>::max());
             }
-            m_mapped_storage_mappings[mapped_index] = m_mapped_array.size();
+            m_mapped_index_mappings[mapped_index] = m_mapped_array.size();
             m_mapped_array.push_back(std::move(mapped));
         }
 
@@ -114,18 +114,18 @@ namespace tetengo::trie
             }
             {
                 std::vector<std::uint32_t> values{};
-                for (auto i = static_cast<std::uint32_t>(0); i < m_mapped_storage_mappings.size(); ++i)
+                for (auto i = static_cast<std::uint32_t>(0); i < m_mapped_index_mappings.size(); ++i)
                 {
-                    if (m_mapped_storage_mappings[i] == std::numeric_limits<std::size_t>::max())
+                    if (m_mapped_index_mappings[i] == std::numeric_limits<std::size_t>::max())
                     {
                         continue;
                     }
 
-                    if (m_mapped_storage_mappings[i] >= values.size())
+                    if (m_mapped_index_mappings[i] >= values.size())
                     {
-                        values.resize(m_mapped_storage_mappings[i] + 1, std::numeric_limits<std::uint32_t>::max());
+                        values.resize(m_mapped_index_mappings[i] + 1, std::numeric_limits<std::uint32_t>::max());
                     }
-                    values[m_mapped_storage_mappings[i]] = i;
+                    values[m_mapped_index_mappings[i]] = i;
                 }
                 assert(
                     std::find(values.begin(), values.end(), std::numeric_limits<std::uint32_t>::max()) == values.end());
@@ -174,7 +174,7 @@ namespace tetengo::trie
         static void deserialize(
             std::istream&               input_stream,
             std::vector<std::uint32_t>& base_check_array,
-            std::vector<std::size_t>&   mapped_storage_mappings,
+            std::vector<std::size_t>&   mapped_index_mappings,
             std::vector<std::any>&      /*mapped_array*/)
         {
             {
@@ -190,11 +190,11 @@ namespace tetengo::trie
                 for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
                 {
                     const auto value = read_uint32(input_stream);
-                    if (value >= mapped_storage_mappings.size())
+                    if (value >= mapped_index_mappings.size())
                     {
-                        mapped_storage_mappings.resize(value + 1, std::numeric_limits<std::size_t>::max());
+                        mapped_index_mappings.resize(value + 1, std::numeric_limits<std::size_t>::max());
                     }
-                    mapped_storage_mappings[value] = i;
+                    mapped_index_mappings[value] = i;
                 }
             }
         }
@@ -204,7 +204,7 @@ namespace tetengo::trie
 
         mutable std::vector<std::uint32_t> m_base_check_array;
 
-        std::vector<std::size_t> m_mapped_storage_mappings;
+        std::vector<std::size_t> m_mapped_index_mappings;
 
         std::vector<std::any> m_mapped_array;
 
