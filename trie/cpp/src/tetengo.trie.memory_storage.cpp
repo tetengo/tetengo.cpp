@@ -14,7 +14,6 @@
 #include <iterator>
 #include <limits>
 #include <memory>
-#include <optional>
 #include <utility>
 #include <vector>
 
@@ -35,12 +34,12 @@ namespace tetengo::trie
         impl() :
         m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
         m_mapped_storage_mappings{},
-        m_next_mapped_storage_index{ 0 } {};
+        m_next_mapped_at{ 0 } {};
 
         explicit impl(std::istream& input_stream) :
-        m_base_check_array{}, m_mapped_storage_mappings{}, m_next_mapped_storage_index{ 0 }
+        m_base_check_array{}, m_mapped_storage_mappings{}, m_next_mapped_at{ 0 }
         {
-            deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_next_mapped_storage_index);
+            deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_next_mapped_at);
         };
 
 
@@ -84,14 +83,15 @@ namespace tetengo::trie
             return m_base_check_array;
         }
 
-        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t mapped_index) const
+        const std::any* mapped_at_impl(const std::size_t mapped_index) const
         {
             if (mapped_index >= m_mapped_storage_mappings.size() ||
                 m_mapped_storage_mappings[mapped_index] == std::numeric_limits<std::size_t>::max())
             {
-                return std::nullopt;
+                return nullptr;
             }
-            return m_mapped_storage_mappings[mapped_index];
+            //return m_mapped_storage_mappings[mapped_index];
+            return nullptr;
         }
 
         void add_mapped_at_impl(const std::size_t mapped_index, std::any /*mapped*/)
@@ -100,8 +100,8 @@ namespace tetengo::trie
             {
                 m_mapped_storage_mappings.resize(mapped_index + 1, std::numeric_limits<std::size_t>::max());
             }
-            m_mapped_storage_mappings[mapped_index] = m_next_mapped_storage_index;
-            ++m_next_mapped_storage_index;
+            m_mapped_storage_mappings[mapped_index] = m_next_mapped_at;
+            ++m_next_mapped_at;
         }
 
         void serialize_impl(std::ostream& output_stream) const
@@ -176,7 +176,7 @@ namespace tetengo::trie
             std::istream&               input_stream,
             std::vector<std::uint32_t>& base_check_array,
             std::vector<std::size_t>&   mapped_storage_mappings,
-            std::size_t&                next_mapped_storage_index)
+            std::size_t&                next_mapped_at)
         {
             {
                 const auto size = read_uint32(input_stream);
@@ -197,7 +197,7 @@ namespace tetengo::trie
                     }
                     mapped_storage_mappings[value] = i;
                 }
-                next_mapped_storage_index = size;
+                next_mapped_at = size;
             }
         }
 
@@ -208,7 +208,7 @@ namespace tetengo::trie
 
         std::vector<std::size_t> m_mapped_storage_mappings;
 
-        std::size_t m_next_mapped_storage_index;
+        std::size_t m_next_mapped_at;
 
 
         // functions
@@ -259,9 +259,9 @@ namespace tetengo::trie
         return m_p_impl->base_check_array_impl();
     }
 
-    std::optional<std::size_t> memory_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    const std::any* memory_storage::mapped_at_impl(const std::size_t mapped_index) const
     {
-        return m_p_impl->mapped_storage_index_impl(mapped_index);
+        return m_p_impl->mapped_at_impl(mapped_index);
     }
 
     void memory_storage::add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)

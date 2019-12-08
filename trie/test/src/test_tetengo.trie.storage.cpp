@@ -7,7 +7,6 @@
 #include <any>
 #include <cstdint>
 #include <memory>
-#include <optional>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -50,9 +49,9 @@ namespace
             return singleton;
         }
 
-        virtual std::optional<std::size_t> mapped_storage_index_impl(const std::size_t /*mapped_index*/) const override
+        virtual const std::any* mapped_at_impl(const std::size_t /*mapped_index*/) const override
         {
-            return std::nullopt;
+            return nullptr;
         }
 
         virtual void add_mapped_at_impl(const std::size_t /*index*/, std::any /*mapped*/) override {}
@@ -138,13 +137,13 @@ BOOST_AUTO_TEST_CASE(base_check_array)
     BOOST_TEST(base_check_array == expected);
 }
 
-BOOST_AUTO_TEST_CASE(mapped_storage_index)
+BOOST_AUTO_TEST_CASE(mapped_at)
 {
     BOOST_TEST_PASSPOINT();
 
     const concrete_storage storage_{};
 
-    BOOST_TEST(!storage_.mapped_storage_index(42));
+    BOOST_TEST(!storage_.mapped_at(42));
 }
 
 BOOST_AUTO_TEST_CASE(add_mapped_at)

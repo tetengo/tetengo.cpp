@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
-#include <optional>
 #include <utility>
 #include <vector>
 
@@ -63,9 +62,9 @@ namespace tetengo::trie
             return m_p_entity->base_check_array();
         }
 
-        std::optional<std::size_t> mapped_storage_index_impl(const std::size_t mapped_index) const
+        const std::any* mapped_at_impl(const std::size_t mapped_index) const
         {
-            return m_p_entity->mapped_storage_index(mapped_index);
+            return m_p_entity->mapped_at(mapped_index);
         }
 
         void add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)
@@ -129,9 +128,9 @@ namespace tetengo::trie
         return m_p_impl->base_check_array_impl();
     }
 
-    std::optional<std::size_t> shared_storage::mapped_storage_index_impl(const std::size_t mapped_index) const
+    const std::any* shared_storage::mapped_at_impl(const std::size_t mapped_index) const
     {
-        return m_p_impl->mapped_storage_index_impl(mapped_index);
+        return m_p_impl->mapped_at_impl(mapped_index);
     }
 
     void shared_storage::add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)

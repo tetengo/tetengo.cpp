@@ -10,7 +10,6 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
-#include <optional>
 #include <vector>
 #include <any>
 
@@ -89,13 +88,13 @@ namespace tetengo::trie
         const std::vector<std::uint32_t>& base_check_array() const;
 
         /*!
-            \brief Returns the mapped storage index.
+            \brief Returns the mapped object.
 
             \param mapped_index A mapped index.
 
-            \return The mapped storage index. Or std::nullopt when there is no corresponding mapped storage index.
+            \return A pointer to the mapped object. Or nullptr when there is no corresponding mapped object.
         */
-        std::optional<std::size_t> mapped_storage_index(std::size_t mapped_index) const;
+        const std::any* mapped_at(std::size_t mapped_index) const;
 
         /*!
             \brief Adds a mapped storage index mapping.
@@ -135,7 +134,7 @@ namespace tetengo::trie
 
         virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
 
-        virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const = 0;
+        virtual const std::any* mapped_at_impl(std::size_t mapped_index) const = 0;
 
         virtual void add_mapped_at_impl(std::size_t mapped_index, std::any mapped) = 0;
 
