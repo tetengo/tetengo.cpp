@@ -33,11 +33,13 @@ namespace tetengo::trie
 
         impl() :
         m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
-        m_mapped_storage_mappings{},
-        m_next_mapped_at{ 0 } {};
+            m_mapped_storage_mappings{},
+            m_next_mapped_at{ 0 } {};
 
         explicit impl(std::istream& input_stream) :
-        m_base_check_array{}, m_mapped_storage_mappings{}, m_next_mapped_at{ 0 }
+        m_base_check_array{},
+            m_mapped_storage_mappings{},
+            m_next_mapped_at{ 0 }
         {
             deserialize(input_stream, m_base_check_array, m_mapped_storage_mappings, m_next_mapped_at);
         };
@@ -90,7 +92,7 @@ namespace tetengo::trie
             {
                 return nullptr;
             }
-            //return m_mapped_storage_mappings[mapped_index];
+            // return m_mapped_storage_mappings[mapped_index];
             return nullptr;
         }
 

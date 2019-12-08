@@ -7,11 +7,11 @@
 #if !defined(TETENGO_TRIE_STORAGE_HPP)
 #define TETENGO_TRIE_STORAGE_HPP
 
+#include <any>
 #include <cstdint>
 #include <istream>
 #include <memory>
 #include <vector>
-#include <any>
 
 #include <boost/core/noncopyable.hpp>
 
