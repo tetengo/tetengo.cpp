@@ -11,7 +11,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/trie/default_key_serializer.hpp>
+#include <tetengo/trie/default_serializer.hpp>
 
 
 namespace tetengo::trie

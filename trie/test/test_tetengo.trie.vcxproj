@@ -116,7 +116,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
-    <ClCompile Include="src\test_tetengo.trie.default_key_serializer.cpp" />
+    <ClCompile Include="src\test_tetengo.trie.default_serializer.cpp" />
     <ClCompile Include="src\test_tetengo.trie.double_array.cpp" />
     <ClCompile Include="src\test_tetengo.trie.enumerator.cpp" />
     <ClCompile Include="src\test_tetengo.trie.memory_storage.cpp" />
