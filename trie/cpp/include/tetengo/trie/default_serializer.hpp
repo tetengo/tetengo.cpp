@@ -1,11 +1,11 @@
 /*! \file
-    \brief A default key serializer.
+    \brief A default serializer.
 
     Copyright (C) 2019 kaoru
 */
 
-#if !defined(TETENGO_TRIE_DEFAULTKEYSERIALIZER_HPP)
-#define TETENGO_TRIE_DEFAULTKEYSERIALIZER_HPP
+#if !defined(TETENGO_TRIE_DEFAULTSERIALIZER_HPP)
+#define TETENGO_TRIE_DEFAULTSERIALIZER_HPP
 
 #include <string>
 
@@ -13,17 +13,17 @@
 namespace tetengo::trie
 {
     /*!
-        \brief A default key serializer.
+        \brief A default serializer.
 
         \tparam Key A key type.
     */
     template <typename Key>
-    class default_key_serializer;
+    class default_serializer;
 
 
 #if !defined(DOCUMENTATION)
     template <>
-    class default_key_serializer<std::string>
+    class default_serializer<std::string>
     {
     public:
         // functions
@@ -36,7 +36,7 @@ namespace tetengo::trie
 
 
     template <typename Char>
-    class default_key_serializer<std::basic_string<Char>>
+    class default_serializer<std::basic_string<Char>>
     {
     public:
         // functions

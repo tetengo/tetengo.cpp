@@ -1,5 +1,5 @@
 /*!
-    \brief A default key serializer.
+    \brief A default serializer.
 
     Copyright (C) 2019 kaoru
  */
@@ -17,10 +17,10 @@
 namespace tetengo::trie
 {
     template <typename Key>
-    class default_key_serializer;
+    class default_serializer;
 
     template <typename Char>
-    class default_key_serializer<std::vector<Char>>
+    class default_serializer<std::vector<Char>>
     {
     public:
         // functions
@@ -47,7 +47,7 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(trie)
-BOOST_AUTO_TEST_SUITE(default_key_serializer)
+BOOST_AUTO_TEST_SUITE(default_serializer)
 
 
 BOOST_AUTO_TEST_CASE(operator_paren)
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::default_key_serializer<std::string> serialize{};
+        const tetengo::trie::default_serializer<std::string> serialize{};
 
         const std::string key{ "Sakuramachi" };
         const std::string expected_serialized{ "Sakuramachi" };
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_TEST(serialized == expected_serialized);
     }
     {
-        const tetengo::trie::default_key_serializer<std::wstring> serialize{};
+        const tetengo::trie::default_serializer<std::wstring> serialize{};
 
         const std::wstring key{ 0x685C, 0x753A };
         const std::string  expected_serialized = []() {
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_TEST(serialized == expected_serialized);
     }
     {
-        const tetengo::trie::default_key_serializer<std::vector<char>> serialize{};
+        const tetengo::trie::default_serializer<std::vector<char>> serialize{};
 
         const std::vector<char> key{ 'T', 'o', 'r', 'i', 'c', 'h', 'o', 's', 'u', 'j', 'i' };
         const std::string       expected_serialized{ "Torichosuji" };

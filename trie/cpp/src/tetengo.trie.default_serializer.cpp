@@ -1,5 +1,5 @@
 /*! \file
-    \brief A default key serializer.
+    \brief A default serializer.
 
     Copyright (C) 2019 kaoru
 */
@@ -14,7 +14,7 @@ namespace tetengo::trie
 {
 #if !defined(DOCUMENTATION)
     template <typename Char>
-    std::string default_key_serializer<std::basic_string<Char>>::operator()(const std::basic_string<Char>& key) const
+    std::string default_serializer<std::basic_string<Char>>::operator()(const std::basic_string<Char>& key) const
     {
         std::string serialized;
         serialized.reserve(key.length() * sizeof(Char) / sizeof(char));
@@ -31,14 +31,14 @@ namespace tetengo::trie
         return serialized;
     }
 
-    template std::string default_key_serializer<std::basic_string<wchar_t>>::
-                         operator()(const std::basic_string<wchar_t>& key) const;
+    template std::string
+    default_serializer<std::basic_string<wchar_t>>::operator()(const std::basic_string<wchar_t>& key) const;
 
-    template std::string default_key_serializer<std::basic_string<char16_t>>::
-                         operator()(const std::basic_string<char16_t>& key) const;
+    template std::string
+    default_serializer<std::basic_string<char16_t>>::operator()(const std::basic_string<char16_t>& key) const;
 
-    template std::string default_key_serializer<std::basic_string<char32_t>>::
-                         operator()(const std::basic_string<char32_t>& key) const;
+    template std::string
+    default_serializer<std::basic_string<char32_t>>::operator()(const std::basic_string<char32_t>& key) const;
 #endif
 
 
