@@ -8,6 +8,7 @@
 #define TETENGO_TRIE_DEFAULTSERIALIZER_HPP
 
 #include <string>
+#include <type_traits>
 
 
 namespace tetengo::trie
@@ -15,9 +16,9 @@ namespace tetengo::trie
     /*!
         \brief A default serializer.
 
-        \tparam Key A key type.
+        \tparam Object An object type.
     */
-    template <typename Key>
+    template <typename Object, typename = void>
     class default_serializer;
 
 
@@ -28,12 +29,8 @@ namespace tetengo::trie
     public:
         // functions
 
-        const std::string& operator()(const std::string& key) const
-        {
-            return key;
-        }
+        const std::string& operator()(const std::string& object) const;
     };
-
 
     template <typename Char>
     class default_serializer<std::basic_string<Char>>
@@ -41,9 +38,17 @@ namespace tetengo::trie
     public:
         // functions
 
-        std::string operator()(const std::basic_string<Char>& key) const;
+        std::string operator()(const std::basic_string<Char>& object) const;
     };
 
+    template <typename Integer>
+    class default_serializer<Integer, std::enable_if_t<std::is_integral<Integer>::value>>
+    {
+    public:
+        // functions
+
+        std::string operator()(Integer object) const;
+    };
 
 #endif
 }
