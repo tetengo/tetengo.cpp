@@ -42,7 +42,7 @@ namespace tetengo::trie
     };
 
     template <typename Integer>
-    class default_serializer<Integer, std::enable_if_t<std::is_integral<Integer>::value>>
+    class default_serializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>
     {
     public:
         // functions
@@ -82,7 +82,7 @@ namespace tetengo::trie
     };
 
     template <typename Integer>
-    class default_deserializer<Integer, std::enable_if_t<std::is_integral<Integer>::value>>
+    class default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>
     {
     public:
         // functions
