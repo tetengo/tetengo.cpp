@@ -8,6 +8,7 @@
 #define TETENGO_TRIE_DEFAULTSERIALIZER_HPP
 
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 
@@ -78,7 +79,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        std::basic_string<Char> operator()(const std::string& bytes) const;
+        std::basic_string<Char> operator()(const std::string_view& bytes) const;
     };
 
     template <typename Integer>
@@ -87,7 +88,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        Integer operator()(const std::string& bytes) const;
+        Integer operator()(const std::string_view& bytes) const;
     };
 
 #endif

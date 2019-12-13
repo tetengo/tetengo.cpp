@@ -6,6 +6,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
@@ -53,9 +54,9 @@ namespace tetengo::trie
     public:
         // functions
 
-        my_class operator()(const std::string& bytes) const
+        my_class operator()(const std::string_view& bytes) const
         {
-            return my_class{ bytes };
+            return my_class{ std::string{ bytes } };
         }
     };
 
