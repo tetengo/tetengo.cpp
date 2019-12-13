@@ -51,6 +51,46 @@ namespace tetengo::trie
     };
 
 #endif
+
+
+    /*!
+        \brief A default deserializer.
+
+        \tparam Object An object type.
+    */
+    template <typename Object, typename = void>
+    class default_deserializer;
+
+
+#if !defined(DOCUMENTATION)
+    template <>
+    class default_deserializer<std::string>
+    {
+    public:
+        // functions
+
+        const std::string& operator()(const std::string& bytes) const;
+    };
+
+    template <typename Char>
+    class default_deserializer<std::basic_string<Char>>
+    {
+    public:
+        // functions
+
+        std::basic_string<Char> operator()(const std::string& bytes) const;
+    };
+
+    template <typename Integer>
+    class default_deserializer<Integer, std::enable_if_t<std::is_integral<Integer>::value>>
+    {
+    public:
+        // functions
+
+        Integer operator()(const std::string& bytes) const;
+    };
+
+#endif
 }
 
 
