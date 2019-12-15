@@ -28,7 +28,7 @@
     <ClCompile Include="src\test_tetengo.trie.shared_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.trie.default_key_serializer.cpp">
+    <ClCompile Include="src\test_tetengo.trie.default_serializer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
