@@ -9,8 +9,10 @@
 
 #include <any>
 #include <cstdint>
+#include <functional>
 #include <istream>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>

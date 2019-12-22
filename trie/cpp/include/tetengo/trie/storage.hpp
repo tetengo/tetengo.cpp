@@ -12,6 +12,7 @@
 #include <functional>
 #include <istream>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
