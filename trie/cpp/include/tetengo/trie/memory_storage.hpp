@@ -73,7 +73,9 @@ namespace tetengo::trie
 
         virtual void add_mapped_at_impl(std::size_t mapped_index, std::any mapped) override;
 
-        virtual void serialize_impl(std::ostream& output_stream) const override;
+        virtual void serialize_impl(
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& serializer) const override;
 
         virtual std::unique_ptr<storage> clone_impl() const override;
     };

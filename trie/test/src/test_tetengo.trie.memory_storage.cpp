@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(serialize)
     storage_.add_mapped_at(1, std::make_any<std::string>("piyo"));
 
     std::ostringstream output_stream{};
-    storage_.serialize(output_stream);
+    storage_.serialize(output_stream, [](const std::any&) { return std::string{}; });
 
     static const std::string expected{
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x2A),

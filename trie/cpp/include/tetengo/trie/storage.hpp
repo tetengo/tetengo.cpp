@@ -9,6 +9,7 @@
 
 #include <any>
 #include <cstdint>
+#include <functional>
 #include <istream>
 #include <memory>
 #include <vector>
@@ -108,8 +109,10 @@ namespace tetengo::trie
             \brief Serializes this storage.
 
             \param output_stream An output stream.
+            \param serializer    A serializer.
         */
-        void serialize(std::ostream& output_stream) const;
+        void
+        serialize(std::ostream& output_stream, const std::function<std::string(const std::any&)>& serializer) const;
 
         /*!
             \brief Clones this storage.
@@ -138,7 +141,9 @@ namespace tetengo::trie
 
         virtual void add_mapped_at_impl(std::size_t mapped_index, std::any mapped) = 0;
 
-        virtual void serialize_impl(std::ostream& output_stream) const = 0;
+        virtual void serialize_impl(
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& serializer) const = 0;
 
         virtual std::unique_ptr<storage> clone_impl() const = 0;
     };

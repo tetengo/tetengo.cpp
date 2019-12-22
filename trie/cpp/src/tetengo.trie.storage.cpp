@@ -56,9 +56,10 @@ namespace tetengo::trie
         add_mapped_at_impl(mapped_index, std::move(mapped));
     }
 
-    void storage::serialize(std::ostream& output_stream) const
+    void
+    storage::serialize(std::ostream& output_stream, const std::function<std::string(const std::any&)>& serializer) const
     {
-        serialize_impl(output_stream);
+        serialize_impl(output_stream, serializer);
     }
 
     std::unique_ptr<storage> storage::clone() const

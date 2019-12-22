@@ -5,6 +5,7 @@
  */
 
 #include <algorithm>
+#include <any>
 #include <cstdint>
 #include <exception>
 #include <filesystem>
@@ -82,7 +83,7 @@ namespace
             throw std::ios_base::failure{ "Can't open the output file." };
         }
 
-        double_array_.get_storage().serialize(output_stream);
+        double_array_.get_storage().serialize(output_stream, [](const std::any&) { return std::string{}; });
     }
 
 

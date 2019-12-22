@@ -103,7 +103,9 @@ namespace tetengo::trie
             m_mapped_array.push_back(std::move(mapped));
         }
 
-        void serialize_impl(std::ostream& output_stream) const
+        void serialize_impl(
+            std::ostream& output_stream,
+            const std::function<std::string(const std::any&)>& /*serializer*/) const
         {
             {
                 write_uint32(output_stream, static_cast<std::uint32_t>(m_base_check_array.size()));
@@ -175,7 +177,7 @@ namespace tetengo::trie
             std::istream&               input_stream,
             std::vector<std::uint32_t>& base_check_array,
             std::vector<std::size_t>&   mapped_index_mappings,
-            std::vector<std::any>&      /*mapped_array*/)
+            std::vector<std::any>& /*mapped_array*/)
         {
             {
                 const auto size = read_uint32(input_stream);
@@ -267,9 +269,11 @@ namespace tetengo::trie
         return m_p_impl->add_mapped_at_impl(mapped_index, std::move(mapped));
     }
 
-    void memory_storage::serialize_impl(std::ostream& output_stream) const
+    void memory_storage::serialize_impl(
+        std::ostream&                                      output_stream,
+        const std::function<std::string(const std::any&)>& serializer) const
     {
-        m_p_impl->serialize_impl(output_stream);
+        m_p_impl->serialize_impl(output_stream, serializer);
     }
 
     std::unique_ptr<storage> memory_storage::clone_impl() const

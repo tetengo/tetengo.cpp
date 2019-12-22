@@ -56,7 +56,10 @@ namespace
 
         virtual void add_mapped_at_impl(const std::size_t /*index*/, std::any /*mapped*/) override {}
 
-        virtual void serialize_impl(std::ostream& /*output_stream*/) const override {}
+        virtual void serialize_impl(
+            std::ostream& /*output_stream*/,
+            const std::function<std::string(const std::any&)>& /*serializer*/) const override
+        {}
 
         std::unique_ptr<storage> clone_impl() const override
         {
@@ -162,7 +165,7 @@ BOOST_AUTO_TEST_CASE(serialize)
     const concrete_storage storage_{};
 
     std::ostringstream output_stream{};
-    storage_.serialize(output_stream);
+    storage_.serialize(output_stream, [](const std::any&) { return std::string{}; });
 }
 
 BOOST_AUTO_TEST_CASE(clone)
