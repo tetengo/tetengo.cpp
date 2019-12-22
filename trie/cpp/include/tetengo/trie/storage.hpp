@@ -108,11 +108,12 @@ namespace tetengo::trie
         /*!
             \brief Serializes this storage.
 
-            \param output_stream An output stream.
-            \param serializer    A serializer.
+            \param output_stream     An output stream.
+            \param mapped_serializer A serializer for mapped objects.
         */
-        void
-        serialize(std::ostream& output_stream, const std::function<std::string(const std::any&)>& serializer) const;
+        void serialize(
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& mapped_serializer) const;
 
         /*!
             \brief Clones this storage.
@@ -143,7 +144,7 @@ namespace tetengo::trie
 
         virtual void serialize_impl(
             std::ostream&                                      output_stream,
-            const std::function<std::string(const std::any&)>& serializer) const = 0;
+            const std::function<std::string(const std::any&)>& mapped_serializer) const = 0;
 
         virtual std::unique_ptr<storage> clone_impl() const = 0;
     };
