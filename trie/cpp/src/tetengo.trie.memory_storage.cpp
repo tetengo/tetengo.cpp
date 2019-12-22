@@ -6,7 +6,6 @@
 
 #include <algorithm>
 #include <any>
-#include <array>
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
@@ -126,32 +125,14 @@ namespace tetengo::trie
     private:
         // static functions
 
-        static std::uint32_t read_uint32(std::istream& input_stream)
-        {
-            std::array<char, 4> buffer{};
-            input_stream.read(buffer.data(), buffer.size());
-            if (input_stream.gcount() < static_cast<std::streamsize>(buffer.size()))
-            {
-                throw std::ios_base::failure("Can't read uint32.");
-            }
-
-            return (static_cast<std::uint8_t>(buffer[0]) << 24) | (static_cast<std::uint8_t>(buffer[1]) << 16) |
-                   (static_cast<std::uint8_t>(buffer[2]) << 8) | static_cast<std::uint8_t>(buffer[3]);
-        }
-
         static void
         serialize_base_check_array(std::ostream& output_stream, const std::vector<std::uint32_t>& base_check_array)
         {
-            static const default_serializer<std::uint32_t> uint32_serializer{};
-            {
-                assert(base_check_array.size() < std::numeric_limits<std::uint32_t>::max());
-                const auto serialized = uint32_serializer(static_cast<std::uint32_t>(base_check_array.size()));
-                output_stream.write(serialized.data(), serialized.length());
-            }
+            assert(base_check_array.size() < std::numeric_limits<std::uint32_t>::max());
+            write_uint32(output_stream, static_cast<std::uint32_t>(base_check_array.size()));
             for (const auto v: base_check_array)
             {
-                const auto serialized = uint32_serializer(v);
-                output_stream.write(serialized.data(), serialized.length());
+                write_uint32(output_stream, v);
             }
         }
 
@@ -175,16 +156,11 @@ namespace tetengo::trie
             }
             assert(std::find(values.begin(), values.end(), std::numeric_limits<std::uint32_t>::max()) == values.end());
 
-            static const default_serializer<std::uint32_t> uint32_serializer{};
-            {
-                assert(values.size() < std::numeric_limits<std::uint32_t>::max());
-                const auto serialized = uint32_serializer(static_cast<std::uint32_t>(values.size()));
-                output_stream.write(serialized.data(), serialized.length());
-            }
+            assert(values.size() < std::numeric_limits<std::uint32_t>::max());
+            write_uint32(output_stream, static_cast<std::uint32_t>(values.size()));
             for (const auto v: values)
             {
-                const auto serialized = uint32_serializer(v);
-                output_stream.write(serialized.data(), serialized.length());
+                write_uint32(output_stream, v);
             }
         }
 
@@ -192,32 +168,64 @@ namespace tetengo::trie
         serialize_mapped_array(std::ostream& /*output_stream*/, const std::vector<std::any>& /*mapped_array*/)
         {}
 
+        static void write_uint32(std::ostream& output_stream, const std::uint32_t value)
+        {
+            static const default_serializer<std::uint32_t> uint32_serializer{};
+
+            const auto serialized = uint32_serializer(value);
+            output_stream.write(serialized.data(), serialized.length());
+        }
+
         static void deserialize(
             std::istream&               input_stream,
             std::vector<std::uint32_t>& base_check_array,
             std::vector<std::size_t>&   mapped_index_mappings,
-            std::vector<std::any>& /*mapped_array*/)
+            std::vector<std::any>&      mapped_array)
         {
+            deserialize_base_check_array(input_stream, base_check_array);
+            deserialize_mapped_index_mappings(input_stream, mapped_index_mappings);
+            deserialize_mapped_array(input_stream, mapped_array);
+        }
+
+        static void
+        deserialize_base_check_array(std::istream& input_stream, std::vector<std::uint32_t>& base_check_array)
+        {
+            const auto size = read_uint32(input_stream);
+            base_check_array.reserve(size);
+            for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
             {
-                const auto size = read_uint32(input_stream);
-                base_check_array.reserve(size);
-                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
-                {
-                    base_check_array.push_back(read_uint32(input_stream));
-                }
+                base_check_array.push_back(read_uint32(input_stream));
             }
+        }
+
+        static void
+        deserialize_mapped_index_mappings(std::istream& input_stream, std::vector<std::size_t>& mapped_index_mappings)
+        {
+            const auto size = read_uint32(input_stream);
+            for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
             {
-                const auto size = read_uint32(input_stream);
-                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+                const auto value = read_uint32(input_stream);
+                if (value >= mapped_index_mappings.size())
                 {
-                    const auto value = read_uint32(input_stream);
-                    if (value >= mapped_index_mappings.size())
-                    {
-                        mapped_index_mappings.resize(value + 1, std::numeric_limits<std::size_t>::max());
-                    }
-                    mapped_index_mappings[value] = i;
+                    mapped_index_mappings.resize(value + 1, std::numeric_limits<std::size_t>::max());
                 }
+                mapped_index_mappings[value] = i;
             }
+        }
+
+        static void deserialize_mapped_array(std::istream& /*input_stream*/, std::vector<std::any>& /*mapped_array*/) {}
+
+        static std::uint32_t read_uint32(std::istream& input_stream)
+        {
+            static const default_deserializer<std::uint32_t> uint32_deserializer{};
+
+            std::string to_deserialize(sizeof(std::uint32_t), 0);
+            input_stream.read(to_deserialize.data(), sizeof(std::uint32_t));
+            if (input_stream.gcount() < static_cast<std::streamsize>(sizeof(std::uint32_t)))
+            {
+                throw std::ios_base::failure("Can't read uint32.");
+            }
+            return uint32_deserializer(to_deserialize);
         }
 
 
