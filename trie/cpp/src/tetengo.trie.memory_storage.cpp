@@ -105,7 +105,7 @@ namespace tetengo::trie
 
         void serialize_impl(
             std::ostream& output_stream,
-            const std::function<std::string(const std::any&)>& /*serializer*/) const
+            const std::function<std::string(const std::any&)>& /*mapped_serializer*/) const
         {
             {
                 write_uint32(output_stream, static_cast<std::uint32_t>(m_base_check_array.size()));

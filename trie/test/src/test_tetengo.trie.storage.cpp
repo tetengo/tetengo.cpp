@@ -58,7 +58,7 @@ namespace
 
         virtual void serialize_impl(
             std::ostream& /*output_stream*/,
-            const std::function<std::string(const std::any&)>& /*serializer*/) const override
+            const std::function<std::string(const std::any&)>& /*mapped_serializer*/) const override
         {}
 
         std::unique_ptr<storage> clone_impl() const override
