@@ -106,12 +106,12 @@ namespace tetengo::trie
         }
 
         void serialize_impl(
-            std::ostream& output_stream,
-            const std::function<std::string(const std::any&)>& /*mapped_serializer*/) const
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& mapped_serializer) const
         {
             serialize_base_check_array(output_stream, m_base_check_array);
             serialize_mapped_index_mappings(output_stream, m_mapped_index_mappings);
-            serialize_mapped_array(output_stream, m_mapped_array);
+            serialize_mapped_array(output_stream, mapped_serializer, m_mapped_array);
         }
 
         std::unique_ptr<storage> clone_impl() const
@@ -164,9 +164,21 @@ namespace tetengo::trie
             }
         }
 
-        static void
-        serialize_mapped_array(std::ostream& /*output_stream*/, const std::vector<std::any>& /*mapped_array*/)
-        {}
+        static void serialize_mapped_array(
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& mapped_serializer,
+            const std::vector<std::any>&                       mapped_array)
+        {
+            assert(mapped_array.size() < std::numeric_limits<std::uint32_t>::max());
+            write_uint32(output_stream, static_cast<std::uint32_t>(mapped_array.size()));
+            for (const auto& v: mapped_array)
+            {
+                const auto serialized = mapped_serializer(v);
+                assert(serialized.length() < std::numeric_limits<std::uint32_t>::max());
+                write_uint32(output_stream, static_cast<std::uint32_t>(serialized.length()));
+                output_stream.write(serialized.data(), serialized.length());
+            }
+        }
 
         static void write_uint32(std::ostream& output_stream, const std::uint32_t value)
         {

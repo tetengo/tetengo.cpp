@@ -16,6 +16,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.hpp>
@@ -29,10 +30,13 @@ namespace
     }
 
     const std::vector<char> serialized{
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x01), to_c(0x23), to_c(0x45),
-        to_c(0x67), to_c(0x89), to_c(0xAB), to_c(0xCD), to_c(0xEF), to_c(0x00), to_c(0x00),
-        to_c(0x00), to_c(0x03), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), to_c(0x00),
-        to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01),
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
+        to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), /*                                                            */
+        to_c(0x89), to_c(0xAB), to_c(0xCD), to_c(0xEF), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x03), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01), /*                                                            */
     };
 
     const std::vector<uint32_t> base_check_array{ 0x01234567, 0x89ABCDEF };
@@ -43,7 +47,9 @@ namespace
     }
 
     const std::vector<char> serialized_broken{
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), to_c(0x89),
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
+        to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), /*                                                            */
+        to_c(0x89), /*                                                                                                */
     };
 
     std::unique_ptr<std::istream> create_broken_input_stream()
@@ -215,13 +221,26 @@ BOOST_AUTO_TEST_CASE(serialize)
     storage_.add_mapped_at(1, std::make_any<std::string>("piyo"));
 
     std::ostringstream output_stream{};
-    storage_.serialize(output_stream, [](const std::any&) { return std::string{}; });
+    storage_.serialize(output_stream, [](const std::any& object) {
+        static const tetengo::trie::default_serializer<std::string> string_serializer{};
+        return string_serializer(std::any_cast<std::string>(object));
+    });
 
     static const std::string expected{
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x2A),
-        to_c(0xFF), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18), to_c(0x00), to_c(0x00),
-        to_c(0x00), to_c(0x03), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), to_c(0x00),
-        to_c(0x00), to_c(0x00), to_c(0x02), to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01),
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x2A), to_c(0xFF), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x03), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x03), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
     };
     const std::string serialized = output_stream.str();
     BOOST_CHECK_EQUAL_COLLECTIONS(serialized.begin(), serialized.end(), expected.begin(), expected.end());
