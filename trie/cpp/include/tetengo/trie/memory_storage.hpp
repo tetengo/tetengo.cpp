@@ -13,6 +13,7 @@
 #include <istream>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
@@ -36,9 +37,12 @@ namespace tetengo::trie
         /*!
             \brief Creates a memory storage.
 
-            \param input_stream An input stream.
+            \param input_stream        An input stream.
+            \param mapped_deserializer A deserializer for mapped objects.
         */
-        explicit memory_storage(std::istream& input_stream);
+        explicit memory_storage(
+            std::istream&                                           input_stream,
+            const std::function<std::any(const std::string_view&)>& mapped_deserializer);
 
         /*!
             \brief Destroys the memory storage.

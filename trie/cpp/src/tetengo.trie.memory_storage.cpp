@@ -15,6 +15,7 @@
 #include <limits>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -38,9 +39,12 @@ namespace tetengo::trie
         m_mapped_index_mappings{},
         m_mapped_array{} {};
 
-        explicit impl(std::istream& input_stream) : m_base_check_array{}, m_mapped_index_mappings{}, m_mapped_array{}
+        explicit impl(
+            std::istream&                                           input_stream,
+            const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
+        m_base_check_array{}, m_mapped_index_mappings{}, m_mapped_array{}
         {
-            deserialize(input_stream, m_base_check_array, m_mapped_index_mappings, m_mapped_array);
+            deserialize(input_stream, mapped_deserializer, m_base_check_array, m_mapped_index_mappings, m_mapped_array);
         };
 
 
@@ -189,14 +193,15 @@ namespace tetengo::trie
         }
 
         static void deserialize(
-            std::istream&               input_stream,
-            std::vector<std::uint32_t>& base_check_array,
-            std::vector<std::size_t>&   mapped_index_mappings,
-            std::vector<std::any>&      mapped_array)
+            std::istream&                                           input_stream,
+            const std::function<std::any(const std::string_view&)>& mapped_deserializer,
+            std::vector<std::uint32_t>&                             base_check_array,
+            std::vector<std::size_t>&                               mapped_index_mappings,
+            std::vector<std::any>&                                  mapped_array)
         {
             deserialize_base_check_array(input_stream, base_check_array);
             deserialize_mapped_index_mappings(input_stream, mapped_index_mappings);
-            deserialize_mapped_array(input_stream, mapped_array);
+            deserialize_mapped_array(input_stream, mapped_deserializer, mapped_array);
         }
 
         static void
@@ -225,7 +230,25 @@ namespace tetengo::trie
             }
         }
 
-        static void deserialize_mapped_array(std::istream& /*input_stream*/, std::vector<std::any>& /*mapped_array*/) {}
+        static void deserialize_mapped_array(
+            std::istream&                                           input_stream,
+            const std::function<std::any(const std::string_view&)>& mapped_deserializer,
+            std::vector<std::any>&                                  mapped_array)
+        {
+            const auto size = read_uint32(input_stream);
+            mapped_array.reserve(size);
+            for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+            {
+                const auto  element_size = read_uint32(input_stream);
+                std::string to_deserialize(element_size, 0);
+                input_stream.read(to_deserialize.data(), element_size);
+                if (input_stream.gcount() < static_cast<std::streamsize>(element_size))
+                {
+                    throw std::ios_base::failure("Can't read mapped.");
+                }
+                mapped_array.push_back(mapped_deserializer(to_deserialize));
+            }
+        }
 
         static std::uint32_t read_uint32(std::istream& input_stream)
         {
@@ -264,7 +287,11 @@ namespace tetengo::trie
 
     memory_storage::memory_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
-    memory_storage::memory_storage(std::istream& input_stream) : m_p_impl{ std::make_unique<impl>(input_stream) } {}
+    memory_storage::memory_storage(
+        std::istream&                                           input_stream,
+        const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
+    m_p_impl{ std::make_unique<impl>(input_stream, mapped_deserializer) }
+    {}
 
     memory_storage::~memory_storage() = default;
 

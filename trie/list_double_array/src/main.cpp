@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <cstdint>
 #include <exception>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
@@ -11,8 +12,10 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
+#include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/enumerator.hpp>
 #include <tetengo/trie/memory_storage.hpp>
@@ -24,7 +27,10 @@ namespace
     std::unique_ptr<tetengo::trie::storage> create_storage(const std::filesystem::path& path_)
     {
         std::ifstream input_stream{ path_.c_str(), std::ios_base::binary };
-        return std::make_unique<tetengo::trie::memory_storage>(input_stream);
+        return std::make_unique<tetengo::trie::memory_storage>(input_stream, [](const std::string_view& serialized) {
+            static const tetengo::trie::default_deserializer<std::int32_t> int32_deserializer{};
+            return int32_deserializer(serialized);
+        });
     }
 
 

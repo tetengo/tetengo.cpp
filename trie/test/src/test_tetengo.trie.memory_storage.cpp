@@ -6,10 +6,12 @@
 
 #include <any>
 #include <cstdint>
+#include <functional>
 #include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <boost/cstdint.hpp>
@@ -31,15 +33,22 @@ namespace
 
     const std::vector<char> serialized{
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
-        to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), /*                                                            */
-        to_c(0x89), to_c(0xAB), to_c(0xCD), to_c(0xEF), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x2A), to_c(0xFF), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18), /*                                                            */
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x03), /*                                                            */
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x03), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
+        to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
     };
 
-    const std::vector<uint32_t> base_check_array{ 0x01234567, 0x89ABCDEF };
+    const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x00000018 };
 
     std::unique_ptr<std::istream> create_input_stream()
     {
@@ -76,20 +85,31 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const auto                          p_input_stream = create_input_stream();
-        const tetengo::trie::memory_storage storage_{ *p_input_stream };
+        const tetengo::trie::memory_storage storage_{
+            *p_input_stream,
+            [](const std::string_view& serialized) {
+                static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
+                return string_deserializer(std::string{ serialized });
+            }
+        };
 
         BOOST_TEST(storage_.base_check_array() == base_check_array);
-        // BOOST_REQUIRE(storage_.mapped_at(4));
-        // BOOST_TEST(*storage_.mapped_at(4) == 0U);
-        // BOOST_REQUIRE(storage_.mapped_at(2));
-        // BOOST_TEST(*storage_.mapped_at(2) == 1U);
-        // BOOST_REQUIRE(storage_.mapped_at(1));
-        // BOOST_TEST(*storage_.mapped_at(1) == 2U);
+        BOOST_REQUIRE(storage_.mapped_at(4));
+        BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(4)) == "hoge");
+        BOOST_REQUIRE(storage_.mapped_at(2));
+        BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(2)) == "fuga");
+        BOOST_REQUIRE(storage_.mapped_at(1));
+        BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(1)) == "piyo");
     }
     {
         const auto p_input_stream = create_broken_input_stream();
 
-        BOOST_CHECK_THROW(const tetengo::trie::memory_storage storage_{ *p_input_stream }, std::ios_base::failure);
+        const auto deserializer = [](const std::string_view& serialized) {
+            static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
+            return string_deserializer(std::string{ serialized });
+        };
+        BOOST_CHECK_THROW(
+            const tetengo::trie::memory_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
     }
 }
 

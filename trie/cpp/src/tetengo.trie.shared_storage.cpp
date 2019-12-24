@@ -10,6 +10,7 @@
 #include <istream>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -29,7 +30,10 @@ namespace tetengo::trie
 
         impl() : m_p_entity{ std::make_shared<memory_storage>() } {};
 
-        explicit impl(std::istream& input_stream) : m_p_entity{ std::make_shared<memory_storage>(input_stream) } {};
+        explicit impl(
+            std::istream&                                           input_stream,
+            const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
+        m_p_entity{ std::make_shared<memory_storage>(input_stream, mapped_deserializer) } {};
 
 
         // functions
@@ -98,7 +102,11 @@ namespace tetengo::trie
 
     shared_storage::shared_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
-    shared_storage::shared_storage(std::istream& input_stream) : m_p_impl{ std::make_unique<impl>(input_stream) } {}
+    shared_storage::shared_storage(
+        std::istream&                                           input_stream,
+        const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
+    m_p_impl{ std::make_unique<impl>(input_stream, mapped_deserializer) }
+    {}
 
     shared_storage::~shared_storage() = default;
 
