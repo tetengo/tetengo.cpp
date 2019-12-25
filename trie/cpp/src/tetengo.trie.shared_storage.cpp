@@ -4,9 +4,14 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <any>
 #include <cstdint>
+#include <functional>
 #include <istream>
 #include <memory>
+#include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -25,7 +30,10 @@ namespace tetengo::trie
 
         impl() : m_p_entity{ std::make_shared<memory_storage>() } {};
 
-        explicit impl(std::istream& input_stream) : m_p_entity{ std::make_shared<memory_storage>(input_stream) } {};
+        explicit impl(
+            std::istream&                                           input_stream,
+            const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
+        m_p_entity{ std::make_shared<memory_storage>(input_stream, mapped_deserializer) } {};
 
 
         // functions
@@ -50,11 +58,6 @@ namespace tetengo::trie
             m_p_entity->set_check_at(base_check_index, value);
         }
 
-        std::size_t size_impl() const
-        {
-            return m_p_entity->size();
-        }
-
         double filling_rate_impl() const
         {
             return m_p_entity->filling_rate();
@@ -65,9 +68,21 @@ namespace tetengo::trie
             return m_p_entity->base_check_array();
         }
 
-        void serialize_impl(std::ostream& output_stream) const
+        const std::any* mapped_at_impl(const std::size_t mapped_index) const
         {
-            m_p_entity->serialize(output_stream);
+            return m_p_entity->mapped_at(mapped_index);
+        }
+
+        void add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)
+        {
+            m_p_entity->add_mapped_at(mapped_index, std::move(mapped));
+        }
+
+        void serialize_impl(
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& mapped_serializer) const
+        {
+            m_p_entity->serialize(output_stream, mapped_serializer);
         }
 
         std::unique_ptr<storage> clone_impl() const
@@ -87,7 +102,11 @@ namespace tetengo::trie
 
     shared_storage::shared_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
-    shared_storage::shared_storage(std::istream& input_stream) : m_p_impl{ std::make_unique<impl>(input_stream) } {}
+    shared_storage::shared_storage(
+        std::istream&                                           input_stream,
+        const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
+    m_p_impl{ std::make_unique<impl>(input_stream, mapped_deserializer) }
+    {}
 
     shared_storage::~shared_storage() = default;
 
@@ -111,11 +130,6 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, value);
     }
 
-    std::size_t shared_storage::size_impl() const
-    {
-        return m_p_impl->size_impl();
-    }
-
     double shared_storage::filling_rate_impl() const
     {
         return m_p_impl->filling_rate_impl();
@@ -126,9 +140,21 @@ namespace tetengo::trie
         return m_p_impl->base_check_array_impl();
     }
 
-    void shared_storage::serialize_impl(std::ostream& output_stream) const
+    const std::any* shared_storage::mapped_at_impl(const std::size_t mapped_index) const
     {
-        m_p_impl->serialize_impl(output_stream);
+        return m_p_impl->mapped_at_impl(mapped_index);
+    }
+
+    void shared_storage::add_mapped_at_impl(const std::size_t mapped_index, std::any mapped)
+    {
+        return m_p_impl->add_mapped_at_impl(mapped_index, std::move(mapped));
+    }
+
+    void shared_storage::serialize_impl(
+        std::ostream&                                      output_stream,
+        const std::function<std::string(const std::any&)>& mapped_serializer) const
+    {
+        m_p_impl->serialize_impl(output_stream, mapped_serializer);
     }
 
     std::unique_ptr<storage> shared_storage::clone_impl() const

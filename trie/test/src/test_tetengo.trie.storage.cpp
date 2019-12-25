@@ -4,9 +4,12 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <any>
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -22,24 +25,19 @@ namespace
     private:
         // virtual functions
 
-        virtual std::int32_t base_at_impl(std::size_t /*base_check_index*/) const override
+        virtual std::int32_t base_at_impl(const std::size_t /*base_check_index*/) const override
         {
             return 42;
         }
 
-        virtual void set_base_at_impl(std::size_t /*base_check_index*/, std::int32_t /*value*/) override {}
+        virtual void set_base_at_impl(const std::size_t /*base_check_index*/, const std::int32_t /*value*/) override {}
 
-        virtual std::uint8_t check_at_impl(std::size_t /*base_check_index*/) const override
+        virtual std::uint8_t check_at_impl(const std::size_t /*base_check_index*/) const override
         {
             return 24;
         }
 
-        virtual void set_check_at_impl(std::size_t /*base_check_index*/, std::uint8_t /*value*/) override {}
-
-        virtual std::size_t size_impl() const override
-        {
-            return 2424;
-        }
+        virtual void set_check_at_impl(const std::size_t /*base_check_index*/, const std::uint8_t /*value*/) override {}
 
         virtual double filling_rate_impl() const override
         {
@@ -52,7 +50,17 @@ namespace
             return singleton;
         }
 
-        virtual void serialize_impl(std::ostream& /*output_stream*/) const override {}
+        virtual const std::any* mapped_at_impl(const std::size_t /*mapped_index*/) const override
+        {
+            return nullptr;
+        }
+
+        virtual void add_mapped_at_impl(const std::size_t /*index*/, std::any /*mapped*/) override {}
+
+        virtual void serialize_impl(
+            std::ostream& /*output_stream*/,
+            const std::function<std::string(const std::any&)>& /*mapped_serializer*/) const override
+        {}
 
         std::unique_ptr<storage> clone_impl() const override
         {
@@ -112,15 +120,6 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     storage_.set_check_at(24, 124);
 }
 
-BOOST_AUTO_TEST_CASE(size)
-{
-    BOOST_TEST_PASSPOINT();
-
-    concrete_storage storage_{};
-
-    BOOST_TEST(storage_.size() == 2424U);
-}
-
 BOOST_AUTO_TEST_CASE(filling_rate)
 {
     BOOST_TEST_PASSPOINT();
@@ -132,7 +131,9 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 
 BOOST_AUTO_TEST_CASE(base_check_array)
 {
-    concrete_storage storage_{};
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage_{};
 
     const auto base_check_array = storage_.base_check_array();
 
@@ -140,21 +141,39 @@ BOOST_AUTO_TEST_CASE(base_check_array)
     BOOST_TEST(base_check_array == expected);
 }
 
-BOOST_AUTO_TEST_CASE(serialize)
+BOOST_AUTO_TEST_CASE(mapped_at)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage_{};
+
+    BOOST_TEST(!storage_.mapped_at(42));
+}
+
+BOOST_AUTO_TEST_CASE(add_mapped_at)
 {
     BOOST_TEST_PASSPOINT();
 
     concrete_storage storage_{};
 
+    storage_.add_mapped_at(42, std::make_any<std::string>("hoge"));
+}
+
+BOOST_AUTO_TEST_CASE(serialize)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage_{};
+
     std::ostringstream output_stream{};
-    storage_.serialize(output_stream);
+    storage_.serialize(output_stream, [](const std::any&) { return std::string{}; });
 }
 
 BOOST_AUTO_TEST_CASE(clone)
 {
     BOOST_TEST_PASSPOINT();
 
-    concrete_storage storage_{};
+    const concrete_storage storage_{};
 
     const auto p_clone = storage_.clone();
 }
