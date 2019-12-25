@@ -21,6 +21,7 @@
 
 #include <boost/format.hpp>
 
+#include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/storage.hpp>
 
@@ -83,7 +84,10 @@ namespace
             throw std::ios_base::failure{ "Can't open the output file." };
         }
 
-        double_array_.get_storage().serialize(output_stream, [](const std::any&) { return std::string{}; });
+        double_array_.get_storage().serialize(output_stream, [](const std::any& object) {
+            static const tetengo::trie::default_serializer<int> int_serializer{};
+            return int_serializer(std::any_cast<int>(object));
+        });
     }
 
 
