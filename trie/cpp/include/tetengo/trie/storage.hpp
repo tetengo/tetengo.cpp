@@ -7,10 +7,12 @@
 #if !defined(TETENGO_TRIE_STORAGE_HPP)
 #define TETENGO_TRIE_STORAGE_HPP
 
+#include <any>
 #include <cstdint>
+#include <functional>
 #include <istream>
 #include <memory>
-#include <optional>
+#include <string>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -88,29 +90,31 @@ namespace tetengo::trie
         const std::vector<std::uint32_t>& base_check_array() const;
 
         /*!
-            \brief Returns the mapped storage index.
+            \brief Returns the mapped object.
 
             \param mapped_index A mapped index.
 
-            \return The mapped storage index. Or std::nullopt when there is no corresponding mapped storage index.
+            \return A pointer to the mapped object. Or nullptr when there is no corresponding mapped object.
         */
-        std::optional<std::size_t> mapped_storage_index(std::size_t mapped_index) const;
+        const std::any* mapped_at(std::size_t mapped_index) const;
 
         /*!
             \brief Adds a mapped storage index mapping.
 
-            A mapped storage index is automatically assigned.
-
             \param mapped_index A mapped index.
+            \param mapped       A mapped object.
         */
-        void add_mapped_storage_index(std::size_t mapped_index);
+        void add_mapped_at(std::size_t mapped_index, std::any mapped);
 
         /*!
             \brief Serializes this storage.
 
-            \param output_stream An output stream.
+            \param output_stream     An output stream.
+            \param mapped_serializer A serializer for mapped objects.
         */
-        void serialize(std::ostream& output_stream) const;
+        void serialize(
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& mapped_serializer) const;
 
         /*!
             \brief Clones this storage.
@@ -135,11 +139,13 @@ namespace tetengo::trie
 
         virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
 
-        virtual std::optional<std::size_t> mapped_storage_index_impl(std::size_t mapped_index) const = 0;
+        virtual const std::any* mapped_at_impl(std::size_t mapped_index) const = 0;
 
-        virtual void add_mapped_storage_index_impl(std::size_t mapped_index) = 0;
+        virtual void add_mapped_at_impl(std::size_t mapped_index, std::any mapped) = 0;
 
-        virtual void serialize_impl(std::ostream& output_stream) const = 0;
+        virtual void serialize_impl(
+            std::ostream&                                      output_stream,
+            const std::function<std::string(const std::any&)>& mapped_serializer) const = 0;
 
         virtual std::unique_ptr<storage> clone_impl() const = 0;
     };

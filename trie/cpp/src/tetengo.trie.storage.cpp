@@ -4,10 +4,13 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <any>
 #include <cstdint>
+#include <functional>
 #include <istream>
 #include <memory>
-#include <optional>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
@@ -45,19 +48,21 @@ namespace tetengo::trie
         return base_check_array_impl();
     }
 
-    std::optional<std::size_t> storage::mapped_storage_index(const std::size_t mapped_index) const
+    const std::any* storage::mapped_at(const std::size_t mapped_index) const
     {
-        return mapped_storage_index_impl(mapped_index);
+        return mapped_at_impl(mapped_index);
     }
 
-    void storage::add_mapped_storage_index(const std::size_t mapped_index)
+    void storage::add_mapped_at(const std::size_t mapped_index, std::any mapped)
     {
-        add_mapped_storage_index_impl(mapped_index);
+        add_mapped_at_impl(mapped_index, std::move(mapped));
     }
 
-    void storage::serialize(std::ostream& output_stream) const
+    void storage::serialize(
+        std::ostream&                                      output_stream,
+        const std::function<std::string(const std::any&)>& mapped_serializer) const
     {
-        serialize_impl(output_stream);
+        serialize_impl(output_stream, mapped_serializer);
     }
 
     std::unique_ptr<storage> storage::clone() const
