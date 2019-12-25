@@ -18,7 +18,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/trie/default_key_serializer.hpp>
+#include <tetengo/trie/default_serializer.hpp>
 
 
 namespace tetengo::trie
@@ -80,7 +80,7 @@ namespace tetengo::trie
         \tparam Mapped        A mapped type.
         \tparam KeySerializer A key serializer type.
     */
-    template <typename Key, typename Mapped, typename KeySerializer = default_key_serializer<Key>>
+    template <typename Key, typename Mapped, typename KeySerializer = default_serializer<Key>>
     class trie : private boost::noncopyable
     {
     public:
@@ -114,7 +114,7 @@ namespace tetengo::trie
         */
         explicit trie(
             std::initializer_list<value_type> elements,
-            const key_serializer_type&        key_serializer = default_key_serializer<key_type>{}) :
+            const key_serializer_type&        key_serializer = default_serializer<key_type>{}) :
         m_impl{ serialize_key(elements, key_serializer) }
         {}
 
