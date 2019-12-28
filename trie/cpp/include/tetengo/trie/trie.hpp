@@ -9,10 +9,12 @@
 
 #include <algorithm>
 #include <any>
+#include <functional>
 #include <initializer_list>
 #include <iterator>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -40,6 +42,32 @@ namespace tetengo::trie
         //! The vaue type.
         using value_type = std::pair<key_type, mapped_type>;
 
+        //! The building observer set type.
+        struct building_observer_set_type
+        {
+            /*!
+                \brief Called when a key is adding.
+
+                \param serialized_key A serialized key.
+            */
+            std::function<void(const std::string_view& serialized_key)> adding;
+
+            /*!
+                \brief Called when the building is done.
+            */
+            std::function<void()> done;
+        };
+
+
+        // static functions
+
+        /*!
+            \brief Returns the null building observer set.
+
+            \return The null bulding observer set.
+        */
+        static const building_observer_set_type& null_building_observer_set();
+
 
         // constructors and destructor
 
@@ -51,9 +79,10 @@ namespace tetengo::trie
         /*!
             \brief Creates a trie.
 
-            \param elements Initial elements.
+            \param elements              Initial elements.
+            \param building_observer_set A building observer set.
         */
-        explicit trie_impl(std::vector<value_type> elements);
+        explicit trie_impl(std::vector<value_type> elements, const building_observer_set_type& building_observer_set);
 
         /*!
             \brief Destroys an implementation of trie.
@@ -98,6 +127,22 @@ namespace tetengo::trie
         //! The value type.
         using value_type = std::pair<key_type, mapped_type>;
 
+        //! The building observer set type.
+        using building_observer_set_type = trie_impl::building_observer_set_type;
+
+
+        // static functions
+
+        /*!
+            \brief Returns the null building observer set.
+
+            \return The null bulding observer set.
+        */
+        static const building_observer_set_type& null_building_observer_set()
+        {
+            return trie_impl::null_building_observer_set();
+        }
+
 
         // constructors and destructor
 
@@ -109,13 +154,15 @@ namespace tetengo::trie
         /*!
             \brief Creates a trie.
 
-            \param elements       Initial elements.
-            \param key_serializer A key serializer.
+            \param elements              Initial elements.
+            \param key_serializer        A key serializer.
+            \param building_observer_set A building observer set.
         */
         explicit trie(
             std::initializer_list<value_type> elements,
-            const key_serializer_type&        key_serializer = default_serializer<key_type>{}) :
-        m_impl{ serialize_key(elements, key_serializer) }
+            const key_serializer_type&        key_serializer = default_serializer<key_type>{},
+            const building_observer_set_type& building_observer_set = null_building_observer_set()) :
+        m_impl{ serialize_key(elements, key_serializer), building_observer_set }
         {}
 
 

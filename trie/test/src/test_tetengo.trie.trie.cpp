@@ -4,11 +4,15 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <functional>
 #include <string>
+#include <string_view>
+#include <vector>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/trie.hpp>
 
 
@@ -39,6 +43,13 @@ BOOST_AUTO_TEST_SUITE(trie)
 BOOST_AUTO_TEST_SUITE(trie)
 
 
+BOOST_AUTO_TEST_CASE(null_building_observer_set)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::trie<std::string, int>::null_building_observer_set();
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
@@ -54,6 +65,25 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+    }
+    {
+        std::vector<std::string>                                          added_serialized_keys{};
+        auto                                                              done = false;
+        tetengo::trie::trie<std::string, int>::building_observer_set_type observer{
+            [&added_serialized_keys](const std::string_view& serialized_key) {
+                added_serialized_keys.emplace_back(serialized_key);
+            },
+            [&done]() { done = true; }
+        };
+        const tetengo::trie::trie<std::string, int> trie_{ { { "Kumamoto", 42 }, { "Tamana", 24 } },
+                                                           tetengo::trie::default_serializer<std::string>{},
+                                                           observer };
+
+        static const tetengo::trie::default_deserializer<std::string> key_deserializer{};
+        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2);
+        BOOST_TEST(key_deserializer(added_serialized_keys[0]) == "Kumamoto");
+        BOOST_TEST(key_deserializer(added_serialized_keys[1]) == "Tamana");
+        BOOST_TEST(done);
     }
 }
 
