@@ -36,13 +36,15 @@ namespace tetengo::trie
 
         impl() :
         m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
-        m_mapped_index_mappings{},
-        m_mapped_array{} {};
+            m_mapped_index_mappings{},
+            m_mapped_array{} {};
 
         explicit impl(
             std::istream&                                           input_stream,
             const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
-        m_base_check_array{}, m_mapped_index_mappings{}, m_mapped_array{}
+        m_base_check_array{},
+            m_mapped_index_mappings{},
+            m_mapped_array{}
         {
             deserialize(input_stream, mapped_deserializer, m_base_check_array, m_mapped_index_mappings, m_mapped_array);
         };

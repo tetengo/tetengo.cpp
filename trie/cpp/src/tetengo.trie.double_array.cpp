@@ -63,7 +63,7 @@ namespace tetengo::trie
             std::vector<std::pair<std::string_view, std::int32_t>>{},
             null_building_observer_set(),
             default_density_factor()) },
-        m_root_base_check_index{ 0 }
+            m_root_base_check_index{ 0 }
         {}
 
         impl(
@@ -71,7 +71,7 @@ namespace tetengo::trie
             const building_observer_set_type&                             building_observer_set,
             const std::size_t                                             density_factor) :
         m_p_storage{ double_array_builder::build(elements, building_observer_set, density_factor) },
-        m_root_base_check_index{ 0 }
+            m_root_base_check_index{ 0 }
         {}
 
         impl(
@@ -84,7 +84,8 @@ namespace tetengo::trie
         {}
 
         impl(std::unique_ptr<storage>&& p_storage, std::size_t root_base_check_index) :
-        m_p_storage{ std::move(p_storage) }, m_root_base_check_index{ root_base_check_index }
+        m_p_storage{ std::move(p_storage) },
+            m_root_base_check_index{ root_base_check_index }
         {}
 
 
