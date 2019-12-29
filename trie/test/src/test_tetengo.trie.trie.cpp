@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(construction)
         };
 
         static const tetengo::trie::default_deserializer<std::string> key_deserializer{};
-        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2);
+        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2U);
         BOOST_TEST(key_deserializer(added_serialized_keys[0]) == "Kumamoto");
         BOOST_TEST(key_deserializer(added_serialized_keys[1]) == "Tamana");
         BOOST_TEST(done);
