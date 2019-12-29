@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -41,12 +42,20 @@ namespace tetengo::trie
             return singleton;
         }
 
+        static std::size_t default_double_array_density_factor()
+        {
+            return double_array::default_density_factor();
+        }
+
 
         // constructors and destructor
 
         impl() : m_p_double_array{ std::make_unique<double_array>() } {}
 
-        explicit impl(std::vector<value_type> elements, const building_observer_set_type& building_observer_set) :
+        impl(
+            std::vector<value_type>           elements,
+            const building_observer_set_type& building_observer_set,
+            const std::size_t                 double_array_density_factor) :
         m_p_double_array{}
         {
             std::vector<std::pair<std::string_view, std::int32_t>> double_array_contents{};
@@ -63,8 +72,8 @@ namespace tetengo::trie
                 [&building_observer_set]() { building_observer_set.done(); }
             };
 
-            m_p_double_array =
-                std::make_unique<double_array>(double_array_contents, double_array_building_observer_set);
+            m_p_double_array = std::make_unique<double_array>(
+                double_array_contents, double_array_building_observer_set, double_array_density_factor);
         }
 
 
@@ -75,18 +84,26 @@ namespace tetengo::trie
     };
 
 
-    trie_impl::trie_impl() : m_p_impl{ std::make_unique<impl>() } {}
-
-    trie_impl::trie_impl(std::vector<value_type> elements, const building_observer_set_type& building_observer_set) :
-    m_p_impl{ std::make_unique<impl>(std::move(elements), building_observer_set) }
-    {}
-
-    trie_impl::~trie_impl() = default;
-
     const trie_impl::building_observer_set_type& trie_impl::null_building_observer_set()
     {
         return impl::null_building_observer_set();
     }
+
+    std::size_t trie_impl::default_double_array_density_factor()
+    {
+        return impl::default_double_array_density_factor();
+    }
+
+    trie_impl::trie_impl() : m_p_impl{ std::make_unique<impl>() } {}
+
+    trie_impl::trie_impl(
+        std::vector<value_type>           elements,
+        const building_observer_set_type& building_observer_set,
+        const std::size_t                 double_array_density_factor) :
+    m_p_impl{ std::make_unique<impl>(std::move(elements), building_observer_set, double_array_density_factor) }
+    {}
+
+    trie_impl::~trie_impl() = default;
 
 
 }

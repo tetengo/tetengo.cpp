@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <any>
+#include <cstddef>
 #include <functional>
 #include <initializer_list>
 #include <iterator>
@@ -68,6 +69,13 @@ namespace tetengo::trie
         */
         static const building_observer_set_type& null_building_observer_set();
 
+        /*!
+            \brief Returns the default double array density factor.
+
+            \return The default double array density factor.
+        */
+        static std::size_t default_double_array_density_factor();
+
 
         // constructors and destructor
 
@@ -79,10 +87,14 @@ namespace tetengo::trie
         /*!
             \brief Creates a trie.
 
-            \param elements              Initial elements.
-            \param building_observer_set A building observer set.
-        */
-        explicit trie_impl(std::vector<value_type> elements, const building_observer_set_type& building_observer_set);
+            \param elements                    Initial elements.
+            \param building_observer_set       A building observer set.
+            \param double_array_density_factor A double array density factor.
+         */
+        trie_impl(
+            std::vector<value_type>           elements,
+            const building_observer_set_type& building_observer_set,
+            std::size_t                       double_array_density_factor);
 
         /*!
             \brief Destroys an implementation of trie.
@@ -143,6 +155,16 @@ namespace tetengo::trie
             return trie_impl::null_building_observer_set();
         }
 
+        /*!
+            \brief Returns the default double array density factor.
+
+            \return The default double array density factor.
+        */
+        static std::size_t default_double_array_density_factor()
+        {
+            return trie_impl::default_double_array_density_factor();
+        }
+
 
         // constructors and destructor
 
@@ -154,15 +176,17 @@ namespace tetengo::trie
         /*!
             \brief Creates a trie.
 
-            \param elements              Initial elements.
-            \param key_serializer        A key serializer.
-            \param building_observer_set A building observer set.
+            \param elements                    Initial elements.
+            \param key_serializer              A key serializer.
+            \param building_observer_set       A building observer set.
+            \param double_array_density_factor A double array density factor.
         */
         explicit trie(
             std::initializer_list<value_type> elements,
             const key_serializer_type&        key_serializer = default_serializer<key_type>{},
-            const building_observer_set_type& building_observer_set = null_building_observer_set()) :
-        m_impl{ serialize_key(elements, key_serializer), building_observer_set }
+            const building_observer_set_type& building_observer_set = null_building_observer_set(),
+            std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
+        m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor }
         {}
 
 

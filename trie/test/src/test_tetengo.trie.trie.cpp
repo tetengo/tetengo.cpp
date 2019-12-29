@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <cstddef>
 #include <functional>
 #include <string>
 #include <string_view>
@@ -13,6 +14,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
+#include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/trie.hpp>
 
 
@@ -50,6 +52,15 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
     tetengo::trie::trie<std::string, int>::null_building_observer_set();
 }
 
+BOOST_AUTO_TEST_CASE(default_double_array_density_factor)
+{
+    BOOST_TEST_PASSPOINT();
+
+    using trie_type = tetengo::trie::trie<std::string, int>;
+    BOOST_TEST(
+        trie_type::default_double_array_density_factor() == tetengo::trie::double_array::default_density_factor());
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
@@ -75,9 +86,12 @@ BOOST_AUTO_TEST_CASE(construction)
             },
             [&done]() { done = true; }
         };
-        const tetengo::trie::trie<std::string, int> trie_{ { { "Kumamoto", 42 }, { "Tamana", 24 } },
-                                                           tetengo::trie::default_serializer<std::string>{},
-                                                           observer };
+        const tetengo::trie::trie<std::string, int> trie_{
+            { { "Kumamoto", 42 }, { "Tamana", 24 } },
+            tetengo::trie::default_serializer<std::string>{},
+            observer,
+            tetengo::trie::trie<std::string, int>::default_double_array_density_factor()
+        };
 
         static const tetengo::trie::default_deserializer<std::string> key_deserializer{};
         BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2);
