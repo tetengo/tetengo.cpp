@@ -11,7 +11,8 @@ sources = \
     tetengo.trie.enumerator.cpp \
     tetengo.trie.memory_storage.cpp \
     tetengo.trie.shared_storage.cpp \
-    tetengo.trie.storage.cpp
+    tetengo.trie.storage.cpp \
+    tetengo.trie.trie.cpp
 
 lib_LIBRARIES = libtetengo.trie.cpp.a
 
