@@ -15,6 +15,7 @@
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/trie/double_array.hpp>
+#include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>
 
 
@@ -62,7 +63,7 @@ namespace tetengo::trie
             double_array_contents.reserve(elements.size());
             for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(elements.size()); ++i)
             {
-                double_array_contents.emplace_back(elements[i].first, i);
+                double_array_contents.emplace_back(std::move(elements[i].first), i);
             }
 
             const double_array::building_observer_set_type double_array_building_observer_set{
@@ -74,6 +75,11 @@ namespace tetengo::trie
 
             m_p_double_array = std::make_unique<double_array>(
                 double_array_contents, double_array_building_observer_set, double_array_density_factor);
+
+            for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(elements.size()); ++i)
+            {
+                m_p_double_array->get_storage().add_mapped_at(i, std::move(elements[i].second));
+            }
         }
 
 

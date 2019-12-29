@@ -194,6 +194,13 @@ namespace tetengo::trie
         */
         const storage& get_storage() const;
 
+        /*!
+            \brief Returns the storage.
+
+            \return The storage.
+        */
+        storage& get_storage();
+
 
     private:
         // types
