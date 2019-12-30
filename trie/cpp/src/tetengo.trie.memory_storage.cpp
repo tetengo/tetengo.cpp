@@ -36,13 +36,15 @@ namespace tetengo::trie
 
         impl() :
         m_base_check_array{ 0x00000000U | double_array::vacant_check_value() },
-        m_mapped_index_mappings{},
-        m_mapped_array{} {};
+            m_mapped_index_mappings{},
+            m_mapped_array{} {};
 
         explicit impl(
             std::istream&                                           input_stream,
             const std::function<std::any(const std::string_view&)>& mapped_deserializer) :
-        m_base_check_array{}, m_mapped_index_mappings{}, m_mapped_array{}
+        m_base_check_array{},
+            m_mapped_index_mappings{},
+            m_mapped_array{}
         {
             deserialize(input_stream, mapped_deserializer, m_base_check_array, m_mapped_index_mappings, m_mapped_array);
         };
@@ -158,7 +160,9 @@ namespace tetengo::trie
                 }
                 values[mapped_index_mappings[i]] = i;
             }
-            assert(std::find(values.begin(), values.end(), std::numeric_limits<std::uint32_t>::max()) == values.end());
+            assert(
+                std::find(std::begin(values), std::end(values), std::numeric_limits<std::uint32_t>::max()) ==
+                std::end(values));
 
             assert(values.size() < std::numeric_limits<std::uint32_t>::max());
             write_uint32(output_stream, static_cast<std::uint32_t>(values.size()));

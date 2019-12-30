@@ -484,17 +484,6 @@ BOOST_AUTO_TEST_CASE(storage)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::double_array double_array_{};
-
-        const auto& base_check_array = double_array_.get_storage().base_check_array();
-
-        BOOST_TEST(base_check_array == expected_empty_base_check_array_empty);
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
         const auto& base_check_array = double_array_.get_storage().base_check_array();
@@ -506,11 +495,11 @@ BOOST_AUTO_TEST_CASE(storage)
     }
 
     {
-        const tetengo::trie::double_array double_array_{ expected_values4 };
+        tetengo::trie::double_array double_array_{ expected_values3 };
 
         const auto& base_check_array = double_array_.get_storage().base_check_array();
 
-        BOOST_TEST(base_check_array == expected_base_check_array4);
+        BOOST_TEST(base_check_array == expected_base_check_array3);
     }
     {
         // TODO: C style API
