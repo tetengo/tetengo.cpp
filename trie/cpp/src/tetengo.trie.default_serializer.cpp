@@ -6,6 +6,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <iterator>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -149,7 +150,7 @@ namespace tetengo::trie
     {
         assert(bytes.length() % sizeof(Char) == 0);
         std::basic_string<Char> object{};
-        for (auto i = bytes.begin(); i != bytes.end(); i += sizeof(Char))
+        for (auto i = std::begin(bytes); i != std::end(bytes); i += sizeof(Char))
         {
             object.push_back(from_bytes<Char>(std::string_view{ &*i, sizeof(Char) }));
         }

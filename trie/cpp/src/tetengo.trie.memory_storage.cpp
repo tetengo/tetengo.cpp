@@ -160,7 +160,9 @@ namespace tetengo::trie
                 }
                 values[mapped_index_mappings[i]] = i;
             }
-            assert(std::find(values.begin(), values.end(), std::numeric_limits<std::uint32_t>::max()) == values.end());
+            assert(
+                std::find(std::begin(values), std::end(values), std::numeric_limits<std::uint32_t>::max()) ==
+                std::end(values));
 
             assert(values.size() < std::numeric_limits<std::uint32_t>::max());
             write_uint32(output_stream, static_cast<std::uint32_t>(values.size()));

@@ -263,7 +263,8 @@ BOOST_AUTO_TEST_CASE(serialize)
         to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
     };
     const std::string serialized = output_stream.str();
-    BOOST_CHECK_EQUAL_COLLECTIONS(serialized.begin(), serialized.end(), expected.begin(), expected.end());
+    BOOST_CHECK_EQUAL_COLLECTIONS(
+        std::begin(serialized), std::end(serialized), std::begin(expected), std::end(expected));
 }
 
 BOOST_AUTO_TEST_CASE(clone)

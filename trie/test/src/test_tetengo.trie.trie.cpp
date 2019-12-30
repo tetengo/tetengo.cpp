@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(get_storage)
         const auto storage_serialized = stream.str();
 
         BOOST_CHECK_EQUAL_COLLECTIONS(
-            storage_serialized.begin(), storage_serialized.end(), serialized.begin(), serialized.end());
+            std::begin(storage_serialized), std::end(storage_serialized), std::begin(serialized), std::end(serialized));
     }
 }
 

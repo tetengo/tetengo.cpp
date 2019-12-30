@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -78,7 +79,7 @@ namespace tetengo::trie
             const std::vector<std::pair<std::string, std::int32_t>>& elements,
             const building_observer_set_type&                        building_observer_set,
             const std::size_t                                        density_factor) :
-        impl{ std::vector<std::pair<std::string_view, std::int32_t>>{ elements.begin(), elements.end() },
+        impl{ std::vector<std::pair<std::string_view, std::int32_t>>{ std::begin(elements), std::end(elements) },
               building_observer_set,
               density_factor }
         {}
