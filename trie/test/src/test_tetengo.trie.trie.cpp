@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
  */
 
+#include <any>
 #include <functional>
 #include <iterator>
 #include <memory>
@@ -44,20 +45,26 @@ namespace
     static const std::wstring tamana2{ 0x7389, 0x540D }; // Tamana in Kanji in UTF-16/32
 
     const std::vector<char> serialized{
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x2A), to_c(0xFF), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x18), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x03), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x0B), /*  base check array                                          */
+        to_c(0xFF), to_c(0xFF), to_c(0x90), to_c(0xFF), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x78), to_c(0x71), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x9D), to_c(0x8A), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x7E), to_c(0x73), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xD9), to_c(0x67), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x06), to_c(0x2C), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xB4), to_c(0x89), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xFC), to_c(0x54), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x0A), to_c(0x0D), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x01), to_c(0x00), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /* mapped index mappings                                      */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x03), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
-        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
-        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x04), /*                                                            */
-        to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /* mapped array                                               */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x06), /*                                                            */
+        to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x06), to_c(0x9C), to_c(0xAC), /*                                    */
+        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x06), /*                                                            */
+        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D), /*                                    */
     };
 
     std::unique_ptr<std::istream> create_input_stream()
@@ -143,6 +150,11 @@ BOOST_AUTO_TEST_CASE(get_storage)
     BOOST_TEST_PASSPOINT();
 
     {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+
+        trie_.get_storage();
+    }
+    {
         auto p_input_stream = create_input_stream();
         auto p_storage =
             std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::string_view& serialized) {
@@ -151,7 +163,17 @@ BOOST_AUTO_TEST_CASE(get_storage)
             });
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
 
-        trie_.get_storage();
+        const auto& storage = trie_.get_storage();
+
+        std::stringstream stream{};
+        storage.serialize(stream, [](const std::any& mapped) {
+            static const tetengo::trie::default_serializer<std::string> serializer{};
+            return serializer(std::any_cast<std::string>(mapped));
+        });
+        const auto storage_serialized = stream.str();
+
+        BOOST_CHECK_EQUAL_COLLECTIONS(
+            storage_serialized.begin(), storage_serialized.end(), serialized.begin(), serialized.end());
     }
 }
 
