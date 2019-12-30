@@ -82,6 +82,10 @@ namespace tetengo::trie
             }
         }
 
+        explicit impl(std::unique_ptr<storage>&& p_storage) :
+        m_p_double_array{ std::make_unique<double_array>(std::move(p_storage), 0) }
+        {}
+
 
     private:
         // variables
@@ -107,6 +111,10 @@ namespace tetengo::trie
         const building_observer_set_type& building_observer_set,
         const std::size_t                 double_array_density_factor) :
     m_p_impl{ std::make_unique<impl>(std::move(elements), building_observer_set, double_array_density_factor) }
+    {}
+
+    trie_impl::trie_impl(std::unique_ptr<storage>&& p_storage) :
+    m_p_impl{ std::make_unique<impl>(std::move(p_storage)) }
     {}
 
     trie_impl::~trie_impl() = default;

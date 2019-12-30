@@ -26,6 +26,9 @@
 
 namespace tetengo::trie
 {
+    class storage;
+
+
     /*!
         \brief An implementation of trie.
     */
@@ -95,6 +98,13 @@ namespace tetengo::trie
             std::vector<value_type>           elements,
             const building_observer_set_type& building_observer_set,
             std::size_t                       double_array_density_factor);
+
+        /*!
+            \brief Creates a trie.
+
+            \param p_storage A unique pointer to a storage.
+        */
+        explicit trie_impl(std::unique_ptr<storage>&& p_storage);
 
         /*!
             \brief Destroys an implementation of trie.
@@ -188,6 +198,13 @@ namespace tetengo::trie
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor }
         {}
+
+        /*!
+            \brief Creates a trie.
+
+            \param p_storage A unique pointer to a storage.
+        */
+        explicit trie(std::unique_ptr<storage>&& p_storage) : m_impl{ std::move(p_storage) } {}
 
 
     private:
