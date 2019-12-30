@@ -87,6 +87,14 @@ namespace tetengo::trie
         {}
 
 
+        // functions
+
+        const storage& get_storage() const
+        {
+            return m_p_double_array->get_storage();
+        }
+
+
     private:
         // variables
 
@@ -118,6 +126,11 @@ namespace tetengo::trie
     {}
 
     trie_impl::~trie_impl() = default;
+
+    const storage& trie_impl::get_storage() const
+    {
+        return m_p_impl->get_storage();
+    }
 
 
 }

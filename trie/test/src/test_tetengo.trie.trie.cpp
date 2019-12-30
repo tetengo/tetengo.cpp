@@ -138,6 +138,23 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(get_storage)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        auto p_input_stream = create_input_stream();
+        auto p_storage =
+            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::string_view& serialized) {
+                static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
+                return string_deserializer(std::string{ serialized });
+            });
+        const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
+
+        trie_.get_storage();
+    }
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

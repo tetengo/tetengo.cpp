@@ -112,6 +112,16 @@ namespace tetengo::trie
         ~trie_impl();
 
 
+        // functions
+
+        /*!
+            \brief Returns the storage.
+
+            \return The storage.
+        */
+        const storage& get_storage() const;
+
+
     private:
         // types
 
@@ -205,6 +215,19 @@ namespace tetengo::trie
             \param p_storage A unique pointer to a storage.
         */
         explicit trie(std::unique_ptr<storage>&& p_storage) : m_impl{ std::move(p_storage) } {}
+
+
+        // functions
+
+        /*!
+            \brief Returns the storage.
+
+            \return The storage.
+        */
+        const storage& get_storage() const
+        {
+            return m_impl.get_storage();
+        }
 
 
     private:
