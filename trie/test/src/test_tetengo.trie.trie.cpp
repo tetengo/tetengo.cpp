@@ -31,6 +31,11 @@ namespace
         return static_cast<char>(uc);
     }
 
+    constexpr char nul_byte()
+    {
+        return to_c(0xFE);
+    }
+
 
     static const std::string kumamoto1{
         to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x6), to_c(0x9C), to_c(0xAC) // Kumamoto in Kanji in UTF-8
@@ -45,25 +50,25 @@ namespace
     static const std::wstring tamana2{ 0x7389, 0x540D }; // Tamana in Kanji in UTF-16/32
 
     const std::vector<char> serialized{
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x0B), /*  base check array                                          */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x0B), /*  base check array                                          */
         to_c(0xFF), to_c(0xFF), to_c(0x90), to_c(0xFF), /*                                                            */
         to_c(0xFF), to_c(0xFF), to_c(0x78), to_c(0x71), /*                                                            */
         to_c(0xFF), to_c(0xFF), to_c(0x9D), to_c(0x8A), /*                                                            */
         to_c(0xFF), to_c(0xFF), to_c(0x7E), to_c(0x73), /*                                                            */
         to_c(0xFF), to_c(0xFF), to_c(0xD9), to_c(0x67), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x06), to_c(0x2C), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x06), to_c(0x2C), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
         to_c(0xFF), to_c(0xFF), to_c(0xB4), to_c(0x89), /*                                                            */
         to_c(0xFF), to_c(0xFF), to_c(0xFC), to_c(0x54), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x0A), to_c(0x0D), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x01), to_c(0x00), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /* mapped index mappings                                      */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x01), /*                                                            */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x02), /* mapped array                                               */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x06), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x0A), to_c(0x0D), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x01), nul_byte(), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* mapped index mappings                                      */
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x01), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* mapped array                                               */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
         to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x06), to_c(0x9C), to_c(0xAC), /*                                    */
-        to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x06), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
         to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D), /*                                    */
     };
 
