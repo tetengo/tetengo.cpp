@@ -152,10 +152,6 @@ namespace
         0x00001800, // [11]   24,    10,         0
     };
 
-    const std::vector<std::pair<std::string, std::int32_t>> expected_values_nul_char{
-        { { to_c(0x00), to_c(0xAB) }, 24 },
-    };
-
 }
 
 
@@ -367,19 +363,6 @@ BOOST_AUTO_TEST_CASE(find)
                                      to_c(0xBA) } }; // "Suizenji" in Kanji
             const auto        o_found = double_array_.find(key);
             BOOST_CHECK(!o_found);
-        }
-    }
-    {
-        // TODO: C style API
-    }
-
-    {
-        const tetengo::trie::double_array double_array_{ expected_values_nul_char };
-
-        {
-            const auto o_found = double_array_.find(std::string{ to_c(0x00), to_c(0xAB) });
-            BOOST_REQUIRE(o_found);
-            BOOST_TEST(*o_found == 24);
         }
     }
     {
