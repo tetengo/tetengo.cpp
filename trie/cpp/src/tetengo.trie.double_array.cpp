@@ -161,6 +161,16 @@ namespace tetengo::trie
         return impl::default_density_factor();
     }
 
+    char double_array::key_terminator()
+    {
+        return impl::key_terminator();
+    }
+
+    std::uint8_t double_array::vacant_check_value()
+    {
+        return impl::vacant_check_value();
+    }
+
     double_array::double_array() : m_p_impl{ std::make_unique<impl>() } {}
 
     double_array::double_array(

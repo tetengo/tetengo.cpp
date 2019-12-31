@@ -71,20 +71,14 @@ namespace tetengo::trie
 
             \return The key terminator.
         */
-        static constexpr char key_terminator()
-        {
-            return '\0';
-        }
+        static char key_terminator();
 
         /*!
             \brief Returns the check value for a vacant element.
 
             \return The check value for a vacant element.
         */
-        static constexpr std::uint8_t vacant_check_value()
-        {
-            return 0xFF;
-        }
+        static std::uint8_t vacant_check_value();
 
 
         // constructors and destructor
