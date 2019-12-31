@@ -27,6 +27,11 @@ namespace
         return static_cast<char>(uc);
     }
 
+    constexpr char nul_byte()
+    {
+        return to_c(0xFE);
+    }
+
 }
 
 namespace tetengo::trie
@@ -89,7 +94,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         const std::wstring object{ 0x685C, 0x753A };
         const std::string  expected_serialized = []() {
             static_assert(sizeof(wchar_t) >= 2);
-            std::string expected(sizeof(wchar_t) * 2, to_c(0x80));
+            std::string expected(sizeof(wchar_t) * 2, nul_byte());
             expected[sizeof(wchar_t) - 2] = to_c(0x68);
             expected[sizeof(wchar_t) - 1] = to_c(0x5C);
             expected[sizeof(wchar_t) * 2 - 2] = to_c(0x75);
@@ -104,7 +109,16 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         const tetengo::trie::default_serializer<std::int32_t> serialize{};
 
         const auto        object = static_cast<std::int32_t>(0x001234AB);
-        const std::string expected_serialized{ to_c(0x00), to_c(0x12), to_c(0x34), to_c(0xAB) };
+        const std::string expected_serialized{ nul_byte(), to_c(0x12), to_c(0x34), to_c(0xAB) };
+        const auto        serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
+        BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
+    }
+    {
+        const tetengo::trie::default_serializer<std::int32_t> serialize{};
+
+        const auto        object = static_cast<std::int32_t>(0xFCFDFEFF);
+        const std::string expected_serialized{ to_c(0xFC), to_c(0xFD), to_c(0xFD), to_c(0xFD), to_c(0xFE), to_c(0xFF) };
         const auto        serialized = serialize(object);
         BOOST_TEST(serialized == expected_serialized);
         BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
@@ -142,7 +156,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
 
         const std::string serialized = []() {
             static_assert(sizeof(wchar_t) >= 2);
-            std::string expected(sizeof(wchar_t) * 2, to_c(0x80));
+            std::string expected(sizeof(wchar_t) * 2, nul_byte());
             expected[sizeof(wchar_t) - 2] = to_c(0x68);
             expected[sizeof(wchar_t) - 1] = to_c(0x5C);
             expected[sizeof(wchar_t) * 2 - 2] = to_c(0x75);
@@ -156,8 +170,16 @@ BOOST_AUTO_TEST_CASE(operator_paren)
     {
         const tetengo::trie::default_deserializer<std::int32_t> deserialize{};
 
-        const std::string serialized{ to_c(0x00), to_c(0x12), to_c(0x34), to_c(0xAB) };
+        const std::string serialized{ nul_byte(), to_c(0x12), to_c(0x34), to_c(0xAB) };
         const auto        expected_object = static_cast<std::int32_t>(0x001234AB);
+        const auto        object = deserialize(serialized);
+        BOOST_TEST(object == expected_object);
+    }
+    {
+        const tetengo::trie::default_deserializer<std::int32_t> deserialize{};
+
+        const std::string serialized{ to_c(0xFC), to_c(0xFD), to_c(0xFD), to_c(0xFD), to_c(0xFE), to_c(0xFF) };
+        const auto        expected_object = static_cast<std::int32_t>(0xFCFDFEFF);
         const auto        object = deserialize(serialized);
         BOOST_TEST(object == expected_object);
     }

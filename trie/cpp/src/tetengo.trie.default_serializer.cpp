@@ -26,9 +26,21 @@ namespace tetengo::trie
             bytes.reserve(sizeof(T));
             for (auto i = static_cast<std::size_t>(0); i < sizeof(T); ++i)
             {
-                const auto byte =
+                const auto byte_ =
                     static_cast<char>(static_cast<unsigned char>(value >> (sizeof(T) - i - 1) * 8) & 0xFF);
-                bytes.push_back(byte);
+                if (byte_ == static_cast<char>(0x00))
+                {
+                    bytes.push_back(static_cast<char>(0xFE));
+                }
+                else if (byte_ == static_cast<char>(0xFD) || byte_ == static_cast<char>(0xFE))
+                {
+                    bytes.push_back(static_cast<char>(0xFD));
+                    bytes.push_back(byte_);
+                }
+                else
+                {
+                    bytes.push_back(byte_);
+                }
             }
             return bytes;
         }
@@ -36,19 +48,71 @@ namespace tetengo::trie
         template <typename T>
         T from_bytes(const std::string_view& bytes)
         {
-            assert(bytes.length() == sizeof(T));
+            assert(bytes.length() >= sizeof(T) && bytes.length() <= 2 * sizeof(T));
             auto object = static_cast<T>(0);
             if constexpr (sizeof(T) > 1)
             {
-                for (const auto b: bytes)
+                for (auto i = static_cast<std::size_t>(0); i < bytes.length(); ++i)
                 {
                     object <<= 8;
-                    object |= static_cast<unsigned char>(b);
+
+                    const auto byte_ = bytes[i];
+                    auto       original_byte = byte_;
+                    if (byte_ == static_cast<char>(0xFD))
+                    {
+                        if (i + 1 < bytes.length())
+                        {
+                            ++i;
+                            const auto byte2 = bytes[i];
+                            if (byte2 == static_cast<char>(0xFD) || byte2 == static_cast<char>(0xFE))
+                            {
+                                original_byte = byte2;
+                            }
+                            else
+                            {
+                                assert(false);
+                            }
+                        }
+                        else
+                        {
+                            assert(false);
+                        }
+                    }
+                    else if (byte_ == static_cast<char>(0xFE))
+                    {
+                        original_byte = static_cast<char>(0x00);
+                    }
+                    object |= static_cast<unsigned char>(original_byte);
                 }
             }
             else
             {
-                object = static_cast<unsigned char>(bytes[0]);
+                const auto byte_ = bytes[0];
+                auto       original_byte = byte_;
+                if (byte_ == static_cast<char>(0xFD))
+                {
+                    if (bytes.length() > 1)
+                    {
+                        const auto byte2 = bytes[1];
+                        if (byte2 == static_cast<char>(0xFD) || byte2 == static_cast<char>(0xFE))
+                        {
+                            original_byte = byte2;
+                        }
+                        else
+                        {
+                            assert(false);
+                        }
+                    }
+                    else
+                    {
+                        assert(false);
+                    }
+                }
+                else if (byte_ == static_cast<char>(0xFE))
+                {
+                    original_byte = static_cast<char>(0x00);
+                }
+                object = static_cast<unsigned char>(original_byte);
             }
             return object;
         }
