@@ -8,6 +8,7 @@
 #include <functional>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -43,6 +44,8 @@ namespace
     static const std::wstring kumamoto2{ 0x718A, 0x672C }; // Kumamoto in Kanji in UTF-16/32
 
     static const std::wstring tamana2{ 0x7389, 0x540D }; // Tamana in Kanji in UTF-16/32
+
+    static const std::wstring uto2{ 0x5B87, 0x571F }; // Uto in Kanji in UTF-16/32
 
     const std::vector<char> serialized{
         to_c(0x00), to_c(0x00), to_c(0x00), to_c(0x0B), /*  base check array                                          */
@@ -104,6 +107,9 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::trie<std::string, int> trie_{};
     }
     {
+        const tetengo::trie::trie<std::string, int> trie_{ tetengo::trie::default_serializer<std::string>{} };
+    }
+    {
         const tetengo::trie::trie<std::string, int> trie_{ { "Kumamoto", 42 }, { "Tamana", 24 } };
     }
     {
@@ -142,6 +148,45 @@ BOOST_AUTO_TEST_CASE(construction)
                 return string_deserializer(std::string{ serialized });
             });
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
+    }
+    {
+        auto p_input_stream = create_input_stream();
+        auto p_storage =
+            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::string_view& serialized) {
+                static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
+                return string_deserializer(std::string{ serialized });
+            });
+        const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage),
+                                                                   tetengo::trie::default_serializer<std::string>{} };
+    }
+}
+
+BOOST_AUTO_TEST_CASE(find)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{};
+
+        const auto o_found = trie_.find(kumamoto2);
+        BOOST_TEST(!o_found);
+    }
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+        {
+            const auto o_found = trie_.find(kumamoto2);
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == kumamoto1);
+        }
+        {
+            const auto o_found = trie_.find(tamana2);
+            BOOST_REQUIRE(o_found);
+            BOOST_TEST(*o_found == tamana1);
+        }
+        {
+            const auto o_found = trie_.find(uto2);
+            BOOST_TEST(!o_found);
+        }
     }
 }
 

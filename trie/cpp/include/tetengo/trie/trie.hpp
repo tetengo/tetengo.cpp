@@ -14,6 +14,7 @@
 #include <initializer_list>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -115,6 +116,15 @@ namespace tetengo::trie
         // functions
 
         /*!
+            \brief Finds the mapped object correspoinding the given key.
+
+            \param key A key.
+
+            \return The mapped object. Or std::nullpot when the trie does not have the given key.
+        */
+        std::optional<mapped_type> find(const key_type& key) const;
+
+        /*!
             \brief Returns the storage.
 
             \return The storage.
@@ -190,8 +200,13 @@ namespace tetengo::trie
 
         /*!
             \brief Creates a trie.
+
+            \param key_serializer A key serializer.
         */
-        trie() : m_impl{} {}
+        explicit trie(const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
+        m_impl{},
+            m_key_serializer{ key_serializer }
+        {}
 
         /*!
             \brief Creates a trie.
@@ -206,18 +221,45 @@ namespace tetengo::trie
             const key_serializer_type&        key_serializer = default_serializer<key_type>{},
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
-        m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor }
+        m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor },
+            m_key_serializer{ key_serializer }
         {}
 
         /*!
             \brief Creates a trie.
 
-            \param p_storage A unique pointer to a storage.
+            \param p_storage      A unique pointer to a storage.
+            \param key_serializer A key serializer.
         */
-        explicit trie(std::unique_ptr<storage>&& p_storage) : m_impl{ std::move(p_storage) } {}
+        explicit trie(
+            std::unique_ptr<storage>&& p_storage,
+            const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
+        m_impl{ std::move(p_storage) },
+            m_key_serializer{ key_serializer }
+        {}
 
 
         // functions
+
+        /*!
+            \brief Finds the mapped object correspoinding the given key.
+
+            \param key A key.
+
+            \return The mapped object. Or std::nullpot when the trie does not have the given key.
+        */
+        std::optional<mapped_type> find(const key_type& key) const
+        {
+            const auto o_found = m_impl.find(m_key_serializer(key));
+            if (o_found)
+            {
+                return std::make_optional(std::any_cast<mapped_type>(*o_found));
+            }
+            else
+            {
+                return std::nullopt;
+            }
+        }
 
         /*!
             \brief Returns the storage.
@@ -252,6 +294,8 @@ namespace tetengo::trie
         // variables
 
         const trie_impl m_impl;
+
+        const key_serializer_type m_key_serializer;
     };
 
 

@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -89,6 +90,21 @@ namespace tetengo::trie
 
         // functions
 
+        std::optional<mapped_type> find(const key_type& key) const
+        {
+            const auto o_index = m_p_double_array->find(key);
+            if (!o_index)
+            {
+                return std::nullopt;
+            }
+            const auto* const p_mapped = m_p_double_array->get_storage().mapped_at(*o_index);
+            if (!p_mapped)
+            {
+                return std::nullopt;
+            }
+            return std::make_optional(*p_mapped);
+        }
+
         const storage& get_storage() const
         {
             return m_p_double_array->get_storage();
@@ -127,10 +143,13 @@ namespace tetengo::trie
 
     trie_impl::~trie_impl() = default;
 
+    std::optional<trie_impl::mapped_type> trie_impl::find(const key_type& key) const
+    {
+        return m_p_impl->find(key);
+    }
+
     const storage& trie_impl::get_storage() const
     {
         return m_p_impl->get_storage();
     }
-
-
 }
