@@ -17,6 +17,17 @@ namespace tetengo::trie
     /*!
         \brief A default serializer.
 
+        Binary bytes except std::string are serialized as following:
+
+        <table>
+          <tr><th>original byte</th><th>serialized byte</th></tr>
+          <tr><td>0x00     </td><td>0xFE       (0b11111110)            </td></tr>
+          <tr><td>0x01-0xFC</td><td>0x01-0xFC  (0b00000001-0b11111100) </td></tr>
+          <tr><td>0xFD     </td><td>0xFD, 0xFD (0b11111101, 0b11111101)</td></tr>
+          <tr><td>0xFE     </td><td>0xFD, 0xFE (0b11111101, 0b11111110)</td></tr>
+          <tr><td>0xFF     </td><td>0xFF       (0b11111111)            </td></tr>
+        </table>
+
         \tparam Object An object type.
     */
     template <typename Object, typename = void>
@@ -56,6 +67,17 @@ namespace tetengo::trie
 
     /*!
         \brief A default deserializer.
+
+        Binary bytes except std::string are deserialized as following:
+
+        <table>
+          <tr><th>original byte</th><th>serialized byte</th></tr>
+          <tr><td>0x00     </td><td>0xFE       (0b11111110)            </td></tr>
+          <tr><td>0x01-0xFC</td><td>0x01-0xFC  (0b00000001-0b11111100) </td></tr>
+          <tr><td>0xFD     </td><td>0xFD, 0xFD (0b11111101, 0b11111101)</td></tr>
+          <tr><td>0xFE     </td><td>0xFD, 0xFE (0b11111101, 0b11111110)</td></tr>
+          <tr><td>0xFF     </td><td>0xFF       (0b11111111)            </td></tr>
+        </table>
 
         \tparam Object An object type.
     */
