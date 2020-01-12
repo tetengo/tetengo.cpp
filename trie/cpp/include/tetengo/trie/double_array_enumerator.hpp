@@ -1,11 +1,11 @@
 /*! \file
-    \brief An enumerator.
+    \brief A double array enumerator.
 
     Copyright (C) 2019 kaoru
 */
 
-#if !defined(TETENGO_TRIE_ENUMERATOR_HPP)
-#define TETENGO_TRIE_ENUMERATOR_HPP
+#if !defined(TETENGO_TRIE_DOUBLEARRAYENUMERATOR_HPP)
+#define TETENGO_TRIE_DOUBLEARRAYENUMERATOR_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -22,9 +22,9 @@ namespace tetengo::trie
 
 
     /*!
-        \brief An enumerator.
+        \brief A double array enumerator.
     */
-    class enumerator
+    class double_array_enumerator
     {
     public:
         // constructors and destructor
@@ -35,7 +35,7 @@ namespace tetengo::trie
             \param storage_              A storage.
             \param root_base_check_index A root base-check index.
         */
-        enumerator(const storage& storage_, std::size_t root_base_check_index);
+        double_array_enumerator(const storage& storage_, std::size_t root_base_check_index);
 
 
         // functions

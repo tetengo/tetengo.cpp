@@ -19,9 +19,6 @@
     <ClCompile Include="src\test_tetengo.trie.storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.trie.enumerator.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\test_tetengo.trie.memory_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -32,6 +29,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\test_tetengo.trie.trie.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.trie.double_array_enumerator.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

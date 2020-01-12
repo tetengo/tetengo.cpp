@@ -17,7 +17,7 @@
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/double_array_enumerator.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.hpp>
 

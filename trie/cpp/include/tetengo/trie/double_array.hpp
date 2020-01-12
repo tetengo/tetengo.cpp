@@ -17,7 +17,7 @@
 #include <utility>
 #include <vector>
 
-#include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/double_array_enumerator.hpp>
 
 
 namespace tetengo::trie
@@ -167,9 +167,9 @@ namespace tetengo::trie
         /*!
             \brief Returns an enumerator.
 
-            \return An enumerator.
+            \return A double array enumerator.
         */
-        enumerator get_enumerator() const;
+        double_array_enumerator get_enumerator() const;
 
         /*!
             \brief Returns a subtrie.

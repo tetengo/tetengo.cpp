@@ -1,5 +1,5 @@
 /*!
-    \brief An enumerator.
+    \brief A double array enumerator.
 
     Copyright (C) 2019 kaoru
  */
@@ -15,7 +15,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/double_array_enumerator.hpp>
 
 
 namespace
@@ -39,7 +39,7 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(trie)
-BOOST_AUTO_TEST_SUITE(enumerator)
+BOOST_AUTO_TEST_SUITE(double_array_enumerator)
 
 
 BOOST_AUTO_TEST_CASE(construction)

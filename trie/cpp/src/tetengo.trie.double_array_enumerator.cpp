@@ -1,5 +1,5 @@
 /*! \file
-    \brief An enumerator.
+    \brief A double array enumerator.
 
     Copyright (C) 2019 kaoru
 */
@@ -16,19 +16,19 @@
 #include <vector>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/double_array_enumerator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
-    enumerator::enumerator(const storage& storage_, const std::size_t root_base_check_index) :
+    double_array_enumerator::double_array_enumerator(const storage& storage_, const std::size_t root_base_check_index) :
     m_storage{ storage_ },
         m_base_check_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
             std::make_pair(root_base_check_index, std::string{}) } }
     {}
 
-    std::optional<std::pair<std::string, std::int32_t>> enumerator::next()
+    std::optional<std::pair<std::string, std::int32_t>> double_array_enumerator::next()
     {
         if (m_base_check_index_key_stack.empty())
         {
