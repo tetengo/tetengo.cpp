@@ -51,7 +51,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        const storage& m_storage;
+        const storage* m_p_storage;
 
         std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
             m_base_check_index_key_stack;
