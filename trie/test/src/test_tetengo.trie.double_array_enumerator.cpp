@@ -47,6 +47,13 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
+        const tetengo::trie::double_array_enumerator enumerator{};
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
         const tetengo::trie::double_array double_array_{};
         auto                              enumerator = double_array_.get_enumerator();
     }
@@ -94,6 +101,19 @@ BOOST_AUTO_TEST_CASE(construction)
 BOOST_AUTO_TEST_CASE(next)
 {
     BOOST_TEST_PASSPOINT();
+
+    {
+        tetengo::trie::double_array_enumerator enumerator{};
+
+        {
+            const auto o_element = enumerator.next();
+
+            BOOST_CHECK(!o_element);
+        }
+    }
+    {
+        // TODO: C style API
+    }
 
     {
         const tetengo::trie::double_array double_array_{};

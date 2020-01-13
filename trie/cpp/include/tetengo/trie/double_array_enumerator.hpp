@@ -32,6 +32,13 @@ namespace tetengo::trie
         /*!
             \brief Creates an enumerator.
 
+            It points to the last of the double array.
+        */
+        double_array_enumerator();
+
+        /*!
+            \brief Creates an enumerator.
+
             \param storage_              A storage.
             \param root_base_check_index A root base-check index.
         */

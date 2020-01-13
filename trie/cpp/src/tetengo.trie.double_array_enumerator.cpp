@@ -22,6 +22,8 @@
 
 namespace tetengo::trie
 {
+    double_array_enumerator::double_array_enumerator() : m_p_storage{ nullptr }, m_base_check_index_key_stack{} {}
+
     double_array_enumerator::double_array_enumerator(const storage& storage_, const std::size_t root_base_check_index) :
     m_p_storage{ &storage_ },
         m_base_check_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
