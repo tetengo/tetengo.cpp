@@ -22,6 +22,17 @@
 
 namespace tetengo::trie
 {
+    bool operator==(const double_array_enumerator& one, const double_array_enumerator& another)
+    {
+        if ((!one.m_p_storage || !another.m_p_storage) && one.m_base_check_index_key_stack.empty() &&
+            another.m_base_check_index_key_stack.empty())
+        {
+            return true;
+        }
+        return one.m_p_storage == another.m_p_storage &&
+               one.m_base_check_index_key_stack == another.m_base_check_index_key_stack;
+    }
+
     double_array_enumerator::double_array_enumerator() : m_p_storage{ nullptr }, m_base_check_index_key_stack{} {}
 
     double_array_enumerator::double_array_enumerator(const storage& storage_, const std::size_t root_base_check_index) :

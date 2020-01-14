@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <boost/core/ignore_unused.hpp>
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -98,6 +99,48 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::double_array_enumerator enumerator1{};
+        const tetengo::trie::double_array_enumerator enumerator2{};
+
+        BOOST_CHECK(enumerator1 == enumerator2);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::double_array double_array_{ expected_base_values };
+        auto                              enumerator1 = double_array_.get_enumerator();
+        auto                              enumerator2 = double_array_.get_enumerator();
+
+        BOOST_CHECK(enumerator1 == enumerator2);
+
+        boost::ignore_unused(enumerator1.next());
+
+        BOOST_CHECK(enumerator1 != enumerator2);
+
+        boost::ignore_unused(enumerator2.next());
+
+        BOOST_CHECK(enumerator1 == enumerator2);
+
+        boost::ignore_unused(enumerator1.next());
+        boost::ignore_unused(enumerator1.next());
+        boost::ignore_unused(enumerator1.next());
+
+        const tetengo::trie::double_array_enumerator enumerator3{};
+
+        BOOST_CHECK(enumerator1 == enumerator3);
+        BOOST_CHECK(enumerator2 != enumerator3);
+    }
+    {
+        // TODO: C style API
+    }
+}
 BOOST_AUTO_TEST_CASE(next)
 {
     BOOST_TEST_PASSPOINT();

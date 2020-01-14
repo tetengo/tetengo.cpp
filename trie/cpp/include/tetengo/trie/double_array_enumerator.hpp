@@ -15,6 +15,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/operators.hpp>
+
 
 namespace tetengo::trie
 {
@@ -24,9 +26,23 @@ namespace tetengo::trie
     /*!
         \brief A double array enumerator.
     */
-    class double_array_enumerator
+    class double_array_enumerator : public boost::equality_comparable<double_array_enumerator>
     {
     public:
+        // friend functions
+
+        /*!
+            \brief Returns true when one is equal to another.
+
+            \param one     One enumerator.
+            \param another Another enumerator.
+
+            \retval true  When one is equal to another.
+            \retval false Otherwise.
+        */
+        friend bool operator==(const double_array_enumerator& one, const double_array_enumerator& another);
+
+
         // constructors and destructor
 
         /*!
