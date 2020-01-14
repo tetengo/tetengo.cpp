@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -433,18 +434,15 @@ BOOST_AUTO_TEST_CASE(subtrie)
             {
                 auto enumerator = o_subtrie->get_enumerator();
 
-                const auto o_element1 = enumerator.next();
-                BOOST_REQUIRE(o_element1);
-                BOOST_TEST(o_element1->first == "TIGOSI");
-                BOOST_TEST(o_element1->second == 24);
+                BOOST_TEST(enumerator->first == "TIGOSI");
+                BOOST_TEST(enumerator->second == 24);
 
-                const auto o_element2 = enumerator.next();
-                BOOST_REQUIRE(o_element2);
-                BOOST_TEST(o_element2->first == "TO");
-                BOOST_TEST(o_element2->second == 2424);
+                ++enumerator;
+                BOOST_TEST(enumerator->first == "TO");
+                BOOST_TEST(enumerator->second == 2424);
 
-                const auto o_element3 = enumerator.next();
-                BOOST_CHECK(!o_element3);
+                ++enumerator;
+                BOOST_CHECK(enumerator == tetengo::trie::double_array_enumerator{});
             }
 
             const auto o_subtrie2 = o_subtrie->subtrie("TI");

@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <stack>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -22,24 +23,45 @@
 
 namespace tetengo::trie
 {
-    bool operator==(const double_array_enumerator& one, const double_array_enumerator& another)
-    {
-        if ((!one.m_p_storage || !another.m_p_storage) && one.m_base_check_index_key_stack.empty() &&
-            another.m_base_check_index_key_stack.empty())
-        {
-            return true;
-        }
-        return one.m_p_storage == another.m_p_storage &&
-               one.m_base_check_index_key_stack == another.m_base_check_index_key_stack;
-    }
-
-    double_array_enumerator::double_array_enumerator() : m_p_storage{ nullptr }, m_base_check_index_key_stack{} {}
+    double_array_enumerator::double_array_enumerator() :
+    m_p_storage{ nullptr },
+        m_base_check_index_key_stack{},
+        m_current{}
+    {}
 
     double_array_enumerator::double_array_enumerator(const storage& storage_, const std::size_t root_base_check_index) :
     m_p_storage{ &storage_ },
         m_base_check_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
-            std::make_pair(root_base_check_index, std::string{}) } }
-    {}
+            std::make_pair(root_base_check_index, std::string{}) } },
+        m_current{}
+    {
+        increment();
+    }
+
+    std::pair<std::string, std::int32_t>& double_array_enumerator::dereference() const
+    {
+        if (!m_current)
+        {
+            throw std::logic_error{ "Iterator not dereferenceable." };
+        }
+        return const_cast<std::pair<std::string, std::int32_t>&>(*m_current);
+    }
+
+    bool double_array_enumerator::equal(const double_array_enumerator& another) const
+    {
+        if ((!m_p_storage || !another.m_p_storage) && m_base_check_index_key_stack.empty() &&
+            another.m_base_check_index_key_stack.empty())
+        {
+            return true;
+        }
+        return m_p_storage == another.m_p_storage &&
+               m_base_check_index_key_stack == another.m_base_check_index_key_stack;
+    }
+
+    void double_array_enumerator::increment()
+    {
+        m_current = next();
+    }
 
     std::optional<std::pair<std::string, std::int32_t>> double_array_enumerator::next()
     {

@@ -9,13 +9,14 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iterator>
 #include <optional>
 #include <stack>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include <boost/operators.hpp>
+#include <boost/iterator/iterator_facade.hpp>
 
 
 namespace tetengo::trie
@@ -26,21 +27,15 @@ namespace tetengo::trie
     /*!
         \brief A double array enumerator.
     */
-    class double_array_enumerator : public boost::equality_comparable<double_array_enumerator>
+    class double_array_enumerator :
+    public boost::iterators::
+        iterator_facade<double_array_enumerator, std::pair<std::string, std::int32_t>, std ::forward_iterator_tag>
     {
     public:
-        // friend functions
+        // friends
 
-        /*!
-            \brief Returns true when one is equal to another.
-
-            \param one     One enumerator.
-            \param another Another enumerator.
-
-            \retval true  When one is equal to another.
-            \retval false Otherwise.
-        */
-        friend bool operator==(const double_array_enumerator& one, const double_array_enumerator& another);
+        //! Allows boost::iterator_facade to access the private members.
+        friend class boost::iterators::iterator_core_access;
 
 
         // constructors and destructor
@@ -61,16 +56,6 @@ namespace tetengo::trie
         double_array_enumerator(const storage& storage_, std::size_t root_base_check_index);
 
 
-        // functions
-
-        /*!
-            \brief Returns the next element.
-
-            \return The next element. Or std::nullopt when no next element.
-        */
-        std::optional<std::pair<std::string, std::int32_t>> next();
-
-
     private:
         // variables
 
@@ -78,6 +63,19 @@ namespace tetengo::trie
 
         std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
             m_base_check_index_key_stack;
+
+        std::optional<std::pair<std::string, std::int32_t>> m_current;
+
+
+        // private functions
+
+        std::pair<std::string, std::int32_t>& dereference() const;
+
+        bool equal(const double_array_enumerator& another) const;
+
+        void increment();
+
+        std::optional<std::pair<std::string, std::int32_t>> next();
     };
 
 

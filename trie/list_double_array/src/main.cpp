@@ -10,10 +10,11 @@
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <memory>
-#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
+
+#include <boost/iterator/iterator_facade.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
@@ -51,15 +52,10 @@ int main(const int argc, char** const argv)
         tetengo::trie::double_array double_array_{ std::move(p_storage), 0 };
 
 
-        for (auto enumerator = double_array_.get_enumerator();;)
+        for (auto enumerator = double_array_.get_enumerator(); enumerator != tetengo::trie::double_array_enumerator{};
+             ++enumerator)
         {
-            auto o_element = enumerator.next();
-            if (!o_element)
-            {
-                break;
-            }
-
-            std::cout << o_element->first << "\t" << o_element->second << std::endl;
+            std::cout << enumerator->first << "\t" << enumerator->second << std::endl;
         }
 
         return 0;
