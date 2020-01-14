@@ -22,7 +22,7 @@
 
 #include <tetengo/trie/double_array.h>
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/double_array_enumerator.hpp>
+#include <tetengo/trie/double_array_iterator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 struct tetengo_trie_doublearray;
@@ -371,14 +371,14 @@ BOOST_AUTO_TEST_CASE(find)
     }
 }
 
-BOOST_AUTO_TEST_CASE(get_enumerator)
+BOOST_AUTO_TEST_CASE(iterator)
 {
     BOOST_TEST_PASSPOINT();
 
     {
         const tetengo::trie::double_array double_array_{};
 
-        const auto enumerator = double_array_.get_enumerator();
+        const auto iterator = double_array_.iterator();
     }
     {
         // TODO: C style API
@@ -387,7 +387,7 @@ BOOST_AUTO_TEST_CASE(get_enumerator)
     {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
-        const auto enumerator = double_array_.get_enumerator();
+        const auto iterator = double_array_.iterator();
     }
     {
         // TODO: C style API
@@ -396,7 +396,7 @@ BOOST_AUTO_TEST_CASE(get_enumerator)
     {
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
-        const auto enumerator = double_array_.get_enumerator();
+        const auto iterator = double_array_.iterator();
     }
     {
         // TODO: C style API
@@ -432,17 +432,17 @@ BOOST_AUTO_TEST_CASE(subtrie)
                 BOOST_CHECK(!o_found);
             }
             {
-                auto enumerator = o_subtrie->get_enumerator();
+                auto iterator = o_subtrie->iterator();
 
-                BOOST_TEST(enumerator->first == "TIGOSI");
-                BOOST_TEST(enumerator->second == 24);
+                BOOST_TEST(iterator->first == "TIGOSI");
+                BOOST_TEST(iterator->second == 24);
 
-                ++enumerator;
-                BOOST_TEST(enumerator->first == "TO");
-                BOOST_TEST(enumerator->second == 2424);
+                ++iterator;
+                BOOST_TEST(iterator->first == "TO");
+                BOOST_TEST(iterator->second == 2424);
 
-                ++enumerator;
-                BOOST_CHECK(enumerator == tetengo::trie::double_array_enumerator{});
+                ++iterator;
+                BOOST_CHECK(iterator == tetengo::trie::double_array_iterator{});
             }
 
             const auto o_subtrie2 = o_subtrie->subtrie("TI");

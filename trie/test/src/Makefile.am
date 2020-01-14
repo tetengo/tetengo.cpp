@@ -7,7 +7,7 @@ sources = \
     master.cpp \
     test_tetengo.trie.default_serializer.cpp \
     test_tetengo.trie.double_array.cpp \
-    test_tetengo.trie.double_array_enumerator.cpp \
+    test_tetengo.trie.double_array_iterator.cpp \
     test_tetengo.trie.memory_storage.cpp \
     test_tetengo.trie.shared_storage.cpp \
     test_tetengo.trie.storage.cpp \

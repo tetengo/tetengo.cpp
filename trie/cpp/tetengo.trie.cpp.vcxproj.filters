@@ -38,7 +38,7 @@
     <ClCompile Include="src\tetengo.trie.trie.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.trie.double_array_enumerator.cpp">
+    <ClCompile Include="src\tetengo.trie.double_array_iterator.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -67,7 +67,7 @@
     <ClInclude Include="include\tetengo\trie\trie.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\trie\double_array_enumerator.hpp">
+    <ClInclude Include="include\tetengo\trie\double_array_iterator.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,7 +18,7 @@
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/double_array_enumerator.hpp>
+#include <tetengo/trie/double_array_iterator.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.hpp>
 
@@ -52,10 +52,9 @@ int main(const int argc, char** const argv)
         tetengo::trie::double_array double_array_{ std::move(p_storage), 0 };
 
 
-        for (auto enumerator = double_array_.get_enumerator(); enumerator != tetengo::trie::double_array_enumerator{};
-             ++enumerator)
+        for (auto i = double_array_.iterator(); i != tetengo::trie::double_array_iterator{}; ++i)
         {
-            std::cout << enumerator->first << "\t" << enumerator->second << std::endl;
+            std::cout << i->first << "\t" << i->second << std::endl;
         }
 
         return 0;

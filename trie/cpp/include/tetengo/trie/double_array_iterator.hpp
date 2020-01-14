@@ -1,5 +1,5 @@
 /*! \file
-    \brief A double array enumerator.
+    \brief A double array iterator.
 
     Copyright (C) 2019 kaoru
 */
@@ -25,11 +25,11 @@ namespace tetengo::trie
 
 
     /*!
-        \brief A double array enumerator.
+        \brief A double array iterator.
     */
-    class double_array_enumerator :
+    class double_array_iterator :
     public boost::iterators::
-        iterator_facade<double_array_enumerator, std::pair<std::string, std::int32_t>, std ::forward_iterator_tag>
+        iterator_facade<double_array_iterator, std::pair<std::string, std::int32_t>, std ::forward_iterator_tag>
     {
     public:
         // friends
@@ -41,19 +41,19 @@ namespace tetengo::trie
         // constructors and destructor
 
         /*!
-            \brief Creates an enumerator.
+            \brief Creates an iterator.
 
             It points to the last of the double array.
         */
-        double_array_enumerator();
+        double_array_iterator();
 
         /*!
-            \brief Creates an enumerator.
+            \brief Creates an iterator.
 
             \param storage_              A storage.
             \param root_base_check_index A root base-check index.
         */
-        double_array_enumerator(const storage& storage_, std::size_t root_base_check_index);
+        double_array_iterator(const storage& storage_, std::size_t root_base_check_index);
 
 
     private:
@@ -71,7 +71,7 @@ namespace tetengo::trie
 
         std::pair<std::string, std::int32_t>& dereference() const;
 
-        bool equal(const double_array_enumerator& another) const;
+        bool equal(const double_array_iterator& another) const;
 
         void increment();
 

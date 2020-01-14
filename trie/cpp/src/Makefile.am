@@ -8,7 +8,7 @@ sources = \
     tetengo.trie.double_array.cpp \
     tetengo.trie.double_array_builder.cpp \
     tetengo.trie.double_array_builder.hpp \
-    tetengo.trie.double_array_enumerator.cpp \
+    tetengo.trie.double_array_iterator.cpp \
     tetengo.trie.memory_storage.cpp \
     tetengo.trie.shared_storage.cpp \
     tetengo.trie.storage.cpp \

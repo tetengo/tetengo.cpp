@@ -1,5 +1,5 @@
 /*! \file
-    \brief A double array enumerator.
+    \brief A double array iterator.
 
     Copyright (C) 2019 kaoru
 */
@@ -17,19 +17,16 @@
 #include <vector>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/double_array_enumerator.hpp>
+#include <tetengo/trie/double_array_iterator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
-    double_array_enumerator::double_array_enumerator() :
-    m_p_storage{ nullptr },
-        m_base_check_index_key_stack{},
-        m_current{}
+    double_array_iterator::double_array_iterator() : m_p_storage{ nullptr }, m_base_check_index_key_stack{}, m_current{}
     {}
 
-    double_array_enumerator::double_array_enumerator(const storage& storage_, const std::size_t root_base_check_index) :
+    double_array_iterator::double_array_iterator(const storage& storage_, const std::size_t root_base_check_index) :
     m_p_storage{ &storage_ },
         m_base_check_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
             std::make_pair(root_base_check_index, std::string{}) } },
@@ -38,7 +35,7 @@ namespace tetengo::trie
         increment();
     }
 
-    std::pair<std::string, std::int32_t>& double_array_enumerator::dereference() const
+    std::pair<std::string, std::int32_t>& double_array_iterator::dereference() const
     {
         if (!m_current)
         {
@@ -47,7 +44,7 @@ namespace tetengo::trie
         return const_cast<std::pair<std::string, std::int32_t>&>(*m_current);
     }
 
-    bool double_array_enumerator::equal(const double_array_enumerator& another) const
+    bool double_array_iterator::equal(const double_array_iterator& another) const
     {
         if ((!m_p_storage || !another.m_p_storage) && m_base_check_index_key_stack.empty() &&
             another.m_base_check_index_key_stack.empty())
@@ -58,12 +55,12 @@ namespace tetengo::trie
                m_base_check_index_key_stack == another.m_base_check_index_key_stack;
     }
 
-    void double_array_enumerator::increment()
+    void double_array_iterator::increment()
     {
         m_current = next();
     }
 
-    std::optional<std::pair<std::string, std::int32_t>> double_array_enumerator::next()
+    std::optional<std::pair<std::string, std::int32_t>> double_array_iterator::next()
     {
         if (m_base_check_index_key_stack.empty())
         {
