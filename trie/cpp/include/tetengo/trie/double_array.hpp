@@ -17,7 +17,7 @@
 #include <utility>
 #include <vector>
 
-#include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/double_array_iterator.hpp>
 
 
 namespace tetengo::trie
@@ -165,11 +165,18 @@ namespace tetengo::trie
         std::optional<std::int32_t> find(const std::string_view& key) const;
 
         /*!
-            \brief Returns an enumerator.
+            \brief Returns a first iterator.
 
-            \return An enumerator.
+            \return A first double array iterator.
         */
-        enumerator get_enumerator() const;
+        double_array_iterator begin() const;
+
+        /*!
+            \brief Returns a last iterator.
+
+            \return A last double array iterator.
+        */
+        double_array_iterator end() const;
 
         /*!
             \brief Returns a subtrie.

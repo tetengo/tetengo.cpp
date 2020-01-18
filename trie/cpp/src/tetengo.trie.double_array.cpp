@@ -16,7 +16,7 @@
 #include <vector>
 
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/double_array_iterator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 #include "tetengo.trie.double_array_builder.hpp"
@@ -98,9 +98,14 @@ namespace tetengo::trie
             return o_index ? std::make_optional(m_p_storage->base_at(*o_index)) : std::nullopt;
         }
 
-        enumerator get_enumerator() const
+        double_array_iterator begin() const
         {
-            return enumerator{ *m_p_storage, m_root_base_check_index };
+            return double_array_iterator{ *m_p_storage, m_root_base_check_index };
+        }
+
+        double_array_iterator end() const
+        {
+            return double_array_iterator{};
         }
 
         std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const
@@ -198,9 +203,14 @@ namespace tetengo::trie
         return m_p_impl->find(key);
     }
 
-    enumerator double_array::get_enumerator() const
+    double_array_iterator double_array::begin() const
     {
-        return m_p_impl->get_enumerator();
+        return m_p_impl->begin();
+    }
+
+    double_array_iterator double_array::end() const
+    {
+        return m_p_impl->end();
     }
 
     std::unique_ptr<double_array> double_array::subtrie(const std::string_view& key_prefix) const
