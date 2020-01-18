@@ -165,11 +165,18 @@ namespace tetengo::trie
         std::optional<std::int32_t> find(const std::string_view& key) const;
 
         /*!
-            \brief Returns an iterator.
+            \brief Returns a first iterator.
 
-            \return A double array iterator.
+            \return A first double array iterator.
         */
-        double_array_iterator iterator() const;
+        double_array_iterator begin() const;
+
+        /*!
+            \brief Returns a last iterator.
+
+            \return A last double array iterator.
+        */
+        double_array_iterator end() const;
 
         /*!
             \brief Returns a subtrie.

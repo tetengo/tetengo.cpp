@@ -52,7 +52,7 @@ int main(const int argc, char** const argv)
         tetengo::trie::double_array double_array_{ std::move(p_storage), 0 };
 
 
-        for (auto i = double_array_.iterator(); i != tetengo::trie::double_array_iterator{}; ++i)
+        for (auto i = double_array_.begin(); i != double_array_.end(); ++i)
         {
             std::cout << i->first << "\t" << i->second << std::endl;
         }

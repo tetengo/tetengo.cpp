@@ -371,14 +371,15 @@ BOOST_AUTO_TEST_CASE(find)
     }
 }
 
-BOOST_AUTO_TEST_CASE(iterator)
+BOOST_AUTO_TEST_CASE(begin_end)
 {
     BOOST_TEST_PASSPOINT();
 
     {
         const tetengo::trie::double_array double_array_{};
 
-        const auto iterator = double_array_.iterator();
+        const auto first = double_array_.begin();
+        const auto last = double_array_.end();
     }
     {
         // TODO: C style API
@@ -387,7 +388,8 @@ BOOST_AUTO_TEST_CASE(iterator)
     {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
-        const auto iterator = double_array_.iterator();
+        const auto first = double_array_.begin();
+        const auto last = double_array_.end();
     }
     {
         // TODO: C style API
@@ -396,7 +398,8 @@ BOOST_AUTO_TEST_CASE(iterator)
     {
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
-        const auto iterator = double_array_.iterator();
+        const auto first = double_array_.begin();
+        const auto last = double_array_.end();
     }
     {
         // TODO: C style API
@@ -432,7 +435,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
                 BOOST_CHECK(!o_found);
             }
             {
-                auto iterator = o_subtrie->iterator();
+                auto iterator = o_subtrie->begin();
 
                 BOOST_TEST(iterator->first == "TIGOSI");
                 BOOST_TEST(iterator->second == 24);
@@ -442,7 +445,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
                 BOOST_TEST(iterator->second == 2424);
 
                 ++iterator;
-                BOOST_CHECK(iterator == tetengo::trie::double_array_iterator{});
+                BOOST_CHECK(iterator == o_subtrie->end());
             }
 
             const auto o_subtrie2 = o_subtrie->subtrie("TI");

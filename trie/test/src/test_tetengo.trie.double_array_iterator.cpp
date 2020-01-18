@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{};
-        auto                              iterator = double_array_.iterator();
+        auto                              iterator = double_array_.begin();
     }
     {
         // TODO: C style API
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{ expected_base_values };
-        auto                              iterator = double_array_.iterator();
+        auto                              iterator = double_array_.begin();
     }
     {
         // TODO: C style API
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{ expected_base_values2 };
-        auto                              iterator = double_array_.iterator();
+        auto                              iterator = double_array_.begin();
     }
     {
         // TODO: C style API
@@ -79,16 +79,16 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::double_array double_array_{ expected_base_values };
-        auto                              iterator = double_array_.iterator();
+        auto                              iterator = double_array_.begin();
 
         ++iterator;
 
-        auto enumerator2 = iterator;
+        auto iterator2 = iterator;
 
         ++iterator;
 
-        BOOST_TEST(enumerator2->first == "UTIGOSI");
-        BOOST_TEST(enumerator2->second == 24);
+        BOOST_TEST(iterator2->first == "UTIGOSI");
+        BOOST_TEST(iterator2->second == 24);
     }
     {
         // TODO: C style API
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
 
     {
         const tetengo::trie::double_array double_array_{ expected_base_values };
-        const auto                        iterator = double_array_.iterator();
+        const auto                        iterator = double_array_.begin();
 
         BOOST_TEST(iterator->first == "SETA");
         BOOST_TEST(iterator->second == 42);
@@ -125,10 +125,10 @@ BOOST_AUTO_TEST_CASE(operator_equal)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::double_array_iterator enumerator1{};
-        const tetengo::trie::double_array_iterator enumerator2{};
+        const tetengo::trie::double_array_iterator iterator1{};
+        const tetengo::trie::double_array_iterator iterator2{};
 
-        BOOST_CHECK(enumerator1 == enumerator2);
+        BOOST_CHECK(iterator1 == iterator2);
     }
     {
         // TODO: C style API
@@ -136,27 +136,27 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
     {
         const tetengo::trie::double_array double_array_{ expected_base_values };
-        auto                              enumerator1 = double_array_.iterator();
-        auto                              enumerator2 = double_array_.iterator();
+        auto                              iterator1 = double_array_.begin();
+        auto                              iterator2 = double_array_.begin();
 
-        BOOST_CHECK(enumerator1 == enumerator2);
+        BOOST_CHECK(iterator1 == iterator2);
 
-        ++enumerator1;
+        ++iterator1;
 
-        BOOST_CHECK(enumerator1 != enumerator2);
+        BOOST_CHECK(iterator1 != iterator2);
 
-        ++enumerator2;
+        ++iterator2;
 
-        BOOST_CHECK(enumerator1 == enumerator2);
+        BOOST_CHECK(iterator1 == iterator2);
 
-        ++enumerator1;
-        ++enumerator1;
-        ++enumerator1;
+        ++iterator1;
+        ++iterator1;
+        ++iterator1;
 
-        const tetengo::trie::double_array_iterator enumerator3{};
+        const tetengo::trie::double_array_iterator iterator3{};
 
-        BOOST_CHECK(enumerator1 == enumerator3);
-        BOOST_CHECK(enumerator2 != enumerator3);
+        BOOST_CHECK(iterator1 == iterator3);
+        BOOST_CHECK(iterator2 != iterator3);
     }
     {
         // TODO: C style API
@@ -169,11 +169,11 @@ BOOST_AUTO_TEST_CASE(increment)
 
     {
         const tetengo::trie::double_array double_array_{};
-        auto                              iterator = double_array_.iterator();
+        auto                              iterator = double_array_.begin();
 
         ++iterator;
 
-        BOOST_CHECK(iterator == tetengo::trie::double_array_iterator{});
+        BOOST_CHECK(iterator == double_array_.end());
     }
     {
         // TODO: C style API
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
     {
         const tetengo::trie::double_array double_array_{ expected_base_values };
-        auto                              iterator = double_array_.iterator();
+        auto                              iterator = double_array_.begin();
 
         BOOST_TEST(iterator->first == "SETA");
         BOOST_TEST(iterator->second == 42);
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         ++iterator;
 
-        BOOST_CHECK(iterator == tetengo::trie::double_array_iterator{});
+        BOOST_CHECK(iterator == double_array_.end());
     }
     {
         // TODO: C style API
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
     {
         const tetengo::trie::double_array double_array_{ expected_base_values2 };
-        auto                              iterator = double_array_.iterator();
+        auto                              iterator = double_array_.begin();
 
         {
             const std::string expected_key{
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE(increment)
         {
             ++iterator;
 
-            BOOST_CHECK(iterator == tetengo::trie::double_array_iterator{});
+            BOOST_CHECK(iterator == double_array_.end());
         }
     }
     {
