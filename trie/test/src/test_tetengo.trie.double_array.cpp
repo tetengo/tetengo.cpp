@@ -378,8 +378,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
     {
         const tetengo::trie::double_array double_array_{};
 
-        const auto first = double_array_.begin();
-        const auto last = double_array_.end();
+        const auto first = std::begin(double_array_);
+        const auto last = std::end(double_array_);
     }
     {
         // TODO: C style API
@@ -388,8 +388,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
     {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
-        const auto first = double_array_.begin();
-        const auto last = double_array_.end();
+        const auto first = std::begin(double_array_);
+        const auto last = std::end(double_array_);
     }
     {
         // TODO: C style API
@@ -398,8 +398,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
     {
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
-        const auto first = double_array_.begin();
-        const auto last = double_array_.end();
+        const auto first = std::begin(double_array_);
+        const auto last = std::end(double_array_);
     }
     {
         // TODO: C style API
