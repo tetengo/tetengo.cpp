@@ -258,11 +258,28 @@ namespace tetengo::trie
         {
             static const default_deserializer<std::uint32_t> uint32_deserializer{};
 
-            std::string to_deserialize(sizeof(std::uint32_t), 0);
-            input_stream.read(to_deserialize.data(), sizeof(std::uint32_t));
-            if (input_stream.gcount() < static_cast<std::streamsize>(sizeof(std::uint32_t)))
+            std::string to_deserialize{};
+            to_deserialize.reserve(sizeof(std::uint32_t));
+            for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
             {
-                throw std::ios_base::failure("Can't read uint32.");
+                auto byte_ = static_cast<char>(0);
+                input_stream.read(&byte_, sizeof(char));
+                if (input_stream.gcount() < static_cast<std::streamsize>(sizeof(char)))
+                {
+                    throw std::ios_base::failure("Can't read uint32.");
+                }
+                to_deserialize.push_back(byte_);
+
+                if (byte_ == static_cast<char>(0xFD))
+                {
+                    auto trailing_byte = static_cast<char>(0);
+                    input_stream.read(&trailing_byte, sizeof(char));
+                    if (input_stream.gcount() < static_cast<std::streamsize>(sizeof(char)))
+                    {
+                        throw std::ios_base::failure("Can't read uint32.");
+                    }
+                    to_deserialize.push_back(trailing_byte);
+                }
             }
             return uint32_deserializer(to_deserialize);
         }
