@@ -67,7 +67,7 @@ namespace tetengo::trie
         std::optional<std::pair<std::string, std::int32_t>> m_current;
 
 
-        // private functions
+        // functions
 
         std::pair<std::string, std::int32_t>& dereference() const;
 

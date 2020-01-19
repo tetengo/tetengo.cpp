@@ -11,7 +11,8 @@ sources = \
     test_tetengo.trie.memory_storage.cpp \
     test_tetengo.trie.shared_storage.cpp \
     test_tetengo.trie.storage.cpp \
-    test_tetengo.trie.trie.cpp
+    test_tetengo.trie.trie.cpp \
+    test_tetengo.trie.trie_iterator.cpp
 
 check_PROGRAMS = test_tetengo.trie
 

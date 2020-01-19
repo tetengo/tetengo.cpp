@@ -8,7 +8,8 @@ pkg_headers = \
     trie/memory_storage.hpp \
     trie/shared_storage.hpp \
     trie/storage.hpp \
-    trie/trie.hpp
+    trie/trie.hpp \
+    trie/trie_iterator.hpp
 
 extra_headers = \
     trie/0namespace.dox
