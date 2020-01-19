@@ -4,8 +4,8 @@
     Copyright (C) 2019 kaoru
 */
 
-#if !defined(TETENGO_TRIE_DOUBLEARRAYENUMERATOR_HPP)
-#define TETENGO_TRIE_DOUBLEARRAYENUMERATOR_HPP
+#if !defined(TETENGO_TRIE_DOUBLEARRAYITERATOR_HPP)
+#define TETENGO_TRIE_DOUBLEARRAYITERATOR_HPP
 
 #include <cstddef>
 #include <cstdint>
