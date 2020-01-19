@@ -39,7 +39,7 @@ namespace
     const std::vector<char> serialized{
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x2A), to_c(0xFF), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x18), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0xFD), to_c(0xFE), to_c(0x18), /*                                                */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x03), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
@@ -53,7 +53,7 @@ namespace
         to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
     };
 
-    const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x00000018 };
+    const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
 
     std::unique_ptr<std::istream> create_input_stream()
     {
@@ -188,11 +188,12 @@ BOOST_AUTO_TEST_CASE(base_check_array)
     tetengo::trie::memory_storage storage_{};
 
     storage_.set_base_at(0, 42);
+    storage_.set_base_at(1, 0xFE);
     storage_.set_check_at(1, 24);
 
     const auto base_check_array = storage_.base_check_array();
 
-    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
+    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x0000FE18 };
     BOOST_TEST(base_check_array == expected);
 }
 
@@ -239,6 +240,7 @@ BOOST_AUTO_TEST_CASE(serialize)
     tetengo::trie::memory_storage storage_{};
 
     storage_.set_base_at(0, 42);
+    storage_.set_base_at(1, 0xFE);
     storage_.set_check_at(1, 24);
 
     storage_.add_mapped_at(4, std::make_any<std::string>("hoge"));
@@ -254,7 +256,7 @@ BOOST_AUTO_TEST_CASE(serialize)
     static const std::string expected{
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x2A), to_c(0xFF), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x18), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0xFD), to_c(0xFE), to_c(0x18), /*                                                */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x03), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
@@ -279,13 +281,14 @@ BOOST_AUTO_TEST_CASE(clone)
     tetengo::trie::memory_storage storage_{};
 
     storage_.set_base_at(0, 42);
+    storage_.set_base_at(1, 0xFE);
     storage_.set_check_at(1, 24);
 
     const auto p_clone = storage_.clone();
 
     const auto base_check_array = p_clone->base_check_array();
 
-    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x00000018 };
+    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x0000FE18 };
     BOOST_TEST(base_check_array == expected);
 }
 
