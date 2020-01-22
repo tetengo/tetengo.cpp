@@ -4,12 +4,8 @@
     Copyright (C) 2019 kaoru
  */
 
-#include <string>
-
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
-
-#include <tetengo/trie/trie_iterator.hpp>
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -22,9 +18,9 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::trie_iterator<std::string, int> iterator{};
-    }
-    {
+        // const tetengo::trie::trie_iterator_impl              iterator_impl{};
+        // const tetengo::trie::trie_iterator<std::string, int> iterator{ std::move(iterator_impl) };
+    } {
         // TODO: C style API
     }
 

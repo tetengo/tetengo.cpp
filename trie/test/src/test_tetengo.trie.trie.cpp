@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -194,6 +195,25 @@ BOOST_AUTO_TEST_CASE(find)
         }
     }
 }
+
+BOOST_AUTO_TEST_CASE(begin_end)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{};
+
+        boost::ignore_unused(std::begin(trie_));
+        boost::ignore_unused(std::end(trie_));
+    }
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+
+        boost::ignore_unused(std::begin(trie_));
+        boost::ignore_unused(std::end(trie_));
+    }
+}
+
 
 BOOST_AUTO_TEST_CASE(get_storage)
 {

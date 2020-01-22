@@ -93,9 +93,9 @@ namespace tetengo::trie
         /*!
             \brief Creates an iterator.
 
-            It points to the last of the double array.
+            \param impl An implementation of trie iterator.
         */
-        trie_iterator() : m_impl{} {}
+        trie_iterator(trie_iterator_impl&& impl) : m_impl{ std::move(impl) } {}
 
 
     private:

@@ -18,6 +18,7 @@
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/trie_iterator.hpp>
 
 
 namespace tetengo::trie
@@ -105,6 +106,16 @@ namespace tetengo::trie
             return std::make_optional(*p_mapped);
         }
 
+        trie_iterator_impl begin() const
+        {
+            return trie_iterator_impl{};
+        }
+
+        trie_iterator_impl end() const
+        {
+            return trie_iterator_impl{};
+        }
+
         const storage& get_storage() const
         {
             return m_p_double_array->get_storage();
@@ -146,6 +157,16 @@ namespace tetengo::trie
     std::optional<trie_impl::mapped_type> trie_impl::find(const key_type& key) const
     {
         return m_p_impl->find(key);
+    }
+
+    trie_iterator_impl trie_impl::begin() const
+    {
+        return m_p_impl->begin();
+    }
+
+    trie_iterator_impl trie_impl::end() const
+    {
+        return m_p_impl->end();
     }
 
     const storage& trie_impl::get_storage() const
