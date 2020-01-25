@@ -7,23 +7,41 @@
 #if !defined(TETENGO_TRIE_TRIEITERATOR_HPP)
 #define TETENGO_TRIE_TRIEITERATOR_HPP
 
-#include <cstdint>
+#include <any>
 #include <iterator>
-#include <string>
 #include <utility>
 
 #include <boost/iterator/iterator_facade.hpp>
 
+#include <tetengo/trie/double_array_iterator.hpp>
+
 
 namespace tetengo::trie
 {
+    class storage;
+
+
     /*!
         \brief An implementation of trie iterator.
     */
     class trie_iterator_impl
     {
     public:
+        // types
+
+        //! The mapped type.
+        using mapped_type = std::any;
+
+
         // constructors and destructor
+
+        /*!
+            \brief Creates an iterator.
+
+            \param double_array_iterator_ A double array iterator.
+            \param storage_               A storage.
+        */
+        trie_iterator_impl(double_array_iterator double_array_iterator_, storage& storage_);
 
         /*!
             \brief Creates an iterator.
@@ -40,7 +58,7 @@ namespace tetengo::trie
 
             \return The dereferenced value.
         */
-        std::pair<std::string, std::int32_t>& dereference() const;
+        mapped_type& dereference() const;
 
         /*!
             \brief Returns true when this iterator is equal to another.
@@ -55,31 +73,31 @@ namespace tetengo::trie
             \brief Increments this iterator.
         */
         void increment();
+
+
+    private:
+        // variables
+
+        double_array_iterator m_double_array_iterator;
+
+        storage* m_p_storage;
     };
 
 
     /*!
         \brief A trie iterator.
 
-        \tparam Key    A key type.
         \tparam Mapped A mapped type.
     */
-    template <typename Key, typename Mapped>
+    template <typename Mapped>
     class trie_iterator :
-    public boost::iterators::
-        iterator_facade<trie_iterator<Key, Mapped>, std::pair<Key, Mapped>, std ::forward_iterator_tag>
+    public boost::iterators::iterator_facade<trie_iterator<Mapped>, Mapped, std ::forward_iterator_tag>
     {
     public:
         // types
 
-        //! The key type.
-        using key_type = Key;
-
         //! The mapped type.
         using mapped_type = Mapped;
-
-        //! The vaue type.
-        using value_type = std::pair<key_type, mapped_type>;
 
 
         // friends
@@ -106,9 +124,9 @@ namespace tetengo::trie
 
         // functions
 
-        value_type& dereference() const
+        mapped_type& dereference() const
         {
-            return m_impl.dereference();
+            return *std::any_cast<mapped_type>(&m_impl.dereference());
         }
 
         bool equal(const trie_iterator& another) const

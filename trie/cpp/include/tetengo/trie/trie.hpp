@@ -185,7 +185,7 @@ namespace tetengo::trie
         using value_type = std::pair<key_type, mapped_type>;
 
         //! The iterator type.
-        using iterator = trie_iterator<key_type, mapped_type>;
+        using iterator = trie_iterator<mapped_type>;
 
         //! The building observer set type.
         using building_observer_set_type = trie_impl::building_observer_set_type;

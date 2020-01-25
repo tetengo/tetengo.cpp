@@ -5,10 +5,12 @@
  */
 
 #include <iterator>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
 #include <boost/core/ignore_unused.hpp>
+#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -49,8 +51,8 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        tetengo::trie::trie_iterator_impl                             impl{};
-        const tetengo::trie::trie_iterator<std::wstring, std::string> iterator{ std::move(impl) };
+        tetengo::trie::trie_iterator_impl               impl{};
+        const tetengo::trie::trie_iterator<std::string> iterator{ std::move(impl) };
     }
     {
         // TODO: C style API
@@ -58,7 +60,6 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
-
         boost::ignore_unused(std::begin(trie_));
         boost::ignore_unused(std::end(trie_));
     }
@@ -68,9 +69,22 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
-
         boost::ignore_unused(std::begin(trie_));
         boost::ignore_unused(std::end(trie_));
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+        auto                                                 iterator = std::begin(trie_);
+
+        ++iterator;
+
+        const auto iterator2 = iterator;
+
+        BOOST_TEST(*iterator2 == tamana1);
     }
     {
         // TODO: C style API
@@ -81,7 +95,25 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{};
+        const auto                                           iterator = std::begin(trie_);
+
+        BOOST_CHECK_THROW(*iterator, std::logic_error);
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+        const auto                                           iterator = std::begin(trie_);
+
+        BOOST_TEST(*iterator == kumamoto1);
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 BOOST_AUTO_TEST_CASE(operator_equal)
