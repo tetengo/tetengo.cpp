@@ -437,12 +437,10 @@ BOOST_AUTO_TEST_CASE(subtrie)
             {
                 auto iterator = o_subtrie->begin();
 
-                BOOST_TEST(iterator->first == "TIGOSI");
-                BOOST_TEST(iterator->second == 24);
+                BOOST_TEST(*iterator == 24);
 
                 ++iterator;
-                BOOST_TEST(iterator->first == "TO");
-                BOOST_TEST(iterator->second == 2424);
+                BOOST_TEST(*iterator == 2424);
 
                 ++iterator;
                 BOOST_CHECK(iterator == o_subtrie->end());
