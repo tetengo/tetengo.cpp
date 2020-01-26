@@ -23,6 +23,7 @@
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
+#include <tetengo/trie/trie_iterator.hpp>
 
 
 namespace tetengo::trie
@@ -125,6 +126,20 @@ namespace tetengo::trie
         std::optional<mapped_type> find(const key_type& key) const;
 
         /*!
+            \brief Returns the first iterator.
+
+            \return The first iterator.
+        */
+        trie_iterator_impl begin() const;
+
+        /*!
+            \brief Returns the last iterator.
+
+            \return The last iterator.
+        */
+        trie_iterator_impl end() const;
+
+        /*!
             \brief Returns the storage.
 
             \return The storage.
@@ -168,6 +183,9 @@ namespace tetengo::trie
 
         //! The value type.
         using value_type = std::pair<key_type, mapped_type>;
+
+        //! The iterator type.
+        using iterator = trie_iterator<mapped_type>;
 
         //! The building observer set type.
         using building_observer_set_type = trie_impl::building_observer_set_type;
@@ -259,6 +277,26 @@ namespace tetengo::trie
             {
                 return std::nullopt;
             }
+        }
+
+        /*!
+            \brief Returns the first iterator.
+
+            \return The first iterator.
+        */
+        iterator begin() const
+        {
+            return iterator{ std::move(m_impl.begin()) };
+        }
+
+        /*!
+            \brief Returns the last iterator.
+
+            \return The last iterator.
+        */
+        iterator end() const
+        {
+            return iterator{ std::move(m_impl.end()) };
         }
 
         /*!

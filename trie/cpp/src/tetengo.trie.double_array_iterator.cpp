@@ -47,7 +47,7 @@ namespace tetengo::trie
     bool double_array_iterator::equal(const double_array_iterator& another) const
     {
         if ((!m_p_storage || !another.m_p_storage) && m_base_check_index_key_stack.empty() &&
-            another.m_base_check_index_key_stack.empty())
+            another.m_base_check_index_key_stack.empty() && !m_current && !another.m_current)
         {
             return true;
         }

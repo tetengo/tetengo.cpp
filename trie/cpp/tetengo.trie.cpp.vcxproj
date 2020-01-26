@@ -107,6 +107,7 @@
     <ClCompile Include="src\tetengo.trie.shared_storage.cpp" />
     <ClCompile Include="src\tetengo.trie.storage.cpp" />
     <ClCompile Include="src\tetengo.trie.trie.cpp" />
+    <ClCompile Include="src\tetengo.trie.trie_iterator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\tetengo\trie\0namespace.dox" />
@@ -120,6 +121,7 @@
     <ClInclude Include="include\tetengo\trie\shared_storage.hpp" />
     <ClInclude Include="include\tetengo\trie\storage.hpp" />
     <ClInclude Include="include\tetengo\trie\trie.hpp" />
+    <ClInclude Include="include\tetengo\trie\trie_iterator.hpp" />
     <ClInclude Include="src\tetengo.trie.double_array_builder.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

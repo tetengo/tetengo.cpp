@@ -4,8 +4,8 @@
     Copyright (C) 2019 kaoru
 */
 
-#if !defined(TETENGO_TRIE_DOUBLEARRAYENUMERATOR_HPP)
-#define TETENGO_TRIE_DOUBLEARRAYENUMERATOR_HPP
+#if !defined(TETENGO_TRIE_DOUBLEARRAYITERATOR_HPP)
+#define TETENGO_TRIE_DOUBLEARRAYITERATOR_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -67,7 +67,7 @@ namespace tetengo::trie
         std::optional<std::pair<std::string, std::int32_t>> m_current;
 
 
-        // private functions
+        // functions
 
         std::pair<std::string, std::int32_t>& dereference() const;
 
