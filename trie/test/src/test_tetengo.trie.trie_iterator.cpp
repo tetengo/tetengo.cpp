@@ -132,7 +132,6 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         // TODO: C style API
     }
 
-#if 0
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
         auto                                                 iterator1 = std::begin(trie_);
@@ -159,7 +158,6 @@ BOOST_AUTO_TEST_CASE(operator_equal)
     {
         // TODO: C style API
     }
-#endif
 }
 
 BOOST_AUTO_TEST_CASE(increment)
