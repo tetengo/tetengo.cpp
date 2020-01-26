@@ -120,14 +120,83 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        tetengo::trie::trie_iterator_impl               iterator_impl1{};
+        const tetengo::trie::trie_iterator<std::string> iterator1{ std::move(iterator_impl1) };
+        tetengo::trie::trie_iterator_impl               iterator_impl2{};
+        const tetengo::trie::trie_iterator<std::string> iterator2{ std::move(iterator_impl2) };
+
+        BOOST_CHECK(iterator1 == iterator2);
+    }
+    {
+        // TODO: C style API
+    }
+
+#if 0
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+        auto                                                 iterator1 = std::begin(trie_);
+        auto                                                 iterator2 = std::begin(trie_);
+
+        BOOST_CHECK(iterator1 == iterator2);
+
+        ++iterator1;
+
+        BOOST_CHECK(iterator1 != iterator2);
+
+        ++iterator2;
+
+        BOOST_CHECK(iterator1 == iterator2);
+
+        ++iterator1;
+
+        tetengo::trie::trie_iterator_impl               iterator_impl3{};
+        const tetengo::trie::trie_iterator<std::string> iterator3{ std::move(iterator_impl3) };
+
+        BOOST_CHECK(iterator1 == iterator3);
+        BOOST_CHECK(iterator2 != iterator3);
+    }
+    {
+        // TODO: C style API
+    }
+#endif
 }
 
 BOOST_AUTO_TEST_CASE(increment)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{};
+        auto                                                 iterator = std::begin(trie_);
+
+        ++iterator;
+
+        BOOST_CHECK(iterator == std::end(trie_));
+    }
+    {
+        // TODO: C style API
+    }
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+        auto                                                 iterator = std::begin(trie_);
+
+        BOOST_REQUIRE(iterator != std::end(trie_));
+        BOOST_TEST(*iterator == kumamoto1);
+
+        ++iterator;
+
+        BOOST_REQUIRE(iterator != std::end(trie_));
+        BOOST_TEST(*iterator == tamana1);
+
+        ++iterator;
+
+        BOOST_CHECK(iterator == std::end(trie_));
+    }
+    {
+        // TODO: C style API
+    }
 }
 
 
