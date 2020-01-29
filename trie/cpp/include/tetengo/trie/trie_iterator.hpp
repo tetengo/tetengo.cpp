@@ -29,8 +29,8 @@ namespace tetengo::trie
     public:
         // types
 
-        //! The mapped type.
-        using mapped_type = std::any;
+        //! The value type.
+        using value_type = std::any;
 
 
         // constructors and destructor
@@ -58,7 +58,7 @@ namespace tetengo::trie
 
             \return The dereferenced value.
         */
-        mapped_type& dereference() const;
+        value_type& dereference() const;
 
         /*!
             \brief Returns true when this iterator is equal to another.
@@ -87,17 +87,17 @@ namespace tetengo::trie
     /*!
         \brief A trie iterator.
 
-        \tparam Mapped A mapped type.
+        \tparam Value A value type.
     */
-    template <typename Mapped>
+    template <typename Value>
     class trie_iterator :
-    public boost::iterators::iterator_facade<trie_iterator<Mapped>, Mapped, std ::forward_iterator_tag>
+    public boost::iterators::iterator_facade<trie_iterator<Value>, Value, std ::forward_iterator_tag>
     {
     public:
         // types
 
-        //! The mapped type.
-        using mapped_type = Mapped;
+        //! The value type.
+        using value_type = Value;
 
 
         // friends
@@ -124,9 +124,9 @@ namespace tetengo::trie
 
         // functions
 
-        mapped_type& dereference() const
+        value_type& dereference() const
         {
-            return *std::any_cast<mapped_type>(&m_impl.dereference());
+            return *std::any_cast<value_type>(&m_impl.dereference());
         }
 
         bool equal(const trie_iterator& another) const
