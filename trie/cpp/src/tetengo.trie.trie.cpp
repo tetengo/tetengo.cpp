@@ -32,8 +32,6 @@ namespace tetengo::trie
 
         using mapped_type = trie_impl::mapped_type;
 
-        using value_type = trie_impl::value_type;
-
         using building_observer_set_type = trie_impl::building_observer_set_type;
 
 
@@ -56,9 +54,9 @@ namespace tetengo::trie
         impl() : m_p_double_array{ std::make_unique<double_array>() } {}
 
         impl(
-            std::vector<value_type>           elements,
-            const building_observer_set_type& building_observer_set,
-            const std::size_t                 double_array_density_factor) :
+            std::vector<std::pair<key_type, mapped_type>> elements,
+            const building_observer_set_type&             building_observer_set,
+            const std::size_t                             double_array_density_factor) :
         m_p_double_array{}
         {
             std::vector<std::pair<std::string_view, std::int32_t>> double_array_contents{};
@@ -142,9 +140,9 @@ namespace tetengo::trie
     trie_impl::trie_impl() : m_p_impl{ std::make_unique<impl>() } {}
 
     trie_impl::trie_impl(
-        std::vector<value_type>           elements,
-        const building_observer_set_type& building_observer_set,
-        const std::size_t                 double_array_density_factor) :
+        std::vector<std::pair<key_type, mapped_type>> elements,
+        const building_observer_set_type&             building_observer_set,
+        const std::size_t                             double_array_density_factor) :
     m_p_impl{ std::make_unique<impl>(std::move(elements), building_observer_set, double_array_density_factor) }
     {}
 

@@ -45,9 +45,6 @@ namespace tetengo::trie
         //! The mapped type.
         using mapped_type = std::any;
 
-        //! The vaue type.
-        using value_type = std::pair<key_type, mapped_type>;
-
         //! The building observer set type.
         struct building_observer_set_type
         {
@@ -97,9 +94,9 @@ namespace tetengo::trie
             \param double_array_density_factor A double array density factor.
          */
         trie_impl(
-            std::vector<value_type>           elements,
-            const building_observer_set_type& building_observer_set,
-            std::size_t                       double_array_density_factor);
+            std::vector<std::pair<key_type, mapped_type>> elements,
+            const building_observer_set_type&             building_observer_set,
+            std::size_t                                   double_array_density_factor);
 
         /*!
             \brief Creates a trie.
@@ -181,9 +178,6 @@ namespace tetengo::trie
         //! The key serializer_type.
         using key_serializer_type = KeySerializer;
 
-        //! The value type.
-        using value_type = std::pair<key_type, mapped_type>;
-
         //! The iterator type.
         using iterator = trie_iterator<mapped_type>;
 
@@ -235,8 +229,8 @@ namespace tetengo::trie
             \param double_array_density_factor A double array density factor.
         */
         explicit trie(
-            std::initializer_list<value_type> elements,
-            const key_serializer_type&        key_serializer = default_serializer<key_type>{},
+            std::initializer_list<std::pair<key_type, mapped_type>> elements,
+            const key_serializer_type&                              key_serializer = default_serializer<key_type>{},
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor },
@@ -313,17 +307,19 @@ namespace tetengo::trie
     private:
         // static functions
 
-        static std::vector<trie_impl::value_type>
-        serialize_key(std::initializer_list<value_type> elements, const key_serializer_type& key_serializer)
+        static std::vector<std::pair<trie_impl::key_type, trie_impl::mapped_type>> serialize_key(
+            std::initializer_list<std::pair<key_type, mapped_type>> elements,
+            const key_serializer_type&                              key_serializer)
         {
-            std::vector<trie_impl::value_type> serialized{};
+            std::vector<std::pair<trie_impl::key_type, trie_impl::mapped_type>> serialized{};
             serialized.reserve(elements.size());
             std::transform(
                 std::begin(elements),
                 std::end(elements),
                 std::back_inserter(serialized),
                 [&key_serializer](auto& value) {
-                    return trie_impl::value_type{ key_serializer(value.first), std::move(value.second) };
+                    return std::pair<trie_impl::key_type, trie_impl::mapped_type>{ key_serializer(value.first),
+                                                                                   std::move(value.second) };
                 });
             return serialized;
         }
