@@ -10,7 +10,6 @@
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <memory>
-#include <string>
 #include <string_view>
 #include <utility>
 
@@ -51,7 +50,7 @@ int main(const int argc, char** const argv)
 
         for (const auto& e: double_array_)
         {
-            std::cout << e.first << "\t" << e.second << std::endl;
+            std::cout << e << std::endl;
         }
 
         return 0;

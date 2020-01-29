@@ -97,12 +97,12 @@ BOOST_AUTO_TEST_CASE(construction)
         };
 
         BOOST_TEST(storage_.base_check_array() == base_check_array);
-        BOOST_REQUIRE(storage_.mapped_at(4));
-        BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(4)) == "hoge");
-        BOOST_REQUIRE(storage_.mapped_at(2));
-        BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(2)) == "fuga");
-        BOOST_REQUIRE(storage_.mapped_at(1));
-        BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(1)) == "piyo");
+        BOOST_REQUIRE(storage_.value_at(4));
+        BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(4)) == "hoge");
+        BOOST_REQUIRE(storage_.value_at(2));
+        BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(2)) == "fuga");
+        BOOST_REQUIRE(storage_.value_at(1));
+        BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(1)) == "piyo");
     }
     {
         const auto p_input_stream = create_broken_input_stream();
@@ -194,40 +194,40 @@ BOOST_AUTO_TEST_CASE(base_check_array)
     BOOST_TEST(base_check_array == expected);
 }
 
-BOOST_AUTO_TEST_CASE(mapped_at)
+BOOST_AUTO_TEST_CASE(value_at)
 {
     BOOST_TEST_PASSPOINT();
 
     const tetengo::trie::shared_storage storage_{};
 
-    BOOST_TEST(!storage_.mapped_at(42));
+    BOOST_TEST(!storage_.value_at(42));
 }
 
-BOOST_AUTO_TEST_CASE(add_mapped_at)
+BOOST_AUTO_TEST_CASE(add_value_at)
 {
     BOOST_TEST_PASSPOINT();
 
     tetengo::trie::shared_storage storage_{};
 
-    storage_.add_mapped_at(24, std::make_any<std::string>("hoge"));
+    storage_.add_value_at(24, std::make_any<std::string>("hoge"));
 
-    BOOST_TEST(!storage_.mapped_at(0));
-    BOOST_REQUIRE(storage_.mapped_at(24));
-    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(24)) == "hoge");
-    BOOST_TEST(!storage_.mapped_at(42));
+    BOOST_TEST(!storage_.value_at(0));
+    BOOST_REQUIRE(storage_.value_at(24));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(24)) == "hoge");
+    BOOST_TEST(!storage_.value_at(42));
 
-    storage_.add_mapped_at(42, std::make_any<std::string>("fuga"));
+    storage_.add_value_at(42, std::make_any<std::string>("fuga"));
 
-    BOOST_REQUIRE(storage_.mapped_at(42));
-    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(42)) == "fuga");
-    BOOST_TEST(!storage_.mapped_at(4242));
+    BOOST_REQUIRE(storage_.value_at(42));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(42)) == "fuga");
+    BOOST_TEST(!storage_.value_at(4242));
 
-    storage_.add_mapped_at(0, std::make_any<std::string>("piyo"));
+    storage_.add_value_at(0, std::make_any<std::string>("piyo"));
 
-    BOOST_REQUIRE(storage_.mapped_at(0));
-    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(0)) == "piyo");
-    BOOST_REQUIRE(storage_.mapped_at(42));
-    BOOST_TEST(std::any_cast<std::string>(*storage_.mapped_at(42)) == "fuga");
+    BOOST_REQUIRE(storage_.value_at(0));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(0)) == "piyo");
+    BOOST_REQUIRE(storage_.value_at(42));
+    BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(42)) == "fuga");
 }
 
 BOOST_AUTO_TEST_CASE(serialize)
@@ -240,9 +240,9 @@ BOOST_AUTO_TEST_CASE(serialize)
     storage_.set_base_at(1, 0xFE);
     storage_.set_check_at(1, 24);
 
-    storage_.add_mapped_at(4, std::make_any<std::string>("hoge"));
-    storage_.add_mapped_at(2, std::make_any<std::string>("fuga"));
-    storage_.add_mapped_at(1, std::make_any<std::string>("piyo"));
+    storage_.add_value_at(4, std::make_any<std::string>("hoge"));
+    storage_.add_value_at(2, std::make_any<std::string>("fuga"));
+    storage_.add_value_at(1, std::make_any<std::string>("piyo"));
 
     std::ostringstream output_stream{};
     storage_.serialize(output_stream, [](const std::any& object) {

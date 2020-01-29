@@ -28,8 +28,7 @@ namespace tetengo::trie
         \brief A double array iterator.
     */
     class double_array_iterator :
-    public boost::iterators::
-        iterator_facade<double_array_iterator, std::pair<std::string, std::int32_t>, std ::forward_iterator_tag>
+    public boost::iterators::iterator_facade<double_array_iterator, std::int32_t, std ::forward_iterator_tag>
     {
     public:
         // friends
@@ -64,18 +63,18 @@ namespace tetengo::trie
         std::stack<std::pair<std::size_t, std::string>, std::vector<std::pair<std::size_t, std::string>>>
             m_base_check_index_key_stack;
 
-        std::optional<std::pair<std::string, std::int32_t>> m_current;
+        std::optional<std::int32_t> m_current;
 
 
         // functions
 
-        std::pair<std::string, std::int32_t>& dereference() const;
+        std::int32_t& dereference() const;
 
         bool equal(const double_array_iterator& another) const;
 
         void increment();
 
-        std::optional<std::pair<std::string, std::int32_t>> next();
+        std::optional<std::int32_t> next();
     };
 
 

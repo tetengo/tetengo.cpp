@@ -35,13 +35,13 @@ namespace tetengo::trie
         increment();
     }
 
-    std::pair<std::string, std::int32_t>& double_array_iterator::dereference() const
+    std::int32_t& double_array_iterator::dereference() const
     {
         if (!m_current)
         {
             throw std::logic_error{ "Iterator not dereferenceable." };
         }
-        return const_cast<std::pair<std::string, std::int32_t>&>(*m_current);
+        return const_cast<std::int32_t&>(*m_current);
     }
 
     bool double_array_iterator::equal(const double_array_iterator& another) const
@@ -60,7 +60,7 @@ namespace tetengo::trie
         m_current = next();
     }
 
-    std::optional<std::pair<std::string, std::int32_t>> double_array_iterator::next()
+    std::optional<std::int32_t> double_array_iterator::next()
     {
         if (m_base_check_index_key_stack.empty())
         {
@@ -76,7 +76,7 @@ namespace tetengo::trie
 
         if (check == double_array::key_terminator())
         {
-            return std::make_optional(std::make_pair(key, base));
+            return std::make_optional(base);
         }
 
         for (auto char_code = static_cast<std::int32_t>(0xFE); char_code >= 0; --char_code)

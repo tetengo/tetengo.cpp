@@ -33,9 +33,9 @@ namespace tetengo::trie
         return check_at_impl(base_check_index);
     }
 
-    void storage::set_check_at(const std::size_t base_check_index, const std::uint8_t value)
+    void storage::set_check_at(const std::size_t base_check_index, const std::uint8_t base)
     {
-        set_check_at_impl(base_check_index, value);
+        set_check_at_impl(base_check_index, base);
     }
 
     double storage::filling_rate() const
@@ -48,21 +48,21 @@ namespace tetengo::trie
         return base_check_array_impl();
     }
 
-    const std::any* storage::mapped_at(const std::size_t mapped_index) const
+    const std::any* storage::value_at(const std::size_t value_index) const
     {
-        return mapped_at_impl(mapped_index);
+        return value_at_impl(value_index);
     }
 
-    void storage::add_mapped_at(const std::size_t mapped_index, std::any mapped)
+    void storage::add_value_at(const std::size_t value_index, std::any value)
     {
-        add_mapped_at_impl(mapped_index, std::move(mapped));
+        add_value_at_impl(value_index, std::move(value));
     }
 
     void storage::serialize(
         std::ostream&                                      output_stream,
-        const std::function<std::string(const std::any&)>& mapped_serializer) const
+        const std::function<std::string(const std::any&)>& value_serializer) const
     {
-        serialize_impl(output_stream, mapped_serializer);
+        serialize_impl(output_stream, value_serializer);
     }
 
     std::unique_ptr<storage> storage::clone() const

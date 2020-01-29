@@ -42,11 +42,8 @@ namespace tetengo::trie
         //! The key type.
         using key_type = std::string;
 
-        //! The mapped type.
-        using mapped_type = std::any;
-
-        //! The vaue type.
-        using value_type = std::pair<key_type, mapped_type>;
+        //! The value type.
+        using value_type = std::any;
 
         //! The building observer set type.
         struct building_observer_set_type
@@ -97,9 +94,9 @@ namespace tetengo::trie
             \param double_array_density_factor A double array density factor.
          */
         trie_impl(
-            std::vector<value_type>           elements,
-            const building_observer_set_type& building_observer_set,
-            std::size_t                       double_array_density_factor);
+            std::vector<std::pair<key_type, value_type>> elements,
+            const building_observer_set_type&            building_observer_set,
+            std::size_t                                  double_array_density_factor);
 
         /*!
             \brief Creates a trie.
@@ -117,13 +114,13 @@ namespace tetengo::trie
         // functions
 
         /*!
-            \brief Finds the mapped object correspoinding the given key.
+            \brief Finds the value object correspoinding the given key.
 
             \param key A key.
 
-            \return The mapped object. Or std::nullpot when the trie does not have the given key.
+            \return The value object. Or std::nullpot when the trie does not have the given key.
         */
-        std::optional<mapped_type> find(const key_type& key) const;
+        std::optional<value_type> find(const key_type& key) const;
 
         /*!
             \brief Returns the first iterator.
@@ -163,10 +160,10 @@ namespace tetengo::trie
         \brief A trie.
 
         \tparam Key           A key type.
-        \tparam Mapped        A mapped type.
+        \tparam Value         A value type.
         \tparam KeySerializer A key serializer type.
     */
-    template <typename Key, typename Mapped, typename KeySerializer = default_serializer<Key>>
+    template <typename Key, typename Value, typename KeySerializer = default_serializer<Key>>
     class trie : private boost::noncopyable
     {
     public:
@@ -175,17 +172,14 @@ namespace tetengo::trie
         //! The key type.
         using key_type = Key;
 
-        //! The mapped type.
-        using mapped_type = Mapped;
+        //! The value type.
+        using value_type = Value;
 
         //! The key serializer_type.
         using key_serializer_type = KeySerializer;
 
-        //! The value type.
-        using value_type = std::pair<key_type, mapped_type>;
-
         //! The iterator type.
-        using iterator = trie_iterator<mapped_type>;
+        using iterator = trie_iterator<value_type>;
 
         //! The building observer set type.
         using building_observer_set_type = trie_impl::building_observer_set_type;
@@ -235,10 +229,10 @@ namespace tetengo::trie
             \param double_array_density_factor A double array density factor.
         */
         explicit trie(
-            std::initializer_list<value_type> elements,
-            const key_serializer_type&        key_serializer = default_serializer<key_type>{},
-            const building_observer_set_type& building_observer_set = null_building_observer_set(),
-            std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
+            std::initializer_list<std::pair<key_type, value_type>> elements,
+            const key_serializer_type&                             key_serializer = default_serializer<key_type>{},
+            const building_observer_set_type&                      building_observer_set = null_building_observer_set(),
+            std::size_t double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor },
             m_key_serializer{ key_serializer }
         {}
@@ -260,18 +254,18 @@ namespace tetengo::trie
         // functions
 
         /*!
-            \brief Finds the mapped object correspoinding the given key.
+            \brief Finds the value object correspoinding the given key.
 
             \param key A key.
 
-            \return The mapped object. Or std::nullpot when the trie does not have the given key.
+            \return The value object. Or std::nullpot when the trie does not have the given key.
         */
-        std::optional<mapped_type> find(const key_type& key) const
+        std::optional<value_type> find(const key_type& key) const
         {
             const auto o_found = m_impl.find(m_key_serializer(key));
             if (o_found)
             {
-                return std::make_optional(std::any_cast<mapped_type>(*o_found));
+                return std::make_optional(std::any_cast<value_type>(*o_found));
             }
             else
             {
@@ -313,17 +307,19 @@ namespace tetengo::trie
     private:
         // static functions
 
-        static std::vector<trie_impl::value_type>
-        serialize_key(std::initializer_list<value_type> elements, const key_serializer_type& key_serializer)
+        static std::vector<std::pair<trie_impl::key_type, trie_impl::value_type>> serialize_key(
+            std::initializer_list<std::pair<key_type, value_type>> elements,
+            const key_serializer_type&                             key_serializer)
         {
-            std::vector<trie_impl::value_type> serialized{};
+            std::vector<std::pair<trie_impl::key_type, trie_impl::value_type>> serialized{};
             serialized.reserve(elements.size());
             std::transform(
                 std::begin(elements),
                 std::end(elements),
                 std::back_inserter(serialized),
                 [&key_serializer](auto& value) {
-                    return trie_impl::value_type{ key_serializer(value.first), std::move(value.second) };
+                    return std::pair<trie_impl::key_type, trie_impl::value_type>{ key_serializer(value.first),
+                                                                                  std::move(value.second) };
                 });
             return serialized;
         }

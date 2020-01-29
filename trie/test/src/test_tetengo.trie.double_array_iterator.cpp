@@ -88,8 +88,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         ++iterator;
 
-        BOOST_TEST(iterator2->first == "UTIGOSI");
-        BOOST_TEST(iterator2->second == 24);
+        BOOST_TEST(*iterator2 == 24);
     }
     {
         // TODO: C style API
@@ -113,8 +112,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         const tetengo::trie::double_array double_array_{ expected_base_values };
         const auto                        iterator = std::begin(double_array_);
 
-        BOOST_TEST(iterator->first == "SETA");
-        BOOST_TEST(iterator->second == 42);
+        BOOST_TEST(*iterator == 42);
     }
     {
         // TODO: C style API
@@ -185,20 +183,17 @@ BOOST_AUTO_TEST_CASE(increment)
         auto                              iterator = std::begin(double_array_);
 
         BOOST_REQUIRE(iterator != std::end(double_array_));
-        BOOST_TEST(iterator->first == "SETA");
-        BOOST_TEST(iterator->second == 42);
+        BOOST_TEST(*iterator == 42);
 
         ++iterator;
 
         BOOST_REQUIRE(iterator != std::end(double_array_));
-        BOOST_TEST(iterator->first == "UTIGOSI");
-        BOOST_TEST(iterator->second == 24);
+        BOOST_TEST(*iterator == 24);
 
         ++iterator;
 
         BOOST_REQUIRE(iterator != std::end(double_array_));
-        BOOST_TEST(iterator->first == "UTO");
-        BOOST_TEST(iterator->second == 2424);
+        BOOST_TEST(*iterator == 2424);
 
         ++iterator;
 
@@ -217,8 +212,7 @@ BOOST_AUTO_TEST_CASE(increment)
                 to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4)
             }; // "Akamizu" in Kanji
             BOOST_REQUIRE(iterator != std::end(double_array_));
-            BOOST_TEST(iterator->first == expected_key);
-            BOOST_TEST(iterator->second == 42);
+            BOOST_TEST(*iterator == 42);
         }
         {
             ++iterator;
@@ -227,8 +221,7 @@ BOOST_AUTO_TEST_CASE(increment)
                 to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC)
             }; // "Akase" in Kanji
             BOOST_REQUIRE(iterator != std::end(double_array_));
-            BOOST_TEST(iterator->first == expected_key);
-            BOOST_TEST(iterator->second == 24);
+            BOOST_TEST(*iterator == 24);
         }
         {
             ++iterator;

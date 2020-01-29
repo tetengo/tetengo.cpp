@@ -66,10 +66,10 @@ namespace
         to_c(0xFF), to_c(0xFF), to_c(0xFC), to_c(0x54), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x0A), to_c(0x0D), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x01), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* mapped index mappings                                      */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* value index mappings                                       */
         nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x01), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* mapped array                                               */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* value array                                                */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
         to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x06), to_c(0x9C), to_c(0xAC), /*                                    */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
@@ -236,9 +236,9 @@ BOOST_AUTO_TEST_CASE(get_storage)
         const auto& storage = trie_.get_storage();
 
         std::stringstream stream{};
-        storage.serialize(stream, [](const std::any& mapped) {
+        storage.serialize(stream, [](const std::any& value) {
             static const tetengo::trie::default_serializer<std::string> serializer{};
-            return serializer(std::any_cast<std::string>(mapped));
+            return serializer(std::any_cast<std::string>(value));
         });
         const auto storage_serialized = stream.str();
 

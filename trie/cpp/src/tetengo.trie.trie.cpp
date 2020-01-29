@@ -30,8 +30,6 @@ namespace tetengo::trie
 
         using key_type = trie_impl::key_type;
 
-        using mapped_type = trie_impl::mapped_type;
-
         using value_type = trie_impl::value_type;
 
         using building_observer_set_type = trie_impl::building_observer_set_type;
@@ -56,9 +54,9 @@ namespace tetengo::trie
         impl() : m_p_double_array{ std::make_unique<double_array>() } {}
 
         impl(
-            std::vector<value_type>           elements,
-            const building_observer_set_type& building_observer_set,
-            const std::size_t                 double_array_density_factor) :
+            std::vector<std::pair<key_type, value_type>> elements,
+            const building_observer_set_type&            building_observer_set,
+            const std::size_t                            double_array_density_factor) :
         m_p_double_array{}
         {
             std::vector<std::pair<std::string_view, std::int32_t>> double_array_contents{};
@@ -80,7 +78,7 @@ namespace tetengo::trie
 
             for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(elements.size()); ++i)
             {
-                m_p_double_array->get_storage().add_mapped_at(i, std::move(elements[i].second));
+                m_p_double_array->get_storage().add_value_at(i, std::move(elements[i].second));
             }
         }
 
@@ -91,19 +89,19 @@ namespace tetengo::trie
 
         // functions
 
-        std::optional<mapped_type> find(const key_type& key) const
+        std::optional<value_type> find(const key_type& key) const
         {
             const auto o_index = m_p_double_array->find(key);
             if (!o_index)
             {
                 return std::nullopt;
             }
-            const auto* const p_mapped = m_p_double_array->get_storage().mapped_at(*o_index);
-            if (!p_mapped)
+            const auto* const p_value = m_p_double_array->get_storage().value_at(*o_index);
+            if (!p_value)
             {
                 return std::nullopt;
             }
-            return std::make_optional(*p_mapped);
+            return std::make_optional(*p_value);
         }
 
         trie_iterator_impl begin() const
@@ -142,9 +140,9 @@ namespace tetengo::trie
     trie_impl::trie_impl() : m_p_impl{ std::make_unique<impl>() } {}
 
     trie_impl::trie_impl(
-        std::vector<value_type>           elements,
-        const building_observer_set_type& building_observer_set,
-        const std::size_t                 double_array_density_factor) :
+        std::vector<std::pair<key_type, value_type>> elements,
+        const building_observer_set_type&            building_observer_set,
+        const std::size_t                            double_array_density_factor) :
     m_p_impl{ std::make_unique<impl>(std::move(elements), building_observer_set, double_array_density_factor) }
     {}
 
@@ -154,7 +152,7 @@ namespace tetengo::trie
 
     trie_impl::~trie_impl() = default;
 
-    std::optional<trie_impl::mapped_type> trie_impl::find(const key_type& key) const
+    std::optional<trie_impl::value_type> trie_impl::find(const key_type& key) const
     {
         return m_p_impl->find(key);
     }
