@@ -78,7 +78,7 @@ namespace tetengo::trie
 
             for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(elements.size()); ++i)
             {
-                m_p_double_array->get_storage().add_mapped_at(i, std::move(elements[i].second));
+                m_p_double_array->get_storage().add_value_at(i, std::move(elements[i].second));
             }
         }
 
@@ -96,7 +96,7 @@ namespace tetengo::trie
             {
                 return std::nullopt;
             }
-            const auto* const p_value = m_p_double_array->get_storage().mapped_at(*o_index);
+            const auto* const p_value = m_p_double_array->get_storage().value_at(*o_index);
             if (!p_value)
             {
                 return std::nullopt;

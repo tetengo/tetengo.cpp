@@ -24,7 +24,7 @@ namespace tetengo::trie
 
     trie_iterator_impl::value_type& trie_iterator_impl::dereference() const
     {
-        return const_cast<value_type&>(*m_p_storage->mapped_at(*m_double_array_iterator));
+        return const_cast<value_type&>(*m_p_storage->value_at(*m_double_array_iterator));
     }
 
     bool trie_iterator_impl::equal(const trie_iterator_impl& another) const
