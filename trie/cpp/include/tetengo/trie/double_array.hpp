@@ -17,6 +17,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/core/noncopyable.hpp>
+
 #include <tetengo/trie/double_array_iterator.hpp>
 
 
@@ -28,7 +30,7 @@ namespace tetengo::trie
     /*!
         \brief A double array.
     */
-    class double_array
+    class double_array : private boost::noncopyable
     {
     public:
         // tyes
