@@ -84,7 +84,7 @@ namespace tetengo::trie
               density_factor }
         {}
 
-        impl(std::unique_ptr<storage>&& p_storage, std::size_t root_base_check_index) :
+        impl(std::unique_ptr<storage>&& p_storage, const std::size_t root_base_check_index) :
         m_p_storage{ std::move(p_storage) },
             m_root_base_check_index{ root_base_check_index }
         {}
