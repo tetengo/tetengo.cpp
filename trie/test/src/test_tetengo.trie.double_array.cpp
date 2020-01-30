@@ -15,13 +15,14 @@
 #include <utility>
 #include <vector>
 
+#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/double_array.h>
 #include <tetengo/trie/double_array.hpp>
-#include <tetengo/trie/enumerator.hpp>
+#include <tetengo/trie/double_array_iterator.hpp>
 #include <tetengo/trie/storage.hpp>
 
 struct tetengo_trie_doublearray;
@@ -370,14 +371,15 @@ BOOST_AUTO_TEST_CASE(find)
     }
 }
 
-BOOST_AUTO_TEST_CASE(get_enumerator)
+BOOST_AUTO_TEST_CASE(begin_end)
 {
     BOOST_TEST_PASSPOINT();
 
     {
         const tetengo::trie::double_array double_array_{};
 
-        const auto enumerator = double_array_.get_enumerator();
+        const auto first = std::begin(double_array_);
+        const auto last = std::end(double_array_);
     }
     {
         // TODO: C style API
@@ -386,7 +388,8 @@ BOOST_AUTO_TEST_CASE(get_enumerator)
     {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
-        const auto enumerator = double_array_.get_enumerator();
+        const auto first = std::begin(double_array_);
+        const auto last = std::end(double_array_);
     }
     {
         // TODO: C style API
@@ -395,7 +398,8 @@ BOOST_AUTO_TEST_CASE(get_enumerator)
     {
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
-        const auto enumerator = double_array_.get_enumerator();
+        const auto first = std::begin(double_array_);
+        const auto last = std::end(double_array_);
     }
     {
         // TODO: C style API
@@ -431,20 +435,15 @@ BOOST_AUTO_TEST_CASE(subtrie)
                 BOOST_CHECK(!o_found);
             }
             {
-                auto enumerator = o_subtrie->get_enumerator();
+                auto iterator = o_subtrie->begin();
 
-                const auto o_element1 = enumerator.next();
-                BOOST_REQUIRE(o_element1);
-                BOOST_TEST(o_element1->first == "TIGOSI");
-                BOOST_TEST(o_element1->second == 24);
+                BOOST_TEST(*iterator == 24);
 
-                const auto o_element2 = enumerator.next();
-                BOOST_REQUIRE(o_element2);
-                BOOST_TEST(o_element2->first == "TO");
-                BOOST_TEST(o_element2->second == 2424);
+                ++iterator;
+                BOOST_TEST(*iterator == 2424);
 
-                const auto o_element3 = enumerator.next();
-                BOOST_CHECK(!o_element3);
+                ++iterator;
+                BOOST_CHECK(iterator == o_subtrie->end());
             }
 
             const auto o_subtrie2 = o_subtrie->subtrie("TI");

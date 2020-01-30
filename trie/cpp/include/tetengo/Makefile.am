@@ -4,11 +4,12 @@
 pkg_headers = \
     trie/default_serializer.hpp \
     trie/double_array.hpp \
-    trie/enumerator.hpp \
+    trie/double_array_iterator.hpp \
     trie/memory_storage.hpp \
     trie/shared_storage.hpp \
     trie/storage.hpp \
-    trie/trie.hpp
+    trie/trie.hpp \
+    trie/trie_iterator.hpp
 
 extra_headers = \
     trie/0namespace.dox

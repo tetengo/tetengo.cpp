@@ -37,12 +37,12 @@ namespace tetengo::trie
         /*!
             \brief Creates a shared storage.
 
-            \param input_stream        An input stream.
-            \param mapped_deserializer A deserializer for mapped objects.
+            \param input_stream       An input stream.
+            \param value_deserializer A deserializer for value objects.
         */
         explicit shared_storage(
             std::istream&                                           input_stream,
-            const std::function<std::any(const std::string_view&)>& mapped_deserializer);
+            const std::function<std::any(const std::string_view&)>& value_deserializer);
 
         /*!
             \brief Destroys the shared storage.
@@ -65,23 +65,23 @@ namespace tetengo::trie
 
         virtual std::int32_t base_at_impl(std::size_t base_check_index) const override;
 
-        virtual void set_base_at_impl(std::size_t base_check_index, std::int32_t value) override;
+        virtual void set_base_at_impl(std::size_t base_check_index, std::int32_t base) override;
 
         virtual std::uint8_t check_at_impl(std::size_t base_check_index) const override;
 
-        virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t value) override;
+        virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t check) override;
 
         virtual double filling_rate_impl() const override;
 
         virtual const std::vector<std::uint32_t>& base_check_array_impl() const override;
 
-        virtual const std::any* mapped_at_impl(std::size_t mapped_index) const override;
+        virtual const std::any* value_at_impl(std::size_t value_index) const override;
 
-        virtual void add_mapped_at_impl(std::size_t mapped_index, std::any mapped) override;
+        virtual void add_value_at_impl(std::size_t value_index, std::any value) override;
 
         virtual void serialize_impl(
             std::ostream&                                      output_stream,
-            const std::function<std::string(const std::any&)>& mapped_serializer) const override;
+            const std::function<std::string(const std::any&)>& value_serializer) const override;
 
         virtual std::unique_ptr<storage> clone_impl() const override;
     };

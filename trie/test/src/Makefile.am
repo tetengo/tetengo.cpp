@@ -7,11 +7,12 @@ sources = \
     master.cpp \
     test_tetengo.trie.default_serializer.cpp \
     test_tetengo.trie.double_array.cpp \
-    test_tetengo.trie.enumerator.cpp \
+    test_tetengo.trie.double_array_iterator.cpp \
     test_tetengo.trie.memory_storage.cpp \
     test_tetengo.trie.shared_storage.cpp \
     test_tetengo.trie.storage.cpp \
-    test_tetengo.trie.trie.cpp
+    test_tetengo.trie.trie.cpp \
+    test_tetengo.trie.trie_iterator.cpp
 
 check_PROGRAMS = test_tetengo.trie
 

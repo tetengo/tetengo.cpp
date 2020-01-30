@@ -118,11 +118,12 @@
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.trie.default_serializer.cpp" />
     <ClCompile Include="src\test_tetengo.trie.double_array.cpp" />
-    <ClCompile Include="src\test_tetengo.trie.enumerator.cpp" />
+    <ClCompile Include="src\test_tetengo.trie.double_array_iterator.cpp" />
     <ClCompile Include="src\test_tetengo.trie.memory_storage.cpp" />
     <ClCompile Include="src\test_tetengo.trie.shared_storage.cpp" />
     <ClCompile Include="src\test_tetengo.trie.storage.cpp" />
     <ClCompile Include="src\test_tetengo.trie.trie.cpp" />
+    <ClCompile Include="src\test_tetengo.trie.trie_iterator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.hpp" />

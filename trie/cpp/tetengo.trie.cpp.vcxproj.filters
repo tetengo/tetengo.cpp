@@ -26,9 +26,6 @@
     <ClCompile Include="src\tetengo.trie.storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.trie.enumerator.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\tetengo.trie.memory_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -39,6 +36,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo.trie.trie.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.trie.double_array_iterator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.trie.trie_iterator.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -55,9 +58,6 @@
     <ClInclude Include="include\tetengo\trie\storage.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\trie\enumerator.hpp">
-      <Filter>header\tetengo::trie</Filter>
-    </ClInclude>
     <ClInclude Include="include\tetengo\trie\memory_storage.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
@@ -68,6 +68,12 @@
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\trie\trie.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\trie\double_array_iterator.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\trie\trie_iterator.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
   </ItemGroup>
