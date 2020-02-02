@@ -46,9 +46,17 @@ namespace
         to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D) // Tamana in Kanji in UTF-8
     };
 
+    static const std::string tamarai1{
+        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE6), to_c(0x9D), to_c(0xA5) // Tamarai in Kanji in UTF-8
+    };
+
     static const std::wstring kumamoto2{ 0x718A, 0x672C }; // Kumamoto in Kanji in UTF-16/32
 
     static const std::wstring tamana2{ 0x7389, 0x540D }; // Tamana in Kanji in UTF-16/32
+
+    static const std::wstring tamarai2{ 0x7389, 0x6765 }; // Tamarai in Kanji in UTF-16/32
+
+    static const std::wstring tama2{ 0x7389 }; // Tama in Kanji in UTF-16/32
 
     static const std::wstring uto2{ 0x5B87, 0x571F }; // Uto in Kanji in UTF-16/32
 
@@ -273,6 +281,49 @@ BOOST_AUTO_TEST_CASE(begin_end)
 BOOST_AUTO_TEST_CASE(subtrie)
 {
     BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
+
+        const auto p_subtrie = trie_.subtrie(tama2);
+        BOOST_TEST_REQUIRE(p_subtrie);
+    }
+    {
+        const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
+            { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
+        };
+
+        const auto p_subtrie = trie_.subtrie(tama2);
+        BOOST_TEST_REQUIRE(!p_subtrie);
+
+        auto iterator_ = std::begin(*p_subtrie);
+        BOOST_REQUIRE(iterator_ != std::end(*p_subtrie));
+        BOOST_CHECK(iterator_->value == tamana1);
+
+        ++iterator_;
+        BOOST_CHECK(iterator_ == std::end(*p_subtrie));
+    }
+    {
+        const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
+            { kumamoto2, detect_copy(kumamoto1) },
+            { tamana2, detect_copy(tamana1) },
+            { tamarai2, detect_copy(tamarai1) }
+        };
+
+        const auto p_subtrie = trie_.subtrie(tama2);
+        BOOST_TEST_REQUIRE(!p_subtrie);
+
+        auto iterator_ = std::begin(*p_subtrie);
+        BOOST_REQUIRE(iterator_ != std::end(*p_subtrie));
+        BOOST_CHECK(iterator_->value == tamana1);
+
+        ++iterator_;
+        BOOST_REQUIRE(iterator_ != std::end(*p_subtrie));
+        BOOST_CHECK(iterator_->value == tamarai1);
+
+        ++iterator_;
+        BOOST_CHECK(iterator_ == std::end(*p_subtrie));
+    }
 }
 
 
