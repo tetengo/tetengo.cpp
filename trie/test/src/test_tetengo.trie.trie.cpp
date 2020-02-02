@@ -81,6 +81,55 @@ namespace
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
 
+
+    bool& copy_detecting()
+    {
+        static bool singleton = false;
+        return singleton;
+    }
+
+    void begin_copy_detection()
+    {
+        copy_detecting() = true;
+    }
+
+    void end_copy_detection()
+    {
+        copy_detecting() = false;
+    }
+
+    template <typename T>
+    struct copy_detector
+    {
+        T value;
+
+        explicit copy_detector(const T& value_) : value{ value_ } {}
+
+        explicit copy_detector(T&& value_) : value{ std::move(value_) } {}
+
+        copy_detector(const copy_detector& another) : value{ another.value } {
+            if (copy_detecting())
+            {
+                BOOST_CHECK_MESSAGE(false, "Object copy detected.");
+            }
+        }
+
+        copy_detector(copy_detector&& another) : value{ std::move(another.value) } {}
+    };
+
+    template <typename T>
+    copy_detector<T> detect_copy(const T& value)
+    {
+        return copy_detector<T>{ value };
+    }
+
+    template <typename T>
+    copy_detector<T> detect_copy(T&& value)
+    {
+        return copy_detector<T>{ std::move(value) };
+    }
+
+
 }
 
 
@@ -178,21 +227,27 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_TEST(!o_found);
     }
     {
-        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+        const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
+            { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
+        };
+        begin_copy_detection();
+
         {
             const auto o_found = trie_.find(kumamoto2);
             BOOST_REQUIRE(o_found);
-            BOOST_TEST(*o_found == kumamoto1);
+            BOOST_TEST(o_found->value == kumamoto1);
         }
         {
             const auto o_found = trie_.find(tamana2);
             BOOST_REQUIRE(o_found);
-            BOOST_TEST(*o_found == tamana1);
+            BOOST_TEST(o_found->value == tamana1);
         }
         {
             const auto o_found = trie_.find(uto2);
             BOOST_TEST(!o_found);
         }
+
+        end_copy_detection();
     }
 }
 
