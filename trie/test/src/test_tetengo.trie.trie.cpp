@@ -8,7 +8,6 @@
 #include <functional>
 #include <iterator>
 #include <memory>
-#include <optional>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -107,7 +106,8 @@ namespace
 
         explicit copy_detector(T&& value_) : value{ std::move(value_) } {}
 
-        copy_detector(const copy_detector& another) : value{ another.value } {
+        copy_detector(const copy_detector& another) : value{ another.value }
+        {
             if (copy_detecting())
             {
                 BOOST_CHECK_MESSAGE(false, "Object copy detected.");
@@ -223,8 +223,8 @@ BOOST_AUTO_TEST_CASE(find)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
 
-        const auto o_found = trie_.find(kumamoto2);
-        BOOST_TEST(!o_found);
+        const auto* const p_found = trie_.find(kumamoto2);
+        BOOST_TEST(!p_found);
     }
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
@@ -233,18 +233,18 @@ BOOST_AUTO_TEST_CASE(find)
         begin_copy_detection();
 
         {
-            const auto o_found = trie_.find(kumamoto2);
-            BOOST_REQUIRE(o_found);
-            BOOST_TEST(o_found->value == kumamoto1);
+            const auto* const p_found = trie_.find(kumamoto2);
+            BOOST_REQUIRE(p_found);
+            BOOST_TEST(p_found->value == kumamoto1);
         }
         {
-            const auto o_found = trie_.find(tamana2);
-            BOOST_REQUIRE(o_found);
-            BOOST_TEST(o_found->value == tamana1);
+            const auto* const p_found = trie_.find(tamana2);
+            BOOST_REQUIRE(p_found);
+            BOOST_TEST(p_found->value == tamana1);
         }
         {
-            const auto o_found = trie_.find(uto2);
-            BOOST_TEST(!o_found);
+            const auto* const p_found = trie_.find(uto2);
+            BOOST_TEST(!p_found);
         }
 
         end_copy_detection();

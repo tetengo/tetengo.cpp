@@ -14,7 +14,6 @@
 #include <initializer_list>
 #include <iterator>
 #include <memory>
-#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -118,9 +117,9 @@ namespace tetengo::trie
 
             \param key A key.
 
-            \return The value object. Or std::nullpot when the trie does not have the given key.
+            \return A pointer to the value object. Or nullptr when the trie does not have the given key.
         */
-        std::optional<value_type> find(const key_type& key) const;
+        const value_type* find(const key_type& key) const;
 
         /*!
             \brief Returns the first iterator.
@@ -258,18 +257,18 @@ namespace tetengo::trie
 
             \param key A key.
 
-            \return The value object. Or std::nullpot when the trie does not have the given key.
+            \return A pointer to the value object. Or nullptr when the trie does not have the given key.
         */
-        std::optional<value_type> find(const key_type& key) const
+        const value_type* find(const key_type& key) const
         {
-            const auto o_found = m_impl.find(m_key_serializer(key));
-            if (o_found)
+            const auto* const p_found = m_impl.find(m_key_serializer(key));
+            if (p_found)
             {
-                return std::make_optional(std::any_cast<value_type>(*o_found));
+                return std::any_cast<value_type>(p_found);
             }
             else
             {
-                return std::nullopt;
+                return nullptr;
             }
         }
 

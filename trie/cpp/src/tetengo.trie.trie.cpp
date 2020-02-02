@@ -89,19 +89,14 @@ namespace tetengo::trie
 
         // functions
 
-        std::optional<value_type> find(const key_type& key) const
+        const value_type* find(const key_type& key) const
         {
             const auto o_index = m_p_double_array->find(key);
             if (!o_index)
             {
-                return std::nullopt;
+                return nullptr;
             }
-            const auto* const p_value = m_p_double_array->get_storage().value_at(*o_index);
-            if (!p_value)
-            {
-                return std::nullopt;
-            }
-            return std::make_optional(*p_value);
+            return m_p_double_array->get_storage().value_at(*o_index);
         }
 
         trie_iterator_impl begin() const
@@ -152,7 +147,7 @@ namespace tetengo::trie
 
     trie_impl::~trie_impl() = default;
 
-    std::optional<trie_impl::value_type> trie_impl::find(const key_type& key) const
+    const trie_impl::value_type* trie_impl::find(const key_type& key) const
     {
         return m_p_impl->find(key);
     }
