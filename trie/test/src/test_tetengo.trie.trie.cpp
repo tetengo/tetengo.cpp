@@ -270,6 +270,12 @@ BOOST_AUTO_TEST_CASE(begin_end)
 }
 
 
+BOOST_AUTO_TEST_CASE(subtrie)
+{
+    BOOST_TEST_PASSPOINT();
+}
+
+
 BOOST_AUTO_TEST_CASE(get_storage)
 {
     BOOST_TEST_PASSPOINT();
