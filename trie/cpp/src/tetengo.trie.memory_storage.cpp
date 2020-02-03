@@ -78,6 +78,11 @@ namespace tetengo::trie
             m_base_check_array[base_check_index] |= check;
         }
 
+        std::size_t size_impl() const
+        {
+            return m_value_array.size();
+        }
+
         double filling_rate_impl() const
         {
             const auto empty_count =
@@ -336,6 +341,11 @@ namespace tetengo::trie
     void memory_storage::set_check_at_impl(const std::size_t base_check_index, const std::uint8_t check)
     {
         m_p_impl->set_check_at_impl(base_check_index, check);
+    }
+
+    std::size_t memory_storage::size_impl() const
+    {
+        return m_p_impl->size_impl();
     }
 
     double memory_storage::filling_rate_impl() const

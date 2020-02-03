@@ -128,6 +128,31 @@ namespace tetengo::trie
         // functions
 
         /*!
+            \brief Returns true when the trie is empty.
+
+            \retval true  When the trie is empty.
+            \retval false Otherwise.
+        */
+        bool empty() const;
+
+        /*!
+            \brief Returns the size of the trie.
+
+            \return The size.
+        */
+        std::size_t size() const;
+
+        /*!
+            \brief Returns true when the trie contains the given key.
+
+            \param key A key.
+
+            \retval true  When the trie contains the given key.
+            \retval false Otherwise.
+        */
+        bool contains(const key_type& key) const;
+
+        /*!
             \brief Finds the value object correspoinding the given key.
 
             \param key A key.
@@ -278,6 +303,40 @@ namespace tetengo::trie
         // functions
 
         /*!
+            \brief Returns true when the trie is empty.
+
+            \retval true  When the trie is empty.
+            \retval false Otherwise.
+        */
+        bool empty() const
+        {
+            return m_impl.empty();
+        }
+
+        /*!
+            \brief Returns the size of the trie.
+
+            \return The size.
+        */
+        std::size_t size() const
+        {
+            return m_impl.size();
+        }
+
+        /*!
+            \brief Returns true when the trie contains the given key.
+
+            \param key A key.
+
+            \retval true  When the trie contains the given key.
+            \retval false Otherwise.
+        */
+        bool contains(const key_type& key) const
+        {
+            return m_impl.contains(m_key_serializer(key));
+        }
+
+        /*!
             \brief Finds the value object correspoinding the given key.
 
             \param key A key.
@@ -287,14 +346,11 @@ namespace tetengo::trie
         const value_type* find(const key_type& key) const
         {
             const auto* const p_found = m_impl.find(m_key_serializer(key));
-            if (p_found)
-            {
-                return std::any_cast<value_type>(p_found);
-            }
-            else
+            if (!p_found)
             {
                 return nullptr;
             }
+            return std::any_cast<value_type>(p_found);
         }
 
         /*!
@@ -332,7 +388,6 @@ namespace tetengo::trie
             {
                 return std::unique_ptr<trie>{};
             }
-
             std::unique_ptr<trie> p_trie{ new trie{ std::move(p_trie_impl), m_key_serializer } };
             return p_trie;
         }

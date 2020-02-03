@@ -38,6 +38,11 @@ namespace tetengo::trie
         set_check_at_impl(base_check_index, base);
     }
 
+    std::size_t storage::size() const
+    {
+        return size_impl();
+    }
+
     double storage::filling_rate() const
     {
         return filling_rate_impl();

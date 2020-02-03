@@ -58,6 +58,11 @@ namespace tetengo::trie
             m_p_entity->set_check_at(base_check_index, check);
         }
 
+        std::size_t size_impl() const
+        {
+            return m_p_entity->size();
+        }
+
         double filling_rate_impl() const
         {
             return m_p_entity->filling_rate();
@@ -128,6 +133,11 @@ namespace tetengo::trie
     void shared_storage::set_check_at_impl(const std::size_t base_check_index, const std::uint8_t check)
     {
         m_p_impl->set_check_at_impl(base_check_index, check);
+    }
+
+    std::size_t shared_storage::size_impl() const
+    {
+        return m_p_impl->size_impl();
     }
 
     double shared_storage::filling_rate_impl() const

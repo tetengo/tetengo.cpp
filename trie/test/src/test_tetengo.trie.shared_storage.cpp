@@ -156,6 +156,23 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     BOOST_TEST(storage_.check_at(24) == 124);
 }
 
+BOOST_AUTO_TEST_CASE(size)
+{
+    BOOST_TEST_PASSPOINT();
+
+    tetengo::trie::shared_storage storage_{};
+    BOOST_TEST(storage_.size() == 0U);
+
+    storage_.add_value_at(24, std::make_any<std::string>("hoge"));
+    BOOST_TEST(storage_.size() == 1U);
+
+    storage_.add_value_at(42, std::make_any<std::string>("fuga"));
+    BOOST_TEST(storage_.size() == 2U);
+
+    storage_.add_value_at(0, std::make_any<std::string>("piyo"));
+    BOOST_TEST(storage_.size() == 3U);
+}
+
 BOOST_AUTO_TEST_CASE(filling_rate)
 {
     BOOST_TEST_PASSPOINT();
