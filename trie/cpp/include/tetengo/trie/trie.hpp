@@ -27,6 +27,7 @@
 
 namespace tetengo::trie
 {
+    class double_array;
     class storage;
 
 
@@ -105,6 +106,20 @@ namespace tetengo::trie
         explicit trie_impl(std::unique_ptr<storage>&& p_storage);
 
         /*!
+            \brief Creates a trie.
+
+            \param p_double_array A unique pointer to a double array.
+        */
+        explicit trie_impl(std::unique_ptr<double_array>&& p_double_array);
+
+        /*!
+            \brief Moves a trie.
+
+            \param another Another trie.
+        */
+        trie_impl(trie_impl&& another);
+
+        /*!
             \brief Destroys an implementation of trie.
         */
         ~trie_impl();
@@ -161,7 +176,7 @@ namespace tetengo::trie
 
         // variables
 
-        const std::unique_ptr<impl> m_p_impl;
+        std::unique_ptr<impl> m_p_impl;
     };
 
 
@@ -225,7 +240,8 @@ namespace tetengo::trie
             \param key_serializer A key serializer.
         */
         explicit trie(const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
-        m_impl{}, m_key_serializer{ key_serializer }
+        m_impl{},
+            m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -242,7 +258,7 @@ namespace tetengo::trie
             const building_observer_set_type&                      building_observer_set = null_building_observer_set(),
             std::size_t double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor },
-        m_key_serializer{ key_serializer }
+            m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -254,7 +270,8 @@ namespace tetengo::trie
         explicit trie(
             std::unique_ptr<storage>&& p_storage,
             const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
-        m_impl{ std::move(p_storage) }, m_key_serializer{ key_serializer }
+        m_impl{ std::move(p_storage) },
+            m_key_serializer{ key_serializer }
         {}
 
 
@@ -308,9 +325,16 @@ namespace tetengo::trie
             \return A unique pointer to a subtrie.
                     Or nullptr when the trie does not have the given key prefix.
         */
-        std::unique_ptr<trie> subtrie(const key_type& /*key_prefix*/) const
+        std::unique_ptr<trie> subtrie(const key_type& key_prefix) const
         {
-            return std::unique_ptr<trie>{};
+            auto p_trie_impl = m_impl.subtrie(m_key_serializer(key_prefix));
+            if (!p_trie_impl)
+            {
+                return std::unique_ptr<trie>{};
+            }
+
+            std::unique_ptr<trie> p_trie{ new trie{ std::move(p_trie_impl), m_key_serializer } };
+            return p_trie;
         }
 
         /*!
@@ -350,6 +374,14 @@ namespace tetengo::trie
         const trie_impl m_impl;
 
         const key_serializer_type m_key_serializer;
+
+
+        // constructors
+
+        explicit trie(std::unique_ptr<trie_impl>&& p_impl, const key_serializer_type& ker_serializer) :
+        m_impl{ std::move(*p_impl) },
+            m_key_serializer{ ker_serializer }
+        {}
     };
 
 

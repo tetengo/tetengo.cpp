@@ -86,6 +86,8 @@ namespace tetengo::trie
         m_p_double_array{ std::make_unique<double_array>(std::move(p_storage), 0) }
         {}
 
+        explicit impl(std::unique_ptr<double_array>&& p_double_array) : m_p_double_array{ std::move(p_double_array) } {}
+
 
         // functions
 
@@ -107,6 +109,17 @@ namespace tetengo::trie
         trie_iterator_impl end() const
         {
             return trie_iterator_impl{};
+        }
+
+        std::unique_ptr<trie_impl> subtrie(const key_type& key_prefix) const
+        {
+            auto p_subtrie = m_p_double_array->subtrie(key_prefix);
+            if (!p_subtrie)
+            {
+                return std::unique_ptr<trie_impl>{};
+            }
+
+            return std::make_unique<trie_impl>(std::move(p_subtrie));
         }
 
         const storage& get_storage() const
@@ -145,6 +158,12 @@ namespace tetengo::trie
     m_p_impl{ std::make_unique<impl>(std::move(p_storage)) }
     {}
 
+    trie_impl::trie_impl(std::unique_ptr<double_array>&& p_double_array) :
+    m_p_impl{ std::make_unique<impl>(std::move(p_double_array)) }
+    {}
+
+    trie_impl::trie_impl(trie_impl&& another) : m_p_impl{ std::move(another.m_p_impl) } {}
+
     trie_impl::~trie_impl() = default;
 
     const trie_impl::value_type* trie_impl::find(const key_type& key) const
@@ -160,6 +179,11 @@ namespace tetengo::trie
     trie_iterator_impl trie_impl::end() const
     {
         return m_p_impl->end();
+    }
+
+    std::unique_ptr<trie_impl> trie_impl::subtrie(const key_type& key_prefix) const
+    {
+        return m_p_impl->subtrie(key_prefix);
     }
 
     const storage& trie_impl::get_storage() const

@@ -15,6 +15,7 @@
 #include <vector>
 
 #include <boost/core/ignore_unused.hpp>
+#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -23,6 +24,7 @@
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/trie_iterator.hpp>
 
 
 namespace
