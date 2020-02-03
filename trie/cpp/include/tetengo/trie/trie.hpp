@@ -27,6 +27,7 @@
 
 namespace tetengo::trie
 {
+    class double_array;
     class storage;
 
 
@@ -105,6 +106,20 @@ namespace tetengo::trie
         explicit trie_impl(std::unique_ptr<storage>&& p_storage);
 
         /*!
+            \brief Creates a trie.
+
+            \param p_double_array A unique pointer to a double array.
+        */
+        explicit trie_impl(std::unique_ptr<double_array>&& p_double_array);
+
+        /*!
+            \brief Moves a trie.
+
+            \param another Another trie.
+        */
+        trie_impl(trie_impl&& another);
+
+        /*!
             \brief Destroys an implementation of trie.
         */
         ~trie_impl();
@@ -136,6 +151,16 @@ namespace tetengo::trie
         trie_iterator_impl end() const;
 
         /*!
+            \brief Returns a subtrie.
+
+            \param key_prefix A key prefix.
+
+            \return A unique pointer to a subtrie.
+                    Or nullptr when the trie does not have the given key prefix.
+        */
+        std::unique_ptr<trie_impl> subtrie(const key_type& key_prefix) const;
+
+        /*!
             \brief Returns the storage.
 
             \return The storage.
@@ -151,7 +176,7 @@ namespace tetengo::trie
 
         // variables
 
-        const std::unique_ptr<impl> m_p_impl;
+        std::unique_ptr<impl> m_p_impl;
     };
 
 
@@ -293,6 +318,26 @@ namespace tetengo::trie
         }
 
         /*!
+            \brief Returns a subtrie.
+
+            \param key_prefix A key prefix.
+
+            \return A unique pointer to a subtrie.
+                    Or nullptr when the trie does not have the given key prefix.
+        */
+        std::unique_ptr<trie> subtrie(const key_type& key_prefix) const
+        {
+            auto p_trie_impl = m_impl.subtrie(m_key_serializer(key_prefix));
+            if (!p_trie_impl)
+            {
+                return std::unique_ptr<trie>{};
+            }
+
+            std::unique_ptr<trie> p_trie{ new trie{ std::move(p_trie_impl), m_key_serializer } };
+            return p_trie;
+        }
+
+        /*!
             \brief Returns the storage.
 
             \return The storage.
@@ -329,6 +374,14 @@ namespace tetengo::trie
         const trie_impl m_impl;
 
         const key_serializer_type m_key_serializer;
+
+
+        // constructors
+
+        explicit trie(std::unique_ptr<trie_impl>&& p_impl, const key_serializer_type& ker_serializer) :
+        m_impl{ std::move(*p_impl) },
+            m_key_serializer{ ker_serializer }
+        {}
     };
 
 

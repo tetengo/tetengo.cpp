@@ -124,6 +124,8 @@ namespace tetengo::trie
         {
             auto p_clone = std::make_unique<memory_storage>();
             p_clone->m_p_impl->m_base_check_array = m_base_check_array;
+            p_clone->m_p_impl->m_value_index_mappings = m_value_index_mappings;
+            p_clone->m_p_impl->m_value_array = m_value_array;
             return p_clone;
         }
 
