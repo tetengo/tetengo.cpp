@@ -286,7 +286,14 @@ BOOST_AUTO_TEST_CASE(subtrie)
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
 
         const auto p_subtrie = trie_.subtrie(tama2);
-        BOOST_REQUIRE(!p_subtrie);
+        BOOST_CHECK(!p_subtrie);
+    }
+    {
+        const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{ { kumamoto2,
+                                                                                     detect_copy(kumamoto1) } };
+
+        const auto p_subtrie = trie_.subtrie(tama2);
+        BOOST_CHECK(!p_subtrie);
     }
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
