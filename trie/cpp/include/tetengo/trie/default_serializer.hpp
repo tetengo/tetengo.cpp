@@ -36,6 +36,15 @@ namespace tetengo::trie
 
 #if !defined(DOCUMENTATION)
     template <>
+    class default_serializer<std::string_view>
+    {
+    public:
+        // functions
+
+        const std::string_view& operator()(const std::string_view& object) const;
+    };
+
+    template <>
     class default_serializer<std::string>
     {
     public:
@@ -44,13 +53,13 @@ namespace tetengo::trie
         const std::string& operator()(const std::string& object) const;
     };
 
-    template <>
-    class default_serializer<std::string_view>
+    template <typename Char>
+    class default_serializer<std::basic_string_view<Char>>
     {
     public:
         // functions
 
-        const std::string_view& operator()(const std::string_view& object) const;
+        std::string operator()(const std::basic_string_view<Char>& object) const;
     };
 
     template <typename Char>
