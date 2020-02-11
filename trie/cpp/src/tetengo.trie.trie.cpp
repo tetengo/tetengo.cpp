@@ -91,6 +91,21 @@ namespace tetengo::trie
 
         // functions
 
+        bool empty() const
+        {
+            return m_p_double_array->get_storage().size() == 0;
+        }
+
+        std::size_t size() const
+        {
+            return m_p_double_array->get_storage().size();
+        }
+
+        bool contains(const key_type& key) const
+        {
+            return static_cast<bool>(m_p_double_array->find(key));
+        }
+
         const value_type* find(const key_type& key) const
         {
             const auto o_index = m_p_double_array->find(key);
@@ -118,7 +133,6 @@ namespace tetengo::trie
             {
                 return std::unique_ptr<trie_impl>{};
             }
-
             return std::make_unique<trie_impl>(std::move(p_subtrie));
         }
 
@@ -165,6 +179,21 @@ namespace tetengo::trie
     trie_impl::trie_impl(trie_impl&& another) : m_p_impl{ std::move(another.m_p_impl) } {}
 
     trie_impl::~trie_impl() = default;
+
+    bool trie_impl::empty() const
+    {
+        return m_p_impl->empty();
+    }
+
+    std::size_t trie_impl::size() const
+    {
+        return m_p_impl->size();
+    }
+
+    bool trie_impl::contains(const key_type& key) const
+    {
+        return m_p_impl->contains(key);
+    }
 
     const trie_impl::value_type* trie_impl::find(const key_type& key) const
     {

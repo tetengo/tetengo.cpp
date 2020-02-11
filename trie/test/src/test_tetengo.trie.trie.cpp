@@ -226,6 +226,71 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(empty)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{};
+
+        BOOST_TEST(trie_.empty());
+    }
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 } };
+
+        BOOST_TEST(!trie_.empty());
+    }
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+
+        BOOST_TEST(!trie_.empty());
+    }
+}
+
+BOOST_AUTO_TEST_CASE(size)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{};
+
+        BOOST_TEST(trie_.size() == 0U);
+    }
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 } };
+
+        BOOST_TEST(trie_.size() == 1U);
+    }
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
+
+        BOOST_TEST(trie_.size() == 2U);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(contains)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::trie<std::wstring, std::string> trie_{};
+
+        BOOST_TEST(!trie_.contains(kumamoto2));
+    }
+    {
+        const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
+            { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
+        };
+        begin_copy_detection();
+
+        BOOST_TEST(trie_.contains(kumamoto2));
+        BOOST_TEST(trie_.contains(tamana2));
+        BOOST_TEST(!trie_.contains(uto2));
+
+        end_copy_detection();
+    }
+}
+
 BOOST_AUTO_TEST_CASE(find)
 {
     BOOST_TEST_PASSPOINT();
@@ -278,7 +343,6 @@ BOOST_AUTO_TEST_CASE(begin_end)
         boost::ignore_unused(std::end(trie_));
     }
 }
-
 
 BOOST_AUTO_TEST_CASE(subtrie)
 {
@@ -334,7 +398,6 @@ BOOST_AUTO_TEST_CASE(subtrie)
         BOOST_CHECK(iterator_ == std::end(*p_subtrie));
     }
 }
-
 
 BOOST_AUTO_TEST_CASE(get_storage)
 {
