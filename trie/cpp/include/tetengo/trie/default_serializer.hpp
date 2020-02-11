@@ -44,6 +44,15 @@ namespace tetengo::trie
         const std::string& operator()(const std::string& object) const;
     };
 
+    template <>
+    class default_serializer<std::string_view>
+    {
+    public:
+        // functions
+
+        const std::string_view& operator()(const std::string_view& object) const;
+    };
+
     template <typename Char>
     class default_serializer<std::basic_string<Char>>
     {

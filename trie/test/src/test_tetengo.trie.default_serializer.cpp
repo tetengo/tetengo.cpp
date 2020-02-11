@@ -89,6 +89,15 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
     }
     {
+        const tetengo::trie::default_serializer<std::string_view> serialize{};
+
+        const std::string_view object{ "Sakuramachi" };
+        const std::string_view expected_serialized{ "Sakuramachi" };
+        const auto        serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
+        BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
+    }
+    {
         const tetengo::trie::default_serializer<std::wstring> serialize{};
 
         const std::wstring object{ 0x685C, 0x753A };
