@@ -1,4 +1,4 @@
-/*!
+/*! \file
     \brief A trie.
 
     Copyright (C) 2019 kaoru

@@ -1,4 +1,4 @@
-/*!
+/*! \file
     \brief A memory storage.
 
     Copyright (C) 2019 kaoru

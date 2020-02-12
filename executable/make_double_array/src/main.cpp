@@ -1,4 +1,4 @@
-/*!
+/*! \file
     \brief A double array building tool.
 
     Copyright (C) 2019 kaoru

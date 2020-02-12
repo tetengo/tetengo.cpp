@@ -1,4 +1,4 @@
-/*!
+/*! \file
     \brief A shared storage.
 
     Copyright (C) 2019 kaoru

@@ -1,4 +1,4 @@
-/*!
+/*! \file
     \brief A default serializer.
 
     Copyright (C) 2019 kaoru

@@ -1,4 +1,4 @@
-/*!
+/*! \file
     \brief A trie iterator.
 
     Copyright (C) 2019 kaoru

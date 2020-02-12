@@ -1,4 +1,4 @@
-/*!
+/*! \file
     \brief A double array iterator.
 
     Copyright (C) 2019 kaoru
