@@ -58,35 +58,35 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_Win32.props" />
-    <Import Project="..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\vsprops\test.props" />
+    <Import Project="..\..\..\vsprops\common.props" />
+    <Import Project="..\..\..\vsprops\compilation.props" />
+    <Import Project="..\..\..\vsprops\compilation_Win32.props" />
+    <Import Project="..\..\..\vsprops\compilation_debug.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_x64.props" />
-    <Import Project="..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\vsprops\test.props" />
+    <Import Project="..\..\..\vsprops\common.props" />
+    <Import Project="..\..\..\vsprops\compilation.props" />
+    <Import Project="..\..\..\vsprops\compilation_x64.props" />
+    <Import Project="..\..\..\vsprops\compilation_debug.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_Win32.props" />
-    <Import Project="..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\vsprops\test.props" />
+    <Import Project="..\..\..\vsprops\common.props" />
+    <Import Project="..\..\..\vsprops\compilation.props" />
+    <Import Project="..\..\..\vsprops\compilation_Win32.props" />
+    <Import Project="..\..\..\vsprops\compilation_release.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_x64.props" />
-    <Import Project="..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\vsprops\test.props" />
+    <Import Project="..\..\..\vsprops\common.props" />
+    <Import Project="..\..\..\vsprops\compilation.props" />
+    <Import Project="..\..\..\vsprops\compilation_x64.props" />
+    <Import Project="..\..\..\vsprops\compilation_release.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -111,7 +111,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\precompiled\precompiled.cpp">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -126,7 +126,7 @@
     <ClCompile Include="src\test_tetengo.trie.trie_iterator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\precompiled\precompiled.hpp" />
+    <ClInclude Include="..\..\..\precompiled\precompiled.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cpp\tetengo.trie.cpp.vcxproj">

@@ -7,7 +7,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\precompiled\precompiled.cpp">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\master.cpp">
@@ -39,7 +39,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\precompiled\precompiled.hpp">
+    <ClInclude Include="..\..\..\precompiled\precompiled.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
