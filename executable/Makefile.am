@@ -2,9 +2,8 @@
 # Copyright (C) 2019 kaoru
 
 SUBDIRS = \
-    cpp \
-    c \
-    test
+    list_double_array \
+    make_double_array
 
 
 iwyu:

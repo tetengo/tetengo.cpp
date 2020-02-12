@@ -9,9 +9,9 @@ sources = \
 bin_PROGRAMS = list_double_array
 
 list_double_array_CPPFLAGS = \
-    -I${top_srcdir}/trie/cpp/include
+    -I${top_srcdir}/library/trie/cpp/include
 list_double_array_LDFLAGS = \
-    -L${top_builddir}/trie/cpp/src
+    -L${top_builddir}/library/trie/cpp/src
 list_double_array_LDADD = \
     -ltetengo.trie.cpp
 list_double_array_SOURCES = ${sources}

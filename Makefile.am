@@ -4,7 +4,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
 SOURCE_SUBDIRS = \
-    trie
+    library \
+    executable
 
 SUBDIRS = \
     ${SOURCE_SUBDIRS} \

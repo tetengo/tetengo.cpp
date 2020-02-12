@@ -18,7 +18,7 @@ sources = \
 lib_LIBRARIES = libtetengo.trie.cpp.a
 
 libtetengo_trie_cpp_a_CPPFLAGS = \
-    -I${top_srcdir}/trie/cpp/include
+    -I${top_srcdir}/library/trie/cpp/include
 libtetengo_trie_cpp_a_SOURCES = ${sources}
 
 noinst_LTLIBRARIES = libtetengo.trie.noinst.la

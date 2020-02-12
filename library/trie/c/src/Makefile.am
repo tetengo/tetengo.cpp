@@ -9,10 +9,10 @@ sources = \
 lib_LTLIBRARIES = libtetengo.trie.la
 
 libtetengo_trie_la_CPPFLAGS = \
-    -I${top_srcdir}/trie/c/include \
-    -I${top_srcdir}/trie/cpp/include
+    -I${top_srcdir}/library/trie/c/include \
+    -I${top_srcdir}/library/trie/cpp/include
 libtetengo_trie_la_LIBADD = \
-    ${top_builddir}/trie/cpp/src/libtetengo.trie.noinst.la
+    ${top_builddir}/library/trie/cpp/src/libtetengo.trie.noinst.la
 libtetengo_trie_la_SOURCES = ${sources}
 
 EXTRA_DIST = \

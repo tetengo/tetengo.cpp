@@ -2,9 +2,7 @@
 # Copyright (C) 2019 kaoru
 
 SUBDIRS = \
-    cpp \
-    c \
-    test
+    trie
 
 
 iwyu:
