@@ -120,10 +120,39 @@ namespace tetengo::trie
     }
 
 
+    const std::string_view& default_serializer<std::string_view>::operator()(const std::string_view& object) const
+    {
+        return object;
+    }
+
+
     const std::string& default_serializer<std::string>::operator()(const std::string& object) const
     {
         return object;
     }
+
+
+    template <typename Char>
+    std::string default_serializer<std::basic_string_view<Char>>::
+                operator()(const std::basic_string_view<Char>& object) const
+    {
+        std::string serialized;
+        serialized.reserve(object.length() * sizeof(Char) / sizeof(char));
+        for (const auto c: object)
+        {
+            serialized += to_bytes(c);
+        }
+        return serialized;
+    }
+
+    template std::string default_serializer<std::basic_string_view<wchar_t>>::
+                         operator()(const std::basic_string_view<wchar_t>& object) const;
+
+    template std::string default_serializer<std::basic_string_view<char16_t>>::
+                         operator()(const std::basic_string_view<char16_t>& object) const;
+
+    template std::string default_serializer<std::basic_string_view<char32_t>>::
+                         operator()(const std::basic_string_view<char32_t>& object) const;
 
 
     template <typename Char>

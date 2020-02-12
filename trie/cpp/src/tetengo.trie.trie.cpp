@@ -4,11 +4,14 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <any>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <optional>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -27,10 +30,6 @@ namespace tetengo::trie
     {
     public:
         // types
-
-        using key_type = trie_impl::key_type;
-
-        using value_type = trie_impl::value_type;
 
         using building_observer_set_type = trie_impl::building_observer_set_type;
 
@@ -54,9 +53,9 @@ namespace tetengo::trie
         impl() : m_p_double_array{ std::make_unique<double_array>() } {}
 
         impl(
-            std::vector<std::pair<key_type, value_type>> elements,
-            const building_observer_set_type&            building_observer_set,
-            const std::size_t                            double_array_density_factor) :
+            std::vector<std::pair<std::string_view, std::any>> elements,
+            const building_observer_set_type&                  building_observer_set,
+            const std::size_t                                  double_array_density_factor) :
         m_p_double_array{}
         {
             std::vector<std::pair<std::string_view, std::int32_t>> double_array_contents{};
@@ -82,6 +81,15 @@ namespace tetengo::trie
             }
         }
 
+        impl(
+            std::vector<std::pair<std::string, std::any>> elements,
+            const building_observer_set_type&             building_observer_set,
+            const std::size_t                             double_array_density_factor) :
+        impl{ std::vector<std::pair<std::string_view, std::any>>{ std::begin(elements), std::end(elements) },
+              building_observer_set,
+              double_array_density_factor }
+        {}
+
         explicit impl(std::unique_ptr<storage>&& p_storage) :
         m_p_double_array{ std::make_unique<double_array>(std::move(p_storage), 0) }
         {}
@@ -101,12 +109,12 @@ namespace tetengo::trie
             return m_p_double_array->get_storage().size();
         }
 
-        bool contains(const key_type& key) const
+        bool contains(const std::string_view& key) const
         {
             return static_cast<bool>(m_p_double_array->find(key));
         }
 
-        const value_type* find(const key_type& key) const
+        const std::any* find(const std::string_view& key) const
         {
             const auto o_index = m_p_double_array->find(key);
             if (!o_index)
@@ -126,7 +134,7 @@ namespace tetengo::trie
             return trie_iterator_impl{};
         }
 
-        std::unique_ptr<trie_impl> subtrie(const key_type& key_prefix) const
+        std::unique_ptr<trie_impl> subtrie(const std::string_view& key_prefix) const
         {
             auto p_subtrie = m_p_double_array->subtrie(key_prefix);
             if (!p_subtrie)
@@ -162,9 +170,16 @@ namespace tetengo::trie
     trie_impl::trie_impl() : m_p_impl{ std::make_unique<impl>() } {}
 
     trie_impl::trie_impl(
-        std::vector<std::pair<key_type, value_type>> elements,
-        const building_observer_set_type&            building_observer_set,
-        const std::size_t                            double_array_density_factor) :
+        std::vector<std::pair<std::string_view, std::any>> elements,
+        const building_observer_set_type&                  building_observer_set,
+        const std::size_t                                  double_array_density_factor) :
+    m_p_impl{ std::make_unique<impl>(std::move(elements), building_observer_set, double_array_density_factor) }
+    {}
+
+    trie_impl::trie_impl(
+        std::vector<std::pair<std::string, std::any>> elements,
+        const building_observer_set_type&             building_observer_set,
+        const std::size_t                             double_array_density_factor) :
     m_p_impl{ std::make_unique<impl>(std::move(elements), building_observer_set, double_array_density_factor) }
     {}
 
@@ -190,12 +205,12 @@ namespace tetengo::trie
         return m_p_impl->size();
     }
 
-    bool trie_impl::contains(const key_type& key) const
+    bool trie_impl::contains(const std::string_view& key) const
     {
         return m_p_impl->contains(key);
     }
 
-    const trie_impl::value_type* trie_impl::find(const key_type& key) const
+    const std::any* trie_impl::find(const std::string_view& key) const
     {
         return m_p_impl->find(key);
     }
@@ -210,7 +225,7 @@ namespace tetengo::trie
         return m_p_impl->end();
     }
 
-    std::unique_ptr<trie_impl> trie_impl::subtrie(const key_type& key_prefix) const
+    std::unique_ptr<trie_impl> trie_impl::subtrie(const std::string_view& key_prefix) const
     {
         return m_p_impl->subtrie(key_prefix);
     }

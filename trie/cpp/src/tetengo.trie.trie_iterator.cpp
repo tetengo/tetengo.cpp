@@ -4,6 +4,7 @@
     Copyright (C) 2019 kaoru
 */
 
+#include <any>
 #include <utility>
 
 #include <boost/iterator/iterator_facade.hpp>
@@ -22,9 +23,9 @@ namespace tetengo::trie
 
     trie_iterator_impl::trie_iterator_impl() : m_double_array_iterator{}, m_p_storage{ nullptr } {}
 
-    trie_iterator_impl::value_type& trie_iterator_impl::dereference() const
+    std::any& trie_iterator_impl::dereference() const
     {
-        return const_cast<value_type&>(*m_p_storage->value_at(*m_double_array_iterator));
+        return const_cast<std::any&>(*m_p_storage->value_at(*m_double_array_iterator));
     }
 
     bool trie_iterator_impl::equal(const trie_iterator_impl& another) const

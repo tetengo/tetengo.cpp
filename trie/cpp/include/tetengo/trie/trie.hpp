@@ -16,6 +16,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -38,12 +39,6 @@ namespace tetengo::trie
     {
     public:
         // types
-
-        //! The key type.
-        using key_type = std::string;
-
-        //! The value type.
-        using value_type = std::any;
 
         //! The building observer set type.
         struct building_observer_set_type
@@ -94,9 +89,21 @@ namespace tetengo::trie
             \param double_array_density_factor A double array density factor.
          */
         trie_impl(
-            std::vector<std::pair<key_type, value_type>> elements,
-            const building_observer_set_type&            building_observer_set,
-            std::size_t                                  double_array_density_factor);
+            std::vector<std::pair<std::string_view, std::any>> elements,
+            const building_observer_set_type&                  building_observer_set,
+            std::size_t                                        double_array_density_factor);
+
+        /*!
+            \brief Creates a trie.
+
+            \param elements                    Initial elements.
+            \param building_observer_set       A building observer set.
+            \param double_array_density_factor A double array density factor.
+         */
+        trie_impl(
+            std::vector<std::pair<std::string, std::any>> elements,
+            const building_observer_set_type&             building_observer_set,
+            std::size_t                                   double_array_density_factor);
 
         /*!
             \brief Creates a trie.
@@ -150,7 +157,7 @@ namespace tetengo::trie
             \retval true  When the trie contains the given key.
             \retval false Otherwise.
         */
-        bool contains(const key_type& key) const;
+        bool contains(const std::string_view& key) const;
 
         /*!
             \brief Finds the value object correspoinding the given key.
@@ -159,7 +166,7 @@ namespace tetengo::trie
 
             \return A pointer to the value object. Or nullptr when the trie does not have the given key.
         */
-        const value_type* find(const key_type& key) const;
+        const std::any* find(const std::string_view& key) const;
 
         /*!
             \brief Returns the first iterator.
@@ -183,7 +190,7 @@ namespace tetengo::trie
             \return A unique pointer to a subtrie.
                     Or nullptr when the trie does not have the given key prefix.
         */
-        std::unique_ptr<trie_impl> subtrie(const key_type& key_prefix) const;
+        std::unique_ptr<trie_impl> subtrie(const std::string_view& key_prefix) const;
 
         /*!
             \brief Returns the storage.
@@ -404,21 +411,27 @@ namespace tetengo::trie
 
 
     private:
+        // types
+
+        using serialized_element_type = std::pair<
+            std::conditional_t<std::is_same_v<key_type, std::string_view>, std::string_view, std::string>,
+            std::any>;
+
+
         // static functions
 
-        static std::vector<std::pair<trie_impl::key_type, trie_impl::value_type>> serialize_key(
+        static std::vector<serialized_element_type> serialize_key(
             std::initializer_list<std::pair<key_type, value_type>> elements,
             const key_serializer_type&                             key_serializer)
         {
-            std::vector<std::pair<trie_impl::key_type, trie_impl::value_type>> serialized{};
+            std::vector<serialized_element_type> serialized{};
             serialized.reserve(elements.size());
             std::transform(
                 std::begin(elements),
                 std::end(elements),
                 std::back_inserter(serialized),
                 [&key_serializer](auto& value) {
-                    return std::pair<trie_impl::key_type, trie_impl::value_type>{ key_serializer(value.first),
-                                                                                  std::move(value.second) };
+                    return serialized_element_type{ key_serializer(value.first), std::move(value.second) };
                 });
             return serialized;
         }
