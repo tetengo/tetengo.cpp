@@ -29,10 +29,6 @@ namespace tetengo::trie
     public:
         // types
 
-        //! The value type.
-        using value_type = std::any;
-
-
         // constructors and destructor
 
         /*!
@@ -58,7 +54,7 @@ namespace tetengo::trie
 
             \return The dereferenced value.
         */
-        value_type& dereference() const;
+        std::any& dereference() const;
 
         /*!
             \brief Returns true when this iterator is equal to another.
