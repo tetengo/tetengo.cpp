@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "executable", "executable", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "list_double_array", "executable\list_double_array\list_double_array.vcxproj", "{15803B5C-8845-4325-819B-B09E40B8826E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "make_double_array", "executable\make_double_array\make_double_array.vcxproj", "{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "make_dict", "executable\make_dict\make_dict.vcxproj", "{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.trie", "library\trie\c\tetengo.trie.vcxproj", "{E14D072F-631B-4E87-BC03-57437306CD34}"
 EndProject

@@ -100,7 +100,7 @@ int main(const int argc, char** const argv)
     {
         if (argc <= 2)
         {
-            std::cout << "Usage: make_double_array input.txt output.bin" << std::endl;
+            std::cout << "Usage: make_dict input.txt output.bin" << std::endl;
             return 0;
         }
 

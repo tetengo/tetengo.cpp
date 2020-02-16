@@ -14,8 +14,8 @@ AC_CONFIG_FILES([
     executable/Makefile
     executable/list_double_array/Makefile
     executable/list_double_array/src/Makefile
-    executable/make_double_array/Makefile
-    executable/make_double_array/src/Makefile
+    executable/make_dict/Makefile
+    executable/make_dict/src/Makefile
     library/Makefile
     library/trie/Makefile
     library/trie/c/Makefile

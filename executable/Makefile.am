@@ -3,7 +3,7 @@
 
 SUBDIRS = \
     list_double_array \
-    make_double_array
+    make_dict
 
 
 iwyu:
