@@ -40,7 +40,7 @@ int main(const int argc, char** const argv)
     {
         if (argc <= 1)
         {
-            std::cout << "Usage: list_double_array input.bin" << std::endl;
+            std::cout << "Usage: search_dict input.bin" << std::endl;
             return 0;
         }
 

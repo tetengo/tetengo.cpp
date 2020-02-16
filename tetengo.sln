@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{43A6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "executable", "executable", "{721A442D-34D8-457A-8D07-D21EB2C6A04C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "list_double_array", "executable\list_double_array\list_double_array.vcxproj", "{15803B5C-8845-4325-819B-B09E40B8826E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_dict", "executable\search_dict\search_dict.vcxproj", "{15803B5C-8845-4325-819B-B09E40B8826E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "make_dict", "executable\make_dict\make_dict.vcxproj", "{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}"
 EndProject

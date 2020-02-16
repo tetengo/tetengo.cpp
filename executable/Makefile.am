@@ -2,8 +2,8 @@
 # Copyright (C) 2019 kaoru
 
 SUBDIRS = \
-    list_double_array \
-    make_dict
+    make_dict \
+    search_dict
 
 
 iwyu:

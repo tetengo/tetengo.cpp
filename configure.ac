@@ -12,10 +12,10 @@ AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
     executable/Makefile
-    executable/list_double_array/Makefile
-    executable/list_double_array/src/Makefile
     executable/make_dict/Makefile
     executable/make_dict/src/Makefile
+    executable/search_dict/Makefile
+    executable/search_dict/src/Makefile
     library/Makefile
     library/trie/Makefile
     library/trie/c/Makefile

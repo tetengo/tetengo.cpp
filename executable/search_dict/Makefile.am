@@ -5,8 +5,8 @@ SUBDIRS = \
     src
 
 EXTRA_DIST = \
-    list_double_array.vcxproj \
-    list_double_array.vcxproj.filters
+    search_dict.vcxproj \
+    search_dict.vcxproj.filters
 
 
 iwyu:

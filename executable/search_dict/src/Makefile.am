@@ -6,15 +6,15 @@ headers =
 sources = \
     main.cpp
 
-bin_PROGRAMS = list_double_array
+bin_PROGRAMS = search_dict
 
-list_double_array_CPPFLAGS = \
+search_dict_CPPFLAGS = \
     -I${top_srcdir}/library/trie/cpp/include
-list_double_array_LDFLAGS = \
+search_dict_LDFLAGS = \
     -L${top_builddir}/library/trie/cpp/src
-list_double_array_LDADD = \
+search_dict_LDADD = \
     -ltetengo.trie.cpp
-list_double_array_SOURCES = ${sources}
+search_dict_SOURCES = ${sources}
 
 
 IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
@@ -22,7 +22,7 @@ IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${list_double_array_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${search_dict_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 clean-local:
