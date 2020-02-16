@@ -4,13 +4,17 @@
     Copyright (C) 2019-2020 kaoru
  */
 
+#include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <exception>
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <boost/format.hpp>
@@ -53,6 +57,39 @@ namespace
         return elements;
     }
 
+    void insert_word_offset_to_map(
+        const std::string_view&                                    key,
+        const std::size_t                                          offset,
+        std::unordered_map<std::string, std::vector<std::size_t>>& map)
+    {
+        auto i_value = map.find(std::string{ key });
+        if (i_value == map.end())
+        {
+            i_value = map.insert(std::make_pair(key, std::vector<std::size_t>{})).first;
+        }
+        assert(i_value != map.end());
+
+        if (std::find(i_value->second.begin(), i_value->second.end(), offset) != i_value->second.end())
+        {
+            return;
+        }
+        i_value->second.push_back(offset);
+    }
+
+    std::vector<std::pair<std::string_view, const std::vector<size_t>&>>
+    map_to_vector(const std::unordered_map<std::string, std::vector<std::size_t>>& map)
+    {
+        std::vector<std::pair<std::string_view, const std::vector<size_t>&>> vector{};
+        vector.reserve(map.size());
+
+        for (const auto& value: map)
+        {
+            vector.emplace_back(value.first, value.second);
+        }
+
+        return vector;
+    }
+
 
 }
 
@@ -72,12 +109,18 @@ int main(const int argc, char** const argv)
         {
             throw std::ios_base::failure{ "Can't open the input file." };
         }
+
+        std::unordered_map<std::string, std::vector<std::size_t>> word_offset_map{};
+
+        auto line_head = static_cast<std::size_t>(0);
         for (auto i = static_cast<std::size_t>(0); stream; ++i)
         {
             std::string line{};
             std::getline(stream, line);
+            const auto line_tail = line_head + line.length() + 1;
             if (line.empty())
             {
+                line_head = line_tail;
                 continue;
             }
             const auto elements = split(line, ',');
@@ -87,12 +130,19 @@ int main(const int argc, char** const argv)
                 throw std::runtime_error{ "Invalid UniDic lex.csv format." };
             }
 
+            insert_word_offset_to_map(elements[12], line_tail, word_offset_map);
+            insert_word_offset_to_map(elements[24], line_tail, word_offset_map);
+
             if (i % 10000 == 0)
             {
                 std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \r" << std::flush;
             }
+
+            line_head = line_tail;
         }
         std::cerr << "Done.        " << std::endl;
+
+        const auto word_offset_vector = map_to_vector(word_offset_map);
 
         return 0;
     }
