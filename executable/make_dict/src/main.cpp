@@ -1,7 +1,7 @@
 /*! \file
     \brief A double array building tool.
 
-    Copyright (C) 2019 kaoru
+    Copyright (C) 2019-2020 kaoru
  */
 
 #include <algorithm>
