@@ -1,7 +1,7 @@
 /*! \file
     \brief The master test suite.
 
-    Copyright (C) 2019 kaoru
+    Copyright (C) 2019-2020 kaoru
  */
 
 #define BOOST_TEST_MODULE "tetengo-trie.test"

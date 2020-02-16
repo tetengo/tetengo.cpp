@@ -1,5 +1,5 @@
 # Automake Settings
-# Copyright (C) 2019 kaoru
+# Copyright (C) 2019-2020 kaoru
 
 pkg_headers = \
     trie/default_serializer.hpp \
