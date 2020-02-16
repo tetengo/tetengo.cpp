@@ -11,23 +11,25 @@ AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
+    executable/Makefile
+    executable/make_dict/Makefile
+    executable/make_dict/src/Makefile
+    executable/search_dict/Makefile
+    executable/search_dict/src/Makefile
+    library/Makefile
+    library/trie/Makefile
+    library/trie/c/Makefile
+    library/trie/c/include/Makefile
+    library/trie/c/include/tetengo/Makefile
+    library/trie/c/src/Makefile
+    library/trie/cpp/Makefile
+    library/trie/cpp/include/Makefile
+    library/trie/cpp/include/tetengo/Makefile
+    library/trie/cpp/src/Makefile
+    library/trie/test/Makefile
+    library/trie/test/src/Makefile
     precompiled/Makefile
     tools/Makefile
-    trie/Makefile
-    trie/c/Makefile
-    trie/c/include/Makefile
-    trie/c/include/tetengo/Makefile
-    trie/c/src/Makefile
-    trie/cpp/Makefile
-    trie/cpp/include/Makefile
-    trie/cpp/include/tetengo/Makefile
-    trie/cpp/src/Makefile
-    trie/list_double_array/Makefile
-    trie/list_double_array/src/Makefile
-    trie/make_double_array/Makefile
-    trie/make_double_array/src/Makefile
-    trie/test/Makefile
-    trie/test/src/Makefile
     vsprops/Makefile
 ])
 

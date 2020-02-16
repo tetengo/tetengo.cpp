@@ -820,9 +820,9 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = docsrc \
-                         precompiled \
-                         README.md \
-                         trie
+                         library/trie/c/include \
+                         library/trie/cpp/include \
+                         README.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
