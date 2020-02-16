@@ -1,7 +1,7 @@
 /*! \file
     \brief A trie iterator.
 
-    Copyright (C) 2019 kaoru
+    Copyright (C) 2019-2020 kaoru
 */
 
 #if !defined(TETENGO_TRIE_TRIEITERATOR_HPP)

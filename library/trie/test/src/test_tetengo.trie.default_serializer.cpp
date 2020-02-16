@@ -1,7 +1,7 @@
 /*! \file
     \brief A default serializer.
 
-    Copyright (C) 2019 kaoru
+    Copyright (C) 2019-2020 kaoru
  */
 
 #include <cstdint>

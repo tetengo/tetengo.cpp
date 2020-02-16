@@ -1,5 +1,5 @@
 # Autoconf Settings
-# Copyright (C) 2019 kaoru
+# Copyright (C) 2019-2020 kaoru
 
 #### General ####
 AC_PREREQ([2.69])

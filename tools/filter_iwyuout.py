@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # IWYU output filter
-# Copyright (C) 2019 kaoru
+# Copyright (C) 2019-2020 kaoru
 
 import re
 import sys
