@@ -11,6 +11,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -209,6 +210,23 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(done);
     }
     {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::begin(content), std::end(content) };
+    }
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+    }
+    {
+        std::unordered_map<std::string_view, std::string> content{ { "Kumamoto", kumamoto1 }, { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{
+            std::begin(content), std::end(content), tetengo::trie::default_serializer<std::string_view>{}
+        };
+    }
+    {
         auto p_input_stream = create_input_stream();
         auto p_storage =
             std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::string_view& serialized) {
@@ -259,6 +277,22 @@ BOOST_AUTO_TEST_CASE(empty)
 
         BOOST_TEST(!trie_.empty());
     }
+
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{};
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        BOOST_TEST(trie_.empty());
+    }
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        BOOST_TEST(!trie_.empty());
+    }
 }
 
 BOOST_AUTO_TEST_CASE(size)
@@ -291,6 +325,22 @@ BOOST_AUTO_TEST_CASE(size)
 
         BOOST_TEST(trie_.size() == 1U);
     }
+
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{};
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        BOOST_TEST(trie_.size() == 0U);
+    }
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        BOOST_TEST(trie_.size() == 2U);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(contains)
@@ -322,6 +372,22 @@ BOOST_AUTO_TEST_CASE(contains)
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
+
+        BOOST_TEST(trie_.contains("Kumamoto"));
+    }
+
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{};
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        BOOST_TEST(!trie_.contains("Kumamoto"));
+    }
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
 
         BOOST_TEST(trie_.contains("Kumamoto"));
     }
@@ -374,6 +440,25 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_REQUIRE(p_found);
         BOOST_TEST(*p_found == 42);
     }
+
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{};
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        const auto* const p_found = trie_.find("Kumamoto");
+        BOOST_TEST(!p_found);
+    }
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        const auto* const p_found = trie_.find("Kumamoto");
+        BOOST_REQUIRE(p_found);
+        BOOST_TEST(*p_found == kumamoto1);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(begin_end)
@@ -401,6 +486,24 @@ BOOST_AUTO_TEST_CASE(begin_end)
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
+
+        boost::ignore_unused(std::begin(trie_));
+        boost::ignore_unused(std::end(trie_));
+    }
+
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{};
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        boost::ignore_unused(std::begin(trie_));
+        boost::ignore_unused(std::end(trie_));
+    }
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
 
         boost::ignore_unused(std::begin(trie_));
         boost::ignore_unused(std::end(trie_));
@@ -476,6 +579,31 @@ BOOST_AUTO_TEST_CASE(subtrie)
         auto iterator_ = std::begin(*p_subtrie);
         BOOST_REQUIRE(iterator_ != std::end(*p_subtrie));
         BOOST_CHECK(*iterator_ == 42);
+
+        ++iterator_;
+        BOOST_CHECK(iterator_ == std::end(*p_subtrie));
+    }
+
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{};
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        const auto p_subtrie = trie_.subtrie("Kuma");
+        BOOST_CHECK(!p_subtrie);
+    }
+    {
+        std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
+                                                                       { "Tamana", tamana1 } };
+        const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
+                                                                        std::make_move_iterator(std::end(content)) };
+
+        const auto p_subtrie = trie_.subtrie("Kuma");
+        BOOST_REQUIRE(p_subtrie);
+
+        auto iterator_ = std::begin(*p_subtrie);
+        BOOST_REQUIRE(iterator_ != std::end(*p_subtrie));
+        BOOST_CHECK(*iterator_ == kumamoto1);
 
         ++iterator_;
         BOOST_CHECK(iterator_ == std::end(*p_subtrie));

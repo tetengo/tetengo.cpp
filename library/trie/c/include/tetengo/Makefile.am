@@ -13,7 +13,7 @@ EXTRA_DIST = ${extra_headers}
 
 IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu_CPPFLAGS = \
-    -I${top_srcdir}/trie/cpp/include
+    -I${top_srcdir}/library/trie/cpp/include
 
 iwyu: ${addsuffix .iwyuout, ${pkg_headers} ${extra_headers}}
 
