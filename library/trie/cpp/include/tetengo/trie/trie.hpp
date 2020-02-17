@@ -289,7 +289,53 @@ namespace tetengo::trie
             const key_serializer_type&                             key_serializer = default_serializer<key_type>{},
             const building_observer_set_type&                      building_observer_set = null_building_observer_set(),
             std::size_t double_array_density_factor = default_double_array_density_factor()) :
-        m_impl{ serialize_key(elements, key_serializer), building_observer_set, double_array_density_factor },
+        m_impl{ serialize_key<true>(std::begin(elements), std::end(elements), key_serializer),
+                building_observer_set,
+                double_array_density_factor },
+            m_key_serializer{ key_serializer }
+        {}
+
+        /*!
+            \brief Creates a trie.
+
+            \tparam InputIterator An input iterator type.
+
+            \param first                       An iterator to the first element.
+            \param last                        An iterator to the last element.
+            \param key_serializer              A key serializer.
+            \param building_observer_set       A building observer set.
+            \param double_array_density_factor A double array density factor.
+        */
+        template <typename InputIterator>
+        trie(
+            InputIterator                     first,
+            InputIterator                     last,
+            const key_serializer_type&        key_serializer = default_serializer<key_type>{},
+            const building_observer_set_type& building_observer_set = null_building_observer_set(),
+            std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
+        m_impl{ serialize_key<false>(first, last, key_serializer), building_observer_set, double_array_density_factor },
+            m_key_serializer{ key_serializer }
+        {}
+
+        /*!
+            \brief Creates a trie.
+
+            \tparam InputIterator An input iterator type.
+
+            \param first                       An iterator to the first element.
+            \param last                        An iterator to the last element.
+            \param key_serializer              A key serializer.
+            \param building_observer_set       A building observer set.
+            \param double_array_density_factor A double array density factor.
+        */
+        template <typename InputIterator>
+        trie(
+            std::move_iterator<InputIterator> first,
+            std::move_iterator<InputIterator> last,
+            const key_serializer_type&        key_serializer = default_serializer<key_type>{},
+            const building_observer_set_type& building_observer_set = null_building_observer_set(),
+            std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
+        m_impl{ serialize_key<true>(first, last, key_serializer), building_observer_set, double_array_density_factor },
             m_key_serializer{ key_serializer }
         {}
 
@@ -420,19 +466,27 @@ namespace tetengo::trie
 
         // static functions
 
-        static std::vector<serialized_element_type> serialize_key(
-            std::initializer_list<std::pair<key_type, value_type>> elements,
-            const key_serializer_type&                             key_serializer)
+        template <bool MoveValue, typename InputIterator>
+        static std::vector<serialized_element_type>
+        serialize_key(InputIterator first, InputIterator last, const key_serializer_type& key_serializer)
         {
             std::vector<serialized_element_type> serialized{};
-            serialized.reserve(elements.size());
-            std::transform(
-                std::begin(elements),
-                std::end(elements),
-                std::back_inserter(serialized),
-                [&key_serializer](auto& value) {
+            if constexpr (std::is_convertible_v<
+                              typename std::iterator_traits<InputIterator>::iterator_category,
+                              std::forward_iterator_tag>)
+            {
+                serialized.reserve(std::distance(first, last));
+            }
+            std::transform(first, last, std::back_inserter(serialized), [&key_serializer](auto&& value) {
+                if constexpr (MoveValue)
+                {
                     return serialized_element_type{ key_serializer(value.first), std::move(value.second) };
-                });
+                }
+                else
+                {
+                    return serialized_element_type{ key_serializer(value.first), value.second };
+                }
+            });
             return serialized;
         }
 
