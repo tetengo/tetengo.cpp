@@ -9,7 +9,9 @@
 #include <cstddef>
 #include <exception>
 #include <fstream> // IWYU pragma: keep
+#include <functional>
 #include <iostream>
+#include <iterator>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -18,6 +20,9 @@
 #include <vector>
 
 #include <boost/format.hpp>
+
+#include <tetengo/trie/default_serializer.hpp>
+#include <tetengo/trie/trie.hpp>
 
 
 namespace
@@ -76,19 +81,23 @@ namespace
         i_value->second.push_back(offset);
     }
 
-    std::vector<std::pair<std::string_view, const std::vector<size_t>&>>
-    map_to_vector(const std::unordered_map<std::string, std::vector<std::size_t>>& map)
+    class trie_building_observer
     {
-        std::vector<std::pair<std::string_view, const std::vector<size_t>&>> vector{};
-        vector.reserve(map.size());
+    public:
+        trie_building_observer() : m_index{ 0 } {}
 
-        for (const auto& value: map)
+        void operator()(const std::string_view& key)
         {
-            vector.emplace_back(value.first, value.second);
+            if (m_index % 10000 == 0)
+            {
+                std::cerr << boost::format{ "%8d: %s" } % m_index % key << "    \r" << std::flush;
+            }
+            ++m_index;
         }
 
-        return vector;
-    }
+    private:
+        std::size_t m_index;
+    };
 
 
 }
@@ -112,6 +121,7 @@ int main(const int argc, char** const argv)
 
         std::unordered_map<std::string, std::vector<std::size_t>> word_offset_map{};
 
+        std::cerr << "Loading UniDic lex.csv..." << std::endl;
         auto line_head = static_cast<std::size_t>(0);
         for (auto i = static_cast<std::size_t>(0); stream; ++i)
         {
@@ -142,7 +152,15 @@ int main(const int argc, char** const argv)
         }
         std::cerr << "Done.        " << std::endl;
 
-        const auto word_offset_vector = map_to_vector(word_offset_map);
+        std::cerr << "Building trie..." << std::endl;
+        const tetengo::trie::trie<std::string_view, std::vector<std::size_t>> trie_{
+            std::make_move_iterator(std::begin(word_offset_map)),
+            std::make_move_iterator(std::end(word_offset_map)),
+            tetengo::trie::default_serializer<std::string_view>{},
+            tetengo::trie::trie<std::string_view, std::vector<std::size_t>>::building_observer_set_type{
+                trie_building_observer{}, []() {} }
+        };
+        std::cerr << "Done.        " << std::endl;
 
         return 0;
     }
