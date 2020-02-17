@@ -21,6 +21,7 @@
 #include <boost/format.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
+#include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>
 
 
@@ -100,6 +101,23 @@ namespace
         std::size_t m_index;
     };
 
+    std::string serialize_value(const std::any& value)
+    {
+        const auto* const p_value = std::any_cast<std::vector<std::pair<std::size_t, std::size_t>>>(&value);
+        assert(p_value);
+
+        static const tetengo::trie::default_serializer<std::size_t> size_t_serializer{};
+
+        auto serialized = size_t_serializer(p_value->size());
+        for (const auto& offset_length: *p_value)
+        {
+            serialized += size_t_serializer(offset_length.first);
+            serialized += size_t_serializer(offset_length.second);
+        }
+
+        return serialized;
+    }
+
 
 }
 
@@ -108,9 +126,9 @@ int main(const int argc, char** const argv)
 {
     try
     {
-        if (argc <= 1)
+        if (argc <= 2)
         {
-            std::cout << "Usage: make_dict UniDic_lex.csv" << std::endl;
+            std::cout << "Usage: make_dict UniDic_lex.csv trie.bin" << std::endl;
             return 0;
         }
 
@@ -160,6 +178,15 @@ int main(const int argc, char** const argv)
             tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>::
                 building_observer_set_type{ trie_building_observer{}, []() {} }
         };
+        std::cerr << "Done.        " << std::endl;
+
+        std::cerr << "Serializing trie..." << std::endl;
+        std::ofstream output_stream{ argv[2] };
+        if (!output_stream)
+        {
+            throw std::ios_base::failure{ "Can't open the output file." };
+        }
+        trie_.get_storage().serialize(output_stream, serialize_value);
         std::cerr << "Done.        " << std::endl;
 
         return 0;
