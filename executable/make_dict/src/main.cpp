@@ -6,7 +6,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <cstddef>
 #include <exception>
 #include <fstream> // IWYU pragma: keep
 #include <functional>
@@ -63,22 +62,24 @@ namespace
     }
 
     void insert_word_offset_to_map(
-        const std::string_view&                                    key,
-        const std::size_t                                          offset,
-        std::unordered_map<std::string, std::vector<std::size_t>>& map)
+        const std::string_view&                                                            key,
+        const std::size_t                                                                  offset,
+        const std::size_t                                                                  length,
+        std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>& map)
     {
         auto i_value = map.find(std::string{ key });
         if (i_value == map.end())
         {
-            i_value = map.insert(std::make_pair(key, std::vector<std::size_t>{})).first;
+            i_value = map.insert(std::make_pair(key, std::vector<std::pair<std::size_t, std::size_t>>{})).first;
         }
         assert(i_value != map.end());
 
-        if (std::find(i_value->second.begin(), i_value->second.end(), offset) != i_value->second.end())
+        if (std::find(i_value->second.begin(), i_value->second.end(), std::make_pair(offset, length)) !=
+            i_value->second.end())
         {
             return;
         }
-        i_value->second.push_back(offset);
+        i_value->second.emplace_back(offset, length);
     }
 
     class trie_building_observer
@@ -119,7 +120,7 @@ int main(const int argc, char** const argv)
             throw std::ios_base::failure{ "Can't open the input file." };
         }
 
-        std::unordered_map<std::string, std::vector<std::size_t>> word_offset_map{};
+        std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>> word_offset_map{};
 
         std::cerr << "Loading UniDic lex.csv..." << std::endl;
         auto line_head = static_cast<std::size_t>(0);
@@ -127,10 +128,9 @@ int main(const int argc, char** const argv)
         {
             std::string line{};
             std::getline(stream, line);
-            const auto line_tail = line_head + line.length() + 1;
             if (line.empty())
             {
-                line_head = line_tail;
+                line_head = line.length() + 1;
                 continue;
             }
             const auto elements = split(line, ',');
@@ -140,25 +140,25 @@ int main(const int argc, char** const argv)
                 throw std::runtime_error{ "Invalid UniDic lex.csv format." };
             }
 
-            insert_word_offset_to_map(elements[12], line_tail, word_offset_map);
-            insert_word_offset_to_map(elements[24], line_tail, word_offset_map);
+            insert_word_offset_to_map(elements[12], line_head, line.length() + 1, word_offset_map);
+            insert_word_offset_to_map(elements[24], line_head, line.length() + 1, word_offset_map);
 
             if (i % 10000 == 0)
             {
                 std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \r" << std::flush;
             }
 
-            line_head = line_tail;
+            line_head = line.length() + 1;
         }
         std::cerr << "Done.        " << std::endl;
 
         std::cerr << "Building trie..." << std::endl;
-        const tetengo::trie::trie<std::string_view, std::vector<std::size_t>> trie_{
+        const tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>> trie_{
             std::make_move_iterator(std::begin(word_offset_map)),
             std::make_move_iterator(std::end(word_offset_map)),
             tetengo::trie::default_serializer<std::string_view>{},
-            tetengo::trie::trie<std::string_view, std::vector<std::size_t>>::building_observer_set_type{
-                trie_building_observer{}, []() {} }
+            tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>::
+                building_observer_set_type{ trie_building_observer{}, []() {} }
         };
         std::cerr << "Done.        " << std::endl;
 
