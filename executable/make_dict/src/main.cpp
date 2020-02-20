@@ -5,6 +5,7 @@
  */
 
 #include <algorithm>
+#include <any>
 #include <cassert>
 #include <exception>
 #include <fstream> // IWYU pragma: keep
