@@ -11,9 +11,12 @@
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <memory>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
+
+#include <boost/format.hpp>
 
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/trie.hpp>
@@ -93,6 +96,29 @@ int main(const int argc, char** const argv)
         }
 
         const auto p_trie = load_trie(argv[1]);
+
+        while (std::cin)
+        {
+            std::cerr << ">> " << std::flush;
+            std::string key{};
+            std::getline(std::cin, key);
+            if (key.empty())
+            {
+                continue;
+            }
+
+            const auto* const p_found = p_trie->find(key);
+            if (!p_found)
+            {
+                std::cout << "ERROR: Not found." << std::endl;
+                continue;
+            }
+
+            for (const auto& e: *p_found)
+            {
+                std::cout << boost::format{ "(%d, %d)" } % e.first % e.second << std::endl;
+            }
+        }
 
         return 0;
     }
