@@ -5,61 +5,61 @@
  */
 
 #include <any>
+#include <cstdint>
 #include <exception>
 #include <filesystem>
-#include <fstream>
+#include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <memory>
-#include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
-#include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/trie.hpp>
 
 
 namespace
 {
-    std::string_view size_t_bytes(const std::string_view& bytes, const std::size_t offset)
+    std::size_t deserialize_size_t(const std::string_view& bytes, std::size_t& byte_offset)
     {
-        auto byte_length = static_cast<std::size_t>(0);
-        for (auto i = static_cast<std::size_t>(0); i < sizeof(std::size_t) && offset + byte_length < bytes.length();
-             ++i)
+        auto value = static_cast<std::size_t>(0);
+        for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
         {
-            const auto byte = bytes[offset + byte_length];
-            if (byte == static_cast<char>(0xFD))
-            {
-                ++byte_length;
-            }
-            ++byte_length;
+            value <<= 8;
+            value |= static_cast<unsigned char>(bytes[byte_offset + i]);
         }
-        return bytes.substr(offset, byte_length);
+        byte_offset += sizeof(std::uint32_t);
+        return value;
+    }
+
+    std::pair<std::size_t, std::size_t>
+    deserialize_pair_of_size_t(const std::string_view& bytes, std::size_t& byte_offset)
+    {
+        const auto first = deserialize_size_t(bytes, byte_offset);
+        const auto second = deserialize_size_t(bytes, byte_offset);
+        return std::make_pair(first, second);
+    }
+
+    std::vector<std::pair<std::size_t, std::size_t>>
+    deserialize_vector_of_pair_of_size_t(const std::string_view& bytes, std::size_t& byte_offset)
+    {
+        std::vector<std::pair<std::size_t, std::size_t>> vps;
+
+        const auto size = deserialize_size_t(bytes, byte_offset);
+        vps.reserve(size);
+        for (auto i = static_cast<std::size_t>(0); i < size; ++i)
+        {
+            vps.push_back(deserialize_pair_of_size_t(bytes, byte_offset));
+        }
+
+        return vps;
     }
 
     std::any deserialize_value(const std::string_view& bytes)
     {
-        static const tetengo::trie::default_deserializer<std::size_t> size_t_deserializer{};
-
-        const auto                                       size_segment_bytes = size_t_bytes(bytes, 0);
-        const auto                                       size = size_t_deserializer(size_segment_bytes);
-        std::vector<std::pair<std::size_t, std::size_t>> value{};
-        value.reserve(size);
-
-        auto byte_offset = static_cast<std::size_t>(size_segment_bytes.length());
-        for (auto i = static_cast<std::size_t>(0); i < size; ++i)
-        {
-            const auto offset_segment_bytes = size_t_bytes(bytes, byte_offset);
-            const auto offset = size_t_deserializer(offset_segment_bytes);
-            byte_offset += offset_segment_bytes.length();
-
-            const auto length_segment_bytes = size_t_bytes(bytes, byte_offset);
-            const auto length = size_t_deserializer(length_segment_bytes);
-            byte_offset += offset_segment_bytes.length();
-
-            value.emplace_back(offset, length);
-        }
-
-        return value;
+        auto byte_offset = static_cast<std::size_t>(0);
+        return deserialize_vector_of_pair_of_size_t(bytes, byte_offset);
     }
 
     std::unique_ptr<tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>>
