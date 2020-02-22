@@ -20,20 +20,42 @@
 
 namespace
 {
+    std::string_view size_t_bytes(const std::string_view& bytes, const std::size_t offset)
+    {
+        auto byte_length = static_cast<std::size_t>(0);
+        for (auto i = static_cast<std::size_t>(0); i < sizeof(std::size_t) && offset + byte_length < bytes.length();
+             ++i)
+        {
+            const auto byte = bytes[offset + byte_length];
+            if (byte == static_cast<char>(0xFD))
+            {
+                ++byte_length;
+            }
+            ++byte_length;
+        }
+        return bytes.substr(offset, byte_length);
+    }
+
     std::any deserialize_value(const std::string_view& bytes)
     {
         static const tetengo::trie::default_deserializer<std::size_t> size_t_deserializer{};
 
-        const auto size = size_t_deserializer(bytes.substr(0, sizeof(std::size_t)));
+        const auto                                       size_segment_bytes = size_t_bytes(bytes, 0);
+        const auto                                       size = size_t_deserializer(size_segment_bytes);
         std::vector<std::pair<std::size_t, std::size_t>> value{};
         value.reserve(size);
 
+        auto byte_offset = static_cast<std::size_t>(size_segment_bytes.length());
         for (auto i = static_cast<std::size_t>(0); i < size; ++i)
         {
-            const auto byte_offset = sizeof(std::size_t) * (i * 2 + 1);
-            const auto offset = size_t_deserializer(bytes.substr(byte_offset, sizeof(std::size_t)));
-            const auto length =
-                size_t_deserializer(bytes.substr(byte_offset + sizeof(std::size_t), sizeof(std::size_t)));
+            const auto offset_segment_bytes = size_t_bytes(bytes, byte_offset);
+            const auto offset = size_t_deserializer(offset_segment_bytes);
+            byte_offset += offset_segment_bytes.length();
+
+            const auto length_segment_bytes = size_t_bytes(bytes, byte_offset);
+            const auto length = size_t_deserializer(length_segment_bytes);
+            byte_offset += offset_segment_bytes.length();
+
             value.emplace_back(offset, length);
         }
 
