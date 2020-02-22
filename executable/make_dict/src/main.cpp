@@ -182,7 +182,7 @@ int main(const int argc, char** const argv)
         std::cerr << "Done.        " << std::endl;
 
         std::cerr << "Serializing trie..." << std::endl;
-        std::ofstream output_stream{ argv[2] };
+        std::ofstream output_stream{ argv[2], std::ios_base::binary };
         if (!output_stream)
         {
             throw std::ios_base::failure{ "Can't open the output file." };
