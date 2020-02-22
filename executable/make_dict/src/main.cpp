@@ -7,11 +7,13 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
+#include <cstdint>
 #include <exception>
 #include <fstream> // IWYU pragma: keep
 #include <functional>
 #include <iostream>
 #include <iterator>
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -102,21 +104,50 @@ namespace
         std::size_t m_index;
     };
 
+    std::string serialize_size_t(const std::size_t s)
+    {
+        assert(s <= std::numeric_limits<std::uint32_t>::max());
+
+        std::string serialized(sizeof(std::uint32_t), '\0');
+
+        for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
+        {
+            serialized[i] = (s >> ((sizeof(std::uint32_t) - i - 1) * 8)) & 0xFF;
+        }
+
+        return serialized;
+    }
+
+    std::string serialize_pair_of_size_t(const std::pair<std::size_t, std::size_t>& ps)
+    {
+        std::string serialized{};
+        serialized.reserve(sizeof(std::uint32_t) * 2);
+
+        serialized += serialize_size_t(ps.first);
+        serialized += serialize_size_t(ps.second);
+
+        return serialized;
+    }
+
+    std::string serialize_vector_of_pair_of_size_t(const std::vector<std::pair<std::size_t, std::size_t>>& vps)
+    {
+        std::string serialized{};
+        serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * vps.size()));
+
+        serialized += serialize_size_t(vps.size());
+        for (const auto& ps: vps)
+        {
+            serialized += serialize_pair_of_size_t(ps);
+        }
+
+        return serialized;
+    }
+
     std::string serialize_value(const std::any& value)
     {
         const auto* const p_value = std::any_cast<std::vector<std::pair<std::size_t, std::size_t>>>(&value);
         assert(p_value);
-
-        static const tetengo::trie::default_serializer<std::size_t> size_t_serializer{};
-
-        auto serialized = size_t_serializer(p_value->size());
-        for (const auto& offset_length: *p_value)
-        {
-            serialized += size_t_serializer(offset_length.first);
-            serialized += size_t_serializer(offset_length.second);
-        }
-
-        return serialized;
+        return serialize_vector_of_pair_of_size_t(*p_value);
     }
 
 
