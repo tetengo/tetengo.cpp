@@ -180,7 +180,7 @@ int main(const int argc, char** const argv)
             std::getline(stream, line);
             if (line.empty())
             {
-                line_head = line.length() + 1;
+                line_head += line.length() + 1;
                 continue;
             }
             const auto elements = split(line, ',');
@@ -198,7 +198,7 @@ int main(const int argc, char** const argv)
                 std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \r" << std::flush;
             }
 
-            line_head = line.length() + 1;
+            line_head += line.length() + 1;
         }
         std::cerr << "Done.        " << std::endl;
 
