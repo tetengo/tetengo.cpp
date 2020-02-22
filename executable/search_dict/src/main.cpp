@@ -16,14 +16,32 @@
 #include <utility>
 #include <vector>
 
-#include <boost/format.hpp>
-
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/trie.hpp>
 
 
 namespace
 {
+    std::string load_lex_csv(const std::filesystem::path& lex_csv_path)
+    {
+        std::ifstream stream{ lex_csv_path };
+        if (!stream)
+        {
+            throw std::ios_base::failure{ "Can't open the lex.csv file." };
+        }
+
+        const auto lex_csv_size = std::filesystem::file_size(lex_csv_path);
+
+        std::vector<char> buffer(lex_csv_size, '\0');
+        stream.read(buffer.data(), lex_csv_size);
+        if (stream.gcount() != static_cast<std::streamsize>(lex_csv_size))
+        {
+            throw std::ios_base::failure{ "Can't read the whole of lex.csv file." };
+        }
+
+        return std::string{ buffer.begin(), buffer.end() };
+    }
+
     std::size_t deserialize_size_t(const std::string_view& bytes, std::size_t& byte_offset)
     {
         auto value = static_cast<std::size_t>(0);
@@ -81,6 +99,11 @@ namespace
         return p_trie;
     }
 
+    std::string_view substring_view(const std::string_view& sv, const std::size_t offset, const std::size_t length)
+    {
+        return sv.substr(offset, length);
+    }
+
 
 }
 
@@ -89,13 +112,14 @@ int main(const int argc, char** const argv)
 {
     try
     {
-        if (argc <= 1)
+        if (argc <= 2)
         {
-            std::cout << "Usage: search_dict trie.bin" << std::endl;
+            std::cout << "Usage: search_dict UniDic_lex.csv trie.bin" << std::endl;
             return 0;
         }
 
-        const auto p_trie = load_trie(argv[1]);
+        const std::string lex_csv = load_lex_csv(argv[1]);
+        const auto        p_trie = load_trie(argv[2]);
 
         while (std::cin)
         {
@@ -116,8 +140,9 @@ int main(const int argc, char** const argv)
 
             for (const auto& e: *p_found)
             {
-                std::cout << boost::format{ "(%d, %d)" } % e.first % e.second << std::endl;
+                std::cout << substring_view(lex_csv, e.first, e.second);
             }
+            std::cout << std::flush;
         }
 
         return 0;
