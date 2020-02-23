@@ -5,6 +5,7 @@ SUBDIRS = \
     src
 
 EXTRA_DIST = \
+    README.md \
     search_dict.vcxproj \
     search_dict.vcxproj.filters
 
