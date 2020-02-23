@@ -1,93 +1,248 @@
 /*! \file
-    \brief A double array building tool.
+    \brief A dictionary building tool.
 
     Copyright (C) 2019-2020 kaoru
  */
 
 #include <algorithm>
 #include <any>
+#include <cassert>
 #include <cstdint>
 #include <exception>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
-#include <functional>
 #include <iostream>
 #include <iterator>
+#include <limits>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
+#include <type_traits>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
 #include <boost/format.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
-#include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/trie.hpp>
 
 
 namespace
 {
-    std::unique_ptr<std::vector<std::pair<std::string, int>>> load_input(const std::filesystem::path& path)
+    std::vector<std::string_view> split(const std::string_view& string, const char delimiter)
     {
-        auto p_input = std::make_unique<std::vector<std::pair<std::string, int>>>();
+        std::vector<std::string_view> elements{};
 
-        std::ifstream input_stream{ path.c_str() };
-        for (auto i = 0; input_stream.good(); ++i)
+        auto first = static_cast<std::size_t>(0);
+        for (;;)
         {
-            std::string line;
-            std::getline(input_stream, line);
-
-            const auto  split_position = std::find(std::begin(line), std::end(line), '\t');
-            std::string key{ std::begin(line), split_position };
-            p_input->emplace_back(std::move(key), i);
+            if (first < string.length() && string[first] == '"')
+            {
+                const auto last = string.find_first_of('"', first + 1);
+                if (last == std::string_view::npos)
+                {
+                    elements.push_back(string.substr(first + 1));
+                    break;
+                }
+                elements.push_back(string.substr(first + 1, last - first - 1));
+                assert(string[last + 1] == delimiter);
+                first = last + 2;
+            }
+            else
+            {
+                const auto last = string.find_first_of(delimiter, first);
+                if (last == std::string_view::npos)
+                {
+                    elements.push_back(string.substr(first));
+                    break;
+                }
+                elements.push_back(string.substr(first, last - first));
+                first = last + 1;
+            }
         }
 
-        return p_input;
+        return elements;
     }
 
-    class adding_observer_type
+    void insert_word_offset_to_map(
+        const std::string_view&                                                            key,
+        const std::size_t                                                                  offset,
+        const std::size_t                                                                  length,
+        std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>& map)
+    {
+        auto i_value = map.find(std::string{ key });
+        if (i_value == map.end())
+        {
+            i_value = map.insert(std::make_pair(key, std::vector<std::pair<std::size_t, std::size_t>>{})).first;
+        }
+        assert(i_value != map.end());
+
+        if (std::find(i_value->second.begin(), i_value->second.end(), std::make_pair(offset, length)) !=
+            i_value->second.end())
+        {
+            return;
+        }
+        i_value->second.emplace_back(offset, length);
+    }
+
+    constexpr char to_c(const unsigned char uc)
+    {
+        return static_cast<char>(uc);
+    }
+
+    const std::string string_kigo{
+        to_c(0xE8), to_c(0xA8), to_c(0x98), to_c(0xE5), to_c(0x8F), to_c(0xB7)
+    }; // "kigo" in Kanji in UTF-8
+
+    const std::string string_hojo{
+        to_c(0xE8), to_c(0xA3), to_c(0x9C), to_c(0xE5), to_c(0x8A), to_c(0xA9)
+    }; // "hojo" in Kanji in UTF-8
+
+    std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>
+    load_lex_csv(const std::filesystem::path& lex_csv_path)
+    {
+        std::ifstream stream{ lex_csv_path };
+        if (!stream)
+        {
+            throw std::ios_base::failure{ "Can't open the input file." };
+        }
+
+        std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>> word_offset_map{};
+
+        std::cerr << "Loading UniDic lex.csv..." << std::endl;
+        auto line_head = static_cast<std::size_t>(0);
+        for (auto i = static_cast<std::size_t>(0); stream; ++i)
+        {
+            std::string line{};
+            std::getline(stream, line);
+            if (line.empty())
+            {
+                line_head += line.length() + 1;
+                continue;
+            }
+            const auto elements = split(line, ',');
+            if (elements.size() != 33)
+            {
+                std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \n" << std::flush;
+                throw std::runtime_error{ "Invalid UniDic lex.csv format." };
+            }
+
+            if (elements[16] == string_kigo && elements[23] == string_hojo)
+            {
+                insert_word_offset_to_map(elements[0], line_head, line.length() + 1, word_offset_map);
+            }
+            else
+            {
+                insert_word_offset_to_map(elements[12], line_head, line.length() + 1, word_offset_map);
+                insert_word_offset_to_map(elements[24], line_head, line.length() + 1, word_offset_map);
+            }
+
+            if (i % 10000 == 0)
+            {
+                std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \r" << std::flush;
+            }
+
+            line_head += line.length() + 1;
+        }
+        std::cerr << "Done.        " << std::endl;
+
+        return word_offset_map;
+    }
+
+    class trie_building_observer
     {
     public:
-        explicit adding_observer_type(const std::size_t size) : m_size{ size }, m_count{ 0 } {}
+        trie_building_observer() : m_index{ 0 } {}
 
-        void operator()(const std::pair<std::string_view, std::int32_t>& element)
+        void operator()(const std::string_view& key)
         {
-            if (m_count % 5000 == 0)
+            if (m_index % 10000 == 0)
             {
-                const auto percentage = (100 * m_count / m_size) * (100 * m_count / m_size) / 100;
-                std::cout << boost::format{ "%8d/%8d (%3d%%) %s    \r" } % m_count % m_size % percentage % element.first
-                          << std::flush;
+                std::cerr << boost::format{ "%8d: %s" } % m_index % key << "    \r" << std::flush;
             }
-            ++m_count;
+            ++m_index;
         }
 
     private:
-        const std::size_t m_size;
-        std::size_t       m_count;
+        std::size_t m_index;
     };
 
-    class done_observer_type
+    std::unique_ptr<tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>>
+    build_trie(const std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>& word_offset_map)
     {
-    public:
-        void operator()() const
+        std::cerr << "Building trie..." << std::endl;
+        auto p_trie =
+            std::make_unique<tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>>(
+                std::make_move_iterator(std::begin(word_offset_map)),
+                std::make_move_iterator(std::end(word_offset_map)),
+                tetengo::trie::default_serializer<std::string_view>{},
+                tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>::
+                    building_observer_set_type{ trie_building_observer{}, []() {} });
+        std::cerr << "Done.        " << std::endl;
+        return p_trie;
+    }
+
+    std::string serialize_size_t(const std::size_t s)
+    {
+        assert(s <= std::numeric_limits<std::uint32_t>::max());
+
+        std::string serialized(sizeof(std::uint32_t), '\0');
+
+        for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
         {
-            std::cout << "done.                " << std::endl;
+            serialized[i] = (s >> ((sizeof(std::uint32_t) - i - 1) * 8)) & 0xFF;
         }
-    };
 
-    void save_double_array(const tetengo::trie::double_array& double_array_, const std::filesystem::path& path)
+        return serialized;
+    }
+
+    std::string serialize_pair_of_size_t(const std::pair<std::size_t, std::size_t>& ps)
     {
-        std::ofstream output_stream{ path.c_str(), std::ios_base::binary };
-        if (!output_stream.is_open())
+        std::string serialized{};
+        serialized.reserve(sizeof(std::uint32_t) * 2);
+
+        serialized += serialize_size_t(ps.first);
+        serialized += serialize_size_t(ps.second);
+
+        return serialized;
+    }
+
+    std::string serialize_vector_of_pair_of_size_t(const std::vector<std::pair<std::size_t, std::size_t>>& vps)
+    {
+        std::string serialized{};
+        serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * vps.size()));
+
+        serialized += serialize_size_t(vps.size());
+        for (const auto& ps: vps)
+        {
+            serialized += serialize_pair_of_size_t(ps);
+        }
+
+        return serialized;
+    }
+
+    std::string serialize_value(const std::any& value)
+    {
+        const auto* const p_value = std::any_cast<std::vector<std::pair<std::size_t, std::size_t>>>(&value);
+        assert(p_value);
+        return serialize_vector_of_pair_of_size_t(*p_value);
+    }
+
+    void serialize_trie(
+        const tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>& trie_,
+        const std::filesystem::path&                                                                   trie_bin_path)
+    {
+        std::cerr << "Serializing trie..." << std::endl;
+        std::ofstream output_stream{ trie_bin_path, std::ios_base::binary };
+        if (!output_stream)
         {
             throw std::ios_base::failure{ "Can't open the output file." };
         }
-
-        double_array_.get_storage().serialize(output_stream, [](const std::any& object) {
-            static const tetengo::trie::default_serializer<int> int_serializer{};
-            return int_serializer(std::any_cast<int>(object));
-        });
+        trie_.get_storage().serialize(output_stream, serialize_value);
+        std::cerr << "Done.        " << std::endl;
     }
 
 
@@ -100,24 +255,13 @@ int main(const int argc, char** const argv)
     {
         if (argc <= 2)
         {
-            std::cout << "Usage: make_dict input.txt output.bin" << std::endl;
+            std::cout << "Usage: make_dict UniDic_lex.csv trie.bin" << std::endl;
             return 0;
         }
 
-        std::cerr << "Loading input file..." << std::flush;
-        const auto p_input = load_input(argv[1]);
-        std::cerr << "done." << std::endl;
-
-        std::cout << "Building double array..." << std::endl;
-        const tetengo::trie::double_array double_array_{
-            p_input->begin(), p_input->end(), { adding_observer_type{ p_input->size() }, done_observer_type{} }
-        };
-        std::cerr << boost::format{ "Filling rate: %3.1f%%" } % (double_array_.get_storage().filling_rate() * 100.0)
-                  << std::endl;
-
-        std::cerr << "Writing double array to file..." << std::flush;
-        save_double_array(double_array_, argv[2]);
-        std::cerr << "done." << std::endl;
+        const auto word_offset_map = load_lex_csv(argv[1]);
+        const auto p_trie = build_trie(word_offset_map);
+        serialize_trie(*p_trie, argv[2]);
 
         return 0;
     }
