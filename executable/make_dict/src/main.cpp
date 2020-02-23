@@ -88,6 +88,19 @@ namespace
         i_value->second.emplace_back(offset, length);
     }
 
+    constexpr char to_c(const unsigned char uc)
+    {
+        return static_cast<char>(uc);
+    }
+
+    const std::string string_kigo{
+        to_c(0xE8), to_c(0xA8), to_c(0x98), to_c(0xE5), to_c(0x8F), to_c(0xB7)
+    }; // "kigo" in Kanji in UTF-8
+
+    const std::string string_hojo{
+        to_c(0xE8), to_c(0xA3), to_c(0x9C), to_c(0xE5), to_c(0x8A), to_c(0xA9)
+    }; // "hojo" in Kanji in UTF-8
+
     std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>
     load_lex_csv(const std::filesystem::path& lex_csv_path)
     {
@@ -117,8 +130,15 @@ namespace
                 throw std::runtime_error{ "Invalid UniDic lex.csv format." };
             }
 
-            insert_word_offset_to_map(elements[12], line_head, line.length() + 1, word_offset_map);
-            insert_word_offset_to_map(elements[24], line_head, line.length() + 1, word_offset_map);
+            if (elements[16] == string_kigo && elements[23] == string_hojo)
+            {
+                insert_word_offset_to_map(elements[0], line_head, line.length() + 1, word_offset_map);
+            }
+            else
+            {
+                insert_word_offset_to_map(elements[12], line_head, line.length() + 1, word_offset_map);
+                insert_word_offset_to_map(elements[24], line_head, line.length() + 1, word_offset_map);
+            }
 
             if (i % 10000 == 0)
             {
