@@ -272,7 +272,8 @@ namespace tetengo::trie
             \param key_serializer A key serializer.
         */
         explicit trie(const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
-        m_impl{}, m_key_serializer{ key_serializer }
+        m_impl{},
+            m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -291,7 +292,7 @@ namespace tetengo::trie
         m_impl{ serialize_key<true>(std::begin(elements), std::end(elements), key_serializer),
                 building_observer_set,
                 double_array_density_factor },
-        m_key_serializer{ key_serializer }
+            m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -313,7 +314,7 @@ namespace tetengo::trie
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key<false>(first, last, key_serializer), building_observer_set, double_array_density_factor },
-        m_key_serializer{ key_serializer }
+            m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -335,7 +336,7 @@ namespace tetengo::trie
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key<true>(first, last, key_serializer), building_observer_set, double_array_density_factor },
-        m_key_serializer{ key_serializer }
+            m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -347,7 +348,8 @@ namespace tetengo::trie
         explicit trie(
             std::unique_ptr<storage>&& p_storage,
             const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
-        m_impl{ std::move(p_storage) }, m_key_serializer{ key_serializer }
+        m_impl{ std::move(p_storage) },
+            m_key_serializer{ key_serializer }
         {}
 
 
@@ -544,7 +546,8 @@ namespace tetengo::trie
         // constructors
 
         explicit trie(std::unique_ptr<trie_impl>&& p_impl, const key_serializer_type& ker_serializer) :
-        m_impl{ std::move(*p_impl) }, m_key_serializer{ ker_serializer }
+        m_impl{ std::move(*p_impl) },
+            m_key_serializer{ ker_serializer }
         {}
     };
 

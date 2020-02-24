@@ -64,7 +64,7 @@ namespace
 
         virtual void serialize_impl(
             std::ostream& /*output_stream*/,
-            const std::function<std::string(const std::any&)>& /*value_serializer*/) const override
+            const std::function<std::vector<char>(const std::any&)>& /*value_serializer*/) const override
         {}
 
         std::unique_ptr<storage> clone_impl() const override
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(serialize)
     const concrete_storage storage_{};
 
     std::ostringstream output_stream{};
-    storage_.serialize(output_stream, [](const std::any&) { return std::string{}; });
+    storage_.serialize(output_stream, [](const std::any&) { return std::vector<char>{}; });
 }
 
 BOOST_AUTO_TEST_CASE(clone)

@@ -43,7 +43,7 @@ namespace
         return std::string{ std::begin(buffer), std::end(buffer) };
     }
 
-    std::size_t deserialize_size_t(const std::string_view& bytes, std::size_t& byte_offset)
+    std::size_t deserialize_size_t(const std::vector<char>& bytes, std::size_t& byte_offset)
     {
         auto value = static_cast<std::size_t>(0);
         for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
@@ -56,7 +56,7 @@ namespace
     }
 
     std::pair<std::size_t, std::size_t>
-    deserialize_pair_of_size_t(const std::string_view& bytes, std::size_t& byte_offset)
+    deserialize_pair_of_size_t(const std::vector<char>& bytes, std::size_t& byte_offset)
     {
         const auto first = deserialize_size_t(bytes, byte_offset);
         const auto second = deserialize_size_t(bytes, byte_offset);
@@ -64,7 +64,7 @@ namespace
     }
 
     std::vector<std::pair<std::size_t, std::size_t>>
-    deserialize_vector_of_pair_of_size_t(const std::string_view& bytes, std::size_t& byte_offset)
+    deserialize_vector_of_pair_of_size_t(const std::vector<char>& bytes, std::size_t& byte_offset)
     {
         std::vector<std::pair<std::size_t, std::size_t>> vps;
 
@@ -78,7 +78,7 @@ namespace
         return vps;
     }
 
-    std::any deserialize_value(const std::string_view& bytes)
+    std::any deserialize_value(const std::vector<char>& bytes)
     {
         auto byte_offset = static_cast<std::size_t>(0);
         return deserialize_vector_of_pair_of_size_t(bytes, byte_offset);

@@ -9,8 +9,6 @@
 #include <functional>
 #include <istream>
 #include <memory>
-#include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -31,8 +29,8 @@ namespace tetengo::trie
         impl() : m_p_entity{ std::make_shared<memory_storage>() } {};
 
         explicit impl(
-            std::istream&                                           input_stream,
-            const std::function<std::any(const std::string_view&)>& value_deserializer) :
+            std::istream&                                            input_stream,
+            const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
         m_p_entity{ std::make_shared<memory_storage>(input_stream, value_deserializer) } {};
 
 
@@ -84,8 +82,8 @@ namespace tetengo::trie
         }
 
         void serialize_impl(
-            std::ostream&                                      output_stream,
-            const std::function<std::string(const std::any&)>& value_serializer) const
+            std::ostream&                                            output_stream,
+            const std::function<std::vector<char>(const std::any&)>& value_serializer) const
         {
             m_p_entity->serialize(output_stream, value_serializer);
         }
@@ -108,8 +106,8 @@ namespace tetengo::trie
     shared_storage::shared_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
     shared_storage::shared_storage(
-        std::istream&                                           input_stream,
-        const std::function<std::any(const std::string_view&)>& value_deserializer) :
+        std::istream&                                            input_stream,
+        const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
     m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer) }
     {}
 
@@ -161,8 +159,8 @@ namespace tetengo::trie
     }
 
     void shared_storage::serialize_impl(
-        std::ostream&                                      output_stream,
-        const std::function<std::string(const std::any&)>& value_serializer) const
+        std::ostream&                                            output_stream,
+        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
     {
         m_p_impl->serialize_impl(output_stream, value_serializer);
     }

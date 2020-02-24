@@ -12,7 +12,6 @@
 #include <functional>
 #include <istream>
 #include <memory>
-#include <string>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -119,8 +118,9 @@ namespace tetengo::trie
             \param output_stream    An output stream.
             \param value_serializer A serializer for value objects.
         */
-        void serialize(std::ostream& output_stream, const std::function<std::string(const std::any&)>& value_serializer)
-            const;
+        void serialize(
+            std::ostream&                                            output_stream,
+            const std::function<std::vector<char>(const std::any&)>& value_serializer) const;
 
         /*!
             \brief Clones this storage.
@@ -152,8 +152,8 @@ namespace tetengo::trie
         virtual void add_value_at_impl(std::size_t value_index, std::any value) = 0;
 
         virtual void serialize_impl(
-            std::ostream&                                      output_stream,
-            const std::function<std::string(const std::any&)>& value_serializer) const = 0;
+            std::ostream&                                            output_stream,
+            const std::function<std::vector<char>(const std::any&)>& value_serializer) const = 0;
 
         virtual std::unique_ptr<storage> clone_impl() const = 0;
     };
