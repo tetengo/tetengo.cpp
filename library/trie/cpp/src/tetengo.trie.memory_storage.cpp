@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
-#include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <istream>
@@ -15,6 +14,7 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -38,7 +38,8 @@ namespace tetengo::trie
         explicit impl(
             std::istream&                                            input_stream,
             const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
-        m_base_check_array{}, m_value_array{}
+        m_base_check_array{},
+            m_value_array{}
         {
             deserialize(input_stream, value_deserializer, m_base_check_array, m_value_array);
         };
