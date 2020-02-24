@@ -169,13 +169,13 @@ BOOST_AUTO_TEST_CASE(size)
     BOOST_TEST(storage_.size() == 0U);
 
     storage_.add_value_at(24, std::make_any<std::string>("hoge"));
-    BOOST_TEST(storage_.size() == 1U);
+    BOOST_TEST(storage_.size() == 25U);
 
     storage_.add_value_at(42, std::make_any<std::string>("fuga"));
-    BOOST_TEST(storage_.size() == 2U);
+    BOOST_TEST(storage_.size() == 43U);
 
     storage_.add_value_at(0, std::make_any<std::string>("piyo"));
-    BOOST_TEST(storage_.size() == 3U);
+    BOOST_TEST(storage_.size() == 43U);
 }
 
 BOOST_AUTO_TEST_CASE(filling_rate)
@@ -256,7 +256,6 @@ BOOST_AUTO_TEST_CASE(serialize)
 {
     BOOST_TEST_PASSPOINT();
 
-#if 0
     tetengo::trie::shared_storage storage_{};
 
     storage_.set_base_at(0, 42);
@@ -278,22 +277,19 @@ BOOST_AUTO_TEST_CASE(serialize)
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x2A), to_c(0xFF), /*                                                            */
         nul_byte(), nul_byte(), to_c(0xFD), to_c(0xFE), to_c(0x18), /*                                                */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x03), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x01), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x03), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x05), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
         to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
     };
     const std::string serialized = output_stream.str();
     BOOST_CHECK_EQUAL_COLLECTIONS(
         std::begin(serialized), std::end(serialized), std::begin(expected), std::end(expected));
-#endif
 }
 
 BOOST_AUTO_TEST_CASE(clone)
