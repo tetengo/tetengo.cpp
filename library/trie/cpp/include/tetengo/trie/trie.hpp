@@ -272,8 +272,7 @@ namespace tetengo::trie
             \param key_serializer A key serializer.
         */
         explicit trie(const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
-        m_impl{},
-            m_key_serializer{ key_serializer }
+        m_impl{}, m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -292,7 +291,7 @@ namespace tetengo::trie
         m_impl{ serialize_key<true>(std::begin(elements), std::end(elements), key_serializer),
                 building_observer_set,
                 double_array_density_factor },
-            m_key_serializer{ key_serializer }
+        m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -314,7 +313,7 @@ namespace tetengo::trie
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key<false>(first, last, key_serializer), building_observer_set, double_array_density_factor },
-            m_key_serializer{ key_serializer }
+        m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -336,7 +335,7 @@ namespace tetengo::trie
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key<true>(first, last, key_serializer), building_observer_set, double_array_density_factor },
-            m_key_serializer{ key_serializer }
+        m_key_serializer{ key_serializer }
         {}
 
         /*!
@@ -348,8 +347,7 @@ namespace tetengo::trie
         explicit trie(
             std::unique_ptr<storage>&& p_storage,
             const key_serializer_type& key_serializer = default_serializer<key_type>{}) :
-        m_impl{ std::move(p_storage) },
-            m_key_serializer{ key_serializer }
+        m_impl{ std::move(p_storage) }, m_key_serializer{ key_serializer }
         {}
 
 
@@ -386,7 +384,15 @@ namespace tetengo::trie
         */
         bool contains(const key_type& key) const
         {
-            return m_impl.contains(m_key_serializer(key));
+            if constexpr (std::is_same_v<key_type, std::string_view> || std::is_same_v<key_type, std::string>)
+            {
+                return m_impl.contains(m_key_serializer(key));
+            }
+            else
+            {
+                const auto serialized_key = m_key_serializer(key);
+                return m_impl.contains(std::string_view{ serialized_key.data(), serialized_key.size() });
+            }
         }
 
         /*!
@@ -398,7 +404,17 @@ namespace tetengo::trie
         */
         const value_type* find(const key_type& key) const
         {
-            const auto* const p_found = m_impl.find(m_key_serializer(key));
+            const auto* const p_found = [this, &key]() {
+                if constexpr (std::is_same_v<key_type, std::string_view> || std::is_same_v<key_type, std::string>)
+                {
+                    return m_impl.find(m_key_serializer(key));
+                }
+                else
+                {
+                    const auto serialized_key = m_key_serializer(key);
+                    return m_impl.find(std::string_view{ serialized_key.data(), serialized_key.size() });
+                }
+            }();
             if (!p_found)
             {
                 return nullptr;
@@ -413,7 +429,7 @@ namespace tetengo::trie
         */
         iterator begin() const
         {
-            return iterator{ std::move(m_impl.begin()) };
+            return iterator{ std::move(std::begin(m_impl)) };
         }
 
         /*!
@@ -423,7 +439,7 @@ namespace tetengo::trie
         */
         iterator end() const
         {
-            return iterator{ std::move(m_impl.end()) };
+            return iterator{ std::move(std::end(m_impl)) };
         }
 
         /*!
@@ -436,7 +452,18 @@ namespace tetengo::trie
         */
         std::unique_ptr<trie> subtrie(const key_type& key_prefix) const
         {
-            auto p_trie_impl = m_impl.subtrie(m_key_serializer(key_prefix));
+            auto p_trie_impl = [this, &key_prefix]() {
+                if constexpr (std::is_same_v<key_type, std::string_view> || std::is_same_v<key_type, std::string>)
+                {
+                    return m_impl.subtrie(m_key_serializer(key_prefix));
+                }
+                else
+                {
+                    const auto serialized_key_prefix = m_key_serializer(key_prefix);
+                    return m_impl.subtrie(
+                        std::string_view{ serialized_key_prefix.data(), serialized_key_prefix.size() });
+                }
+            }();
             if (!p_trie_impl)
             {
                 return std::unique_ptr<trie>{};
@@ -478,13 +505,29 @@ namespace tetengo::trie
                 serialized.reserve(std::distance(first, last));
             }
             std::transform(first, last, std::back_inserter(serialized), [&key_serializer](auto&& value) {
-                if constexpr (MoveValue)
+                if constexpr (std::is_same_v<key_type, std::string_view> || std::is_same_v<key_type, std::string>)
                 {
-                    return serialized_element_type{ key_serializer(value.first), std::move(value.second) };
+                    if constexpr (MoveValue)
+                    {
+                        return serialized_element_type{ key_serializer(value.first), std::move(value.second) };
+                    }
+                    else
+                    {
+                        return serialized_element_type{ key_serializer(value.first), value.second };
+                    }
                 }
                 else
                 {
-                    return serialized_element_type{ key_serializer(value.first), value.second };
+                    const auto  serialized_key_vector = key_serializer(value.first);
+                    std::string serialized_key{ std::begin(serialized_key_vector), std::end(serialized_key_vector) };
+                    if constexpr (MoveValue)
+                    {
+                        return serialized_element_type{ std::move(serialized_key), std::move(value.second) };
+                    }
+                    else
+                    {
+                        return serialized_element_type{ std::move(serialized_key), value.second };
+                    }
                 }
             });
             return serialized;
@@ -501,8 +544,7 @@ namespace tetengo::trie
         // constructors
 
         explicit trie(std::unique_ptr<trie_impl>&& p_impl, const key_serializer_type& ker_serializer) :
-        m_impl{ std::move(*p_impl) },
-            m_key_serializer{ ker_serializer }
+        m_impl{ std::move(*p_impl) }, m_key_serializer{ ker_serializer }
         {}
     };
 

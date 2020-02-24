@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -39,7 +40,7 @@ namespace
             throw std::ios_base::failure{ "Can't read the whole of lex.csv file." };
         }
 
-        return std::string{ buffer.begin(), buffer.end() };
+        return std::string{ std::begin(buffer), std::end(buffer) };
     }
 
     std::size_t deserialize_size_t(const std::string_view& bytes, std::size_t& byte_offset)

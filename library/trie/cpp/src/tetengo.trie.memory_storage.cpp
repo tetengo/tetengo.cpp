@@ -200,7 +200,7 @@ namespace tetengo::trie
             static const default_serializer<std::uint32_t> uint32_serializer{};
 
             const auto serialized = uint32_serializer(value);
-            output_stream.write(serialized.data(), serialized.length());
+            output_stream.write(serialized.data(), serialized.size());
         }
 
         static void deserialize(
@@ -265,7 +265,7 @@ namespace tetengo::trie
         {
             static const default_deserializer<std::uint32_t> uint32_deserializer{};
 
-            std::string to_deserialize{};
+            std::vector<char> to_deserialize{};
             to_deserialize.reserve(sizeof(std::uint32_t));
             for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
             {

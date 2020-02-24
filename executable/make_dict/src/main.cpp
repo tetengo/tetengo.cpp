@@ -74,14 +74,14 @@ namespace
         std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>& map)
     {
         auto i_value = map.find(std::string{ key });
-        if (i_value == map.end())
+        if (i_value == std::end(map))
         {
             i_value = map.insert(std::make_pair(key, std::vector<std::pair<std::size_t, std::size_t>>{})).first;
         }
-        assert(i_value != map.end());
+        assert(i_value != std::end(map));
 
-        if (std::find(i_value->second.begin(), i_value->second.end(), std::make_pair(offset, length)) !=
-            i_value->second.end())
+        if (std::find(std::begin(i_value->second), std::end(i_value->second), std::make_pair(offset, length)) !=
+            std::end(i_value->second))
         {
             return;
         }
