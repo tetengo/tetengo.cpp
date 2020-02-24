@@ -39,39 +39,33 @@ namespace
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x2A), to_c(0xFF), /*                                                            */
         nul_byte(), nul_byte(), to_c(0xFD), to_c(0xFE), to_c(0x18), /*                                                */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x03), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x01), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x03), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x05), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
         to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
     };
 
     const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
 
-#if 0
     std::unique_ptr<std::istream> create_input_stream()
     {
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
-#endif
 
     const std::vector<char> serialized_broken{
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), to_c(0x89),
     };
 
-#if 0
     std::unique_ptr<std::istream> create_broken_input_stream()
     {
         return std::make_unique<std::stringstream>(
             std::string{ std::begin(serialized_broken), std::end(serialized_broken) });
     }
-#endif
 
 
 }
@@ -89,7 +83,6 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::shared_storage storage_{};
     }
-#if 0
     {
         const auto                          p_input_stream = create_input_stream();
         const tetengo::trie::shared_storage storage_{
@@ -118,7 +111,6 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_CHECK_THROW(
             const tetengo::trie::shared_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
     }
-#endif
 }
 
 BOOST_AUTO_TEST_CASE(base_at)
