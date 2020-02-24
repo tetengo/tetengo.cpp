@@ -9,7 +9,6 @@
 #include <functional>
 #include <istream>
 #include <memory>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -64,8 +63,8 @@ namespace tetengo::trie
     }
 
     void storage::serialize(
-        std::ostream&                                      output_stream,
-        const std::function<std::string(const std::any&)>& value_serializer) const
+        std::ostream&                                            output_stream,
+        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
     {
         serialize_impl(output_stream, value_serializer);
     }

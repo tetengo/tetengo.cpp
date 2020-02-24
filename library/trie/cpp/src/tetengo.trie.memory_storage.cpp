@@ -14,8 +14,6 @@
 #include <iterator>
 #include <limits>
 #include <memory>
-#include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -40,8 +38,8 @@ namespace tetengo::trie
             m_value_array{} {};
 
         explicit impl(
-            std::istream&                                           input_stream,
-            const std::function<std::any(const std::string_view&)>& value_deserializer) :
+            std::istream&                                            input_stream,
+            const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
         m_base_check_array{},
             m_value_index_mappings{},
             m_value_array{}
@@ -117,8 +115,8 @@ namespace tetengo::trie
         }
 
         void serialize_impl(
-            std::ostream&                                      output_stream,
-            const std::function<std::string(const std::any&)>& value_serializer) const
+            std::ostream&                                            output_stream,
+            const std::function<std::vector<char>(const std::any&)>& value_serializer) const
         {
             serialize_base_check_array(output_stream, m_base_check_array);
             serialize_value_index_mappings(output_stream, m_value_index_mappings);
@@ -180,18 +178,18 @@ namespace tetengo::trie
         }
 
         static void serialize_value_array(
-            std::ostream&                                      output_stream,
-            const std::function<std::string(const std::any&)>& value_serializer,
-            const std::vector<std::any>&                       value_array)
+            std::ostream&                                            output_stream,
+            const std::function<std::vector<char>(const std::any&)>& value_serializer,
+            const std::vector<std::any>&                             value_array)
         {
             assert(value_array.size() < std::numeric_limits<std::uint32_t>::max());
             write_uint32(output_stream, static_cast<std::uint32_t>(value_array.size()));
             for (const auto& v: value_array)
             {
                 const auto serialized = value_serializer(v);
-                assert(serialized.length() < std::numeric_limits<std::uint32_t>::max());
-                write_uint32(output_stream, static_cast<std::uint32_t>(serialized.length()));
-                output_stream.write(serialized.data(), serialized.length());
+                assert(serialized.size() < std::numeric_limits<std::uint32_t>::max());
+                write_uint32(output_stream, static_cast<std::uint32_t>(serialized.size()));
+                output_stream.write(serialized.data(), serialized.size());
             }
         }
 
@@ -200,15 +198,15 @@ namespace tetengo::trie
             static const default_serializer<std::uint32_t> uint32_serializer{};
 
             const auto serialized = uint32_serializer(value);
-            output_stream.write(serialized.data(), serialized.length());
+            output_stream.write(serialized.data(), serialized.size());
         }
 
         static void deserialize(
-            std::istream&                                           input_stream,
-            const std::function<std::any(const std::string_view&)>& value_deserializer,
-            std::vector<std::uint32_t>&                             base_check_array,
-            std::vector<std::size_t>&                               value_index_mappings,
-            std::vector<std::any>&                                  value_array)
+            std::istream&                                            input_stream,
+            const std::function<std::any(const std::vector<char>&)>& value_deserializer,
+            std::vector<std::uint32_t>&                              base_check_array,
+            std::vector<std::size_t>&                                value_index_mappings,
+            std::vector<std::any>&                                   value_array)
         {
             deserialize_base_check_array(input_stream, base_check_array);
             deserialize_value_index_mappings(input_stream, value_index_mappings);
@@ -242,16 +240,16 @@ namespace tetengo::trie
         }
 
         static void deserialize_value_array(
-            std::istream&                                           input_stream,
-            const std::function<std::any(const std::string_view&)>& value_deserializer,
-            std::vector<std::any>&                                  value_array)
+            std::istream&                                            input_stream,
+            const std::function<std::any(const std::vector<char>&)>& value_deserializer,
+            std::vector<std::any>&                                   value_array)
         {
             const auto size = read_uint32(input_stream);
             value_array.reserve(size);
             for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
             {
-                const auto  element_size = read_uint32(input_stream);
-                std::string to_deserialize(element_size, 0);
+                const auto        element_size = read_uint32(input_stream);
+                std::vector<char> to_deserialize(element_size, 0);
                 input_stream.read(to_deserialize.data(), element_size);
                 if (input_stream.gcount() < static_cast<std::streamsize>(element_size))
                 {
@@ -265,7 +263,7 @@ namespace tetengo::trie
         {
             static const default_deserializer<std::uint32_t> uint32_deserializer{};
 
-            std::string to_deserialize{};
+            std::vector<char> to_deserialize{};
             to_deserialize.reserve(sizeof(std::uint32_t));
             for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
             {
@@ -316,8 +314,8 @@ namespace tetengo::trie
     memory_storage::memory_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
     memory_storage::memory_storage(
-        std::istream&                                           input_stream,
-        const std::function<std::any(const std::string_view&)>& value_deserializer) :
+        std::istream&                                            input_stream,
+        const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
     m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer) }
     {}
 
@@ -369,8 +367,8 @@ namespace tetengo::trie
     }
 
     void memory_storage::serialize_impl(
-        std::ostream&                                      output_stream,
-        const std::function<std::string(const std::any&)>& value_serializer) const
+        std::ostream&                                            output_stream,
+        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
     {
         m_p_impl->serialize_impl(output_stream, value_serializer);
     }

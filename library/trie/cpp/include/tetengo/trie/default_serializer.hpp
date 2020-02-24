@@ -10,6 +10,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <vector>
 
 
 namespace tetengo::trie
@@ -59,7 +60,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        std::string operator()(const std::basic_string_view<Char>& object) const;
+        std::vector<char> operator()(const std::basic_string_view<Char>& object) const;
     };
 
     template <typename Char>
@@ -68,7 +69,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        std::string operator()(const std::basic_string<Char>& object) const;
+        std::vector<char> operator()(const std::basic_string<Char>& object) const;
     };
 
     template <typename Integer>
@@ -77,7 +78,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        std::string operator()(Integer object) const;
+        std::vector<char> operator()(Integer object) const;
     };
 
 #endif
@@ -119,7 +120,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        std::basic_string<Char> operator()(const std::string_view& bytes) const;
+        std::basic_string<Char> operator()(const std::vector<char>& bytes) const;
     };
 
     template <typename Integer>
@@ -128,7 +129,7 @@ namespace tetengo::trie
     public:
         // functions
 
-        Integer operator()(const std::string_view& bytes) const;
+        Integer operator()(const std::vector<char>& bytes) const;
     };
 
 #endif

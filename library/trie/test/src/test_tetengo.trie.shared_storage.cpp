@@ -11,7 +11,6 @@
 #include <memory>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <boost/cstdint.hpp>
@@ -90,9 +89,9 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto                          p_input_stream = create_input_stream();
         const tetengo::trie::shared_storage storage_{
             *p_input_stream,
-            [](const std::string_view& serialized) {
+            [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
-                return string_deserializer(std::string{ serialized });
+                return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
             }
         };
 
@@ -107,9 +106,9 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const auto p_input_stream = create_broken_input_stream();
 
-        const auto deserializer = [](const std::string_view& serialized) {
+        const auto deserializer = [](const std::vector<char>& serialized) {
             static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
-            return string_deserializer(std::string{ serialized });
+            return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
         };
         BOOST_CHECK_THROW(
             const tetengo::trie::shared_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
@@ -264,7 +263,8 @@ BOOST_AUTO_TEST_CASE(serialize)
     std::ostringstream output_stream{};
     storage_.serialize(output_stream, [](const std::any& object) {
         static const tetengo::trie::default_serializer<std::string> string_serializer{};
-        return string_serializer(std::any_cast<std::string>(object));
+        const auto serialized = string_serializer(std::any_cast<std::string>(object));
+        return std::vector<char>{ std::begin(serialized), std::end(serialized) };
     });
 
     static const std::string expected{

@@ -12,8 +12,6 @@
 #include <functional>
 #include <istream>
 #include <memory>
-#include <string>
-#include <string_view>
 #include <vector>
 
 #include <tetengo/trie/storage.hpp>
@@ -41,8 +39,8 @@ namespace tetengo::trie
             \param value_deserializer A deserializer for value objects.
         */
         explicit shared_storage(
-            std::istream&                                           input_stream,
-            const std::function<std::any(const std::string_view&)>& value_deserializer);
+            std::istream&                                            input_stream,
+            const std::function<std::any(const std::vector<char>&)>& value_deserializer);
 
         /*!
             \brief Destroys the shared storage.
@@ -82,8 +80,8 @@ namespace tetengo::trie
         virtual void add_value_at_impl(std::size_t value_index, std::any value) override;
 
         virtual void serialize_impl(
-            std::ostream&                                      output_stream,
-            const std::function<std::string(const std::any&)>& value_serializer) const override;
+            std::ostream&                                            output_stream,
+            const std::function<std::vector<char>(const std::any&)>& value_serializer) const override;
 
         virtual std::unique_ptr<storage> clone_impl() const override;
     };

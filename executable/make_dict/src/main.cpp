@@ -74,14 +74,14 @@ namespace
         std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>& map)
     {
         auto i_value = map.find(std::string{ key });
-        if (i_value == map.end())
+        if (i_value == std::end(map))
         {
             i_value = map.insert(std::make_pair(key, std::vector<std::pair<std::size_t, std::size_t>>{})).first;
         }
-        assert(i_value != map.end());
+        assert(i_value != std::end(map));
 
-        if (std::find(i_value->second.begin(), i_value->second.end(), std::make_pair(offset, length)) !=
-            i_value->second.end())
+        if (std::find(std::begin(i_value->second), std::end(i_value->second), std::make_pair(offset, length)) !=
+            std::end(i_value->second))
         {
             return;
         }
@@ -185,11 +185,11 @@ namespace
         return p_trie;
     }
 
-    std::string serialize_size_t(const std::size_t s)
+    std::vector<char> serialize_size_t(const std::size_t s)
     {
         assert(s <= std::numeric_limits<std::uint32_t>::max());
 
-        std::string serialized(sizeof(std::uint32_t), '\0');
+        std::vector<char> serialized(sizeof(std::uint32_t), '\0');
 
         for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
         {
@@ -199,32 +199,36 @@ namespace
         return serialized;
     }
 
-    std::string serialize_pair_of_size_t(const std::pair<std::size_t, std::size_t>& ps)
+    std::vector<char> serialize_pair_of_size_t(const std::pair<std::size_t, std::size_t>& ps)
     {
-        std::string serialized{};
+        std::vector<char> serialized{};
         serialized.reserve(sizeof(std::uint32_t) * 2);
 
-        serialized += serialize_size_t(ps.first);
-        serialized += serialize_size_t(ps.second);
+        const auto serialized_offset = serialize_size_t(ps.first);
+        serialized.insert(std::end(serialized), std::begin(serialized_offset), std::end(serialized_offset));
+        const auto serialized_length = serialize_size_t(ps.second);
+        serialized.insert(std::end(serialized), std::begin(serialized_length), std::end(serialized_length));
 
         return serialized;
     }
 
-    std::string serialize_vector_of_pair_of_size_t(const std::vector<std::pair<std::size_t, std::size_t>>& vps)
+    std::vector<char> serialize_vector_of_pair_of_size_t(const std::vector<std::pair<std::size_t, std::size_t>>& vps)
     {
-        std::string serialized{};
+        std::vector<char> serialized{};
         serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * vps.size()));
 
-        serialized += serialize_size_t(vps.size());
+        const auto serialized_size = serialize_size_t(vps.size());
+        serialized.insert(std::end(serialized), std::begin(serialized_size), std::end(serialized_size));
         for (const auto& ps: vps)
         {
-            serialized += serialize_pair_of_size_t(ps);
+            const auto serialized_element = serialize_pair_of_size_t(ps);
+            serialized.insert(std::end(serialized), std::begin(serialized_element), std::end(serialized_element));
         }
 
         return serialized;
     }
 
-    std::string serialize_value(const std::any& value)
+    std::vector<char> serialize_value(const std::any& value)
     {
         const auto* const p_value = std::any_cast<std::vector<std::pair<std::size_t, std::size_t>>>(&value);
         assert(p_value);
