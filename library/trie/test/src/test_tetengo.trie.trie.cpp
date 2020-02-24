@@ -76,9 +76,6 @@ namespace
         to_c(0xFF), to_c(0xFF), to_c(0xFC), to_c(0x54), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x0A), to_c(0x0D), /*                                                            */
         nul_byte(), nul_byte(), to_c(0x01), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* value index mappings                                       */
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x01), /*                                                            */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* value array                                                */
         nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
         to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x06), to_c(0x9C), to_c(0xAC), /*                                    */
