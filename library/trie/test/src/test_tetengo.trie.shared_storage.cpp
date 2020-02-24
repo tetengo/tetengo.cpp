@@ -54,20 +54,24 @@ namespace
 
     const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
 
+#if 0
     std::unique_ptr<std::istream> create_input_stream()
     {
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
+#endif
 
     const std::vector<char> serialized_broken{
         nul_byte(), nul_byte(), nul_byte(), to_c(0x02), to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), to_c(0x89),
     };
 
+#if 0
     std::unique_ptr<std::istream> create_broken_input_stream()
     {
         return std::make_unique<std::stringstream>(
             std::string{ std::begin(serialized_broken), std::end(serialized_broken) });
     }
+#endif
 
 
 }
@@ -85,6 +89,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::shared_storage storage_{};
     }
+#if 0
     {
         const auto                          p_input_stream = create_input_stream();
         const tetengo::trie::shared_storage storage_{
@@ -113,6 +118,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_CHECK_THROW(
             const tetengo::trie::shared_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
     }
+#endif
 }
 
 BOOST_AUTO_TEST_CASE(base_at)
@@ -250,6 +256,7 @@ BOOST_AUTO_TEST_CASE(serialize)
 {
     BOOST_TEST_PASSPOINT();
 
+#if 0
     tetengo::trie::shared_storage storage_{};
 
     storage_.set_base_at(0, 42);
@@ -286,6 +293,7 @@ BOOST_AUTO_TEST_CASE(serialize)
     const std::string serialized = output_stream.str();
     BOOST_CHECK_EQUAL_COLLECTIONS(
         std::begin(serialized), std::end(serialized), std::begin(expected), std::end(expected));
+#endif
 }
 
 BOOST_AUTO_TEST_CASE(clone)
