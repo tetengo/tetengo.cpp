@@ -3,7 +3,7 @@
 
 #### General ####
 AC_PREREQ([2.69])
-AC_INIT([tetengo], [0.0.0], [kaoru  https://www.tetengo.org/t@mc.pikara.ne.jp])
+AC_INIT([tetengo], [0.0.0], [https://github.com/kaorut])
 AC_CONFIG_SRCDIR([precompiled/precompiled.hpp])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([--warnings=no-portability])
