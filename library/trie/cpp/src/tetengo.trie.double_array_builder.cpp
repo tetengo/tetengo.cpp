@@ -1,7 +1,7 @@
 /*! \file
     \brief A double array builder.
 
-    Copyright (C) 2019-2020 kaoru
+    Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(DOCUMENTATION)
