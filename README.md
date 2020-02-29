@@ -73,6 +73,29 @@ X:\path\to\tetengo-work-tree
 
 #### Procedure
 
+Clone from GitHub:
+
+```shell-session
+$ git clone https://github.com/kaorut/tetengo.git
+```
+
+Run `bootstrap.sh` to generate `configure` script.
+
+```shell-session
+$ ./bootstrap.sh
+```
+Configure, build and install.
+
+```shell-session
+$ ./configure
+$ make
+$ sudo make install
+```
+
+By default, tetengo will be installed in `/usr/local`.
+To change the directory where tetengo is installed, specify `--prefix` option
+to `configure` script.
+
 How to Use
 ----------
 
