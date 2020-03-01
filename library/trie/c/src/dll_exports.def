@@ -7,3 +7,4 @@ EXPORTS
     tetengo_trie_trie_destroy
     tetengo_trie_trie_empty
     tetengo_trie_trie_size
+    tetengo_trie_trie_contains

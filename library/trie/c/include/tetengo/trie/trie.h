@@ -110,6 +110,17 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie* p_trie);
 */
 size_t tetengo_trie_trie_size(const tetengo_trie_trie* p_trie);
 
+/*!
+    \brief Returns non-zero when the trie contains the given key.
+
+    \param p_trie A pointer to a trie.
+    \param key    A key.
+
+    \retval non-zero When the trie contains the given key.
+    \retval 0        Otherwise.
+*/
+int tetengo_trie_trie_contains(const tetengo_trie_trie* p_trie, const char* key);
+
 
 #if defined(__cplusplus)
 }

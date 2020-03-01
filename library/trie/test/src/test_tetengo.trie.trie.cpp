@@ -544,6 +544,48 @@ BOOST_AUTO_TEST_CASE(contains)
 
         BOOST_TEST(trie_.contains("Kumamoto"));
     }
+
+    {
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(!tetengo_trie_trie_contains(p_trie, "Kumamoto"));
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_trie_trie_contains(p_trie, "Kumamoto"));
+        BOOST_TEST(tetengo_trie_trie_contains(p_trie, "Tamana"));
+        BOOST_TEST(!tetengo_trie_trie_contains(p_trie, "Uto"));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(find)

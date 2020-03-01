@@ -79,8 +79,14 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie* const p_trie)
     return p_cpp_trie->empty() ? 1 : 0;
 }
 
-size_t tetengo_trie_trie_size(const tetengo_trie_trie* p_trie)
+size_t tetengo_trie_trie_size(const tetengo_trie_trie* const p_trie)
 {
     const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
     return p_cpp_trie->size();
+}
+
+int tetengo_trie_trie_contains(const tetengo_trie_trie* const p_trie, const char* const key)
+{
+    const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
+    return p_cpp_trie->contains(key);
 }
