@@ -34,34 +34,30 @@ How to Build and Install
 
 #### Procedure
 
-Clone from GitHub:
+Clone the source from GitHub:
 
 ```bat
 > git clone https://github.com/kaorut/tetengo.git
 ```
 
-Open the `tetengo.sln` file in the work tree.
+Open the file `tetengo.sln` in the work tree.
 
-In Visual Studio, execute the menu command: [Build]-[Build Solution].
+In Visual Studio, execute the menu command [Build]-[Build Solution].
 
-Add `library\(library name)\c\include` and `library\(library name)\cpp\include`
-to the settings "C/C++ - Additional Include Directories" of your Visual C++
-project.
-
-Add `bin\(configuration).(platform)` to the settings "Linker - Additional
-Library Directories" of your Visual C++ project.
-And add `tetengo.(library name).lib` (for C programs) or
-`tetengo.(library name).cpp.lib` (for C++ programs) to the settings "Additional
-Dependencies".
-
-To generate the documents, open a Command Prompt. Execute `doxygen` command in
-the top directory of the work tree. Doxygen will output the documents into the
-`doc` directory in the work tree.
+You can "install" tetengo library. Open a command prompt and execute the batch
+file `install_tetengo_library.bat` in the directory `tools` in the top
+directory of the work tree. That copies the header files and the built library
+files into your preferred place.
 
 ```bat
-> cd
-X:\path\to\tetengo-work-tree
+> tools\install_tetengo_library.bat [your_preferred_path]
+```
 
+To generate the documents, open a Command Prompt. Execute the command `doxygen`
+on the top directory of the work tree. Doxygen will output the documents into
+the directory `doc` in the work tree.
+
+```bat
 > doxygen
 ```
 
@@ -83,18 +79,18 @@ X:\path\to\tetengo-work-tree
 
 #### Procedure
 
-Clone from GitHub:
+Clone the source from GitHub:
 
 ```shell-session
 $ git clone https://github.com/kaorut/tetengo.git
 ```
 
-Run `bootstrap.sh` to generate `configure` script.
+Run the script `bootstrap.sh` to generate the script `configure`.
 
 ```shell-session
 $ ./bootstrap.sh
 ```
-Configure, build and install.
+Configure, build and install tetengo by the following commands.
 
 ```shell-session
 $ ./configure
@@ -103,21 +99,14 @@ $ sudo make install
 ```
 
 By default, tetengo will be installed in `/usr/local`.
-To change the directory where tetengo is installed, specify `--prefix` option
-to `configure` script.
+To change the directory where tetengo is installed, specify the option
+`--prefix` to the script `configure`.
 
 To generate the documents, execute `make doc` command.
 
 ```shell-session
 $ make doc
 ```
-
-How to Use
-----------
-
-### With Visual C++ on Windows
-
-### With Clang or GCC on Linux
 
 ---
 
