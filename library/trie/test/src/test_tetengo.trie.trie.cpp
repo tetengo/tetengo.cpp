@@ -18,14 +18,18 @@
 #include <boost/core/ignore_unused.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trie_iterator.hpp>
+
+struct tetengo_trie_trie;
 
 
 namespace
@@ -151,15 +155,25 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
     BOOST_TEST_PASSPOINT();
 
     tetengo::trie::trie<std::string, int>::null_building_observer_set();
+
+    tetengo_trie_trie_nullAddingObserver("hoge");
+    tetengo_trie_trie_nullDoneObserver();
 }
 
 BOOST_AUTO_TEST_CASE(default_double_array_density_factor)
 {
     BOOST_TEST_PASSPOINT();
 
-    using trie_type = tetengo::trie::trie<std::string, int>;
-    BOOST_TEST(
-        trie_type::default_double_array_density_factor() == tetengo::trie::double_array::default_density_factor());
+    {
+        using trie_type = tetengo::trie::trie<std::string, int>;
+        BOOST_TEST(
+            trie_type::default_double_array_density_factor() == tetengo::trie::double_array::default_density_factor());
+    }
+    {
+        BOOST_TEST(
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor() ==
+            tetengo::trie::double_array::default_density_factor());
+    }
 }
 
 BOOST_AUTO_TEST_CASE(construction)
@@ -168,6 +182,14 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::trie<std::string, int> trie_{};
+    }
+    {
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create();
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
     {
         const tetengo::trie::trie<std::string, int> trie_{ tetengo::trie::default_serializer<std::string>{} };

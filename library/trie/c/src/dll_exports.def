@@ -1,4 +1,7 @@
 LIBRARY tetengo.trie.dll
 EXPORTS
+    tetengo_trie_trie_nullAddingObserver
+    tetengo_trie_trie_nullDoneObserver
+    tetengo_trie_trie_defaultDoubleArrayDensityFactor
     tetengo_trie_trie_create
     tetengo_trie_trie_destroy
