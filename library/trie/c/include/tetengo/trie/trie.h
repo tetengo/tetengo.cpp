@@ -101,6 +101,15 @@ void tetengo_trie_trie_destroy(tetengo_trie_trie* p_trie);
 */
 int tetengo_trie_trie_empty(const tetengo_trie_trie* p_trie);
 
+/*!
+    \brief Returns the size of the trie.
+
+    \param p_trie A pointer to a trie.
+
+    \return The size.
+*/
+size_t tetengo_trie_trie_size(const tetengo_trie_trie* p_trie);
+
 
 #if defined(__cplusplus)
 }
