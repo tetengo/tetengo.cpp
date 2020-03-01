@@ -44,6 +44,16 @@ Open the `tetengo.sln` file in the work tree.
 
 In Visual Studio, execute the menu command: [Build]-[Build Solution].
 
+Add `library\(library name)\c\include` and `library\(library name)\cpp\include`
+to the settings "C/C++ - Additional Include Directories" of your Visual C++
+project.
+
+Add `bin\(configuration).(platform)` to the settings "Linker - Additional
+Library Directories" of your Visual C++ project.
+And add `tetengo.(library name).lib` (for C programs) or
+`tetengo.(library name).cpp.lib` (for C++ programs) to the settings "Additional
+Dependencies".
+
 To generate the documents, open a Command Prompt. Execute `doxygen` command in
 the top directory of the work tree. Doxygen will output the documents into the
 `doc` directory in the work tree.
@@ -95,6 +105,12 @@ $ sudo make install
 By default, tetengo will be installed in `/usr/local`.
 To change the directory where tetengo is installed, specify `--prefix` option
 to `configure` script.
+
+To generate the documents, execute `make doc` command.
+
+```shell-session
+$ make doc
+```
 
 How to Use
 ----------
