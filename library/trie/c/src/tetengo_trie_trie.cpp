@@ -70,5 +70,11 @@ tetengo_trie_trie* tetengo_trie_trie_create(
 
 void tetengo_trie_trie_destroy(tetengo_trie_trie* const p_trie)
 {
-    const std::unique_ptr<trie_type> p_unique_trie{ reinterpret_cast<trie_type*>(p_trie) };
+    const std::unique_ptr<trie_type> p_cpp_trie{ reinterpret_cast<trie_type*>(p_trie) };
+}
+
+int tetengo_trie_trie_empty(const tetengo_trie_trie* const p_trie)
+{
+    const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
+    return p_cpp_trie->empty() ? 1 : 0;
 }

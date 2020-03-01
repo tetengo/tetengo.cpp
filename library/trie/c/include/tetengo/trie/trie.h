@@ -91,6 +91,16 @@ tetengo_trie_trie* tetengo_trie_trie_create(
 */
 void tetengo_trie_trie_destroy(tetengo_trie_trie* p_trie);
 
+/*!
+    \brief Returns non-zero when the trie is empty.
+
+    \param p_trie A pointer to a trie.
+
+    \retval non-zero When the trie is empty.
+    \retval 0        Otherwise.
+*/
+int tetengo_trie_trie_empty(const tetengo_trie_trie* p_trie);
+
 
 #if defined(__cplusplus)
 }

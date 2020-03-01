@@ -5,3 +5,4 @@ EXPORTS
     tetengo_trie_trie_defaultDoubleArrayDensityFactor
     tetengo_trie_trie_create
     tetengo_trie_trie_destroy
+    tetengo_trie_trie_empty
