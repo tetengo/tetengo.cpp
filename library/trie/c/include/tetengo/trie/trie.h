@@ -121,6 +121,16 @@ size_t tetengo_trie_trie_size(const tetengo_trie_trie* p_trie);
 */
 int tetengo_trie_trie_contains(const tetengo_trie_trie* p_trie, const char* key);
 
+/*!
+    \brief Finds the value object correspoinding the given key.
+
+    \param p_trie A pointer to a trie.
+    \param key    A key.
+
+    \return A pointer to the value object. Or NULL when the trie does not have the given key.
+*/
+const void* tetengo_trie_trie_find(const tetengo_trie_trie* p_trie, const char* key);
+
 
 #if defined(__cplusplus)
 }

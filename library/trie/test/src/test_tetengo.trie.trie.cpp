@@ -654,6 +654,49 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_REQUIRE(p_found);
         BOOST_TEST(*p_found == kumamoto1);
     }
+
+    {
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_found = tetengo_trie_trie_find(p_trie, "Kumamoto");
+        BOOST_TEST(!p_found);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_found = tetengo_trie_trie_find(p_trie, "Kumamoto");
+        BOOST_REQUIRE(p_found);
+        BOOST_TEST(*reinterpret_cast<const int* const*>(p_found) == &kumamoto_value);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(begin_end)

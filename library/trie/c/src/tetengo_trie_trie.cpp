@@ -90,3 +90,9 @@ int tetengo_trie_trie_contains(const tetengo_trie_trie* const p_trie, const char
     const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
     return p_cpp_trie->contains(key);
 }
+
+const void* tetengo_trie_trie_find(const tetengo_trie_trie* const p_trie, const char* const key)
+{
+    const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
+    return p_cpp_trie->find(key);
+}
