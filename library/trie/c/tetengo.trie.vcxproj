@@ -112,14 +112,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.hpp" />
-    <ClInclude Include="include\tetengo\trie\double_array.h" />
+    <ClInclude Include="include\tetengo\trie\trie.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\tetengo.trie.double_array.cpp" />
+    <ClCompile Include="src\tetengo_trie_trie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def" />

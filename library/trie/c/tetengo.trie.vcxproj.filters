@@ -14,18 +14,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tetengo\trie\double_array.h">
-      <Filter>header\tetengo::trie</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\precompiled\precompiled.hpp">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\trie\trie.h">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tetengo.trie.double_array.cpp">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+    <ClCompile Include="src\tetengo_trie_trie.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
