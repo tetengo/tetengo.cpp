@@ -26,8 +26,8 @@ struct tetengo_trie_trie_element_t
     //! The key.
     const char* key;
 
-    //! The pointer to the element.
-    const void* p_element;
+    //! The pointer to the value.
+    const void* p_value;
 };
 
 /*!
@@ -62,9 +62,20 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor();
 /*!
     \brief Creates a trie.
 
+    \param p_elements                  A pointer to the first element.
+    \param element_count               An element count.
+    \param adding_observer             An adding observer.
+    \param done_observer               A done observer.
+    \param double_array_density_factor A double array density factor.
+
     \return A pointer to a trie.
 */
-tetengo_trie_trie* tetengo_trie_trie_create();
+tetengo_trie_trie* tetengo_trie_trie_create(
+    const tetengo_trie_trie_element_t* p_elements,
+    size_t                             element_count,
+    tetengo_trie_trie_addingObserver_t adding_observer,
+    tetengo_trie_trie_doneObserver_t   done_observer,
+    size_t                             double_array_density_factor);
 
 /*!
     \brief Destroys a trie.

@@ -184,14 +184,6 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::trie<std::string, int> trie_{};
     }
     {
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create();
-        BOOST_SCOPE_EXIT((p_trie))
-        {
-            tetengo_trie_trie_destroy(p_trie);
-        }
-        BOOST_SCOPE_EXIT_END;
-    }
-    {
         const tetengo::trie::trie<std::string, int> trie_{ tetengo::trie::default_serializer<std::string>{} };
     }
     {
@@ -263,6 +255,25 @@ BOOST_AUTO_TEST_CASE(construction)
             });
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage),
                                                                    tetengo::trie::default_serializer<std::string>{} };
+    }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            tetengo_trie_trie_nullAddingObserver,
+            tetengo_trie_trie_nullDoneObserver,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
 }
 
