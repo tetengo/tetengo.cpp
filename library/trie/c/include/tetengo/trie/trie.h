@@ -34,23 +34,26 @@ struct tetengo_trie_trie_element_t
     \brief An observer type called when a key is adding.
 
     \param serialized_key A serialized key.
+    \param p_context      A pointer to the context.
 */
-typedef void (*tetengo_trie_trie_addingObserver_t)(const char* serialized_key);
+typedef void (*tetengo_trie_trie_addingObserver_t)(const char* serialized_key, void* context);
 
 /*!
     \brief A null adding observer.
 */
-void tetengo_trie_trie_nullAddingObserver(const char*);
+void tetengo_trie_trie_nullAddingObserver(const char*, void*);
 
 /*!
     \brief An observer type called when the building is done.
+
+    \param p_context A pointer to the context.
 */
-typedef void (*tetengo_trie_trie_doneObserver_t)();
+typedef void (*tetengo_trie_trie_doneObserver_t)(void* context);
 
 /*!
     \brief A null done observer.
 */
-void tetengo_trie_trie_nullDoneObserver();
+void tetengo_trie_trie_nullDoneObserver(void*);
 
 /*!
     \brief Returns the default double array density factor.
@@ -65,7 +68,9 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor();
     \param p_elements                  A pointer to the first element.
     \param element_count               An element count.
     \param adding_observer             An adding observer.
+    \param p_adding_observer_context   A pointer to the adding observer context.
     \param done_observer               A done observer.
+    \param p_done_observer_context     A pointer to the done observer context.
     \param double_array_density_factor A double array density factor.
 
     \return A pointer to a trie.
@@ -74,7 +79,9 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     const tetengo_trie_trie_element_t* p_elements,
     size_t                             element_count,
     tetengo_trie_trie_addingObserver_t adding_observer,
+    void*                              p_adding_observer_context,
     tetengo_trie_trie_doneObserver_t   done_observer,
+    void*                              p_done_observer_context,
     size_t                             double_array_density_factor);
 
 /*!

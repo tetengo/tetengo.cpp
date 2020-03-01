@@ -28,9 +28,9 @@ namespace
 }
 
 
-void tetengo_trie_trie_nullAddingObserver(const char*) {}
+void tetengo_trie_trie_nullAddingObserver(const char*, void*) {}
 
-void tetengo_trie_trie_nullDoneObserver() {}
+void tetengo_trie_trie_nullDoneObserver(void*) {}
 
 size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor()
 {
@@ -41,7 +41,9 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     const tetengo_trie_trie_element_t* const p_elements,
     const size_t                             element_count,
     const tetengo_trie_trie_addingObserver_t adding_observer,
+    void* const                              p_adding_observer_context,
     const tetengo_trie_trie_doneObserver_t   done_observer,
+    void* const                              p_done_observer_context,
     const size_t                             double_array_density_factor)
 {
     std::vector<std::pair<std::string_view, const void*>> elements{};
@@ -51,7 +53,10 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     });
 
     const trie_type::building_observer_set_type observer_set{
-        [adding_observer](const std::string_view& key) { adding_observer(std::string{ key }.c_str()); }, done_observer
+        [adding_observer, p_adding_observer_context](const std::string_view& key) {
+            adding_observer(std::string{ key }.c_str(), p_adding_observer_context);
+        },
+        [done_observer, p_done_observer_context]() { done_observer(p_done_observer_context); }
     };
     auto p_trie = std::make_unique<trie_type>(
         elements.begin(),

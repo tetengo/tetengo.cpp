@@ -92,6 +92,17 @@ namespace
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
 
+    void adding_observer(const char* const key, void* const context)
+    {
+        std::vector<std::string>* const p_added_serialized_keys = reinterpret_cast<std::vector<std::string>*>(context);
+        p_added_serialized_keys->push_back(key);
+    }
+
+    void done_observer(void* const context)
+    {
+        bool* const p_done = reinterpret_cast<bool*>(context);
+        *p_done = true;
+    }
 
     bool& copy_detecting()
     {
@@ -156,8 +167,8 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
 
     tetengo::trie::trie<std::string, int>::null_building_observer_set();
 
-    tetengo_trie_trie_nullAddingObserver("hoge");
-    tetengo_trie_trie_nullDoneObserver();
+    tetengo_trie_trie_nullAddingObserver("hoge", nullptr);
+    tetengo_trie_trie_nullDoneObserver(nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(default_double_array_density_factor)
@@ -263,17 +274,26 @@ BOOST_AUTO_TEST_CASE(construction)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
         tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
-            tetengo_trie_trie_nullAddingObserver,
-            tetengo_trie_trie_nullDoneObserver,
+            adding_observer,
+            &added_serialized_keys,
+            done_observer,
+            &done,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
         BOOST_SCOPE_EXIT((p_trie))
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2U);
+        BOOST_TEST(added_serialized_keys[0] == "Kumamoto");
+        BOOST_TEST(added_serialized_keys[1] == "Tamana");
+        BOOST_TEST(done);
     }
 }
 
