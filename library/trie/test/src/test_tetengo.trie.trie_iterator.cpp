@@ -104,10 +104,6 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::trie_iterator<std::string> iterator{ std::move(impl) };
     }
     {
-        // TODO: C style API
-    }
-
-    {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
         begin_copy_detection();
 
@@ -116,10 +112,6 @@ BOOST_AUTO_TEST_CASE(construction)
 
         end_copy_detection();
     }
-    {
-        // TODO: C style API
-    }
-
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
             { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
@@ -131,10 +123,6 @@ BOOST_AUTO_TEST_CASE(construction)
 
         end_copy_detection();
     }
-    {
-        // TODO: C style API
-    }
-
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
             { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
@@ -151,9 +139,6 @@ BOOST_AUTO_TEST_CASE(construction)
 
         end_copy_detection();
     }
-    {
-        // TODO: C style API
-    }
 }
 
 BOOST_AUTO_TEST_CASE(operator_dereference)
@@ -167,10 +152,6 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         BOOST_CHECK_THROW(*iterator, std::logic_error);
     }
     {
-        // TODO: C style API
-    }
-
-    {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
             { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
         };
@@ -181,9 +162,6 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         BOOST_TEST(iterator->value == kumamoto1);
 
         end_copy_detection();
-    }
-    {
-        // TODO: C style API
     }
 }
 
@@ -199,10 +177,6 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         BOOST_CHECK(iterator1 == iterator2);
     }
-    {
-        // TODO: C style API
-    }
-
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
             { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
@@ -232,9 +206,6 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         end_copy_detection();
     }
-    {
-        // TODO: C style API
-    }
 }
 
 BOOST_AUTO_TEST_CASE(increment)
@@ -249,10 +220,6 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator == std::end(trie_));
     }
-    {
-        // TODO: C style API
-    }
-
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
             { kumamoto2, detect_copy(kumamoto1) }, { tamana2, detect_copy(tamana1) }
@@ -270,9 +237,6 @@ BOOST_AUTO_TEST_CASE(increment)
         ++iterator;
 
         BOOST_CHECK(iterator == std::end(trie_));
-    }
-    {
-        // TODO: C style API
     }
 }
 
