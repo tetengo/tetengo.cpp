@@ -9,3 +9,5 @@ EXPORTS
     tetengo_trie_trie_size
     tetengo_trie_trie_contains
     tetengo_trie_trie_find
+    tetengo_trie_trieIterator_create
+    tetengo_trie_trieIterator_destroy

@@ -8,14 +8,21 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include <boost/core/ignore_unused.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
+
+struct tetengo_trie_trie;
+struct tetengo_trie_trieIterator;
 
 
 namespace
@@ -138,6 +145,34 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(iterator2->value == tamana1);
 
         end_copy_detection();
+    }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo_trie_trieIterator* const p_iteartor = tetengo_trie_trieIterator_create(p_trie);
+        BOOST_SCOPE_EXIT((p_iteartor))
+        {
+            tetengo_trie_trieIterator_destroy(p_iteartor);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
 }
 

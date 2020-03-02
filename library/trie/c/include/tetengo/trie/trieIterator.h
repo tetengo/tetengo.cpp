@@ -10,6 +10,30 @@
 extern "C" {
 #endif
 
+struct tetengo_trie_trie;
+
+
+/*!
+    \brief A trie iterator.
+*/
+struct tetengo_trie_trieIterator;
+
+/*!
+    \brief Creates an iterator.
+
+    \param p_trie A pointer to a trie.
+
+    \return A pointer to an iterator.
+*/
+tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_trie* p_trie);
+
+/*!
+    \brief Destroys an iterator.
+
+    \param p_trie_iterator A pointer to a
+*/
+void tetengo_trie_trieIterator_destroy(tetengo_trie_trieIterator* p_trie_iterator);
+
 
 #if defined(__cplusplus)
 }
