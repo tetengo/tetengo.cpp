@@ -746,6 +746,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
         boost::ignore_unused(std::begin(trie_));
         boost::ignore_unused(std::end(trie_));
     }
+
+    // TODO: begin end checks
 }
 
 BOOST_AUTO_TEST_CASE(subtrie)
@@ -846,6 +848,8 @@ BOOST_AUTO_TEST_CASE(subtrie)
         ++iterator_;
         BOOST_CHECK(iterator_ == std::end(*p_subtrie));
     }
+
+    // TODO: subtries checks
 }
 
 BOOST_AUTO_TEST_CASE(get_storage)
@@ -884,6 +888,8 @@ BOOST_AUTO_TEST_CASE(get_storage)
         BOOST_CHECK_EQUAL_COLLECTIONS(
             std::begin(storage_serialized), std::end(storage_serialized), std::begin(serialized), std::end(serialized));
     }
+
+    // TODO: subtries checks
 }
 
 
