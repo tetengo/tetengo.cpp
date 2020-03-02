@@ -53,6 +53,13 @@ const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_ite
 */
 int tetengo_trie_trieIterator_hasMore(const tetengo_trie_trieIterator* p_iterator);
 
+/*!
+    \brief Increments the iterator.
+
+    \param p_iterator A pointer to a iterator.
+*/
+void tetengo_trie_trieIterator_next(tetengo_trie_trieIterator* p_iterator);
+
 
 #if defined(__cplusplus)
 }
