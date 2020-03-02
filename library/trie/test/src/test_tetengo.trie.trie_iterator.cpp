@@ -273,6 +273,61 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         end_copy_detection();
     }
+
+
+    {
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo_trie_trieIterator* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        BOOST_SCOPE_EXIT((p_iterator))
+        {
+            tetengo_trie_trie_destroyIterator(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(!tetengo_trie_trieIterator_hasMore(p_iterator));
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo_trie_trieIterator* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        BOOST_SCOPE_EXIT((p_iterator))
+        {
+            tetengo_trie_trie_destroyIterator(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_trie_trieIterator_hasMore(p_iterator));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(increment)

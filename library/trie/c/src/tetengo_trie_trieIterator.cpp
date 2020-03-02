@@ -46,3 +46,10 @@ const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_ite
         reinterpret_cast<const std::pair<trie_type::iterator, trie_type::iterator>*>(p_iterator);
     return *p_cpp_iterator_pair->first;
 }
+
+int tetengo_trie_trieIterator_hasMore(const tetengo_trie_trieIterator* p_iterator)
+{
+    const auto* const p_cpp_iterator_pair =
+        reinterpret_cast<const std::pair<trie_type::iterator, trie_type::iterator>*>(p_iterator);
+    return p_cpp_iterator_pair->first == p_cpp_iterator_pair->second ? 0 : 1;
+}

@@ -43,6 +43,16 @@ void tetengo_trie_trieIterator_destroy(tetengo_trie_trieIterator* p_iterator);
 */
 const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_iterator);
 
+/*!
+    \brief Returns non-zero when the iterator will return more elements.
+
+    \param p_iterator A pointer to a iterator.
+
+    \retval non-zero When the iterator will return more elements.
+    \retval 0        Otherwise.
+*/
+int tetengo_trie_trieIterator_hasMore(const tetengo_trie_trieIterator* p_iterator);
+
 
 #if defined(__cplusplus)
 }
