@@ -18,8 +18,10 @@
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/trieIterator.h>
 
 struct tetengo_trie_trie;
+struct tetengo_trie_trieIterator;
 
 
 namespace
@@ -95,4 +97,14 @@ const void* tetengo_trie_trie_find(const tetengo_trie_trie* const p_trie, const 
 {
     const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
     return p_cpp_trie->find(key);
+}
+
+tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_trie* p_trie)
+{
+    return tetengo_trie_trieIterator_create(p_trie);
+}
+
+void tetengo_trie_trie_destroyIterator(tetengo_trie_trieIterator* p_iterator)
+{
+    tetengo_trie_trieIterator_destroy(p_iterator);
 }

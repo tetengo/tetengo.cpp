@@ -12,6 +12,8 @@ extern "C" {
 
 #include <stddef.h>
 
+struct tetengo_trie_trieIterator;
+
 
 /*!
     \brief A trie.
@@ -130,6 +132,22 @@ int tetengo_trie_trie_contains(const tetengo_trie_trie* p_trie, const char* key)
     \return A pointer to the value object. Or NULL when the trie does not have the given key.
 */
 const void* tetengo_trie_trie_find(const tetengo_trie_trie* p_trie, const char* key);
+
+/*!
+    \brief Creates an iterator.
+
+    \param p_trie A pointer to a trie.
+
+    \return A pointer to an iterator.
+*/
+tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_trie* p_trie);
+
+/*!
+    \brief Destroys an iterator.
+
+    \param p_iterator A pointer to an iterator.
+*/
+void tetengo_trie_trie_destroyIterator(tetengo_trie_trieIterator* p_iterator);
 
 
 #if defined(__cplusplus)
