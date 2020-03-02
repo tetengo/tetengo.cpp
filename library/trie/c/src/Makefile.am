@@ -4,7 +4,8 @@
 headers =
 
 sources = \
-    tetengo_trie_trie.cpp
+    tetengo_trie_trie.cpp \
+    tetengo_trie_trieIterator.cpp
 
 lib_LTLIBRARIES = libtetengo.trie.la
 

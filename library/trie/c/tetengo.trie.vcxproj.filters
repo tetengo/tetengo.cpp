@@ -20,12 +20,18 @@
     <ClInclude Include="include\tetengo\trie\trie.h">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\trie\trieIterator.h">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo_trie_trie.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo_trie_trieIterator.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
