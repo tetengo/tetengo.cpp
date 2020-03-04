@@ -91,7 +91,7 @@ tetengo_trie_trie* tetengo_trie_trie_create(
 
     \param p_trie A pointer to a trie.
 */
-void tetengo_trie_trie_destroy(tetengo_trie_trie* p_trie);
+void tetengo_trie_trie_destroy(const tetengo_trie_trie* p_trie);
 
 /*!
     \brief Returns non-zero when the trie is empty.
@@ -147,7 +147,7 @@ tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_t
 
     \param p_iterator A pointer to an iterator.
 */
-void tetengo_trie_trie_destroyIterator(tetengo_trie_trieIterator* p_iterator);
+void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterator);
 
 /*!
     \brief Creates a subtrie.

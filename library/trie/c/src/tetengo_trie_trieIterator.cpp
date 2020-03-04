@@ -33,10 +33,10 @@ tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_t
     return reinterpret_cast<tetengo_trie_trieIterator*>(p_cpp_iterator_pair.release());
 }
 
-void tetengo_trie_trieIterator_destroy(tetengo_trie_trieIterator* const p_iterator)
+void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator* const p_iterator)
 {
-    std::unique_ptr<std::pair<trie_type::iterator, trie_type::iterator>> p_iterator_pair{
-        reinterpret_cast<std::pair<trie_type::iterator, trie_type::iterator>*>(p_iterator)
+    std::unique_ptr<const std::pair<trie_type::iterator, trie_type::iterator>> p_iterator_pair{
+        reinterpret_cast<const std::pair<trie_type::iterator, trie_type::iterator>*>(p_iterator)
     };
 }
 

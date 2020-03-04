@@ -70,9 +70,9 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     return reinterpret_cast<tetengo_trie_trie*>(p_trie.release());
 }
 
-void tetengo_trie_trie_destroy(tetengo_trie_trie* const p_trie)
+void tetengo_trie_trie_destroy(const tetengo_trie_trie* const p_trie)
 {
-    const std::unique_ptr<trie_type> p_cpp_trie{ reinterpret_cast<trie_type*>(p_trie) };
+    const std::unique_ptr<const trie_type> p_cpp_trie{ reinterpret_cast<const trie_type*>(p_trie) };
 }
 
 int tetengo_trie_trie_empty(const tetengo_trie_trie* const p_trie)
@@ -104,7 +104,7 @@ tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_t
     return tetengo_trie_trieIterator_create(p_trie);
 }
 
-void tetengo_trie_trie_destroyIterator(tetengo_trie_trieIterator* p_iterator)
+void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterator)
 {
     tetengo_trie_trieIterator_destroy(p_iterator);
 }

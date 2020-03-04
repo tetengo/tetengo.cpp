@@ -32,7 +32,7 @@ tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_t
 
     \param p_iterator A pointer to a iterator.
 */
-void tetengo_trie_trieIterator_destroy(tetengo_trie_trieIterator* p_iterator);
+void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator* p_iterator);
 
 /*!
     \brief Dereferences the iterator.

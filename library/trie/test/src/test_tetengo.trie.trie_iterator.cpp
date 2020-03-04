@@ -21,9 +21,6 @@
 #include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
 
-struct tetengo_trie_trie;
-struct tetengo_trie_trieIterator;
-
 
 namespace
 {
@@ -153,7 +150,7 @@ BOOST_AUTO_TEST_CASE(construction)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -167,7 +164,7 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo_trie_trieIterator* const p_iteartor = tetengo_trie_trieIterator_create(p_trie);
+        const auto* const p_iteartor = tetengo_trie_trieIterator_create(p_trie);
         BOOST_SCOPE_EXIT((p_iteartor))
         {
             tetengo_trie_trieIterator_destroy(p_iteartor);
@@ -205,7 +202,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -219,7 +216,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo_trie_trieIterator* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
         BOOST_SCOPE_EXIT((p_iterator))
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
@@ -275,7 +272,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
     }
 
     {
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             nullptr,
             0,
             tetengo_trie_trie_nullAddingObserver,
@@ -289,7 +286,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo_trie_trieIterator* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
         BOOST_SCOPE_EXIT((p_iterator))
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
@@ -304,7 +301,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -318,7 +315,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo_trie_trieIterator* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
         BOOST_SCOPE_EXIT((p_iterator))
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
@@ -374,7 +371,7 @@ BOOST_AUTO_TEST_CASE(increment)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -388,7 +385,7 @@ BOOST_AUTO_TEST_CASE(increment)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo_trie_trieIterator* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
         BOOST_SCOPE_EXIT((p_iterator))
         {
             tetengo_trie_trie_destroyIterator(p_iterator);

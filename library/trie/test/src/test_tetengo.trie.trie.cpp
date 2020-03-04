@@ -30,8 +30,6 @@
 #include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
 
-struct tetengo_trie_trie;
-
 
 namespace
 {
@@ -277,7 +275,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         std::vector<std::string> added_serialized_keys{};
         auto                     done = false;
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const        p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             adding_observer,
@@ -349,7 +347,7 @@ BOOST_AUTO_TEST_CASE(empty)
     }
 
     {
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             nullptr,
             0,
             tetengo_trie_trie_nullAddingObserver,
@@ -371,7 +369,7 @@ BOOST_AUTO_TEST_CASE(empty)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -437,7 +435,7 @@ BOOST_AUTO_TEST_CASE(size)
     }
 
     {
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             nullptr,
             0,
             tetengo_trie_trie_nullAddingObserver,
@@ -457,7 +455,7 @@ BOOST_AUTO_TEST_CASE(size)
         const int                                kumamoto_value = 42;
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -479,7 +477,7 @@ BOOST_AUTO_TEST_CASE(size)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -547,7 +545,7 @@ BOOST_AUTO_TEST_CASE(contains)
     }
 
     {
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             nullptr,
             0,
             tetengo_trie_trie_nullAddingObserver,
@@ -569,7 +567,7 @@ BOOST_AUTO_TEST_CASE(contains)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -657,7 +655,7 @@ BOOST_AUTO_TEST_CASE(find)
     }
 
     {
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             nullptr,
             0,
             tetengo_trie_trie_nullAddingObserver,
@@ -680,7 +678,7 @@ BOOST_AUTO_TEST_CASE(find)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -749,7 +747,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
     }
 
     {
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             nullptr,
             0,
             tetengo_trie_trie_nullAddingObserver,
@@ -763,7 +761,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
         }
         BOOST_SCOPE_EXIT_END;
 
-        auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
         BOOST_SCOPE_EXIT((p_iterator))
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
@@ -776,7 +774,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -790,7 +788,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
         }
         BOOST_SCOPE_EXIT_END;
 
-        auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
         BOOST_SCOPE_EXIT((p_iterator))
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
@@ -906,7 +904,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
                                                            { "Tamana", &tamana_value },
                                                            { "Tamarai", &tamarai_value } };
 
-        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+        const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
             tetengo_trie_trie_nullAddingObserver,
@@ -924,7 +922,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
             const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Tama");
             BOOST_SCOPE_EXIT((p_subtrie))
             {
-                tetengo_trie_trie_destroy(const_cast<tetengo_trie_trie*>(p_subtrie));
+                tetengo_trie_trie_destroy(p_subtrie);
             }
             BOOST_SCOPE_EXIT_END;
 
@@ -951,7 +949,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
             const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Uto");
             BOOST_SCOPE_EXIT((p_subtrie))
             {
-                tetengo_trie_trie_destroy(const_cast<tetengo_trie_trie*>(p_subtrie));
+                tetengo_trie_trie_destroy(p_subtrie);
             }
             BOOST_SCOPE_EXIT_END;
 
