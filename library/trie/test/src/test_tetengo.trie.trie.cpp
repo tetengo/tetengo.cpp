@@ -27,6 +27,7 @@
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
 
 struct tetengo_trie_trie;
@@ -897,7 +898,66 @@ BOOST_AUTO_TEST_CASE(subtrie)
         BOOST_CHECK(iterator_ == std::end(*p_subtrie));
     }
 
-    // TODO: subtries checks
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        const int                                tamarai_value = 35;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value },
+                                                           { "Tamarai", &tamarai_value } };
+
+        tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        {
+            const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Tama");
+            BOOST_SCOPE_EXIT((p_subtrie))
+            {
+                tetengo_trie_trie_destroy(const_cast<tetengo_trie_trie*>(p_subtrie));
+            }
+            BOOST_SCOPE_EXIT_END;
+
+            BOOST_TEST_REQUIRE(p_subtrie);
+
+            auto* const p_subtrie_iterator = tetengo_trie_trie_createIterator(p_subtrie);
+            BOOST_SCOPE_EXIT((p_subtrie_iterator))
+            {
+                tetengo_trie_trie_destroyIterator(p_subtrie_iterator);
+            }
+            BOOST_SCOPE_EXIT_END;
+
+            BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
+            BOOST_TEST(tetengo_trie_trieIterator_get(p_subtrie_iterator) == &tamana_value);
+            tetengo_trie_trieIterator_next(p_subtrie_iterator);
+
+            BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
+            BOOST_TEST(tetengo_trie_trieIterator_get(p_subtrie_iterator) == &tamarai_value);
+            tetengo_trie_trieIterator_next(p_subtrie_iterator);
+
+            BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
+        }
+        {
+            const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Uto");
+            BOOST_SCOPE_EXIT((p_subtrie))
+            {
+                tetengo_trie_trie_destroy(const_cast<tetengo_trie_trie*>(p_subtrie));
+            }
+            BOOST_SCOPE_EXIT_END;
+
+            BOOST_TEST(!p_subtrie);
+        }
+    }
 }
 
 BOOST_AUTO_TEST_CASE(get_storage)

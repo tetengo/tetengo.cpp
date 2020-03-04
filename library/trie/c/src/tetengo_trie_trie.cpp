@@ -108,3 +108,10 @@ void tetengo_trie_trie_destroyIterator(tetengo_trie_trieIterator* p_iterator)
 {
     tetengo_trie_trieIterator_destroy(p_iterator);
 }
+
+const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* const p_trie, const char* const key_prefix)
+{
+    const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
+    auto              p_subtrie = p_cpp_trie->subtrie(key_prefix);
+    return reinterpret_cast<tetengo_trie_trie*>(p_subtrie.release());
+}

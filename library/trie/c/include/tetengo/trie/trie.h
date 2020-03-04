@@ -149,6 +149,17 @@ tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_t
 */
 void tetengo_trie_trie_destroyIterator(tetengo_trie_trieIterator* p_iterator);
 
+/*!
+    \brief Creates a subtrie.
+
+    \param p_trie     A pointer to a trie.
+    \param key_prefix A key prefix.
+
+    \return A pointer to a subtrie.
+            Or NULL when the trie does not have the given key prefix.
+*/
+const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* p_trie, const char* key_prefix);
+
 
 #if defined(__cplusplus)
 }
