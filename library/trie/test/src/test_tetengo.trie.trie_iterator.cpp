@@ -274,7 +274,6 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         end_copy_detection();
     }
 
-
     {
         tetengo_trie_trie* const p_trie = tetengo_trie_trie_create(
             nullptr,
@@ -297,7 +296,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         }
         BOOST_SCOPE_EXIT_END;
 
-        BOOST_TEST(!tetengo_trie_trieIterator_hasMore(p_iterator));
+        BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_iterator));
     }
     {
         const int                                kumamoto_value = 42;
@@ -326,15 +325,15 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         }
         BOOST_SCOPE_EXIT_END;
 
-        BOOST_TEST(tetengo_trie_trieIterator_hasMore(p_iterator));
+        BOOST_TEST(tetengo_trie_trieIterator_hasNext(p_iterator));
 
         tetengo_trie_trieIterator_next(p_iterator);
 
-        BOOST_TEST(tetengo_trie_trieIterator_hasMore(p_iterator));
+        BOOST_TEST(tetengo_trie_trieIterator_hasNext(p_iterator));
 
         tetengo_trie_trieIterator_next(p_iterator);
 
-        BOOST_TEST(!tetengo_trie_trieIterator_hasMore(p_iterator));
+        BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_iterator));
     }
 }
 
@@ -396,7 +395,7 @@ BOOST_AUTO_TEST_CASE(increment)
         }
         BOOST_SCOPE_EXIT_END;
 
-        BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasMore(p_iterator));
+        BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_iterator));
         {
             const auto* const p_value = tetengo_trie_trieIterator_get(p_iterator);
             BOOST_REQUIRE(p_value);
@@ -405,7 +404,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         tetengo_trie_trieIterator_next(p_iterator);
 
-        BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasMore(p_iterator));
+        BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_iterator));
         {
             const auto* const p_value = tetengo_trie_trieIterator_get(p_iterator);
             BOOST_REQUIRE(p_value);
@@ -414,7 +413,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         tetengo_trie_trieIterator_next(p_iterator);
 
-        BOOST_TEST(!tetengo_trie_trieIterator_hasMore(p_iterator));
+        BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_iterator));
     }
 }
 

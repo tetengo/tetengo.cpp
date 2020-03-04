@@ -51,7 +51,7 @@ const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_ite
     \retval non-zero When the iterator will return more elements.
     \retval 0        Otherwise.
 */
-int tetengo_trie_trieIterator_hasMore(const tetengo_trie_trieIterator* p_iterator);
+int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator* p_iterator);
 
 /*!
     \brief Increments the iterator.

@@ -14,5 +14,5 @@ EXPORTS
     tetengo_trie_trieIterator_create
     tetengo_trie_trieIterator_destroy
     tetengo_trie_trieIterator_get
-    tetengo_trie_trieIterator_hasMore
+    tetengo_trie_trieIterator_hasNext
     tetengo_trie_trieIterator_next
