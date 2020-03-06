@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.hpp" />
+    <ClInclude Include="include\tetengo\trie\storage.h" />
     <ClInclude Include="include\tetengo\trie\trie.h" />
     <ClInclude Include="include\tetengo\trie\trieIterator.h" />
   </ItemGroup>
@@ -120,6 +121,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo_trie_storage.cpp" />
     <ClCompile Include="src\tetengo_trie_trie.cpp" />
     <ClCompile Include="src\tetengo_trie_trieIterator.cpp" />
   </ItemGroup>

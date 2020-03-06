@@ -4,6 +4,7 @@
 headers =
 
 sources = \
+    tetengo_trie_storage.cpp \
     tetengo_trie_trie.cpp \
     tetengo_trie_trieIterator.cpp
 
