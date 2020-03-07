@@ -69,6 +69,20 @@ namespace
             std::string{ std::begin(serialized_broken), std::end(serialized_broken) });
     }
 
+#if 0
+    std::filesystem::path temporary_file_path(const std::vector<char>& initial_content)
+    {
+        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.memory_storage";
+
+        {
+            std::ofstream stream{ path, std::ios_base::binary };
+            stream.write(initial_content.data(), initial_content.size());
+        }
+
+        return path;
+    }
+#endif
+
 
 }
 

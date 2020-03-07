@@ -10,6 +10,10 @@
 extern "C" {
 #endif
 
+#if defined(_WIN32)
+#include <wchar.h>
+#endif
+
 
 /*!
     \brief A storage.
@@ -17,11 +21,22 @@ extern "C" {
 struct tetengo_trie_storage;
 
 /*!
+    \brief A path character type.
+*/
+#if defined(_WIN32)
+typedef wchar_t path_character_type;
+#else
+typedef char path_character_type;
+#endif
+
+/*!
     \brief Creates a memory storage.
 
-    \return A pointer to a memory storage.
+    \param path A file path in which content is stored.
+
+    \return A pointer to a memory storage. Or NULL when content cannot be loaded from the path.
 */
-tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage();
+tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_character_type* path);
 
 /*!
     \brief Destroys a storage.
