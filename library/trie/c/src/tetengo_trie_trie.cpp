@@ -56,23 +56,23 @@ tetengo_trie_trie* tetengo_trie_trie_create(
         },
         [done_observer, p_done_observer_context]() { done_observer(p_done_observer_context); }
     };
-    auto p_trie = std::make_unique<trie_type>(
+    auto p_cpp_trie = std::make_unique<trie_type>(
         elements.begin(),
         elements.end(),
         tetengo::trie::default_serializer<std::string_view>{},
         observer_set,
         double_array_density_factor);
 
-    auto p_instance = std::make_unique<tetengo_trie_trie>(p_trie.release(), element_value_size);
+    auto p_instance = std::make_unique<tetengo_trie_trie>(p_cpp_trie.release(), element_value_size);
     return p_instance.release();
 }
 
 void tetengo_trie_trie_destroy(const tetengo_trie_trie* const p_trie)
 {
-    const std::unique_ptr<const tetengo_trie_trie> p_unique{ p_trie };
-    if (p_unique)
+    const std::unique_ptr<const tetengo_trie_trie> p_instance{ p_trie };
+    if (p_instance)
     {
-        const std::unique_ptr<trie_type> p_cpp_trie{ p_unique->p_cpp_trie };
+        const std::unique_ptr<trie_type> p_cpp_trie{ p_instance->p_cpp_trie };
     }
 }
 
