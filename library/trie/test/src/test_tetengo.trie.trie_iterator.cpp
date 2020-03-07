@@ -153,6 +153,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
+            sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
             tetengo_trie_trie_nullDoneObserver,
@@ -205,6 +206,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
+            sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
             tetengo_trie_trie_nullDoneObserver,
@@ -275,6 +277,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         const auto* const p_trie = tetengo_trie_trie_create(
             nullptr,
             0,
+            sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
             tetengo_trie_trie_nullDoneObserver,
@@ -304,6 +307,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
+            sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
             tetengo_trie_trie_nullDoneObserver,
@@ -374,6 +378,7 @@ BOOST_AUTO_TEST_CASE(increment)
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
             elements.size(),
+            sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
             tetengo_trie_trie_nullDoneObserver,

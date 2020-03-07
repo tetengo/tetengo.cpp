@@ -26,6 +26,9 @@
     <ClInclude Include="include\tetengo\trie\storage.h">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
+    <ClInclude Include="src\tetengo_trie_trie.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">

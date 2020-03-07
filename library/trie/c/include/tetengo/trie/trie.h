@@ -69,6 +69,7 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor();
 
     \param p_elements                  A pointer to the first element.
     \param element_count               An element count.
+    \param element_value_size          An element value size.
     \param adding_observer             An adding observer.
     \param p_adding_observer_context   A pointer to the adding observer context.
     \param done_observer               A done observer.
@@ -80,6 +81,7 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor();
 tetengo_trie_trie* tetengo_trie_trie_create(
     const tetengo_trie_trie_element_t* p_elements,
     size_t                             element_count,
+    size_t                             element_value_size,
     tetengo_trie_trie_addingObserver_t adding_observer,
     void*                              p_adding_observer_context,
     tetengo_trie_trie_doneObserver_t   done_observer,

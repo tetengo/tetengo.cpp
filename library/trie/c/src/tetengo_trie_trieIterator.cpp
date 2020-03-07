@@ -6,7 +6,6 @@
 
 #include <iterator>
 #include <memory>
-#include <string_view>
 #include <utility>
 
 #include <boost/iterator/iterator_facade.hpp>
@@ -15,21 +14,15 @@
 #include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
 
-struct tetengo_trie_trie;
+#include "tetengo_trie_trie.hpp"
+
 struct tetengo_trie_trieIterator;
-
-
-namespace
-{
-    using trie_type = tetengo::trie::trie<std::string_view, const void*>;
-}
 
 
 tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_trie* const p_trie)
 {
-    const auto* const p_cpp_trie = reinterpret_cast<const trie_type*>(p_trie);
-    auto              p_cpp_iterator_pair = std::make_unique<std::pair<trie_type::iterator, trie_type::iterator>>(
-        std::begin(*p_cpp_trie), std::end(*p_cpp_trie));
+    auto p_cpp_iterator_pair = std::make_unique<std::pair<trie_type::iterator, trie_type::iterator>>(
+        std::begin(*p_trie->p_cpp_trie), std::end(*p_trie->p_cpp_trie));
     return reinterpret_cast<tetengo_trie_trieIterator*>(p_cpp_iterator_pair.release());
 }
 

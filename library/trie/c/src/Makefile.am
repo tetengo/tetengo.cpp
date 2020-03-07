@@ -1,7 +1,8 @@
 # Automake Settings
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    tetengo_trie_trie.hpp
 
 sources = \
     tetengo_trie_storage.cpp \
