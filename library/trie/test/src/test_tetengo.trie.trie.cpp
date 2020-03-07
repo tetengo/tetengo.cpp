@@ -93,13 +93,13 @@ namespace
 
     void adding_observer(const char* const key, void* const context)
     {
-        std::vector<std::string>* const p_added_serialized_keys = reinterpret_cast<std::vector<std::string>*>(context);
+        std::vector<std::string>* const p_added_serialized_keys = static_cast<std::vector<std::string>*>(context);
         p_added_serialized_keys->push_back(key);
     }
 
     void done_observer(void* const context)
     {
-        bool* const p_done = reinterpret_cast<bool*>(context);
+        bool* const p_done = static_cast<bool*>(context);
         *p_done = true;
     }
 
@@ -704,7 +704,7 @@ BOOST_AUTO_TEST_CASE(find)
 
         const auto* const p_found = tetengo_trie_trie_find(p_trie, "Kumamoto");
         BOOST_REQUIRE(p_found);
-        BOOST_TEST(*reinterpret_cast<const int*>(p_found) == kumamoto_value);
+        BOOST_TEST(*static_cast<const int*>(p_found) == kumamoto_value);
     }
 }
 
@@ -949,13 +949,11 @@ BOOST_AUTO_TEST_CASE(subtrie)
             BOOST_SCOPE_EXIT_END;
 
             BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
-            BOOST_TEST(
-                *reinterpret_cast<const int*>(tetengo_trie_trieIterator_get(p_subtrie_iterator)) == tamana_value);
+            BOOST_TEST(*static_cast<const int*>(tetengo_trie_trieIterator_get(p_subtrie_iterator)) == tamana_value);
             tetengo_trie_trieIterator_next(p_subtrie_iterator);
 
             BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
-            BOOST_TEST(
-                *reinterpret_cast<const int*>(tetengo_trie_trieIterator_get(p_subtrie_iterator)) == tamarai_value);
+            BOOST_TEST(*static_cast<const int*>(tetengo_trie_trieIterator_get(p_subtrie_iterator)) == tamarai_value);
             tetengo_trie_trieIterator_next(p_subtrie_iterator);
 
             BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
