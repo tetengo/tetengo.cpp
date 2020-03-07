@@ -44,11 +44,15 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     void* const                              p_done_observer_context,
     const size_t                             double_array_density_factor)
 {
-    std::vector<std::pair<std::string_view, const void*>> elements{};
+    std::vector<std::pair<std::string_view, std::vector<char>>> elements{};
     elements.reserve(element_count);
-    std::transform(p_elements, p_elements + element_count, std::back_inserter(elements), [](const auto& e) {
-        return std::make_pair(e.key, e.p_value);
-    });
+    std::transform(
+        p_elements, p_elements + element_count, std::back_inserter(elements), [element_value_size](const auto& e) {
+            return std::make_pair(
+                e.key,
+                std::vector<char>{ static_cast<const char*>(e.p_value),
+                                   static_cast<const char*>(e.p_value) + element_value_size });
+        });
 
     const trie_type::building_observer_set_type observer_set{
         [adding_observer, p_adding_observer_context](const std::string_view& key) {
@@ -93,7 +97,12 @@ int tetengo_trie_trie_contains(const tetengo_trie_trie* const p_trie, const char
 
 const void* tetengo_trie_trie_find(const tetengo_trie_trie* const p_trie, const char* const key)
 {
-    return p_trie->p_cpp_trie->find(key);
+    const auto* const p_found = p_trie->p_cpp_trie->find(key);
+    if (!p_found)
+    {
+        return nullptr;
+    }
+    return p_found->data();
 }
 
 tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_trie* p_trie)

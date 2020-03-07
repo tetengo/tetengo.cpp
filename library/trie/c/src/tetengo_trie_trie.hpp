@@ -8,13 +8,14 @@
 #define TETENGO_TRIE_TRIE_HPP_
 
 #include <string_view>
+#include <vector>
 
 #include <stddef.h>
 
 #include <tetengo/trie/trie.hpp>
 
 
-using trie_type = tetengo::trie::trie<std::string_view, const void*>;
+using trie_type = tetengo::trie::trie<std::string_view, std::vector<char>>;
 
 struct tetengo_trie_trie
 {

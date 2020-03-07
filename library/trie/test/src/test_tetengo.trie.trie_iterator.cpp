@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
 
         const auto* const p_value = tetengo_trie_trieIterator_get(p_iterator);
         BOOST_REQUIRE(p_value);
-        BOOST_TEST(p_value == &kumamoto_value);
+        BOOST_TEST(*reinterpret_cast<const int*>(p_value) == kumamoto_value);
     }
 }
 
@@ -401,7 +401,7 @@ BOOST_AUTO_TEST_CASE(increment)
         {
             const auto* const p_value = tetengo_trie_trieIterator_get(p_iterator);
             BOOST_REQUIRE(p_value);
-            BOOST_TEST(p_value == &kumamoto_value);
+            BOOST_TEST(*reinterpret_cast<const int*>(p_value) == kumamoto_value);
         }
 
         tetengo_trie_trieIterator_next(p_iterator);
@@ -410,7 +410,7 @@ BOOST_AUTO_TEST_CASE(increment)
         {
             const auto* const p_value = tetengo_trie_trieIterator_get(p_iterator);
             BOOST_REQUIRE(p_value);
-            BOOST_TEST(p_value == &tamana_value);
+            BOOST_TEST(*reinterpret_cast<const int*>(p_value) == tamana_value);
         }
 
         tetengo_trie_trieIterator_next(p_iterator);

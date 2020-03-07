@@ -7,6 +7,7 @@
 #include <iterator>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include <boost/iterator/iterator_facade.hpp>
 
@@ -47,7 +48,7 @@ void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator* const p_
 
 const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_iterator)
 {
-    return *p_iterator->p_cpp_iterator_pair->first;
+    return p_iterator->p_cpp_iterator_pair->first->data();
 }
 
 int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator* p_iterator)
