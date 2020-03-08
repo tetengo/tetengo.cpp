@@ -20,30 +20,25 @@
 
 struct tetengo_trie_trieIterator
 {
-    std::pair<trie_type::iterator, trie_type::iterator>* p_cpp_iterator_pair;
+    std::unique_ptr<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>> p_cpp_iterator_pair;
 
-    tetengo_trie_trieIterator(std::pair<trie_type::iterator, trie_type::iterator>* const p_cpp_iterator_pair) :
-    p_cpp_iterator_pair{ p_cpp_iterator_pair }
+    tetengo_trie_trieIterator(
+        std::unique_ptr<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>>&& p_cpp_iterator_pair) :
+    p_cpp_iterator_pair{ std::move(p_cpp_iterator_pair) }
     {}
 };
 
 tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_trie* const p_trie)
 {
-    auto p_cpp_iterator_pair = std::make_unique<std::pair<trie_type::iterator, trie_type::iterator>>(
+    auto p_cpp_iterator_pair = std::make_unique<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>>(
         std::begin(*p_trie->p_cpp_trie), std::end(*p_trie->p_cpp_trie));
-    auto p_instance = std::make_unique<tetengo_trie_trieIterator>(p_cpp_iterator_pair.release());
+    auto p_instance = std::make_unique<tetengo_trie_trieIterator>(std::move(p_cpp_iterator_pair));
     return p_instance.release();
 }
 
 void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator* const p_iterator)
 {
     const std::unique_ptr<const tetengo_trie_trieIterator> p_instance{ p_iterator };
-    if (p_instance)
-    {
-        const std::unique_ptr<std::pair<trie_type::iterator, trie_type::iterator>> p_cpp_iterator_pair{
-            p_instance->p_cpp_iterator_pair
-        };
-    }
 }
 
 const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_iterator)

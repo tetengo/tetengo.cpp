@@ -7,7 +7,9 @@
 #if !defined(TETENGO_TRIE_TRIE_HPP_)
 #define TETENGO_TRIE_TRIE_HPP_
 
+#include <memory>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include <stddef.h>
@@ -15,16 +17,15 @@
 #include <tetengo/trie/trie.hpp>
 
 
-using trie_type = tetengo::trie::trie<std::string_view, std::vector<char>>;
+using cpp_trie_type = tetengo::trie::trie<std::string_view, std::vector<char>>;
 
 struct tetengo_trie_trie
 {
-    trie_type* p_cpp_trie;
-    size_t     element_value_size;
+    std::unique_ptr<cpp_trie_type> p_cpp_trie;
+    size_t                     element_value_size;
 
-    tetengo_trie_trie(trie_type* const p_cpp_trie, const size_t element_value_size) :
-    p_cpp_trie{ p_cpp_trie },
-        element_value_size{ element_value_size }
+    tetengo_trie_trie(std::unique_ptr<cpp_trie_type>&& p_cpp_trie, const size_t element_value_size) :
+    p_cpp_trie{ std::move(p_cpp_trie) }, element_value_size{ element_value_size }
     {}
 };
 
