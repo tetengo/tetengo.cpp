@@ -29,6 +29,9 @@
     <ClInclude Include="src\tetengo_trie_trie.hpp">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\tetengo_trie_storage.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">

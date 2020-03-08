@@ -115,6 +115,7 @@
     <ClInclude Include="include\tetengo\trie\storage.h" />
     <ClInclude Include="include\tetengo\trie\trie.h" />
     <ClInclude Include="include\tetengo\trie\trieIterator.h" />
+    <ClInclude Include="src\tetengo_trie_storage.hpp" />
     <ClInclude Include="src\tetengo_trie_trie.hpp" />
   </ItemGroup>
   <ItemGroup>

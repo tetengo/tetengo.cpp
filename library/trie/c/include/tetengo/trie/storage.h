@@ -14,6 +14,8 @@ extern "C" {
 #include <wchar.h>
 #endif
 
+struct tetengo_trie_trie;
+
 
 /*!
     \brief A storage.
@@ -28,6 +30,15 @@ typedef wchar_t path_character_type;
 #else
 typedef char path_character_type;
 #endif
+
+/*!
+    \brief Creates a storage.
+
+    \param p_trie A pointer to a trie.
+
+    \return A pointer to a storage.
+*/
+tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie* p_trie);
 
 /*!
     \brief Creates a memory storage.

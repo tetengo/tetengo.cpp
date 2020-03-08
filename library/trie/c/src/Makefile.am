@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
+    tetengo_trie_storage.hpp \
     tetengo_trie_trie.hpp
 
 sources = \

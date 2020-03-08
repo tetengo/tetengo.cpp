@@ -1008,7 +1008,32 @@ BOOST_AUTO_TEST_CASE(get_storage)
             std::begin(storage_serialized), std::end(storage_serialized), std::begin(serialized), std::end(serialized));
     }
 
-    // TODO: subtries checks
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        const int                                tamarai_value = 35;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value },
+                                                           { "Tamarai", &tamarai_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
+        BOOST_TEST(p_storage);
+    }
 }
 
 

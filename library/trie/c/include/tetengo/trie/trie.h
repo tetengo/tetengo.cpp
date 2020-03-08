@@ -12,6 +12,7 @@ extern "C" {
 
 #include <stddef.h>
 
+struct tetengo_trie_storage;
 struct tetengo_trie_trieIterator;
 
 
@@ -161,6 +162,15 @@ void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterat
             Or NULL when the trie does not have the given key prefix.
 */
 const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* p_trie, const char* key_prefix);
+
+/*!
+    \brief Returns the pointer to the storage.
+
+    \param p_trie A pointer to a trie.
+
+    \return The pointer to the storage.
+*/
+const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie* p_trie);
 
 
 #if defined(__cplusplus)

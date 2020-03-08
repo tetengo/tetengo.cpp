@@ -12,6 +12,7 @@ EXPORTS
     tetengo_trie_trie_createIterator
     tetengo_trie_trie_destroyIterator
     tetengo_trie_trie_subtrie
+    tetengo_trie_trie_getStorage
     tetengo_trie_trieIterator_create
     tetengo_trie_trieIterator_destroy
     tetengo_trie_trieIterator_get

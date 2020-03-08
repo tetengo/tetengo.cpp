@@ -16,6 +16,7 @@
 #include <stddef.h>
 
 #include <tetengo/trie/default_serializer.hpp>
+#include <tetengo/trie/storage.h>
 #include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trieIterator.h>
@@ -120,4 +121,14 @@ const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* cons
     }
     auto p_instance = std::make_unique<tetengo_trie_trie>(std::move(p_subtrie), p_trie->element_value_size);
     return p_instance.release();
+}
+
+const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie* p_trie)
+{
+    if (!p_trie->p_storage)
+    {
+        const_cast<tetengo_trie_trie*>(p_trie)->p_storage =
+            std::unique_ptr<tetengo_trie_storage>{ tetengo_trie_storage_createStorage(p_trie) };
+    }
+    return p_trie->p_storage.get();
 }
