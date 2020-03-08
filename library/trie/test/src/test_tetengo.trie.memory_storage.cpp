@@ -205,17 +205,45 @@ BOOST_AUTO_TEST_CASE(size)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::memory_storage storage_{};
-    BOOST_TEST(storage_.size() == 0U);
+    {
+        tetengo::trie::memory_storage storage_{};
+        BOOST_TEST(storage_.size() == 0U);
 
-    storage_.add_value_at(24, std::make_any<std::string>("hoge"));
-    BOOST_TEST(storage_.size() == 25U);
+        storage_.add_value_at(24, std::make_any<std::string>("hoge"));
+        BOOST_TEST(storage_.size() == 25U);
 
-    storage_.add_value_at(42, std::make_any<std::string>("fuga"));
-    BOOST_TEST(storage_.size() == 43U);
+        storage_.add_value_at(42, std::make_any<std::string>("fuga"));
+        BOOST_TEST(storage_.size() == 43U);
 
-    storage_.add_value_at(0, std::make_any<std::string>("piyo"));
-    BOOST_TEST(storage_.size() == 43U);
+        storage_.add_value_at(0, std::make_any<std::string>("piyo"));
+        BOOST_TEST(storage_.size() == 43U);
+    }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
+
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(filling_rate)

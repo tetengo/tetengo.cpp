@@ -10,6 +10,7 @@
 extern "C" {
 #endif
 
+#include <stddef.h>
 #if defined(_WIN32)
 #include <wchar.h>
 #endif
@@ -55,6 +56,15 @@ tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_charac
     \param p_storage A pointer to a storage.
 */
 void tetengo_trie_storage_destroy(const tetengo_trie_storage* p_storage);
+
+/*!
+    \brief Returns the size.
+
+    \param p_storage A pointer to a storage.
+
+    \return The size.
+*/
+size_t tetengo_trie_storage_size(const tetengo_trie_storage* p_storage);
 
 
 #if defined(__cplusplus)
