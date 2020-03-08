@@ -22,7 +22,7 @@ struct tetengo_trie_trieIterator
 {
     std::unique_ptr<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>> p_cpp_iterator_pair;
 
-    tetengo_trie_trieIterator(
+    explicit tetengo_trie_trieIterator(
         std::unique_ptr<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>>&& p_cpp_iterator_pair) :
     p_cpp_iterator_pair{ std::move(p_cpp_iterator_pair) }
     {}

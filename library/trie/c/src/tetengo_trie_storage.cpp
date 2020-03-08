@@ -4,7 +4,10 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <any>
+#include <fstream>
 #include <memory>
+#include <vector>
 
 #include <stddef.h>
 
@@ -34,10 +37,17 @@ void tetengo_trie_storage_destroy(const tetengo_trie_storage* const p_storage)
 
 size_t tetengo_trie_storage_size(const tetengo_trie_storage* const p_storage)
 {
-    return p_storage->p_cpp_storage()->size();
+    return p_storage->p_cpp_storage->size();
 }
 
 double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* const p_storage)
 {
-    return p_storage->p_cpp_storage()->filling_rate();
+    return p_storage->p_cpp_storage->filling_rate();
+}
+
+void tetengo_trie_storage_serialize(const tetengo_trie_storage* const p_storage, const path_character_type* const path)
+{
+    std::ofstream stream{ path, std::ios_base::binary };
+    p_storage->p_cpp_storage->serialize(
+        stream, [](const std::any& value) { return *std::any_cast<std::vector<char>>(&value); });
 }

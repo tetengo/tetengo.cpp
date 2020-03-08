@@ -75,6 +75,14 @@ size_t tetengo_trie_storage_size(const tetengo_trie_storage* p_storage);
 */
 double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* p_storage);
 
+/*!
+    \brief Serializes the storage.
+
+    \param p_storage A pointer to a storage.
+    \param path      A file path.
+*/
+void tetengo_trie_storage_serialize(const tetengo_trie_storage* p_storage, const path_character_type* path);
+
 
 #if defined(__cplusplus)
 }

@@ -127,8 +127,9 @@ const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie
 {
     if (!p_trie->p_storage)
     {
-        const_cast<tetengo_trie_trie*>(p_trie)->p_storage =
-            std::unique_ptr<tetengo_trie_storage>{ tetengo_trie_storage_createStorage(p_trie) };
+        const_cast<tetengo_trie_trie*>(p_trie)->p_storage = std::unique_ptr<tetengo_trie_storage>{
+            tetengo_trie_storage_createStorage(p_trie),
+        };
     }
     return p_trie->p_storage.get();
 }
