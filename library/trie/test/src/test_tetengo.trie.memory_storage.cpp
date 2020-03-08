@@ -15,12 +15,15 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/trie.h>
 
 
 namespace
@@ -126,6 +129,35 @@ BOOST_AUTO_TEST_CASE(construction)
         };
         BOOST_CHECK_THROW(
             const tetengo::trie::memory_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
+    }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createStorage(p_trie);
+        BOOST_SCOPE_EXIT((p_storage))
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
 }
 

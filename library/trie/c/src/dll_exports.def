@@ -18,5 +18,6 @@ EXPORTS
     tetengo_trie_trieIterator_get
     tetengo_trie_trieIterator_hasNext
     tetengo_trie_trieIterator_next
+    tetengo_trie_storage_createStorage
     tetengo_trie_storage_createMemoryStorage
     tetengo_trie_storage_destroy
