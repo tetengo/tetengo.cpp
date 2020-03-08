@@ -66,6 +66,15 @@ void tetengo_trie_storage_destroy(const tetengo_trie_storage* p_storage);
 */
 size_t tetengo_trie_storage_size(const tetengo_trie_storage* p_storage);
 
+/*!
+    \brief Returns the filling rate.
+
+    \param p_storage A pointer to a storage.
+
+    \return The filling rate.
+*/
+double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* p_storage);
+
 
 #if defined(__cplusplus)
 }

@@ -250,23 +250,52 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::memory_storage storage_{};
-
-    for (auto i = static_cast<std::size_t>(0); i < 9; ++i)
     {
-        if (i % 3 == 0)
+        tetengo::trie::memory_storage storage_{};
+
+        for (auto i = static_cast<std::size_t>(0); i < 9; ++i)
         {
-            storage_.set_base_at(i, static_cast<std::int32_t>(i * i));
-            storage_.set_check_at(i, static_cast<std::uint8_t>(i));
+            if (i % 3 == 0)
+            {
+                storage_.set_base_at(i, static_cast<std::int32_t>(i * i));
+                storage_.set_check_at(i, static_cast<std::uint8_t>(i));
+            }
+            else
+            {
+                storage_.set_base_at(i, storage_.base_at(i));
+                storage_.set_check_at(i, storage_.check_at(i));
+            }
         }
-        else
-        {
-            storage_.set_base_at(i, storage_.base_at(i));
-            storage_.set_check_at(i, storage_.check_at(i));
-        }
+
+        BOOST_CHECK_CLOSE(storage_.filling_rate(), 3.0 / 9.0, 0.1);
     }
 
-    BOOST_CHECK_CLOSE(storage_.filling_rate(), 3.0 / 9.0, 0.1);
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
+
+        BOOST_TEST(0.0 < tetengo_trie_storage_fillingRate(p_storage));
+        BOOST_TEST(tetengo_trie_storage_fillingRate(p_storage) <= 1.0);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(base_check_array)
