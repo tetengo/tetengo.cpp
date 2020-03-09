@@ -75,6 +75,32 @@ namespace
             std::string{ std::begin(serialized_broken), std::end(serialized_broken) });
     }
 
+    const std::vector<char> serialized_c_if{
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x11), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xB6), to_c(0xFF), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x8D), to_c(0x4B), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x96), to_c(0x75), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xA3), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x98), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x97), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x93), to_c(0x6F), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x99), to_c(0x74), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x09), to_c(0x6F), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0xFE), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAA), to_c(0x54), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x9F), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAC), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xA0), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAE), to_c(0x6E), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x10), to_c(0x61), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x01), to_c(0xFE), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x2A), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x18), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+    };
+
     std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
     {
         const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.memory_storage";
@@ -164,6 +190,21 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_storage = tetengo_trie_storage_createStorage(p_trie);
+        BOOST_SCOPE_EXIT((p_storage))
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_c_if);
+        BOOST_SCOPE_EXIT((&file_path))
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
         BOOST_SCOPE_EXIT((p_storage))
         {
             tetengo_trie_storage_destroy(p_storage);

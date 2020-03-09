@@ -24,8 +24,10 @@ using cpp_trie_type = tetengo::trie::trie<std::string_view, std::vector<char>>;
 
 struct tetengo_trie_trie
 {
-    std::unique_ptr<cpp_trie_type>        p_cpp_trie;
-    size_t                                element_value_size;
+    std::unique_ptr<cpp_trie_type> p_cpp_trie;
+
+    size_t element_value_size;
+
     std::unique_ptr<tetengo_trie_storage> p_storage;
 
     tetengo_trie_trie(std::unique_ptr<cpp_trie_type>&& p_cpp_trie, const size_t element_value_size) :
