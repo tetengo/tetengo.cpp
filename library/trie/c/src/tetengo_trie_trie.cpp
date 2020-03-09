@@ -72,6 +72,21 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     return p_instance.release();
 }
 
+tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* const p_storage)
+{
+    if (!p_storage->p_cpp_storage_owned)
+    {
+        return nullptr;
+    }
+
+    auto       p_cpp_trie = std::make_unique<cpp_trie_type>(std::move(p_storage->p_cpp_storage_owned));
+    const auto element_value_size = p_storage->element_value_size;
+    tetengo_trie_storage_destroy(p_storage);
+
+    auto p_instance = std::make_unique<tetengo_trie_trie>(std::move(p_cpp_trie), element_value_size);
+    return p_instance.release();
+}
+
 void tetengo_trie_trie_destroy(const tetengo_trie_trie* const p_trie)
 {
     const std::unique_ptr<const tetengo_trie_trie> p_instance{ p_trie };

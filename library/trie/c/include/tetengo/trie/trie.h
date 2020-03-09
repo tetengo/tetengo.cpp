@@ -90,6 +90,18 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     size_t                             double_array_density_factor);
 
 /*!
+    \brief Creates a trie.
+
+    The ownership of the storage pointed by p_storage is transferred into the trie.
+    There is no need to destroy the storage after calling this function.
+
+    \param p_storage A pointer to a storage.
+
+    \return A pointer to a trie. Or NULL when p_storage does not own a storage but just refferes one.
+*/
+tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* p_storage);
+
+/*!
     \brief Destroys a trie.
 
     \param p_trie A pointer to a trie.

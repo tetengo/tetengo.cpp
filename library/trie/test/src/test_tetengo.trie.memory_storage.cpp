@@ -204,12 +204,30 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
-        BOOST_SCOPE_EXIT((p_storage))
+        auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
+
+        const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
+        BOOST_SCOPE_EXIT((&p_trie))
         {
-            tetengo_trie_storage_destroy(p_storage);
+            tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
+
+        {
+            const auto* const p_value = tetengo_trie_trie_find(p_trie, "Kumamoto");
+            BOOST_TEST_REQUIRE(p_value);
+            BOOST_TEST(*static_cast<const int*>(p_value) == 42);
+        }
+        {
+            const auto* const p_value = tetengo_trie_trie_find(p_trie, "Tamana");
+            BOOST_TEST_REQUIRE(p_value);
+            BOOST_TEST(*static_cast<const int*>(p_value) == 24);
+        }
+        {
+            const auto* const p_value = tetengo_trie_trie_find(p_trie, "Uto");
+            BOOST_TEST(!p_value);
+        }
     }
 }
 

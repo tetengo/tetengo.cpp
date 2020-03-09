@@ -5,12 +5,12 @@
 */
 
 #include <any>
+#include <cstddef>
 #include <fstream>
+#include <limits>
 #include <memory>
 #include <utility>
 #include <vector>
-
-#include <stddef.h>
 
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.h>
@@ -23,16 +23,24 @@
 
 tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie* const p_trie)
 {
-    auto p_instance = std::make_unique<tetengo_trie_storage>(&p_trie->p_cpp_trie->get_storage());
+    auto p_instance =
+        std::make_unique<tetengo_trie_storage>(&p_trie->p_cpp_trie->get_storage(), p_trie->element_value_size);
     return p_instance.release();
 }
 
 tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_character_type* const path)
 {
     std::ifstream stream{ path, std::ios_base::binary };
+    std::size_t   element_value_size = std::numeric_limits<std::size_t>::max();
     auto          p_storage = std::make_unique<tetengo::trie::memory_storage>(
-        stream, [](const std::vector<char>& serialized) { return serialized; });
-    auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_storage));
+        stream, [&element_value_size](const std::vector<char>& serialized) {
+            if (element_value_size == std::numeric_limits<std::size_t>::max())
+            {
+                element_value_size = serialized.size();
+            }
+            return serialized;
+        });
+    auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_storage), element_value_size);
     return p_instance.release();
 }
 

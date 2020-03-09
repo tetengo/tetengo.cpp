@@ -4,6 +4,7 @@ EXPORTS
     tetengo_trie_trie_nullDoneObserver
     tetengo_trie_trie_defaultDoubleArrayDensityFactor
     tetengo_trie_trie_create
+    tetengo_trie_trie_createWithStorage
     tetengo_trie_trie_destroy
     tetengo_trie_trie_empty
     tetengo_trie_trie_size
