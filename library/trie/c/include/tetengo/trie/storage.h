@@ -83,6 +83,15 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* p_storage);
 */
 void tetengo_trie_storage_serialize(const tetengo_trie_storage* p_storage, const path_character_type* path);
 
+/*!
+    \brief Clones a storage.
+
+    \param p_storage A pointer to a storage.
+
+    \return A pointer to a clone of the storage.
+*/
+tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* p_storage);
+
 
 #if defined(__cplusplus)
 }

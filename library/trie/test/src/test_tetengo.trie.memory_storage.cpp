@@ -16,6 +16,8 @@
 #include <string>
 #include <vector>
 
+#include <stddef.h>
+
 #include <boost/cstdint.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
@@ -530,18 +532,68 @@ BOOST_AUTO_TEST_CASE(clone)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::memory_storage storage_{};
+    {
+        tetengo::trie::memory_storage storage_{};
 
-    storage_.set_base_at(0, 42);
-    storage_.set_base_at(1, 0xFE);
-    storage_.set_check_at(1, 24);
+        storage_.set_base_at(0, 42);
+        storage_.set_base_at(1, 0xFE);
+        storage_.set_check_at(1, 24);
 
-    const auto p_clone = storage_.clone();
+        const auto p_clone = storage_.clone();
 
-    const auto base_check_array = p_clone->base_check_array();
+        const auto base_check_array = p_clone->base_check_array();
 
-    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x0000FE18 };
-    BOOST_TEST(base_check_array == expected);
+        static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x0000FE18 };
+        BOOST_TEST(base_check_array == expected);
+    }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
+        auto* const       p_cloned = tetengo_trie_storage_clone(p_storage);
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == tetengo_trie_storage_size(p_cloned));
+
+        const auto* const p_cloned_trie = tetengo_trie_trie_createWithStorage(p_cloned);
+        BOOST_SCOPE_EXIT((p_cloned_trie))
+        {
+            tetengo_trie_trie_destroy(p_cloned_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        {
+            const auto p_found = tetengo_trie_trie_find(p_cloned_trie, "Kumamoto");
+            BOOST_TEST_REQUIRE(p_found);
+            BOOST_TEST(*static_cast<const int*>(p_found) == kumamoto_value);
+        }
+        {
+            const auto p_found = tetengo_trie_trie_find(p_cloned_trie, "Tamana");
+            BOOST_TEST_REQUIRE(p_found);
+            BOOST_TEST(*static_cast<const int*>(p_found) == tamana_value);
+        }
+        {
+            const auto p_found = tetengo_trie_trie_find(p_cloned_trie, "Uto");
+            BOOST_TEST(!p_found);
+        }
+    }
 }
 
 

@@ -25,3 +25,4 @@ EXPORTS
     tetengo_trie_storage_size
     tetengo_trie_storage_fillingRate
     tetengo_trie_storage_serialize
+    tetengo_trie_storage_clone

@@ -65,3 +65,11 @@ void tetengo_trie_storage_serialize(const tetengo_trie_storage* const p_storage,
     p_storage->p_cpp_storage()->serialize(
         stream, [](const std::any& value) { return *std::any_cast<std::vector<char>>(&value); });
 }
+
+tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* const p_storage)
+{
+    auto p_clone = p_storage->p_cpp_storage()->clone();
+
+    auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_clone), p_storage->element_value_size);
+    return p_instance.release();
+}
