@@ -5,6 +5,8 @@
  */
 
 #include <any>
+#include <filesystem>
+#include <fstream> // IWYU pragma: keep
 #include <functional>
 #include <iterator>
 #include <memory>
@@ -24,6 +26,7 @@
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
@@ -101,6 +104,44 @@ namespace
     {
         bool* const p_done = static_cast<bool*>(context);
         *p_done = true;
+    }
+
+    const std::vector<char> serialized_c_if{
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x11), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xB6), to_c(0xFF), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x8D), to_c(0x4B), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x96), to_c(0x75), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xA3), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x98), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x97), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x93), to_c(0x6F), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x99), to_c(0x74), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x09), to_c(0x6F), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0xFE), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAA), to_c(0x54), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x9F), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAC), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xA0), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAE), to_c(0x6E), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x10), to_c(0x61), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x01), to_c(0xFE), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x2A), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x18), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+    };
+
+    std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
+    {
+        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.memory_storage";
+
+        {
+            std::ofstream stream{ path, std::ios_base::binary };
+            stream.write(initial_content.data(), initial_content.size());
+        }
+
+        return path;
     }
 
     bool& copy_detecting()
@@ -296,7 +337,52 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(done);
     }
     {
-        // TODO: creation with storage
+        const auto file_path = temporary_file_path(serialized_c_if);
+        BOOST_SCOPE_EXIT((&file_path))
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
+
+        const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
+        BOOST_SCOPE_EXIT((&p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_trie);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            adding_observer,
+            &added_serialized_keys,
+            done_observer,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_trie_storage_createStorage(p_trie);
+
+        const auto* const p_trie2 = tetengo_trie_trie_createWithStorage(p_storage);
+        BOOST_TEST(!p_trie2);
     }
 }
 

@@ -76,6 +76,7 @@ tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* con
 {
     if (!p_storage->p_cpp_storage_owned)
     {
+        tetengo_trie_storage_destroy(p_storage);
         return nullptr;
     }
 
