@@ -112,6 +112,11 @@ namespace tetengo::trie
             std::ostream&                                            output_stream,
             const std::function<std::vector<char>(const std::any&)>& value_serializer) const
         {
+            if (!output_stream)
+            {
+                throw std::ios_base::failure{ "Bad output_stream." };
+            }
+
             serialize_base_check_array(output_stream, m_base_check_array);
             serialize_value_array(output_stream, value_serializer, m_value_array);
         }

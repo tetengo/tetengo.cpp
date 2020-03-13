@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cassert>
+#include <cmath>
 #include <cstdint>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
@@ -199,6 +200,9 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
     }
     {
+        BOOST_TEST(!tetengo_trie_storage_createStorage(nullptr));
+    }
+    {
         const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT((&file_path))
         {
@@ -230,6 +234,9 @@ BOOST_AUTO_TEST_CASE(construction)
             const auto* const p_value = tetengo_trie_trie_find(p_trie, "Uto");
             BOOST_TEST(!p_value);
         }
+    }
+    {
+        BOOST_TEST(!tetengo_trie_storage_createMemoryStorage(nullptr));
     }
 }
 
@@ -316,6 +323,9 @@ BOOST_AUTO_TEST_CASE(size)
 
         BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
     }
+    {
+        BOOST_TEST(tetengo_trie_storage_size(nullptr) == static_cast<size_t>(-1));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(filling_rate)
@@ -367,6 +377,9 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 
         BOOST_TEST(0.0 < tetengo_trie_storage_fillingRate(p_storage));
         BOOST_TEST(tetengo_trie_storage_fillingRate(p_storage) <= 1.0);
+    }
+    {
+        BOOST_TEST(std::isnan(tetengo_trie_storage_fillingRate(nullptr)));
     }
 }
 
@@ -526,6 +539,44 @@ BOOST_AUTO_TEST_CASE(serialize)
                 std::begin(serialized), std::end(serialized), std::begin(expected), std::end(expected));
         }
     }
+    {
+        const auto file_path = temporary_file_path();
+        BOOST_SCOPE_EXIT((&file_path))
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo_trie_storage_serialize(nullptr, file_path.c_str());
+
+        const auto serialized = file_content(file_path);
+        BOOST_TEST(serialized.empty());
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
+
+        tetengo_trie_storage_serialize(p_storage, nullptr);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(clone)
@@ -593,6 +644,9 @@ BOOST_AUTO_TEST_CASE(clone)
             const auto p_found = tetengo_trie_trie_find(p_cloned_trie, "Uto");
             BOOST_TEST(!p_found);
         }
+    }
+    {
+        BOOST_TEST(!tetengo_trie_storage_clone(nullptr));
     }
 }
 

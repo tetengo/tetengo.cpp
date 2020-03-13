@@ -37,7 +37,7 @@ typedef char path_character_type;
 
     \param p_trie A pointer to a trie.
 
-    \return A pointer to a storage.
+    \return A pointer to a storage. Or NULL on error.
 */
 tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie* p_trie);
 
@@ -62,7 +62,7 @@ void tetengo_trie_storage_destroy(const tetengo_trie_storage* p_storage);
 
     \param p_storage A pointer to a storage.
 
-    \return The size.
+    \return The size. Or (size_t)-1 on error.
 */
 size_t tetengo_trie_storage_size(const tetengo_trie_storage* p_storage);
 
@@ -71,7 +71,7 @@ size_t tetengo_trie_storage_size(const tetengo_trie_storage* p_storage);
 
     \param p_storage A pointer to a storage.
 
-    \return The filling rate.
+    \return The filling rate. Or NAN on error.
 */
 double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* p_storage);
 
@@ -88,7 +88,7 @@ void tetengo_trie_storage_serialize(const tetengo_trie_storage* p_storage, const
 
     \param p_storage A pointer to a storage.
 
-    \return A pointer to a clone of the storage.
+    \return A pointer to a clone of the storage. Or NULL on error.
 */
 tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* p_storage);
 

@@ -9,6 +9,7 @@
 #include <fstream>
 #include <limits>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -23,53 +24,131 @@
 
 tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie* const p_trie)
 {
-    auto p_instance =
-        std::make_unique<tetengo_trie_storage>(&p_trie->p_cpp_trie->get_storage(), p_trie->element_value_size);
-    return p_instance.release();
+    try
+    {
+        if (!p_trie)
+        {
+            throw std::invalid_argument{ "p_trie is NULL." };
+        }
+
+        auto p_instance =
+            std::make_unique<tetengo_trie_storage>(&p_trie->p_cpp_trie->get_storage(), p_trie->element_value_size);
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
 }
 
 tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_character_type* const path)
 {
-    std::ifstream stream{ path, std::ios_base::binary };
-    std::size_t   element_value_size = std::numeric_limits<std::size_t>::max();
-    auto          p_storage = std::make_unique<tetengo::trie::memory_storage>(
-        stream, [&element_value_size](const std::vector<char>& serialized) {
-            if (element_value_size == std::numeric_limits<std::size_t>::max())
-            {
-                element_value_size = serialized.size();
-            }
-            return serialized;
-        });
-    auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_storage), element_value_size);
-    return p_instance.release();
+    try
+    {
+        if (!path)
+        {
+            throw std::invalid_argument{ "path is NULL." };
+        }
+
+        std::ifstream stream{ path, std::ios_base::binary };
+        std::size_t   element_value_size = std::numeric_limits<std::size_t>::max();
+        auto          p_storage = std::make_unique<tetengo::trie::memory_storage>(
+            stream, [&element_value_size](const std::vector<char>& serialized) {
+                if (element_value_size == std::numeric_limits<std::size_t>::max())
+                {
+                    element_value_size = serialized.size();
+                }
+                return serialized;
+            });
+        auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_storage), element_value_size);
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
 }
 
 void tetengo_trie_storage_destroy(const tetengo_trie_storage* const p_storage)
 {
-    const std::unique_ptr<const tetengo_trie_storage> p_instance{ p_storage };
+    try
+    {
+        const std::unique_ptr<const tetengo_trie_storage> p_instance{ p_storage };
+    }
+    catch (...)
+    {}
 }
 
 size_t tetengo_trie_storage_size(const tetengo_trie_storage* const p_storage)
 {
-    return p_storage->p_cpp_storage()->size();
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        return p_storage->p_cpp_storage()->size();
+    }
+    catch (...)
+    {
+        return static_cast<size_t>(-1);
+    }
 }
 
 double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* const p_storage)
 {
-    return p_storage->p_cpp_storage()->filling_rate();
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        return p_storage->p_cpp_storage()->filling_rate();
+    }
+    catch (...)
+    {
+        return std::numeric_limits<double>::signaling_NaN();
+    }
 }
 
 void tetengo_trie_storage_serialize(const tetengo_trie_storage* const p_storage, const path_character_type* const path)
 {
-    std::ofstream stream{ path, std::ios_base::binary };
-    p_storage->p_cpp_storage()->serialize(
-        stream, [](const std::any& value) { return *std::any_cast<std::vector<char>>(&value); });
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!path)
+        {
+            throw std::invalid_argument{ "path is NULL." };
+        }
+
+        std::ofstream stream{ path, std::ios_base::binary };
+        p_storage->p_cpp_storage()->serialize(
+            stream, [](const std::any& value) { return *std::any_cast<std::vector<char>>(&value); });
+    }
+    catch (...)
+    {}
 }
 
 tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* const p_storage)
 {
-    auto p_clone = p_storage->p_cpp_storage()->clone();
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        auto p_clone = p_storage->p_cpp_storage()->clone();
 
-    auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_clone), p_storage->element_value_size);
-    return p_instance.release();
+        auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_clone), p_storage->element_value_size);
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
 }
