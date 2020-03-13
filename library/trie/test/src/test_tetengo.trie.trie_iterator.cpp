@@ -172,6 +172,9 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
     }
+    {
+        BOOST_TEST(!tetengo_trie_trieIterator_create(nullptr));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(operator_dereference)
@@ -228,6 +231,9 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         const auto* const p_value = tetengo_trie_trieIterator_get(p_iterator);
         BOOST_REQUIRE(p_value);
         BOOST_TEST(*static_cast<const int*>(p_value) == kumamoto_value);
+    }
+    {
+        BOOST_TEST(!tetengo_trie_trieIterator_get(nullptr));
     }
 }
 
@@ -336,6 +342,9 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_iterator));
     }
+    {
+        BOOST_TEST(!tetengo_trie_trieIterator_hasNext(nullptr));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(increment)
@@ -416,6 +425,9 @@ BOOST_AUTO_TEST_CASE(increment)
         tetengo_trie_trieIterator_next(p_iterator);
 
         BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_iterator));
+    }
+    {
+        tetengo_trie_trieIterator_next(nullptr);
     }
 }
 

@@ -23,7 +23,7 @@ struct tetengo_trie_trieIterator;
 
     \param p_trie A pointer to a trie.
 
-    \return A pointer to an iterator.
+    \return A pointer to an iterator. Or NULL on error.
 */
 tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_trie* p_trie);
 
@@ -39,7 +39,7 @@ void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator* p_iterat
 
     \param p_iterator A pointer to a iterator.
 
-    \return The dereferenced value.
+    \return The dereferenced value. Or NULL on error.
 */
 const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_iterator);
 
