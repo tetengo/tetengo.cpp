@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/shared_storage.hpp>
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>
@@ -53,6 +54,34 @@ tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_charac
         std::ifstream stream{ path, std::ios_base::binary };
         std::size_t   element_value_size = std::numeric_limits<std::size_t>::max();
         auto          p_storage = std::make_unique<tetengo::trie::memory_storage>(
+            stream, [&element_value_size](const std::vector<char>& serialized) {
+                if (element_value_size == std::numeric_limits<std::size_t>::max())
+                {
+                    element_value_size = serialized.size();
+                }
+                return serialized;
+            });
+        auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_storage), element_value_size);
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+tetengo_trie_storage* tetengo_trie_storage_createSharedStorage(const path_character_type* const path)
+{
+    try
+    {
+        if (!path)
+        {
+            throw std::invalid_argument{ "path is NULL." };
+        }
+
+        std::ifstream stream{ path, std::ios_base::binary };
+        std::size_t   element_value_size = std::numeric_limits<std::size_t>::max();
+        auto          p_storage = std::make_unique<tetengo::trie::shared_storage>(
             stream, [&element_value_size](const std::vector<char>& serialized) {
                 if (element_value_size == std::numeric_limits<std::size_t>::max())
                 {

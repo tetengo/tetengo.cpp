@@ -51,6 +51,15 @@ tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie
 tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_character_type* path);
 
 /*!
+    \brief Creates a shared storage.
+
+    \param path A file path in which content is stored.
+
+    \return A pointer to a shared storage. Or NULL when content cannot be loaded from the path.
+*/
+tetengo_trie_storage* tetengo_trie_storage_createSharedStorage(const path_character_type* path);
+
+/*!
     \brief Destroys a storage.
 
     \param p_storage A pointer to a storage.
