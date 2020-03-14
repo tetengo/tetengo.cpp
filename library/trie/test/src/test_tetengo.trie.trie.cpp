@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
 
         auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
-        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2U);
 
         const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
         BOOST_SCOPE_EXIT((&p_trie))

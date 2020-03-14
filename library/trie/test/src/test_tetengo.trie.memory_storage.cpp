@@ -120,7 +120,7 @@ namespace
     {
         const auto        file_size = std::filesystem::file_size(path);
         std::ifstream     stream{ path, std::ios_base::binary };
-        std::vector<char> content(file_size, 0);
+        std::vector<char> content(static_cast<std::size_t>(file_size), 0);
         stream.read(content.data(), file_size);
         assert(stream.gcount() == static_cast<std::streamsize>(file_size));
         return content;
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
 
         auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
-        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2U);
 
         const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
         BOOST_SCOPE_EXIT((&p_trie))
@@ -321,7 +321,7 @@ BOOST_AUTO_TEST_CASE(size)
 
         const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
 
-        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2U);
     }
     {
         BOOST_TEST(tetengo_trie_storage_size(nullptr) == static_cast<size_t>(-1));
