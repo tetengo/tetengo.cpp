@@ -42,7 +42,7 @@ Clone the source from GitHub:
 
 Open the file `tetengo.sln` in the work tree.
 
-In Visual Studio, execute the menu command [Build]-[Build Solution].
+Execute the menu command [Build]-[Build Solution] in Visual Studio.
 
 You can "install" tetengo library. Open a command prompt and execute the batch
 file `install_tetengo_library.bat` in the directory `tools` in the top
@@ -53,9 +53,9 @@ files into your preferred place.
 > tools\install_tetengo_library.bat [your_preferred_path]
 ```
 
-To generate the documents, open a Command Prompt. Execute the command `doxygen`
-on the top directory of the work tree. Doxygen will output the documents into
-the directory `doc` in the work tree.
+To generate the documents, open a Command Prompt, and execute the command
+`doxygen` on the top directory of the work tree.
+Doxygen will output the documents into the directory `doc` in the work tree.
 
 ```bat
 > doxygen
@@ -90,7 +90,7 @@ Run the script `bootstrap.sh` to generate the script `configure`.
 ```shell-session
 $ ./bootstrap.sh
 ```
-Configure, build and install tetengo by the following commands.
+Configure, build and install tetengo by the following commands:
 
 ```shell-session
 $ ./configure
@@ -98,11 +98,11 @@ $ make
 $ sudo make install
 ```
 
-By default, tetengo will be installed in `/usr/local`.
+By default, tetengo will be installed in the directory `/usr/local`.
 To change the directory where tetengo is installed, specify the option
 `--prefix` to the script `configure`.
 
-To generate the documents, execute `make doc` command.
+To generate the documents, execute the command `make doc`:
 
 ```shell-session
 $ make doc
