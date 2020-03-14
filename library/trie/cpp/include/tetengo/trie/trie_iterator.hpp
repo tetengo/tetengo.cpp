@@ -62,6 +62,7 @@ namespace tetengo::trie
             \param another Another iterator.
 
             \retval true  When this iterator is equal to another.
+            \retval false Otherwise.
         */
         bool equal(const trie_iterator_impl& another) const;
 

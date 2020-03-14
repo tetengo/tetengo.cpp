@@ -2,7 +2,9 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    trie/double_array.h
+    trie/storage.h \
+    trie/trie.h \
+    trie/trieIterator.h
 
 extra_headers =
 

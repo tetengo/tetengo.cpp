@@ -56,12 +56,14 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '<[0-9a-z_/]+>'
     Priority: 0
-  - Regex: '<boost/.*'
+  - Regex: '<[0-9a-z]+\.h>'
     Priority: 1
-  - Regex: '<.*'
+  - Regex: '<boost/.*'
     Priority: 2
-  - Regex: '<tetengo/.*'
+  - Regex: '<.*'
     Priority: 3
+  - Regex: '<tetengo/.*'
+    Priority: 4
   - Regex: '.*'
     Priority: 99999
 IncludeIsMainRegex: ''

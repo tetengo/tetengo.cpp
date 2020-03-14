@@ -5,6 +5,8 @@
  */
 
 #include <any>
+#include <filesystem>
+#include <fstream> // IWYU pragma: keep
 #include <functional>
 #include <iterator>
 #include <memory>
@@ -15,16 +17,22 @@
 #include <utility>
 #include <vector>
 
+#include <stddef.h>
+
 #include <boost/core/ignore_unused.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
 
 
@@ -88,6 +96,55 @@ namespace
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
 
+    void adding_observer(const char* const key, void* const context)
+    {
+        std::vector<std::string>* const p_added_serialized_keys = static_cast<std::vector<std::string>*>(context);
+        p_added_serialized_keys->push_back(key);
+    }
+
+    void done_observer(void* const context)
+    {
+        bool* const p_done = static_cast<bool*>(context);
+        *p_done = true;
+    }
+
+    const std::vector<char> serialized_c_if{
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x11), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xB6), to_c(0xFF), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x8D), to_c(0x4B), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x96), to_c(0x75), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xA3), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x98), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x97), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x93), to_c(0x6F), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x99), to_c(0x74), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x09), to_c(0x6F), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0xFE), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAA), to_c(0x54), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0x9F), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAC), to_c(0x6D), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xA0), to_c(0x61), /*                                                            */
+        to_c(0xFF), to_c(0xFF), to_c(0xAE), to_c(0x6E), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x10), to_c(0x61), /*                                                            */
+        nul_byte(), nul_byte(), to_c(0x01), to_c(0xFE), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x2A), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
+        to_c(0x18), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+    };
+
+    std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
+    {
+        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.memory_storage";
+
+        {
+            std::ofstream stream{ path, std::ios_base::binary };
+            stream.write(initial_content.data(), initial_content.size());
+        }
+
+        return path;
+    }
 
     bool& copy_detecting()
     {
@@ -151,15 +208,25 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
     BOOST_TEST_PASSPOINT();
 
     tetengo::trie::trie<std::string, int>::null_building_observer_set();
+
+    tetengo_trie_trie_nullAddingObserver("hoge", nullptr);
+    tetengo_trie_trie_nullDoneObserver(nullptr);
 }
 
 BOOST_AUTO_TEST_CASE(default_double_array_density_factor)
 {
     BOOST_TEST_PASSPOINT();
 
-    using trie_type = tetengo::trie::trie<std::string, int>;
-    BOOST_TEST(
-        trie_type::default_double_array_density_factor() == tetengo::trie::double_array::default_density_factor());
+    {
+        using trie_type = tetengo::trie::trie<std::string, int>;
+        BOOST_TEST(
+            trie_type::default_double_array_density_factor() == tetengo::trie::double_array::default_density_factor());
+    }
+    {
+        BOOST_TEST(
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor() ==
+            tetengo::trie::double_array::default_density_factor());
+    }
 }
 
 BOOST_AUTO_TEST_CASE(construction)
@@ -242,6 +309,142 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage),
                                                                    tetengo::trie::default_serializer<std::string>{} };
     }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            adding_observer,
+            &added_serialized_keys,
+            done_observer,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2U);
+        BOOST_TEST(added_serialized_keys[0] == "Kumamoto");
+        BOOST_TEST(added_serialized_keys[1] == "Tamana");
+        BOOST_TEST(done);
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_c_if);
+        BOOST_SCOPE_EXIT((&file_path))
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
+        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2);
+
+        const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
+        BOOST_SCOPE_EXIT((&p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_trie);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            adding_observer,
+            &added_serialized_keys,
+            done_observer,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_trie_storage_createStorage(p_trie);
+
+        const auto* const p_trie2 = tetengo_trie_trie_createWithStorage(p_storage);
+        BOOST_TEST(!p_trie2);
+    }
+    {
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            nullptr,
+            1,
+            sizeof(int),
+            adding_observer,
+            &added_serialized_keys,
+            done_observer,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+
+        BOOST_TEST(!p_trie);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            nullptr,
+            &added_serialized_keys,
+            done_observer,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+
+        BOOST_TEST(!p_trie);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            adding_observer,
+            &added_serialized_keys,
+            nullptr,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+
+        BOOST_TEST(!p_trie);
+    }
+    {
+        const auto* const p_trie2 = tetengo_trie_trie_createWithStorage(nullptr);
+        BOOST_TEST(!p_trie2);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(empty)
@@ -290,6 +493,51 @@ BOOST_AUTO_TEST_CASE(empty)
 
         BOOST_TEST(!trie_.empty());
     }
+
+    {
+        const auto* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_trie_trie_empty(p_trie));
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(!tetengo_trie_trie_empty(p_trie));
+    }
+    {
+        BOOST_TEST(!tetengo_trie_trie_empty(nullptr));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(size)
@@ -337,6 +585,72 @@ BOOST_AUTO_TEST_CASE(size)
                                                                         std::make_move_iterator(std::end(content)) };
 
         BOOST_TEST(trie_.size() == 2U);
+    }
+
+    {
+        const auto* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_trie_trie_size(p_trie) == 0U);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_trie_trie_size(p_trie) == 1U);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_trie_trie_size(p_trie) == 2U);
+    }
+    {
+        BOOST_TEST(tetengo_trie_trie_size(nullptr) == static_cast<size_t>(-1));
     }
 }
 
@@ -387,6 +701,76 @@ BOOST_AUTO_TEST_CASE(contains)
                                                                         std::make_move_iterator(std::end(content)) };
 
         BOOST_TEST(trie_.contains("Kumamoto"));
+    }
+
+    {
+        const auto* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(!tetengo_trie_trie_contains(p_trie, "Kumamoto"));
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_trie_trie_contains(p_trie, "Kumamoto"));
+        BOOST_TEST(tetengo_trie_trie_contains(p_trie, "Tamana"));
+        BOOST_TEST(!tetengo_trie_trie_contains(p_trie, "Uto"));
+    }
+    {
+        BOOST_TEST(!tetengo_trie_trie_contains(nullptr, "Kumamoto"));
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(!tetengo_trie_trie_contains(p_trie, nullptr));
     }
 }
 
@@ -456,6 +840,79 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_REQUIRE(p_found);
         BOOST_TEST(*p_found == kumamoto1);
     }
+
+    {
+        const auto* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_found = tetengo_trie_trie_find(p_trie, "Kumamoto");
+        BOOST_TEST(!p_found);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_found = tetengo_trie_trie_find(p_trie, "Kumamoto");
+        BOOST_REQUIRE(p_found);
+        BOOST_TEST(*static_cast<const int*>(p_found) == kumamoto_value);
+    }
+    {
+        const auto* const p_found = tetengo_trie_trie_find(nullptr, "Kumamoto");
+        BOOST_TEST(!p_found);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_found = tetengo_trie_trie_find(p_trie, nullptr);
+        BOOST_TEST(!p_found);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(begin_end)
@@ -504,6 +961,66 @@ BOOST_AUTO_TEST_CASE(begin_end)
 
         boost::ignore_unused(std::begin(trie_));
         boost::ignore_unused(std::end(trie_));
+    }
+
+    {
+        const auto* const p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        BOOST_SCOPE_EXIT((p_iterator))
+        {
+            tetengo_trie_trie_destroyIterator(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_iterator);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
+        BOOST_SCOPE_EXIT((p_iterator))
+        {
+            tetengo_trie_trie_destroyIterator(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_iterator);
+    }
+    {
+        const auto* const p_iterator = tetengo_trie_trie_createIterator(nullptr);
+        BOOST_TEST(!p_iterator);
     }
 }
 
@@ -605,6 +1122,98 @@ BOOST_AUTO_TEST_CASE(subtrie)
         ++iterator_;
         BOOST_CHECK(iterator_ == std::end(*p_subtrie));
     }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        const int                                tamarai_value = 35;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value },
+                                                           { "Tamarai", &tamarai_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        {
+            const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Tama");
+            BOOST_SCOPE_EXIT((p_subtrie))
+            {
+                tetengo_trie_trie_destroy(p_subtrie);
+            }
+            BOOST_SCOPE_EXIT_END;
+
+            BOOST_TEST_REQUIRE(p_subtrie);
+
+            auto* const p_subtrie_iterator = tetengo_trie_trie_createIterator(p_subtrie);
+            BOOST_SCOPE_EXIT((p_subtrie_iterator))
+            {
+                tetengo_trie_trie_destroyIterator(p_subtrie_iterator);
+            }
+            BOOST_SCOPE_EXIT_END;
+
+            BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
+            BOOST_TEST(*static_cast<const int*>(tetengo_trie_trieIterator_get(p_subtrie_iterator)) == tamana_value);
+            tetengo_trie_trieIterator_next(p_subtrie_iterator);
+
+            BOOST_TEST_REQUIRE(tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
+            BOOST_TEST(*static_cast<const int*>(tetengo_trie_trieIterator_get(p_subtrie_iterator)) == tamarai_value);
+            tetengo_trie_trieIterator_next(p_subtrie_iterator);
+
+            BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_subtrie_iterator));
+        }
+        {
+            const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Uto");
+            BOOST_SCOPE_EXIT((p_subtrie))
+            {
+                tetengo_trie_trie_destroy(p_subtrie);
+            }
+            BOOST_SCOPE_EXIT_END;
+
+            BOOST_TEST(!p_subtrie);
+        }
+    }
+    {
+        const auto* const p_subtrie = tetengo_trie_trie_subtrie(nullptr, "Tama");
+        BOOST_TEST(!p_subtrie);
+    }
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        const int                                tamarai_value = 35;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value },
+                                                           { "Tamarai", &tamarai_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, nullptr);
+        BOOST_TEST(!p_subtrie);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(get_storage)
@@ -642,6 +1251,37 @@ BOOST_AUTO_TEST_CASE(get_storage)
 
         BOOST_CHECK_EQUAL_COLLECTIONS(
             std::begin(storage_serialized), std::end(storage_serialized), std::begin(serialized), std::end(serialized));
+    }
+
+    {
+        const int                                kumamoto_value = 42;
+        const int                                tamana_value = 24;
+        const int                                tamarai_value = 35;
+        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                           { "Tamana", &tamana_value },
+                                                           { "Tamarai", &tamarai_value } };
+
+        const auto* const p_trie = tetengo_trie_trie_create(
+            elements.data(),
+            elements.size(),
+            sizeof(int),
+            tetengo_trie_trie_nullAddingObserver,
+            nullptr,
+            tetengo_trie_trie_nullDoneObserver,
+            nullptr,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
+        BOOST_TEST(p_storage);
+    }
+    {
+        const auto* const p_storage = tetengo_trie_trie_getStorage(nullptr);
+        BOOST_TEST(!p_storage);
     }
 }
 

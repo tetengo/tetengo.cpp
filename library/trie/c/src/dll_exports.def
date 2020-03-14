@@ -1,4 +1,29 @@
 LIBRARY tetengo.trie.dll
 EXPORTS
-    tetengo_trie_doublearray_create  @1
-    tetengo_trie_doublearray_destroy @2
+    tetengo_trie_trie_nullAddingObserver
+    tetengo_trie_trie_nullDoneObserver
+    tetengo_trie_trie_defaultDoubleArrayDensityFactor
+    tetengo_trie_trie_create
+    tetengo_trie_trie_createWithStorage
+    tetengo_trie_trie_destroy
+    tetengo_trie_trie_empty
+    tetengo_trie_trie_size
+    tetengo_trie_trie_contains
+    tetengo_trie_trie_find
+    tetengo_trie_trie_createIterator
+    tetengo_trie_trie_destroyIterator
+    tetengo_trie_trie_subtrie
+    tetengo_trie_trie_getStorage
+    tetengo_trie_trieIterator_create
+    tetengo_trie_trieIterator_destroy
+    tetengo_trie_trieIterator_get
+    tetengo_trie_trieIterator_hasNext
+    tetengo_trie_trieIterator_next
+    tetengo_trie_storage_createStorage
+    tetengo_trie_storage_createMemoryStorage
+    tetengo_trie_storage_createSharedStorage
+    tetengo_trie_storage_destroy
+    tetengo_trie_storage_size
+    tetengo_trie_storage_fillingRate
+    tetengo_trie_storage_serialize
+    tetengo_trie_storage_clone
