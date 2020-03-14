@@ -77,7 +77,7 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor();
     \param p_done_observer_context     A pointer to the done observer context.
     \param double_array_density_factor A double array density factor.
 
-    \return A pointer to a trie.
+    \return A pointer to a trie. Or NULL on error.
 */
 tetengo_trie_trie* tetengo_trie_trie_create(
     const tetengo_trie_trie_element_t* p_elements,
@@ -97,7 +97,7 @@ tetengo_trie_trie* tetengo_trie_trie_create(
 
     \param p_storage A pointer to a storage.
 
-    \return A pointer to a trie. Or NULL when p_storage does not own a storage but just refferes one.
+    \return A pointer to a trie. Or NULL on error or when p_storage does not own a storage but just refferes one.
 */
 tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* p_storage);
 
@@ -123,7 +123,7 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie* p_trie);
 
     \param p_trie A pointer to a trie.
 
-    \return The size.
+    \return The size. Or (size_t)-1 on error.
 */
 size_t tetengo_trie_trie_size(const tetengo_trie_trie* p_trie);
 
@@ -144,7 +144,7 @@ int tetengo_trie_trie_contains(const tetengo_trie_trie* p_trie, const char* key)
     \param p_trie A pointer to a trie.
     \param key    A key.
 
-    \return A pointer to the value object. Or NULL when the trie does not have the given key.
+    \return A pointer to the value object. Or NULL on error or when the trie does not have the given key.
 */
 const void* tetengo_trie_trie_find(const tetengo_trie_trie* p_trie, const char* key);
 
@@ -153,7 +153,7 @@ const void* tetengo_trie_trie_find(const tetengo_trie_trie* p_trie, const char* 
 
     \param p_trie A pointer to a trie.
 
-    \return A pointer to an iterator.
+    \return A pointer to an iterator. Or NULL on error.
 */
 tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_trie* p_trie);
 
@@ -170,8 +170,7 @@ void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterat
     \param p_trie     A pointer to a trie.
     \param key_prefix A key prefix.
 
-    \return A pointer to a subtrie.
-            Or NULL when the trie does not have the given key prefix.
+    \return A pointer to a subtrie. Or NULL on error or when the trie does not have the given key prefix.
 */
 const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* p_trie, const char* key_prefix);
 
@@ -180,7 +179,7 @@ const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* p_tr
 
     \param p_trie A pointer to a trie.
 
-    \return The pointer to the storage.
+    \return The pointer to the storage. Or NULL on error.
 */
 const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie* p_trie);
 
