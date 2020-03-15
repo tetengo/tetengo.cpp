@@ -63,7 +63,7 @@ void tetengo_trie_trie_nullDoneObserver(void*);
 
     \return The default double array density factor.
 */
-size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor();
+size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor(void);
 
 /*!
     \brief Creates a trie.
