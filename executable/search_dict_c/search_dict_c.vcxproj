@@ -120,6 +120,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\library\trie\c\tetengo.trie.vcxproj">
+      <Project>{e14d072f-631b-4e87-bc03-57437306cd34}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
