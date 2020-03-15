@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.trie.cpp", "library
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tetengo.trie", "library\trie\test\test_tetengo.trie.vcxproj", "{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "search_dict_c", "executable\search_dict_c\search_dict_c.vcxproj", "{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -67,6 +69,14 @@ Global
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x64.Build.0 = Release|x64
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x86.ActiveCfg = Release|Win32
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}.Release|x86.Build.0 = Release|Win32
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Debug|x64.ActiveCfg = Debug|x64
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Debug|x64.Build.0 = Debug|x64
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Debug|x86.ActiveCfg = Debug|Win32
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Debug|x86.Build.0 = Debug|Win32
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Release|x64.ActiveCfg = Release|x64
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Release|x64.Build.0 = Release|x64
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Release|x86.ActiveCfg = Release|Win32
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +88,7 @@ Global
 		{E14D072F-631B-4E87-BC03-57437306CD34} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
 		{A755F6BF-9964-4608-A0C8-9F7557D14A09} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
 		{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB} = {61A0CE42-96A0-4578-A035-17D62CE4A691}
+		{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546} = {721A442D-34D8-457A-8D07-D21EB2C6A04C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1FDB91A-BB78-49E0-8D13-17726804EA86}

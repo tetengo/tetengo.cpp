@@ -16,6 +16,8 @@ AC_CONFIG_FILES([
     executable/make_dict/src/Makefile
     executable/search_dict/Makefile
     executable/search_dict/src/Makefile
+    executable/search_dict_c/Makefile
+    executable/search_dict_c/src/Makefile
     library/Makefile
     library/trie/Makefile
     library/trie/c/Makefile
