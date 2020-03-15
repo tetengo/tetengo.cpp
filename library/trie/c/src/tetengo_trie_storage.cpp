@@ -17,10 +17,11 @@
 #include <tetengo/trie/shared_storage.hpp>
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
 
 #include "tetengo_trie_storage.hpp"
-#include "tetengo_trie_trie.hpp"
+#include "tetengo_trie_trie.hpp" // IWYU pragma: keep
 
 
 tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie* const p_trie)

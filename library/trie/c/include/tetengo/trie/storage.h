@@ -15,13 +15,16 @@ extern "C" {
 #include <wchar.h>
 #endif
 
-struct tetengo_trie_trie;
 
+/*!
+    \brief A trie.
+*/
+typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
 
 /*!
     \brief A storage.
 */
-struct tetengo_trie_storage;
+typedef struct tetengo_trie_storage_tag tetengo_trie_storage;
 
 /*!
     \brief A path character type.

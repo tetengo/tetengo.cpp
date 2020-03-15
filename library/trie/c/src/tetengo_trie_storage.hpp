@@ -15,7 +15,7 @@
 #include <tetengo/trie/storage.hpp>
 
 
-struct tetengo_trie_storage
+struct tetengo_trie_storage_tag
 {
 private:
     const tetengo::trie::storage* p_cpp_storage_referred;
@@ -25,13 +25,13 @@ public:
 
     std::size_t element_value_size;
 
-    tetengo_trie_storage(const tetengo::trie::storage* const p_cpp_storage, const std::size_t element_value_size) :
+    tetengo_trie_storage_tag(const tetengo::trie::storage* const p_cpp_storage, const std::size_t element_value_size) :
     p_cpp_storage_referred{ p_cpp_storage },
         p_cpp_storage_owned{},
         element_value_size{ element_value_size }
     {}
 
-    tetengo_trie_storage(
+    tetengo_trie_storage_tag(
         std::unique_ptr<tetengo::trie::storage>&& p_cpp_storage,
         const std::size_t                         element_value_size) :
     p_cpp_storage_referred{},

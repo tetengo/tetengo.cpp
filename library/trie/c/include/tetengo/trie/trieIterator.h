@@ -10,13 +10,16 @@
 extern "C" {
 #endif
 
-struct tetengo_trie_trie;
 
+/*!
+    \brief A trie.
+*/
+typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
 
 /*!
     \brief A trie iterator.
 */
-struct tetengo_trie_trieIterator;
+typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
 
 /*!
     \brief Creates an iterator.
