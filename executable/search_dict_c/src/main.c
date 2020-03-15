@@ -157,20 +157,44 @@ int main(const int argc, char** const argv)
         return 1;
     }
 
-    const void* const p_value = tetengo_trie_trie_find(p_trie, "A");
-    if (p_value)
+    while (!feof(stdin))
     {
-        size_t       byte_offset = 0;
-        const size_t lex_span_count_ = lex_span_count((const char*)p_value, &byte_offset);
-        if (lex_span_count_ > 0)
+        printf(">> ");
+        char key[1024] = { 0 };
+        fgets(key, 1024, stdin);
+        size_t key_length = strlen(key);
+        if (key_length > 0 && key[key_length - 1] =='\n')
         {
-            lex_span_t* const p_lex_spans = malloc(sizeof(lex_span_t) * lex_span_count_);
-
-            to_array_of_lex_span((const char*)p_value, &byte_offset, p_lex_spans, lex_span_count_);
-
-            free(p_lex_spans);
+            key[key_length - 1] = '\0';
+            --key_length;
+        }
+        if (key_length == 0)
+        {
+            continue;
         }
 
+        const void* const p_found = tetengo_trie_trie_find(p_trie, key);
+        if (!p_found)
+        {
+            printf("ERROR: Not found.\n");
+            continue;
+        }
+
+        size_t       byte_offset = 0;
+        const size_t lex_span_count_ = lex_span_count((const char*)p_found, &byte_offset);
+        if (lex_span_count_ == 0)
+        {
+            continue;
+        }
+
+        lex_span_t* const p_lex_spans = malloc(sizeof(lex_span_t) * lex_span_count_);
+        to_array_of_lex_span((const char*)p_found, &byte_offset, p_lex_spans, lex_span_count_);
+        for (size_t i = 0; i < lex_span_count_; ++i)
+        {
+            printf("(%zd, %zd)\n", p_lex_spans[i].offset, p_lex_spans[i].length);
+        }
+
+        free(p_lex_spans);
     }
 
     free((void*)p_trie);
