@@ -12,6 +12,8 @@
 
 #include <boost/iterator/iterator_facade.hpp>
 
+#include <tetengo/trie/storage.h> // IWYU pragma: keep
+#include <tetengo/trie/trie.h> // IWYU pragma: keep
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
@@ -19,11 +21,11 @@
 #include "tetengo_trie_trie.hpp"
 
 
-struct tetengo_trie_trieIterator
+struct tetengo_trie_trieIterator_tag
 {
     std::unique_ptr<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>> p_cpp_iterator_pair;
 
-    explicit tetengo_trie_trieIterator(
+    explicit tetengo_trie_trieIterator_tag(
         std::unique_ptr<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>>&& p_cpp_iterator_pair) :
     p_cpp_iterator_pair{ std::move(p_cpp_iterator_pair) }
     {}

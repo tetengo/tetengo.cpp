@@ -15,14 +15,15 @@
 #include <stddef.h>
 
 #include <tetengo/trie/storage.h>
+#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
 
-#include "tetengo_trie_storage.hpp"
+#include "tetengo_trie_storage.hpp" // IWYU pragma: keep
 
 
 using cpp_trie_type = tetengo::trie::trie<std::string_view, std::vector<char>>;
 
-struct tetengo_trie_trie
+struct tetengo_trie_trie_tag
 {
     std::unique_ptr<cpp_trie_type> p_cpp_trie;
 
@@ -30,13 +31,13 @@ struct tetengo_trie_trie
 
     std::unique_ptr<tetengo_trie_storage> p_storage;
 
-    tetengo_trie_trie(std::unique_ptr<cpp_trie_type>&& p_cpp_trie, const size_t element_value_size) :
+    tetengo_trie_trie_tag(std::unique_ptr<cpp_trie_type>&& p_cpp_trie, const size_t element_value_size) :
     p_cpp_trie{ std::move(p_cpp_trie) },
         element_value_size{ element_value_size },
         p_storage{}
     {}
 
-    ~tetengo_trie_trie()
+    ~tetengo_trie_trie_tag()
     {
         tetengo_trie_storage_destroy(p_storage.release());
     }

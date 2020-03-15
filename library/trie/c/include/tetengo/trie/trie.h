@@ -12,26 +12,32 @@ extern "C" {
 
 #include <stddef.h>
 
-struct tetengo_trie_storage;
-struct tetengo_trie_trieIterator;
-
-
 /*!
     \brief A trie.
 */
-struct tetengo_trie_trie;
+typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
+
+/*!
+    \brief A storage.
+*/
+typedef struct tetengo_trie_storage_tag tetengo_trie_storage;
+
+/*!
+    \brief A trie iterator.
+*/
+typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
 
 /*!
     \brief An element type.
 */
-struct tetengo_trie_trie_element_t
+typedef struct tetengo_trie_trie_element_t_tag
 {
     //! The key.
     const char* key;
 
     //! The pointer to the value.
     const void* p_value;
-};
+} tetengo_trie_trie_element_t;
 
 /*!
     \brief An observer type called when a key is adding.
@@ -63,7 +69,7 @@ void tetengo_trie_trie_nullDoneObserver(void*);
 
     \return The default double array density factor.
 */
-size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor();
+size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor(void);
 
 /*!
     \brief Creates a trie.
