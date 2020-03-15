@@ -25,7 +25,7 @@ static const char* load_lex_csv(const char* const lex_csv_path)
     char*               lex_csv = NULL;
     size_t              lex_csv_size = 0;
     static const size_t buffer_capacity = 1048576;
-    char* const         p_buffer = malloc(buffer_capacity);
+    char* const         p_buffer = (char*)malloc(buffer_capacity);
     if (!p_buffer)
     {
         return NULL;
@@ -34,7 +34,7 @@ static const char* load_lex_csv(const char* const lex_csv_path)
     {
         const size_t read_size = fread(p_buffer, 1, buffer_capacity, p_stream);
 
-        char* const reallocated_lex_csv = realloc(lex_csv, lex_csv_size + read_size);
+        char* const reallocated_lex_csv = (char*)realloc(lex_csv, lex_csv_size + read_size);
         if (!reallocated_lex_csv)
         {
             free(lex_csv);
@@ -125,7 +125,7 @@ static void to_lex_span(const char* const p_bytes, size_t* const p_byte_offset, 
     p_result->length = to_size_t(p_bytes, p_byte_offset);
 }
 
-static size_t lex_span_count(const void* const p_bytes, size_t* const p_byte_offset)
+static size_t lex_span_count(const char* const p_bytes, size_t* const p_byte_offset)
 {
     assert(p_bytes);
     assert(p_byte_offset);
@@ -134,7 +134,7 @@ static size_t lex_span_count(const void* const p_bytes, size_t* const p_byte_off
 }
 
 static void to_array_of_lex_span(
-    const void* const p_bytes,
+    const char* const p_bytes,
     size_t* const     p_byte_offset,
     lex_span_t* const p_lex_spans,
     const size_t      lex_span_count)
@@ -197,7 +197,7 @@ int main(const int argc, char** const argv)
             continue;
         }
 
-        lex_span_t* const p_lex_spans = malloc(sizeof(lex_span_t) * lex_span_count_);
+        lex_span_t* const p_lex_spans = (lex_span_t*)malloc(sizeof(lex_span_t) * lex_span_count_);
         if (!p_lex_spans)
         {
             continue;
