@@ -7,10 +7,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="src\main.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\precompiled\precompiled.cpp">
+    <ClCompile Include="..\..\precompiled\precompiled.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

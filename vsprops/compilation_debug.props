@@ -7,7 +7,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation>true</BrowseInformation>
-      <ForcedIncludeFiles>precompiled.hpp</ForcedIncludeFiles>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

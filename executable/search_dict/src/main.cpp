@@ -66,7 +66,7 @@ namespace
     std::vector<std::pair<std::size_t, std::size_t>>
     deserialize_vector_of_pair_of_size_t(const std::vector<char>& bytes, std::size_t& byte_offset)
     {
-        std::vector<std::pair<std::size_t, std::size_t>> vps;
+        std::vector<std::pair<std::size_t, std::size_t>> vps{};
 
         const auto size = deserialize_size_t(bytes, byte_offset);
         vps.reserve(size);
@@ -119,8 +119,8 @@ int main(const int argc, char** const argv)
             return 0;
         }
 
-        const std::string lex_csv = load_lex_csv(argv[1]);
-        const auto        p_trie = load_trie(argv[2]);
+        const auto lex_csv = load_lex_csv(argv[1]);
+        const auto p_trie = load_trie(argv[2]);
 
         while (std::cin)
         {

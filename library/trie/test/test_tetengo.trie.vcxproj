@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{584C5F3E-3956-4BC8-A1F7-6A8A09EDFDFB}</ProjectGuid>
-    <RootNamespace>tetengotrietest</RootNamespace>
+    <RootNamespace>testtetengotrie</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -126,7 +126,7 @@
     <ClCompile Include="src\test_tetengo.trie.trie_iterator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.hpp" />
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cpp\tetengo.trie.cpp.vcxproj">

@@ -113,7 +113,7 @@
     <None Include="include\tetengo\trie\0namespace.dox" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.hpp" />
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\trie\default_serializer.hpp" />
     <ClInclude Include="include\tetengo\trie\double_array.hpp" />
     <ClInclude Include="include\tetengo\trie\double_array_iterator.hpp" />
