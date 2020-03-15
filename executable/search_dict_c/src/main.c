@@ -80,6 +80,21 @@ static const tetengo_trie_trie* load_trie(const char* const trie_path)
     return p_trie;
 }
 
+void chop_line_feed(char* const line)
+{
+    const size_t length = strlen(line);
+    if (line == 0)
+    {
+        return;
+    }
+    if (line[length - 1] != '\n')
+    {
+        return;
+    }
+
+    line[length - 1] = '\0';
+}
+
 typedef struct
 {
     size_t offset;
@@ -145,14 +160,14 @@ int main(const int argc, char** const argv)
     const char* const lex_csv = load_lex_csv(argv[1]);
     if (!lex_csv)
     {
-        fprintf(stderr, "Can't open the lex.csv file.\n");
+        fprintf(stderr, "Error: Can't open the lex.csv file.\n");
         return 1;
     }
 
     const tetengo_trie_trie* const p_trie = load_trie(argv[2]);
     if (!p_trie)
     {
-        fprintf(stderr, "Can't open the trie.bin file.\n");
+        fprintf(stderr, "Error: Can't open the trie.bin file.\n");
         free((void*)lex_csv);
         return 1;
     }
@@ -162,13 +177,8 @@ int main(const int argc, char** const argv)
         printf(">> ");
         char key[1024] = { 0 };
         fgets(key, 1024, stdin);
-        size_t key_length = strlen(key);
-        if (key_length > 0 && key[key_length - 1] =='\n')
-        {
-            key[key_length - 1] = '\0';
-            --key_length;
-        }
-        if (key_length == 0)
+        chop_line_feed(key);
+        if (strlen(key) == 0)
         {
             continue;
         }
@@ -188,10 +198,14 @@ int main(const int argc, char** const argv)
         }
 
         lex_span_t* const p_lex_spans = malloc(sizeof(lex_span_t) * lex_span_count_);
+        if (!p_lex_spans)
+        {
+            continue;
+        }
         to_array_of_lex_span((const char*)p_found, &byte_offset, p_lex_spans, lex_span_count_);
         for (size_t i = 0; i < lex_span_count_; ++i)
         {
-            printf("(%zd, %zd)\n", p_lex_spans[i].offset, p_lex_spans[i].length);
+            printf("%.*s", (unsigned int)p_lex_spans[i].length, &lex_csv[p_lex_spans[i].offset]);
         }
 
         free(p_lex_spans);
