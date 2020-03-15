@@ -126,7 +126,7 @@
     <ClCompile Include="src\test_tetengo.trie.trie_iterator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.hpp" />
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cpp\tetengo.trie.cpp.vcxproj">

@@ -4,7 +4,7 @@
 #### General ####
 AC_PREREQ([2.69])
 AC_INIT([tetengo], [0.0.0], [https://github.com/kaorut])
-AC_CONFIG_SRCDIR([precompiled/precompiled.hpp])
+AC_CONFIG_SRCDIR([precompiled/precompiled.h])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([--warnings=no-portability])
 AC_CONFIG_MACRO_DIRS([m4])

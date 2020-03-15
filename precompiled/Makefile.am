@@ -3,4 +3,4 @@
 
 EXTRA_DIST = \
     precompiled.cpp \
-    precompiled.hpp
+    precompiled.h

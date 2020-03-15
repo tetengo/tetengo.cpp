@@ -118,7 +118,7 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\precompiled\precompiled.hpp" />
+    <ClInclude Include="..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\library\trie\cpp\tetengo.trie.cpp.vcxproj">

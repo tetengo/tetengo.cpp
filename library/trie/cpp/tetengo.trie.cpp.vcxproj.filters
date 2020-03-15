@@ -46,7 +46,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.hpp">
+    <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\trie\double_array.hpp">

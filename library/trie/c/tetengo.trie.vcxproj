@@ -111,7 +111,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.hpp" />
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\trie\storage.h" />
     <ClInclude Include="include\tetengo\trie\trie.h" />
     <ClInclude Include="include\tetengo\trie\trieIterator.h" />
