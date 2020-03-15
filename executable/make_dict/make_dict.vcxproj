@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{D23815A4-4916-4C12-8DFA-CF6F4A8E51BB}</ProjectGuid>
-    <RootNamespace>makedoublearray</RootNamespace>
+    <RootNamespace>makedict</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

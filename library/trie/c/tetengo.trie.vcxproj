@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{E14D072F-631B-4E87-BC03-57437306CD34}</ProjectGuid>
-    <RootNamespace>tetengotriec</RootNamespace>
+    <RootNamespace>tetengotrie</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
