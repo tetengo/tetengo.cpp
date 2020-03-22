@@ -20,16 +20,33 @@ if not ""%INSTALL_PATH%""=="""" (
     
     echo Installing tetengo...
     
-    xcopy /s /i /f /y "%~dp0"..\library\trie\c\include\tetengo\trie   %INSTALL_PATH%\include\tetengo\trie
-    xcopy /s /i /f /y "%~dp0"..\library\trie\cpp\include\tetengo\trie %INSTALL_PATH%\include.cpp\tetengo\trie
+    xcopy /s /i /f /y "%~dp0"..\library\trie\c\include\tetengo\trie   %INSTALL_PATH%\include\tetengo\trie\
+    xcopy /s /i /f /y "%~dp0"..\library\trie\cpp\include\tetengo\trie %INSTALL_PATH%\include.cpp\tetengo\trie\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\*.lib %INSTALL_PATH%\lib.Win32
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\*.dll %INSTALL_PATH%\lib.Win32
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.lib   %INSTALL_PATH%\lib.x64
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.dll   %INSTALL_PATH%\lib.x64
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\*.lib %INSTALL_PATH%\lib.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\*.dll %INSTALL_PATH%\lib.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.lib   %INSTALL_PATH%\lib.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.dll   %INSTALL_PATH%\lib.x64\
     
-    xcopy /f /y "%~dp0"..\README.md %INSTALL_PATH%
-    xcopy /f /y "%~dp0"..\COPYING   %INSTALL_PATH%
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\make_dict.exe %INSTALL_PATH%\tool\make_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\executable\make_dict\README.md  %INSTALL_PATH%\tool\make_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\make_dict.exe   %INSTALL_PATH%\tool\make_dict.x64\
+    xcopy /i /f /y "%~dp0"..\executable\make_dict\README.md  %INSTALL_PATH%\tool\make_dict.x64\
+    
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\search_dict.exe %INSTALL_PATH%\tool\search_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\executable\search_dict\README.md  %INSTALL_PATH%\tool\search_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\search_dict.exe   %INSTALL_PATH%\tool\search_dict.x64\
+    xcopy /i /f /y "%~dp0"..\executable\search_dict\README.md  %INSTALL_PATH%\tool\search_dict.x64\
+    
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\search_dict_c.exe %INSTALL_PATH%\tool\search_dict_c.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.trie.dll  %INSTALL_PATH%\tool\search_dict_c.Win32\
+    xcopy /i /f /y "%~dp0"..\executable\search_dict_c\README.md  %INSTALL_PATH%\tool\search_dict_c.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\search_dict_c.exe   %INSTALL_PATH%\tool\search_dict_c.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.trie.dll    %INSTALL_PATH%\tool\search_dict_c.x64\
+    xcopy /i /f /y "%~dp0"..\executable\search_dict_c\README.md  %INSTALL_PATH%\tool\search_dict_c.x64\
+    
+    xcopy /f /y "%~dp0"..\README.md %INSTALL_PATH%\
+    xcopy /f /y "%~dp0"..\COPYING   %INSTALL_PATH%\
     
     echo Done.
     if "%PAUSE_ON_EXIT%"=="1" pause
