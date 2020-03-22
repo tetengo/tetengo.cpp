@@ -1,0 +1,126 @@
+# GitHub Actions Workflow
+# Build with Clang on Linux
+# Copyright 2019-2020 kaoru  https://www.tetengo.org/
+
+name: Linux - Clang
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CACHE_REV:     0
+  DOXYGEN_VER:   1.8.17
+  BOOST_VER:     1_72_0
+  BOOST_VER_DOT: 1.72.0
+
+jobs:
+  build:
+    name:    Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install \
+          autoconf-archive \
+          bison \
+          cmake \
+          dos2unix \
+          flex \
+          graphviz \
+          iwyu
+    
+    - name: Cache Doxygen build
+      uses: actions/cache@v1
+      with:
+        path: ../doxygen_build
+        key: ${{ env.CACHE_REV }}-Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}
+    
+    - name: Build Doxygen
+      shell: bash
+      run: |
+        mkdir -p ../doxygen_build
+        cd ../doxygen_build
+        wget http://doxygen.nl/files/doxygen-${DOXYGEN_VER}.src.tar.gz
+        tar xvf doxygen-${DOXYGEN_VER}.src.tar.gz
+        mkdir -p doxygen-${DOXYGEN_VER}/build
+        cd doxygen-${DOXYGEN_VER}/build
+        cmake -G "Unix Makefiles" ..
+        make -j2
+        sudo make -j2 install
+    
+    - name: Cache Boost build
+      uses: actions/cache@v1
+      with:
+        path: ../boost_build
+        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
+    
+    - name: Build Boost
+      shell: bash
+      run: |
+        mkdir -p ../boost_build
+        cd ../boost_build
+        wget https://dl.bintray.com/boostorg/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
+        tar xvf boost_${BOOST_VER}.tar.bz2
+        cd boost_${BOOST_VER}
+        ./bootstrap.sh --with-toolset=clang
+        (./b2 -j2 toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
+        (sudo ./b2 -j2 toolset=clang variant=release link=static install --prefix=/usr/local || :)
+    
+    - name: Checkout
+      uses: actions/checkout@v1
+    
+    - name: Configure
+      shell: bash
+      run: |
+        export DISTCHECK_CONFIGURE_FLAGS=" \
+          CC=clang-9 \
+          CXX=clang++-9 \
+        "
+        ./bootstrap.sh
+        mkdir -p build
+        cd build
+        ../configure $DISTCHECK_CONFIGURE_FLAGS
+    
+    - name: Lint
+      shell: bash
+      run: |
+        cd build
+        make -j2 iwyu
+    
+    - name: Build and make archives
+      shell: bash
+      run: |
+        export DISTCHECK_CONFIGURE_FLAGS=" \
+          CC=clang-9 \
+          CXX=clang++-9 \
+        "
+        export BOOST_TEST_LOG_LEVEL=warning
+        cd build
+        make -j2 distcheck
+        make -j2 dist-bzip2
+        make -j2 dist-zip
+    
+    - name: Make documents
+      shell: bash
+      run: |
+        cd build
+        make doc
+    
+    - name: Move artifacts
+      shell: bash
+      run: |
+        mkdir artifacts
+        mv build/tetengo-* artifacts
+        mv build/doc artifacts
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: artifacts
+        path: artifacts
+    
