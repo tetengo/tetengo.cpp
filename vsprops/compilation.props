@@ -2,9 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <IncludePath>$(BOOST_INCLUDE);$(IncludePath)</IncludePath>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -18,7 +16,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)precompiled;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_INCLUDE);$(SolutionDir)precompiled;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <DisableSpecificWarnings>4459</DisableSpecificWarnings>
     </ClCompile>
