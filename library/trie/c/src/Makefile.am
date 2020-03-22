@@ -17,7 +17,7 @@ libtetengo_trie_la_CPPFLAGS = \
     -I${top_srcdir}/library/trie/cpp/include
 libtetengo_trie_la_LIBADD = \
     ${top_builddir}/library/trie/cpp/src/libtetengo.trie.noinst.la
-libtetengo_trie_la_SOURCES = ${sources}
+libtetengo_trie_la_SOURCES = ${headers} ${sources}
 
 EXTRA_DIST = \
     dll_exports.def
