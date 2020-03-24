@@ -23,6 +23,7 @@ missing
 obj/
 stamp-h1
 test-driver
+__pycache__/
 *~
 *.a
 *.la
