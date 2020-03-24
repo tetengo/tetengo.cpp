@@ -70,4 +70,3 @@ jobs:
         export BOOST_TEST_LOG_LEVEL=warning
         cd build
         make -j2 check
-    

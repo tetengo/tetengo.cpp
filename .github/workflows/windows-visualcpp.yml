@@ -49,9 +49,6 @@ jobs:
       run: |
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
-        dir %BOOST_INCLUDE%
-        dir %BOOST_INCLUDE%\boost\core
-        type %BOOST_INCLUDE%\boost\core\noncopyable.hpp
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
     
     - name:  Build 64bit
