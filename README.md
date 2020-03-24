@@ -70,11 +70,16 @@ Doxygen will output the documents into the directory `doc` in the work tree.
   [GNU Autoconf Archive](https://www.gnu.org/software/autoconf-archive/)
 - [Automake](https://www.gnu.org/software/automake/)
 - [GNU Libtool](https://www.gnu.org/software/libtool/)
-- [Clang 7.0](https://clang.llvm.org/) or [GCC 8.3.0](https://gcc.gnu.org/)
+- [Clang 7.0.1](https://clang.llvm.org/),
+  [Clang 9.0.0](https://clang.llvm.org/),
+  [GCC 8.3.0](https://gcc.gnu.org/) or
+  [GCC 9.2.1](https://gcc.gnu.org/)
 - [Boost C++ libraries 1.72.0](https://www.boost.org/)
 - [Doxygen 1.8.17](http://www.doxygen.nl/)
-- [include-what-you-use 0.11](https://include-what-you-use.org/)
-- [Clang Format 7.0](https://clang.llvm.org/docs/ClangFormat.html)
+- [include-what-you-use 0.11](https://include-what-you-use.org/) or
+  [include-what-you-use 5.0](https://include-what-you-use.org/)
+- [Clang Format 7.0](https://clang.llvm.org/docs/ClangFormat.html) or
+  [Clang Format 9](https://clang.llvm.org/docs/ClangFormat.html)
 - [Dos2Unix](https://waterlan.home.xs4all.nl/dos2unix.html)
 
 #### Procedure
