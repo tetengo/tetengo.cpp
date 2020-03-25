@@ -21,6 +21,10 @@ EXTRA_DIST = \
     tetengo.sln
 
 
+.PHONY: precompiled_h
+precompiled_h:
+	cd $(top_srcdir) && ./tools/make_precompiled_h.py
+
 .PHONY: doc
 doc:
 	cd $(top_srcdir) && $(DOXYGEN) Doxyfile
