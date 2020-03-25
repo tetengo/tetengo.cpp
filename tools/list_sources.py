@@ -4,6 +4,7 @@
 
 from pathlib import Path
 
+
 directories = ['executable', 'library']
 extensions = ['h', 'hpp', 'c', 'cpp']
 
