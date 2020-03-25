@@ -31,6 +31,7 @@ How to Build and Install
 - [Visual Studio 2019](https://visualstudio.microsoft.com/)
 - [Boost C++ libraries 1.72.0](https://www.boost.org/)
 - [Doxygen 1.8.17](http://www.doxygen.nl/)
+- [Python 3](https://www.python.org/)
 
 #### Procedure
 
@@ -81,6 +82,7 @@ Doxygen will output the documents into the directory `doc` in the work tree.
 - [Clang Format 7.0](https://clang.llvm.org/docs/ClangFormat.html) or
   [Clang Format 9](https://clang.llvm.org/docs/ClangFormat.html)
 - [Dos2Unix](https://waterlan.home.xs4all.nl/dos2unix.html)
+- [Python 3](https://www.python.org/)
 
 #### Procedure
 
