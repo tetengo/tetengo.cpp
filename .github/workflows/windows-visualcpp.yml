@@ -12,6 +12,7 @@ on:
 
 env:
   CACHE_REV:     0
+  TETENGO_VER:   1.0.0
   BOOST_VER:     1_72_0
   BOOST_VER_DOT: 1.72.0
 
@@ -61,7 +62,14 @@ jobs:
     - name:  Install
       shell: cmd
       run: |
-        tools\install_tetengo_library.bat artifacts
+        tools\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
+        PowerShell -Command Compress-Archive -Path bin\tetengo-windows-%TETENGO_VER% -DestinationPath bin\tetengo-windows-%TETENGO_VER%.zip
+    
+    - name: Move artifacts
+      shell: cmd
+      run: |
+        mkdir artifacts
+        move bin\tetengo-windows-*.zip artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
