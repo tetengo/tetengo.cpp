@@ -66,5 +66,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: tetengo-library
+        name: artifacts-windows
         path: artifacts
