@@ -46,7 +46,7 @@ jobs:
         mkdir -p ../doxygen_build
         cd ../doxygen_build
         wget http://doxygen.nl/files/doxygen-${DOXYGEN_VER}.src.tar.gz
-        tar xvf doxygen-${DOXYGEN_VER}.src.tar.gz
+        tar -xf doxygen-${DOXYGEN_VER}.src.tar.gz
         mkdir -p doxygen-${DOXYGEN_VER}/build
         cd doxygen-${DOXYGEN_VER}/build
         cmake -G "Unix Makefiles" ..
@@ -64,8 +64,9 @@ jobs:
       run: |
         mkdir -p ../boost_build
         cd ../boost_build
-        wget https://dl.bintray.com/boostorg/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
-        tar xvf boost_${BOOST_VER}.tar.bz2
+        curl -L -o boost_%BOOST_VER%.tar.bz2 https://downloads.sourceforge.net/project/boost/boost/${BOOST_VER_DOT}/boost_${BOOST_VER}.tar.bz2
+        #curl -L -o boost_%BOOST_VER%.tar.bz2 https://dl.bintray.com/boostorg/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
+        tar -xf boost_${BOOST_VER}.tar.bz2
         cd boost_${BOOST_VER}
         ./bootstrap.sh --with-toolset=clang
         (./b2 -j2 toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
