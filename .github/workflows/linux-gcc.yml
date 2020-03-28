@@ -38,7 +38,8 @@ jobs:
       run: |
         mkdir -p ../boost_build
         cd ../boost_build
-        wget https://dl.bintray.com/boostorg/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
+        curl -L -o boost_%BOOST_VER%.tar.bz2 https://downloads.sourceforge.net/project/boost/boost/${BOOST_VER_DOT}/boost_${BOOST_VER}.tar.bz2
+        #curl -L -o boost_%BOOST_VER%.tar.bz2 https://dl.bintray.com/boostorg/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
         tar xvf boost_${BOOST_VER}.tar.bz2
         cd boost_${BOOST_VER}
         ./bootstrap.sh --with-toolset=gcc
