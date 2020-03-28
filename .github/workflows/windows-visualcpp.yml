@@ -45,31 +45,35 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     
-    - name:  Build 32bit
+    - name: Build 32bit
       shell: cmd
       run: |
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
     
-    - name:  Build 64bit
+    - name: Build 64bit
       shell: cmd
       run: |
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
     
-    - name:  Install
+    - name: Install
       shell: cmd
       run: |
         tools\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
-        PowerShell -Command Compress-Archive -Path bin\tetengo-windows-%TETENGO_VER% -DestinationPath bin\tetengo-windows-%TETENGO_VER%.zip
+    
+    - name: Make archive
+      shell: powershell
+      run: |
+        Compress-Archive -Path .\bin\tetengo-windows-$env:TETENGO_VER -DestinationPath .\bin\tetengo-windows-$env:TETENGO_VER.zip
     
     - name: Move artifacts
       shell: cmd
       run: |
         mkdir artifacts
-        move bin\tetengo-windows-*.zip artifacts
+        move bin\tetengo-windows-%TETENGO_VER%.zip artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
