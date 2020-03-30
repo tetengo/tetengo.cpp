@@ -2,8 +2,12 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
-    lattice \
-    trie
+    include \
+    src
+
+EXTRA_DIST = \
+    tetengo.lattice.cpp.vcxproj \
+    tetengo.lattice.cpp.vcxproj.filters
 
 
 iwyu:

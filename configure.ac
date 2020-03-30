@@ -19,6 +19,17 @@ AC_CONFIG_FILES([
     executable/search_dict_c/Makefile
     executable/search_dict_c/src/Makefile
     library/Makefile
+    library/lattice/Makefile
+    library/lattice/c/Makefile
+    library/lattice/c/include/Makefile
+    library/lattice/c/include/tetengo/Makefile
+    library/lattice/c/src/Makefile
+    library/lattice/cpp/Makefile
+    library/lattice/cpp/include/Makefile
+    library/lattice/cpp/include/tetengo/Makefile
+    library/lattice/cpp/src/Makefile
+    library/lattice/test/Makefile
+    library/lattice/test/src/Makefile
     library/trie/Makefile
     library/trie/c/Makefile
     library/trie/c/include/Makefile
