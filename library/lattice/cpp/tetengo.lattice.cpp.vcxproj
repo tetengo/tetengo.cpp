@@ -18,6 +18,20 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="include\tetengo\lattice\0namespace.dox" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\lattice\vocabulary.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.vocabulary.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{65C6D977-AC51-4E28-8B15-178FBDF69168}</ProjectGuid>

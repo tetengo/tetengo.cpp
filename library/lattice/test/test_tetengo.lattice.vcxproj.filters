@@ -6,4 +6,20 @@
       <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\master.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.lattice.vocabulary.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\precompiled\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

@@ -99,6 +99,18 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\precompiled\precompiled.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\tetengo_lattice_vocabulary.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\dll_exports.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
