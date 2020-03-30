@@ -64,7 +64,7 @@
     <Import Project="..\..\..\vsprops\compilation_debug.props" />
     <Import Project="..\..\..\vsprops\dynamic_lib.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\vsprops\common.props" />
     <Import Project="..\..\..\vsprops\compilation.props" />
@@ -80,7 +80,7 @@
     <Import Project="..\..\..\vsprops\compilation_release.props" />
     <Import Project="..\..\..\vsprops\dynamic_lib.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\vsprops\common.props" />
     <Import Project="..\..\..\vsprops\compilation.props" />

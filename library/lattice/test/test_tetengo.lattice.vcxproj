@@ -20,32 +20,32 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{A755F6BF-9964-4608-A0C8-9F7557D14A09}</ProjectGuid>
-    <RootNamespace>tetengotriecpp</RootNamespace>
+    <ProjectGuid>{3FED617D-365B-4DEA-ACC0-21A60741EBD3}</ProjectGuid>
+    <RootNamespace>testtetengolattice</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -62,7 +62,7 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_Win32.props" />
     <Import Project="..\..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\..\vsprops\static_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
@@ -70,7 +70,7 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_x64.props" />
     <Import Project="..\..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\..\vsprops\static_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
@@ -78,7 +78,7 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_Win32.props" />
     <Import Project="..\..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\..\vsprops\static_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
@@ -86,43 +86,19 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_x64.props" />
     <Import Project="..\..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\..\vsprops\static_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="src\tetengo.trie.default_serializer.cpp" />
-    <ClCompile Include="src\tetengo.trie.double_array_builder.cpp" />
-    <ClCompile Include="src\tetengo.trie.double_array.cpp" />
-    <ClCompile Include="src\tetengo.trie.double_array_iterator.cpp" />
-    <ClCompile Include="src\tetengo.trie.memory_storage.cpp" />
-    <ClCompile Include="src\tetengo.trie.shared_storage.cpp" />
-    <ClCompile Include="src\tetengo.trie.storage.cpp" />
-    <ClCompile Include="src\tetengo.trie.trie.cpp" />
-    <ClCompile Include="src\tetengo.trie.trie_iterator.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="include\tetengo\trie\0namespace.dox" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
-    <ClInclude Include="include\tetengo\trie\default_serializer.hpp" />
-    <ClInclude Include="include\tetengo\trie\double_array.hpp" />
-    <ClInclude Include="include\tetengo\trie\double_array_iterator.hpp" />
-    <ClInclude Include="include\tetengo\trie\memory_storage.hpp" />
-    <ClInclude Include="include\tetengo\trie\shared_storage.hpp" />
-    <ClInclude Include="include\tetengo\trie\storage.hpp" />
-    <ClInclude Include="include\tetengo\trie\trie.hpp" />
-    <ClInclude Include="include\tetengo\trie\trie_iterator.hpp" />
-    <ClInclude Include="src\tetengo.trie.double_array_builder.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

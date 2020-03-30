@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{A755F6BF-9964-4608-A0C8-9F7557D14A09}</ProjectGuid>
-    <RootNamespace>tetengotriecpp</RootNamespace>
+    <ProjectGuid>{65C6D977-AC51-4E28-8B15-178FBDF69168}</ProjectGuid>
+    <RootNamespace>tetengolatticecpp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -94,36 +94,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-  <ItemGroup>
-    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="src\tetengo.trie.default_serializer.cpp" />
-    <ClCompile Include="src\tetengo.trie.double_array_builder.cpp" />
-    <ClCompile Include="src\tetengo.trie.double_array.cpp" />
-    <ClCompile Include="src\tetengo.trie.double_array_iterator.cpp" />
-    <ClCompile Include="src\tetengo.trie.memory_storage.cpp" />
-    <ClCompile Include="src\tetengo.trie.shared_storage.cpp" />
-    <ClCompile Include="src\tetengo.trie.storage.cpp" />
-    <ClCompile Include="src\tetengo.trie.trie.cpp" />
-    <ClCompile Include="src\tetengo.trie.trie_iterator.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="include\tetengo\trie\0namespace.dox" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
-    <ClInclude Include="include\tetengo\trie\default_serializer.hpp" />
-    <ClInclude Include="include\tetengo\trie\double_array.hpp" />
-    <ClInclude Include="include\tetengo\trie\double_array_iterator.hpp" />
-    <ClInclude Include="include\tetengo\trie\memory_storage.hpp" />
-    <ClInclude Include="include\tetengo\trie\shared_storage.hpp" />
-    <ClInclude Include="include\tetengo\trie\storage.hpp" />
-    <ClInclude Include="include\tetengo\trie\trie.hpp" />
-    <ClInclude Include="include\tetengo\trie\trie_iterator.hpp" />
-    <ClInclude Include="src\tetengo.trie.double_array_builder.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
