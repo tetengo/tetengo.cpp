@@ -103,11 +103,11 @@
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\precompiled\precompiled.c">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\tetengo_lattice_vocabulary.c" />
+    <ClCompile Include="src\tetengo_lattice_vocabulary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def" />

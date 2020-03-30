@@ -22,10 +22,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tetengo_lattice_vocabulary.c">
+    <ClCompile Include="src\tetengo_lattice_vocabulary.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\precompiled\precompiled.c">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
