@@ -1,5 +1,5 @@
 /*! \file
-    \brief A double array.
+    \brief A vocabulary.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
