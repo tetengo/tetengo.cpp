@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="include\tetengo\lattice\0namespace.dox" />
+    <None Include="Makefile.am" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\lattice\entry.hpp" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,6 +32,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.entry.cpp" />
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

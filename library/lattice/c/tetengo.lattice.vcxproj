@@ -100,6 +100,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\lattice\entry.h" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +108,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo_lattice_entry.cpp" />
     <ClCompile Include="src\tetengo_lattice_vocabulary.cpp" />
   </ItemGroup>
   <ItemGroup>

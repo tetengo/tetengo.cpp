@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    lattice/entry.hpp \
     lattice/vocabulary.hpp
 
 extra_headers = \
