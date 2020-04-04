@@ -18,5 +18,20 @@ namespace tetengo::lattice
         m_cost{ cost }
     {}
 
+    const std::string_view& entry::key() const
+    {
+        return m_key;
+    }
+
+    const std::string_view& entry::surface() const
+    {
+        return m_surface;
+    }
+
+    int entry::cost() const
+    {
+        return m_cost;
+    }
+
 
 }

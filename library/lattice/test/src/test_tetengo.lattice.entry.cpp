@@ -41,6 +41,39 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(key)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::entry entry_{ key_mizuho, surface_mizuho, 42 };
+
+        BOOST_TEST(entry_.key() == key_mizuho);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(surface)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::entry entry_{ key_mizuho, surface_mizuho, 42 };
+
+        BOOST_TEST(entry_.surface() == surface_mizuho);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(cost)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::entry entry_{ key_mizuho, surface_mizuho, 42 };
+
+        BOOST_TEST(entry_.cost() == 42);
+    }
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

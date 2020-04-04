@@ -30,6 +30,30 @@ namespace tetengo::lattice
         entry(std::string_view key, std::string_view surface, int cost);
 
 
+        // functions
+
+        /*!
+            \brief Returns the key.
+
+            \return The key.
+        */
+        const std::string_view& key() const;
+
+        /*!
+            \brief Returns the surface.
+
+            \return The surface.
+        */
+        const std::string_view& surface() const;
+
+        /*!
+            \brief Returns the cost.
+
+            \return The cost.
+        */
+        int cost() const;
+
+
     private:
         // variables
 
