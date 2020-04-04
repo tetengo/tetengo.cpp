@@ -23,6 +23,9 @@
     <ClInclude Include="include\tetengo\lattice\entry.h">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\string_view.h">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo_lattice_vocabulary.cpp">

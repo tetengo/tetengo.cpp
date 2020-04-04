@@ -101,6 +101,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\lattice\entry.h" />
+    <ClInclude Include="include\tetengo\lattice\string_view.h" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
   </ItemGroup>
   <ItemGroup>

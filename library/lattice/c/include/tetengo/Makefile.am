@@ -3,6 +3,7 @@
 
 pkg_headers = \
     lattice/entry.h \
+    lattice/string_view.h \
     lattice/vocabulary.h
 
 extra_headers =

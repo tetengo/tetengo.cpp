@@ -119,6 +119,7 @@
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.entry.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.string_view.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.vocabulary.cpp" />
   </ItemGroup>
   <ItemGroup>
