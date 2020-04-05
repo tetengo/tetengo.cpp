@@ -4,6 +4,8 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <string>
+
 #include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
