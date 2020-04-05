@@ -4,7 +4,6 @@
 headers =
 
 sources = \
-    tetengo_lattice_entry.cpp \
     tetengo_lattice_vocabulary.cpp
 
 lib_LTLIBRARIES = libtetengo.lattice.la

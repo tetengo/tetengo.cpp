@@ -24,6 +24,8 @@ typedef struct tetengo_lattice_stringview_tag
 
     //! The length.
     size_t length;
+
+
 } tetengo_lattice_stringview;
 
 

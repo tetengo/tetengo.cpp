@@ -6,10 +6,13 @@
 
 #include <string>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/string_view.h>
 
 
 namespace
@@ -39,6 +42,12 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::lattice::entry entry_{ key_mizuho, surface_mizuho, 42 };
     }
+    {
+        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() },
+                                            { surface_mizuho.c_str(), surface_mizuho.length() },
+                                            42 };
+        boost::ignore_unused(entry_);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(key)
@@ -49,6 +58,14 @@ BOOST_AUTO_TEST_CASE(key)
         const tetengo::lattice::entry entry_{ key_mizuho, surface_mizuho, 42 };
 
         BOOST_TEST(entry_.key() == key_mizuho);
+    }
+    {
+        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() },
+                                            { surface_mizuho.c_str(), surface_mizuho.length() },
+                                            42 };
+
+        BOOST_TEST(entry_.key.p_head == key_mizuho.c_str());
+        BOOST_TEST(entry_.key.length == key_mizuho.length());
     }
 }
 
@@ -61,6 +78,14 @@ BOOST_AUTO_TEST_CASE(surface)
 
         BOOST_TEST(entry_.surface() == surface_mizuho);
     }
+    {
+        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() },
+                                            { surface_mizuho.c_str(), surface_mizuho.length() },
+                                            42 };
+
+        BOOST_TEST(entry_.surface.p_head == surface_mizuho.c_str());
+        BOOST_TEST(entry_.surface.length == surface_mizuho.length());
+    }
 }
 
 BOOST_AUTO_TEST_CASE(cost)
@@ -71,6 +96,13 @@ BOOST_AUTO_TEST_CASE(cost)
         const tetengo::lattice::entry entry_{ key_mizuho, surface_mizuho, 42 };
 
         BOOST_TEST(entry_.cost() == 42);
+    }
+    {
+        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() },
+                                            { surface_mizuho.c_str(), surface_mizuho.length() },
+                                            42 };
+
+        BOOST_TEST(entry_.cost == 42);
     }
 }
 
