@@ -6,11 +6,13 @@
 
 #if !defined(TETENGO_TRIE_TRIE_H)
 #define TETENGO_TRIE_TRIE_H
+
+#include <stddef.h>
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
-#include <stddef.h>
 
 /*!
     \brief A trie.
@@ -193,4 +195,6 @@ const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif

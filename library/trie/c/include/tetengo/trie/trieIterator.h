@@ -6,10 +6,11 @@
 
 #if !defined(TETENGO_TRIE_TRIEITERATOR_H)
 #define TETENGO_TRIE_TRIEITERATOR_H
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
 
 /*!
     \brief A trie.
@@ -67,4 +68,6 @@ void tetengo_trie_trieIterator_next(tetengo_trie_trieIterator* p_iterator);
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif

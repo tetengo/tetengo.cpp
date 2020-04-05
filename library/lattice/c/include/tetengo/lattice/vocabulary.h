@@ -6,6 +6,8 @@
 
 #if !defined(TETENGO_LATTICE_VOCABULARY_H)
 #define TETENGO_LATTICE_VOCABULARY_H
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -14,4 +16,6 @@ extern "C" {
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif

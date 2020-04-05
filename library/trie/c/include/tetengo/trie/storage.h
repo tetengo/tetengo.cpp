@@ -6,15 +6,16 @@
 
 #if !defined(TETENGO_TRIE_STORAGE_H)
 #define TETENGO_TRIE_STORAGE_H
-#if defined(__cplusplus)
-extern "C" {
-#endif
 
 #include <stddef.h>
 #if defined(_WIN32)
 #include <wchar.h>
 #endif
 
+
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
 /*!
     \brief A trie.
@@ -108,4 +109,6 @@ tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* p_s
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif

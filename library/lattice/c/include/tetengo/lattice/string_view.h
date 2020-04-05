@@ -4,11 +4,12 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#if !defined(TETENGO_LATTICE_STRINGVIEW_H)
+#define TETENGO_LATTICE_STRINGVIEW_H
+
 #include <stddef.h>
 
 
-#if !defined(TETENGO_LATTICE_STRINGVIEW_H)
-#define TETENGO_LATTICE_STRINGVIEW_H
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -29,4 +30,6 @@ typedef struct tetengo_lattice_stringview_tag
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif
