@@ -20,10 +20,10 @@ extern "C" {
 typedef struct tetengo_lattice_entry_tag
 {
     //! A key.
-    tetengo_lattice_stringview key;
+    tetengo_lattice_stringView key;
 
     //! A surface.
-    tetengo_lattice_stringview surface;
+    tetengo_lattice_stringView surface;
 
     //! A cost.
     int cost;

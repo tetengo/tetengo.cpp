@@ -17,7 +17,7 @@ extern "C" {
 /*!
     \brief A string view.
 */
-typedef struct tetengo_lattice_stringview_tag
+typedef struct tetengo_lattice_stringView_tag
 {
     //! A pointer to the head.
     const char* p_head;
@@ -26,7 +26,7 @@ typedef struct tetengo_lattice_stringview_tag
     size_t length;
 
 
-} tetengo_lattice_stringview;
+} tetengo_lattice_stringView;
 
 
 #if defined(__cplusplus)
