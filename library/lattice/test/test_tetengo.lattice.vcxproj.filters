@@ -22,6 +22,9 @@
     <ClCompile Include="src\test_tetengo.lattice.string_view.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\test_tetengo.lattice.unordered_map_vocabulary.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">

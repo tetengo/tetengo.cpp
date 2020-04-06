@@ -7,6 +7,7 @@ sources = \
     master.cpp \
     test_tetengo.lattice.entry.cpp \
     test_tetengo.lattice.string_view.cpp \
+    test_tetengo.lattice.unordered_map_vocabulary.cpp \
     test_tetengo.lattice.vocabulary.cpp
 
 check_PROGRAMS = test_tetengo.lattice

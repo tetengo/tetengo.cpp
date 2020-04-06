@@ -31,6 +31,9 @@
     <ClInclude Include="include\tetengo\lattice\entry.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\unordered_map_vocabulary.hpp">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp">
@@ -40,6 +43,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo.lattice.entry.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.unordered_map_vocabulary.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
