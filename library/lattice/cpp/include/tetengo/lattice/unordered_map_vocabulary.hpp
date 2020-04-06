@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string_view>
+#include <unordered_map>
 #include <vector>
 
 #include <tetengo/lattice/vocabulary.hpp>
@@ -29,8 +30,10 @@ namespace tetengo::lattice
 
         /*!
             \brief Creates an unordered_map vocabulary.
+
+            \param entries Entries.
         */
-        unordered_map_vocabulary();
+        explicit unordered_map_vocabulary(const std::unordered_map<std::string_view, std::vector<entry>>& entries);
 
         /*!
             \brief Destroys the unordered_map vocabulary.
