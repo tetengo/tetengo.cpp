@@ -20,6 +20,14 @@ namespace tetengo::lattice
     {}
 
     template <typename String>
+    template <typename S>
+    basic_entry<String>::basic_entry(const basic_entry<S>& another) :
+    m_key{ another.key() },
+        m_surface{ another.surface() },
+        m_cost{ another.cost() }
+    {}
+
+    template <typename String>
     const typename basic_entry<String>::string_type& basic_entry<String>::key() const
     {
         return m_key;
@@ -41,6 +49,8 @@ namespace tetengo::lattice
     template class basic_entry<std::string>;
 
     template class basic_entry<std::string_view>;
+
+    template basic_entry<std::string_view>::basic_entry(const basic_entry<std::string>&);
 
 
 }

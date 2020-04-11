@@ -10,7 +10,6 @@
 #include <string>
 #include <string_view>
 #include <tuple>
-#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -28,9 +27,7 @@ namespace tetengo::lattice
     public:
         // constructors and destructor
 
-        explicit impl(const std::unordered_map<std::string_view, std::vector<entry_view>>& entries) :
-        m_map{ to_holding_map(entries) }
-        {}
+        explicit impl(std::unordered_map<std::string, std::vector<entry>> map) : m_map{ std::move(map) } {}
 
 
         // functions
@@ -45,7 +42,7 @@ namespace tetengo::lattice
 
             std::vector<entry_view> entries{};
             entries.reserve(found->second.size());
-            std::transform(std::begin(found->second), std::end(found->second), std::back_inserter(entries), to_entry);
+            std::copy(std::begin(found->second), std::end(found->second), std::back_inserter(entries));
             return entries;
         }
 
@@ -56,51 +53,14 @@ namespace tetengo::lattice
         using entry_holder_type = std::tuple<std::string, std::string, int>;
 
 
-        // static functions
-
-        static std::unordered_map<std::string, std::vector<entry_holder_type>>
-        to_holding_map(const std::unordered_map<std::string_view, std::vector<entry_view>>& entries)
-        {
-            std::unordered_map<std::string, std::vector<entry_holder_type>> map{};
-            map.reserve(entries.size());
-            std::transform(
-                std::begin(entries), std::end(entries), std::inserter(map, map.end()), to_entry_holder_value);
-            return map;
-        }
-
-        static std::pair<std::string, std::vector<entry_holder_type>>
-        to_entry_holder_value(const std::pair<std::string_view, std::vector<entry_view>>& value)
-        {
-            std::vector<entry_holder_type> holding_entries{};
-            holding_entries.reserve(value.second.size());
-            std::transform(
-                std::begin(value.second),
-                std::end(value.second),
-                std::back_inserter(holding_entries),
-                to_holding_entry);
-            return std::make_pair(std::string{ value.first }, std::move(holding_entries));
-        }
-
-        static entry_holder_type to_holding_entry(const entry_view& entry_)
-        {
-            return entry_holder_type{ entry_.key(), entry_.surface(), entry_.cost() };
-        }
-
-        static entry_view to_entry(const entry_holder_type& holder)
-        {
-            return entry_view{ std::get<0>(holder), std::get<1>(holder), std::get<2>(holder) };
-        }
-
-
         // variables
 
-        const std::unordered_map<std::string, std::vector<entry_holder_type>> m_map;
+        const std::unordered_map<std::string, std::vector<entry>> m_map;
     };
 
 
-    unordered_map_vocabulary::unordered_map_vocabulary(
-        const std::unordered_map<std::string_view, std::vector<entry_view>>& entries) :
-    m_p_impl{ std::make_unique<impl>(entries) }
+    unordered_map_vocabulary::unordered_map_vocabulary(std::unordered_map<std::string, std::vector<entry>> map) :
+    m_p_impl{ std::make_unique<impl>(std::move(map)) }
     {}
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;

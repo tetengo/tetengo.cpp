@@ -39,6 +39,16 @@ namespace tetengo::lattice
         */
         basic_entry(string_type key, string_type surface, int cost);
 
+        /*!
+            \brief Copies an entry.
+
+            \tparam S A string type.
+
+            \param another Another entry.
+        */
+        template <typename S>
+        basic_entry(const basic_entry<S>& another);
+
 
         // functions
 

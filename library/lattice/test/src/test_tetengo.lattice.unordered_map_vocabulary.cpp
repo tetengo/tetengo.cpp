@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <string>
-#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -51,11 +50,11 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const std::unordered_map<std::string_view, std::vector<tetengo::lattice::entry_view>> map{};
-        const tetengo::lattice::unordered_map_vocabulary                                      vocabulary{ map };
+        const std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{};
+        const tetengo::lattice::unordered_map_vocabulary                            vocabulary{ map };
     }
     {
-        const std::unordered_map<std::string_view, std::vector<tetengo::lattice::entry_view>> map{
+        const std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{
             { key_mizuho, { { key_mizuho, surface_mizuho, 42 } } },
             { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
         };
@@ -68,8 +67,8 @@ BOOST_AUTO_TEST_CASE(find)
     BOOST_TEST_PASSPOINT();
 
     {
-        const std::unordered_map<std::string_view, std::vector<tetengo::lattice::entry_view>> map{};
-        const tetengo::lattice::unordered_map_vocabulary                                      vocabulary{ map };
+        const std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{};
+        const tetengo::lattice::unordered_map_vocabulary                            vocabulary{ map };
 
         {
             const auto found = vocabulary.find(key_mizuho);
@@ -81,7 +80,7 @@ BOOST_AUTO_TEST_CASE(find)
         }
     }
     {
-        const std::unordered_map<std::string_view, std::vector<tetengo::lattice::entry_view>> map{
+        const std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{
             { key_mizuho, { { key_mizuho, surface_mizuho, 42 } } },
             { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
         };
