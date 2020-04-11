@@ -12,14 +12,12 @@
 #include <unordered_map>
 #include <vector>
 
+#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
 
 namespace tetengo::lattice
 {
-    class entry;
-
-
     /*!
         \brief An unordered_map vocabulary.
     */

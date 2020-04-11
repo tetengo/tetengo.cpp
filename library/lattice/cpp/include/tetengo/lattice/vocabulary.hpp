@@ -12,12 +12,11 @@
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/lattice/entry.hpp>
+
 
 namespace tetengo::lattice
 {
-    class entry;
-
-
     /*!
         \brief A vocabulary.
     */

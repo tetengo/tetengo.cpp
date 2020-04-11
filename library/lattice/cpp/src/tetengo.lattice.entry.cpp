@@ -5,33 +5,39 @@
 */
 
 #include <string_view>
-#include <utility>
 
 #include <tetengo/lattice/entry.hpp>
 
 
 namespace tetengo::lattice
 {
-    entry::entry(std::string_view key, std::string_view surface, const int cost) :
+    template <typename String>
+    basic_entry<String>::basic_entry(string_type key, string_type surface, const int cost) :
     m_key{ std::move(key) },
         m_surface{ std::move(surface) },
         m_cost{ cost }
     {}
 
-    const std::string_view& entry::key() const
+    template <typename String>
+    const typename basic_entry<String>::string_type& basic_entry<String>::key() const
     {
         return m_key;
     }
 
-    const std::string_view& entry::surface() const
+    template <typename String>
+    const typename basic_entry<String>::string_type& basic_entry<String>::surface() const
     {
         return m_surface;
     }
 
-    int entry::cost() const
+    template <typename String>
+    int basic_entry<String>::cost() const
     {
         return m_cost;
     }
+
+
+    template class basic_entry<std::string_view>;
 
 
 }

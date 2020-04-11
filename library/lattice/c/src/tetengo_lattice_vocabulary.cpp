@@ -7,7 +7,8 @@
 #include <memory>
 #include <utility>
 
-#include <tetengo/lattice/unordered_map_vocabulary.hpp>
+#include <stddef.h>
+
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
 

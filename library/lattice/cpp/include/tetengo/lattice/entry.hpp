@@ -13,11 +13,20 @@
 namespace tetengo::lattice
 {
     /*!
-        \brief An entry.
+        \brief A template of an entry.
+
+        \tparam String A string type.
     */
-    class entry
+    template <typename String>
+    class basic_entry
     {
     public:
+        // types
+
+        //! The string type.
+        using string_type = String;
+
+
         // constructors
 
         /*!
@@ -27,7 +36,7 @@ namespace tetengo::lattice
             \param surface A surface.
             \param cost    A cost.
         */
-        entry(std::string_view key, std::string_view surface, int cost);
+        basic_entry(string_type key, string_type surface, int cost);
 
 
         // functions
@@ -37,14 +46,14 @@ namespace tetengo::lattice
 
             \return The key.
         */
-        const std::string_view& key() const;
+        const string_type& key() const;
 
         /*!
             \brief Returns the surface.
 
             \return The surface.
         */
-        const std::string_view& surface() const;
+        const string_type& surface() const;
 
         /*!
             \brief Returns the cost.
@@ -57,12 +66,18 @@ namespace tetengo::lattice
     private:
         // variables
 
-        std::string_view m_key;
+        string_type m_key;
 
-        std::string_view m_surface;
+        string_type m_surface;
 
         int m_cost;
     };
+
+
+    /*!
+        \brief A entry.
+    */
+    using entry = basic_entry<std::string_view>;
 
 
 }
