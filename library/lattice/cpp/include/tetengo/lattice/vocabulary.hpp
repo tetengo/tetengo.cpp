@@ -43,15 +43,15 @@ namespace tetengo::lattice
 
             \param key A key.
 
-            \return Entries.
+            \return Entry views.
         */
-        std::vector<entry> find(const std::string_view& key) const;
+        std::vector<entry_view> find(const std::string_view& key) const;
 
 
     private:
         // virtual functions
 
-        virtual std::vector<entry> find_impl(const std::string_view& key) const = 0;
+        virtual std::vector<entry_view> find_impl(const std::string_view& key) const = 0;
     };
 
 

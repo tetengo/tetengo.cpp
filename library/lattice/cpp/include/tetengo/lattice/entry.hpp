@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_ENTRY_HPP)
 #define TETENGO_LATTICE_ENTRY_HPP
 
+#include <string>
 #include <string_view>
 
 
@@ -75,9 +76,14 @@ namespace tetengo::lattice
 
 
     /*!
-        \brief A entry.
+        \brief An entry.
     */
-    using entry = basic_entry<std::string_view>;
+    using entry = basic_entry<std::string>;
+
+    /*!
+        \brief An entry view.
+    */
+    using entry_view = basic_entry<std::string_view>;
 
 
 }

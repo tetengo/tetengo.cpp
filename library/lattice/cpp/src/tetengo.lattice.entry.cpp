@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <string>
 #include <string_view>
 
 #include <tetengo/lattice/entry.hpp>
@@ -36,6 +37,8 @@ namespace tetengo::lattice
         return m_cost;
     }
 
+
+    template class basic_entry<std::string>;
 
     template class basic_entry<std::string_view>;
 

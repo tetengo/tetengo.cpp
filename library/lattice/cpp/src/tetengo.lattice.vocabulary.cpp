@@ -17,7 +17,7 @@ namespace tetengo::lattice
 
     vocabulary::~vocabulary() = default;
 
-    std::vector<entry> vocabulary::find(const std::string_view& key) const
+    std::vector<entry_view> vocabulary::find(const std::string_view& key) const
     {
         return find_impl(key);
     }

@@ -44,16 +44,16 @@ namespace
     private:
         // virtual functions
 
-        std::vector<tetengo::lattice::entry> find_impl(const std::string_view& key) const
+        std::vector<tetengo::lattice::entry_view> find_impl(const std::string_view& key) const
         {
             if (key == key_mizuho)
             {
-                return std::vector<tetengo::lattice::entry>{ tetengo::lattice::entry{
+                return std::vector<tetengo::lattice::entry_view>{ tetengo::lattice::entry_view{
                     key_mizuho, surface_mizuho, 42 } };
             }
             else
             {
-                return std::vector<tetengo::lattice::entry>{};
+                return std::vector<tetengo::lattice::entry_view>{};
             }
         }
     };

@@ -31,7 +31,7 @@ namespace tetengo::lattice
 
             \param entries Entries.
         */
-        explicit unordered_map_vocabulary(const std::unordered_map<std::string_view, std::vector<entry>>& entries);
+        explicit unordered_map_vocabulary(const std::unordered_map<std::string_view, std::vector<entry_view>>& entries);
 
         /*!
             \brief Destroys the unordered_map vocabulary.
@@ -52,7 +52,7 @@ namespace tetengo::lattice
 
         // virtual functions
 
-        virtual std::vector<entry> find_impl(const std::string_view& key) const override;
+        virtual std::vector<entry_view> find_impl(const std::string_view& key) const override;
     };
 
 
