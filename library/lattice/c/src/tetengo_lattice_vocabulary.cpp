@@ -4,8 +4,10 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
@@ -86,9 +88,26 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary* const 
 }
 
 size_t tetengo_lattice_vocabulary_find(
-    const tetengo_lattice_vocabulary* const /*p_vocabulary*/,
-    const char* const /*key*/,
-    tetengo_lattice_entry* const /*p_entries*/)
+    const tetengo_lattice_vocabulary* const p_vocabulary,
+    const char* const                       key,
+    tetengo_lattice_entry* const            p_entries)
 {
-    return 0;
+    const auto found = p_vocabulary->p_cpp_vocabulary->find(key);
+
+    if (p_entries)
+    {
+        for (auto i = static_cast<std::size_t>(0); i < found.size(); ++i)
+        {
+            const auto& cpp_entry = found[i];
+            auto&       entry = p_entries[i];
+
+            entry.key.p_head = cpp_entry.key().data();
+            entry.key.length = cpp_entry.key().length();
+            entry.surface.p_head = cpp_entry.surface().data();
+            entry.surface.length = cpp_entry.surface().length();
+            entry.cost = cpp_entry.cost();
+        }
+    }
+
+    return found.size();
 }
