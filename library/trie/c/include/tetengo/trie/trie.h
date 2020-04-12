@@ -6,26 +6,20 @@
 
 #if !defined(TETENGO_TRIE_TRIE_H)
 #define TETENGO_TRIE_TRIE_H
+
+#include <stddef.h>
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-#include <stddef.h>
-
-/*!
-    \brief A trie.
-*/
-typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
-
-/*!
-    \brief A storage.
-*/
-typedef struct tetengo_trie_storage_tag tetengo_trie_storage;
-
-/*!
-    \brief A trie iterator.
-*/
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_trie_trie_tag         tetengo_trie_trie;
+typedef struct tetengo_trie_storage_tag      tetengo_trie_storage;
 typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
+#endif
+
 
 /*!
     \brief An element type.
@@ -193,4 +187,6 @@ const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif

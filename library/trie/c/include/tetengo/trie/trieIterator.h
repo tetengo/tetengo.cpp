@@ -6,20 +6,17 @@
 
 #if !defined(TETENGO_TRIE_TRIEITERATOR_H)
 #define TETENGO_TRIE_TRIEITERATOR_H
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-
-/*!
-    \brief A trie.
-*/
-typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
-
-/*!
-    \brief A trie iterator.
-*/
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_trie_trie_tag         tetengo_trie_trie;
 typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
+#endif
+
 
 /*!
     \brief Creates an iterator.
@@ -67,4 +64,6 @@ void tetengo_trie_trieIterator_next(tetengo_trie_trieIterator* p_iterator);
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif

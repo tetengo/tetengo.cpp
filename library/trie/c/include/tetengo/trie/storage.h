@@ -6,9 +6,6 @@
 
 #if !defined(TETENGO_TRIE_STORAGE_H)
 #define TETENGO_TRIE_STORAGE_H
-#if defined(__cplusplus)
-extern "C" {
-#endif
 
 #include <stddef.h>
 #if defined(_WIN32)
@@ -16,15 +13,15 @@ extern "C" {
 #endif
 
 
-/*!
-    \brief A trie.
-*/
-typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
-/*!
-    \brief A storage.
-*/
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_trie_trie_tag    tetengo_trie_trie;
 typedef struct tetengo_trie_storage_tag tetengo_trie_storage;
+#endif
+
 
 /*!
     \brief A path character type.
@@ -108,4 +105,6 @@ tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* p_s
 #if defined(__cplusplus)
 }
 #endif
+
+
 #endif

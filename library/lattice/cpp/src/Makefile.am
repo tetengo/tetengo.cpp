@@ -4,6 +4,8 @@
 headers =
 
 sources = \
+    tetengo.lattice.entry.cpp \
+    tetengo.lattice.unordered_map_vocabulary.cpp \
     tetengo.lattice.vocabulary.cpp
 
 lib_LIBRARIES = libtetengo.lattice.cpp.a

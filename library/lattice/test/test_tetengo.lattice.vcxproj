@@ -91,12 +91,26 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile />
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\c\include;$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile />
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\c\include;$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\c\include;$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\c\include;$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
@@ -104,10 +118,21 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.entry.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.string_view.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.unordered_map_vocabulary.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.vocabulary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cpp\tetengo.lattice.cpp.vcxproj">
+      <Project>{65c6d977-ac51-4e28-8b15-178fbdf69168}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\c\tetengo.lattice.vcxproj">
+      <Project>{2ee3983d-a0e0-429f-bc2f-5d46c93e1c81}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
