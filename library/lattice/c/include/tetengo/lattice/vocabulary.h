@@ -14,10 +14,11 @@
 extern "C" {
 #endif
 
-/*!
-    \brief A vocabulary.
-*/
-typedef struct tetengo_lattice_vocabulary_tag tetengo_lattice_vocabulary;
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_lattice_vocabulary_tag        tetengo_lattice_vocabulary;
+typedef struct tetengo_lattice_entry_tag             tetengo_lattice_entry;
+typedef struct tetengo_lattice_entry_map_element_tag tetengo_lattice_entry_map_element;
+#endif
 
 /*!
     \brief A entry.

@@ -12,15 +12,11 @@
 extern "C" {
 #endif
 
-/*!
-    \brief A trie.
-*/
-typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
-
-/*!
-    \brief A trie iterator.
-*/
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_trie_trie_tag         tetengo_trie_trie;
 typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
+#endif
+
 
 /*!
     \brief Creates an iterator.

@@ -14,20 +14,12 @@
 extern "C" {
 #endif
 
-/*!
-    \brief A trie.
-*/
-typedef struct tetengo_trie_trie_tag tetengo_trie_trie;
-
-/*!
-    \brief A storage.
-*/
-typedef struct tetengo_trie_storage_tag tetengo_trie_storage;
-
-/*!
-    \brief A trie iterator.
-*/
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_trie_trie_tag         tetengo_trie_trie;
+typedef struct tetengo_trie_storage_tag      tetengo_trie_storage;
 typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
+#endif
+
 
 /*!
     \brief An element type.
