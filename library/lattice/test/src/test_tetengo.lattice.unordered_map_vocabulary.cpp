@@ -10,10 +10,13 @@
 #include <vector>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
+#include <tetengo/lattice/vocabulary.h>
 
 
 namespace
@@ -59,6 +62,39 @@ BOOST_AUTO_TEST_CASE(construction)
             { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
         };
         const tetengo::lattice::unordered_map_vocabulary vocabulary{ map };
+    }
+
+    {
+        const std::vector<tetengo_lattice_entry> entries_mizuho{
+            { { key_mizuho.c_str(), key_mizuho.length() }, { surface_mizuho.c_str(), surface_mizuho.length() }, 42 }
+        };
+        const std::vector<tetengo_lattice_entry> entries_sakura{
+            { { key_sakura.c_str(), key_sakura.length() }, { surface_sakura1.c_str(), surface_sakura1.length() }, 24 },
+            { { key_sakura.c_str(), key_sakura.length() }, { surface_sakura2.c_str(), surface_sakura2.length() }, 2424 }
+        };
+        const std::vector<tetengo_lattice_entry_map_element> map{
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+        };
+
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(map.data(), 2);
+        BOOST_SCOPE_EXIT(p_vocabulary)
+        {
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_vocabulary);
+    }
+    {
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(nullptr, 0);
+
+        BOOST_TEST(!p_vocabulary);
+    }
+    {
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(nullptr, 42);
+
+        BOOST_TEST(!p_vocabulary);
     }
 }
 

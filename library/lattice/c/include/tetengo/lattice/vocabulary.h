@@ -20,24 +20,18 @@ typedef struct tetengo_lattice_entry_tag             tetengo_lattice_entry;
 typedef struct tetengo_lattice_entry_map_element_tag tetengo_lattice_entry_map_element;
 #endif
 
-/*!
-    \brief A entry.
-*/
-typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry;
 
 /*!
     \brief Creates an unordered_map vocabulary.
 
-    \param p_keys      A pointer to the first of keys.
-    \param p_entries   A pointer to the first of entries.
-    \param value_count A key (and entry) count.
+    \param p_map    An entry map.
+    \param map_size An entry map size.
 
-    \return A pointer to an unordered_map vocabulary.
+    \return A pointer to an unordered_map vocabulary. Or NULL when p_map is NULL.
 */
 tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-    const char* const*           p_keys,
-    const tetengo_lattice_entry* p_entries,
-    size_t                       value_count);
+    const tetengo_lattice_entry_map_element* p_map,
+    size_t                                   map_size);
 
 /*!
     \brief Destroys the vocabulary.

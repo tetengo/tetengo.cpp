@@ -7,6 +7,8 @@
 #if !defined(TETENGO_LATTICE_ENTRY_H)
 #define TETENGO_LATTICE_ENTRY_H
 
+#include <stddef.h>
+
 #include <tetengo/lattice/string_view.h>
 
 
@@ -30,6 +32,23 @@ typedef struct tetengo_lattice_entry_tag
 
 
 } tetengo_lattice_entry;
+
+/*!
+    \brief An entry map element.
+*/
+typedef struct tetengo_lattice_entry_map_element_tag
+{
+    //! A key.
+    tetengo_lattice_stringView key;
+
+    //! Entries
+    const tetengo_lattice_entry* p_entries;
+
+    //! An entry count.
+    size_t entry_count;
+
+
+} tetengo_lattice_entry_map_element;
 
 
 #if defined(__cplusplus)
