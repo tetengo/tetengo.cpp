@@ -33,8 +33,11 @@ iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
-clean-local:
+.PHONY: clean-iwyu
+clean-iwyu:
 	-find -name "*.iwyuout" | xargs rm -f
+
+clean-local: clean-iwyu
 
 
 .PHONY: format

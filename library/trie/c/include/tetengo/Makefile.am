@@ -24,8 +24,11 @@ iwyu: ${addsuffix .iwyuout, ${pkg_headers} ${extra_headers}}
 	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${iwyu_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
-clean-local:
+.PHONY: clean-iwyu
+clean-iwyu:
 	-find -name "*.iwyuout" | xargs rm -f
+
+clean-local: clean-iwyu
 
 
 .PHONY: format
