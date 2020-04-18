@@ -28,6 +28,7 @@ jobs:
         sudo apt-get -y install \
           autoconf-archive \
           bison \
+          clang-5.0 \
           cmake \
           dos2unix \
           flex \
