@@ -5,6 +5,7 @@
  */
 
 #include <any>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
@@ -13,6 +14,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <utility> // IWYU pragma: keep
 #include <vector>
 
 #include <boost/cstdint.hpp>

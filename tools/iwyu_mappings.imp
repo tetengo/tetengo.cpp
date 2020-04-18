@@ -1,8 +1,11 @@
 [
-  { include: ["<bits/exception.h>",    "private", "<exception>", "public"] },
-  { include: ["@<bits/stdint-.+>",     "private", "<cstdint>",   "public"] },
-  { include: ["<ext/alloc_traits.h>",  "private", "<vector>",    "public"] },
-  { include: ["<ext/new_allocator.h>", "private", "<cstddef>",   "public"] },
+  { include: ["<bits/exception.h>",     "private", "<exception>",   "public"] },
+  { include: ["<bits/std_function.h>",  "private", "<functional>",  "public"] },
+  { include: ["@<bits/fs_.+>",          "private", "<filesystem>",  "public"] },
+  { include: ["@<bits/stdint-.+>",      "private", "<cstdint>",     "public"] },
+  { include: ["<bits/string_view.tcc>", "private", "<string_view>", "public"] },
+  { include: ["<ext/alloc_traits.h>",   "private", "<vector>",      "public"] },
+  { include: ["<ext/new_allocator.h>",  "private", "<cstddef>",     "public"] },
   
   { include: ["@<boost/format/.+>",       "private", "<boost/format.hpp>",         "public"] },
   { include: ["@<boost/preprocessor/.+>", "private", "<boost/preprocessor.hpp>",   "public"] },
