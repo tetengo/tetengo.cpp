@@ -30,12 +30,12 @@ namespace tetengo::trie
         /*!
             \brief Creates a storage.
         */
-        storage() = default;
+        storage();
 
         /*!
             \brief Destroys the storage.
         */
-        virtual ~storage() = default;
+        virtual ~storage();
 
 
         // functions
