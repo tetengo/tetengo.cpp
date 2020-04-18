@@ -16,7 +16,7 @@
 #include <memory>
 #include <optional>
 #include <type_traits>
-#include <utility>
+#include <utility> // IWYU pragma: keep
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>

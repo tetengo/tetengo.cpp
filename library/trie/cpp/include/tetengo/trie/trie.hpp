@@ -7,7 +7,7 @@
 #if !defined(TETENGO_TRIE_TRIE_HPP)
 #define TETENGO_TRIE_TRIE_HPP
 
-#include <algorithm>
+#include <algorithm> // IWYU pragma: keep
 #include <any>
 #include <cstddef>
 #include <functional>
