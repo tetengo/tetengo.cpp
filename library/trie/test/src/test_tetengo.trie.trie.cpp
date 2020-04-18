@@ -5,6 +5,7 @@
  */
 
 #include <any>
+#include <cstddef> // IWYU pragma: keep
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
 #include <functional>
@@ -17,7 +18,7 @@
 #include <utility>
 #include <vector>
 
-#include <stddef.h>
+#include <stddef.h> // IWYU pragma: keep
 
 #include <boost/core/ignore_unused.hpp>
 #include <boost/iterator/iterator_facade.hpp>

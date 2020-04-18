@@ -5,6 +5,7 @@
  */
 
 #include <any>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <exception>
 #include <filesystem>
