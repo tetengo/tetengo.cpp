@@ -48,7 +48,7 @@ necessary in addition the above tools.
 
 - [Git](https://git-scm.com/)
 
-#### Getting a built library files
+#### Getting built library files
 
 ##### Downloading the prebuilt library files
 
@@ -84,7 +84,7 @@ preferred path.
 
 To generate the documents, open a command prompt, and execute the command
 `doxygen` in the top directory.
-Doxygen will output the documents into the directory `doc` in the work tree.
+Doxygen will output the documents into the directory `doc`.
 
 ```bat
 > doxygen
