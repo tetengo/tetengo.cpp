@@ -30,7 +30,8 @@ How to Build and Install
 - [Git](https://git-scm.com/)
 - [Visual Studio 2019](https://visualstudio.microsoft.com/)
 - [Boost C++ libraries 1.72.0](https://www.boost.org/)
-- [Doxygen 1.8.17](http://www.doxygen.nl/)
+- [Doxygen 1.8.18](http://www.doxygen.nl/)
+- [Graphviz](https://www.graphviz.org/)
 - [Python 3](https://www.python.org/)
 
 #### Procedure
@@ -76,7 +77,8 @@ Doxygen will output the documents into the directory `doc` in the work tree.
   [GCC 8.3.0](https://gcc.gnu.org/) or
   [GCC 9.2.1](https://gcc.gnu.org/)
 - [Boost C++ libraries 1.72.0](https://www.boost.org/)
-- [Doxygen 1.8.17](http://www.doxygen.nl/)
+- [Doxygen 1.8.18](http://www.doxygen.nl/)
+- [Graphviz](https://www.graphviz.org/)
 - [include-what-you-use 0.11](https://include-what-you-use.org/) or
   [include-what-you-use 5.0](https://include-what-you-use.org/)
 - [Clang Format 7.0](https://clang.llvm.org/docs/ClangFormat.html) or
