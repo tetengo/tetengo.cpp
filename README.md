@@ -20,6 +20,16 @@ Given a key, it returns the corresponding value in a constant time.
 The trie is also able to perform a prefix search.
 It has a method to enumerates the values with the same prefix.
 
+### tetengo::lattice
+
+A Viterbi search library.
+
+The Viterbi search is a dynamic programming algorithm. It finds the most likely
+path in the lattice consisted of the observed event nodes.
+
+This library also provides the A* search algorithm for the lattice created by
+the Viterbi search.
+
 How to Build and Install
 ------------------------
 
@@ -55,7 +65,7 @@ files into your preferred place.
 > tools\install_tetengo_library.bat [your_preferred_path]
 ```
 
-To generate the documents, open a Command Prompt, and execute the command
+To generate the documents, open a command prompt, and execute the command
 `doxygen` on the top directory of the work tree.
 Doxygen will output the documents into the directory `doc` in the work tree.
 
