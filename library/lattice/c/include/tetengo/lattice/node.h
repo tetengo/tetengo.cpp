@@ -7,6 +7,8 @@
 #if !defined(TETENGO_LATTICE_NODE_H)
 #define TETENGO_LATTICE_NODE_H
 
+#include <tetengo/lattice/string_view.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -17,8 +19,17 @@ extern "C" {
 */
 typedef struct tetengo_lattice_node_tag
 {
-    //! dummy
-    int dummy;
+    //! A key.
+    tetengo_lattice_stringView key;
+
+    //! A pointer to a value.
+    const void* p_value;
+
+    //! A node cost.
+    int node_cost;
+
+    //! A path cost.
+    int path_cost;
 
 
 } tetengo_lattice_node;

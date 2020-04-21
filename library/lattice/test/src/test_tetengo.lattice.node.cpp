@@ -7,9 +7,11 @@
 #include <any>
 #include <string_view>
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 
 
@@ -25,6 +27,13 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::lattice::node node_{ "mizuho", 42, 24, 2424 };
     }
+
+    {
+        const std::string_view     key{ "mizuho" };
+        const auto                 value = 42;
+        const tetengo_lattice_node node_{ { key.data(), key.length() }, &value, 24, 2424 };
+        boost::ignore_unused(node_);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(key)
@@ -35,6 +44,15 @@ BOOST_AUTO_TEST_CASE(key)
         const tetengo::lattice::node node_{ "mizuho", 42, 24, 2424 };
 
         BOOST_TEST(node_.key() == "mizuho");
+    }
+
+    {
+        const std::string_view     key{ "mizuho" };
+        const auto                 value = 42;
+        const tetengo_lattice_node node_{ { key.data(), key.length() }, &value, 24, 2424 };
+
+        BOOST_TEST(node_.key.p_head == key.data());
+        BOOST_TEST(node_.key.length == key.length());
     }
 }
 
@@ -47,6 +65,14 @@ BOOST_AUTO_TEST_CASE(value)
 
         BOOST_TEST(std::any_cast<int>(node_.value()) == 42);
     }
+
+    {
+        const std::string_view     key{ "mizuho" };
+        const auto                 value = 42;
+        const tetengo_lattice_node node_{ { key.data(), key.length() }, &value, 24, 2424 };
+
+        BOOST_TEST(node_.p_value == &value);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(node_cost)
@@ -58,6 +84,14 @@ BOOST_AUTO_TEST_CASE(node_cost)
 
         BOOST_TEST(node_.node_cost() == 24);
     }
+
+    {
+        const std::string_view     key{ "mizuho" };
+        const auto                 value = 42;
+        const tetengo_lattice_node node_{ { key.data(), key.length() }, &value, 24, 2424 };
+
+        BOOST_TEST(node_.node_cost == 24);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(path_cost)
@@ -68,6 +102,14 @@ BOOST_AUTO_TEST_CASE(path_cost)
         const tetengo::lattice::node node_{ "mizuho", 42, 24, 2424 };
 
         BOOST_TEST(node_.path_cost() == 2424);
+    }
+
+    {
+        const std::string_view     key{ "mizuho" };
+        const auto                 value = 42;
+        const tetengo_lattice_node node_{ { key.data(), key.length() }, &value, 24, 2424 };
+
+        BOOST_TEST(node_.path_cost == 2424);
     }
 }
 
