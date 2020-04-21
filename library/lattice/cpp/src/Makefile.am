@@ -5,6 +5,7 @@ headers =
 
 sources = \
     tetengo.lattice.entry.cpp \
+    tetengo.lattice.node.cpp \
     tetengo.lattice.unordered_map_vocabulary.cpp \
     tetengo.lattice.vocabulary.cpp
 
