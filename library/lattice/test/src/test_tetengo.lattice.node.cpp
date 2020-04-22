@@ -13,6 +13,7 @@
 
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/string_view.h>
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)

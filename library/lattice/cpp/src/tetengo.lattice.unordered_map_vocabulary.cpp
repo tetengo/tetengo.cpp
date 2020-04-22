@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 #include <string_view>
-#include <tuple>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -48,11 +47,6 @@ namespace tetengo::lattice
 
 
     private:
-        // types
-
-        using entry_holder_type = std::tuple<std::string, std::string, int>;
-
-
         // variables
 
         const std::unordered_map<std::string, std::vector<entry>> m_map;
