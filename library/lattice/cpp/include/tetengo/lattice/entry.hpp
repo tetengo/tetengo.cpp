@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_ENTRY_HPP)
 #define TETENGO_LATTICE_ENTRY_HPP
 
+#include <any>
 #include <string>
 #include <string_view>
 
@@ -16,9 +17,10 @@ namespace tetengo::lattice
     /*!
         \brief A template of an entry.
 
-        \tparam Key A key type.
+        \tparam Key   A key type.
+        \tparam Value A value type.
     */
-    template <typename Key>
+    template <typename Key, typename Value>
     class basic_entry
     {
     public:
@@ -27,27 +29,31 @@ namespace tetengo::lattice
         //! The key type.
         using key_type = Key;
 
+        //! The value type.
+        using value_type = Value;
+
 
         // constructors
 
         /*!
             \brief Creates an entry.
 
-            \param key     A key.
-            \param surface A surface.
-            \param cost    A cost.
+            \param key   A key.
+            \param value A value.
+            \param cost  A cost.
         */
-        basic_entry(key_type key, key_type surface, int cost);
+        basic_entry(key_type key, value_type value, int cost);
 
         /*!
             \brief Copies an entry.
 
             \tparam K A key type.
+            \tparam V A value type.
 
             \param another Another entry.
         */
-        template <typename K>
-        basic_entry(const basic_entry<K>& another);
+        template <typename K, typename V>
+        basic_entry(const basic_entry<K, V>& another);
 
 
         // functions
@@ -60,11 +66,11 @@ namespace tetengo::lattice
         const key_type& key() const;
 
         /*!
-            \brief Returns the surface.
+            \brief Returns the value.
 
-            \return The surface.
+            \return The value.
         */
-        const key_type& surface() const;
+        const value_type& value() const;
 
         /*!
             \brief Returns the cost.
@@ -79,7 +85,7 @@ namespace tetengo::lattice
 
         key_type m_key;
 
-        key_type m_surface;
+        value_type m_value;
 
         int m_cost;
     };
@@ -88,12 +94,12 @@ namespace tetengo::lattice
     /*!
         \brief An entry.
     */
-    using entry = basic_entry<std::string>;
+    using entry = basic_entry<std::string, std::any>;
 
     /*!
         \brief An entry view.
     */
-    using entry_view = basic_entry<std::string_view>;
+    using entry_view = basic_entry<std::string_view, const std::any*>;
 
 
 }

@@ -24,8 +24,8 @@ typedef struct tetengo_lattice_entry_tag
     //! A key.
     tetengo_lattice_stringView key;
 
-    //! A surface.
-    tetengo_lattice_stringView surface;
+    //! A pointer to a value.
+    const void* p_value;
 
     //! A cost.
     int cost;

@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <any>
 #include <cstddef>
 #include <memory>
 #include <string>
@@ -59,7 +60,7 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
 
                 cpp_entries.emplace_back(
                     std::string{ entry.key.p_head, entry.key.length },
-                    std::string{ entry.surface.p_head, entry.surface.length },
+                    *reinterpret_cast<const std::string*>(entry.p_value),
                     entry.cost);
             }
 
@@ -103,8 +104,7 @@ size_t tetengo_lattice_vocabulary_find(
 
             entry.key.p_head = cpp_entry.key().data();
             entry.key.length = cpp_entry.key().length();
-            entry.surface.p_head = cpp_entry.surface().data();
-            entry.surface.length = cpp_entry.surface().length();
+            entry.p_value = std::any_cast<std::string>(cpp_entry.value());
             entry.cost = cpp_entry.cost();
         }
     }

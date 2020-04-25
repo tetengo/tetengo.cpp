@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <any>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -67,11 +68,11 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const std::vector<tetengo_lattice_entry> entries_mizuho{
-            { { key_mizuho.c_str(), key_mizuho.length() }, { surface_mizuho.c_str(), surface_mizuho.length() }, 42 }
+            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
         };
         const std::vector<tetengo_lattice_entry> entries_sakura{
-            { { key_sakura.c_str(), key_sakura.length() }, { surface_sakura1.c_str(), surface_sakura1.length() }, 24 },
-            { { key_sakura.c_str(), key_sakura.length() }, { surface_sakura2.c_str(), surface_sakura2.length() }, 2424 }
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
         const std::vector<tetengo_lattice_entry_map_element> map{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
@@ -127,28 +128,28 @@ BOOST_AUTO_TEST_CASE(find)
             const auto found = vocabulary.find(key_mizuho);
             BOOST_TEST_REQUIRE(found.size() == 1U);
             BOOST_TEST(found[0].key() == key_mizuho);
-            BOOST_TEST(found[0].surface() == surface_mizuho);
+            BOOST_TEST(*std::any_cast<std::string>(found[0].value()) == surface_mizuho);
             BOOST_TEST(found[0].cost() == 42);
         }
         {
             const auto found = vocabulary.find(key_sakura);
             BOOST_TEST_REQUIRE(found.size() == 2U);
             BOOST_TEST(found[0].key() == key_sakura);
-            BOOST_TEST(found[0].surface() == surface_sakura1);
+            BOOST_TEST(*std::any_cast<std::string>(found[0].value()) == surface_sakura1);
             BOOST_TEST(found[0].cost() == 24);
             BOOST_TEST(found[1].key() == key_sakura);
-            BOOST_TEST(found[1].surface() == surface_sakura2);
+            BOOST_TEST(*std::any_cast<std::string>(found[1].value()) == surface_sakura2);
             BOOST_TEST(found[1].cost() == 2424);
         }
     }
 
     {
         const std::vector<tetengo_lattice_entry> entries_mizuho{
-            { { key_mizuho.c_str(), key_mizuho.length() }, { surface_mizuho.c_str(), surface_mizuho.length() }, 42 }
+            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
         };
         const std::vector<tetengo_lattice_entry> entries_sakura{
-            { { key_sakura.c_str(), key_sakura.length() }, { surface_sakura1.c_str(), surface_sakura1.length() }, 24 },
-            { { key_sakura.c_str(), key_sakura.length() }, { surface_sakura2.c_str(), surface_sakura2.length() }, 2424 }
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
         const std::vector<tetengo_lattice_entry_map_element> map{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
@@ -174,7 +175,7 @@ BOOST_AUTO_TEST_CASE(find)
             BOOST_TEST_REQUIRE(entry_count_again == 1U);
 
             BOOST_TEST((std::string{ entries[0].key.p_head, entries[0].key.length } == key_mizuho));
-            BOOST_TEST((std::string{ entries[0].surface.p_head, entries[0].surface.length } == surface_mizuho));
+            BOOST_TEST(*reinterpret_cast<const std::string*>(entries[0].p_value) == surface_mizuho);
             BOOST_TEST(entries[0].cost == 42);
         }
         {
@@ -187,10 +188,10 @@ BOOST_AUTO_TEST_CASE(find)
             BOOST_TEST_REQUIRE(entry_count_again == 2U);
 
             BOOST_TEST((std::string{ entries[0].key.p_head, entries[0].key.length } == key_sakura));
-            BOOST_TEST((std::string{ entries[0].surface.p_head, entries[0].surface.length } == surface_sakura1));
+            BOOST_TEST(*reinterpret_cast<const std::string*>(entries[0].p_value) == surface_sakura1);
             BOOST_TEST(entries[0].cost == 24);
             BOOST_TEST((std::string{ entries[1].key.p_head, entries[1].key.length } == key_sakura));
-            BOOST_TEST((std::string{ entries[1].surface.p_head, entries[1].surface.length } == surface_sakura2));
+            BOOST_TEST(*reinterpret_cast<const std::string*>(entries[1].p_value) == surface_sakura2);
             BOOST_TEST(entries[1].cost == 2424);
         }
     }

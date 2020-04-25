@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <any>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -28,6 +29,8 @@ namespace
 
     const std::string surface_mizuho{ to_c(0xE7), to_c(0x91), to_c(0x9E), to_c(0xE7), to_c(0xA9), to_c(0x82) };
 
+    const std::any value_mizuho{ surface_mizuho };
+
     const std::string key_sakura{ to_c(0xE3), to_c(0x81), to_c(0x95), to_c(0xE3), to_c(0x81),
                                   to_c(0x8F), to_c(0xE3), to_c(0x82), to_c(0x89) };
 
@@ -49,7 +52,7 @@ namespace
             if (key == key_mizuho)
             {
                 return std::vector<tetengo::lattice::entry_view>{ tetengo::lattice::entry_view{
-                    key_mizuho, surface_mizuho, 42 } };
+                    key_mizuho, &value_mizuho, 42 } };
             }
             else
             {
@@ -88,7 +91,7 @@ BOOST_AUTO_TEST_CASE(find)
 
             BOOST_TEST_REQUIRE(!entries.empty());
             BOOST_TEST(entries[0].key() == key_mizuho);
-            BOOST_TEST(entries[0].surface() == surface_mizuho);
+            BOOST_TEST(*std::any_cast<std::string>(entries[0].value()) == surface_mizuho);
             BOOST_TEST(entries[0].cost() == 42);
         }
         {
