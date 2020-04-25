@@ -3,6 +3,7 @@
 
 pkg_headers = \
     lattice/entry.hpp \
+    lattice/lattice.hpp \
     lattice/node.hpp \
     lattice/unordered_map_vocabulary.hpp \
     lattice/vocabulary.hpp

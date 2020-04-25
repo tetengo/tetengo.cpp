@@ -29,12 +29,18 @@
     <ClInclude Include="include\tetengo\lattice\node.h">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\lattice.h">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo_lattice_vocabulary.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo_lattice_lattice.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

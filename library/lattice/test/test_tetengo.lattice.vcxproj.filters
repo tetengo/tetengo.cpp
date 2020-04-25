@@ -28,6 +28,9 @@
     <ClCompile Include="src\test_tetengo.lattice.node.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\test_tetengo.lattice.lattice.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">

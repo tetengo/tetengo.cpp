@@ -17,9 +17,6 @@
     <None Include="include\tetengo\lattice\0namespace.dox">
       <Filter>header\tetengo::lattice</Filter>
     </None>
-    <None Include="Makefile.am">
-      <Filter>src</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\tetengo\lattice\vocabulary.hpp">
@@ -37,6 +34,9 @@
     <ClInclude Include="include\tetengo\lattice\node.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\lattice.hpp">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp">
@@ -52,6 +52,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo.lattice.node.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.lattice.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
