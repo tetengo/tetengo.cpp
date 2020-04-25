@@ -16,16 +16,16 @@ namespace tetengo::lattice
     /*!
         \brief A template of an entry.
 
-        \tparam String A string type.
+        \tparam Key A key type.
     */
-    template <typename String>
+    template <typename Key>
     class basic_entry
     {
     public:
         // types
 
-        //! The string type.
-        using string_type = String;
+        //! The key type.
+        using key_type = Key;
 
 
         // constructors
@@ -37,17 +37,17 @@ namespace tetengo::lattice
             \param surface A surface.
             \param cost    A cost.
         */
-        basic_entry(string_type key, string_type surface, int cost);
+        basic_entry(key_type key, key_type surface, int cost);
 
         /*!
             \brief Copies an entry.
 
-            \tparam S A string type.
+            \tparam K A key type.
 
             \param another Another entry.
         */
-        template <typename S>
-        basic_entry(const basic_entry<S>& another);
+        template <typename K>
+        basic_entry(const basic_entry<K>& another);
 
 
         // functions
@@ -57,14 +57,14 @@ namespace tetengo::lattice
 
             \return The key.
         */
-        const string_type& key() const;
+        const key_type& key() const;
 
         /*!
             \brief Returns the surface.
 
             \return The surface.
         */
-        const string_type& surface() const;
+        const key_type& surface() const;
 
         /*!
             \brief Returns the cost.
@@ -77,9 +77,9 @@ namespace tetengo::lattice
     private:
         // variables
 
-        string_type m_key;
+        key_type m_key;
 
-        string_type m_surface;
+        key_type m_surface;
 
         int m_cost;
     };

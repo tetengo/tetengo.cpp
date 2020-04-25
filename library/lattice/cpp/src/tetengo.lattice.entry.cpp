@@ -12,35 +12,35 @@
 
 namespace tetengo::lattice
 {
-    template <typename String>
-    basic_entry<String>::basic_entry(string_type key, string_type surface, const int cost) :
+    template <typename Key>
+    basic_entry<Key>::basic_entry(key_type key, key_type surface, const int cost) :
     m_key{ std::move(key) },
         m_surface{ std::move(surface) },
         m_cost{ cost }
     {}
 
-    template <typename String>
-    template <typename S>
-    basic_entry<String>::basic_entry(const basic_entry<S>& another) :
+    template <typename Key>
+    template <typename K>
+    basic_entry<Key>::basic_entry(const basic_entry<K>& another) :
     m_key{ another.key() },
         m_surface{ another.surface() },
         m_cost{ another.cost() }
     {}
 
-    template <typename String>
-    const typename basic_entry<String>::string_type& basic_entry<String>::key() const
+    template <typename Key>
+    const typename basic_entry<Key>::key_type& basic_entry<Key>::key() const
     {
         return m_key;
     }
 
-    template <typename String>
-    const typename basic_entry<String>::string_type& basic_entry<String>::surface() const
+    template <typename Key>
+    const typename basic_entry<Key>::key_type& basic_entry<Key>::surface() const
     {
         return m_surface;
     }
 
-    template <typename String>
-    int basic_entry<String>::cost() const
+    template <typename Key>
+    int basic_entry<Key>::cost() const
     {
         return m_cost;
     }
