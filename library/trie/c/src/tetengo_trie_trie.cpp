@@ -33,7 +33,14 @@ void tetengo_trie_trie_nullDoneObserver(void*) {}
 
 size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor(void)
 {
-    return tetengo::trie::trie_impl::default_double_array_density_factor();
+    try
+    {
+        return tetengo::trie::trie_impl::default_double_array_density_factor();
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 tetengo_trie_trie* tetengo_trie_trie_create(

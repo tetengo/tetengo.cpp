@@ -93,21 +93,28 @@ size_t tetengo_lattice_vocabulary_find(
     const char* const                       key,
     tetengo_lattice_entry* const            p_entries)
 {
-    const auto found = p_vocabulary->p_cpp_vocabulary->find(key);
-
-    if (p_entries)
+    try
     {
-        for (auto i = static_cast<std::size_t>(0); i < found.size(); ++i)
+        const auto found = p_vocabulary->p_cpp_vocabulary->find(key);
+
+        if (p_entries)
         {
-            const auto& cpp_entry = found[i];
-            auto&       entry = p_entries[i];
+            for (auto i = static_cast<std::size_t>(0); i < found.size(); ++i)
+            {
+                const auto& cpp_entry = found[i];
+                auto&       entry = p_entries[i];
 
-            entry.key.p_head = cpp_entry.key().data();
-            entry.key.length = cpp_entry.key().length();
-            entry.p_value = std::any_cast<std::string>(cpp_entry.value());
-            entry.cost = cpp_entry.cost();
+                entry.key.p_head = cpp_entry.key().data();
+                entry.key.length = cpp_entry.key().length();
+                entry.p_value = std::any_cast<std::string>(cpp_entry.value());
+                entry.cost = cpp_entry.cost();
+            }
         }
-    }
 
-    return found.size();
+        return found.size();
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
