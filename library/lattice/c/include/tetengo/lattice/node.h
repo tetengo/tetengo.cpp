@@ -7,6 +7,8 @@
 #if !defined(TETENGO_LATTICE_NODE_H)
 #define TETENGO_LATTICE_NODE_H
 
+#include <stddef.h>
+
 #include <tetengo/lattice/string_view.h>
 
 
@@ -24,6 +26,9 @@ typedef struct tetengo_lattice_node_tag
 
     //! A pointer to a value.
     const void* p_value;
+
+    //! An index of preceding nodes.
+    size_t preceding;
 
     //! A node cost.
     int node_cost;

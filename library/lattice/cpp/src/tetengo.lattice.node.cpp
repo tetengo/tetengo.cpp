@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <cstddef>
 #include <string_view>
 #include <utility>
 
@@ -13,9 +14,15 @@
 
 namespace tetengo::lattice
 {
-    node::node(std::string_view key, std::any value, int node_cost, int path_cost) :
+    node::node(
+        std::string_view  key,
+        std::any          value,
+        const std::size_t preceding,
+        const int         node_cost,
+        const int         path_cost) :
     m_key{ std::move(key) },
         m_value{ std::move(value) },
+        m_preceding{ preceding },
         m_node_cost{ node_cost },
         m_path_cost{ path_cost }
     {}
@@ -28,6 +35,11 @@ namespace tetengo::lattice
     const std::any& node::value() const
     {
         return m_value;
+    }
+
+    std::size_t node::preceding() const
+    {
+        return m_preceding;
     }
 
     int node::node_cost() const

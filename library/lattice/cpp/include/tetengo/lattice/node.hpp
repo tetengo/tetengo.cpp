@@ -8,6 +8,7 @@
 #define TETENGO_LATTICE_NODE_HPP
 
 #include <any>
+#include <cstddef>
 #include <string_view>
 
 
@@ -26,10 +27,11 @@ namespace tetengo::lattice
 
             \param key       A key.
             \param value     A value.
+            \param preceding An index of preceding nodes.
             \param node_cost A node cost.
             \param path_cost A path cost.
         */
-        node(std::string_view key, std::any value, int node_cost, int path_cost);
+        node(std::string_view key, std::any value, std::size_t preceding, int node_cost, int path_cost);
 
 
         // functions
@@ -47,6 +49,13 @@ namespace tetengo::lattice
             \return The value.
         */
         const std::any& value() const;
+
+        /*!
+            \brief Returns the index of the preceding nodes.
+
+            \return The index of the preceding nodes.
+        */
+        std::size_t preceding() const;
 
         /*!
             \brief Returns the node cost.
@@ -69,6 +78,8 @@ namespace tetengo::lattice
         std::string_view m_key;
 
         std::any m_value;
+
+        std::size_t m_preceding;
 
         int m_node_cost;
 
