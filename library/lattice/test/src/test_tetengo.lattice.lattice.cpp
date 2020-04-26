@@ -23,7 +23,32 @@ namespace
 {
     std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary()
     {
-        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{};
+        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{
+            { "[HT][TO][OK]",
+              {
+                  { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "mizuho" }, 3670 },
+                  { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "sakura" }, 2620 },
+                  { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "tsubame" }, 2390 },
+              } },
+            { "[HT][TO]",
+              {
+                  { "Hakata-Tosu-Omuta", std::string{ "ariake" }, 2150 },
+                  { "Hakata-Tosu-Omuta", std::string{ "rapid811" }, 1310 },
+              } },
+            { "[HT]",
+              {
+                  { "Hakata-Tosu", std::string{ "kamome" }, 840 },
+                  { "Hakata-Tosu", std::string{ "local813" }, 570 },
+              } },
+            { "[TO][OK]",
+              {
+                  { "Tosu-Omuta-Kumamoto", std::string{ "local815" }, 1680 },
+              } },
+            { "[OK]",
+              {
+                  { "Omuta-Kumamoto", std::string{ "local817" }, 950 },
+              } },
+        };
         return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(map));
     }
 
