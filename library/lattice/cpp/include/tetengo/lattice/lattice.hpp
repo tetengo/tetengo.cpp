@@ -8,6 +8,7 @@
 #define TETENGO_LATTICE_LATTICE_HPP
 
 #include <memory>
+#include <string_view>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -36,6 +37,16 @@ namespace tetengo::lattice
             \brief Destroys the lattice.
         */
         ~lattice();
+
+
+        // functions
+
+        /*!
+            \brief Pushes back an input.
+
+            \param input An input.
+        */
+        void push_back(const std::string_view& input);
 
 
     private:

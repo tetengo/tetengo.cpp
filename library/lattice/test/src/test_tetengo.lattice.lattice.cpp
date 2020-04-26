@@ -23,6 +23,15 @@ namespace
 {
     std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary()
     {
+        /*
+                  +------------------mizuho/sakura/tsubame-------------------+
+                  |                                                          |
+                  +------------ariake/rapid811------------+                  |
+                  |                                       |                  |
+            (Hakata)--kamome/local415--(Tosu)--local813--(Omuta)--local817--(Kumamoto)
+                                           |                                 |
+                                           +------------local815-------------+
+        */
         std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{
             { "[HT][TO][OK]",
               {
@@ -38,7 +47,11 @@ namespace
             { "[HT]",
               {
                   { "Hakata-Tosu", std::string{ "kamome" }, 840 },
-                  { "Hakata-Tosu", std::string{ "local813" }, 570 },
+                  { "Hakata-Tosu", std::string{ "local415" }, 570 },
+              } },
+            { "[TO]",
+              {
+                  { "Tosu-Omuta", std::string{ "local813" }, 860 },
               } },
             { "[TO][OK]",
               {
@@ -67,6 +80,19 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::lattice::lattice lattice_{ create_vocabulary() };
+    }
+}
+
+BOOST_AUTO_TEST_CASE(push_back)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        tetengo::lattice::lattice lattice_{ create_vocabulary() };
+
+        lattice_.push_back("[HT]");
+        lattice_.push_back("[TO]");
+        lattice_.push_back("[OK]");
     }
 }
 
