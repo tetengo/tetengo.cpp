@@ -33,31 +33,31 @@ namespace
                                            +------------local815-------------+
         */
         std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{
-            { "[HT][TO][OK]",
+            { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
               {
                   { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "mizuho" }, 3670 },
                   { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "sakura" }, 2620 },
                   { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "tsubame" }, 2390 },
               } },
-            { "[HT][TO]",
+            { "[HakataTosu][TosuOmuta]",
               {
                   { "Hakata-Tosu-Omuta", std::string{ "ariake" }, 2150 },
                   { "Hakata-Tosu-Omuta", std::string{ "rapid811" }, 1310 },
               } },
-            { "[HT]",
+            { "[HakataTosu]",
               {
                   { "Hakata-Tosu", std::string{ "kamome" }, 840 },
                   { "Hakata-Tosu", std::string{ "local415" }, 570 },
               } },
-            { "[TO]",
+            { "[TosuOmuta]",
               {
                   { "Tosu-Omuta", std::string{ "local813" }, 860 },
               } },
-            { "[TO][OK]",
+            { "[TosuOmuta][OmutaKumamoto]",
               {
                   { "Tosu-Omuta-Kumamoto", std::string{ "local815" }, 1680 },
               } },
-            { "[OK]",
+            { "[OmutaKumamoto]",
               {
                   { "Omuta-Kumamoto", std::string{ "local817" }, 950 },
               } },
@@ -90,9 +90,9 @@ BOOST_AUTO_TEST_CASE(push_back)
     {
         tetengo::lattice::lattice lattice_{ create_vocabulary() };
 
-        lattice_.push_back("[HT]");
-        lattice_.push_back("[TO]");
-        lattice_.push_back("[OK]");
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
     }
 }
 

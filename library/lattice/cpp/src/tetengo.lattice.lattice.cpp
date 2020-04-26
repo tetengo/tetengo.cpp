@@ -4,7 +4,11 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
+#include <any>
+#include <cassert>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -13,6 +17,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -38,7 +43,7 @@ namespace tetengo::lattice
             return m_input_tail;
         }
 
-        const std::vector<node> nodes() const
+        const std::vector<node>& nodes() const
         {
             return m_nodes;
         }
@@ -61,7 +66,7 @@ namespace tetengo::lattice
         explicit impl(std::unique_ptr<vocabulary>&& p_vocabulary) :
         m_p_vocabulary{ std::move(p_vocabulary) },
             m_input{},
-            m_graph{}
+            m_graph{ { bos() } }
         {}
 
 
@@ -70,11 +75,53 @@ namespace tetengo::lattice
         void push_back(const std::string_view& input)
         {
             m_input += input;
-            m_graph.emplace_back(m_input.length(), std::vector<node>{});
+
+            std::vector<node> nodes{};
+            for (auto i = static_cast<std::size_t>(0); i < m_graph.size(); ++i)
+            {
+                const auto& step = m_graph[i];
+
+                const auto lowest_preceding_path_cost = lowest_path_cost(step);
+
+                const std::string_view node_key{ std::next(m_input.data(), step.input_tail()),
+                                                 m_input.length() - step.input_tail() };
+                const auto             found = m_p_vocabulary->find(node_key);
+                std::transform(
+                    std::begin(found),
+                    std::end(found),
+                    std::back_inserter(nodes),
+                    [i, lowest_preceding_path_cost](const auto& e) {
+                        return to_node(e, i, lowest_preceding_path_cost);
+                    });
+            }
+            m_graph.emplace_back(m_input.length(), std::move(nodes));
         }
 
 
     private:
+        // static functions
+
+        static const graph_step& bos()
+        {
+            static const graph_step singleton{ 0, std::vector<node>{ { std::string_view{}, std::any{}, 0, 0, 0 } } };
+            return singleton;
+        }
+
+        static node to_node(const entry_view& entry, const std::size_t preceding, const int preceding_path_cost)
+        {
+            return node{ entry.key(), entry.value(), preceding, entry.cost(), preceding_path_cost + entry.cost() };
+        }
+
+        static int lowest_path_cost(const graph_step& step)
+        {
+            assert(!step.nodes().empty());
+            return std::min_element(
+                       std::begin(step.nodes()),
+                       std::end(step.nodes()),
+                       [](const auto& one, const auto& another) { return one.path_cost() < another.path_cost(); })
+                ->path_cost();
+        }
+
         // variables
 
         const std::unique_ptr<vocabulary> m_p_vocabulary;
@@ -95,6 +142,4 @@ namespace tetengo::lattice
     {
         m_p_impl->push_back(input);
     }
-
-
 }
