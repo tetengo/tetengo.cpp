@@ -14,6 +14,9 @@
 
 namespace tetengo::lattice
 {
+    class vocabulary;
+
+
     /*!
         \brief A lattice.
     */
@@ -24,8 +27,10 @@ namespace tetengo::lattice
 
         /*!
             \brief Creates a lattice.
+
+            \param p_vocabulary A unique pointer to a vocabulary.
         */
-        lattice();
+        explicit lattice(std::unique_ptr<vocabulary>&& p_vocabulary);
 
         /*!
             \brief Destroys the lattice.
