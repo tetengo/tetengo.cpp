@@ -16,4 +16,10 @@ fi
 
 ${CLANGFORMAT} ${FILEPATH} > ${FILEPATH_TMP}
 ${UNIX2DOS} -q ${FILEPATH_TMP}
-mv -f ${FILEPATH_TMP} ${FILEPATH}
+
+if diff -q ${FILEPATH_TMP} ${FILEPATH};
+then
+    rm -f ${FILEPATH_TMP}
+else
+    mv -f ${FILEPATH_TMP} ${FILEPATH}
+fi
