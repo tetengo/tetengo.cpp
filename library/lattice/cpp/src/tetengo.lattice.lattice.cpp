@@ -122,6 +122,7 @@ namespace tetengo::lattice
                 ->path_cost();
         }
 
+
         // variables
 
         const std::unique_ptr<vocabulary> m_p_vocabulary;
