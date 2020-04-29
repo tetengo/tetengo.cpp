@@ -95,6 +95,19 @@ namespace tetengo::lattice
 
 
     /*!
+        \brief Returns true if one equals to another.
+
+        \tparam Key   A key type.
+        \tparam Value A value type.
+
+        \param one     One entry.
+        \param another Another entry.
+    */
+    template <typename Key, typename Value>
+    bool operator==(const basic_entry<Key, Value>& one, const basic_entry<Key, Value>& another);
+
+
+    /*!
         \brief An entry.
     */
     using entry = basic_entry<std::string, std::any>;

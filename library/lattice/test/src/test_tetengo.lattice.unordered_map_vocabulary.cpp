@@ -70,7 +70,12 @@ BOOST_AUTO_TEST_CASE(construction)
             { key_mizuho, { { key_mizuho, surface_mizuho, 42 } } },
             { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
         };
-        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> connection_map{};
+        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> connection_map{
+            { std::make_pair(
+                  tetengo::lattice::entry{ key_mizuho, surface_mizuho, 42 },
+                  tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
+              4242 }
+        };
         const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entry_map), std::move(connection_map) };
     }
 
@@ -131,7 +136,12 @@ BOOST_AUTO_TEST_CASE(find_entries)
             { key_mizuho, { { key_mizuho, surface_mizuho, 42 } } },
             { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
         };
-        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> connection_map{};
+        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> connection_map{
+            { std::make_pair(
+                  tetengo::lattice::entry{ key_mizuho, surface_mizuho, 42 },
+                  tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
+              4242 }
+        };
         const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entry_map), std::move(connection_map) };
 
         {

@@ -49,10 +49,23 @@ namespace tetengo::lattice
         return m_cost;
     }
 
+    template <typename Key, typename Value>
+    bool operator==(const basic_entry<Key, Value>& one, const basic_entry<Key, Value>& another)
+    {
+        return one.key() == another.key() && one.cost() == another.cost();
+    }
+
 
     template class basic_entry<std::string, std::any>;
 
     template class basic_entry<std::string_view, const std::any*>;
+
+    template bool
+    operator==(const basic_entry<std::string, std::any>& one, const basic_entry<std::string, std::any>& another);
+
+    template bool operator==(
+        const basic_entry<std::string_view, const std::any*>& one,
+        const basic_entry<std::string_view, const std::any*>& another);
 
 
 }
