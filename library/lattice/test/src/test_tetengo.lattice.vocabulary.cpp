@@ -47,7 +47,7 @@ namespace
     private:
         // virtual functions
 
-        std::vector<tetengo::lattice::entry_view> find_impl(const std::string_view& key) const
+        std::vector<tetengo::lattice::entry_view> find_entries_impl(const std::string_view& key) const
         {
             if (key == key_mizuho)
             {
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
-BOOST_AUTO_TEST_CASE(find)
+BOOST_AUTO_TEST_CASE(find_entries)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(find)
         const concrete_vocabulary vocabulary{};
 
         {
-            const auto entries = vocabulary.find(key_mizuho);
+            const auto entries = vocabulary.find_entries(key_mizuho);
 
             BOOST_TEST_REQUIRE(!entries.empty());
             BOOST_TEST(entries[0].key() == key_mizuho);
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(find)
             BOOST_TEST(entries[0].cost() == 42);
         }
         {
-            const auto entries = vocabulary.find(key_sakura);
+            const auto entries = vocabulary.find_entries(key_sakura);
 
             BOOST_TEST(entries.empty());
         }

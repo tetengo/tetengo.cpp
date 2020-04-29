@@ -45,13 +45,13 @@ namespace tetengo::lattice
 
             \return Entry views.
         */
-        std::vector<entry_view> find(const std::string_view& key) const;
+        std::vector<entry_view> find_entries(const std::string_view& key) const;
 
 
     private:
         // virtual functions
 
-        virtual std::vector<entry_view> find_impl(const std::string_view& key) const = 0;
+        virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const = 0;
     };
 
 

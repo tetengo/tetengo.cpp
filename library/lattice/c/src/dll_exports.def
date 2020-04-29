@@ -2,4 +2,4 @@ LIBRARY tetengo.lattice.dll
 EXPORTS
 	tetengo_lattice_vocabulary_createUnorderedMapVocabulary
 	tetengo_lattice_vocabulary_destroy
-	tetengo_lattice_vocabulary_find
+	tetengo_lattice_vocabulary_findEntries

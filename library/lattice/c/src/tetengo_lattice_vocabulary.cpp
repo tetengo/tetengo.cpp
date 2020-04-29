@@ -88,14 +88,14 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary* const 
     {}
 }
 
-size_t tetengo_lattice_vocabulary_find(
+size_t tetengo_lattice_vocabulary_findEntries(
     const tetengo_lattice_vocabulary* const p_vocabulary,
     const char* const                       key,
     tetengo_lattice_entry* const            p_entries)
 {
     try
     {
-        const auto found = p_vocabulary->p_cpp_vocabulary->find(key);
+        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(key);
 
         if (p_entries)
         {

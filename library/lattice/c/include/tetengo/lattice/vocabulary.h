@@ -49,7 +49,7 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary* p_voca
 
     \return An entry count.
 */
-size_t tetengo_lattice_vocabulary_find(
+size_t tetengo_lattice_vocabulary_findEntries(
     const tetengo_lattice_vocabulary* p_vocabulary,
     const char*                       key,
     tetengo_lattice_entry*            p_entries);
