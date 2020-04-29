@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -15,6 +16,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 
@@ -45,6 +47,11 @@ namespace tetengo::lattice
             return entries;
         }
 
+        connection find_connection_impl(const entry_view& /*from*/, const entry_view& /*to*/) const
+        {
+            throw std::logic_error{ "Implement it." };
+        }
+
 
     private:
         // variables
@@ -62,6 +69,11 @@ namespace tetengo::lattice
     std::vector<entry_view> unordered_map_vocabulary::find_entries_impl(const std::string_view& key) const
     {
         return m_p_impl->find_entries_impl(key);
+    }
+
+    connection unordered_map_vocabulary::find_connection_impl(const entry_view& from, const entry_view& to) const
+    {
+        return m_p_impl->find_connection_impl(from, to);
     }
 
 

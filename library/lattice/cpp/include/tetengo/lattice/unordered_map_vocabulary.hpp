@@ -19,6 +19,9 @@
 
 namespace tetengo::lattice
 {
+    class connection;
+
+
     /*!
         \brief An unordered_map vocabulary.
     */
@@ -54,6 +57,8 @@ namespace tetengo::lattice
         // virtual functions
 
         virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const override;
+
+        virtual connection find_connection_impl(const entry_view& from, const entry_view& to) const override;
     };
 
 

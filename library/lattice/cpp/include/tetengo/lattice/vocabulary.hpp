@@ -17,6 +17,9 @@
 
 namespace tetengo::lattice
 {
+    class connection;
+
+
     /*!
         \brief A vocabulary.
     */
@@ -47,11 +50,23 @@ namespace tetengo::lattice
         */
         std::vector<entry_view> find_entries(const std::string_view& key) const;
 
+        /*!
+            \brief Finds a connection between entries.
+
+            \param from An origin entry view.
+            \param to   A destination entry view.
+
+            \return A connection between the entries.
+        */
+        connection find_connection(const entry_view& from, const entry_view& to) const;
+
 
     private:
         // virtual functions
 
         virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const = 0;
+
+        virtual connection find_connection_impl(const entry_view& from, const entry_view& to) const = 0;
     };
 
 
