@@ -12,7 +12,9 @@
 #include <functional> // IWYU pragma: keep
 #include <string>
 #include <string_view>
-#include <variant>
+#include <system_error>
+
+#include <boost/operators.hpp>
 
 
 namespace tetengo::lattice
@@ -24,7 +26,7 @@ namespace tetengo::lattice
         \tparam Value A value type.
     */
     template <typename Key, typename Value>
-    class basic_entry
+    class basic_entry : public boost::equality_comparable<basic_entry<Key, Value>>
     {
     public:
         // types
