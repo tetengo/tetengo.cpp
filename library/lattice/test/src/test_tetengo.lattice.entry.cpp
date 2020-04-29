@@ -48,8 +48,9 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::lattice::entry      entry_{ key_mizuho, surface_mizuho, 42 };
-        const tetengo::lattice::entry_view view_{ entry_ };
+        const tetengo::lattice::entry      entry1{ key_mizuho, surface_mizuho, 42 };
+        const tetengo::lattice::entry_view view{ entry1 };
+        const tetengo::lattice::entry      entry2{ view };
     }
 
     {

@@ -5,6 +5,7 @@
  */
 
 #include <any>
+#include <limits>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -15,6 +16,7 @@
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/string_view.h>
@@ -220,6 +222,36 @@ BOOST_AUTO_TEST_CASE(find_entries)
 BOOST_AUTO_TEST_CASE(find_connection)
 {
     BOOST_TEST_PASSPOINT();
+
+    {
+        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> entry_map{
+            { key_mizuho, { { key_mizuho, surface_mizuho, 42 } } },
+            { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
+        };
+        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> connection_map{
+            { std::make_pair(
+                  tetengo::lattice::entry{ key_mizuho, surface_mizuho, 42 },
+                  tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
+              4242 }
+        };
+        const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entry_map), std::move(connection_map) };
+
+        const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
+        BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
+        const auto entries_sakura = vocabulary.find_entries(key_sakura);
+        BOOST_TEST_REQUIRE(entries_sakura.size() == 2U);
+
+        {
+            const auto connection = vocabulary.find_connection(entries_mizuho[0], entries_sakura[0]);
+
+            BOOST_TEST(connection.cost() == 4242);
+        }
+        {
+            const auto connection = vocabulary.find_connection(entries_mizuho[0], entries_sakura[1]);
+
+            BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
+        }
+    }
 }
 
 

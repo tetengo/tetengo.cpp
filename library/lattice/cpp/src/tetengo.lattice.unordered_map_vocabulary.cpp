@@ -7,10 +7,11 @@
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
+#include <limits>
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -66,9 +67,14 @@ namespace tetengo::lattice
             return entries;
         }
 
-        connection find_connection_impl(const entry_view& /*from*/, const entry_view& /*to*/) const
+        connection find_connection_impl(const entry_view& from, const entry_view& to) const
         {
-            throw std::logic_error{ "Implement it." };
+            const auto found = m_connection_map.find(std::make_pair(from, to));
+            if (found == m_connection_map.end())
+            {
+                return connection{ std::numeric_limits<int>::max() };
+            }
+            return connection{ found->second };
         }
 
 

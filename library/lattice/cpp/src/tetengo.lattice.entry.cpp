@@ -31,6 +31,14 @@ namespace tetengo::lattice
         m_cost{ another.cost() }
     {}
 
+    template <>
+    template <>
+    basic_entry<std::string, std::any>::basic_entry(const basic_entry<std::string_view, const std::any*>& another) :
+    m_key{ another.key() },
+        m_value{ *another.value() },
+        m_cost{ another.cost() }
+    {}
+
     template <typename Key, typename Value>
     const typename basic_entry<Key, Value>::key_type& basic_entry<Key, Value>::key() const
     {
