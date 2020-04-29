@@ -4,8 +4,12 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
+
+#include <tetengo/lattice/connection.h>
+#include <tetengo/lattice/connection.hpp>
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -17,14 +21,31 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const tetengo::lattice::connection connection_{ 42 };
+    }
+
+    {
+        const tetengo_lattice_connection connection_{ 42 };
+        boost::ignore_unused(connection_);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(cost)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const tetengo::lattice::connection connection_{ 42 };
+
+        BOOST_TEST(connection_.cost() == 42);
+    }
+
+    {
+        const tetengo_lattice_connection connection_{ 42 };
+
+        BOOST_TEST(connection_.cost == 42);
+    }
 }
 
 
