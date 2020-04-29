@@ -32,7 +32,7 @@ namespace
                                            |                                 |
                                            +------------local815-------------+
         */
-        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{
+        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> entry_map{
             { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
               {
                   { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "mizuho" }, 3670 },
@@ -62,7 +62,9 @@ namespace
                   { "Omuta-Kumamoto", std::string{ "local817" }, 950 },
               } },
         };
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(map));
+        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> connection_map{};
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
+            std::move(entry_map), std::move(connection_map));
     }
 
 

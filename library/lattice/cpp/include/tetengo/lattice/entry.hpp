@@ -8,8 +8,11 @@
 #define TETENGO_LATTICE_ENTRY_HPP
 
 #include <any>
+#include <cstddef>
+#include <functional> // IWYU pragma: keep
 #include <string>
 #include <string_view>
+#include <variant>
 
 
 namespace tetengo::lattice
@@ -100,6 +103,18 @@ namespace tetengo::lattice
         \brief An entry view.
     */
     using entry_view = basic_entry<std::string_view, const std::any*>;
+
+
+}
+
+
+namespace std
+{
+    template <typename Key, typename Value>
+    struct hash<tetengo::lattice::basic_entry<Key, Value>>
+    {
+        std::size_t operator()(const tetengo::lattice::basic_entry<Key, Value>& key) const;
+    };
 
 
 }

@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
@@ -14,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/container_hash/hash.hpp>
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/lattice/connection.hpp>
@@ -23,20 +25,37 @@
 
 namespace tetengo::lattice
 {
+    namespace
+    {
+        static const std::hash<entry> entry_hash()
+        {
+            static const std::hash<entry> singleton{};
+            return singleton;
+        }
+
+
+    }
+
+
     class unordered_map_vocabulary::impl : private boost::noncopyable
     {
     public:
         // constructors and destructor
 
-        explicit impl(std::unordered_map<std::string, std::vector<entry>> map) : m_map{ std::move(map) } {}
+        explicit impl(
+            std::unordered_map<std::string, std::vector<entry>> entry_map,
+            std::unordered_map<std::pair<entry, entry>, int>    connection_map) :
+        m_entry_map{ std::move(entry_map) },
+            m_connection_map{ std::move(connection_map) }
+        {}
 
 
         // functions
 
         std::vector<entry_view> find_entries_impl(const std::string_view& key) const
         {
-            const auto found = m_map.find(std::string{ key });
-            if (found == m_map.end())
+            const auto found = m_entry_map.find(std::string{ key });
+            if (found == m_entry_map.end())
             {
                 return std::vector<entry_view>{};
             }
@@ -56,12 +75,16 @@ namespace tetengo::lattice
     private:
         // variables
 
-        const std::unordered_map<std::string, std::vector<entry>> m_map;
+        const std::unordered_map<std::string, std::vector<entry>> m_entry_map;
+
+        const std::unordered_map<std::pair<entry, entry>, int> m_connection_map;
     };
 
 
-    unordered_map_vocabulary::unordered_map_vocabulary(std::unordered_map<std::string, std::vector<entry>> map) :
-    m_p_impl{ std::make_unique<impl>(std::move(map)) }
+    unordered_map_vocabulary::unordered_map_vocabulary(
+        std::unordered_map<std::string, std::vector<entry>> entry_map,
+        std::unordered_map<std::pair<entry, entry>, int>    connection_map) :
+    m_p_impl{ std::make_unique<impl>(std::move(entry_map), std::move(connection_map)) }
     {}
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;
@@ -74,6 +97,21 @@ namespace tetengo::lattice
     connection unordered_map_vocabulary::find_connection_impl(const entry_view& from, const entry_view& to) const
     {
         return m_p_impl->find_connection_impl(from, to);
+    }
+
+
+}
+
+
+namespace std
+{
+    std::size_t hash<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>>::
+                operator()(const std::pair<tetengo::lattice::entry, tetengo::lattice::entry>& key) const
+    {
+        auto seed = static_cast<std::size_t>(0);
+        boost::hash_combine(seed, tetengo::lattice::entry_hash()(key.first));
+        boost::hash_combine(seed, tetengo::lattice::entry_hash()(key.second));
+        return seed;
     }
 
 

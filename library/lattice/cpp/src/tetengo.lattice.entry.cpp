@@ -5,8 +5,11 @@
 */
 
 #include <any>
+#include <cstddef>
 #include <string>
 #include <string_view>
+
+#include <boost/container_hash/hash.hpp>
 
 #include <tetengo/lattice/entry.hpp>
 
@@ -50,6 +53,27 @@ namespace tetengo::lattice
     template class basic_entry<std::string, std::any>;
 
     template class basic_entry<std::string_view, const std::any*>;
+
+
+}
+
+
+namespace std
+{
+    template <typename Key, typename Value>
+    std::size_t hash<tetengo::lattice::basic_entry<Key, Value>>::
+                operator()(const tetengo::lattice::basic_entry<Key, Value>& key) const
+    {
+        auto seed = static_cast<std::size_t>(0);
+        boost::hash_combine(seed, boost::hash_value(key.key()));
+        boost::hash_combine(seed, boost::hash_value(key.cost()));
+        return seed;
+    }
+
+
+    template struct hash<tetengo::lattice::basic_entry<std::string, std::any>>;
+
+    template struct hash<tetengo::lattice::basic_entry<std::string_view, const std::any*>>;
 
 
 }
