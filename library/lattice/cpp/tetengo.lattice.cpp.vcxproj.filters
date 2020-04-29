@@ -37,6 +37,9 @@
     <ClInclude Include="include\tetengo\lattice\lattice.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\connection.hpp">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp">
@@ -55,6 +58,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo.lattice.lattice.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.connection.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\lattice\connection.h" />
     <ClInclude Include="include\tetengo\lattice\entry.h" />
     <ClInclude Include="include\tetengo\lattice\lattice.h" />
     <ClInclude Include="include\tetengo\lattice\node.h" />

@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    lattice/connection.hpp \
     lattice/entry.hpp \
     lattice/lattice.hpp \
     lattice/node.hpp \

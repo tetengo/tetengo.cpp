@@ -5,6 +5,7 @@ headers =
 
 sources = \
     master.cpp \
+    test_tetengo.lattice.connection.cpp \
     test_tetengo.lattice.entry.cpp \
     test_tetengo.lattice.lattice.cpp \
     test_tetengo.lattice.node.cpp \
