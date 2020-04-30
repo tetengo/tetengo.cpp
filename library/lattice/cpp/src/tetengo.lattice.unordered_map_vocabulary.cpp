@@ -21,6 +21,7 @@
 
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 
 
@@ -67,9 +68,11 @@ namespace tetengo::lattice
             return entries;
         }
 
-        connection find_connection_impl(const entry_view& from, const entry_view& to) const
+        connection find_connection_impl(const node& from, const node& to) const
         {
-            const auto found = m_connection_map.find(std::make_pair(from, to));
+            entry      entry_from{ std::string{ from.key() }, from.value(), from.node_cost() };
+            entry      entry_to{ std::string{ to.key() }, to.value(), to.node_cost() };
+            const auto found = m_connection_map.find(std::make_pair(std::move(entry_from), std::move(entry_to)));
             if (found == m_connection_map.end())
             {
                 return connection{ std::numeric_limits<int>::max() };
@@ -100,7 +103,7 @@ namespace tetengo::lattice
         return m_p_impl->find_entries_impl(key);
     }
 
-    connection unordered_map_vocabulary::find_connection_impl(const entry_view& from, const entry_view& to) const
+    connection unordered_map_vocabulary::find_connection_impl(const node& from, const node& to) const
     {
         return m_p_impl->find_connection_impl(from, to);
     }

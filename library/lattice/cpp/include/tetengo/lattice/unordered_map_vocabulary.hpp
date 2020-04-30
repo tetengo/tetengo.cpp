@@ -12,9 +12,9 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <system_error>
 #include <unordered_map>
 #include <utility>
-#include <variant>
 #include <vector>
 
 #include <tetengo/lattice/entry.hpp>
@@ -24,6 +24,7 @@
 namespace tetengo::lattice
 {
     class connection;
+    class node;
 
 
     /*!
@@ -65,7 +66,7 @@ namespace tetengo::lattice
 
         virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const override;
 
-        virtual connection find_connection_impl(const entry_view& from, const entry_view& to) const override;
+        virtual connection find_connection_impl(const node& from, const node& to) const override;
     };
 
 

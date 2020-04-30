@@ -19,6 +19,7 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/string_view.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
@@ -48,6 +49,11 @@ namespace
                                    to_c(0xB0), to_c(0xE3), to_c(0x82), to_c(0x81) };
 
     const std::string surface_tsubame{ to_c(0xE7), to_c(0x87), to_c(0x95) };
+
+    tetengo::lattice::node to_node(const tetengo::lattice::entry_view& entry)
+    {
+        return tetengo::lattice::node{ entry.key(), *entry.value(), 0, entry.cost(), 0 };
+    }
 
 
 }
@@ -242,12 +248,12 @@ BOOST_AUTO_TEST_CASE(find_connection)
         BOOST_TEST_REQUIRE(entries_sakura.size() == 2U);
 
         {
-            const auto connection = vocabulary.find_connection(entries_mizuho[0], entries_sakura[0]);
+            const auto connection = vocabulary.find_connection(to_node(entries_mizuho[0]), to_node(entries_sakura[0]));
 
             BOOST_TEST(connection.cost() == 4242);
         }
         {
-            const auto connection = vocabulary.find_connection(entries_mizuho[0], entries_sakura[1]);
+            const auto connection = vocabulary.find_connection(to_node(entries_mizuho[0]), to_node(entries_sakura[1]));
 
             BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
         }

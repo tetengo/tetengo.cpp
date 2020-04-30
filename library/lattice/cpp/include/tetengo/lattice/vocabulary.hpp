@@ -18,6 +18,7 @@
 namespace tetengo::lattice
 {
     class connection;
+    class node;
 
 
     /*!
@@ -53,12 +54,12 @@ namespace tetengo::lattice
         /*!
             \brief Finds a connection between entries.
 
-            \param from An origin entry view.
-            \param to   A destination entry view.
+            \param from An origin node.
+            \param to   A destination node.
 
             \return A connection between the entries.
         */
-        connection find_connection(const entry_view& from, const entry_view& to) const;
+        connection find_connection(const node& from, const node& to) const;
 
 
     private:
@@ -66,7 +67,7 @@ namespace tetengo::lattice
 
         virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const = 0;
 
-        virtual connection find_connection_impl(const entry_view& from, const entry_view& to) const = 0;
+        virtual connection find_connection_impl(const node& from, const node& to) const = 0;
     };
 
 

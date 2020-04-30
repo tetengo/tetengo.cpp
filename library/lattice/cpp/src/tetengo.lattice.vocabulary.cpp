@@ -14,6 +14,9 @@
 
 namespace tetengo::lattice
 {
+    class node;
+
+
     vocabulary::vocabulary() = default;
 
     vocabulary::~vocabulary() = default;
@@ -23,7 +26,7 @@ namespace tetengo::lattice
         return find_entries_impl(key);
     }
 
-    connection vocabulary::find_connection(const entry_view& from, const entry_view& to) const
+    connection vocabulary::find_connection(const node& from, const node& to) const
     {
         return find_connection_impl(from, to);
     }

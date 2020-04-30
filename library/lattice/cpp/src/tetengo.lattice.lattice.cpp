@@ -109,7 +109,7 @@ namespace tetengo::lattice
 
         static node to_node(const entry_view& entry, const std::size_t preceding, const int preceding_path_cost)
         {
-            return node{ entry.key(), entry.value(), preceding, entry.cost(), preceding_path_cost + entry.cost() };
+            return node{ entry.key(), *entry.value(), preceding, entry.cost(), preceding_path_cost + entry.cost() };
         }
 
         static int lowest_path_cost(const graph_step& step)
