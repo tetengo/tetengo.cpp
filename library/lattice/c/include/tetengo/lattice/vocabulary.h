@@ -18,6 +18,7 @@ extern "C" {
 typedef struct tetengo_lattice_vocabulary_tag             tetengo_lattice_vocabulary;
 typedef struct tetengo_lattice_entry_tag                  tetengo_lattice_entry;
 typedef struct tetengo_lattice_entry_map_element_tag      tetengo_lattice_entry_map_element;
+typedef struct tetengo_lattice_connection_tag             tetengo_lattice_connection;
 typedef struct tetengo_lattice_connection_map_element_tag tetengo_lattice_connection_map_element;
 #endif
 
@@ -58,6 +59,22 @@ size_t tetengo_lattice_vocabulary_findEntries(
     const tetengo_lattice_vocabulary* p_vocabulary,
     const char*                       key,
     tetengo_lattice_entry*            p_entries);
+
+/*!
+    \brief Finds a connection between entries.
+
+    \param p_from       A pointer to an origin node.
+    \param p_to         A pointer to a destination node.
+    \param p_connection The storage for an output connection.
+
+    \retval non-zero When an output connection is stored.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_vocabulary_findConnection(
+    const tetengo_lattice_vocabulary* p_vocabulary,
+    const tetengo_lattice_entry*      p_from,
+    const tetengo_lattice_entry*      p_to,
+    tetengo_lattice_connection*       p_connection);
 
 
 #if defined(__cplusplus)

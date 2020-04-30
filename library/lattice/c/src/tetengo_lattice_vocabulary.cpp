@@ -17,8 +17,10 @@
 #include <stddef.h>
 
 #include <tetengo/lattice/connection.h>
+#include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/string_view.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
@@ -139,6 +141,49 @@ size_t tetengo_lattice_vocabulary_findEntries(
         }
 
         return found.size();
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+int tetengo_lattice_vocabulary_findConnection(
+    const tetengo_lattice_vocabulary* const p_vocabulary,
+    const tetengo_lattice_entry* const      p_from,
+    const tetengo_lattice_entry* const      p_to,
+    tetengo_lattice_connection* const       p_connection)
+{
+    try
+    {
+        if (!p_vocabulary)
+        {
+            return 0;
+        }
+        if (!p_from)
+        {
+            return 0;
+        }
+        if (!p_to)
+        {
+            return 0;
+        }
+        if (!p_connection)
+        {
+            return 0;
+        }
+
+        const std::any               cpp_from_value{ *reinterpret_cast<const std::string*>(p_from->p_value) };
+        const tetengo::lattice::node cpp_from{ tetengo::lattice::entry_view{
+            std::string_view{ p_from->key.p_head, p_from->key.length }, &cpp_from_value, p_from->cost } };
+        const std::any               cpp_to_value{ *reinterpret_cast<const std::string*>(p_to->p_value) };
+        const tetengo::lattice::node cpp_to{ tetengo::lattice::entry_view{
+            std::string_view{ p_to->key.p_head, p_to->key.length }, &cpp_to_value, p_to->cost } };
+        const auto                   found = p_vocabulary->p_cpp_vocabulary->find_connection(cpp_from, cpp_to);
+
+        p_connection->cost = found.cost();
+
+        return 1;
     }
     catch (...)
     {

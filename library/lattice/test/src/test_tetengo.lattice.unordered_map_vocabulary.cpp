@@ -357,6 +357,82 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
         }
     }
+
+    {
+        const std::vector<tetengo_lattice_entry> entries_mizuho{
+            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
+        };
+        const std::vector<tetengo_lattice_entry> entries_sakura{
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
+        };
+        const std::vector<tetengo_lattice_entry_map_element> entry_map{
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+        };
+
+        const tetengo_lattice_entry connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
+                                                           &surface_mizuho,
+                                                           42 };
+        const tetengo_lattice_entry connection_key_sakura1{ { key_sakura.c_str(), key_sakura.length() },
+                                                            &surface_sakura1,
+                                                            24 };
+        const tetengo_lattice_entry connection_key_sakura2{ { key_sakura.c_str(), key_sakura.length() },
+                                                            &surface_sakura2,
+                                                            2424 };
+        std::vector<tetengo_lattice_connection_map_element> connection_map{
+            { &connection_key_mizuho, &connection_key_sakura1, 4242 }
+        };
+
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+            entry_map.data(), entry_map.size(), connection_map.data(), connection_map.size());
+        BOOST_SCOPE_EXIT(p_vocabulary)
+        {
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_vocabulary);
+
+        {
+            tetengo_lattice_connection connection{};
+            const auto                 found = tetengo_lattice_vocabulary_findConnection(
+                p_vocabulary, &connection_key_mizuho, &connection_key_sakura1, &connection);
+            BOOST_TEST(found);
+
+            BOOST_TEST(connection.cost == 4242);
+        }
+        {
+            tetengo_lattice_connection connection{};
+            const auto                 found = tetengo_lattice_vocabulary_findConnection(
+                p_vocabulary, &connection_key_mizuho, &connection_key_sakura2, &connection);
+            BOOST_TEST(found);
+
+            BOOST_TEST(connection.cost == std::numeric_limits<int>::max());
+        }
+        {
+            tetengo_lattice_connection connection{};
+            const auto                 found = tetengo_lattice_vocabulary_findConnection(
+                nullptr, &connection_key_mizuho, &connection_key_sakura2, &connection);
+            BOOST_TEST(!found);
+        }
+        {
+            tetengo_lattice_connection connection{};
+            const auto                 found =
+                tetengo_lattice_vocabulary_findConnection(p_vocabulary, nullptr, &connection_key_sakura2, &connection);
+            BOOST_TEST(!found);
+        }
+        {
+            tetengo_lattice_connection connection{};
+            const auto                 found =
+                tetengo_lattice_vocabulary_findConnection(p_vocabulary, &connection_key_mizuho, nullptr, &connection);
+            BOOST_TEST(!found);
+        }
+        {
+            const auto found = tetengo_lattice_vocabulary_findConnection(
+                p_vocabulary, &connection_key_mizuho, &connection_key_sakura2, nullptr);
+            BOOST_TEST(!found);
+        }
+    }
 }
 
 
