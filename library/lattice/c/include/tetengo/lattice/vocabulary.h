@@ -15,23 +15,28 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_vocabulary_tag        tetengo_lattice_vocabulary;
-typedef struct tetengo_lattice_entry_tag             tetengo_lattice_entry;
-typedef struct tetengo_lattice_entry_map_element_tag tetengo_lattice_entry_map_element;
+typedef struct tetengo_lattice_vocabulary_tag             tetengo_lattice_vocabulary;
+typedef struct tetengo_lattice_entry_tag                  tetengo_lattice_entry;
+typedef struct tetengo_lattice_entry_map_element_tag      tetengo_lattice_entry_map_element;
+typedef struct tetengo_lattice_connection_map_element_tag tetengo_lattice_connection_map_element;
 #endif
 
 
 /*!
     \brief Creates an unordered_map vocabulary.
 
-    \param p_map    An entry map.
-    \param map_size An entry map size.
+    \param p_entry_map         An entry map.
+    \param entry_map_size      An entry map size.
+    \param p_connection_map    A connection map.
+    \param connection_map_size A connection map size.
 
-    \return A pointer to an unordered_map vocabulary. Or NULL when p_map is NULL.
+    \return A pointer to an unordered_map vocabulary. Or NULL when p_entry_map is NULL.
 */
 tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-    const tetengo_lattice_entry_map_element* p_map,
-    size_t                                   map_size);
+    const tetengo_lattice_entry_map_element*      p_entry_map,
+    size_t                                        entry_map_size,
+    const tetengo_lattice_connection_map_element* p_connection_map,
+    size_t                                        connection_map_size);
 
 /*!
     \brief Destroys the vocabulary.

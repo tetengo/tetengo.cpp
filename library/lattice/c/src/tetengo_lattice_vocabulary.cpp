@@ -16,6 +16,7 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/connection.h>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/string_view.h>
@@ -34,21 +35,27 @@ struct tetengo_lattice_vocabulary_tag
 };
 
 tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-    const tetengo_lattice_entry_map_element* const p_map,
-    const size_t                                   map_size)
+    const tetengo_lattice_entry_map_element* const      p_entry_map,
+    const size_t                                        entry_map_size,
+    const tetengo_lattice_connection_map_element* const p_connection_map,
+    const size_t                                        connection_map_size)
 {
     try
     {
-        if (!p_map)
+        if (!p_entry_map || entry_map_size == 0)
+        {
+            return nullptr;
+        }
+        if (!p_connection_map || connection_map_size == 0)
         {
             return nullptr;
         }
 
         std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> cpp_entry_map{};
-        cpp_entry_map.reserve(map_size);
-        for (auto i = static_cast<size_t>(0); i < map_size; ++i)
+        cpp_entry_map.reserve(entry_map_size);
+        for (auto i = static_cast<size_t>(0); i < entry_map_size; ++i)
         {
-            const auto& map_element = p_map[i];
+            const auto& map_element = p_entry_map[i];
 
             std::string cpp_key{ map_element.key.p_head, map_element.key.length };
 
@@ -68,6 +75,23 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
         }
 
         std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> cpp_connection_map{};
+        cpp_connection_map.reserve(connection_map_size);
+        for (auto i = static_cast<size_t>(0); i < connection_map_size; ++i)
+        {
+            const auto& connection_element = p_connection_map[i];
+
+            auto cpp_key = std::make_pair(
+                tetengo::lattice::entry{
+                    std::string{ connection_element.p_from->key.p_head, connection_element.p_from->key.length },
+                    *reinterpret_cast<const std::string*>(connection_element.p_from->p_value),
+                    connection_element.p_from->cost },
+                tetengo::lattice::entry{
+                    std::string{ connection_element.p_to->key.p_head, connection_element.p_to->key.length },
+                    *reinterpret_cast<const std::string*>(connection_element.p_to->p_value),
+                    connection_element.p_to->cost });
+
+            cpp_connection_map.insert(std::make_pair(std::move(cpp_key), connection_element.cost));
+        }
 
         auto p_cpp_vocabulary = std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
             std::move(cpp_entry_map), std::move(cpp_connection_map));
