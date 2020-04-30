@@ -50,11 +50,6 @@ namespace
 
     const std::string surface_tsubame{ to_c(0xE7), to_c(0x87), to_c(0x95) };
 
-    tetengo::lattice::node to_node(const tetengo::lattice::entry_view& entry)
-    {
-        return tetengo::lattice::node{ entry.key(), *entry.value(), 0, entry.cost(), 0 };
-    }
-
 
 }
 
@@ -248,12 +243,14 @@ BOOST_AUTO_TEST_CASE(find_connection)
         BOOST_TEST_REQUIRE(entries_sakura.size() == 2U);
 
         {
-            const auto connection = vocabulary.find_connection(to_node(entries_mizuho[0]), to_node(entries_sakura[0]));
+            const auto connection = vocabulary.find_connection(
+                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_sakura[0] });
 
             BOOST_TEST(connection.cost() == 4242);
         }
         {
-            const auto connection = vocabulary.find_connection(to_node(entries_mizuho[0]), to_node(entries_sakura[1]));
+            const auto connection = vocabulary.find_connection(
+                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_sakura[1] });
 
             BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
         }

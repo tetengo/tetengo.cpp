@@ -89,11 +89,6 @@ namespace
         }
     };
 
-    tetengo::lattice::node to_node(const tetengo::lattice::entry_view& entry)
-    {
-        return tetengo::lattice::node{ entry.key(), *entry.value(), 0, entry.cost(), 0 };
-    }
-
 
 }
 
@@ -146,7 +141,8 @@ BOOST_AUTO_TEST_CASE(find_connection)
             const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
             BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
 
-            const auto connection = vocabulary.find_connection(to_node(entries_mizuho[0]), to_node(entries_mizuho[0]));
+            const auto connection = vocabulary.find_connection(
+                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_mizuho[0] });
 
             BOOST_TEST(connection.cost() == 42);
         }
@@ -156,7 +152,8 @@ BOOST_AUTO_TEST_CASE(find_connection)
             const auto entries_tsubame = vocabulary.find_entries(key_tsubame);
             BOOST_TEST_REQUIRE(entries_tsubame.size() == 1U);
 
-            const auto connection = vocabulary.find_connection(to_node(entries_mizuho[0]), to_node(entries_tsubame[0]));
+            const auto connection = vocabulary.find_connection(
+                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_tsubame[0] });
 
             BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
         }

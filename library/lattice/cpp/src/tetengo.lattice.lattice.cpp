@@ -17,7 +17,6 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -91,7 +90,7 @@ namespace tetengo::lattice
                     std::end(found),
                     std::back_inserter(nodes),
                     [i, lowest_preceding_path_cost](const auto& e) {
-                        return to_node(e, i, lowest_preceding_path_cost);
+                        return node{ e, i, lowest_preceding_path_cost + e.cost() };
                     });
             }
             m_graph.emplace_back(m_input.length(), std::move(nodes));
@@ -105,11 +104,6 @@ namespace tetengo::lattice
         {
             static const graph_step singleton{ 0, std::vector<node>{ { std::string_view{}, std::any{}, 0, 0, 0 } } };
             return singleton;
-        }
-
-        static node to_node(const entry_view& entry, const std::size_t preceding, const int preceding_path_cost)
-        {
-            return node{ entry.key(), *entry.value(), preceding, entry.cost(), preceding_path_cost + entry.cost() };
         }
 
         static int lowest_path_cost(const graph_step& step)

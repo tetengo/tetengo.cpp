@@ -9,7 +9,10 @@
 
 #include <any>
 #include <cstddef>
+#include <limits>
 #include <string_view>
+
+#include <tetengo/lattice/entry.hpp>
 
 
 namespace tetengo::lattice
@@ -32,6 +35,18 @@ namespace tetengo::lattice
             \param path_cost A path cost.
         */
         node(std::string_view key, std::any value, std::size_t preceding, int node_cost, int path_cost);
+
+        /*!
+            \brief Creates a node from a vocabulary entry.
+
+            \param entry     An entry.
+            \param preceding An index of preceding nodes.
+            \param path_cost A path cost.
+        */
+        explicit node(
+            const entry_view& entry,
+            std::size_t       preceding = std::numeric_limits<std::size_t>::max(),
+            int               path_cost = std::numeric_limits<int>::max());
 
 
         // functions

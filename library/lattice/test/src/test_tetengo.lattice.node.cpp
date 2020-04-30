@@ -6,11 +6,13 @@
 
 #include <any>
 #include <string_view>
+#include <utility>
 
 #include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/string_view.h>
@@ -27,6 +29,17 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::lattice::node node_{ "mizuho", 42, 1, 24, 2424 };
+    }
+    {
+        const std::any               entry_value{ 42 };
+        tetengo::lattice::entry_view entry{ "mizuho", &entry_value, 24 };
+        const tetengo::lattice::node node_{ std::move(entry), 1, 2424 };
+
+        BOOST_TEST(node_.key() == "mizuho");
+        BOOST_TEST(std::any_cast<int>(node_.value()) == 42);
+        BOOST_TEST(node_.preceding() == 1U);
+        BOOST_TEST(node_.node_cost() == 24);
+        BOOST_TEST(node_.path_cost() == 2424);
     }
 
     {

@@ -9,6 +9,7 @@
 #include <string_view>
 #include <utility>
 
+#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.hpp>
 
 
@@ -25,6 +26,13 @@ namespace tetengo::lattice
         m_preceding{ preceding },
         m_node_cost{ node_cost },
         m_path_cost{ path_cost }
+    {}
+
+    node::node(
+        const entry_view& entry,
+        const std::size_t preceding /*= std::numeric_limits<std::size_t>::max()*/,
+        const int         path_cost /*= std::numeric_limits<int>::max()*/) :
+    node{ entry.key(), *entry.value(), preceding, entry.cost(), path_cost }
     {}
 
     const std::string_view& node::key() const
