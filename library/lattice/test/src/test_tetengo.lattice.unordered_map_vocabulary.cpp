@@ -16,7 +16,7 @@
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/lattice/connection.h>
+#include <tetengo/lattice/connection.h> // IWYU pragma: keep
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
@@ -318,6 +318,14 @@ BOOST_AUTO_TEST_CASE(find_entries)
             BOOST_TEST((std::string{ entries[1].key.p_head, entries[1].key.length } == key_sakura));
             BOOST_TEST(*reinterpret_cast<const std::string*>(entries[1].p_value) == surface_sakura2);
             BOOST_TEST(entries[1].cost == 2424);
+        }
+        {
+            const auto entry_count = tetengo_lattice_vocabulary_findEntries(nullptr, key_sakura.c_str(), nullptr);
+            BOOST_TEST(entry_count == 0U);
+        }
+        {
+            const auto entry_count = tetengo_lattice_vocabulary_findEntries(p_vocabulary, nullptr, nullptr);
+            BOOST_TEST(entry_count == 0U);
         }
     }
 }

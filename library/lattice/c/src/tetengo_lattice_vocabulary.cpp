@@ -124,6 +124,15 @@ size_t tetengo_lattice_vocabulary_findEntries(
 {
     try
     {
+        if (!p_vocabulary)
+        {
+            return 0;
+        }
+        if (!key)
+        {
+            return 0;
+        }
+
         const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(key);
 
         if (p_entries)
