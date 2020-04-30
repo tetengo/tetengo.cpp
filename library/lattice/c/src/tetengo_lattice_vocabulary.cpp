@@ -67,10 +67,9 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
             {
                 const auto& entry = map_element.p_entries[j];
 
+                std::any cpp_entry_value{ entry.p_value };
                 cpp_entries.emplace_back(
-                    std::string{ entry.key.p_head, entry.key.length },
-                    *reinterpret_cast<const std::string*>(entry.p_value),
-                    entry.cost);
+                    std::string{ entry.key.p_head, entry.key.length }, std::move(cpp_entry_value), entry.cost);
             }
 
             cpp_entry_map.insert(std::make_pair(std::move(cpp_key), std::move(cpp_entries)));
@@ -82,14 +81,16 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
         {
             const auto& connection_element = p_connection_map[i];
 
-            auto cpp_key = std::make_pair(
+            std::any cpp_from_value{ connection_element.p_from->p_value };
+            std::any cpp_to_value{ connection_element.p_from->p_value };
+            auto     cpp_key = std::make_pair(
                 tetengo::lattice::entry{
                     std::string{ connection_element.p_from->key.p_head, connection_element.p_from->key.length },
-                    *reinterpret_cast<const std::string*>(connection_element.p_from->p_value),
+                    std::move(cpp_from_value),
                     connection_element.p_from->cost },
                 tetengo::lattice::entry{
                     std::string{ connection_element.p_to->key.p_head, connection_element.p_to->key.length },
-                    *reinterpret_cast<const std::string*>(connection_element.p_to->p_value),
+                    std::move(cpp_to_value),
                     connection_element.p_to->cost });
 
             cpp_connection_map.insert(std::make_pair(std::move(cpp_key), connection_element.cost));
@@ -144,7 +145,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
 
                 entry.key.p_head = cpp_entry.key().data();
                 entry.key.length = cpp_entry.key().length();
-                entry.p_value = std::any_cast<std::string>(cpp_entry.value());
+                entry.p_value = std::any_cast<const void*>(*cpp_entry.value());
                 entry.cost = cpp_entry.cost();
             }
         }
@@ -182,10 +183,10 @@ int tetengo_lattice_vocabulary_findConnection(
             return 0;
         }
 
-        const std::any               cpp_from_value{ *reinterpret_cast<const std::string*>(p_from->p_value) };
+        const std::any               cpp_from_value{ p_from->p_value };
         const tetengo::lattice::node cpp_from{ tetengo::lattice::entry_view{
             std::string_view{ p_from->key.p_head, p_from->key.length }, &cpp_from_value, p_from->cost } };
-        const std::any               cpp_to_value{ *reinterpret_cast<const std::string*>(p_to->p_value) };
+        const std::any               cpp_to_value{ p_to->p_value };
         const tetengo::lattice::node cpp_to{ tetengo::lattice::entry_view{
             std::string_view{ p_to->key.p_head, p_to->key.length }, &cpp_to_value, p_to->cost } };
         const auto                   found = p_vocabulary->p_cpp_vocabulary->find_connection(cpp_from, cpp_to);
