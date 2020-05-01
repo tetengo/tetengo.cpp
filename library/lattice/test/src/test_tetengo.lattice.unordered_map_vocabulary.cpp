@@ -300,7 +300,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
             BOOST_TEST_REQUIRE(entry_count_again == 1U);
 
             BOOST_TEST((std::string{ entries[0].key.p_head, entries[0].key.length } == key_mizuho));
-            BOOST_TEST(*reinterpret_cast<const std::string*>(entries[0].p_value) == surface_mizuho);
+            BOOST_TEST(reinterpret_cast<const std::string*>(entries[0].p_value) == &surface_mizuho);
             BOOST_TEST(entries[0].cost == 42);
         }
         {
@@ -313,10 +313,10 @@ BOOST_AUTO_TEST_CASE(find_entries)
             BOOST_TEST_REQUIRE(entry_count_again == 2U);
 
             BOOST_TEST((std::string{ entries[0].key.p_head, entries[0].key.length } == key_sakura));
-            BOOST_TEST(*reinterpret_cast<const std::string*>(entries[0].p_value) == surface_sakura1);
+            BOOST_TEST(reinterpret_cast<const std::string*>(entries[0].p_value) == &surface_sakura1);
             BOOST_TEST(entries[0].cost == 24);
             BOOST_TEST((std::string{ entries[1].key.p_head, entries[1].key.length } == key_sakura));
-            BOOST_TEST(*reinterpret_cast<const std::string*>(entries[1].p_value) == surface_sakura2);
+            BOOST_TEST(reinterpret_cast<const std::string*>(entries[1].p_value) == &surface_sakura2);
             BOOST_TEST(entries[1].cost == 2424);
         }
         {
