@@ -23,6 +23,26 @@ namespace tetengo::lattice
     class node
     {
     public:
+        // static functions
+
+        /*!
+            \brief Returns the BOS (Beginning of Sentence).
+
+            \return The BOS.
+        */
+        static const node& bos();
+
+        /*!
+            \brief Returns an EOS (End of Sentence).
+
+            \param preceding An index of preceding nodes.
+            \param path_cost A path cost.
+
+            \return An EOS.
+        */
+        static node eos(std::size_t preceding, int path_cost);
+
+
         // constructors and destructor
 
         /*!

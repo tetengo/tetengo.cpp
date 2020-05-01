@@ -5,7 +5,6 @@
 */
 
 #include <algorithm>
-#include <any>
 #include <cassert>
 #include <cstddef>
 #include <iterator>
@@ -102,7 +101,7 @@ namespace tetengo::lattice
 
         static const graph_step& bos()
         {
-            static const graph_step singleton{ 0, std::vector<node>{ { std::string_view{}, std::any{}, 0, 0, 0 } } };
+            static const graph_step singleton{ 0, std::vector<node>{ tetengo::lattice::node::bos() } };
             return singleton;
         }
 

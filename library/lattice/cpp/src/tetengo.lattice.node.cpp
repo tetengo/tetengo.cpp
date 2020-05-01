@@ -15,6 +15,17 @@
 
 namespace tetengo::lattice
 {
+    const node& node::bos()
+    {
+        static const node& singleton{ std::string_view{}, std::any{}, 0, 0, 0 };
+        return singleton;
+    }
+
+    node node::eos(const std::size_t preceding, const int path_cost)
+    {
+        return node{ std::string_view{}, std::any{}, preceding, 0, path_cost };
+    }
+
     node::node(
         std::string_view  key,
         std::any          value,

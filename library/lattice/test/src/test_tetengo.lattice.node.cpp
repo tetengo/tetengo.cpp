@@ -23,6 +23,46 @@ BOOST_AUTO_TEST_SUITE(lattice)
 BOOST_AUTO_TEST_SUITE(node)
 
 
+BOOST_AUTO_TEST_CASE(bos)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto& bos = tetengo::lattice::node::bos();
+        boost::ignore_unused(bos);
+    }
+
+    {
+        const auto* p_bos = tetengo_lattice_node_bos();
+        boost::ignore_unused(p_bos);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(eos)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto eos = tetengo::lattice::node::eos(1, 42);
+
+        BOOST_TEST(eos.preceding() == 1U);
+        BOOST_TEST(eos.path_cost() == 42);
+    }
+
+    {
+        tetengo_lattice_node eos{};
+        const auto           result = tetengo_lattice_node_eos(1, 42, &eos);
+        BOOST_TEST(result);
+
+        BOOST_TEST(eos.preceding == 1U);
+        BOOST_TEST(eos.path_cost == 42);
+    }
+    {
+        const auto result = tetengo_lattice_node_eos(1, 42, nullptr);
+        BOOST_TEST(!result);
+    }
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
