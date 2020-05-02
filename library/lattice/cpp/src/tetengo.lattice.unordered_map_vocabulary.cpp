@@ -11,7 +11,6 @@
 #include <memory>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -27,18 +26,6 @@
 
 namespace tetengo::lattice
 {
-    namespace
-    {
-        static const std::hash<entry> entry_hash()
-        {
-            static const std::hash<entry> singleton{};
-            return singleton;
-        }
-
-
-    }
-
-
     class unordered_map_vocabulary::impl : private boost::noncopyable
     {
     public:
@@ -48,7 +35,7 @@ namespace tetengo::lattice
             std::unordered_map<std::string, std::vector<entry>> entry_map,
             std::unordered_map<std::pair<entry, entry>, int>    connection_map) :
         m_entry_map{ std::move(entry_map) },
-            m_connection_map{ std::move(connection_map) }
+            m_connection_map{ make_connection_map(std::move(connection_map)) }
         {}
 
 
@@ -70,9 +57,8 @@ namespace tetengo::lattice
 
         connection find_connection_impl(const node& from, const node& to) const
         {
-            entry      entry_from{ std::string{ from.key() }, from.value(), from.node_cost() };
-            entry      entry_to{ std::string{ to.key() }, to.value(), to.node_cost() };
-            const auto found = m_connection_map.find(std::make_pair(std::move(entry_from), std::move(entry_to)));
+            const auto found =
+                m_connection_map.find(std::make_pair(std::string{ from.key() }, std::string{ to.key() }));
             if (found == m_connection_map.end())
             {
                 return connection{ std::numeric_limits<int>::max() };
@@ -82,11 +68,39 @@ namespace tetengo::lattice
 
 
     private:
+        // types
+
+        struct connection_map_hash
+        {
+            std::size_t operator()(const std::pair<std::string, std::string>& key) const
+            {
+                return boost::hash_value(key);
+            }
+        };
+
+        using connection_map_type = std::unordered_map<std::pair<std::string, std::string>, int, connection_map_hash>;
+
+
+        // static functions
+
+        static connection_map_type
+        make_connection_map(const std::unordered_map<std::pair<entry, entry>, int>& input_map)
+        {
+            connection_map_type result_map{};
+            result_map.reserve(input_map.size());
+            for (auto&& e: input_map)
+            {
+                result_map.insert(std::make_pair(std::make_pair(e.first.first.key(), e.first.second.key()), e.second));
+            }
+            return result_map;
+        }
+
+
         // variables
 
         const std::unordered_map<std::string, std::vector<entry>> m_entry_map;
 
-        const std::unordered_map<std::pair<entry, entry>, int> m_connection_map;
+        const connection_map_type m_connection_map;
     };
 
 
@@ -117,9 +131,11 @@ namespace std
     std::size_t hash<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>>::
                 operator()(const std::pair<tetengo::lattice::entry, tetengo::lattice::entry>& key) const
     {
+        static const std::hash<tetengo::lattice::entry> entry_hash{};
+
         auto seed = static_cast<std::size_t>(0);
-        boost::hash_combine(seed, tetengo::lattice::entry_hash()(key.first));
-        boost::hash_combine(seed, tetengo::lattice::entry_hash()(key.second));
+        boost::hash_combine(seed, entry_hash(key.first));
+        boost::hash_combine(seed, entry_hash(key.second));
         return seed;
     }
 

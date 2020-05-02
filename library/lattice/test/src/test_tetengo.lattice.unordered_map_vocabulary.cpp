@@ -360,7 +360,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         }
         {
             const auto connection = vocabulary.find_connection(
-                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_sakura[1] });
+                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_mizuho[0] });
 
             BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
         }
@@ -412,7 +412,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         {
             tetengo_lattice_connection connection{};
             const auto                 found = tetengo_lattice_vocabulary_findConnection(
-                p_vocabulary, &connection_key_mizuho, &connection_key_sakura2, &connection);
+                p_vocabulary, &connection_key_mizuho, &connection_key_mizuho, &connection);
             BOOST_TEST(found);
 
             BOOST_TEST(connection.cost == std::numeric_limits<int>::max());
