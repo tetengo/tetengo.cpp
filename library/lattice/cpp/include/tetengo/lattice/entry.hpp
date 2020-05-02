@@ -8,13 +8,8 @@
 #define TETENGO_LATTICE_ENTRY_HPP
 
 #include <any>
-#include <cstddef>
-#include <functional> // IWYU pragma: keep
 #include <string>
 #include <string_view>
-#include <system_error>
-
-#include <boost/operators.hpp>
 
 
 namespace tetengo::lattice
@@ -26,7 +21,7 @@ namespace tetengo::lattice
         \tparam Value A value type.
     */
     template <typename Key, typename Value>
-    class basic_entry : public boost::equality_comparable<basic_entry<Key, Value>>
+    class basic_entry
     {
     public:
         // types
@@ -97,19 +92,6 @@ namespace tetengo::lattice
 
 
     /*!
-        \brief Returns true if one equals to another.
-
-        \tparam Key   A key type.
-        \tparam Value A value type.
-
-        \param one     One entry.
-        \param another Another entry.
-    */
-    template <typename Key, typename Value>
-    bool operator==(const basic_entry<Key, Value>& one, const basic_entry<Key, Value>& another);
-
-
-    /*!
         \brief An entry.
     */
     using entry = basic_entry<std::string, std::any>;
@@ -118,18 +100,6 @@ namespace tetengo::lattice
         \brief An entry view.
     */
     using entry_view = basic_entry<std::string_view, const std::any*>;
-
-
-}
-
-
-namespace std
-{
-    template <typename Key, typename Value>
-    struct hash<tetengo::lattice::basic_entry<Key, Value>>
-    {
-        std::size_t operator()(const tetengo::lattice::basic_entry<Key, Value>& key) const;
-    };
 
 
 }

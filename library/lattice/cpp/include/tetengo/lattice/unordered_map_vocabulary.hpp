@@ -7,12 +7,10 @@
 #if !defined(TETENGO_LATTICE_UNORDEREDMAPVOCABULARY_HPP)
 #define TETENGO_LATTICE_UNORDEREDMAPVOCABULARY_HPP
 
-#include <cstddef>
 #include <functional> // IWYU pragma: keep
 #include <memory>
 #include <string>
 #include <string_view>
-#include <system_error>
 #include <utility>
 #include <vector>
 
@@ -66,18 +64,6 @@ namespace tetengo::lattice
         virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const override;
 
         virtual connection find_connection_impl(const node& from, const node& to) const override;
-    };
-
-
-}
-
-
-namespace std
-{
-    template <>
-    struct hash<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>>
-    {
-        std::size_t operator()(const std::pair<tetengo::lattice::entry, tetengo::lattice::entry>& key) const;
     };
 
 

@@ -137,20 +137,3 @@ namespace tetengo::lattice
 
 
 }
-
-
-namespace std
-{
-    std::size_t hash<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>>::
-                operator()(const std::pair<tetengo::lattice::entry, tetengo::lattice::entry>& key) const
-    {
-        static const std::hash<tetengo::lattice::entry> entry_hash{};
-
-        auto seed = static_cast<std::size_t>(0);
-        boost::hash_combine(seed, entry_hash(key.first));
-        boost::hash_combine(seed, entry_hash(key.second));
-        return seed;
-    }
-
-
-}
