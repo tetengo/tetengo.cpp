@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -31,11 +32,11 @@ namespace tetengo::lattice
     public:
         // constructors and destructor
 
-        explicit impl(
-            std::unordered_map<std::string, std::vector<entry>> entry_map,
-            std::unordered_map<std::pair<entry, entry>, int>    connection_map) :
-        m_entry_map{ std::move(entry_map) },
-            m_connection_map{ make_connection_map(std::move(connection_map)) }
+        impl(
+            std::vector<std::pair<std::string, std::vector<entry>>> entries,
+            std::vector<std::pair<std::pair<entry, entry>, int>>    connections) :
+        m_entry_map{ make_entry_map(std::move(entries)) },
+            m_connection_map{ make_connection_map(std::move(connections)) }
         {}
 
 
@@ -70,6 +71,8 @@ namespace tetengo::lattice
     private:
         // types
 
+        using entry_map_type = std::unordered_map<std::string, std::vector<entry>>;
+
         struct connection_map_hash
         {
             std::size_t operator()(const std::pair<std::string, std::string>& key) const
@@ -83,31 +86,41 @@ namespace tetengo::lattice
 
         // static functions
 
-        static connection_map_type
-        make_connection_map(const std::unordered_map<std::pair<entry, entry>, int>& input_map)
+        static entry_map_type make_entry_map(std::vector<std::pair<std::string, std::vector<entry>>> entries)
         {
-            connection_map_type result_map{};
-            result_map.reserve(input_map.size());
-            for (auto&& e: input_map)
+            entry_map_type map{};
+            map.reserve(entries.size());
+            for (auto&& e: entries)
             {
-                result_map.insert(std::make_pair(std::make_pair(e.first.first.key(), e.first.second.key()), e.second));
+                map.insert(std::make_pair(std::move(e.first), std::move(e.second)));
             }
-            return result_map;
+            return map;
+        }
+
+        static connection_map_type make_connection_map(std::vector<std::pair<std::pair<entry, entry>, int>> connections)
+        {
+            connection_map_type map{};
+            map.reserve(connections.size());
+            for (auto&& e: connections)
+            {
+                map.insert(std::make_pair(std::make_pair(e.first.first.key(), e.first.second.key()), e.second));
+            }
+            return map;
         }
 
 
         // variables
 
-        const std::unordered_map<std::string, std::vector<entry>> m_entry_map;
+        const entry_map_type m_entry_map;
 
         const connection_map_type m_connection_map;
     };
 
 
     unordered_map_vocabulary::unordered_map_vocabulary(
-        std::unordered_map<std::string, std::vector<entry>> entry_map,
-        std::unordered_map<std::pair<entry, entry>, int>    connection_map) :
-    m_p_impl{ std::make_unique<impl>(std::move(entry_map), std::move(connection_map)) }
+        std::vector<std::pair<std::string, std::vector<entry>>> entries,
+        std::vector<std::pair<std::pair<entry, entry>, int>>    connections) :
+    m_p_impl{ std::make_unique<impl>(std::move(entries), std::move(connections)) }
     {}
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;

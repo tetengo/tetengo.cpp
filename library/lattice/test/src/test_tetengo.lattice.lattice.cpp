@@ -6,7 +6,6 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -32,7 +31,7 @@ namespace
                                            |                                 |
                                            +------------local815-------------+
         */
-        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> entry_map{
+        std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
             { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
               {
                   { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "mizuho" }, 3670 },
@@ -62,9 +61,8 @@ namespace
                   { "Omuta-Kumamoto", std::string{ "local817" }, 950 },
               } },
         };
-        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> connection_map{};
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
-            std::move(entry_map), std::move(connection_map));
+        std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{};
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(entries), std::move(connections));
     }
 
 

@@ -13,7 +13,6 @@
 #include <string>
 #include <string_view>
 #include <system_error>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -38,12 +37,12 @@ namespace tetengo::lattice
         /*!
             \brief Creates an unordered_map vocabulary.
 
-            \param entry_map      An entry map.
-            \param connection_map A connection map.
+            \param entries     Entries.
+            \param connections Connections.
         */
         unordered_map_vocabulary(
-            std::unordered_map<std::string, std::vector<entry>> entry_map,
-            std::unordered_map<std::pair<entry, entry>, int>    connection_map);
+            std::vector<std::pair<std::string, std::vector<entry>>> entries,
+            std::vector<std::pair<std::pair<entry, entry>, int>>    connections);
 
         /*!
             \brief Destroys the unordered_map vocabulary.

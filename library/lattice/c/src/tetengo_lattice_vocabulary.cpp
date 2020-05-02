@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 #include <string_view>
-#include <type_traits>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -53,30 +51,30 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
             return nullptr;
         }
 
-        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> cpp_entry_map{};
-        cpp_entry_map.reserve(entry_map_size);
+        std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> cpp_entries{};
+        cpp_entries.reserve(entry_map_size);
         for (auto i = static_cast<size_t>(0); i < entry_map_size; ++i)
         {
             const auto& map_element = p_entry_map[i];
 
             std::string cpp_key{ map_element.key.p_head, map_element.key.length };
 
-            std::vector<tetengo::lattice::entry> cpp_entries{};
-            cpp_entries.reserve(map_element.entry_count);
+            std::vector<tetengo::lattice::entry> cpp_entry_values{};
+            cpp_entry_values.reserve(map_element.entry_count);
             for (auto j = static_cast<size_t>(0); j < map_element.entry_count; ++j)
             {
                 const auto& entry = map_element.p_entries[j];
 
                 std::any cpp_entry_value{ entry.p_value };
-                cpp_entries.emplace_back(
+                cpp_entry_values.emplace_back(
                     std::string{ entry.key.p_head, entry.key.length }, std::move(cpp_entry_value), entry.cost);
             }
 
-            cpp_entry_map.insert(std::make_pair(std::move(cpp_key), std::move(cpp_entries)));
+            cpp_entries.emplace_back(std::move(cpp_key), std::move(cpp_entry_values));
         }
 
-        std::unordered_map<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int> cpp_connection_map{};
-        cpp_connection_map.reserve(connection_map_size);
+        std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> cpp_connections{};
+        cpp_connections.reserve(connection_map_size);
         for (auto i = static_cast<size_t>(0); i < connection_map_size; ++i)
         {
             const auto& connection_element = p_connection_map[i];
@@ -93,11 +91,11 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
                     std::move(cpp_to_value),
                     connection_element.p_to->cost });
 
-            cpp_connection_map.insert(std::make_pair(std::move(cpp_key), connection_element.cost));
+            cpp_connections.emplace_back(std::move(cpp_key), connection_element.cost);
         }
 
         auto p_cpp_vocabulary = std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
-            std::move(cpp_entry_map), std::move(cpp_connection_map));
+            std::move(cpp_entries), std::move(cpp_connections));
 
         auto p_instance = std::make_unique<tetengo_lattice_vocabulary>(std::move(p_cpp_vocabulary));
         return p_instance.release();
