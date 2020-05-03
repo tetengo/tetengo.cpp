@@ -26,7 +26,7 @@ typedef struct tetengo_lattice_stringView_tag
     size_t length;
 
 
-} tetengo_lattice_stringView;
+} tetengo_lattice_stringView_t;
 
 
 #if defined(__cplusplus)

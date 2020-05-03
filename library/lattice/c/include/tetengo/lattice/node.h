@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry;
+typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry_t;
 #endif
 
 
@@ -27,7 +27,7 @@ typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry;
 typedef struct tetengo_lattice_node_tag
 {
     //! A key.
-    tetengo_lattice_stringView key;
+    tetengo_lattice_stringView_t key;
 
     //! A pointer to a value.
     const void* p_value;
@@ -42,14 +42,14 @@ typedef struct tetengo_lattice_node_tag
     int path_cost;
 
 
-} tetengo_lattice_node;
+} tetengo_lattice_node_t;
 
 /*!
     \brief Returns the pointer to the BOS (Beginning of Sentence).
 
     \return The pointer to the BOS.
 */
-const tetengo_lattice_node* tetengo_lattice_node_bos();
+const tetengo_lattice_node_t* tetengo_lattice_node_bos();
 
 /*!
     \brief Returns an EOS (End of Sentence).
@@ -61,7 +61,7 @@ const tetengo_lattice_node* tetengo_lattice_node_bos();
     \retval non-zero When an EOS is stored.
     \retval 0        Otherwise.
 */
-int tetengo_lattice_node_eos(size_t preceding, int path_cost, tetengo_lattice_node* p_eos);
+int tetengo_lattice_node_eos(size_t preceding, int path_cost, tetengo_lattice_node_t* p_eos);
 
 /*!
     \brief Makes a node from an entry.
@@ -75,10 +75,10 @@ int tetengo_lattice_node_eos(size_t preceding, int path_cost, tetengo_lattice_no
     \retval 0        Otherwise.
 */
 int tetengo_lattice_node_toNode(
-    const tetengo_lattice_entry* p_entry,
-    size_t                       preceding,
-    int                          path_cost,
-    tetengo_lattice_node*        p_node);
+    const tetengo_lattice_entry_t* p_entry,
+    size_t                         preceding,
+    int                            path_cost,
+    tetengo_lattice_node_t*        p_node);
 
 
 #if defined(__cplusplus)

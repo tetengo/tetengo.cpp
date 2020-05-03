@@ -35,11 +35,11 @@ struct tetengo_lattice_vocabulary_tag
     {}
 };
 
-tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-    const tetengo_lattice_keyEntriesPair* const            p_entries,
-    const size_t                                           entry_count,
-    const tetengo_lattice_entriesConnectionCostPair* const p_connections,
-    const size_t                                           connection_count)
+tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+    const tetengo_lattice_keyEntriesPair_t* const            p_entries,
+    const size_t                                             entry_count,
+    const tetengo_lattice_entriesConnectionCostPair_t* const p_connections,
+    const size_t                                             connection_count)
 {
     try
     {
@@ -98,7 +98,7 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
         auto p_cpp_vocabulary = std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
             std::move(cpp_entries), std::move(cpp_connections));
 
-        auto p_instance = std::make_unique<tetengo_lattice_vocabulary>(std::move(p_cpp_vocabulary));
+        auto p_instance = std::make_unique<tetengo_lattice_vocabulary_t>(std::move(p_cpp_vocabulary));
         return p_instance.release();
     }
     catch (...)
@@ -107,20 +107,20 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
     }
 }
 
-void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary* const p_vocabulary)
+void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* const p_vocabulary)
 {
     try
     {
-        const std::unique_ptr<const tetengo_lattice_vocabulary> p_instance{ p_vocabulary };
+        const std::unique_ptr<const tetengo_lattice_vocabulary_t> p_instance{ p_vocabulary };
     }
     catch (...)
     {}
 }
 
 size_t tetengo_lattice_vocabulary_findEntries(
-    const tetengo_lattice_vocabulary* const p_vocabulary,
-    const char* const                       key,
-    tetengo_lattice_entry* const            p_entries)
+    const tetengo_lattice_vocabulary_t* const p_vocabulary,
+    const char* const                         key,
+    tetengo_lattice_entry_t* const            p_entries)
 {
     try
     {
@@ -158,10 +158,10 @@ size_t tetengo_lattice_vocabulary_findEntries(
 }
 
 int tetengo_lattice_vocabulary_findConnection(
-    const tetengo_lattice_vocabulary* const p_vocabulary,
-    const tetengo_lattice_node* const       p_from,
-    const tetengo_lattice_entry* const      p_to,
-    tetengo_lattice_connection* const       p_connection)
+    const tetengo_lattice_vocabulary_t* const p_vocabulary,
+    const tetengo_lattice_node_t* const       p_from,
+    const tetengo_lattice_entry_t* const      p_to,
+    tetengo_lattice_connection_t* const       p_connection)
 {
     try
     {

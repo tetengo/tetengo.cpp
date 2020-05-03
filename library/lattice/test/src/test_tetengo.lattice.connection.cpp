@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo_lattice_connection connection_{ 42 };
+        const tetengo_lattice_connection_t connection_{ 42 };
         boost::ignore_unused(connection_);
     }
 }
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(cost)
     }
 
     {
-        const tetengo_lattice_connection connection_{ 42 };
+        const tetengo_lattice_connection_t connection_{ 42 };
 
         BOOST_TEST(connection_.cost == 42);
     }

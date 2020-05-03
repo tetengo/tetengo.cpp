@@ -15,12 +15,12 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_vocabulary_tag                tetengo_lattice_vocabulary;
-typedef struct tetengo_lattice_entry_tag                     tetengo_lattice_entry;
-typedef struct tetengo_lattice_node_tag                      tetengo_lattice_node;
-typedef struct tetengo_lattice_keyEntriesPair_tag            tetengo_lattice_keyEntriesPair;
-typedef struct tetengo_lattice_connection_tag                tetengo_lattice_connection;
-typedef struct tetengo_lattice_entriesConnectionCostPair_tag tetengo_lattice_entriesConnectionCostPair;
+typedef struct tetengo_lattice_vocabulary_tag                tetengo_lattice_vocabulary_t;
+typedef struct tetengo_lattice_entry_tag                     tetengo_lattice_entry_t;
+typedef struct tetengo_lattice_node_tag                      tetengo_lattice_node_t;
+typedef struct tetengo_lattice_keyEntriesPair_tag            tetengo_lattice_keyEntriesPair_t;
+typedef struct tetengo_lattice_connection_tag                tetengo_lattice_connection_t;
+typedef struct tetengo_lattice_entriesConnectionCostPair_tag tetengo_lattice_entriesConnectionCostPair_t;
 #endif
 
 
@@ -34,18 +34,18 @@ typedef struct tetengo_lattice_entriesConnectionCostPair_tag tetengo_lattice_ent
 
     \return A pointer to an unordered_map vocabulary. Or NULL when p_entries is NULL.
 */
-tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-    const tetengo_lattice_keyEntriesPair*            p_entries,
-    size_t                                           entry_count,
-    const tetengo_lattice_entriesConnectionCostPair* p_connections,
-    size_t                                           connection_count);
+tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+    const tetengo_lattice_keyEntriesPair_t*            p_entries,
+    size_t                                             entry_count,
+    const tetengo_lattice_entriesConnectionCostPair_t* p_connections,
+    size_t                                             connection_count);
 
 /*!
     \brief Destroys the vocabulary.
 
     \param p_vocabulary A pointer to a vocabulary.
 */
-void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary* p_vocabulary);
+void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* p_vocabulary);
 
 /*!
     \brief Finds entries.
@@ -57,9 +57,9 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary* p_voca
     \return An entry count.
 */
 size_t tetengo_lattice_vocabulary_findEntries(
-    const tetengo_lattice_vocabulary* p_vocabulary,
-    const char*                       key,
-    tetengo_lattice_entry*            p_entries);
+    const tetengo_lattice_vocabulary_t* p_vocabulary,
+    const char*                         key,
+    tetengo_lattice_entry_t*            p_entries);
 
 /*!
     \brief Finds a connection between entries.
@@ -72,10 +72,10 @@ size_t tetengo_lattice_vocabulary_findEntries(
     \retval 0        Otherwise.
 */
 int tetengo_lattice_vocabulary_findConnection(
-    const tetengo_lattice_vocabulary* p_vocabulary,
-    const tetengo_lattice_node*       p_from,
-    const tetengo_lattice_entry*      p_to,
-    tetengo_lattice_connection*       p_connection);
+    const tetengo_lattice_vocabulary_t* p_vocabulary,
+    const tetengo_lattice_node_t*       p_from,
+    const tetengo_lattice_entry_t*      p_to,
+    tetengo_lattice_connection_t*       p_connection);
 
 
 #if defined(__cplusplus)

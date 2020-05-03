@@ -16,11 +16,11 @@
 #include <tetengo/lattice/string_view.h>
 
 
-const tetengo_lattice_node* tetengo_lattice_node_bos()
+const tetengo_lattice_node_t* tetengo_lattice_node_bos()
 {
     try
     {
-        static const tetengo_lattice_node singleton{ { nullptr, 0 }, nullptr, 0, 0, 0 };
+        static const tetengo_lattice_node_t singleton{ { nullptr, 0 }, nullptr, 0, 0, 0 };
         return &singleton;
     }
     catch (...)
@@ -29,7 +29,7 @@ const tetengo_lattice_node* tetengo_lattice_node_bos()
     }
 }
 
-int tetengo_lattice_node_eos(const size_t preceding, const int path_cost, tetengo_lattice_node* const p_eos)
+int tetengo_lattice_node_eos(const size_t preceding, const int path_cost, tetengo_lattice_node_t* const p_eos)
 {
     try
     {
@@ -51,10 +51,10 @@ int tetengo_lattice_node_eos(const size_t preceding, const int path_cost, teteng
 }
 
 int tetengo_lattice_node_toNode(
-    const tetengo_lattice_entry* p_entry,
-    size_t                       preceding,
-    int                          path_cost,
-    tetengo_lattice_node*        p_node)
+    const tetengo_lattice_entry_t* p_entry,
+    size_t                         preceding,
+    int                            path_cost,
+    tetengo_lattice_node_t*        p_node)
 {
     try
     {

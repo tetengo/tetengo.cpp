@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
+        const tetengo_lattice_entry_t entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
         boost::ignore_unused(entry_);
     }
 }
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(key)
     }
 
     {
-        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
+        const tetengo_lattice_entry_t entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
 
         BOOST_TEST(entry_.key.p_head == key_mizuho.c_str());
         BOOST_TEST(entry_.key.length == key_mizuho.length());
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(value)
     }
 
     {
-        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
+        const tetengo_lattice_entry_t entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
 
         BOOST_TEST(reinterpret_cast<const std::string*>(entry_.p_value) == &surface_mizuho);
     }
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(cost)
     }
 
     {
-        const tetengo_lattice_entry entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
+        const tetengo_lattice_entry_t entry_{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
 
         BOOST_TEST(entry_.cost == 42);
     }

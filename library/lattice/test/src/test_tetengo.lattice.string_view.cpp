@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_stringView string_view{ string_value.c_str(), string_value.length() };
+    const tetengo_lattice_stringView_t string_view{ string_value.c_str(), string_value.length() };
     boost::ignore_unused(string_view);
 }
 
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(p_head)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_stringView string_view{ string_value.c_str(), string_value.length() };
+    const tetengo_lattice_stringView_t string_view{ string_value.c_str(), string_value.length() };
 
     BOOST_TEST(string_view.p_head == string_value.c_str());
 }
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(length)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_stringView string_view{ string_value.c_str(), string_value.length() };
+    const tetengo_lattice_stringView_t string_view{ string_value.c_str(), string_value.length() };
 
     BOOST_TEST(string_view.length == string_value.length());
 }

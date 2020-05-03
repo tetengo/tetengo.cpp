@@ -22,7 +22,7 @@ extern "C" {
 typedef struct tetengo_lattice_entry_tag
 {
     //! A key.
-    tetengo_lattice_stringView key;
+    tetengo_lattice_stringView_t key;
 
     //! A pointer to a value.
     const void* p_value;
@@ -31,7 +31,7 @@ typedef struct tetengo_lattice_entry_tag
     int cost;
 
 
-} tetengo_lattice_entry;
+} tetengo_lattice_entry_t;
 
 /*!
     \brief A pair of a key and entries.
@@ -39,16 +39,16 @@ typedef struct tetengo_lattice_entry_tag
 typedef struct tetengo_lattice_keyEntriesPair_tag
 {
     //! A key.
-    tetengo_lattice_stringView key;
+    tetengo_lattice_stringView_t key;
 
     //! Entries
-    const tetengo_lattice_entry* p_entries;
+    const tetengo_lattice_entry_t* p_entries;
 
     //! An entry count.
     size_t entry_count;
 
 
-} tetengo_lattice_keyEntriesPair;
+} tetengo_lattice_keyEntriesPair_t;
 
 
 #if defined(__cplusplus)
