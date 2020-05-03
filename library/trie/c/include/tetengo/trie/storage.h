@@ -18,8 +18,8 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_trie_trie_tag    tetengo_trie_trie;
-typedef struct tetengo_trie_storage_tag tetengo_trie_storage;
+typedef struct tetengo_trie_trie_tag    tetengo_trie_trie_t;
+typedef struct tetengo_trie_storage_tag tetengo_trie_storage_t;
 #endif
 
 
@@ -39,7 +39,7 @@ typedef char path_character_type;
 
     \return A pointer to a storage. Or NULL on error.
 */
-tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie* p_trie);
+tetengo_trie_storage_t* tetengo_trie_storage_createStorage(const tetengo_trie_trie_t* p_trie);
 
 /*!
     \brief Creates a memory storage.
@@ -48,7 +48,7 @@ tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie
 
     \return A pointer to a memory storage. Or NULL when content cannot be loaded from the path.
 */
-tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_character_type* path);
+tetengo_trie_storage_t* tetengo_trie_storage_createMemoryStorage(const path_character_type* path);
 
 /*!
     \brief Creates a shared storage.
@@ -57,14 +57,14 @@ tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_charac
 
     \return A pointer to a shared storage. Or NULL when content cannot be loaded from the path.
 */
-tetengo_trie_storage* tetengo_trie_storage_createSharedStorage(const path_character_type* path);
+tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_character_type* path);
 
 /*!
     \brief Destroys a storage.
 
     \param p_storage A pointer to a storage.
 */
-void tetengo_trie_storage_destroy(const tetengo_trie_storage* p_storage);
+void tetengo_trie_storage_destroy(const tetengo_trie_storage_t* p_storage);
 
 /*!
     \brief Returns the size.
@@ -73,7 +73,7 @@ void tetengo_trie_storage_destroy(const tetengo_trie_storage* p_storage);
 
     \return The size. Or (size_t)-1 on error.
 */
-size_t tetengo_trie_storage_size(const tetengo_trie_storage* p_storage);
+size_t tetengo_trie_storage_size(const tetengo_trie_storage_t* p_storage);
 
 /*!
     \brief Returns the filling rate.
@@ -82,7 +82,7 @@ size_t tetengo_trie_storage_size(const tetengo_trie_storage* p_storage);
 
     \return The filling rate. Or NAN on error.
 */
-double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* p_storage);
+double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* p_storage);
 
 /*!
     \brief Serializes the storage.
@@ -90,7 +90,7 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* p_storage);
     \param p_storage A pointer to a storage.
     \param path      A file path.
 */
-void tetengo_trie_storage_serialize(const tetengo_trie_storage* p_storage, const path_character_type* path);
+void tetengo_trie_storage_serialize(const tetengo_trie_storage_t* p_storage, const path_character_type* path);
 
 /*!
     \brief Clones a storage.
@@ -99,7 +99,7 @@ void tetengo_trie_storage_serialize(const tetengo_trie_storage* p_storage, const
 
     \return A pointer to a clone of the storage. Or NULL on error.
 */
-tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* p_storage);
+tetengo_trie_storage_t* tetengo_trie_storage_clone(const tetengo_trie_storage_t* p_storage);
 
 
 #if defined(__cplusplus)

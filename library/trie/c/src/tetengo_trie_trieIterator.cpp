@@ -31,7 +31,7 @@ struct tetengo_trie_trieIterator_tag
     {}
 };
 
-tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_trie* const p_trie)
+tetengo_trie_trieIterator_t* tetengo_trie_trieIterator_create(const tetengo_trie_trie_t* const p_trie)
 {
     try
     {
@@ -42,7 +42,7 @@ tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_t
 
         auto p_cpp_iterator_pair = std::make_unique<std::pair<cpp_trie_type::iterator, cpp_trie_type::iterator>>(
             std::begin(*p_trie->p_cpp_trie), std::end(*p_trie->p_cpp_trie));
-        auto p_instance = std::make_unique<tetengo_trie_trieIterator>(std::move(p_cpp_iterator_pair));
+        auto p_instance = std::make_unique<tetengo_trie_trieIterator_t>(std::move(p_cpp_iterator_pair));
         return p_instance.release();
     }
     catch (...)
@@ -51,17 +51,17 @@ tetengo_trie_trieIterator* tetengo_trie_trieIterator_create(const tetengo_trie_t
     }
 }
 
-void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator* const p_iterator)
+void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator_t* const p_iterator)
 {
     try
     {
-        const std::unique_ptr<const tetengo_trie_trieIterator> p_instance{ p_iterator };
+        const std::unique_ptr<const tetengo_trie_trieIterator_t> p_instance{ p_iterator };
     }
     catch (...)
     {}
 }
 
-const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_iterator)
+const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator_t* p_iterator)
 {
     try
     {
@@ -78,7 +78,7 @@ const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator* p_ite
     }
 }
 
-int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator* p_iterator)
+int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator_t* p_iterator)
 {
     try
     {
@@ -95,7 +95,7 @@ int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator* p_iterato
     }
 }
 
-void tetengo_trie_trieIterator_next(tetengo_trie_trieIterator* p_iterator)
+void tetengo_trie_trieIterator_next(tetengo_trie_trieIterator_t* p_iterator)
 {
     try
     {
