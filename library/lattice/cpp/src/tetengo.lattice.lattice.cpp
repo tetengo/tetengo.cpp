@@ -18,6 +18,7 @@
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/lattice/connection.hpp>
+#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -87,7 +88,7 @@ namespace tetengo::lattice
 
                 std::transform(
                     std::begin(found), std::end(found), std::back_inserter(nodes), [this, i, &step](const auto& e) {
-                        const auto lowest_preceding_path_cost = lowest_path_cost(step, node{ e });
+                        const auto lowest_preceding_path_cost = lowest_path_cost(step, e);
 
                         return node{ e, i, lowest_preceding_path_cost + e.cost() };
                     });
@@ -129,21 +130,21 @@ namespace tetengo::lattice
 
         // functions
 
-        int lowest_path_cost(const graph_step& step, const node& next_node) const
+        int lowest_path_cost(const graph_step& step, const entry_view& next_entry) const
         {
             assert(!step.nodes().empty());
             const auto i_min_cost_node = std::min_element(
                 std::begin(step.nodes()),
                 std::end(step.nodes()),
-                [this, &next_node](const auto& one, const auto& another) {
+                [this, &next_entry](const auto& one, const auto& another) {
                     return add_connection_cost(
-                               one.path_cost(), m_p_vocabulary->find_connection(one, next_node).cost()) <
+                               one.path_cost(), m_p_vocabulary->find_connection(one, next_entry).cost()) <
                            add_connection_cost(
-                               another.path_cost(), m_p_vocabulary->find_connection(another, next_node).cost());
+                               another.path_cost(), m_p_vocabulary->find_connection(another, next_entry).cost());
                 });
 
             return add_connection_cost(
-                i_min_cost_node->path_cost(), m_p_vocabulary->find_connection(*i_min_cost_node, next_node).cost());
+                i_min_cost_node->path_cost(), m_p_vocabulary->find_connection(*i_min_cost_node, next_entry).cost());
         }
     };
 

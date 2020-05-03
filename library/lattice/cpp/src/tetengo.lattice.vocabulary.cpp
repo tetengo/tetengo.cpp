@@ -26,7 +26,7 @@ namespace tetengo::lattice
         return find_entries_impl(key);
     }
 
-    connection vocabulary::find_connection(const node& from, const node& to) const
+    connection vocabulary::find_connection(const node& from, const entry_view& to) const
     {
         return find_connection_impl(from, to);
     }

@@ -52,14 +52,14 @@ namespace tetengo::lattice
         std::vector<entry_view> find_entries(const std::string_view& key) const;
 
         /*!
-            \brief Finds a connection between entries.
+            \brief Finds a connection between an origin node and a destination entry.
 
             \param from An origin node.
-            \param to   A destination node.
+            \param to   A destination entry.
 
-            \return A connection between the entries.
+            \return A connection between the origin node and the destination entry.
         */
-        connection find_connection(const node& from, const node& to) const;
+        connection find_connection(const node& from, const entry_view& to) const;
 
 
     private:
@@ -67,7 +67,7 @@ namespace tetengo::lattice
 
         virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const = 0;
 
-        virtual connection find_connection_impl(const node& from, const node& to) const = 0;
+        virtual connection find_connection_impl(const node& from, const entry_view& to) const = 0;
     };
 
 

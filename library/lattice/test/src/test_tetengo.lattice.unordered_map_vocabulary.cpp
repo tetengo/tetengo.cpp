@@ -352,14 +352,14 @@ BOOST_AUTO_TEST_CASE(find_connection)
         BOOST_TEST_REQUIRE(entries_sakura.size() == 2U);
 
         {
-            const auto connection = vocabulary.find_connection(
-                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_sakura[0] });
+            const auto connection =
+                vocabulary.find_connection(tetengo::lattice::node{ entries_mizuho[0] }, entries_sakura[0]);
 
             BOOST_TEST(connection.cost() == 4242);
         }
         {
-            const auto connection = vocabulary.find_connection(
-                tetengo::lattice::node{ entries_mizuho[0] }, tetengo::lattice::node{ entries_mizuho[0] });
+            const auto connection =
+                vocabulary.find_connection(tetengo::lattice::node{ entries_mizuho[0] }, entries_mizuho[0]);
 
             BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
         }

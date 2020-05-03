@@ -63,7 +63,7 @@ namespace tetengo::lattice
 
         virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const override;
 
-        virtual connection find_connection_impl(const node& from, const node& to) const override;
+        virtual connection find_connection_impl(const node& from, const entry_view& to) const override;
     };
 
 

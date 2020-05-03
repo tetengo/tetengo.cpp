@@ -56,7 +56,7 @@ namespace tetengo::lattice
             return entries;
         }
 
-        connection find_connection_impl(const node& from, const node& to) const
+        connection find_connection_impl(const node& from, const entry_view& to) const
         {
             const auto found =
                 m_connection_map.find(std::make_pair(std::string{ from.key() }, std::string{ to.key() }));
@@ -130,7 +130,7 @@ namespace tetengo::lattice
         return m_p_impl->find_entries_impl(key);
     }
 
-    connection unordered_map_vocabulary::find_connection_impl(const node& from, const node& to) const
+    connection unordered_map_vocabulary::find_connection_impl(const node& from, const entry_view& to) const
     {
         return m_p_impl->find_connection_impl(from, to);
     }

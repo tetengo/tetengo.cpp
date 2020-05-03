@@ -181,13 +181,14 @@ int tetengo_lattice_vocabulary_findConnection(
             return 0;
         }
 
-        const std::any               cpp_from_value{ p_from->p_value };
-        const tetengo::lattice::node cpp_from{ tetengo::lattice::entry_view{
+        const std::any                     cpp_from_value{ p_from->p_value };
+        const tetengo::lattice::node       cpp_from{ tetengo::lattice::entry_view{
             std::string_view{ p_from->key.p_head, p_from->key.length }, &cpp_from_value, p_from->cost } };
-        const std::any               cpp_to_value{ p_to->p_value };
-        const tetengo::lattice::node cpp_to{ tetengo::lattice::entry_view{
-            std::string_view{ p_to->key.p_head, p_to->key.length }, &cpp_to_value, p_to->cost } };
-        const auto                   found = p_vocabulary->p_cpp_vocabulary->find_connection(cpp_from, cpp_to);
+        const std::any                     cpp_to_value{ p_to->p_value };
+        const tetengo::lattice::entry_view cpp_to{ std::string_view{ p_to->key.p_head, p_to->key.length },
+                                                   &cpp_to_value,
+                                                   p_to->cost };
+        const auto                         found = p_vocabulary->p_cpp_vocabulary->find_connection(cpp_from, cpp_to);
 
         p_connection->cost = found.cost();
 
