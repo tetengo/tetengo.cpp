@@ -29,13 +29,26 @@ namespace
                                                             tetengo::lattice::node::bos().node_cost() };
 
         /*
-                  +------------------mizuho/sakura/tsubame-------------------+
-                  |                                                          |
-                  +------------ariake/rapid811------------+                  |
-                  |                                       |                  |
-            (Hakata)--kamome/local415--(Tosu)--local813--(Omuta)--local817--(Kumamoto)
-                                           |                                 |
-                                           +------------local815-------------+
+                       +------------------mizuho/sakura/tsubame-------------------+
+                       |                path cost: 4270/3220/2990                 |
+                       |                                                          |
+                       +------------ariake/rapid811------------+                  |
+                       |          path cost: 2850/2010         |                  |
+                       |                                       |                  |
+            BOS--(Hakata)--kamome/local415--(Tosu)--local813--(Omuta)--local817--(Kumamoto)--EOS
+                         path cost: 1640/1370   |   pc: 2830           pc: 3160   |     path cost:3390
+                                                |                                 |
+                                                +------------local815-------------+
+                                                          path cost: 3550
+            (1) 3390  BOS - tsubame - EOS
+            (2) 3620  BOS - sakura - EOS
+            (3) 3760  BOS - rapid811 - local817 - EOS
+            (4) 4050  BOS - local415 - local815 - EOS
+            (5) 4320  BOS - kamome - local815 - EOS
+            (6) 4600  BOS - ariake - local817 - EOS
+            (7) 4670  BOS - mizuho - EOS
+            (8) 4680  BOS - local415 - local813 - local817 - EOS
+            (9) 4950  BOS - kamome - local813 - local817 - EOS
         */
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
             { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
