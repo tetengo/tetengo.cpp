@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include <stddef.h>
+
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -19,6 +21,7 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/string_view.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
@@ -401,25 +404,43 @@ BOOST_AUTO_TEST_CASE(find_connection)
         BOOST_TEST_REQUIRE(p_vocabulary);
 
         {
+            tetengo_lattice_node connection_key_node_mizuho{};
+            BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
+                &connection_key_mizuho,
+                std::numeric_limits<size_t>::max(),
+                std::numeric_limits<int>::max(),
+                &connection_key_node_mizuho));
             tetengo_lattice_connection connection{};
             const auto                 found = tetengo_lattice_vocabulary_findConnection(
-                p_vocabulary, &connection_key_mizuho, &connection_key_sakura1, &connection);
+                p_vocabulary, &connection_key_node_mizuho, &connection_key_sakura1, &connection);
             BOOST_TEST(found);
 
             BOOST_TEST(connection.cost == 4242);
         }
         {
+            tetengo_lattice_node connection_key_node_mizuho{};
+            BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
+                &connection_key_mizuho,
+                std::numeric_limits<size_t>::max(),
+                std::numeric_limits<int>::max(),
+                &connection_key_node_mizuho));
             tetengo_lattice_connection connection{};
             const auto                 found = tetengo_lattice_vocabulary_findConnection(
-                p_vocabulary, &connection_key_mizuho, &connection_key_mizuho, &connection);
+                p_vocabulary, &connection_key_node_mizuho, &connection_key_mizuho, &connection);
             BOOST_TEST(found);
 
             BOOST_TEST(connection.cost == std::numeric_limits<int>::max());
         }
         {
+            tetengo_lattice_node connection_key_node_mizuho{};
+            BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
+                &connection_key_mizuho,
+                std::numeric_limits<size_t>::max(),
+                std::numeric_limits<int>::max(),
+                &connection_key_node_mizuho));
             tetengo_lattice_connection connection{};
             const auto                 found = tetengo_lattice_vocabulary_findConnection(
-                nullptr, &connection_key_mizuho, &connection_key_sakura2, &connection);
+                nullptr, &connection_key_node_mizuho, &connection_key_sakura2, &connection);
             BOOST_TEST(!found);
         }
         {
@@ -429,14 +450,26 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(!found);
         }
         {
+            tetengo_lattice_node connection_key_node_mizuho{};
+            BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
+                &connection_key_mizuho,
+                std::numeric_limits<size_t>::max(),
+                std::numeric_limits<int>::max(),
+                &connection_key_node_mizuho));
             tetengo_lattice_connection connection{};
-            const auto                 found =
-                tetengo_lattice_vocabulary_findConnection(p_vocabulary, &connection_key_mizuho, nullptr, &connection);
+            const auto                 found = tetengo_lattice_vocabulary_findConnection(
+                p_vocabulary, &connection_key_node_mizuho, nullptr, &connection);
             BOOST_TEST(!found);
         }
         {
+            tetengo_lattice_node connection_key_node_mizuho{};
+            BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
+                &connection_key_mizuho,
+                std::numeric_limits<size_t>::max(),
+                std::numeric_limits<int>::max(),
+                &connection_key_node_mizuho));
             const auto found = tetengo_lattice_vocabulary_findConnection(
-                p_vocabulary, &connection_key_mizuho, &connection_key_sakura2, nullptr);
+                p_vocabulary, &connection_key_node_mizuho, &connection_key_sakura2, nullptr);
             BOOST_TEST(!found);
         }
     }

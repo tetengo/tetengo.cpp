@@ -18,6 +18,7 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/string_view.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
@@ -158,7 +159,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
 
 int tetengo_lattice_vocabulary_findConnection(
     const tetengo_lattice_vocabulary* const p_vocabulary,
-    const tetengo_lattice_entry* const      p_from,
+    const tetengo_lattice_node* const       p_from,
     const tetengo_lattice_entry* const      p_to,
     tetengo_lattice_connection* const       p_connection)
 {
@@ -182,8 +183,11 @@ int tetengo_lattice_vocabulary_findConnection(
         }
 
         const std::any                     cpp_from_value{ p_from->p_value };
-        const tetengo::lattice::node       cpp_from{ tetengo::lattice::entry_view{
-            std::string_view{ p_from->key.p_head, p_from->key.length }, &cpp_from_value, p_from->cost } };
+        const tetengo::lattice::node       cpp_from{ std::string_view{ p_from->key.p_head, p_from->key.length },
+                                               &cpp_from_value,
+                                               p_from->preceding,
+                                               p_from->node_cost,
+                                               p_from->path_cost };
         const std::any                     cpp_to_value{ p_to->p_value };
         const tetengo::lattice::entry_view cpp_to{ std::string_view{ p_to->key.p_head, p_to->key.length },
                                                    &cpp_to_value,

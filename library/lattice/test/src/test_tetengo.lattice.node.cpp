@@ -12,6 +12,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
@@ -85,8 +86,23 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const std::string_view     key{ "mizuho" };
         const auto                 value = 42;
-        const tetengo_lattice_node node_{ { key.data(), key.length() }, &value, 1, 24, 2424 };
-        boost::ignore_unused(node_);
+        const tetengo_lattice_node node{ { key.data(), key.length() }, &value, 1, 24, 2424 };
+        boost::ignore_unused(node);
+    }
+    {
+        const std::string_view      key{ "mizuho" };
+        const auto                  value = 42;
+        const tetengo_lattice_entry entry{ { key.data(), key.length() }, &value, 24 };
+        tetengo_lattice_node        node{};
+        const auto                  result = tetengo_lattice_node_toNode(&entry, 1, 2424, &node);
+        BOOST_TEST_REQUIRE(result);
+
+        BOOST_TEST(node.key.p_head == entry.key.p_head);
+        BOOST_TEST(node.key.length == entry.key.length);
+        BOOST_TEST(node.p_value == entry.p_value);
+        BOOST_TEST(node.preceding == 1U);
+        BOOST_TEST(node.node_cost == entry.cost);
+        BOOST_TEST(node.path_cost == 2424);
     }
 }
 
