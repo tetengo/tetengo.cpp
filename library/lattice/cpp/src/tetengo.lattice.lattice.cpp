@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cstddef>
 #include <iterator>
+#include <limits>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -16,6 +17,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -79,16 +81,14 @@ namespace tetengo::lattice
             {
                 const auto& step = m_graph[i];
 
-                const auto lowest_preceding_path_cost = lowest_path_cost(step);
-
                 const std::string_view node_key{ std::next(m_input.data(), step.input_tail()),
                                                  m_input.length() - step.input_tail() };
                 const auto             found = m_p_vocabulary->find_entries(node_key);
+
                 std::transform(
-                    std::begin(found),
-                    std::end(found),
-                    std::back_inserter(nodes),
-                    [i, lowest_preceding_path_cost](const auto& e) {
+                    std::begin(found), std::end(found), std::back_inserter(nodes), [this, i, &step](const auto& e) {
+                        const auto lowest_preceding_path_cost = lowest_path_cost(step, node{ e });
+
                         return node{ e, i, lowest_preceding_path_cost + e.cost() };
                     });
             }
@@ -101,18 +101,20 @@ namespace tetengo::lattice
 
         static const graph_step& bos()
         {
-            static const graph_step singleton{ 0, std::vector<node>{ tetengo::lattice::node::bos() } };
+            static const graph_step singleton{ 0, std::vector<node>{ node::bos() } };
             return singleton;
         }
 
-        static int lowest_path_cost(const graph_step& step)
+        static int add_connection_cost(const int one, const int another)
         {
-            assert(!step.nodes().empty());
-            return std::min_element(
-                       std::begin(step.nodes()),
-                       std::end(step.nodes()),
-                       [](const auto& one, const auto& another) { return one.path_cost() < another.path_cost(); })
-                ->path_cost();
+            if (one == std::numeric_limits<int>::max() || another == std::numeric_limits<int>::max())
+            {
+                return std::numeric_limits<int>::max();
+            }
+            else
+            {
+                return one + another;
+            }
         }
 
 
@@ -123,6 +125,26 @@ namespace tetengo::lattice
         std::string m_input;
 
         std::vector<graph_step> m_graph;
+
+
+        // functions
+
+        int lowest_path_cost(const graph_step& step, const node& next_node) const
+        {
+            assert(!step.nodes().empty());
+            const auto i_min_cost_node = std::min_element(
+                std::begin(step.nodes()),
+                std::end(step.nodes()),
+                [this, &next_node](const auto& one, const auto& another) {
+                    return add_connection_cost(
+                               one.path_cost(), m_p_vocabulary->find_connection(one, next_node).cost()) <
+                           add_connection_cost(
+                               another.path_cost(), m_p_vocabulary->find_connection(another, next_node).cost());
+                });
+
+            return add_connection_cost(
+                i_min_cost_node->path_cost(), m_p_vocabulary->find_connection(*i_min_cost_node, next_node).cost());
+        }
     };
 
 

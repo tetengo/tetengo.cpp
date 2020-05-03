@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -14,6 +15,7 @@
 
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.hpp>
+#include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
@@ -22,6 +24,10 @@ namespace
 {
     std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary()
     {
+        static const tetengo::lattice::entry bos_eos_entry{ std::string{ tetengo::lattice::node::bos().key() },
+                                                            tetengo::lattice::node::bos().value(),
+                                                            tetengo::lattice::node::bos().node_cost() };
+
         /*
                   +------------------mizuho/sakura/tsubame-------------------+
                   |                                                          |
@@ -61,11 +67,20 @@ namespace
                   { "Omuta-Kumamoto", std::string{ "local817" }, 950 },
               } },
         };
-        std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{};
+        std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{
+            { { bos_eos_entry, { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 } }, 600 },
+            { { bos_eos_entry, { "Hakata-Tosu-Omuta", {}, 0 } }, 700 },
+            { { bos_eos_entry, { "Hakata-Tosu", {}, 0 } }, 800 },
+            { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta-Kumamoto", {}, 0 } }, 500 },
+            { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta", {}, 0 } }, 600 },
+            { { { "Hakata-Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 200 },
+            { { { "Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 300 },
+            { { { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 400 },
+            { { { "Tosu-Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 500 },
+            { { { "Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 600 },
+        };
         return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(entries), std::move(connections));
     }
-
-
 }
 
 
