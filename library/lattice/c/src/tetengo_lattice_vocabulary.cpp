@@ -35,27 +35,27 @@ struct tetengo_lattice_vocabulary_tag
 };
 
 tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-    const tetengo_lattice_entry_map_element* const      p_entry_map,
-    const size_t                                        entry_map_size,
-    const tetengo_lattice_connection_map_element* const p_connection_map,
-    const size_t                                        connection_map_size)
+    const tetengo_lattice_keyEntriesPair* const            p_entries,
+    const size_t                                           entry_count,
+    const tetengo_lattice_entriesConnectionCostPair* const p_connections,
+    const size_t                                           connection_count)
 {
     try
     {
-        if (!p_entry_map || entry_map_size == 0)
+        if (!p_entries || entry_count == 0)
         {
             return nullptr;
         }
-        if (!p_connection_map || connection_map_size == 0)
+        if (!p_connections || connection_count == 0)
         {
             return nullptr;
         }
 
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> cpp_entries{};
-        cpp_entries.reserve(entry_map_size);
-        for (auto i = static_cast<size_t>(0); i < entry_map_size; ++i)
+        cpp_entries.reserve(entry_count);
+        for (auto i = static_cast<size_t>(0); i < entry_count; ++i)
         {
-            const auto& map_element = p_entry_map[i];
+            const auto& map_element = p_entries[i];
 
             std::string cpp_key{ map_element.key.p_head, map_element.key.length };
 
@@ -74,10 +74,10 @@ tetengo_lattice_vocabulary* tetengo_lattice_vocabulary_createUnorderedMapVocabul
         }
 
         std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> cpp_connections{};
-        cpp_connections.reserve(connection_map_size);
-        for (auto i = static_cast<size_t>(0); i < connection_map_size; ++i)
+        cpp_connections.reserve(connection_count);
+        for (auto i = static_cast<size_t>(0); i < connection_count; ++i)
         {
-            const auto& connection_element = p_connection_map[i];
+            const auto& connection_element = p_connections[i];
 
             std::any cpp_from_value{ connection_element.p_from->p_value };
             std::any cpp_to_value{ connection_element.p_from->p_value };

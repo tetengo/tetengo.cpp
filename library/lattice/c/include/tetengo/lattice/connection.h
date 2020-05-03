@@ -29,9 +29,9 @@ typedef struct tetengo_lattice_connection_tag
 } tetengo_lattice_connection;
 
 /*!
-    \brief A connection map element.
+    \brief A pair of entries and a connection cost.
 */
-typedef struct tetengo_lattice_connection_map_element_tag
+typedef struct tetengo_lattice_entriesConnectionCostPair_tag
 {
     //! A pointer to an origin entry.
     const tetengo_lattice_entry* p_from;
@@ -43,7 +43,7 @@ typedef struct tetengo_lattice_connection_map_element_tag
     int cost;
 
 
-} tetengo_lattice_connection_map_element;
+} tetengo_lattice_entriesConnectionCostPair;
 
 
 #if defined(__cplusplus)

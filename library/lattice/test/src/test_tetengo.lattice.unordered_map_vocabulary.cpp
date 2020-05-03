@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(construction)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_map_element> entries{
+        const std::vector<tetengo_lattice_keyEntriesPair> entries{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
             { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
         };
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo_lattice_entry connection_key_sakura{ { key_sakura.c_str(), key_sakura.length() },
                                                            &surface_sakura1,
                                                            24 };
-        std::vector<tetengo_lattice_connection_map_element> connections{
+        std::vector<tetengo_lattice_entriesConnectionCostPair> connections{
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(construction)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_map_element> entries{
+        const std::vector<tetengo_lattice_keyEntriesPair> entries{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
             { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
         };
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo_lattice_entry connection_key_sakura{ { key_sakura.c_str(), key_sakura.length() },
                                                            &surface_sakura1,
                                                            24 };
-        std::vector<tetengo_lattice_connection_map_element> connections{
+        std::vector<tetengo_lattice_entriesConnectionCostPair> connections{
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo_lattice_entry connection_key_sakura{ { key_sakura.c_str(), key_sakura.length() },
                                                            &surface_sakura1,
                                                            24 };
-        std::vector<tetengo_lattice_connection_map_element> connections{
+        std::vector<tetengo_lattice_entriesConnectionCostPair> connections{
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(construction)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_map_element> entries{
+        const std::vector<tetengo_lattice_keyEntriesPair> entries{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
             { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
         };
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo_lattice_entry connection_key_sakura{ { key_sakura.c_str(), key_sakura.length() },
                                                            &surface_sakura1,
                                                            24 };
-        std::vector<tetengo_lattice_connection_map_element> connections{
+        std::vector<tetengo_lattice_entriesConnectionCostPair> connections{
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(construction)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_map_element> entries{
+        const std::vector<tetengo_lattice_keyEntriesPair> entries{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
             { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
         };
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_map_element> entries{
+        const std::vector<tetengo_lattice_keyEntriesPair> entries{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
             { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
         };
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
         const tetengo_lattice_entry connection_key_sakura{ { key_sakura.c_str(), key_sakura.length() },
                                                            &surface_sakura1,
                                                            24 };
-        std::vector<tetengo_lattice_connection_map_element> connections{
+        std::vector<tetengo_lattice_entriesConnectionCostPair> connections{
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_map_element> entries{
+        const std::vector<tetengo_lattice_keyEntriesPair> entries{
             { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
             { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
         };
@@ -387,7 +387,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         const tetengo_lattice_entry connection_key_sakura2{ { key_sakura.c_str(), key_sakura.length() },
                                                             &surface_sakura2,
                                                             2424 };
-        std::vector<tetengo_lattice_connection_map_element> connections{
+        std::vector<tetengo_lattice_entriesConnectionCostPair> connections{
             { &connection_key_mizuho, &connection_key_sakura1, 4242 }
         };
 

@@ -34,9 +34,9 @@ typedef struct tetengo_lattice_entry_tag
 } tetengo_lattice_entry;
 
 /*!
-    \brief An entry map element.
+    \brief A pair of a key and entries.
 */
-typedef struct tetengo_lattice_entry_map_element_tag
+typedef struct tetengo_lattice_keyEntriesPair_tag
 {
     //! A key.
     tetengo_lattice_stringView key;
@@ -48,7 +48,7 @@ typedef struct tetengo_lattice_entry_map_element_tag
     size_t entry_count;
 
 
-} tetengo_lattice_entry_map_element;
+} tetengo_lattice_keyEntriesPair;
 
 
 #if defined(__cplusplus)
