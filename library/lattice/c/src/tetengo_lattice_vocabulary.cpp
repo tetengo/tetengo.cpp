@@ -25,15 +25,8 @@
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
 
+#include "tetengo_lattice_vocabulary.hpp"
 
-struct tetengo_lattice_vocabulary_tag
-{
-    std::unique_ptr<tetengo::lattice::vocabulary> p_cpp_vocabulary;
-
-    explicit tetengo_lattice_vocabulary_tag(std::unique_ptr<tetengo::lattice::vocabulary>&& p_cpp_vocabulary) :
-    p_cpp_vocabulary{ std::move(p_cpp_vocabulary) }
-    {}
-};
 
 tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
     const tetengo_lattice_keyEntriesPair_t* const            p_entries,

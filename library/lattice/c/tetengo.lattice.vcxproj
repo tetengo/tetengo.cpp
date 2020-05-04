@@ -118,6 +118,7 @@
     <ClInclude Include="include\tetengo\lattice\node.h" />
     <ClInclude Include="include\tetengo\lattice\string_view.h" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
+    <ClInclude Include="src\tetengo_lattice_vocabulary.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
