@@ -2,6 +2,7 @@ LIBRARY tetengo.lattice.dll
 EXPORTS
 	tetengo_lattice_lattice_create
 	tetengo_lattice_lattice_destroy
+	tetengo_lattice_lattice_pushBack
 	tetengo_lattice_node_bos
 	tetengo_lattice_node_eos
 	tetengo_lattice_node_toNode

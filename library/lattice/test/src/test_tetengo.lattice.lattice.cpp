@@ -204,6 +204,32 @@ BOOST_AUTO_TEST_CASE(push_back)
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
     }
+
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+
+        BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]"));
+        BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]"));
+        BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]"));
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+
+        BOOST_TEST(!tetengo_lattice_lattice_pushBack(nullptr, "[HakataTosu]"));
+        BOOST_TEST(!tetengo_lattice_lattice_pushBack(p_lattice, nullptr));
+    }
 }
 
 

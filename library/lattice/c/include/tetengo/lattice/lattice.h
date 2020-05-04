@@ -36,6 +36,16 @@ tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabu
 */
 void tetengo_lattice_lattice_destroy(const tetengo_lattice_lattice_t* p_lattice);
 
+/*!
+    \brief Pushes back an input.
+
+    \param input An input.
+
+    \retval non-zero When the input is pushed back.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, const char* input);
+
 
 #if defined(__cplusplus)
 }
