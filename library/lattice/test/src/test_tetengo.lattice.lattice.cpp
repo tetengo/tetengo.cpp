@@ -89,10 +89,14 @@ namespace
         { { bos_eos_entry, { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 } }, 600 },
         { { bos_eos_entry, { "Hakata-Tosu-Omuta", {}, 0 } }, 700 },
         { { bos_eos_entry, { "Hakata-Tosu", {}, 0 } }, 800 },
+        { { bos_eos_entry, bos_eos_entry }, 8000 },
         { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta-Kumamoto", {}, 0 } }, 500 },
         { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta", {}, 0 } }, 600 },
+        { { { "Hakata-Tosu", {}, 0 }, bos_eos_entry }, 6000 },
         { { { "Hakata-Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 200 },
+        { { { "Hakata-Tosu-Omuta", {}, 0 }, bos_eos_entry }, 2000 },
         { { { "Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 300 },
+        { { { "Tosu-Omuta", {}, 0 }, bos_eos_entry }, 3000 },
         { { { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 400 },
         { { { "Tosu-Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 500 },
         { { { "Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 600 },
@@ -229,6 +233,46 @@ BOOST_AUTO_TEST_CASE(push_back)
 
         BOOST_TEST(!tetengo_lattice_lattice_pushBack(nullptr, "[HakataTosu]"));
         BOOST_TEST(!tetengo_lattice_lattice_pushBack(p_lattice, nullptr));
+    }
+}
+
+BOOST_AUTO_TEST_CASE(settle)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+
+        {
+            const auto eos_node = lattice_.settle();
+
+            BOOST_TEST(eos_node.preceding() == 0U);
+            BOOST_TEST(eos_node.path_cost() == 8000);
+        }
+
+        lattice_.push_back("[HakataTosu]");
+        {
+            const auto eos_node = lattice_.settle();
+
+            BOOST_TEST(eos_node.preceding() == 1U);
+            BOOST_TEST(eos_node.path_cost() == 7370);
+        }
+
+        lattice_.push_back("[TosuOmuta]");
+        {
+            const auto eos_node = lattice_.settle();
+
+            BOOST_TEST(eos_node.preceding() == 2U);
+            BOOST_TEST(eos_node.path_cost() == 4010);
+        }
+
+        lattice_.push_back("[OmutaKumamoto]");
+        {
+            const auto eos_node = lattice_.settle();
+
+            BOOST_TEST(eos_node.preceding() == 3U);
+            BOOST_TEST(eos_node.path_cost() == 3390);
+        }
     }
 }
 

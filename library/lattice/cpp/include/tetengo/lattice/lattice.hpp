@@ -16,6 +16,7 @@
 namespace tetengo::lattice
 {
     class vocabulary;
+    class node;
 
 
     /*!
@@ -47,6 +48,16 @@ namespace tetengo::lattice
             \param input An input.
         */
         void push_back(const std::string_view& input);
+
+        /*!
+            \brief Settles this lattice.
+
+            You can modify the lattice after settlement.
+            Modification of the lattice after settlement invalidate the EOS node.
+
+            \return The EOS node.
+        */
+        node settle();
 
 
     private:

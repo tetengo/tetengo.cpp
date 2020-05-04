@@ -31,7 +31,7 @@ namespace tetengo::lattice
     public:
         // constructors and destructor
 
-        explicit graph_step(const std::size_t input_tail, std::vector<node> nodes) :
+        graph_step(const std::size_t input_tail, std::vector<node> nodes) :
         m_input_tail{ input_tail },
             m_nodes{ std::move(nodes) }
         {}
@@ -96,6 +96,11 @@ namespace tetengo::lattice
             m_graph.emplace_back(m_input.length(), std::move(nodes));
         }
 
+        node settle()
+        {
+            return node::eos(m_graph.size() - 1, lowest_path_cost(m_graph.back(), eos_entry()));
+        }
+
 
     private:
         // static functions
@@ -103,6 +108,14 @@ namespace tetengo::lattice
         static const graph_step& bos()
         {
             static const graph_step singleton{ 0, std::vector<node>{ node::bos() } };
+            return singleton;
+        }
+
+        static const entry_view& eos_entry()
+        {
+            static const tetengo::lattice::entry_view singleton{ tetengo::lattice::node::bos().key(),
+                                                                 &tetengo::lattice::node::bos().value(),
+                                                                 tetengo::lattice::node::bos().node_cost() };
             return singleton;
         }
 
@@ -159,4 +172,11 @@ namespace tetengo::lattice
     {
         m_p_impl->push_back(input);
     }
+
+    node lattice::settle()
+    {
+        return m_p_impl->settle();
+    }
+
+
 }
