@@ -5,10 +5,14 @@
 */
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
+#include <tetengo/lattice/node.h> // IWYU pragma: keep
+#include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/string_view.h>
 #include <tetengo/lattice/vocabulary.h>
 
 #include "tetengo_lattice_vocabulary.hpp" // IWYU pragma: keep
@@ -72,6 +76,36 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice,
         }
 
         p_lattice->p_cpp_lattice->push_back(input);
+
+        return 1;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* const p_lattice, tetengo_lattice_node_t* const p_node)
+{
+    try
+    {
+        if (!p_lattice)
+        {
+            return 0;
+        }
+        if (!p_node)
+        {
+            return 0;
+        }
+
+        const auto cpp_eos_node = p_lattice->p_cpp_lattice->settle();
+
+        p_node->key.p_head = cpp_eos_node.key().data();
+        p_node->key.length = cpp_eos_node.key().length();
+        p_node->p_value = &cpp_eos_node.value();
+        p_node->preceding = cpp_eos_node.preceding();
+        p_node->node_cost = cpp_eos_node.node_cost();
+        p_node->path_cost = cpp_eos_node.path_cost();
 
         return 1;
     }

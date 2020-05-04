@@ -20,6 +20,7 @@
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
+#include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
@@ -273,6 +274,64 @@ BOOST_AUTO_TEST_CASE(settle)
             BOOST_TEST(eos_node.preceding() == 3U);
             BOOST_TEST(eos_node.path_cost() == 3390);
         }
+    }
+
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+
+        {
+            tetengo_lattice_node_t eos_node{};
+            BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
+
+            BOOST_TEST(eos_node.preceding == 0U);
+            BOOST_TEST(eos_node.path_cost == 8000);
+        }
+
+        BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]"));
+        {
+            tetengo_lattice_node_t eos_node{};
+            BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
+
+            BOOST_TEST(eos_node.preceding == 1U);
+            BOOST_TEST(eos_node.path_cost == 7370);
+        }
+
+        BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]"));
+        {
+            tetengo_lattice_node_t eos_node{};
+            BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
+
+            BOOST_TEST(eos_node.preceding == 2U);
+            BOOST_TEST(eos_node.path_cost == 4010);
+        }
+
+        BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]"));
+        {
+            tetengo_lattice_node_t eos_node{};
+            BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
+
+            BOOST_TEST(eos_node.preceding == 3U);
+            BOOST_TEST(eos_node.path_cost == 3390);
+        }
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+
+        tetengo_lattice_node_t eos_node{};
+        BOOST_TEST(!tetengo_lattice_lattice_settle(nullptr, &eos_node));
+        BOOST_TEST(!tetengo_lattice_lattice_settle(p_lattice, nullptr));
     }
 }
 
