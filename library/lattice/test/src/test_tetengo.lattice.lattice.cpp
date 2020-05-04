@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const auto* p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        const auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
         BOOST_SCOPE_EXIT(p_lattice)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
@@ -185,6 +185,11 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
 
         BOOST_TEST(p_lattice);
+    }
+    {
+        const auto* const p_lattice = tetengo_lattice_lattice_create(nullptr);
+
+        BOOST_TEST(!p_lattice);
     }
 }
 
