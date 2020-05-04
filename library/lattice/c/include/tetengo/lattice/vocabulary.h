@@ -32,7 +32,7 @@ typedef struct tetengo_lattice_entriesConnectionCostPair_tag tetengo_lattice_ent
     \param p_connections    A pointer to connections.
     \param connection_count A connection count.
 
-    \return A pointer to an unordered_map vocabulary. Or NULL when p_entries is NULL.
+    \return A pointer to an unordered_map vocabulary. Or NULL when p_entries and/or p_connections are NULL.
 */
 tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
     const tetengo_lattice_keyEntriesPair_t*            p_entries,
