@@ -64,6 +64,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
 /*!
     \brief Finds a connection between entries.
 
+    \param p_vocabulary A pointer to a vocabulary.
     \param p_from       A pointer to an origin node.
     \param p_to         A pointer to a destination entry.
     \param p_connection The storage for an output connection.

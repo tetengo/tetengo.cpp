@@ -27,8 +27,7 @@ struct tetengo_lattice_lattice_tag
     explicit tetengo_lattice_lattice_tag(
         std::unique_ptr<tetengo::lattice::lattice>&& p_cpp_lattice,
         tetengo_lattice_vocabulary_t* const          p_vocabulary) :
-    p_cpp_lattice{ std::move(p_cpp_lattice) },
-        p_vocabulary{ p_vocabulary }
+    p_cpp_lattice{ std::move(p_cpp_lattice) }, p_vocabulary{ p_vocabulary }
     {}
 };
 
@@ -85,7 +84,7 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice,
     }
 }
 
-int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* const p_lattice, tetengo_lattice_node_t* const p_node)
+int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* const p_lattice, tetengo_lattice_node_t* const p_eos_node)
 {
     try
     {
@@ -93,19 +92,19 @@ int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* const p_lattice, t
         {
             return 0;
         }
-        if (!p_node)
+        if (!p_eos_node)
         {
             return 0;
         }
 
         const auto cpp_eos_node = p_lattice->p_cpp_lattice->settle();
 
-        p_node->key.p_head = cpp_eos_node.key().data();
-        p_node->key.length = cpp_eos_node.key().length();
-        p_node->p_value = &cpp_eos_node.value();
-        p_node->preceding = cpp_eos_node.preceding();
-        p_node->node_cost = cpp_eos_node.node_cost();
-        p_node->path_cost = cpp_eos_node.path_cost();
+        p_eos_node->key.p_head = cpp_eos_node.key().data();
+        p_eos_node->key.length = cpp_eos_node.key().length();
+        p_eos_node->p_value = &cpp_eos_node.value();
+        p_eos_node->preceding = cpp_eos_node.preceding();
+        p_eos_node->node_cost = cpp_eos_node.node_cost();
+        p_eos_node->path_cost = cpp_eos_node.path_cost();
 
         return 1;
     }

@@ -60,7 +60,7 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, const
     \retval non-zero When an EOS node is stored.
     \retval 0        Otherwise.
 */
-int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* p_lattice, tetengo_lattice_node_t* p_node);
+int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* p_lattice, tetengo_lattice_node_t* p_eos_node);
 
 
 #if defined(__cplusplus)
