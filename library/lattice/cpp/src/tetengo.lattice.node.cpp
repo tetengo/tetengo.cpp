@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cstddef>
+#include <limits>
 #include <string_view>
 #include <utility>
 
@@ -17,7 +18,9 @@ namespace tetengo::lattice
 {
     const node& node::bos()
     {
-        static const node singleton{ entry_view::bos_eos(), 0, 0, 0 };
+        static const node singleton{
+            entry_view::bos_eos(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), 0
+        };
         return singleton;
     }
 

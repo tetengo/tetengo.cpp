@@ -5,6 +5,8 @@
  */
 
 #include <any>
+#include <cstddef>
+#include <limits>
 #include <string_view>
 #include <utility>
 
@@ -30,12 +32,25 @@ BOOST_AUTO_TEST_CASE(bos)
 
     {
         const auto& bos = tetengo::lattice::node::bos();
-        boost::ignore_unused(bos);
+
+        BOOST_TEST(bos.key() == tetengo::lattice::entry_view::bos_eos().key());
+        BOOST_TEST(!bos.value().has_value());
+        BOOST_TEST(bos.preceding_step() == std::numeric_limits<std::size_t>::max());
+        BOOST_TEST(bos.best_preceding_node() == std::numeric_limits<std::size_t>::max());
+        BOOST_TEST(bos.node_cost() == tetengo::lattice::entry_view::bos_eos().cost());
+        BOOST_TEST(bos.path_cost() == 0);
     }
 
     {
-        const auto* p_bos = tetengo_lattice_node_bos();
-        boost::ignore_unused(p_bos);
+        const auto* const p_bos = tetengo_lattice_node_bos();
+
+        BOOST_TEST(p_bos->key.p_head == tetengo_lattice_entry_bosEos()->key.p_head);
+        BOOST_TEST(p_bos->key.length == tetengo_lattice_entry_bosEos()->key.length);
+        BOOST_TEST(!reinterpret_cast<const std::any*>(p_bos->p_value)->has_value());
+        BOOST_TEST(p_bos->preceding_step == std::numeric_limits<std::size_t>::max());
+        BOOST_TEST(p_bos->best_preceding_node == std::numeric_limits<std::size_t>::max());
+        BOOST_TEST(p_bos->node_cost == tetengo_lattice_entry_bosEos()->cost);
+        BOOST_TEST(p_bos->path_cost == 0);
     }
 }
 
