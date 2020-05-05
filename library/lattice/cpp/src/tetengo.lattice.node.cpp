@@ -21,29 +21,29 @@ namespace tetengo::lattice
         return singleton;
     }
 
-    node node::eos(const std::size_t preceding, const int path_cost)
+    node node::eos(const std::size_t preceding_step, const int path_cost)
     {
-        return node{ entry_view::bos_eos(), preceding, path_cost };
+        return node{ entry_view::bos_eos(), preceding_step, path_cost };
     }
 
     node::node(
         std::string_view  key,
         std::any          value,
-        const std::size_t preceding,
+        const std::size_t preceding_step,
         const int         node_cost,
         const int         path_cost) :
     m_key{ std::move(key) },
         m_value{ std::move(value) },
-        m_preceding{ preceding },
+        m_preceding_step{ preceding_step },
         m_node_cost{ node_cost },
         m_path_cost{ path_cost }
     {}
 
     node::node(
         const entry_view& entry,
-        const std::size_t preceding /*= std::numeric_limits<std::size_t>::max()*/,
+        const std::size_t preceding_step /*= std::numeric_limits<std::size_t>::max()*/,
         const int         path_cost /*= std::numeric_limits<int>::max()*/) :
-    node{ entry.key(), entry.value() ? *entry.value() : std::any{}, preceding, entry.cost(), path_cost }
+    node{ entry.key(), entry.value() ? *entry.value() : std::any{}, preceding_step, entry.cost(), path_cost }
     {}
 
     const std::string_view& node::key() const
@@ -56,9 +56,9 @@ namespace tetengo::lattice
         return m_value;
     }
 
-    std::size_t node::preceding() const
+    std::size_t node::preceding_step() const
     {
-        return m_preceding;
+        return m_preceding_step;
     }
 
     int node::node_cost() const

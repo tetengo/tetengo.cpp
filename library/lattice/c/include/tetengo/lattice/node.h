@@ -32,8 +32,8 @@ typedef struct tetengo_lattice_node_tag
     //! A pointer to a value.
     const void* p_value;
 
-    //! An index of preceding nodes.
-    size_t preceding;
+    //! An index of preceding step.
+    size_t preceding_step;
 
     //! A node cost.
     int node_cost;
@@ -54,29 +54,29 @@ const tetengo_lattice_node_t* tetengo_lattice_node_bos();
 /*!
     \brief Returns an EOS (End of Sequence).
 
-    \param preceding An index of preceding nodes.
-    \param path_cost A path cost.
-    \param p_eos     The storage for an output EOS.
+    \param preceding_step An index of preceding step.
+    \param path_cost      A path cost.
+    \param p_eos          The storage for an output EOS.
 
     \retval non-zero When an EOS is stored.
     \retval 0        Otherwise.
 */
-int tetengo_lattice_node_eos(size_t preceding, int path_cost, tetengo_lattice_node_t* p_eos);
+int tetengo_lattice_node_eos(size_t preceding_step, int path_cost, tetengo_lattice_node_t* p_eos);
 
 /*!
     \brief Makes a node from an entry.
 
-    \param p_entry   A pointer to an entry.
-    \param preceding An index of preceding nodes.
-    \param path_cost A path cost.
-    \param p_node    The storage for an output node.
+    \param p_entry        A pointer to an entry.
+    \param preceding_step An index of preceding step.
+    \param path_cost      A path cost.
+    \param p_node         The storage for an output node.
 
     \retval non-zero When a node is stored.
     \retval 0        Otherwise.
 */
 int tetengo_lattice_node_toNode(
     const tetengo_lattice_entry_t* p_entry,
-    size_t                         preceding,
+    size_t                         preceding_step,
     int                            path_cost,
     tetengo_lattice_node_t*        p_node);
 

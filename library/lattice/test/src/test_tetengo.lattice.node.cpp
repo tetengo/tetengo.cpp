@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(eos)
     {
         const auto eos = tetengo::lattice::node::eos(1, 42);
 
-        BOOST_TEST(eos.preceding() == 1U);
+        BOOST_TEST(eos.preceding_step() == 1U);
         BOOST_TEST(eos.path_cost() == 42);
     }
 
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(eos)
         const auto             result = tetengo_lattice_node_eos(1, 42, &eos);
         BOOST_TEST(result);
 
-        BOOST_TEST(eos.preceding == 1U);
+        BOOST_TEST(eos.preceding_step == 1U);
         BOOST_TEST(eos.path_cost == 42);
     }
     {
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         BOOST_TEST(node_.key() == "mizuho");
         BOOST_TEST(std::any_cast<int>(node_.value()) == 42);
-        BOOST_TEST(node_.preceding() == 1U);
+        BOOST_TEST(node_.preceding_step() == 1U);
         BOOST_TEST(node_.node_cost() == 24);
         BOOST_TEST(node_.path_cost() == 2424);
     }
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(node.key.p_head == entry.key.p_head);
         BOOST_TEST(node.key.length == entry.key.length);
         BOOST_TEST(node.p_value == entry.p_value);
-        BOOST_TEST(node.preceding == 1U);
+        BOOST_TEST(node.preceding_step == 1U);
         BOOST_TEST(node.node_cost == entry.cost);
         BOOST_TEST(node.path_cost == 2424);
     }
@@ -145,14 +145,14 @@ BOOST_AUTO_TEST_CASE(value)
     }
 }
 
-BOOST_AUTO_TEST_CASE(preceding)
+BOOST_AUTO_TEST_CASE(preceding_step)
 {
     BOOST_TEST_PASSPOINT();
 
     {
         const tetengo::lattice::node node_{ "mizuho", 42, 1, 24, 2424 };
 
-        BOOST_TEST(node_.preceding() == 1U);
+        BOOST_TEST(node_.preceding_step() == 1U);
     }
 
     {
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(preceding)
         const auto                   value = 42;
         const tetengo_lattice_node_t node_{ { key.data(), key.length() }, &value, 1, 24, 2424 };
 
-        BOOST_TEST(node_.preceding == 1U);
+        BOOST_TEST(node_.preceding_step == 1U);
     }
 }
 

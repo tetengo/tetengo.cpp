@@ -35,12 +35,12 @@ namespace tetengo::lattice
         /*!
             \brief Returns an EOS (End of Sequence).
 
-            \param preceding An index of preceding nodes.
-            \param path_cost A path cost.
+            \param preceding_step An index of preceding step.
+            \param path_cost      A path cost.
 
             \return An EOS.
         */
-        static node eos(std::size_t preceding, int path_cost);
+        static node eos(std::size_t preceding_step, int path_cost);
 
 
         // constructors and destructor
@@ -48,24 +48,24 @@ namespace tetengo::lattice
         /*!
             \brief Creates a node.
 
-            \param key       A key.
-            \param value     A value.
-            \param preceding An index of preceding nodes.
-            \param node_cost A node cost.
-            \param path_cost A path cost.
+            \param key            A key.
+            \param value          A value.
+            \param preceding_step An index of preceding step.
+            \param node_cost      A node cost.
+            \param path_cost      A path cost.
         */
-        node(std::string_view key, std::any value, std::size_t preceding, int node_cost, int path_cost);
+        node(std::string_view key, std::any value, std::size_t preceding_step, int node_cost, int path_cost);
 
         /*!
             \brief Creates a node from a vocabulary entry.
 
-            \param entry     An entry.
-            \param preceding An index of preceding nodes.
-            \param path_cost A path cost.
+            \param entry          An entry.
+            \param preceding_step An index of preceding step.
+            \param path_cost      A path cost.
         */
         explicit node(
             const entry_view& entry,
-            std::size_t       preceding = std::numeric_limits<std::size_t>::max(),
+            std::size_t       preceding_step = std::numeric_limits<std::size_t>::max(),
             int               path_cost = std::numeric_limits<int>::max());
 
 
@@ -86,11 +86,11 @@ namespace tetengo::lattice
         const std::any& value() const;
 
         /*!
-            \brief Returns the index of the preceding nodes.
+            \brief Returns the index of the preceding step.
 
-            \return The index of the preceding nodes.
+            \return The index of the preceding step.
         */
-        std::size_t preceding() const;
+        std::size_t preceding_step() const;
 
         /*!
             \brief Returns the node cost.
@@ -114,7 +114,7 @@ namespace tetengo::lattice
 
         std::any m_value;
 
-        std::size_t m_preceding;
+        std::size_t m_preceding_step;
 
         int m_node_cost;
 

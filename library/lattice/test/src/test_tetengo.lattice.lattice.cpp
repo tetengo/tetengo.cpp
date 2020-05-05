@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(settle)
         {
             const auto eos_node = lattice_.settle();
 
-            BOOST_TEST(eos_node.preceding() == 0U);
+            BOOST_TEST(eos_node.preceding_step() == 0U);
             BOOST_TEST(eos_node.path_cost() == 8000);
         }
 
@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE(settle)
         {
             const auto eos_node = lattice_.settle();
 
-            BOOST_TEST(eos_node.preceding() == 1U);
+            BOOST_TEST(eos_node.preceding_step() == 1U);
             BOOST_TEST(eos_node.path_cost() == 7370);
         }
 
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(settle)
         {
             const auto eos_node = lattice_.settle();
 
-            BOOST_TEST(eos_node.preceding() == 2U);
+            BOOST_TEST(eos_node.preceding_step() == 2U);
             BOOST_TEST(eos_node.path_cost() == 4010);
         }
 
@@ -266,7 +266,7 @@ BOOST_AUTO_TEST_CASE(settle)
         {
             const auto eos_node = lattice_.settle();
 
-            BOOST_TEST(eos_node.preceding() == 3U);
+            BOOST_TEST(eos_node.preceding_step() == 3U);
             BOOST_TEST(eos_node.path_cost() == 3390);
         }
     }
@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
 
-            BOOST_TEST(eos_node.preceding == 0U);
+            BOOST_TEST(eos_node.preceding_step == 0U);
             BOOST_TEST(eos_node.path_cost == 8000);
         }
 
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
 
-            BOOST_TEST(eos_node.preceding == 1U);
+            BOOST_TEST(eos_node.preceding_step == 1U);
             BOOST_TEST(eos_node.path_cost == 7370);
         }
 
@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
 
-            BOOST_TEST(eos_node.preceding == 2U);
+            BOOST_TEST(eos_node.preceding_step == 2U);
             BOOST_TEST(eos_node.path_cost == 4010);
         }
 
@@ -311,7 +311,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             BOOST_TEST(tetengo_lattice_lattice_settle(p_lattice, &eos_node));
 
-            BOOST_TEST(eos_node.preceding == 3U);
+            BOOST_TEST(eos_node.preceding_step == 3U);
             BOOST_TEST(eos_node.path_cost == 3390);
         }
     }
