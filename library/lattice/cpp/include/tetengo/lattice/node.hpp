@@ -35,7 +35,7 @@ namespace tetengo::lattice
         /*!
             \brief Returns an EOS (End of Sequence).
 
-            \param preceding_step An index of preceding step.
+            \param preceding_step An index of a preceding step.
             \param path_cost      A path cost.
 
             \return An EOS.
@@ -50,7 +50,7 @@ namespace tetengo::lattice
 
             \param key            A key.
             \param value          A value.
-            \param preceding_step An index of preceding step.
+            \param preceding_step An index of a preceding step.
             \param node_cost      A node cost.
             \param path_cost      A path cost.
         */
@@ -60,7 +60,7 @@ namespace tetengo::lattice
             \brief Creates a node from a vocabulary entry.
 
             \param entry          An entry.
-            \param preceding_step An index of preceding step.
+            \param preceding_step An index of a preceding step.
             \param path_cost      A path cost.
         */
         explicit node(

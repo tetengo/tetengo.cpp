@@ -32,7 +32,7 @@ typedef struct tetengo_lattice_node_tag
     //! A pointer to a value.
     const void* p_value;
 
-    //! An index of preceding step.
+    //! An index of a preceding step.
     size_t preceding_step;
 
     //! A node cost.
