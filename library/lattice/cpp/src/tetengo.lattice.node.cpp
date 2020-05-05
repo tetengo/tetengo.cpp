@@ -49,8 +49,7 @@ namespace tetengo::lattice
         const std::size_t preceding_step /*= std::numeric_limits<std::size_t>::max()*/,
         const std::size_t best_preceding_node /*= std::numeric_limits<std::size_t>::max()*/,
         const int         path_cost /*= std::numeric_limits<int>::max()*/) :
-    node{ entry.key(), entry.value() ? *entry.value() : std::any{}, preceding_step, best_preceding_node, entry.cost(),
-          path_cost }
+    node{ entry.key(), *entry.value(), preceding_step, best_preceding_node, entry.cost(), path_cost }
     {}
 
     const std::string_view& node::key() const
