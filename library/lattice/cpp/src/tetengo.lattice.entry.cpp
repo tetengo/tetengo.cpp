@@ -13,10 +13,18 @@
 
 namespace tetengo::lattice
 {
-    template <typename Key, typename Value>
-    const basic_entry<Key, Value>& basic_entry<Key, Value>::bos_eos()
+    template <>
+    const basic_entry<std::string, std::any>& basic_entry<std::string, std::any>::bos_eos()
     {
-        static const basic_entry singleton{ key_type{}, value_type{}, 0 };
+        static const basic_entry singleton{ std::string{}, std::any{}, 0 };
+        return singleton;
+    }
+
+    template <>
+    const basic_entry<std::string_view, const std::any*>& basic_entry<std::string_view, const std::any*>::bos_eos()
+    {
+        static const std::any    value_singleton{};
+        static const basic_entry singleton{ std::string_view{}, &value_singleton, 0 };
         return singleton;
     }
 

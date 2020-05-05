@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <cassert>
 #include <string_view>
 
 #include <stddef.h>
@@ -20,9 +21,10 @@ const tetengo_lattice_node_t* tetengo_lattice_node_bos()
 {
     try
     {
+        assert(!tetengo::lattice::node::bos().value().has_value());
         static const tetengo_lattice_node_t singleton{ { tetengo::lattice::node::bos().key().data(),
                                                          tetengo::lattice::node::bos().key().length() },
-                                                       &tetengo::lattice::node::bos().value(),
+                                                       nullptr,
                                                        tetengo::lattice::node::bos().preceding_step(),
                                                        tetengo::lattice::node::bos().best_preceding_node(),
                                                        tetengo::lattice::node::bos().node_cost(),
@@ -50,9 +52,10 @@ int tetengo_lattice_node_eos(
 
         const auto cpp_eos = tetengo::lattice::node::eos(preceding_step, best_preceding_node, path_cost);
 
+        assert(!cpp_eos.value().has_value());
         p_eos->key.p_head = cpp_eos.key().data();
         p_eos->key.length = cpp_eos.key().length();
-        p_eos->p_value = &cpp_eos.value();
+        p_eos->p_value = nullptr;
         p_eos->preceding_step = cpp_eos.preceding_step();
         p_eos->best_preceding_node = cpp_eos.best_preceding_node();
         p_eos->node_cost = cpp_eos.node_cost();
