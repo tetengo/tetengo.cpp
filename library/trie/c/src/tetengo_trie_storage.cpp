@@ -24,7 +24,7 @@
 #include "tetengo_trie_trie.hpp" // IWYU pragma: keep
 
 
-tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie* const p_trie)
+tetengo_trie_storage_t* tetengo_trie_storage_createStorage(const tetengo_trie_trie_t* const p_trie)
 {
     try
     {
@@ -34,7 +34,7 @@ tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie
         }
 
         auto p_instance =
-            std::make_unique<tetengo_trie_storage>(&p_trie->p_cpp_trie->get_storage(), p_trie->element_value_size);
+            std::make_unique<tetengo_trie_storage_t>(&p_trie->p_cpp_trie->get_storage(), p_trie->element_value_size);
         return p_instance.release();
     }
     catch (...)
@@ -43,7 +43,7 @@ tetengo_trie_storage* tetengo_trie_storage_createStorage(const tetengo_trie_trie
     }
 }
 
-tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_character_type* const path)
+tetengo_trie_storage_t* tetengo_trie_storage_createMemoryStorage(const path_character_type* const path)
 {
     try
     {
@@ -62,7 +62,7 @@ tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_charac
                 }
                 return serialized;
             });
-        auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_storage), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage), element_value_size);
         return p_instance.release();
     }
     catch (...)
@@ -71,7 +71,7 @@ tetengo_trie_storage* tetengo_trie_storage_createMemoryStorage(const path_charac
     }
 }
 
-tetengo_trie_storage* tetengo_trie_storage_createSharedStorage(const path_character_type* const path)
+tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_character_type* const path)
 {
     try
     {
@@ -90,7 +90,7 @@ tetengo_trie_storage* tetengo_trie_storage_createSharedStorage(const path_charac
                 }
                 return serialized;
             });
-        auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_storage), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage), element_value_size);
         return p_instance.release();
     }
     catch (...)
@@ -99,17 +99,17 @@ tetengo_trie_storage* tetengo_trie_storage_createSharedStorage(const path_charac
     }
 }
 
-void tetengo_trie_storage_destroy(const tetengo_trie_storage* const p_storage)
+void tetengo_trie_storage_destroy(const tetengo_trie_storage_t* const p_storage)
 {
     try
     {
-        const std::unique_ptr<const tetengo_trie_storage> p_instance{ p_storage };
+        const std::unique_ptr<const tetengo_trie_storage_t> p_instance{ p_storage };
     }
     catch (...)
     {}
 }
 
-size_t tetengo_trie_storage_size(const tetengo_trie_storage* const p_storage)
+size_t tetengo_trie_storage_size(const tetengo_trie_storage_t* const p_storage)
 {
     try
     {
@@ -126,7 +126,7 @@ size_t tetengo_trie_storage_size(const tetengo_trie_storage* const p_storage)
     }
 }
 
-double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* const p_storage)
+double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* const p_storage)
 {
     try
     {
@@ -143,7 +143,9 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage* const p_stor
     }
 }
 
-void tetengo_trie_storage_serialize(const tetengo_trie_storage* const p_storage, const path_character_type* const path)
+void tetengo_trie_storage_serialize(
+    const tetengo_trie_storage_t* const p_storage,
+    const path_character_type* const    path)
 {
     try
     {
@@ -164,7 +166,7 @@ void tetengo_trie_storage_serialize(const tetengo_trie_storage* const p_storage,
     {}
 }
 
-tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* const p_storage)
+tetengo_trie_storage_t* tetengo_trie_storage_clone(const tetengo_trie_storage_t* const p_storage)
 {
     try
     {
@@ -174,7 +176,7 @@ tetengo_trie_storage* tetengo_trie_storage_clone(const tetengo_trie_storage* con
         }
         auto p_clone = p_storage->p_cpp_storage()->clone();
 
-        auto p_instance = std::make_unique<tetengo_trie_storage>(std::move(p_clone), p_storage->element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_clone), p_storage->element_value_size);
         return p_instance.release();
     }
     catch (...)

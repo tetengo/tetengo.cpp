@@ -1,5 +1,14 @@
 LIBRARY tetengo.lattice.dll
 EXPORTS
+	tetengo_lattice_lattice_create
+	tetengo_lattice_lattice_destroy
+	tetengo_lattice_lattice_pushBack
+	tetengo_lattice_lattice_settle
+	tetengo_lattice_node_bos
+	tetengo_lattice_node_eos
+	tetengo_lattice_node_toNode
 	tetengo_lattice_vocabulary_createUnorderedMapVocabulary
 	tetengo_lattice_vocabulary_destroy
-	tetengo_lattice_vocabulary_find
+	tetengo_lattice_vocabulary_findEntries
+	tetengo_lattice_vocabulary_findConnection
+	tetengo_lattice_entry_bosEos

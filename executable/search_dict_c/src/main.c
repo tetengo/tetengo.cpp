@@ -66,17 +66,17 @@ static void to_native_path(const char* const path, path_character_type* native_p
     }
 }
 
-static const tetengo_trie_trie* load_trie(const char* const trie_path)
+static const tetengo_trie_trie_t* load_trie(const char* const trie_path)
 {
     path_character_type native_path[256] = { 0 };
     to_native_path(trie_path, native_path, sizeof(native_path) / sizeof(path_character_type));
-    tetengo_trie_storage* const p_storage = tetengo_trie_storage_createMemoryStorage(native_path);
+    tetengo_trie_storage_t* const p_storage = tetengo_trie_storage_createMemoryStorage(native_path);
     if (!p_storage)
     {
         return NULL;
     }
 
-    const tetengo_trie_trie* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
+    const tetengo_trie_trie_t* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
     return p_trie;
 }
 
@@ -164,7 +164,7 @@ int main(const int argc, char** const argv)
         return 1;
     }
 
-    const tetengo_trie_trie* const p_trie = load_trie(argv[2]);
+    const tetengo_trie_trie_t* const p_trie = load_trie(argv[2]);
     if (!p_trie)
     {
         fprintf(stderr, "Error: Can't open the trie.bin file.\n");

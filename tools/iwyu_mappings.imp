@@ -8,8 +8,8 @@
   { include: ["<ext/alloc_traits.h>",   "private", "<vector>",      "public"] },
   { include: ["<ext/new_allocator.h>",  "private", "<cstddef>",     "public"] },
   
-  { include: ["@<boost/format/.+>",       "private", "<boost/format.hpp>",         "public"] },
-  { include: ["@<boost/preprocessor/.+>", "private", "<boost/preprocessor.hpp>",   "public"] },
-  { include: ["@<boost/test/.+>",         "private", "<boost/test/unit_test.hpp>", "public"] },
-  
+  { include: ["@<boost/format/.+>",                    "private", "<boost/format.hpp>",              "public"] },
+  { include: ["@<boost/preprocessor/.+>",              "private", "<boost/preprocessor.hpp>",        "public"] },
+  { include: ["@<boost/test/.+>",                      "private", "<boost/test/unit_test.hpp>",      "public"] },
+  { include: ["<boost/container_hash/extensions.hpp>", "private", "<boost/container_hash/hash.hpp>", "public"] },
 ]

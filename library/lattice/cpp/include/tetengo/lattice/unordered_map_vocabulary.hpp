@@ -7,10 +7,11 @@
 #if !defined(TETENGO_LATTICE_UNORDEREDMAPVOCABULARY_HPP)
 #define TETENGO_LATTICE_UNORDEREDMAPVOCABULARY_HPP
 
+#include <functional> // IWYU pragma: keep
 #include <memory>
 #include <string>
 #include <string_view>
-#include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <tetengo/lattice/entry.hpp>
@@ -19,6 +20,10 @@
 
 namespace tetengo::lattice
 {
+    class connection;
+    class node;
+
+
     /*!
         \brief An unordered_map vocabulary.
     */
@@ -30,9 +35,12 @@ namespace tetengo::lattice
         /*!
             \brief Creates an unordered_map vocabulary.
 
-            \param map A entry map.
+            \param entries     Entries.
+            \param connections Connections.
         */
-        explicit unordered_map_vocabulary(std::unordered_map<std::string, std::vector<entry>> map);
+        unordered_map_vocabulary(
+            std::vector<std::pair<std::string, std::vector<entry>>> entries,
+            std::vector<std::pair<std::pair<entry, entry>, int>>    connections);
 
         /*!
             \brief Destroys the unordered_map vocabulary.
@@ -53,7 +61,9 @@ namespace tetengo::lattice
 
         // virtual functions
 
-        virtual std::vector<entry_view> find_impl(const std::string_view& key) const override;
+        virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const override;
+
+        virtual connection find_connection_impl(const node& from, const entry_view& to) const override;
     };
 
 

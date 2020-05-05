@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <any>
 #include <string>
 #include <string_view>
 
@@ -12,45 +13,58 @@
 
 namespace tetengo::lattice
 {
-    template <typename String>
-    basic_entry<String>::basic_entry(string_type key, string_type surface, const int cost) :
+    template <typename Key, typename Value>
+    const basic_entry<Key, Value>& basic_entry<Key, Value>::bos_eos()
+    {
+        static const basic_entry singleton{ key_type{}, value_type{}, 0 };
+        return singleton;
+    }
+
+    template <typename Key, typename Value>
+    basic_entry<Key, Value>::basic_entry(key_type key, value_type value, const int cost) :
     m_key{ std::move(key) },
-        m_surface{ std::move(surface) },
+        m_value{ std::move(value) },
         m_cost{ cost }
     {}
 
-    template <typename String>
-    template <typename S>
-    basic_entry<String>::basic_entry(const basic_entry<S>& another) :
+    template <>
+    template <>
+    basic_entry<std::string_view, const std::any*>::basic_entry(const basic_entry<std::string, std::any>& another) :
     m_key{ another.key() },
-        m_surface{ another.surface() },
+        m_value{ &another.value() },
         m_cost{ another.cost() }
     {}
 
-    template <typename String>
-    const typename basic_entry<String>::string_type& basic_entry<String>::key() const
+    template <>
+    template <>
+    basic_entry<std::string, std::any>::basic_entry(const basic_entry<std::string_view, const std::any*>& another) :
+    m_key{ another.key() },
+        m_value{ *another.value() },
+        m_cost{ another.cost() }
+    {}
+
+    template <typename Key, typename Value>
+    const typename basic_entry<Key, Value>::key_type& basic_entry<Key, Value>::key() const
     {
         return m_key;
     }
 
-    template <typename String>
-    const typename basic_entry<String>::string_type& basic_entry<String>::surface() const
+    template <typename Key, typename Value>
+    const typename basic_entry<Key, Value>::value_type& basic_entry<Key, Value>::value() const
     {
-        return m_surface;
+        return m_value;
     }
 
-    template <typename String>
-    int basic_entry<String>::cost() const
+    template <typename Key, typename Value>
+    int basic_entry<Key, Value>::cost() const
     {
         return m_cost;
     }
 
 
-    template class basic_entry<std::string>;
+    template class basic_entry<std::string, std::any>;
 
-    template class basic_entry<std::string_view>;
-
-    template basic_entry<std::string_view>::basic_entry(const basic_entry<std::string>&);
+    template class basic_entry<std::string_view, const std::any*>;
 
 
 }

@@ -24,7 +24,7 @@
 
 #include "tetengo_trie_trie.hpp"
 
-typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
+typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
 
 
 void tetengo_trie_trie_nullAddingObserver(const char*, void*) {}
@@ -33,10 +33,17 @@ void tetengo_trie_trie_nullDoneObserver(void*) {}
 
 size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor(void)
 {
-    return tetengo::trie::trie_impl::default_double_array_density_factor();
+    try
+    {
+        return tetengo::trie::trie_impl::default_double_array_density_factor();
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
 
-tetengo_trie_trie* tetengo_trie_trie_create(
+tetengo_trie_trie_t* tetengo_trie_trie_create(
     const tetengo_trie_trie_element_t* const p_elements,
     const size_t                             element_count,
     const size_t                             element_value_size,
@@ -84,7 +91,7 @@ tetengo_trie_trie* tetengo_trie_trie_create(
             observer_set,
             double_array_density_factor);
 
-        auto p_instance = std::make_unique<tetengo_trie_trie>(std::move(p_cpp_trie), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_cpp_trie), element_value_size);
         return p_instance.release();
     }
     catch (...)
@@ -93,7 +100,7 @@ tetengo_trie_trie* tetengo_trie_trie_create(
     }
 }
 
-tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* const p_storage)
+tetengo_trie_trie_t* tetengo_trie_trie_createWithStorage(tetengo_trie_storage_t* const p_storage)
 {
     try
     {
@@ -111,7 +118,7 @@ tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* con
         const auto element_value_size = p_storage->element_value_size;
         tetengo_trie_storage_destroy(p_storage);
 
-        auto p_instance = std::make_unique<tetengo_trie_trie>(std::move(p_cpp_trie), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_cpp_trie), element_value_size);
         return p_instance.release();
     }
     catch (...)
@@ -120,17 +127,17 @@ tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* con
     }
 }
 
-void tetengo_trie_trie_destroy(const tetengo_trie_trie* const p_trie)
+void tetengo_trie_trie_destroy(const tetengo_trie_trie_t* const p_trie)
 {
     try
     {
-        const std::unique_ptr<const tetengo_trie_trie> p_instance{ p_trie };
+        const std::unique_ptr<const tetengo_trie_trie_t> p_instance{ p_trie };
     }
     catch (...)
     {}
 }
 
-int tetengo_trie_trie_empty(const tetengo_trie_trie* const p_trie)
+int tetengo_trie_trie_empty(const tetengo_trie_trie_t* const p_trie)
 {
     try
     {
@@ -147,7 +154,7 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie* const p_trie)
     }
 }
 
-size_t tetengo_trie_trie_size(const tetengo_trie_trie* const p_trie)
+size_t tetengo_trie_trie_size(const tetengo_trie_trie_t* const p_trie)
 {
     try
     {
@@ -164,7 +171,7 @@ size_t tetengo_trie_trie_size(const tetengo_trie_trie* const p_trie)
     }
 }
 
-int tetengo_trie_trie_contains(const tetengo_trie_trie* const p_trie, const char* const key)
+int tetengo_trie_trie_contains(const tetengo_trie_trie_t* const p_trie, const char* const key)
 {
     try
     {
@@ -185,7 +192,7 @@ int tetengo_trie_trie_contains(const tetengo_trie_trie* const p_trie, const char
     }
 }
 
-const void* tetengo_trie_trie_find(const tetengo_trie_trie* const p_trie, const char* const key)
+const void* tetengo_trie_trie_find(const tetengo_trie_trie_t* const p_trie, const char* const key)
 {
     try
     {
@@ -211,7 +218,7 @@ const void* tetengo_trie_trie_find(const tetengo_trie_trie* const p_trie, const 
     }
 }
 
-tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_trie* p_trie)
+tetengo_trie_trieIterator_t* tetengo_trie_trie_createIterator(const tetengo_trie_trie_t* p_trie)
 {
     try
     {
@@ -227,7 +234,7 @@ tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_t
     }
 }
 
-void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterator)
+void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator_t* p_iterator)
 {
     try
     {
@@ -241,7 +248,8 @@ void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterat
     {}
 }
 
-const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* const p_trie, const char* const key_prefix)
+const tetengo_trie_trie_t*
+tetengo_trie_trie_subtrie(const tetengo_trie_trie_t* const p_trie, const char* const key_prefix)
 {
     try
     {
@@ -259,7 +267,7 @@ const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* cons
         {
             return nullptr;
         }
-        auto p_instance = std::make_unique<tetengo_trie_trie>(std::move(p_subtrie), p_trie->element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_subtrie), p_trie->element_value_size);
         return p_instance.release();
     }
     catch (...)
@@ -268,7 +276,7 @@ const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* cons
     }
 }
 
-const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie* p_trie)
+const tetengo_trie_storage_t* tetengo_trie_trie_getStorage(const tetengo_trie_trie_t* p_trie)
 {
     try
     {
@@ -278,7 +286,7 @@ const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie
         }
         if (!p_trie->p_storage)
         {
-            const_cast<tetengo_trie_trie*>(p_trie)->p_storage = std::unique_ptr<tetengo_trie_storage>{
+            const_cast<tetengo_trie_trie_t*>(p_trie)->p_storage = std::unique_ptr<tetengo_trie_storage_t>{
                 tetengo_trie_storage_createStorage(p_trie),
             };
         }

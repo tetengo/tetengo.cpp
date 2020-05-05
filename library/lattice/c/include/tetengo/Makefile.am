@@ -2,7 +2,10 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    lattice/connection.h \
     lattice/entry.h \
+    lattice/lattice.h \
+    lattice/node.h \
     lattice/string_view.h \
     lattice/vocabulary.h
 

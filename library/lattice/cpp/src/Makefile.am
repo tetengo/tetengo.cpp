@@ -4,7 +4,10 @@
 headers =
 
 sources = \
+    tetengo.lattice.connection.cpp \
     tetengo.lattice.entry.cpp \
+    tetengo.lattice.lattice.cpp \
+    tetengo.lattice.node.cpp \
     tetengo.lattice.unordered_map_vocabulary.cpp \
     tetengo.lattice.vocabulary.cpp
 

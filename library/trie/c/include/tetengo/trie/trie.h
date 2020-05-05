@@ -15,16 +15,16 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_trie_trie_tag         tetengo_trie_trie;
-typedef struct tetengo_trie_storage_tag      tetengo_trie_storage;
-typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator;
+typedef struct tetengo_trie_trie_tag         tetengo_trie_trie_t;
+typedef struct tetengo_trie_storage_tag      tetengo_trie_storage_t;
+typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
 #endif
 
 
 /*!
     \brief An element type.
 */
-typedef struct tetengo_trie_trie_element_t_tag
+typedef struct tetengo_trie_trie_element_tag
 {
     //! The key.
     const char* key;
@@ -79,7 +79,7 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor(void);
 
     \return A pointer to a trie. Or NULL on error.
 */
-tetengo_trie_trie* tetengo_trie_trie_create(
+tetengo_trie_trie_t* tetengo_trie_trie_create(
     const tetengo_trie_trie_element_t* p_elements,
     size_t                             element_count,
     size_t                             element_value_size,
@@ -99,14 +99,14 @@ tetengo_trie_trie* tetengo_trie_trie_create(
 
     \return A pointer to a trie. Or NULL on error or when p_storage does not own a storage but just refferes one.
 */
-tetengo_trie_trie* tetengo_trie_trie_createWithStorage(tetengo_trie_storage* p_storage);
+tetengo_trie_trie_t* tetengo_trie_trie_createWithStorage(tetengo_trie_storage_t* p_storage);
 
 /*!
     \brief Destroys a trie.
 
     \param p_trie A pointer to a trie.
 */
-void tetengo_trie_trie_destroy(const tetengo_trie_trie* p_trie);
+void tetengo_trie_trie_destroy(const tetengo_trie_trie_t* p_trie);
 
 /*!
     \brief Returns non-zero when the trie is empty.
@@ -116,7 +116,7 @@ void tetengo_trie_trie_destroy(const tetengo_trie_trie* p_trie);
     \retval non-zero When the trie is empty.
     \retval 0        Otherwise.
 */
-int tetengo_trie_trie_empty(const tetengo_trie_trie* p_trie);
+int tetengo_trie_trie_empty(const tetengo_trie_trie_t* p_trie);
 
 /*!
     \brief Returns the size of the trie.
@@ -125,7 +125,7 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie* p_trie);
 
     \return The size. Or (size_t)-1 on error.
 */
-size_t tetengo_trie_trie_size(const tetengo_trie_trie* p_trie);
+size_t tetengo_trie_trie_size(const tetengo_trie_trie_t* p_trie);
 
 /*!
     \brief Returns non-zero when the trie contains the given key.
@@ -136,7 +136,7 @@ size_t tetengo_trie_trie_size(const tetengo_trie_trie* p_trie);
     \retval non-zero When the trie contains the given key.
     \retval 0        Otherwise.
 */
-int tetengo_trie_trie_contains(const tetengo_trie_trie* p_trie, const char* key);
+int tetengo_trie_trie_contains(const tetengo_trie_trie_t* p_trie, const char* key);
 
 /*!
     \brief Finds the value object correspoinding the given key.
@@ -146,7 +146,7 @@ int tetengo_trie_trie_contains(const tetengo_trie_trie* p_trie, const char* key)
 
     \return A pointer to the value object. Or NULL on error or when the trie does not have the given key.
 */
-const void* tetengo_trie_trie_find(const tetengo_trie_trie* p_trie, const char* key);
+const void* tetengo_trie_trie_find(const tetengo_trie_trie_t* p_trie, const char* key);
 
 /*!
     \brief Creates an iterator.
@@ -155,14 +155,14 @@ const void* tetengo_trie_trie_find(const tetengo_trie_trie* p_trie, const char* 
 
     \return A pointer to an iterator. Or NULL on error.
 */
-tetengo_trie_trieIterator* tetengo_trie_trie_createIterator(const tetengo_trie_trie* p_trie);
+tetengo_trie_trieIterator_t* tetengo_trie_trie_createIterator(const tetengo_trie_trie_t* p_trie);
 
 /*!
     \brief Destroys an iterator.
 
     \param p_iterator A pointer to an iterator.
 */
-void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterator);
+void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator_t* p_iterator);
 
 /*!
     \brief Creates a subtrie.
@@ -172,7 +172,7 @@ void tetengo_trie_trie_destroyIterator(const tetengo_trie_trieIterator* p_iterat
 
     \return A pointer to a subtrie. Or NULL on error or when the trie does not have the given key prefix.
 */
-const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* p_trie, const char* key_prefix);
+const tetengo_trie_trie_t* tetengo_trie_trie_subtrie(const tetengo_trie_trie_t* p_trie, const char* key_prefix);
 
 /*!
     \brief Returns the pointer to the storage.
@@ -181,7 +181,7 @@ const tetengo_trie_trie* tetengo_trie_trie_subtrie(const tetengo_trie_trie* p_tr
 
     \return The pointer to the storage. Or NULL on error.
 */
-const tetengo_trie_storage* tetengo_trie_trie_getStorage(const tetengo_trie_trie* p_trie);
+const tetengo_trie_storage_t* tetengo_trie_trie_getStorage(const tetengo_trie_trie_t* p_trie);
 
 
 #if defined(__cplusplus)
