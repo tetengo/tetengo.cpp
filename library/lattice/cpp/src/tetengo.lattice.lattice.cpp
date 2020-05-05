@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -88,9 +89,8 @@ namespace tetengo::lattice
 
                 std::transform(
                     std::begin(found), std::end(found), std::back_inserter(nodes), [this, i, &step](const auto& e) {
-                        const auto lowest_preceding_path_cost = lowest_path_cost(step, e);
-
-                        return node{ e, i, lowest_preceding_path_cost + e.cost() };
+                        const auto best_preceding_node_ = best_preceding_node(step, e);
+                        return node{ e, i, best_preceding_node_.first, best_preceding_node_.second + e.cost() };
                     });
             }
             m_graph.emplace_back(m_input.length(), std::move(nodes));
@@ -98,7 +98,8 @@ namespace tetengo::lattice
 
         node settle()
         {
-            return node::eos(m_graph.size() - 1, lowest_path_cost(m_graph.back(), entry_view::bos_eos()));
+            const auto best_preceding_node_ = best_preceding_node(m_graph.back(), entry_view::bos_eos());
+            return node::eos(m_graph.size() - 1, best_preceding_node_.first, best_preceding_node_.second);
         }
 
 
@@ -135,7 +136,7 @@ namespace tetengo::lattice
 
         // functions
 
-        int lowest_path_cost(const graph_step& step, const entry_view& next_entry) const
+        std::pair<std::size_t, int> best_preceding_node(const graph_step& step, const entry_view& next_entry) const
         {
             assert(!step.nodes().empty());
             const auto i_min_cost_node = std::min_element(
@@ -147,9 +148,11 @@ namespace tetengo::lattice
                            add_connection_cost(
                                another.path_cost(), m_p_vocabulary->find_connection(another, next_entry).cost());
                 });
-
-            return add_connection_cost(
-                i_min_cost_node->path_cost(), m_p_vocabulary->find_connection(*i_min_cost_node, next_entry).cost());
+            return std::make_pair(
+                std::distance(std::begin(step.nodes()), i_min_cost_node),
+                add_connection_cost(
+                    i_min_cost_node->path_cost(),
+                    m_p_vocabulary->find_connection(*i_min_cost_node, next_entry).cost()));
         }
     };
 

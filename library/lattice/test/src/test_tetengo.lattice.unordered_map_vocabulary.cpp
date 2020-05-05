@@ -408,6 +408,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &connection_key_mizuho,
                 std::numeric_limits<size_t>::max(),
+                std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &connection_key_node_mizuho));
             tetengo_lattice_connection_t connection{};
@@ -422,6 +423,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &connection_key_mizuho,
                 std::numeric_limits<size_t>::max(),
+                std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &connection_key_node_mizuho));
             tetengo_lattice_connection_t connection{};
@@ -435,6 +437,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_node_t connection_key_node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &connection_key_mizuho,
+                std::numeric_limits<size_t>::max(),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &connection_key_node_mizuho));
@@ -454,6 +457,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &connection_key_mizuho,
                 std::numeric_limits<size_t>::max(),
+                std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &connection_key_node_mizuho));
             tetengo_lattice_connection_t connection{};
@@ -465,6 +469,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_node_t connection_key_node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &connection_key_mizuho,
+                std::numeric_limits<size_t>::max(),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &connection_key_node_mizuho));

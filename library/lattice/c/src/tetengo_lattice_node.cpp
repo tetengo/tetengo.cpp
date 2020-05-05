@@ -24,6 +24,7 @@ const tetengo_lattice_node_t* tetengo_lattice_node_bos()
                                                          tetengo::lattice::node::bos().key().length() },
                                                        &tetengo::lattice::node::bos().value(),
                                                        tetengo::lattice::node::bos().preceding_step(),
+                                                       tetengo::lattice::node::bos().best_preceding_node(),
                                                        tetengo::lattice::node::bos().node_cost(),
                                                        tetengo::lattice::node::bos().path_cost() };
         return &singleton;
@@ -34,7 +35,11 @@ const tetengo_lattice_node_t* tetengo_lattice_node_bos()
     }
 }
 
-int tetengo_lattice_node_eos(const size_t preceding_step, const int path_cost, tetengo_lattice_node_t* const p_eos)
+int tetengo_lattice_node_eos(
+    const size_t                  preceding_step,
+    const size_t                  best_preceding_node,
+    const int                     path_cost,
+    tetengo_lattice_node_t* const p_eos)
 {
     try
     {
@@ -43,12 +48,13 @@ int tetengo_lattice_node_eos(const size_t preceding_step, const int path_cost, t
             return 0;
         }
 
-        const auto cpp_eos = tetengo::lattice::node::eos(preceding_step, path_cost);
+        const auto cpp_eos = tetengo::lattice::node::eos(preceding_step, best_preceding_node, path_cost);
 
         p_eos->key.p_head = cpp_eos.key().data();
         p_eos->key.length = cpp_eos.key().length();
         p_eos->p_value = &cpp_eos.value();
         p_eos->preceding_step = cpp_eos.preceding_step();
+        p_eos->best_preceding_node = cpp_eos.best_preceding_node();
         p_eos->node_cost = cpp_eos.node_cost();
         p_eos->path_cost = cpp_eos.path_cost();
 
@@ -61,10 +67,11 @@ int tetengo_lattice_node_eos(const size_t preceding_step, const int path_cost, t
 }
 
 int tetengo_lattice_node_toNode(
-    const tetengo_lattice_entry_t* p_entry,
-    size_t                         preceding_step,
-    int                            path_cost,
-    tetengo_lattice_node_t*        p_node)
+    const tetengo_lattice_entry_t* const p_entry,
+    const size_t                         preceding_step,
+    const size_t                         best_preceding_node,
+    const int                            path_cost,
+    tetengo_lattice_node_t* const        p_node)
 {
     try
     {
@@ -81,12 +88,13 @@ int tetengo_lattice_node_toNode(
         const tetengo::lattice::entry_view cpp_entry{ std::string_view{ p_entry->key.p_head, p_entry->key.length },
                                                       &cpp_entry_value,
                                                       p_entry->cost };
-        const tetengo::lattice::node       cpp_node{ cpp_entry, preceding_step, path_cost };
+        const tetengo::lattice::node       cpp_node{ cpp_entry, preceding_step, best_preceding_node, path_cost };
 
         p_node->key.p_head = cpp_node.key().data();
         p_node->key.length = cpp_node.key().length();
         p_node->p_value = std::any_cast<const void*>(cpp_node.value());
         p_node->preceding_step = cpp_node.preceding_step();
+        p_node->best_preceding_node = cpp_node.best_preceding_node();
         p_node->node_cost = cpp_node.node_cost();
         p_node->path_cost = cpp_node.path_cost();
 

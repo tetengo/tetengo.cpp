@@ -35,12 +35,13 @@ namespace tetengo::lattice
         /*!
             \brief Returns an EOS (End of Sequence).
 
-            \param preceding_step An index of a preceding step.
-            \param path_cost      A path cost.
+            \param preceding_step      An index of a preceding step.
+            \param best_preceding_node An index of a best preceding node.
+            \param path_cost           A path cost.
 
             \return An EOS.
         */
-        static node eos(std::size_t preceding_step, int path_cost);
+        static node eos(std::size_t preceding_step, std::size_t best_preceding_node, int path_cost);
 
 
         // constructors and destructor
@@ -48,24 +49,33 @@ namespace tetengo::lattice
         /*!
             \brief Creates a node.
 
-            \param key            A key.
-            \param value          A value.
-            \param preceding_step An index of a preceding step.
-            \param node_cost      A node cost.
-            \param path_cost      A path cost.
+            \param key                 A key.
+            \param value               A value.
+            \param preceding_step      An index of a preceding step.
+            \param best_preceding_node An index of a best preceding node.
+            \param node_cost           A node cost.
+            \param path_cost           A path cost.
         */
-        node(std::string_view key, std::any value, std::size_t preceding_step, int node_cost, int path_cost);
+        node(
+            std::string_view key,
+            std::any         value,
+            std::size_t      preceding_step,
+            std::size_t      best_preceding_node,
+            int              node_cost,
+            int              path_cost);
 
         /*!
             \brief Creates a node from a vocabulary entry.
 
-            \param entry          An entry.
-            \param preceding_step An index of a preceding step.
-            \param path_cost      A path cost.
+            \param entry               An entry.
+            \param preceding_step      An index of a preceding step.
+            \param best_preceding_node An index of a best preceding node.
+            \param path_cost           A path cost.
         */
         explicit node(
             const entry_view& entry,
             std::size_t       preceding_step = std::numeric_limits<std::size_t>::max(),
+            std::size_t       best_preceding_node = std::numeric_limits<std::size_t>::max(),
             int               path_cost = std::numeric_limits<int>::max());
 
 
@@ -93,6 +103,13 @@ namespace tetengo::lattice
         std::size_t preceding_step() const;
 
         /*!
+            \brief Returns the index of the best preceding node.
+
+            \return The index of the best preceding node.
+        */
+        std::size_t best_preceding_node() const;
+
+        /*!
             \brief Returns the node cost.
 
             \return The node cost.
@@ -115,6 +132,8 @@ namespace tetengo::lattice
         std::any m_value;
 
         std::size_t m_preceding_step;
+
+        std::size_t m_best_preceding_node;
 
         int m_node_cost;
 
