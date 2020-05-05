@@ -14,6 +14,13 @@
 namespace tetengo::lattice
 {
     template <typename Key, typename Value>
+    const basic_entry<Key, Value>& basic_entry<Key, Value>::bos_eos()
+    {
+        static const basic_entry singleton{ key_type{}, value_type{}, 0 };
+        return singleton;
+    }
+
+    template <typename Key, typename Value>
     basic_entry<Key, Value>::basic_entry(key_type key, value_type value, const int cost) :
     m_key{ std::move(key) },
         m_value{ std::move(value) },

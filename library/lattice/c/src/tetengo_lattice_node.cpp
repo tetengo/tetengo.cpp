@@ -20,7 +20,12 @@ const tetengo_lattice_node_t* tetengo_lattice_node_bos()
 {
     try
     {
-        static const tetengo_lattice_node_t singleton{ { nullptr, 0 }, nullptr, 0, 0, 0 };
+        static const tetengo_lattice_node_t singleton{ { tetengo::lattice::node::bos().key().data(),
+                                                         tetengo::lattice::node::bos().key().length() },
+                                                       &tetengo::lattice::node::bos().value(),
+                                                       tetengo::lattice::node::bos().preceding(),
+                                                       tetengo::lattice::node::bos().node_cost(),
+                                                       tetengo::lattice::node::bos().path_cost() };
         return &singleton;
     }
     catch (...)
@@ -38,9 +43,14 @@ int tetengo_lattice_node_eos(const size_t preceding, const int path_cost, teteng
             return 0;
         }
 
-        *p_eos = *tetengo_lattice_node_bos();
-        p_eos->preceding = preceding;
-        p_eos->path_cost = path_cost;
+        const auto cpp_eos = tetengo::lattice::node::eos(preceding, path_cost);
+
+        p_eos->key.p_head = cpp_eos.key().data();
+        p_eos->key.length = cpp_eos.key().length();
+        p_eos->p_value = &cpp_eos.value();
+        p_eos->preceding = cpp_eos.preceding();
+        p_eos->node_cost = cpp_eos.node_cost();
+        p_eos->path_cost = cpp_eos.path_cost();
 
         return 1;
     }

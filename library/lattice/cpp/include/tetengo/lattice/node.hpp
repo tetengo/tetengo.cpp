@@ -26,14 +26,14 @@ namespace tetengo::lattice
         // static functions
 
         /*!
-            \brief Returns the BOS (Beginning of Sentence).
+            \brief Returns the BOS (Beginning of Sequence).
 
             \return The BOS.
         */
         static const node& bos();
 
         /*!
-            \brief Returns an EOS (End of Sentence).
+            \brief Returns an EOS (End of Sequence).
 
             \param preceding An index of preceding nodes.
             \param path_cost A path cost.

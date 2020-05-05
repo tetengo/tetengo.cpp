@@ -17,13 +17,13 @@ namespace tetengo::lattice
 {
     const node& node::bos()
     {
-        static const node& singleton{ std::string_view{}, std::any{}, 0, 0, 0 };
+        static const node& singleton{ entry_view::bos_eos(), 0, 0 };
         return singleton;
     }
 
     node node::eos(const std::size_t preceding, const int path_cost)
     {
-        return node{ std::string_view{}, std::any{}, preceding, 0, path_cost };
+        return node{ entry_view::bos_eos(), preceding, path_cost };
     }
 
     node::node(
@@ -43,7 +43,7 @@ namespace tetengo::lattice
         const entry_view& entry,
         const std::size_t preceding /*= std::numeric_limits<std::size_t>::max()*/,
         const int         path_cost /*= std::numeric_limits<int>::max()*/) :
-    node{ entry.key(), *entry.value(), preceding, entry.cost(), path_cost }
+    node{ entry.key(), entry.value() ? *entry.value() : std::any{}, preceding, entry.cost(), path_cost }
     {}
 
     const std::string_view& node::key() const

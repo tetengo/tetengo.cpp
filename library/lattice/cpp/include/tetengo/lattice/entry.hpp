@@ -33,6 +33,16 @@ namespace tetengo::lattice
         using value_type = Value;
 
 
+        // static functions
+
+        /*!
+            \brief Returns the BOS/EOS (Beginning/End of Sequence) entry.
+
+            \return The BOS/EOS entry.
+        */
+        static const basic_entry& bos_eos();
+
+
         // constructors
 
         /*!

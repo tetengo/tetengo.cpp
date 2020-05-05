@@ -52,6 +52,9 @@
     <ClCompile Include="src\tetengo_lattice_node.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo_lattice_entry.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def">

@@ -45,14 +45,14 @@ typedef struct tetengo_lattice_node_tag
 } tetengo_lattice_node_t;
 
 /*!
-    \brief Returns the pointer to the BOS (Beginning of Sentence).
+    \brief Returns the pointer to the BOS (Beginning of Sequence).
 
     \return The pointer to the BOS.
 */
 const tetengo_lattice_node_t* tetengo_lattice_node_bos();
 
 /*!
-    \brief Returns an EOS (End of Sentence).
+    \brief Returns an EOS (End of Sequence).
 
     \param preceding An index of preceding nodes.
     \param path_cost A path cost.

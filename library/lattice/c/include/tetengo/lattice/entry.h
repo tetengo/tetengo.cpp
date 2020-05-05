@@ -50,6 +50,13 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
 
 } tetengo_lattice_keyEntriesPair_t;
 
+/*!
+    \brief Returns the pointer to the BOS/EOS (Beginning/End of Sequence) entry.
+
+    \return The pointer to the BOS/EOS entry.
+*/
+const tetengo_lattice_entry_t* tetengo_lattice_entry_bosEos();
+
 
 #if defined(__cplusplus)
 }

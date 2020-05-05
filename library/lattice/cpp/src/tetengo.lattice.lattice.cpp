@@ -98,7 +98,7 @@ namespace tetengo::lattice
 
         node settle()
         {
-            return node::eos(m_graph.size() - 1, lowest_path_cost(m_graph.back(), eos_entry()));
+            return node::eos(m_graph.size() - 1, lowest_path_cost(m_graph.back(), entry_view::bos_eos()));
         }
 
 
@@ -108,14 +108,6 @@ namespace tetengo::lattice
         static const graph_step& bos()
         {
             static const graph_step singleton{ 0, std::vector<node>{ node::bos() } };
-            return singleton;
-        }
-
-        static const entry_view& eos_entry()
-        {
-            static const tetengo::lattice::entry_view singleton{ tetengo::lattice::node::bos().key(),
-                                                                 &tetengo::lattice::node::bos().value(),
-                                                                 tetengo::lattice::node::bos().node_cost() };
             return singleton;
         }
 

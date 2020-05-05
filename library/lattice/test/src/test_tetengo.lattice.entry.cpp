@@ -37,6 +37,28 @@ BOOST_AUTO_TEST_SUITE(lattice)
 BOOST_AUTO_TEST_SUITE(entry)
 
 
+BOOST_AUTO_TEST_CASE(bos_eos)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        static auto& bos_eos_ = tetengo::lattice::entry::bos_eos();
+
+        BOOST_TEST(bos_eos_.key().empty());
+        BOOST_TEST(!bos_eos_.value().has_value());
+        BOOST_TEST(bos_eos_.cost() == 0);
+    }
+
+    {
+        static auto* const p_bos_eos = tetengo_lattice_entry_bosEos();
+
+        BOOST_TEST(!p_bos_eos->key.p_head);
+        BOOST_TEST(p_bos_eos->key.length == 0U);
+        BOOST_TEST(!p_bos_eos->p_value);
+        BOOST_TEST(p_bos_eos->cost == 0);
+    }
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();

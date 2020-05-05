@@ -7,7 +7,6 @@
 #include <cstddef>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -29,10 +28,6 @@
 
 namespace
 {
-    const tetengo::lattice::entry bos_eos_entry{ std::string{ tetengo::lattice::node::bos().key() },
-                                                 tetengo::lattice::node::bos().value(),
-                                                 tetengo::lattice::node::bos().node_cost() };
-
     /*
                    +------------------mizuho/sakura/tsubame-------------------+
                    |                path cost: 4270/3220/2990                 |
@@ -87,20 +82,20 @@ namespace
     };
 
     const std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{
-        { { bos_eos_entry, { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 } }, 600 },
-        { { bos_eos_entry, { "Hakata-Tosu-Omuta", {}, 0 } }, 700 },
-        { { bos_eos_entry, { "Hakata-Tosu", {}, 0 } }, 800 },
-        { { bos_eos_entry, bos_eos_entry }, 8000 },
+        { { tetengo::lattice::entry::bos_eos(), { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 } }, 600 },
+        { { tetengo::lattice::entry::bos_eos(), { "Hakata-Tosu-Omuta", {}, 0 } }, 700 },
+        { { tetengo::lattice::entry::bos_eos(), { "Hakata-Tosu", {}, 0 } }, 800 },
+        { { tetengo::lattice::entry::bos_eos(), tetengo::lattice::entry::bos_eos() }, 8000 },
         { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta-Kumamoto", {}, 0 } }, 500 },
         { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta", {}, 0 } }, 600 },
-        { { { "Hakata-Tosu", {}, 0 }, bos_eos_entry }, 6000 },
+        { { { "Hakata-Tosu", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 6000 },
         { { { "Hakata-Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 200 },
-        { { { "Hakata-Tosu-Omuta", {}, 0 }, bos_eos_entry }, 2000 },
+        { { { "Hakata-Tosu-Omuta", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 2000 },
         { { { "Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 300 },
-        { { { "Tosu-Omuta", {}, 0 }, bos_eos_entry }, 3000 },
-        { { { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 400 },
-        { { { "Tosu-Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 500 },
-        { { { "Omuta-Kumamoto", {}, 0 }, bos_eos_entry }, 600 },
+        { { { "Tosu-Omuta", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 3000 },
+        { { { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 400 },
+        { { { "Tosu-Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 500 },
+        { { { "Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 600 },
     };
 
     std::unique_ptr<tetengo::lattice::vocabulary> create_cpp_vocabulary()
