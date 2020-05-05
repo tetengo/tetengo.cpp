@@ -17,7 +17,7 @@ namespace tetengo::lattice
 {
     const node& node::bos()
     {
-        static const node& singleton{ entry_view::bos_eos(), 0, 0, 0 };
+        static const node singleton{ entry_view::bos_eos(), 0, 0, 0 };
         return singleton;
     }
 
