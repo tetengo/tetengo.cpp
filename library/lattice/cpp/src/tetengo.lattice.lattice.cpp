@@ -10,6 +10,7 @@
 #include <iterator>
 #include <limits>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -77,6 +78,16 @@ namespace tetengo::lattice
         std::size_t step_count() const
         {
             return m_graph.size();
+        }
+
+        const std::vector<node>& nodes_at(const std::size_t step) const
+        {
+            if (step >= m_graph.size())
+            {
+                throw std::out_of_range{ "step is too large." };
+            }
+
+            return m_graph[step].nodes();
         }
 
         void push_back(const std::string_view& input)
@@ -171,6 +182,11 @@ namespace tetengo::lattice
     std::size_t lattice::step_count() const
     {
         return m_p_impl->step_count();
+    }
+
+    const std::vector<node>& lattice::nodes_at(const std::size_t step) const
+    {
+        return m_p_impl->nodes_at(step);
     }
 
     void lattice::push_back(const std::string_view& input)

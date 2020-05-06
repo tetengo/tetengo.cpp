@@ -3,6 +3,7 @@ EXPORTS
 	tetengo_lattice_lattice_create
 	tetengo_lattice_lattice_destroy
 	tetengo_lattice_lattice_stepCount
+	tetengo_lattice_lattice_nodesAt
 	tetengo_lattice_lattice_pushBack
 	tetengo_lattice_lattice_settle
 	tetengo_lattice_node_bos
