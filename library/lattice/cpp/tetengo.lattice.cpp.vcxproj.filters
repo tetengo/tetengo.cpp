@@ -40,7 +40,7 @@
     <ClInclude Include="include\tetengo\lattice\connection.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\lattice\n_best.hpp">
+    <ClInclude Include="include\tetengo\lattice\n_best_iterator.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
   </ItemGroup>
@@ -66,7 +66,7 @@
     <ClCompile Include="src\tetengo.lattice.connection.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.lattice.n_best.cpp">
+    <ClCompile Include="src\tetengo.lattice.n_best_iterator.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

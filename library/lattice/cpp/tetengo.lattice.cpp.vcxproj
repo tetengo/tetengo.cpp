@@ -27,7 +27,7 @@
     <ClInclude Include="include\tetengo\lattice\entry.hpp" />
     <ClInclude Include="include\tetengo\lattice\lattice.hpp" />
     <ClInclude Include="include\tetengo\lattice\node.hpp" />
-    <ClInclude Include="include\tetengo\lattice\n_best.hpp" />
+    <ClInclude Include="include\tetengo\lattice\n_best_iterator.hpp" />
     <ClInclude Include="include\tetengo\lattice\unordered_map_vocabulary.hpp" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.hpp" />
   </ItemGroup>
@@ -40,7 +40,7 @@
     <ClCompile Include="src\tetengo.lattice.entry.cpp" />
     <ClCompile Include="src\tetengo.lattice.lattice.cpp" />
     <ClCompile Include="src\tetengo.lattice.node.cpp" />
-    <ClCompile Include="src\tetengo.lattice.n_best.cpp" />
+    <ClCompile Include="src\tetengo.lattice.n_best_iterator.cpp" />
     <ClCompile Include="src\tetengo.lattice.unordered_map_vocabulary.cpp" />
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp" />
   </ItemGroup>

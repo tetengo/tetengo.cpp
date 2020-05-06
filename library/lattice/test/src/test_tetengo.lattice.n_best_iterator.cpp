@@ -1,5 +1,5 @@
 /*! \file
-    \brief An N-best lattice path enumerator.
+    \brief An N-best lattice path iterator.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
@@ -10,7 +10,7 @@
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(lattice)
-BOOST_AUTO_TEST_SUITE(n_best)
+BOOST_AUTO_TEST_SUITE(n_best_iterator)
 
 
 BOOST_AUTO_TEST_CASE(construction)

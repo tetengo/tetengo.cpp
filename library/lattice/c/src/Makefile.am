@@ -7,7 +7,7 @@ headers = \
 sources = \
     tetengo_lattice_entry.cpp \
     tetengo_lattice_lattice.cpp \
-    tetengo_lattice_nBest.cpp \
+    tetengo_lattice_nBestIterator.cpp \
     tetengo_lattice_node.cpp \
     tetengo_lattice_vocabulary.cpp
 

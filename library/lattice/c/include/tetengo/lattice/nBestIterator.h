@@ -1,11 +1,11 @@
 /*! \file
-    \brief An N-best lattice path enumerator.
+    \brief An N-best lattice path iterator.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
-#if !defined(TETENGO_LATTICE_NBEST_H)
-#define TETENGO_LATTICE_NBEST_H
+#if !defined(TETENGO_LATTICE_NBESTITERATOR_H)
+#define TETENGO_LATTICE_NBESTITERATOR_H
 
 
 #if defined(__cplusplus)
