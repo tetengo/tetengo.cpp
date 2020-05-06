@@ -117,7 +117,8 @@ namespace
 
             for (const auto& ev: e.second)
             {
-                entry_values.push_back({ { ev.key().c_str(), ev.key().length() }, &ev.value(), ev.cost() });
+                entry_values.push_back(
+                    { { ev.key().c_str(), ev.key().length() }, std::any_cast<std::string>(&ev.value()), ev.cost() });
             }
         }
         entry_value_offsets.push_back(entry_values.size());
@@ -139,10 +140,10 @@ namespace
         for (const auto& c: connections)
         {
             connection_froms.push_back({ { c.first.first.key().c_str(), c.first.first.key().length() },
-                                         &c.first.first.value(),
+                                         std::any_cast<std::string>(&c.first.first.value()),
                                          c.first.first.cost() });
             connection_tos.push_back({ { c.first.second.key().c_str(), c.first.second.key().length() },
-                                       &c.first.second.value(),
+                                       std::any_cast<std::string>(&c.first.second.value()),
                                        c.first.second.cost() });
         }
 
@@ -291,7 +292,6 @@ BOOST_AUTO_TEST_CASE(nodes_at)
         }
     }
 
-#if 0
     {
         auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
         BOOST_SCOPE_EXIT(p_lattice)
@@ -360,7 +360,6 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST(node_count == 0U);
         }
     }
-#endif
 }
 
 BOOST_AUTO_TEST_CASE(push_back)
