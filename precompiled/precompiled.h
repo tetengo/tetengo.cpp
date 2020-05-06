@@ -51,6 +51,7 @@
 #include <vector>
 
 // Boost
+#include <boost/container_hash/hash.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/core/noncopyable.hpp>
 #include <boost/cstdint.hpp>
