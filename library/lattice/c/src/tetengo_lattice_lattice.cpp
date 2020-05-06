@@ -12,7 +12,7 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
 #include "tetengo_lattice_vocabulary.hpp" // IWYU pragma: keep

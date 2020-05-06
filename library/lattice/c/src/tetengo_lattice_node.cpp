@@ -14,7 +14,7 @@
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 
 
 const tetengo_lattice_node_t* tetengo_lattice_node_bos()

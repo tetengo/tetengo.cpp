@@ -7,7 +7,7 @@ pkg_headers = \
     lattice/lattice.h \
     lattice/nBestIterator.h \
     lattice/node.h \
-    lattice/string_view.h \
+    lattice/stringView.h \
     lattice/vocabulary.h
 
 extra_headers =

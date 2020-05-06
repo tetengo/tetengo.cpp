@@ -117,7 +117,7 @@
     <ClInclude Include="include\tetengo\lattice\lattice.h" />
     <ClInclude Include="include\tetengo\lattice\nBestIterator.h" />
     <ClInclude Include="include\tetengo\lattice\node.h" />
-    <ClInclude Include="include\tetengo\lattice\string_view.h" />
+    <ClInclude Include="include\tetengo\lattice\stringView.h" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
     <ClInclude Include="src\tetengo_lattice_vocabulary.hpp" />
   </ItemGroup>

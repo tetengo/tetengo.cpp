@@ -9,7 +9,7 @@
 
 #include <stddef.h>
 
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 
 
 #if defined(__cplusplus)

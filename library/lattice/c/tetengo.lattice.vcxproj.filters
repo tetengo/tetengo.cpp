@@ -23,9 +23,6 @@
     <ClInclude Include="include\tetengo\lattice\entry.h">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\lattice\string_view.h">
-      <Filter>header\tetengo::lattice</Filter>
-    </ClInclude>
     <ClInclude Include="include\tetengo\lattice\node.h">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
@@ -39,6 +36,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\lattice\nBestIterator.h">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\stringView.h">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
   </ItemGroup>

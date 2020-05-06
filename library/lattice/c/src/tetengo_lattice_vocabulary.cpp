@@ -20,7 +20,7 @@
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>

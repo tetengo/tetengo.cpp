@@ -13,7 +13,7 @@
 
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 
 
 namespace
