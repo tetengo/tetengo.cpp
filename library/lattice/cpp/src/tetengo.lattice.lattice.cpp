@@ -74,6 +74,11 @@ namespace tetengo::lattice
 
         // functions
 
+        std::size_t step_count() const
+        {
+            return m_graph.size();
+        }
+
         void push_back(const std::string_view& input)
         {
             m_input += input;
@@ -162,6 +167,11 @@ namespace tetengo::lattice
     {}
 
     lattice::~lattice() = default;
+
+    std::size_t lattice::step_count() const
+    {
+        return m_p_impl->step_count();
+    }
 
     void lattice::push_back(const std::string_view& input)
     {

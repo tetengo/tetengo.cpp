@@ -8,6 +8,8 @@
 #include <string_view>
 #include <utility>
 
+#include <stddef.h>
+
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
@@ -60,6 +62,18 @@ void tetengo_lattice_lattice_destroy(const tetengo_lattice_lattice_t* const p_la
     }
     catch (...)
     {}
+}
+
+size_t tetengo_lattice_lattice_stepCount(const tetengo_lattice_lattice_t* const p_lattice)
+{
+    try
+    {
+        return p_lattice->p_cpp_lattice->step_count();
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice, const char* const input)

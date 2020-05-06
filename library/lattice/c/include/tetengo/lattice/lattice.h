@@ -7,6 +7,8 @@
 #if !defined(TETENGO_LATTICE_LATTICE_H)
 #define TETENGO_LATTICE_LATTICE_H
 
+#include <stddef.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -36,6 +38,15 @@ tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabu
     \param p_lattice A pointer to a lattice.
 */
 void tetengo_lattice_lattice_destroy(const tetengo_lattice_lattice_t* p_lattice);
+
+/*!
+    \brief Returns the step count.
+
+    \param p_lattice A pointer to a lattice.
+
+    \return The step count.
+*/
+size_t tetengo_lattice_lattice_stepCount(const tetengo_lattice_lattice_t* p_lattice);
 
 /*!
     \brief Pushes back an input.

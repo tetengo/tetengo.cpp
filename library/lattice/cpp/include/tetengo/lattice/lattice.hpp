@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_LATTICE_HPP)
 #define TETENGO_LATTICE_LATTICE_HPP
 
+#include <cstddef>
 #include <memory>
 #include <string_view>
 
@@ -41,6 +42,13 @@ namespace tetengo::lattice
 
 
         // functions
+
+        /*!
+            \brief Returns the step count.
+
+            \return The step count.
+        */
+        std::size_t step_count() const;
 
         /*!
             \brief Pushes back an input.
