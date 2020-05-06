@@ -26,7 +26,7 @@ extern "C" {
 tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createEnd();
 
 /*!
-    \brief Destroys the iterator.
+    \brief Destroys an iterator.
 
     \param p_iterator A pointer to an iterator.
 */

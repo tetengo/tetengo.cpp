@@ -33,7 +33,7 @@ typedef struct tetengo_lattice_node_tag       tetengo_lattice_node_t;
 tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabulary_t* p_vocabulary);
 
 /*!
-    \brief Destroys the lattice.
+    \brief Destroys a lattice.
 
     \param p_lattice A pointer to a lattice.
 */
