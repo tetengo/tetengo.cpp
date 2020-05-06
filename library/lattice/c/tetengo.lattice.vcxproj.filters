@@ -38,6 +38,9 @@
     <ClInclude Include="src\tetengo_lattice_vocabulary.hpp">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\n_best.h">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo_lattice_vocabulary.cpp">
@@ -53,6 +56,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo_lattice_entry.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo_lattice_nBest.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

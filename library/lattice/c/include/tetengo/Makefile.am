@@ -5,6 +5,7 @@ pkg_headers = \
     lattice/connection.h \
     lattice/entry.h \
     lattice/lattice.h \
+    lattice/n_best.h \
     lattice/node.h \
     lattice/string_view.h \
     lattice/vocabulary.h

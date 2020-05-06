@@ -116,6 +116,7 @@
     <ClInclude Include="include\tetengo\lattice\entry.h" />
     <ClInclude Include="include\tetengo\lattice\lattice.h" />
     <ClInclude Include="include\tetengo\lattice\node.h" />
+    <ClInclude Include="include\tetengo\lattice\n_best.h" />
     <ClInclude Include="include\tetengo\lattice\string_view.h" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
     <ClInclude Include="src\tetengo_lattice_vocabulary.hpp" />
@@ -127,6 +128,7 @@
     </ClCompile>
     <ClCompile Include="src\tetengo_lattice_entry.cpp" />
     <ClCompile Include="src\tetengo_lattice_lattice.cpp" />
+    <ClCompile Include="src\tetengo_lattice_nBest.cpp" />
     <ClCompile Include="src\tetengo_lattice_node.cpp" />
     <ClCompile Include="src\tetengo_lattice_vocabulary.cpp" />
   </ItemGroup>
