@@ -4,6 +4,8 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <any>
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
@@ -13,12 +15,17 @@
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/connection.h> // IWYU pragma: keep
+#include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
+#include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
+#include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
 
 
@@ -99,7 +106,6 @@ namespace
         return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(entries, connections);
     }
 
-#if 0
     tetengo_lattice_vocabulary_t* create_c_vocabulary()
     {
         std::vector<tetengo_lattice_entry_t> entry_values{};
@@ -158,7 +164,6 @@ namespace
             entries_connection_cost_pairs.data(),
             entries_connection_cost_pairs.size());
     }
-#endif
 
 
 }
@@ -192,6 +197,48 @@ BOOST_AUTO_TEST_CASE(construction)
             tetengo_lattice_nBestIterator_destroy(p_iterator);
         }
         BOOST_SCOPE_EXIT_END;
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        tetengo_lattice_node_t eos_node{};
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node);
+        const auto* const p_iterator = tetengo_lattice_nBestIterator_createBegin(p_lattice, &eos_node);
+        BOOST_SCOPE_EXIT(p_iterator)
+        {
+            tetengo_lattice_nBestIterator_destroy(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_iterator);
+    }
+    {
+        tetengo_lattice_node_t eos_node{};
+        const auto* const      p_iterator = tetengo_lattice_nBestIterator_createBegin(nullptr, &eos_node);
+        BOOST_TEST(!p_iterator);
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        const auto* const p_iterator = tetengo_lattice_nBestIterator_createBegin(p_lattice, nullptr);
+        BOOST_TEST(!p_iterator);
     }
 }
 

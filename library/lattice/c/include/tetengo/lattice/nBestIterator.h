@@ -9,6 +9,8 @@
 
 #if !defined(DOCUMENTATION)
 typedef struct tetengo_lattice_nBestIterator_tag tetengo_lattice_nBestIterator_t;
+typedef struct tetengo_lattice_lattice_tag       tetengo_lattice_lattice_t;
+typedef struct tetengo_lattice_node_tag          tetengo_lattice_node_t;
 #endif
 
 
@@ -24,6 +26,19 @@ extern "C" {
     \return A pointer to an iterator.
 */
 tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createEnd();
+
+/*!
+    \brief Creates an iterator.
+
+    \param p_lattice  A pointer to a lattice.
+    \param p_eos_node A pointer to an EOS node.
+
+    \return A pointer to an iterator.
+*/
+tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createBegin(
+    const tetengo_lattice_lattice_t* p_lattice,
+    const tetengo_lattice_node_t*    p_eos_node);
+
 
 /*!
     \brief Destroys an iterator.
