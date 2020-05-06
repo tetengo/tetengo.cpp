@@ -68,6 +68,11 @@ size_t tetengo_lattice_lattice_stepCount(const tetengo_lattice_lattice_t* const 
 {
     try
     {
+        if (!p_lattice)
+        {
+            return 0;
+        }
+
         return p_lattice->p_cpp_lattice->step_count();
     }
     catch (...)

@@ -44,7 +44,7 @@ void tetengo_lattice_lattice_destroy(const tetengo_lattice_lattice_t* p_lattice)
 
     \param p_lattice A pointer to a lattice.
 
-    \return The step count.
+    \return The step count. Or 0 when p_lattice is NULL.
 */
 size_t tetengo_lattice_lattice_stepCount(const tetengo_lattice_lattice_t* p_lattice);
 

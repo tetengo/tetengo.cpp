@@ -238,6 +238,9 @@ BOOST_AUTO_TEST_CASE(step_count)
 
         BOOST_TEST(tetengo_lattice_lattice_stepCount(p_lattice) == 4U);
     }
+    {
+        BOOST_TEST(tetengo_lattice_lattice_stepCount(nullptr) == 0U);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(push_back)
