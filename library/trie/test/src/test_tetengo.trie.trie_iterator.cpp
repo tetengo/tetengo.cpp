@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
     }
 }
 
-BOOST_AUTO_TEST_CASE(increment)
+BOOST_AUTO_TEST_CASE(operator_increment)
 {
     BOOST_TEST_PASSPOINT();
 
