@@ -39,6 +39,7 @@
 #include <list>
 #include <memory>
 #include <optional>
+#include <queue>
 #include <sstream>
 #include <stack>
 #include <stdexcept>
@@ -57,6 +58,7 @@
 #include <boost/cstdint.hpp>
 #include <boost/format.hpp>
 #include <boost/iterator/iterator_facade.hpp>
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 

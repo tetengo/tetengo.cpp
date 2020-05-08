@@ -13,7 +13,7 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/vocabulary.h>
 
-#include "tetengo_lattice_vocabulary.hpp"
+#include "tetengo_lattice_vocabulary.hpp" // IWYU pragma: keep
 
 
 struct tetengo_lattice_lattice_tag

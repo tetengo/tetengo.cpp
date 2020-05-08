@@ -7,10 +7,12 @@
 #include <any>
 #include <cstddef>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -171,6 +173,32 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(lattice)
+BOOST_AUTO_TEST_SUITE(cap)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(operator_less)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(middle)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(n_best_iterator)
 
 
@@ -240,6 +268,45 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto* const p_iterator = tetengo_lattice_nBestIterator_createBegin(p_lattice, nullptr);
         BOOST_TEST(!p_iterator);
     }
+}
+
+BOOST_AUTO_TEST_CASE(operator_dereference)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
+
+        const tetengo::lattice::n_best_iterator iterator{ lattice_, lattice_.settle() };
+
+        const auto path = *iterator;
+        BOOST_TEST_REQUIRE(path.size() == 3U);
+        BOOST_TEST(!path[0].value().has_value());
+        BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "tsubame");
+        BOOST_TEST(!path[2].value().has_value());
+    }
+    {
+        const tetengo::lattice::n_best_iterator iterator{};
+
+        BOOST_CHECK_THROW(*iterator, std::logic_error);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(operator_increment)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
 }
 
 
