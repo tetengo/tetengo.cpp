@@ -16,7 +16,7 @@ extern "C" {
 
 #if !defined(DOCUMENTATION)
 typedef struct tetengo_lattice_vocabulary_tag                tetengo_lattice_vocabulary_t;
-typedef struct tetengo_lattice_entry_tag                     tetengo_lattice_entry_t;
+typedef struct tetengo_lattice_entryView_tag                 tetengo_lattice_entryView_t;
 typedef struct tetengo_lattice_node_tag                      tetengo_lattice_node_t;
 typedef struct tetengo_lattice_keyEntriesPair_tag            tetengo_lattice_keyEntriesPair_t;
 typedef struct tetengo_lattice_connection_tag                tetengo_lattice_connection_t;
@@ -59,7 +59,7 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* p_vo
 size_t tetengo_lattice_vocabulary_findEntries(
     const tetengo_lattice_vocabulary_t* p_vocabulary,
     const char*                         key,
-    tetengo_lattice_entry_t*            p_entries);
+    tetengo_lattice_entryView_t*        p_entries);
 
 /*!
     \brief Finds a connection between entries.
@@ -75,7 +75,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
 int tetengo_lattice_vocabulary_findConnection(
     const tetengo_lattice_vocabulary_t* p_vocabulary,
     const tetengo_lattice_node_t*       p_from,
-    const tetengo_lattice_entry_t*      p_to,
+    const tetengo_lattice_entryView_t*  p_to,
     tetengo_lattice_connection_t*       p_connection);
 
 

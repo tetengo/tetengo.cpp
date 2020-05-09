@@ -5,10 +5,12 @@
 */
 
 #include <any>
+#include <cassert>
 #include <cstddef>
 #include <memory>
 #include <string>
 #include <string_view>
+#include <typeinfo>
 #include <utility>
 #include <vector>
 
@@ -113,7 +115,7 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* cons
 size_t tetengo_lattice_vocabulary_findEntries(
     const tetengo_lattice_vocabulary_t* const p_vocabulary,
     const char* const                         key,
-    tetengo_lattice_entry_t* const            p_entries)
+    tetengo_lattice_entryView_t* const        p_entries)
 {
     try
     {
@@ -137,7 +139,8 @@ size_t tetengo_lattice_vocabulary_findEntries(
 
                 entry.key.p_head = cpp_entry.key().data();
                 entry.key.length = cpp_entry.key().length();
-                entry.p_value = std::any_cast<const void*>(*cpp_entry.value());
+                assert(cpp_entry.value()->type() == typeid(const void*));
+                entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
                 entry.cost = cpp_entry.cost();
             }
         }
@@ -153,7 +156,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
 int tetengo_lattice_vocabulary_findConnection(
     const tetengo_lattice_vocabulary_t* const p_vocabulary,
     const tetengo_lattice_node_t* const       p_from,
-    const tetengo_lattice_entry_t* const      p_to,
+    const tetengo_lattice_entryView_t* const  p_to,
     tetengo_lattice_connection_t* const       p_connection)
 {
     try
@@ -182,9 +185,8 @@ int tetengo_lattice_vocabulary_findConnection(
                                                p_from->best_preceding_node,
                                                p_from->node_cost,
                                                p_from->path_cost };
-        const std::any                     cpp_to_value{ p_to->p_value };
         const tetengo::lattice::entry_view cpp_to{ std::string_view{ p_to->key.p_head, p_to->key.length },
-                                                   &cpp_to_value,
+                                                   reinterpret_cast<const std::any*>(p_to->value_handle),
                                                    p_to->cost };
         const auto                         found = p_vocabulary->p_cpp_vocabulary->find_connection(cpp_from, cpp_to);
 

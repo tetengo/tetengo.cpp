@@ -70,11 +70,11 @@ int tetengo_lattice_node_eos(
 }
 
 int tetengo_lattice_node_toNode(
-    const tetengo_lattice_entry_t* const p_entry,
-    const size_t                         preceding_step,
-    const size_t                         best_preceding_node,
-    const int                            path_cost,
-    tetengo_lattice_node_t* const        p_node)
+    const tetengo_lattice_entryView_t* const p_entry,
+    const size_t                             preceding_step,
+    const size_t                             best_preceding_node,
+    const int                                path_cost,
+    tetengo_lattice_node_t* const            p_node)
 {
     try
     {
@@ -87,7 +87,7 @@ int tetengo_lattice_node_toNode(
             return 0;
         }
 
-        const std::any                     cpp_entry_value{ p_entry->p_value };
+        const std::any                     cpp_entry_value{ tetengo_lattice_entry_valueOf(p_entry->value_handle) };
         const tetengo::lattice::entry_view cpp_entry{ std::string_view{ p_entry->key.p_head, p_entry->key.length },
                                                       &cpp_entry_value,
                                                       p_entry->cost };

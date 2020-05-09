@@ -115,26 +115,31 @@ BOOST_AUTO_TEST_CASE(construction)
         boost::ignore_unused(node);
     }
     {
-        const std::string_view        key{ "mizuho" };
-        const auto                    value = 42;
-        const tetengo_lattice_entry_t entry{ { key.data(), key.length() }, &value, 24 };
-        tetengo_lattice_node_t        node{};
-        const auto                    result = tetengo_lattice_node_toNode(&entry, 1, 5, 2424, &node);
+        const std::string_view            key{ "mizuho" };
+        const std::any                    value{ reinterpret_cast<const void*>("MIZUHO") };
+        const tetengo_lattice_entryView_t entry{ { key.data(), key.length() },
+                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
+                                                 24 };
+        tetengo_lattice_node_t            node{};
+        const auto                        result = tetengo_lattice_node_toNode(&entry, 1, 5, 2424, &node);
         BOOST_TEST_REQUIRE(result);
 
         BOOST_TEST(node.key.p_head == entry.key.p_head);
         BOOST_TEST(node.key.length == entry.key.length);
-        BOOST_TEST(node.p_value == entry.p_value);
+        BOOST_TEST(node.p_value == tetengo_lattice_entry_valueOf(entry.value_handle));
         BOOST_TEST(node.preceding_step == 1U);
         BOOST_TEST(node.best_preceding_node == 5U);
         BOOST_TEST(node.node_cost == entry.cost);
         BOOST_TEST(node.path_cost == 2424);
     }
     {
-        const std::string_view        key{ "mizuho" };
-        const tetengo_lattice_entry_t entry{ { key.data(), key.length() }, nullptr, 24 };
-        tetengo_lattice_node_t        node{};
-        const auto                    result = tetengo_lattice_node_toNode(&entry, 1, 5, 2424, &node);
+        const std::string_view            key{ "mizuho" };
+        const std::any                    value{ static_cast<const void*>(nullptr) };
+        const tetengo_lattice_entryView_t entry{ { key.data(), key.length() },
+                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
+                                                 24 };
+        tetengo_lattice_node_t            node{};
+        const auto                        result = tetengo_lattice_node_toNode(&entry, 1, 5, 2424, &node);
         BOOST_TEST_REQUIRE(result);
 
         BOOST_TEST(node.key.p_head == entry.key.p_head);

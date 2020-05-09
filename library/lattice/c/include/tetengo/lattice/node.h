@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry_t;
+typedef struct tetengo_lattice_entryView_tag tetengo_lattice_entryView_t;
 #endif
 
 
@@ -84,11 +84,11 @@ int tetengo_lattice_node_eos(
     \retval 0        Otherwise.
 */
 int tetengo_lattice_node_toNode(
-    const tetengo_lattice_entry_t* p_entry,
-    size_t                         preceding_step,
-    size_t                         best_preceding_node,
-    int                            path_cost,
-    tetengo_lattice_node_t*        p_node);
+    const tetengo_lattice_entryView_t* p_entry,
+    size_t                             preceding_step,
+    size_t                             best_preceding_node,
+    int                                path_cost,
+    tetengo_lattice_node_t*            p_node);
 
 
 #if defined(__cplusplus)
