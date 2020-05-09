@@ -30,3 +30,16 @@ const tetengo_lattice_entry_t* tetengo_lattice_entry_bosEos()
         return nullptr;
     }
 }
+
+const void* tetengo_lattice_entry_valueOf(const tetengo_lattice_entry_valueHandle_t handle)
+{
+    try
+    {
+        assert(handle);
+        return std::any_cast<const void*>(reinterpret_cast<const std::any*>(handle));
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
