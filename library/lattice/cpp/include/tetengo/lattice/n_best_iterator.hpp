@@ -52,11 +52,11 @@ namespace tetengo::lattice
         friend bool operator<(const cap& one, const cap& another);
 
         /*!
-            \brief Returns the middle node.
+            \brief Returns the tail path.
 
-            \return The middle node.
+            \return The tail path.
         */
-        const node& middle() const;
+        const std::vector<node>& tail() const;
 
 
     private:
@@ -110,6 +110,8 @@ namespace tetengo::lattice
         // functions
 
         std::vector<node> dereference() const;
+
+        void increment();
     };
 
 

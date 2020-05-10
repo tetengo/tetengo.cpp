@@ -24,9 +24,9 @@ namespace tetengo::lattice
         return one.m_whole_path_cost < another.m_whole_path_cost;
     }
 
-    const node& cap::middle() const
+    const std::vector<node>& cap::tail() const
     {
-        return m_tail.front();
+        return m_tail;
     }
 
 
@@ -44,22 +44,20 @@ namespace tetengo::lattice
             throw std::logic_error{ "No more path." };
         }
 
-        std::vector<node> path{};
-
-
-        for (auto p_node = &m_caps.top().middle();;)
+        auto path = m_caps.top().tail();
+        for (const auto* p_node = &m_caps.top().tail().back(); !p_node->is_bos();)
         {
-            path.push_back(*p_node);
-            if (p_node->is_bos())
-            {
-                break;
-            }
-            const auto& preceding_nodes = m_p_lattice->nodes_at(p_node->preceding_step());
-            p_node = &preceding_nodes[p_node->best_preceding_node()];
+            const auto&       preceding_nodes = m_p_lattice->nodes_at(p_node->preceding_step());
+            const auto* const p_best_preceding_node = &preceding_nodes[p_node->best_preceding_node()];
+            path.push_back(*p_best_preceding_node);
+
+            p_node = p_best_preceding_node;
         }
 
         return path;
     }
+
+    void n_best_iterator::increment() {}
 
 
 }

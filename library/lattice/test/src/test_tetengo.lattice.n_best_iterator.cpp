@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(operator_less)
     BOOST_WARN_MESSAGE(false, "Implement it.");
 }
 
-BOOST_AUTO_TEST_CASE(middle)
+BOOST_AUTO_TEST_CASE(tail)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -306,7 +306,30 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
+
+        tetengo::lattice::n_best_iterator iterator{ lattice_, lattice_.settle() };
+        {
+            const auto path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 3U);
+            BOOST_TEST(!path[0].value().has_value());
+            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "tsubame");
+            BOOST_TEST(!path[2].value().has_value());
+        }
+
+        ++iterator;
+        //{
+        //    const auto path = *iterator;
+        //    BOOST_TEST_REQUIRE(path.size() == 3U);
+        //    BOOST_TEST(!path[0].value().has_value());
+        //    BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "sakura");
+        //    BOOST_TEST(!path[2].value().has_value());
+        //}
+    }
 }
 
 
