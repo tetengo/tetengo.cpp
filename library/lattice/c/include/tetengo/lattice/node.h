@@ -17,7 +17,8 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry_t;
+typedef struct tetengo_lattice_entryView_tag                tetengo_lattice_entryView_t;
+typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entry_valueHandle_t;
 #endif
 
 
@@ -29,8 +30,8 @@ typedef struct tetengo_lattice_node_tag
     //! A key.
     tetengo_lattice_stringView_t key;
 
-    //! A pointer to a value.
-    const void* p_value;
+    //! A value handle.
+    tetengo_lattice_entry_valueHandle_t value_handle;
 
     //! An index of a preceding step.
     size_t preceding_step;
@@ -84,11 +85,11 @@ int tetengo_lattice_node_eos(
     \retval 0        Otherwise.
 */
 int tetengo_lattice_node_toNode(
-    const tetengo_lattice_entry_t* p_entry,
-    size_t                         preceding_step,
-    size_t                         best_preceding_node,
-    int                            path_cost,
-    tetengo_lattice_node_t*        p_node);
+    const tetengo_lattice_entryView_t* p_entry,
+    size_t                             preceding_step,
+    size_t                             best_preceding_node,
+    int                                path_cost,
+    tetengo_lattice_node_t*            p_node);
 
 
 #if defined(__cplusplus)

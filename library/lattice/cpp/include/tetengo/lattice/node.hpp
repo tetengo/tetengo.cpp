@@ -50,15 +50,17 @@ namespace tetengo::lattice
             \brief Creates a node.
 
             \param key                 A key.
-            \param value               A value.
+            \param p_value             A pointer to a value.
             \param preceding_step      An index of a preceding step.
             \param best_preceding_node An index of a best preceding node.
             \param node_cost           A node cost.
             \param path_cost           A path cost.
+
+            \throw std::invalid_argument When p_value is nullptr.
         */
         node(
             std::string_view key,
-            std::any         value,
+            const std::any*  p_value,
             std::size_t      preceding_step,
             std::size_t      best_preceding_node,
             int              node_cost,
@@ -129,7 +131,7 @@ namespace tetengo::lattice
 
         std::string_view m_key;
 
-        std::any m_value;
+        const std::any* m_p_value;
 
         std::size_t m_preceding_step;
 
