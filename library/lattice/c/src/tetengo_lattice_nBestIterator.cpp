@@ -8,6 +8,7 @@
 #include <memory>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
@@ -62,6 +63,7 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createBegin(
         tetengo::lattice::node cpp_eos_node{ std::string_view{ p_eos_node->key.p_head, p_eos_node->key.length },
                                              reinterpret_cast<const std::any*>(p_eos_node->value_handle),
                                              p_eos_node->preceding_step,
+                                             std::vector<int>{},
                                              p_eos_node->best_preceding_node,
                                              p_eos_node->node_cost,
                                              p_eos_node->path_cost };

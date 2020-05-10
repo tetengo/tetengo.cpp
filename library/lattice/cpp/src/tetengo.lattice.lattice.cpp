@@ -104,11 +104,15 @@ namespace tetengo::lattice
 
                 std::transform(
                     std::begin(found), std::end(found), std::back_inserter(nodes), [this, i, &step](const auto& e) {
-                        const auto preceding_edge_costs_ = preceding_edge_costs(step, e);
+                        auto       preceding_edge_costs_ = preceding_edge_costs(step, e);
                         const auto best_preceding_node_index_ = best_preceding_node_index(step, preceding_edge_costs_);
                         const auto best_preceding_path_cost = step.nodes()[best_preceding_node_index_].path_cost() +
                                                               preceding_edge_costs_[best_preceding_node_index_];
-                        return node{ e, i, best_preceding_node_index_, best_preceding_path_cost + e.cost() };
+                        return node{ e,
+                                     i,
+                                     std::move(preceding_edge_costs_),
+                                     best_preceding_node_index_,
+                                     best_preceding_path_cost + e.cost() };
                     });
             }
             m_graph.emplace_back(m_input.length(), std::move(nodes));
@@ -116,11 +120,15 @@ namespace tetengo::lattice
 
         node settle()
         {
-            const auto preceding_edge_costs_ = preceding_edge_costs(m_graph.back(), entry_view::bos_eos());
+            auto       preceding_edge_costs_ = preceding_edge_costs(m_graph.back(), entry_view::bos_eos());
             const auto best_preceding_node_index_ = best_preceding_node_index(m_graph.back(), preceding_edge_costs_);
             const auto best_preceding_path_cost = m_graph.back().nodes()[best_preceding_node_index_].path_cost() +
                                                   preceding_edge_costs_[best_preceding_node_index_];
-            return node::eos(m_graph.size() - 1, best_preceding_node_index_, best_preceding_path_cost);
+            return node::eos(
+                m_graph.size() - 1,
+                std::move(preceding_edge_costs_),
+                best_preceding_node_index_,
+                best_preceding_path_cost);
         }
 
 
