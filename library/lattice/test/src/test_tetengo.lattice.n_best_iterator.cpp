@@ -335,8 +335,8 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             const auto path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!path[0].value().has_value());
-            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local817");
-            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "rapid811");
+            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "rapid811");
+            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "local817");
             BOOST_TEST(!path[3].value().has_value());
         }
 
@@ -345,8 +345,8 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             const auto path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!path[0].value().has_value());
-            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local815");
-            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "local415");
+            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local415");
+            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "local815");
             BOOST_TEST(!path[3].value().has_value());
         }
 
@@ -355,8 +355,8 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             const auto path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!path[0].value().has_value());
-            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local815");
-            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "kamome");
+            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "kamome");
+            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "local815");
             BOOST_TEST(!path[3].value().has_value());
         }
 
@@ -365,8 +365,8 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             const auto path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!path[0].value().has_value());
-            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local817");
-            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "ariake");
+            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "ariake");
+            BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "local817");
             BOOST_TEST(!path[3].value().has_value());
         }
 
@@ -384,9 +384,9 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             const auto path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 5U);
             BOOST_TEST(!path[0].value().has_value());
-            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local817");
+            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local415");
             BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "local813");
-            BOOST_TEST(std::any_cast<std::string>(path[3].value()) == "local415");
+            BOOST_TEST(std::any_cast<std::string>(path[3].value()) == "local817");
             BOOST_TEST(!path[4].value().has_value());
         }
 
@@ -395,9 +395,9 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             const auto path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 5U);
             BOOST_TEST(!path[0].value().has_value());
-            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local817");
+            BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "kamome");
             BOOST_TEST(std::any_cast<std::string>(path[2].value()) == "local813");
-            BOOST_TEST(std::any_cast<std::string>(path[3].value()) == "kamome");
+            BOOST_TEST(std::any_cast<std::string>(path[3].value()) == "local817");
             BOOST_TEST(!path[4].value().has_value());
         }
 

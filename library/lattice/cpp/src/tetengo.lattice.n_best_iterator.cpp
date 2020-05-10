@@ -4,8 +4,10 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
 #include <cstddef>
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <queue>
 #include <stdexcept>
@@ -74,6 +76,7 @@ namespace tetengo::lattice
             p_node = &best_preceding_node;
         }
 
+        std::reverse(std::begin(path), std::end(path));
         return path;
     }
 
