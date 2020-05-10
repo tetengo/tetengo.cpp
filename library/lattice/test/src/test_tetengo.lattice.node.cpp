@@ -305,6 +305,41 @@ BOOST_AUTO_TEST_CASE(path_cost)
     }
 }
 
+BOOST_AUTO_TEST_CASE(is_bos)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        BOOST_TEST(tetengo::lattice::node::bos().is_bos());
+    }
+    {
+        BOOST_TEST(!tetengo::lattice::node::eos(1, 5, 42).is_bos());
+    }
+    {
+        const std::any value{ 42 };
+        BOOST_TEST((!tetengo::lattice::node{ "mizuho", &value, 1, 5, 24, 2424 }.is_bos()));
+    }
+
+    {
+        BOOST_TEST(tetengo_lattice_node_isBos(tetengo_lattice_node_bos()));
+    }
+    {
+        tetengo_lattice_node_t eos{};
+        tetengo_lattice_node_eos(1, 5, 42, &eos);
+
+        BOOST_TEST(!tetengo_lattice_node_isBos(&eos));
+    }
+    {
+        const std::string_view       key{ "mizuho" };
+        const std::any               value{ reinterpret_cast<const void*>("MIZUHO") };
+        const tetengo_lattice_node_t node_{
+            { key.data(), key.length() }, reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value), 1, 5, 24, 2424
+        };
+
+        BOOST_TEST(!tetengo_lattice_node_isBos(&node_));
+    }
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

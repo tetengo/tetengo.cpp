@@ -125,6 +125,14 @@ namespace tetengo::lattice
         */
         int path_cost() const;
 
+        /*!
+            \brief Returns true is this node is the BOS.
+
+            \retval true  When this node is the BOS.
+            \retval false Otherwise.
+        */
+        bool is_bos() const;
+
 
     private:
         // variables

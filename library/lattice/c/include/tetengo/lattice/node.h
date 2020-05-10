@@ -91,6 +91,16 @@ int tetengo_lattice_node_toNode(
     int                                path_cost,
     tetengo_lattice_node_t*            p_node);
 
+/*!
+    \brief Returns true is this node is the BOS.
+
+    \param p_node A pointer to node.
+
+    \retval non-zero When this node is the BOS.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* p_node);
+
 
 #if defined(__cplusplus)
 }

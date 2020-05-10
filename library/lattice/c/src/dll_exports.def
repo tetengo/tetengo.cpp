@@ -9,6 +9,7 @@ EXPORTS
 	tetengo_lattice_node_bos
 	tetengo_lattice_node_eos
 	tetengo_lattice_node_toNode
+	tetengo_lattice_node_isBos
 	tetengo_lattice_vocabulary_createUnorderedMapVocabulary
 	tetengo_lattice_vocabulary_destroy
 	tetengo_lattice_vocabulary_findEntries

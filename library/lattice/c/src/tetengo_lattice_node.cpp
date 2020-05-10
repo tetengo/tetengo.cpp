@@ -105,3 +105,21 @@ int tetengo_lattice_node_toNode(
         return 0;
     }
 }
+
+int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
+{
+    try
+    {
+        const tetengo::lattice::node cpp_node{ std::string_view{ p_node->key.p_head, p_node->key.length },
+                                               reinterpret_cast<const std::any*>(p_node->value_handle),
+                                               p_node->preceding_step,
+                                               p_node->best_preceding_node,
+                                               p_node->node_cost,
+                                               p_node->path_cost };
+        return cpp_node.is_bos() ? 1 : 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}

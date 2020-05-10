@@ -88,5 +88,12 @@ namespace tetengo::lattice
         return m_path_cost;
     }
 
+    bool node::is_bos() const
+    {
+        return key() == bos().key() && preceding_step() == bos().preceding_step() &&
+               best_preceding_node() == bos().best_preceding_node() && node_cost() == bos().node_cost() &&
+               path_cost() == bos().path_cost();
+    }
+
 
 }

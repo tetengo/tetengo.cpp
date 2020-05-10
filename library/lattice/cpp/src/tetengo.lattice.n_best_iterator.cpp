@@ -4,8 +4,6 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#include <cstddef>
-#include <limits>
 #include <memory>
 #include <queue>
 #include <stdexcept>
@@ -52,15 +50,12 @@ namespace tetengo::lattice
         for (auto p_node = &m_caps.top().middle();;)
         {
             path.push_back(*p_node);
-            if (p_node->preceding_step() == std::numeric_limits<std::size_t>::max())
+            if (p_node->is_bos())
             {
                 break;
             }
-            else
-            {
-                const auto& preceding_nodes = m_p_lattice->nodes_at(p_node->preceding_step());
-                p_node = &preceding_nodes[p_node->best_preceding_node()];
-            }
+            const auto& preceding_nodes = m_p_lattice->nodes_at(p_node->preceding_step());
+            p_node = &preceding_nodes[p_node->best_preceding_node()];
         }
 
         return path;
