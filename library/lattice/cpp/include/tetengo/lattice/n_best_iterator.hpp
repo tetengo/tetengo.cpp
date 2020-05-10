@@ -34,10 +34,11 @@ namespace tetengo::lattice
         /*!
             \brief Creates a cap.
 
-            \param tail            The tail of a path.
+            \param tail_path       A tail path.
+            \param tail_path_cost  A tail path cost.
             \param whole_path_cost A whole path cost.
         */
-        cap(std::vector<node> tail, int whole_path_cost);
+        cap(std::vector<node> tail_path, int tail_path_cost, int whole_path_cost);
 
 
         // functions
@@ -58,13 +59,29 @@ namespace tetengo::lattice
 
             \return The tail path.
         */
-        const std::vector<node>& tail() const;
+        const std::vector<node>& tail_path() const;
+
+        /*!
+            \brief Returns the tail path cost.
+
+            \return The tail path cost.
+        */
+        int tail_path_cost() const;
+
+        /*!
+            \brief Returns the whole path cost.
+
+            \return The whole path cost.
+        */
+        int whole_path_cost() const;
 
 
     private:
         // variables
 
-        std::vector<node> m_tail;
+        std::vector<node> m_tail_path;
+
+        int m_tail_path_cost;
 
         int m_whole_path_cost;
     };
