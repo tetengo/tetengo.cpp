@@ -329,6 +329,8 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         //    BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "sakura");
         //    BOOST_TEST(!path[2].value().has_value());
         //}
+
+        ++iterator;
     }
 }
 

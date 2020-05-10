@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_NBESTITERATOR_HPP)
 #define TETENGO_LATTICE_NBESTITERATOR_HPP
 
+#include <functional>
 #include <iterator>
 #include <queue>
 #include <vector>
@@ -33,9 +34,10 @@ namespace tetengo::lattice
         /*!
             \brief Creates a cap.
 
-            \param tail The tail of a path.
+            \param tail            The tail of a path.
+            \param whole_path_cost A whole path cost.
         */
-        explicit cap(std::vector<node> tail);
+        cap(std::vector<node> tail, int whole_path_cost);
 
 
         // functions
@@ -104,7 +106,7 @@ namespace tetengo::lattice
 
         const lattice* m_p_lattice;
 
-        std::priority_queue<cap> m_caps;
+        std::priority_queue<cap, std::vector<cap>, std::greater<cap>> m_caps;
 
 
         // functions
