@@ -9,7 +9,6 @@
 #include <limits>
 #include <stdexcept>
 #include <string_view>
-#include <utility>
 
 #include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
@@ -98,9 +97,9 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::lattice::node node_{ "mizuho", &value, 1, 5, 24, 2424 };
     }
     {
-        const std::any               entry_value{ 42 };
-        tetengo::lattice::entry_view entry{ "mizuho", &entry_value, 24 };
-        const tetengo::lattice::node node_{ std::move(entry), 1, 5, 2424 };
+        const std::any                     entry_value{ 42 };
+        const tetengo::lattice::entry_view entry{ "mizuho", &entry_value, 24 };
+        const tetengo::lattice::node       node_{ entry, 1, 5, 2424 };
 
         BOOST_TEST(node_.key() == "mizuho");
         BOOST_TEST(std::any_cast<int>(node_.value()) == 42);
@@ -156,6 +155,20 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(node.best_preceding_node == 5U);
         BOOST_TEST(node.node_cost == entry.cost);
         BOOST_TEST(node.path_cost == 2424);
+    }
+    {
+        tetengo_lattice_node_t node{};
+        const auto             result = tetengo_lattice_node_toNode(nullptr, 1, 5, 2424, &node);
+        BOOST_TEST(!result);
+    }
+    {
+        const std::string_view            key{ "mizuho" };
+        const std::any                    value{ reinterpret_cast<const void*>("MIZUHO") };
+        const tetengo_lattice_entryView_t entry{ { key.data(), key.length() },
+                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
+                                                 24 };
+        const auto                        result = tetengo_lattice_node_toNode(&entry, 1, 5, 2424, nullptr);
+        BOOST_TEST(!result);
     }
 }
 
