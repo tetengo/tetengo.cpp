@@ -152,7 +152,7 @@ int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* const p_lattice, t
         assert(!cpp_eos_node.value().has_value());
         p_eos_node->key.p_head = cpp_eos_node.key().data();
         p_eos_node->key.length = cpp_eos_node.key().length();
-        p_eos_node->p_value = nullptr;
+        p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_eos_node.value());
         p_eos_node->preceding_step = cpp_eos_node.preceding_step();
         p_eos_node->best_preceding_node = cpp_eos_node.best_preceding_node();
         p_eos_node->node_cost = cpp_eos_node.node_cost();
