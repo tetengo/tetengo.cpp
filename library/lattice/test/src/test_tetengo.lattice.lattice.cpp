@@ -314,7 +314,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 0, nodes.data());
             BOOST_TEST(node_count_again == 1U);
 
-            BOOST_TEST(nodes[0].p_value == tetengo_lattice_node_bos()->p_value);
+            BOOST_TEST(nodes[0].value_handle == tetengo_lattice_node_bos()->value_handle);
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 1, nullptr);
@@ -324,8 +324,12 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 1, nodes.data());
             BOOST_TEST(node_count_again == 2U);
 
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[0].p_value) == "kamome");
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[1].p_value) == "local415");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[0].value_handle)) ==
+                "kamome");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "local415");
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 2, nullptr);
@@ -335,9 +339,15 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 2, nodes.data());
             BOOST_TEST(node_count_again == 3U);
 
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[0].p_value) == "ariake");
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[1].p_value) == "rapid811");
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[2].p_value) == "local813");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[0].value_handle)) ==
+                "ariake");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "rapid811");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "local813");
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 3, nullptr);
@@ -347,11 +357,21 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 3, nodes.data());
             BOOST_TEST(node_count_again == 5U);
 
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[0].p_value) == "mizuho");
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[1].p_value) == "sakura");
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[2].p_value) == "tsubame");
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[3].p_value) == "local815");
-            BOOST_TEST(*reinterpret_cast<const std::string*>(nodes[4].p_value) == "local817");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[0].value_handle)) ==
+                "mizuho");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "sakura");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "tsubame");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[3].value_handle)) ==
+                "local815");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[4].value_handle)) ==
+                "local817");
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 4, nullptr);

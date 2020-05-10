@@ -95,8 +95,7 @@ size_t tetengo_lattice_lattice_nodesAt(
             {
                 p_nodes[i].key.p_head = cpp_nodes[i].key().data();
                 p_nodes[i].key.length = cpp_nodes[i].key().length();
-                p_nodes[i].p_value =
-                    cpp_nodes[i].value().has_value() ? std::any_cast<const void*>(cpp_nodes[i].value()) : nullptr;
+                p_nodes[i].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_nodes[i].value());
                 p_nodes[i].preceding_step = cpp_nodes[i].preceding_step();
                 p_nodes[i].best_preceding_node = cpp_nodes[i].best_preceding_node();
                 p_nodes[i].node_cost = cpp_nodes[i].node_cost();
