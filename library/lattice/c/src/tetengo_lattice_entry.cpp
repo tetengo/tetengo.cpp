@@ -39,7 +39,7 @@ const void* tetengo_lattice_entry_valueOf(const tetengo_lattice_entry_valueHandl
     {
         assert(handle);
         const auto* const p_cpp_value = reinterpret_cast<const std::any*>(handle);
-        return std::any_cast<const void*>(*p_cpp_value);
+        return p_cpp_value->has_value() ? std::any_cast<const void*>(*p_cpp_value) : nullptr;
     }
     catch (...)
     {

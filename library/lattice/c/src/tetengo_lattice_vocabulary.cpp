@@ -178,9 +178,8 @@ int tetengo_lattice_vocabulary_findConnection(
             return 0;
         }
 
-        const std::any                     cpp_from_value{ p_from->p_value };
         const tetengo::lattice::node       cpp_from{ std::string_view{ p_from->key.p_head, p_from->key.length },
-                                               &cpp_from_value,
+                                               reinterpret_cast<const std::any*>(p_from->value_handle),
                                                p_from->preceding_step,
                                                p_from->best_preceding_node,
                                                p_from->node_cost,
