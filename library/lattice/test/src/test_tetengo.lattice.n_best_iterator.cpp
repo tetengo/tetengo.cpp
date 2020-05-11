@@ -299,7 +299,34 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
+
+        const tetengo::lattice::n_best_iterator iterator1{ lattice_, lattice_.settle() };
+        const tetengo::lattice::n_best_iterator iterator2{ lattice_, lattice_.settle() };
+        tetengo::lattice::n_best_iterator       iterator3{ lattice_, lattice_.settle() };
+        ++iterator3;
+        const tetengo::lattice::n_best_iterator iterator_last{};
+
+        BOOST_CHECK(iterator1 == iterator1);
+        BOOST_CHECK(iterator1 == iterator2);
+        BOOST_CHECK(iterator1 != iterator3);
+        BOOST_CHECK(iterator1 != iterator_last);
+
+        ++iterator3;
+        ++iterator3;
+        ++iterator3;
+        ++iterator3;
+        ++iterator3;
+        ++iterator3;
+        ++iterator3;
+        ++iterator3;
+
+        BOOST_CHECK(iterator3 == iterator_last);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(operator_increment)

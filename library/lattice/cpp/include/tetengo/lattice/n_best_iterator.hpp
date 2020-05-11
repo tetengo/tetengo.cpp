@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_NBESTITERATOR_HPP)
 #define TETENGO_LATTICE_NBESTITERATOR_HPP
 
+#include <cstddef>
 #include <functional>
 #include <iterator>
 #include <queue>
@@ -125,10 +126,14 @@ namespace tetengo::lattice
 
         std::priority_queue<cap, std::vector<cap>, std::greater<cap>> m_caps;
 
+        std::size_t m_index;
+
 
         // functions
 
         std::vector<node> dereference() const;
+
+        bool equal(const n_best_iterator& another) const;
 
         void increment();
     };

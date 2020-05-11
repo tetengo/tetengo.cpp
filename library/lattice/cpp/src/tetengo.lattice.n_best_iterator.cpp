@@ -50,9 +50,12 @@ namespace tetengo::lattice
     }
 
 
-    n_best_iterator::n_best_iterator() : m_p_lattice{}, m_caps{} {}
+    n_best_iterator::n_best_iterator() : m_p_lattice{}, m_caps{}, m_index{ 0 } {}
 
-    n_best_iterator::n_best_iterator(const lattice& lattice_, node eos_node) : m_p_lattice{ &lattice_ }, m_caps{}
+    n_best_iterator::n_best_iterator(const lattice& lattice_, node eos_node) :
+    m_p_lattice{ &lattice_ },
+        m_caps{},
+        m_index{ 0 }
     {
         const int tail_path_cost = eos_node.node_cost();
         const int whole_path_cost = eos_node.path_cost();
@@ -78,6 +81,16 @@ namespace tetengo::lattice
 
         std::reverse(std::begin(path), std::end(path));
         return path;
+    }
+
+    bool n_best_iterator::equal(const n_best_iterator& another) const
+    {
+        if (m_caps.empty() && another.m_caps.empty())
+        {
+            return true;
+        }
+
+        return m_p_lattice == another.m_p_lattice && m_index == another.m_index;
     }
 
     void n_best_iterator::increment()
@@ -116,6 +129,8 @@ namespace tetengo::lattice
             tail_path_cost += best_preceding_edge_cost + best_preceding_node.node_cost();
             p_node = &best_preceding_node;
         }
+
+        ++m_index;
     }
 
 
