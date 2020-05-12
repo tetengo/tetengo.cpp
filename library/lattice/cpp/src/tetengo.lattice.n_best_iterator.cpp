@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/container_hash/hash.hpp>
 #include <boost/operators.hpp>
 
 #include <tetengo/lattice/lattice.hpp>
@@ -51,6 +52,18 @@ namespace tetengo::lattice
 
     namespace
     {
+        std::size_t calc_node_hash(const node& node_)
+        {
+            auto seed = static_cast<std::size_t>(0);
+            boost::hash_combine(seed, boost::hash_value(node_.key()));
+            boost::hash_combine(seed, boost::hash_value(node_.preceding_step()));
+            boost::hash_combine(seed, boost::hash_value(node_.preceding_edge_costs()));
+            boost::hash_combine(seed, boost::hash_value(node_.best_preceding_node()));
+            boost::hash_combine(seed, boost::hash_value(node_.node_cost()));
+            boost::hash_combine(seed, boost::hash_value(node_.path_cost()));
+            return seed;
+        }
+
         std::vector<node> make_whole_path(
             const lattice&                                                       lattice_,
             const cap&                                                           opened,
@@ -98,11 +111,12 @@ namespace tetengo::lattice
 
     }
 
-    n_best_iterator::n_best_iterator() : m_p_lattice{}, m_caps{}, m_index{ 0 } {}
+    n_best_iterator::n_best_iterator() : m_p_lattice{}, m_caps{}, m_eos_hash{ 0 }, m_index{ 0 } {}
 
     n_best_iterator::n_best_iterator(const lattice& lattice_, node eos_node) :
     m_p_lattice{ &lattice_ },
         m_caps{},
+        m_eos_hash{ calc_node_hash(eos_node) },
         m_index{ 0 }
     {
         const int tail_path_cost = eos_node.node_cost();
@@ -129,7 +143,7 @@ namespace tetengo::lattice
             return true;
         }
 
-        return m_p_lattice == another.m_p_lattice && m_index == another.m_index;
+        return m_p_lattice == another.m_p_lattice && m_eos_hash == another.m_eos_hash && m_index == another.m_index;
     }
 
     void n_best_iterator::increment()

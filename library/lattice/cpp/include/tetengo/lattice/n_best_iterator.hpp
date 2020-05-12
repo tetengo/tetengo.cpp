@@ -126,6 +126,8 @@ namespace tetengo::lattice
 
         std::priority_queue<cap, std::vector<cap>, std::greater<cap>> m_caps;
 
+        std::size_t m_eos_hash;
+
         std::size_t m_index;
 
 

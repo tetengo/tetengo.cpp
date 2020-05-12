@@ -327,6 +327,19 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         BOOST_CHECK(iterator3 == iterator_last);
     }
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+
+        const tetengo::lattice::n_best_iterator iterator1{ lattice_, lattice_.settle() };
+
+        lattice_.push_back("[OmutaKumamoto]");
+
+        const tetengo::lattice::n_best_iterator iterator2{ lattice_, lattice_.settle() };
+
+        BOOST_CHECK(iterator1 != iterator2);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(operator_increment)
