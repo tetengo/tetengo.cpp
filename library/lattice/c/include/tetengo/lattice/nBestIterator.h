@@ -21,21 +21,12 @@ extern "C" {
 /*!
     \brief Creates an iterator.
 
-    It points to the last of the paths.
-
-    \return A pointer to an iterator.
-*/
-tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createEnd();
-
-/*!
-    \brief Creates an iterator.
-
     \param p_lattice  A pointer to a lattice.
     \param p_eos_node A pointer to an EOS node.
 
-    \return A pointer to an iterator.
+    \return A pointer to an iterator. Or NULL on error.
 */
-tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createBegin(
+tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
     const tetengo_lattice_lattice_t* p_lattice,
     const tetengo_lattice_node_t*    p_eos_node);
 

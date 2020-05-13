@@ -219,14 +219,6 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const auto* const p_iterator = tetengo_lattice_nBestIterator_createEnd();
-        BOOST_SCOPE_EXIT(p_iterator)
-        {
-            tetengo_lattice_nBestIterator_destroy(p_iterator);
-        }
-        BOOST_SCOPE_EXIT_END;
-    }
-    {
         auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
         BOOST_SCOPE_EXIT(p_lattice)
         {
@@ -240,7 +232,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         tetengo_lattice_node_t eos_node{};
         tetengo_lattice_lattice_settle(p_lattice, &eos_node);
-        const auto* const p_iterator = tetengo_lattice_nBestIterator_createBegin(p_lattice, &eos_node);
+        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
         BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_lattice_nBestIterator_destroy(p_iterator);
@@ -250,7 +242,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         tetengo_lattice_node_t eos_node{};
-        const auto* const      p_iterator = tetengo_lattice_nBestIterator_createBegin(nullptr, &eos_node);
+        const auto* const      p_iterator = tetengo_lattice_nBestIterator_create(nullptr, &eos_node);
         BOOST_TEST(!p_iterator);
     }
     {
@@ -265,7 +257,7 @@ BOOST_AUTO_TEST_CASE(construction)
         tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
         tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
 
-        const auto* const p_iterator = tetengo_lattice_nBestIterator_createBegin(p_lattice, nullptr);
+        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, nullptr);
         BOOST_TEST(!p_iterator);
     }
 }

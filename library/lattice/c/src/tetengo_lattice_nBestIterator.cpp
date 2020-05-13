@@ -23,29 +23,17 @@
 
 struct tetengo_lattice_nBestIterator_tag
 {
-    std::unique_ptr<tetengo::lattice::n_best_iterator> p_cpp_iterator;
+    std::unique_ptr<std::pair<tetengo::lattice::n_best_iterator, tetengo::lattice::n_best_iterator>>
+        p_cpp_iterator_pair;
 
-    explicit tetengo_lattice_nBestIterator_tag(std::unique_ptr<tetengo::lattice::n_best_iterator>&& p_cpp_iterator) :
-    p_cpp_iterator{ std::move(p_cpp_iterator) }
+    explicit tetengo_lattice_nBestIterator_tag(
+        std::unique_ptr<std::pair<tetengo::lattice::n_best_iterator, tetengo::lattice::n_best_iterator>>&&
+            p_cpp_iterator_pair) :
+    p_cpp_iterator_pair{ std::move(p_cpp_iterator_pair) }
     {}
 };
 
-tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createEnd()
-{
-    try
-    {
-        auto p_cpp_iterator = std::make_unique<tetengo::lattice::n_best_iterator>();
-
-        auto p_instance = std::make_unique<tetengo_lattice_nBestIterator_t>(std::move(p_cpp_iterator));
-        return p_instance.release();
-    }
-    catch (...)
-    {
-        return nullptr;
-    }
-}
-
-tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createBegin(
+tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
     const tetengo_lattice_lattice_t* const p_lattice,
     const tetengo_lattice_node_t* const    p_eos_node)
 {
@@ -67,10 +55,11 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_createBegin(
                                              p_eos_node->best_preceding_node,
                                              p_eos_node->node_cost,
                                              p_eos_node->path_cost };
-        auto                   p_cpp_iterator =
-            std::make_unique<tetengo::lattice::n_best_iterator>(*p_lattice->p_cpp_lattice, std::move(cpp_eos_node));
 
-        auto p_instance = std::make_unique<tetengo_lattice_nBestIterator_t>(std::move(p_cpp_iterator));
+        auto p_instance = std::make_unique<tetengo_lattice_nBestIterator_t>(
+            std::make_unique<std::pair<tetengo::lattice::n_best_iterator, tetengo::lattice::n_best_iterator>>(
+                tetengo::lattice::n_best_iterator{ *p_lattice->p_cpp_lattice, std::move(cpp_eos_node) },
+                tetengo::lattice::n_best_iterator{}));
         return p_instance.release();
     }
     catch (...)
