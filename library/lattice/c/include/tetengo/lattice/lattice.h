@@ -7,6 +7,8 @@
 #if !defined(TETENGO_LATTICE_LATTICE_H)
 #define TETENGO_LATTICE_LATTICE_H
 
+#include <stddef.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -31,11 +33,34 @@ typedef struct tetengo_lattice_node_tag       tetengo_lattice_node_t;
 tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabulary_t* p_vocabulary);
 
 /*!
-    \brief Destroys the lattice.
+    \brief Destroys a lattice.
 
     \param p_lattice A pointer to a lattice.
 */
 void tetengo_lattice_lattice_destroy(const tetengo_lattice_lattice_t* p_lattice);
+
+/*!
+    \brief Returns the step count.
+
+    \param p_lattice A pointer to a lattice.
+
+    \return The step count. Or 0 when p_lattice is NULL.
+*/
+size_t tetengo_lattice_lattice_stepCount(const tetengo_lattice_lattice_t* p_lattice);
+
+/*!
+    \brief Returns the nodes at the specified step.
+
+    \param p_lattice A pointer to a lattice.
+    \param step      A step.
+    \param p_nodes   The storage for output nodes. Can be NULL.
+
+    \return A node count. Or 0 when p_lattice is NULL or step is too large.
+*/
+size_t tetengo_lattice_lattice_nodesAt(
+    const tetengo_lattice_lattice_t* p_lattice,
+    size_t                           step,
+    tetengo_lattice_node_t*          p_nodes);
 
 /*!
     \brief Pushes back an input.

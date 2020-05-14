@@ -10,7 +10,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 
 
 namespace

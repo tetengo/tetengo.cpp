@@ -7,8 +7,10 @@
 #if !defined(TETENGO_LATTICE_LATTICE_HPP)
 #define TETENGO_LATTICE_LATTICE_HPP
 
+#include <cstddef>
 #include <memory>
 #include <string_view>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -41,6 +43,24 @@ namespace tetengo::lattice
 
 
         // functions
+
+        /*!
+            \brief Returns the step count.
+
+            \return The step count.
+        */
+        std::size_t step_count() const;
+
+        /*!
+            \brief Returns the nodes at the specified step.
+
+            \param step A step.
+
+            \return The nodes.
+
+            \throw std::out_of_rage When step is too large.
+        */
+        const std::vector<node>& nodes_at(std::size_t step) const;
 
         /*!
             \brief Pushes back an input.

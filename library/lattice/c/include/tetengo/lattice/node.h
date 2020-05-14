@@ -9,7 +9,7 @@
 
 #include <stddef.h>
 
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 
 
 #if defined(__cplusplus)
@@ -90,6 +90,16 @@ int tetengo_lattice_node_toNode(
     size_t                             best_preceding_node,
     int                                path_cost,
     tetengo_lattice_node_t*            p_node);
+
+/*!
+    \brief Returns true is this node is the BOS.
+
+    \param p_node A pointer to node.
+
+    \retval non-zero When this node is the BOS.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* p_node);
 
 
 #if defined(__cplusplus)

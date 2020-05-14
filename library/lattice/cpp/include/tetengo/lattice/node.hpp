@@ -11,6 +11,7 @@
 #include <cstddef>
 #include <limits>
 #include <string_view>
+#include <vector>
 
 #include <tetengo/lattice/entry.hpp>
 
@@ -36,12 +37,17 @@ namespace tetengo::lattice
             \brief Returns an EOS (End of Sequence).
 
             \param preceding_step      An index of a preceding step.
+            \param preceding_edge_costs Preceding edge costs.
             \param best_preceding_node An index of a best preceding node.
             \param path_cost           A path cost.
 
             \return An EOS.
         */
-        static node eos(std::size_t preceding_step, std::size_t best_preceding_node, int path_cost);
+        static node
+        eos(std::size_t      preceding_step,
+            std::vector<int> preceding_edge_costs,
+            std::size_t      best_preceding_node,
+            int              path_cost);
 
 
         // constructors and destructor
@@ -49,12 +55,13 @@ namespace tetengo::lattice
         /*!
             \brief Creates a node.
 
-            \param key                 A key.
-            \param p_value             A pointer to a value.
-            \param preceding_step      An index of a preceding step.
-            \param best_preceding_node An index of a best preceding node.
-            \param node_cost           A node cost.
-            \param path_cost           A path cost.
+            \param key                  A key.
+            \param p_value              A pointer to a value.
+            \param preceding_step       An index of a preceding step.
+            \param preceding_edge_costs Preceding edge costs.
+            \param best_preceding_node  An index of a best preceding node.
+            \param node_cost            A node cost.
+            \param path_cost            A path cost.
 
             \throw std::invalid_argument When p_value is nullptr.
         */
@@ -62,6 +69,7 @@ namespace tetengo::lattice
             std::string_view key,
             const std::any*  p_value,
             std::size_t      preceding_step,
+            std::vector<int> preceding_edge_costs,
             std::size_t      best_preceding_node,
             int              node_cost,
             int              path_cost);
@@ -69,14 +77,16 @@ namespace tetengo::lattice
         /*!
             \brief Creates a node from a vocabulary entry.
 
-            \param entry               An entry.
-            \param preceding_step      An index of a preceding step.
-            \param best_preceding_node An index of a best preceding node.
-            \param path_cost           A path cost.
+            \param entry                An entry.
+            \param preceding_step       An index of a preceding step.
+            \param preceding_edge_costs Preceding edge costs.
+            \param best_preceding_node  An index of a best preceding node.
+            \param path_cost            A path cost.
         */
         explicit node(
             const entry_view& entry,
             std::size_t       preceding_step = std::numeric_limits<std::size_t>::max(),
+            std::vector<int>  preceding_edge_costs = std::vector<int>{},
             std::size_t       best_preceding_node = std::numeric_limits<std::size_t>::max(),
             int               path_cost = std::numeric_limits<int>::max());
 
@@ -105,6 +115,13 @@ namespace tetengo::lattice
         std::size_t preceding_step() const;
 
         /*!
+            \brief Returns the preceding edge costs.
+
+            \return The preceding edge costs.
+        */
+        const std::vector<int>& preceding_edge_costs() const;
+
+        /*!
             \brief Returns the index of the best preceding node.
 
             \return The index of the best preceding node.
@@ -125,6 +142,14 @@ namespace tetengo::lattice
         */
         int path_cost() const;
 
+        /*!
+            \brief Returns true is this node is the BOS.
+
+            \retval true  When this node is the BOS.
+            \retval false Otherwise.
+        */
+        bool is_bos() const;
+
 
     private:
         // variables
@@ -134,6 +159,8 @@ namespace tetengo::lattice
         const std::any* m_p_value;
 
         std::size_t m_preceding_step;
+
+        std::vector<int> m_preceding_edge_costs;
 
         std::size_t m_best_preceding_node;
 

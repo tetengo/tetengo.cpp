@@ -5,6 +5,7 @@ pkg_headers = \
     lattice/connection.hpp \
     lattice/entry.hpp \
     lattice/lattice.hpp \
+    lattice/n_best_iterator.hpp \
     lattice/node.hpp \
     lattice/unordered_map_vocabulary.hpp \
     lattice/vocabulary.hpp

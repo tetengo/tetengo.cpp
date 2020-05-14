@@ -5,8 +5,9 @@ pkg_headers = \
     lattice/connection.h \
     lattice/entry.h \
     lattice/lattice.h \
+    lattice/nBestIterator.h \
     lattice/node.h \
-    lattice/string_view.h \
+    lattice/stringView.h \
     lattice/vocabulary.h
 
 extra_headers =

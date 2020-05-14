@@ -2,11 +2,13 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
+    tetengo_lattice_lattice.hpp \
     tetengo_lattice_vocabulary.hpp
 
 sources = \
     tetengo_lattice_entry.cpp \
     tetengo_lattice_lattice.cpp \
+    tetengo_lattice_nBestIterator.cpp \
     tetengo_lattice_node.cpp \
     tetengo_lattice_vocabulary.cpp
 

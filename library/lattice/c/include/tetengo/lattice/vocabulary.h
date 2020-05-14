@@ -41,7 +41,7 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
     size_t                                             connection_count);
 
 /*!
-    \brief Destroys the vocabulary.
+    \brief Destroys a vocabulary.
 
     \param p_vocabulary A pointer to a vocabulary.
 */

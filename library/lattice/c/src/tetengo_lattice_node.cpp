@@ -6,6 +6,7 @@
 
 #include <any>
 #include <string_view>
+#include <vector>
 
 #include <stddef.h>
 
@@ -13,7 +14,7 @@
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 
 
 const tetengo_lattice_node_t* tetengo_lattice_node_bos()
@@ -49,7 +50,8 @@ int tetengo_lattice_node_eos(
             return 0;
         }
 
-        const auto cpp_eos = tetengo::lattice::node::eos(preceding_step, best_preceding_node, path_cost);
+        const auto cpp_eos =
+            tetengo::lattice::node::eos(preceding_step, std::vector<int>{}, best_preceding_node, path_cost);
 
         p_eos->key.p_head = cpp_eos.key().data();
         p_eos->key.length = cpp_eos.key().length();
@@ -88,7 +90,9 @@ int tetengo_lattice_node_toNode(
         const tetengo::lattice::entry_view cpp_entry{ std::string_view{ p_entry->key.p_head, p_entry->key.length },
                                                       reinterpret_cast<const std::any*>(p_entry->value_handle),
                                                       p_entry->cost };
-        const tetengo::lattice::node       cpp_node{ cpp_entry, preceding_step, best_preceding_node, path_cost };
+        const tetengo::lattice::node       cpp_node{
+            cpp_entry, preceding_step, std::vector<int>{}, best_preceding_node, path_cost
+        };
 
         p_node->key.p_head = cpp_node.key().data();
         p_node->key.length = cpp_node.key().length();
@@ -99,6 +103,25 @@ int tetengo_lattice_node_toNode(
         p_node->path_cost = cpp_node.path_cost();
 
         return 1;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
+{
+    try
+    {
+        const tetengo::lattice::node cpp_node{ std::string_view{ p_node->key.p_head, p_node->key.length },
+                                               reinterpret_cast<const std::any*>(p_node->value_handle),
+                                               p_node->preceding_step,
+                                               std::vector<int>{},
+                                               p_node->best_preceding_node,
+                                               p_node->node_cost,
+                                               p_node->path_cost };
+        return cpp_node.is_bos() ? 1 : 0;
     }
     catch (...)
     {

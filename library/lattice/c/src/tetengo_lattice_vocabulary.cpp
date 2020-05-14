@@ -22,7 +22,7 @@
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/string_view.h>
+#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -181,6 +181,7 @@ int tetengo_lattice_vocabulary_findConnection(
         const tetengo::lattice::node       cpp_from{ std::string_view{ p_from->key.p_head, p_from->key.length },
                                                reinterpret_cast<const std::any*>(p_from->value_handle),
                                                p_from->preceding_step,
+                                               std::vector<int>{},
                                                p_from->best_preceding_node,
                                                p_from->node_cost,
                                                p_from->path_cost };

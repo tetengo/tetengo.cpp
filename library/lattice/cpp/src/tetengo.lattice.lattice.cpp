@@ -10,9 +10,9 @@
 #include <iterator>
 #include <limits>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -74,6 +74,21 @@ namespace tetengo::lattice
 
         // functions
 
+        std::size_t step_count() const
+        {
+            return m_graph.size();
+        }
+
+        const std::vector<node>& nodes_at(const std::size_t step) const
+        {
+            if (step >= m_graph.size())
+            {
+                throw std::out_of_range{ "step is too large." };
+            }
+
+            return m_graph[step].nodes();
+        }
+
         void push_back(const std::string_view& input)
         {
             m_input += input;
@@ -89,8 +104,15 @@ namespace tetengo::lattice
 
                 std::transform(
                     std::begin(found), std::end(found), std::back_inserter(nodes), [this, i, &step](const auto& e) {
-                        const auto best_preceding_node_ = best_preceding_node(step, e);
-                        return node{ e, i, best_preceding_node_.first, best_preceding_node_.second + e.cost() };
+                        auto       preceding_edge_costs_ = preceding_edge_costs(step, e);
+                        const auto best_preceding_node_index_ = best_preceding_node_index(step, preceding_edge_costs_);
+                        const auto best_preceding_path_cost = step.nodes()[best_preceding_node_index_].path_cost() +
+                                                              preceding_edge_costs_[best_preceding_node_index_];
+                        return node{ e,
+                                     i,
+                                     std::move(preceding_edge_costs_),
+                                     best_preceding_node_index_,
+                                     best_preceding_path_cost + e.cost() };
                     });
             }
             m_graph.emplace_back(m_input.length(), std::move(nodes));
@@ -98,8 +120,15 @@ namespace tetengo::lattice
 
         node settle()
         {
-            const auto best_preceding_node_ = best_preceding_node(m_graph.back(), entry_view::bos_eos());
-            return node::eos(m_graph.size() - 1, best_preceding_node_.first, best_preceding_node_.second);
+            auto       preceding_edge_costs_ = preceding_edge_costs(m_graph.back(), entry_view::bos_eos());
+            const auto best_preceding_node_index_ = best_preceding_node_index(m_graph.back(), preceding_edge_costs_);
+            const auto best_preceding_path_cost = m_graph.back().nodes()[best_preceding_node_index_].path_cost() +
+                                                  preceding_edge_costs_[best_preceding_node_index_];
+            return node::eos(
+                m_graph.size() - 1,
+                std::move(preceding_edge_costs_),
+                best_preceding_node_index_,
+                best_preceding_path_cost);
         }
 
 
@@ -112,7 +141,22 @@ namespace tetengo::lattice
             return singleton;
         }
 
-        static int add_connection_cost(const int one, const int another)
+        static std::size_t best_preceding_node_index(const graph_step& step, const std::vector<int>& edge_costs)
+        {
+            assert(!step.nodes().empty());
+            auto min_index = static_cast<std::size_t>(0);
+            for (auto i = static_cast<std::size_t>(1); i < step.nodes().size(); ++i)
+            {
+                if (add_cost(step.nodes()[i].path_cost(), edge_costs[i]) <
+                    add_cost(step.nodes()[min_index].path_cost(), edge_costs[min_index]))
+                {
+                    min_index = i;
+                }
+            }
+            return min_index;
+        }
+
+        static int add_cost(const int one, const int another)
         {
             if (one == std::numeric_limits<int>::max() || another == std::numeric_limits<int>::max())
             {
@@ -136,23 +180,19 @@ namespace tetengo::lattice
 
         // functions
 
-        std::pair<std::size_t, int> best_preceding_node(const graph_step& step, const entry_view& next_entry) const
+        std::vector<int> preceding_edge_costs(const graph_step& step, const entry_view& next_entry) const
         {
             assert(!step.nodes().empty());
-            const auto i_min_cost_node = std::min_element(
+            std::vector<int> costs{};
+            costs.reserve(step.nodes().size());
+            std::transform(
                 std::begin(step.nodes()),
                 std::end(step.nodes()),
-                [this, &next_entry](const auto& one, const auto& another) {
-                    return add_connection_cost(
-                               one.path_cost(), m_p_vocabulary->find_connection(one, next_entry).cost()) <
-                           add_connection_cost(
-                               another.path_cost(), m_p_vocabulary->find_connection(another, next_entry).cost());
+                std::back_inserter(costs),
+                [this, &next_entry](const auto& node) {
+                    return m_p_vocabulary->find_connection(node, next_entry).cost();
                 });
-            return std::make_pair(
-                std::distance(std::begin(step.nodes()), i_min_cost_node),
-                add_connection_cost(
-                    i_min_cost_node->path_cost(),
-                    m_p_vocabulary->find_connection(*i_min_cost_node, next_entry).cost()));
+            return costs;
         }
     };
 
@@ -162,6 +202,16 @@ namespace tetengo::lattice
     {}
 
     lattice::~lattice() = default;
+
+    std::size_t lattice::step_count() const
+    {
+        return m_p_impl->step_count();
+    }
+
+    const std::vector<node>& lattice::nodes_at(const std::size_t step) const
+    {
+        return m_p_impl->nodes_at(step);
+    }
 
     void lattice::push_back(const std::string_view& input)
     {
