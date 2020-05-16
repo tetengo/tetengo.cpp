@@ -4,9 +4,11 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
 #include <any>
 #include <cassert>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <string_view>
 #include <utility>
@@ -133,7 +135,10 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice,
     }
 }
 
-int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* const p_lattice, tetengo_lattice_node_t* const p_eos_node)
+size_t tetengo_lattice_lattice_settle(
+    tetengo_lattice_lattice_t* const p_lattice,
+    tetengo_lattice_node_t* const    p_eos_node,
+    int* const                       p_preceding_edge_costs)
 {
     try
     {
@@ -141,23 +146,31 @@ int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* const p_lattice, t
         {
             return 0;
         }
-        if (!p_eos_node)
+
+        const auto cpp_eos_node_and_preceding_edge_costs = p_lattice->p_cpp_lattice->settle();
+
+        if (p_eos_node)
         {
-            return 0;
+            assert(!cpp_eos_node_and_preceding_edge_costs.first.value().has_value());
+            p_eos_node->key.p_head = cpp_eos_node_and_preceding_edge_costs.first.key().data();
+            p_eos_node->key.length = cpp_eos_node_and_preceding_edge_costs.first.key().length();
+            p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
+                &cpp_eos_node_and_preceding_edge_costs.first.value());
+            p_eos_node->preceding_step = cpp_eos_node_and_preceding_edge_costs.first.preceding_step();
+            p_eos_node->best_preceding_node = cpp_eos_node_and_preceding_edge_costs.first.best_preceding_node();
+            p_eos_node->node_cost = cpp_eos_node_and_preceding_edge_costs.first.node_cost();
+            p_eos_node->path_cost = cpp_eos_node_and_preceding_edge_costs.first.path_cost();
         }
 
-        const auto cpp_eos_node = p_lattice->p_cpp_lattice->settle();
+        if (p_preceding_edge_costs)
+        {
+            std::copy(
+                std::begin(cpp_eos_node_and_preceding_edge_costs.second),
+                std::end(cpp_eos_node_and_preceding_edge_costs.second),
+                p_preceding_edge_costs);
+        }
 
-        assert(!cpp_eos_node.value().has_value());
-        p_eos_node->key.p_head = cpp_eos_node.key().data();
-        p_eos_node->key.length = cpp_eos_node.key().length();
-        p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_eos_node.value());
-        p_eos_node->preceding_step = cpp_eos_node.preceding_step();
-        p_eos_node->best_preceding_node = cpp_eos_node.best_preceding_node();
-        p_eos_node->node_cost = cpp_eos_node.node_cost();
-        p_eos_node->path_cost = cpp_eos_node.path_cost();
-
-        return 1;
+        return cpp_eos_node_and_preceding_edge_costs.second.size();
     }
     catch (...)
     {

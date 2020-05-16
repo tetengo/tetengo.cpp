@@ -13,6 +13,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -129,17 +130,16 @@ namespace tetengo::lattice
             m_graph.emplace_back(m_input.length(), std::move(nodes), std::move(node_preceding_edge_costs));
         }
 
-        node settle()
+        std::pair<node, std::vector<int>> settle()
         {
             auto       preceding_edge_costs_ = preceding_edge_costs(m_graph.back(), entry_view::bos_eos());
             const auto best_preceding_node_index_ = best_preceding_node_index(m_graph.back(), preceding_edge_costs_);
             const auto best_preceding_path_cost = m_graph.back().nodes()[best_preceding_node_index_].path_cost() +
                                                   preceding_edge_costs_[best_preceding_node_index_];
-            return node::eos(
-                m_graph.size() - 1,
-                std::move(preceding_edge_costs_),
-                best_preceding_node_index_,
-                best_preceding_path_cost);
+
+            node eos_node{ node::eos(
+                m_graph.size() - 1, preceding_edge_costs_, best_preceding_node_index_, best_preceding_path_cost) };
+            return std::make_pair(std::move(eos_node), std::move(preceding_edge_costs_));
         }
 
 
@@ -232,7 +232,7 @@ namespace tetengo::lattice
         m_p_impl->push_back(input);
     }
 
-    node lattice::settle()
+    std::pair<node, std::vector<int>> lattice::settle()
     {
         return m_p_impl->settle();
     }

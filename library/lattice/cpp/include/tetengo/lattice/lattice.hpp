@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <memory>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -75,9 +76,9 @@ namespace tetengo::lattice
             You can modify the lattice after settlement.
             Modification of the lattice after settlement invalidate the EOS node.
 
-            \return The EOS node.
+            \return The EOS node and its preceding edge costs.
         */
-        node settle();
+        std::pair<node, std::vector<int>> settle();
 
 
     private:
