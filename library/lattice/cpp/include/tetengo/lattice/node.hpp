@@ -9,7 +9,6 @@
 
 #include <any>
 #include <cstddef>
-#include <limits>
 #include <string_view>
 #include <vector>
 
@@ -83,12 +82,12 @@ namespace tetengo::lattice
             \param best_preceding_node  An index of a best preceding node.
             \param path_cost            A path cost.
         */
-        explicit node(
+        node(
             const entry_view& entry,
-            std::size_t       preceding_step = std::numeric_limits<std::size_t>::max(),
-            std::vector<int>  preceding_edge_costs = std::vector<int>{},
-            std::size_t       best_preceding_node = std::numeric_limits<std::size_t>::max(),
-            int               path_cost = std::numeric_limits<int>::max());
+            std::size_t       preceding_step,
+            std::vector<int>  preceding_edge_costs,
+            std::size_t       best_preceding_node,
+            int               path_cost);
 
 
         // functions

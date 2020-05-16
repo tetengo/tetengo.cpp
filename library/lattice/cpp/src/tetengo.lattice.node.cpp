@@ -63,10 +63,10 @@ namespace tetengo::lattice
 
     node::node(
         const entry_view& entry,
-        const std::size_t preceding_step /*= std::numeric_limits<std::size_t>::max()*/,
-        std::vector<int>  preceding_edge_costs /*= std::vector<int>{}*/,
-        const std::size_t best_preceding_node /*= std::numeric_limits<std::size_t>::max()*/,
-        const int         path_cost /*= std::numeric_limits<int>::max()*/) :
+        const std::size_t preceding_step,
+        std::vector<int>  preceding_edge_costs,
+        const std::size_t best_preceding_node,
+        const int         path_cost) :
     node{ entry.key(),         entry.value(), preceding_step, std::move(preceding_edge_costs),
           best_preceding_node, entry.cost(),  path_cost }
     {}
