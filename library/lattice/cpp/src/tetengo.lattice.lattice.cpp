@@ -32,9 +32,13 @@ namespace tetengo::lattice
     public:
         // constructors and destructor
 
-        graph_step(const std::size_t input_tail, std::vector<node> nodes) :
+        graph_step(
+            const std::size_t             input_tail,
+            std::vector<node>             nodes,
+            std::vector<std::vector<int>> preceding_edge_costs) :
         m_input_tail{ input_tail },
-            m_nodes{ std::move(nodes) }
+            m_nodes{ std::move(nodes) },
+            m_preceding_edge_costs{ std::move(preceding_edge_costs) }
         {}
 
 
@@ -50,6 +54,12 @@ namespace tetengo::lattice
             return m_nodes;
         }
 
+        const std::vector<int>& preceding_edge_costs(const std::size_t index) const
+        {
+            assert(index < m_preceding_edge_costs.size());
+            return m_preceding_edge_costs[index];
+        }
+
 
     private:
         // variables
@@ -57,6 +67,8 @@ namespace tetengo::lattice
         std::size_t m_input_tail;
 
         std::vector<node> m_nodes;
+
+        std::vector<std::vector<int>> m_preceding_edge_costs;
     };
 
 
@@ -93,7 +105,8 @@ namespace tetengo::lattice
         {
             m_input += input;
 
-            std::vector<node> nodes{};
+            std::vector<node>             nodes{};
+            std::vector<std::vector<int>> node_preceding_edge_costs;
             for (auto i = static_cast<std::size_t>(0); i < m_graph.size(); ++i)
             {
                 const auto& step = m_graph[i];
@@ -102,20 +115,18 @@ namespace tetengo::lattice
                                                  m_input.length() - step.input_tail() };
                 const auto             found = m_p_vocabulary->find_entries(node_key);
 
-                std::transform(
-                    std::begin(found), std::end(found), std::back_inserter(nodes), [this, i, &step](const auto& e) {
-                        auto       preceding_edge_costs_ = preceding_edge_costs(step, e);
-                        const auto best_preceding_node_index_ = best_preceding_node_index(step, preceding_edge_costs_);
-                        const auto best_preceding_path_cost = step.nodes()[best_preceding_node_index_].path_cost() +
-                                                              preceding_edge_costs_[best_preceding_node_index_];
-                        return node{ e,
-                                     i,
-                                     std::move(preceding_edge_costs_),
-                                     best_preceding_node_index_,
-                                     best_preceding_path_cost + e.cost() };
-                    });
+                for (const auto& e: found)
+                {
+                    auto       preceding_edge_costs_ = preceding_edge_costs(step, e);
+                    const auto best_preceding_node_index_ = best_preceding_node_index(step, preceding_edge_costs_);
+                    const auto best_preceding_path_cost = step.nodes()[best_preceding_node_index_].path_cost() +
+                                                          preceding_edge_costs_[best_preceding_node_index_];
+                    nodes.emplace_back(
+                        e, i, preceding_edge_costs_, best_preceding_node_index_, best_preceding_path_cost + e.cost());
+                    node_preceding_edge_costs.push_back(std::move(preceding_edge_costs_));
+                }
             }
-            m_graph.emplace_back(m_input.length(), std::move(nodes));
+            m_graph.emplace_back(m_input.length(), std::move(nodes), std::move(node_preceding_edge_costs));
         }
 
         node settle()
@@ -137,7 +148,10 @@ namespace tetengo::lattice
 
         static const graph_step& bos()
         {
-            static const graph_step singleton{ 0, std::vector<node>{ node::bos() } };
+            static const graph_step singleton{ 0,
+                                               std::vector<node>{ node::bos() },
+                                               std::vector<std::vector<int>>{
+                                                   std::vector<int>{ std::numeric_limits<int>::max() } } };
             return singleton;
         }
 
@@ -222,6 +236,4 @@ namespace tetengo::lattice
     {
         return m_p_impl->settle();
     }
-
-
 }
