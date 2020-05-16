@@ -28,17 +28,19 @@ namespace tetengo::lattice
         /*!
             \brief Returns the BOS (Beginning of Sequence).
 
+            \param preceding_edge_costs Preceding edge costs.
+
             \return The BOS.
         */
-        static const node& bos();
+        static node bos(std::vector<int> preceding_edge_costs);
 
         /*!
             \brief Returns an EOS (End of Sequence).
 
-            \param preceding_step      An index of a preceding step.
+            \param preceding_step       An index of a preceding step.
             \param preceding_edge_costs Preceding edge costs.
-            \param best_preceding_node An index of a best preceding node.
-            \param path_cost           A path cost.
+            \param best_preceding_node  An index of a best preceding node.
+            \param path_cost            A path cost.
 
             \return An EOS.
         */

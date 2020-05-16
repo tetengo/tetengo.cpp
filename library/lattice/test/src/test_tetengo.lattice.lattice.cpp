@@ -263,7 +263,8 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto& nodes = lattice_.nodes_at(0);
 
             BOOST_TEST_REQUIRE(nodes.size() == 1U);
-            BOOST_TEST(nodes[0].value().has_value() == tetengo::lattice::node::bos().value().has_value());
+            BOOST_TEST(
+                nodes[0].value().has_value() == tetengo::lattice::node::bos(std::vector<int>{}).value().has_value());
         }
         {
             const auto& nodes = lattice_.nodes_at(1);
@@ -315,7 +316,9 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 0, nodes.data());
             BOOST_TEST(node_count_again == 1U);
 
-            BOOST_TEST(nodes[0].value_handle == tetengo_lattice_node_bos()->value_handle);
+            tetengo_lattice_node_t bos{};
+            tetengo_lattice_node_bos(&bos);
+            BOOST_TEST(nodes[0].value_handle == bos.value_handle);
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 1, nullptr);

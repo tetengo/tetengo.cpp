@@ -17,23 +17,30 @@
 #include <tetengo/lattice/stringView.h>
 
 
-const tetengo_lattice_node_t* tetengo_lattice_node_bos()
+int tetengo_lattice_node_bos(tetengo_lattice_node_t* p_bos)
 {
     try
     {
-        static const tetengo_lattice_node_t singleton{
-            { tetengo::lattice::node::bos().key().data(), tetengo::lattice::node::bos().key().length() },
-            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&tetengo::lattice::node::bos().value()),
-            tetengo::lattice::node::bos().preceding_step(),
-            tetengo::lattice::node::bos().best_preceding_node(),
-            tetengo::lattice::node::bos().node_cost(),
-            tetengo::lattice::node::bos().path_cost()
-        };
-        return &singleton;
+        if (!p_bos)
+        {
+            return 0;
+        }
+
+        const auto cpp_bos = tetengo::lattice::node::bos(std::vector<int>{});
+
+        p_bos->key.p_head = cpp_bos.key().data();
+        p_bos->key.length = cpp_bos.key().length();
+        p_bos->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_bos.value());
+        p_bos->preceding_step = cpp_bos.preceding_step();
+        p_bos->best_preceding_node = cpp_bos.best_preceding_node();
+        p_bos->node_cost = cpp_bos.node_cost();
+        p_bos->path_cost = cpp_bos.path_cost();
+
+        return 1;
     }
     catch (...)
     {
-        return nullptr;
+        return 0;
     }
 }
 

@@ -149,9 +149,8 @@ namespace tetengo::lattice
         static const graph_step& bos()
         {
             static const graph_step singleton{ 0,
-                                               std::vector<node>{ node::bos() },
-                                               std::vector<std::vector<int>>{
-                                                   std::vector<int>{ std::numeric_limits<int>::max() } } };
+                                               std::vector<node>{ node::bos(std::vector<int>{}) },
+                                               std::vector<std::vector<int>>{ std::vector<int>{} } };
             return singleton;
         }
 

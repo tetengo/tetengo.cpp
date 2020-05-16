@@ -18,11 +18,11 @@
 
 namespace tetengo::lattice
 {
-    const node& node::bos()
+    node node::bos(std::vector<int> preceding_edge_costs)
     {
         static const node singleton{ entry_view::bos_eos(),
                                      std::numeric_limits<std::size_t>::max(),
-                                     std::vector<int>{},
+                                     std::move(preceding_edge_costs),
                                      std::numeric_limits<std::size_t>::max(),
                                      0 };
         return singleton;
@@ -108,9 +108,10 @@ namespace tetengo::lattice
 
     bool node::is_bos() const
     {
-        return key() == bos().key() && preceding_step() == bos().preceding_step() &&
-               best_preceding_node() == bos().best_preceding_node() && node_cost() == bos().node_cost() &&
-               path_cost() == bos().path_cost();
+        static const node bos_ = bos(std::vector<int>{});
+        return key() == bos_.key() && preceding_step() == bos_.preceding_step() &&
+               best_preceding_node() == bos_.best_preceding_node() && node_cost() == bos_.node_cost() &&
+               path_cost() == bos_.path_cost();
     }
 
 
