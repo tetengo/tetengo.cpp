@@ -144,7 +144,7 @@ namespace tetengo::lattice
             m_graph.emplace_back(m_input.length(), std::move(nodes), std::move(p_node_preceding_edge_costs));
         }
 
-        std::pair<node, std::vector<int>> settle()
+        std::pair<node, std::unique_ptr<std::vector<int>>> settle()
         {
             auto       preceding_edge_costs_ = preceding_edge_costs(m_graph.back(), entry_view::bos_eos());
             const auto best_preceding_node_index_ = best_preceding_node_index(m_graph.back(), preceding_edge_costs_);
@@ -153,7 +153,8 @@ namespace tetengo::lattice
 
             node eos_node{ node::eos(
                 m_graph.size() - 1, preceding_edge_costs_, best_preceding_node_index_, best_preceding_path_cost) };
-            return std::make_pair(std::move(eos_node), std::move(preceding_edge_costs_));
+            return std::make_pair(
+                std::move(eos_node), std::make_unique<std::vector<int>>(std::move(preceding_edge_costs_)));
         }
 
 
@@ -245,7 +246,7 @@ namespace tetengo::lattice
         m_p_impl->push_back(input);
     }
 
-    std::pair<node, std::vector<int>> lattice::settle()
+    std::pair<node, std::unique_ptr<std::vector<int>>> lattice::settle()
     {
         return m_p_impl->settle();
     }

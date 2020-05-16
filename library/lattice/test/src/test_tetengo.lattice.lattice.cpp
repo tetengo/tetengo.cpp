@@ -443,8 +443,8 @@ BOOST_AUTO_TEST_CASE(settle)
 
             const std::vector<int> expected_preceding_edge_costs{ 8000 };
             BOOST_CHECK_EQUAL_COLLECTIONS(
-                std::begin(eos_node_and_preceding_edge_costs.second),
-                std::end(eos_node_and_preceding_edge_costs.second),
+                std::begin(*eos_node_and_preceding_edge_costs.second),
+                std::end(*eos_node_and_preceding_edge_costs.second),
                 std::begin(expected_preceding_edge_costs),
                 std::end(expected_preceding_edge_costs));
         }
@@ -459,8 +459,8 @@ BOOST_AUTO_TEST_CASE(settle)
 
             const std::vector<int> expected_preceding_edge_costs{ 6000, 6000 };
             BOOST_CHECK_EQUAL_COLLECTIONS(
-                std::begin(eos_node_and_preceding_edge_costs.second),
-                std::end(eos_node_and_preceding_edge_costs.second),
+                std::begin(*eos_node_and_preceding_edge_costs.second),
+                std::end(*eos_node_and_preceding_edge_costs.second),
                 std::begin(expected_preceding_edge_costs),
                 std::end(expected_preceding_edge_costs));
         }
@@ -475,8 +475,8 @@ BOOST_AUTO_TEST_CASE(settle)
 
             const std::vector<int> expected_preceding_edge_costs{ 2000, 2000, 3000 };
             BOOST_CHECK_EQUAL_COLLECTIONS(
-                std::begin(eos_node_and_preceding_edge_costs.second),
-                std::end(eos_node_and_preceding_edge_costs.second),
+                std::begin(*eos_node_and_preceding_edge_costs.second),
+                std::end(*eos_node_and_preceding_edge_costs.second),
                 std::begin(expected_preceding_edge_costs),
                 std::end(expected_preceding_edge_costs));
         }
@@ -491,8 +491,8 @@ BOOST_AUTO_TEST_CASE(settle)
 
             const std::vector<int> expected_preceding_edge_costs{ 400, 400, 400, 500, 600 };
             BOOST_CHECK_EQUAL_COLLECTIONS(
-                std::begin(eos_node_and_preceding_edge_costs.second),
-                std::end(eos_node_and_preceding_edge_costs.second),
+                std::begin(*eos_node_and_preceding_edge_costs.second),
+                std::end(*eos_node_and_preceding_edge_costs.second),
                 std::begin(expected_preceding_edge_costs),
                 std::end(expected_preceding_edge_costs));
         }

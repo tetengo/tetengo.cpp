@@ -149,6 +149,14 @@ size_t tetengo_lattice_lattice_settle(
 
         const auto cpp_eos_node_and_preceding_edge_costs = p_lattice->p_cpp_lattice->settle();
 
+        if (p_preceding_edge_costs)
+        {
+            std::copy(
+                std::begin(*cpp_eos_node_and_preceding_edge_costs.second),
+                std::end(*cpp_eos_node_and_preceding_edge_costs.second),
+                p_preceding_edge_costs);
+        }
+
         if (p_eos_node)
         {
             assert(!cpp_eos_node_and_preceding_edge_costs.first.value().has_value());
@@ -162,15 +170,7 @@ size_t tetengo_lattice_lattice_settle(
             p_eos_node->path_cost = cpp_eos_node_and_preceding_edge_costs.first.path_cost();
         }
 
-        if (p_preceding_edge_costs)
-        {
-            std::copy(
-                std::begin(cpp_eos_node_and_preceding_edge_costs.second),
-                std::end(cpp_eos_node_and_preceding_edge_costs.second),
-                p_preceding_edge_costs);
-        }
-
-        return cpp_eos_node_and_preceding_edge_costs.second.size();
+        return cpp_eos_node_and_preceding_edge_costs.second->size();
     }
     catch (...)
     {

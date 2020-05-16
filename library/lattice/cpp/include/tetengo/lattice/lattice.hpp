@@ -78,7 +78,7 @@ namespace tetengo::lattice
 
             \return The EOS node and its preceding edge costs.
         */
-        std::pair<node, std::vector<int>> settle();
+        std::pair<node, std::unique_ptr<std::vector<int>>> settle();
 
 
     private:
