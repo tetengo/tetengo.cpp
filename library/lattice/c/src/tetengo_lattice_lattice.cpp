@@ -99,6 +99,8 @@ size_t tetengo_lattice_lattice_nodesAt(
                 p_nodes[i].key.length = cpp_nodes[i].key().length();
                 p_nodes[i].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_nodes[i].value());
                 p_nodes[i].preceding_step = cpp_nodes[i].preceding_step();
+                p_nodes[i].p_preceding_edge_costs = cpp_nodes[i].preceding_edge_costs().data();
+                p_nodes[i].preceding_edge_cost_count = cpp_nodes[i].preceding_edge_costs().size();
                 p_nodes[i].best_preceding_node = cpp_nodes[i].best_preceding_node();
                 p_nodes[i].node_cost = cpp_nodes[i].node_cost();
                 p_nodes[i].path_cost = cpp_nodes[i].path_cost();
@@ -166,6 +168,8 @@ size_t tetengo_lattice_lattice_settle(
                 &cpp_eos_node_and_preceding_edge_costs.first.value());
             p_eos_node->preceding_step = cpp_eos_node_and_preceding_edge_costs.first.preceding_step();
             p_eos_node->best_preceding_node = cpp_eos_node_and_preceding_edge_costs.first.best_preceding_node();
+            p_eos_node->p_preceding_edge_costs = cpp_eos_node_and_preceding_edge_costs.second->data();
+            p_eos_node->preceding_edge_cost_count = cpp_eos_node_and_preceding_edge_costs.second->size();
             p_eos_node->node_cost = cpp_eos_node_and_preceding_edge_costs.first.node_cost();
             p_eos_node->path_cost = cpp_eos_node_and_preceding_edge_costs.first.path_cost();
         }

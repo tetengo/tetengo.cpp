@@ -317,8 +317,9 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 0, nodes.data());
             BOOST_TEST(node_count_again == 1U);
 
+            const std::vector<int> preceding_edge_costs{};
             tetengo_lattice_node_t bos{};
-            tetengo_lattice_node_bos(&bos);
+            tetengo_lattice_node_bos(preceding_edge_costs.data(), preceding_edge_costs.size(), &bos);
             BOOST_TEST(nodes[0].value_handle == bos.value_handle);
         }
         {

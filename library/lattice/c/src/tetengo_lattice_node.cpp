@@ -17,10 +17,17 @@
 #include <tetengo/lattice/stringView.h>
 
 
-int tetengo_lattice_node_bos(tetengo_lattice_node_t* p_bos)
+int tetengo_lattice_node_bos(
+    const int* const              p_preceding_edge_costs,
+    const size_t                  preceding_edge_count,
+    tetengo_lattice_node_t* const p_bos)
 {
     try
     {
+        if (preceding_edge_count > 0 && !p_preceding_edge_costs)
+        {
+            return 0;
+        }
         if (!p_bos)
         {
             return 0;
@@ -33,6 +40,8 @@ int tetengo_lattice_node_bos(tetengo_lattice_node_t* p_bos)
         p_bos->key.length = cpp_bos.key().length();
         p_bos->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_bos.value());
         p_bos->preceding_step = cpp_bos.preceding_step();
+        p_bos->p_preceding_edge_costs = p_preceding_edge_costs;
+        p_bos->preceding_edge_cost_count = preceding_edge_count;
         p_bos->best_preceding_node = cpp_bos.best_preceding_node();
         p_bos->node_cost = cpp_bos.node_cost();
         p_bos->path_cost = cpp_bos.path_cost();
@@ -47,12 +56,18 @@ int tetengo_lattice_node_bos(tetengo_lattice_node_t* p_bos)
 
 int tetengo_lattice_node_eos(
     const size_t                  preceding_step,
+    const int* const              p_preceding_edge_costs,
+    const size_t                  preceding_edge_count,
     const size_t                  best_preceding_node,
     const int                     path_cost,
     tetengo_lattice_node_t* const p_eos)
 {
     try
     {
+        if (preceding_edge_count > 0 && !p_preceding_edge_costs)
+        {
+            return 0;
+        }
         if (!p_eos)
         {
             return 0;
@@ -66,6 +81,8 @@ int tetengo_lattice_node_eos(
         p_eos->key.length = cpp_eos.key().length();
         p_eos->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_eos.value());
         p_eos->preceding_step = cpp_eos.preceding_step();
+        p_eos->p_preceding_edge_costs = p_preceding_edge_costs;
+        p_eos->preceding_edge_cost_count = preceding_edge_count;
         p_eos->best_preceding_node = cpp_eos.best_preceding_node();
         p_eos->node_cost = cpp_eos.node_cost();
         p_eos->path_cost = cpp_eos.path_cost();
@@ -81,6 +98,8 @@ int tetengo_lattice_node_eos(
 int tetengo_lattice_node_toNode(
     const tetengo_lattice_entryView_t* const p_entry,
     const size_t                             preceding_step,
+    const int* const                         p_preceding_edge_costs,
+    const size_t                             preceding_edge_count,
     const size_t                             best_preceding_node,
     const int                                path_cost,
     tetengo_lattice_node_t* const            p_node)
@@ -88,6 +107,10 @@ int tetengo_lattice_node_toNode(
     try
     {
         if (!p_entry)
+        {
+            return 0;
+        }
+        if (preceding_edge_count > 0 && !p_preceding_edge_costs)
         {
             return 0;
         }
@@ -108,6 +131,8 @@ int tetengo_lattice_node_toNode(
         p_node->key.length = cpp_node.key().length();
         p_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value());
         p_node->preceding_step = cpp_node.preceding_step();
+        p_node->p_preceding_edge_costs = p_preceding_edge_costs;
+        p_node->preceding_edge_cost_count = preceding_edge_count;
         p_node->best_preceding_node = cpp_node.best_preceding_node();
         p_node->node_cost = cpp_node.node_cost();
         p_node->path_cost = cpp_node.path_cost();
@@ -124,7 +149,9 @@ int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
 {
     try
     {
-        const std::vector<int>       cpp_preceding_edge_costs{};
+        const std::vector<int> cpp_preceding_edge_costs{
+            p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count
+        };
         const tetengo::lattice::node cpp_node{ std::string_view{ p_node->key.p_head, p_node->key.length },
                                                reinterpret_cast<const std::any*>(p_node->value_handle),
                                                p_node->preceding_step,
