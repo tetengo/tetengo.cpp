@@ -5,6 +5,7 @@
  */
 
 #include <any>
+#include <cstddef>
 #include <limits>
 #include <memory>
 #include <string>
@@ -89,6 +90,16 @@ namespace
         }
     };
 
+    tetengo::lattice::node make_node(const tetengo::lattice::entry_view& entry)
+    {
+        static const std::vector<int> preceding_edge_costs{};
+        return tetengo::lattice::node{ entry,
+                                       std::numeric_limits<std::size_t>::max(),
+                                       &preceding_edge_costs,
+                                       std::numeric_limits<std::size_t>::max(),
+                                       std::numeric_limits<int>::max() };
+    }
+
 
 }
 
@@ -141,8 +152,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
             BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
 
-            const auto connection =
-                vocabulary.find_connection(tetengo::lattice::node{ entries_mizuho[0] }, entries_mizuho[0]);
+            const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_mizuho[0]);
 
             BOOST_TEST(connection.cost() == 42);
         }
@@ -152,8 +162,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             const auto entries_tsubame = vocabulary.find_entries(key_tsubame);
             BOOST_TEST_REQUIRE(entries_tsubame.size() == 1U);
 
-            const auto connection =
-                vocabulary.find_connection(tetengo::lattice::node{ entries_mizuho[0] }, entries_tsubame[0]);
+            const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_tsubame[0]);
 
             BOOST_TEST(connection.cost() == std::numeric_limits<int>::max());
         }
