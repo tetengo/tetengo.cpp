@@ -42,12 +42,6 @@ namespace tetengo::lattice
             m_p_preceding_edge_costs{ std::move(p_preceding_edge_costs) }
         {}
 
-        graph_step(graph_step&& another) :
-        m_input_tail{ std::move(another.m_input_tail) },
-            m_nodes{ std::move(another.m_nodes) },
-            m_p_preceding_edge_costs{ std::move(another.m_p_preceding_edge_costs) }
-        {}
-
 
         // functions
 
