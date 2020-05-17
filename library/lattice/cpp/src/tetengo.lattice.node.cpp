@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <cassert>
 #include <cstddef>
 #include <limits>
 #include <stdexcept>
@@ -18,39 +19,36 @@
 
 namespace tetengo::lattice
 {
-    node node::bos(std::vector<int> preceding_edge_costs)
+    node node::bos(const std::vector<int>* const p_preceding_edge_costs)
     {
-        static const node singleton{ entry_view::bos_eos(),
-                                     std::numeric_limits<std::size_t>::max(),
-                                     std::move(preceding_edge_costs),
-                                     std::numeric_limits<std::size_t>::max(),
-                                     0 };
-        return singleton;
+        return node{ entry_view::bos_eos(),
+                     std::numeric_limits<std::size_t>::max(),
+                     p_preceding_edge_costs,
+                     std::numeric_limits<std::size_t>::max(),
+                     0 };
     }
 
     node node::eos(
-        const std::size_t preceding_step,
-        std::vector<int>  preceding_edge_costs,
-        const std::size_t best_preceding_node,
-        const int         path_cost)
+        const std::size_t             preceding_step,
+        const std::vector<int>* const p_preceding_edge_costs,
+        const std::size_t             best_preceding_node,
+        const int                     path_cost)
     {
-        return node{
-            entry_view::bos_eos(), preceding_step, std::move(preceding_edge_costs), best_preceding_node, path_cost
-        };
+        return node{ entry_view::bos_eos(), preceding_step, p_preceding_edge_costs, best_preceding_node, path_cost };
     }
 
     node::node(
-        std::string_view  key,
-        const std::any*   p_value,
-        const std::size_t preceding_step,
-        std::vector<int>  preceding_edge_costs,
-        const std::size_t best_preceding_node,
-        const int         node_cost,
-        const int         path_cost) :
+        std::string_view              key,
+        const std::any*               p_value,
+        const std::size_t             preceding_step,
+        const std::vector<int>* const p_preceding_edge_costs,
+        const std::size_t             best_preceding_node,
+        const int                     node_cost,
+        const int                     path_cost) :
     m_key{ std::move(key) },
         m_p_value{ p_value },
         m_preceding_step{ preceding_step },
-        m_preceding_edge_costs{ std::move(preceding_edge_costs) },
+        m_p_preceding_edge_costs{ p_preceding_edge_costs },
         m_best_preceding_node{ best_preceding_node },
         m_node_cost{ node_cost },
         m_path_cost{ path_cost }
@@ -59,15 +57,19 @@ namespace tetengo::lattice
         {
             throw std::invalid_argument{ "p_value is nullptr." };
         }
+        if (!m_p_preceding_edge_costs)
+        {
+            throw std::invalid_argument{ "m_p_preceding_edge_costs is nullptr." };
+        }
     }
 
     node::node(
-        const entry_view& entry,
-        const std::size_t preceding_step,
-        std::vector<int>  preceding_edge_costs,
-        const std::size_t best_preceding_node,
-        const int         path_cost) :
-    node{ entry.key(),         entry.value(), preceding_step, std::move(preceding_edge_costs),
+        const entry_view&             entry,
+        const std::size_t             preceding_step,
+        const std::vector<int>* const p_preceding_edge_costs,
+        const std::size_t             best_preceding_node,
+        const int                     path_cost) :
+    node{ entry.key(),         entry.value(), preceding_step, p_preceding_edge_costs,
           best_preceding_node, entry.cost(),  path_cost }
     {}
 
@@ -78,6 +80,7 @@ namespace tetengo::lattice
 
     const std::any& node::value() const
     {
+        assert(m_p_value);
         return *m_p_value;
     }
 
@@ -88,7 +91,8 @@ namespace tetengo::lattice
 
     const std::vector<int>& node::preceding_edge_costs() const
     {
-        return m_preceding_edge_costs;
+        assert(m_p_preceding_edge_costs);
+        return *m_p_preceding_edge_costs;
     }
 
     std::size_t node::best_preceding_node() const
@@ -108,7 +112,8 @@ namespace tetengo::lattice
 
     bool node::is_bos() const
     {
-        static const node bos_ = bos(std::vector<int>{});
+        static const std::vector<int> bos_preceding_edge_costs{};
+        static const node             bos_ = bos(&bos_preceding_edge_costs);
         return key() == bos_.key() && preceding_step() == bos_.preceding_step() &&
                best_preceding_node() == bos_.best_preceding_node() && node_cost() == bos_.node_cost() &&
                path_cost() == bos_.path_cost();

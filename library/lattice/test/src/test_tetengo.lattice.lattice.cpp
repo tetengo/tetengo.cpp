@@ -263,8 +263,9 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const auto& nodes = lattice_.nodes_at(0);
 
             BOOST_TEST_REQUIRE(nodes.size() == 1U);
+            const std::vector<int> preceding_edge_costs{};
             BOOST_TEST(
-                nodes[0].value().has_value() == tetengo::lattice::node::bos(std::vector<int>{}).value().has_value());
+                nodes[0].value().has_value() == tetengo::lattice::node::bos(&preceding_edge_costs).value().has_value());
         }
         {
             const auto& nodes = lattice_.nodes_at(1);

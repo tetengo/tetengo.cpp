@@ -127,20 +127,28 @@ namespace tetengo::lattice
 
                 for (const auto& e: found)
                 {
-                    auto       p_preceding_edge_costs = preceding_edge_costs(step, e);
-                    const auto best_preceding_node_index_ = best_preceding_node_index(step, *p_preceding_edge_costs);
-                    const auto best_preceding_path_cost = step.nodes()[best_preceding_node_index_].path_cost() +
-                                                          (*p_preceding_edge_costs)[best_preceding_node_index_];
-
+                    auto p_preceding_edge_costs = preceding_edge_costs(step, e);
                     p_node_preceding_edge_costs.push_back(std::move(p_preceding_edge_costs));
+                }
+
+                for (auto j = static_cast<std::size_t>(0); j < found.size(); ++j)
+                {
+                    const auto& entry = found[j];
+                    const auto& preceding_edge_costs = *p_node_preceding_edge_costs.back();
+
+                    const auto best_preceding_node_index_ = best_preceding_node_index(step, preceding_edge_costs);
+                    const auto best_preceding_path_cost = step.nodes()[best_preceding_node_index_].path_cost() +
+                                                          preceding_edge_costs[best_preceding_node_index_];
+
                     nodes.emplace_back(
-                        e,
+                        entry,
                         i,
-                        *p_node_preceding_edge_costs.back(),
+                        &preceding_edge_costs,
                         best_preceding_node_index_,
-                        best_preceding_path_cost + e.cost());
+                        best_preceding_path_cost + entry.cost());
                 }
             }
+
             m_graph.emplace_back(m_input.length(), std::move(nodes), std::move(p_node_preceding_edge_costs));
         }
 
@@ -152,7 +160,10 @@ namespace tetengo::lattice
                                                   (*p_preceding_edge_costs)[best_preceding_node_index_];
 
             node eos_node{ node::eos(
-                m_graph.size() - 1, *p_preceding_edge_costs, best_preceding_node_index_, best_preceding_path_cost) };
+                m_graph.size() - 1,
+                p_preceding_edge_costs.get(),
+                best_preceding_node_index_,
+                best_preceding_path_cost) };
             return std::make_pair(std::move(eos_node), std::move(p_preceding_edge_costs));
         }
 
@@ -164,7 +175,7 @@ namespace tetengo::lattice
         {
             std::vector<std::unique_ptr<std::vector<int>>> p_node_preceding_edge_costs{};
             p_node_preceding_edge_costs.push_back(std::make_unique<std::vector<int>>());
-            std::vector<node> nodes{ node::bos(*p_node_preceding_edge_costs[0]) };
+            std::vector<node> nodes{ node::bos(p_node_preceding_edge_costs[0].get()) };
             return graph_step{ 0, std::move(nodes), std::move(p_node_preceding_edge_costs) };
         }
 

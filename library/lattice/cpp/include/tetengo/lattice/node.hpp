@@ -28,27 +28,27 @@ namespace tetengo::lattice
         /*!
             \brief Returns the BOS (Beginning of Sequence).
 
-            \param preceding_edge_costs Preceding edge costs.
+            \param p_preceding_edge_costs A pointer to preceding edge costs.
 
             \return The BOS.
         */
-        static node bos(std::vector<int> preceding_edge_costs);
+        static node bos(const std::vector<int>* p_preceding_edge_costs);
 
         /*!
             \brief Returns an EOS (End of Sequence).
 
-            \param preceding_step       An index of a preceding step.
-            \param preceding_edge_costs Preceding edge costs.
-            \param best_preceding_node  An index of a best preceding node.
-            \param path_cost            A path cost.
+            \param preceding_step         An index of a preceding step.
+            \param p_preceding_edge_costs A pointer to preceding edge costs.
+            \param best_preceding_node    An index of a best preceding node.
+            \param path_cost              A path cost.
 
             \return An EOS.
         */
         static node
-        eos(std::size_t      preceding_step,
-            std::vector<int> preceding_edge_costs,
-            std::size_t      best_preceding_node,
-            int              path_cost);
+        eos(std::size_t             preceding_step,
+            const std::vector<int>* p_preceding_edge_costs,
+            std::size_t             best_preceding_node,
+            int                     path_cost);
 
 
         // constructors and destructor
@@ -56,40 +56,40 @@ namespace tetengo::lattice
         /*!
             \brief Creates a node.
 
-            \param key                  A key.
-            \param p_value              A pointer to a value.
-            \param preceding_step       An index of a preceding step.
-            \param preceding_edge_costs Preceding edge costs.
-            \param best_preceding_node  An index of a best preceding node.
-            \param node_cost            A node cost.
-            \param path_cost            A path cost.
+            \param key                    A key.
+            \param p_value                A pointer to a value.
+            \param preceding_step         An index of a preceding step.
+            \param p_preceding_edge_costs A pointer to preceding edge costs.
+            \param best_preceding_node    An index of a best preceding node.
+            \param node_cost              A node cost.
+            \param path_cost              A path cost.
 
             \throw std::invalid_argument When p_value is nullptr.
         */
         node(
-            std::string_view key,
-            const std::any*  p_value,
-            std::size_t      preceding_step,
-            std::vector<int> preceding_edge_costs,
-            std::size_t      best_preceding_node,
-            int              node_cost,
-            int              path_cost);
+            std::string_view        key,
+            const std::any*         p_value,
+            std::size_t             preceding_step,
+            const std::vector<int>* p_preceding_edge_costs,
+            std::size_t             best_preceding_node,
+            int                     node_cost,
+            int                     path_cost);
 
         /*!
             \brief Creates a node from a vocabulary entry.
 
-            \param entry                An entry.
-            \param preceding_step       An index of a preceding step.
-            \param preceding_edge_costs Preceding edge costs.
-            \param best_preceding_node  An index of a best preceding node.
-            \param path_cost            A path cost.
+            \param entry                  An entry.
+            \param preceding_step         An index of a preceding step.
+            \param p_preceding_edge_costs A pointer to preceding edge costs.
+            \param best_preceding_node    An index of a best preceding node.
+            \param path_cost              A path cost.
         */
         node(
-            const entry_view& entry,
-            std::size_t       preceding_step,
-            std::vector<int>  preceding_edge_costs,
-            std::size_t       best_preceding_node,
-            int               path_cost);
+            const entry_view&       entry,
+            std::size_t             preceding_step,
+            const std::vector<int>* p_preceding_edge_costs,
+            std::size_t             best_preceding_node,
+            int                     path_cost);
 
 
         // functions
@@ -161,7 +161,7 @@ namespace tetengo::lattice
 
         std::size_t m_preceding_step;
 
-        std::vector<int> m_preceding_edge_costs;
+        const std::vector<int>* m_p_preceding_edge_costs;
 
         std::size_t m_best_preceding_node;
 
