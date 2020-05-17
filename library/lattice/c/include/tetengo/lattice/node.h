@@ -51,9 +51,12 @@ typedef struct tetengo_lattice_node_tag
 /*!
     \brief Returns the pointer to the BOS (Beginning of Sequence).
 
-    \return The pointer to the BOS.
+    \param p_bos The storage for an output BOS.
+
+    \retval non-zero When an EOS is stored.
+    \retval 0        Otherwise.
 */
-const tetengo_lattice_node_t* tetengo_lattice_node_bos();
+int tetengo_lattice_node_bos(tetengo_lattice_node_t* p_bos);
 
 /*!
     \brief Returns an EOS (End of Sequence).

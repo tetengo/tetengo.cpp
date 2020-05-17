@@ -25,7 +25,6 @@
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
-#include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -215,7 +214,9 @@ BOOST_AUTO_TEST_CASE(construction)
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
 
-        const tetengo::lattice::n_best_iterator iterator{ lattice_, lattice_.settle() };
+        auto                                    eos_node_and_preceding_edge_costs = lattice_.settle();
+        const tetengo::lattice::n_best_iterator iterator{ lattice_,
+                                                          std::move(eos_node_and_preceding_edge_costs.first) };
     }
 
     {
@@ -230,8 +231,10 @@ BOOST_AUTO_TEST_CASE(construction)
         tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
         tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
 
+        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
         tetengo_lattice_node_t eos_node{};
-        tetengo_lattice_lattice_settle(p_lattice, &eos_node);
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
         const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
         BOOST_SCOPE_EXIT(p_iterator)
         {
@@ -272,7 +275,9 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
 
-        const tetengo::lattice::n_best_iterator iterator{ lattice_, lattice_.settle() };
+        auto                                    eos_node_and_preceding_edge_costs = lattice_.settle();
+        const tetengo::lattice::n_best_iterator iterator{ lattice_,
+                                                          std::move(eos_node_and_preceding_edge_costs.first) };
 
         const auto path = *iterator;
         BOOST_TEST_REQUIRE(path.size() == 3U);
@@ -297,9 +302,14 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
 
-        const tetengo::lattice::n_best_iterator iterator1{ lattice_, lattice_.settle() };
-        const tetengo::lattice::n_best_iterator iterator2{ lattice_, lattice_.settle() };
-        tetengo::lattice::n_best_iterator       iterator3{ lattice_, lattice_.settle() };
+        auto                                    eos_node_and_preceding_edge_costs1 = lattice_.settle();
+        const tetengo::lattice::n_best_iterator iterator1{ lattice_,
+                                                           std::move(eos_node_and_preceding_edge_costs1.first) };
+        auto                                    eos_node_and_preceding_edge_costs2 = lattice_.settle();
+        const tetengo::lattice::n_best_iterator iterator2{ lattice_,
+                                                           std::move(eos_node_and_preceding_edge_costs2.first) };
+        auto                                    eos_node_and_preceding_edge_costs3 = lattice_.settle();
+        tetengo::lattice::n_best_iterator iterator3{ lattice_, std::move(eos_node_and_preceding_edge_costs3.first) };
         ++iterator3;
         const tetengo::lattice::n_best_iterator iterator_last{};
 
@@ -324,11 +334,15 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         lattice_.push_back("[HakataTosu]");
         lattice_.push_back("[TosuOmuta]");
 
-        const tetengo::lattice::n_best_iterator iterator1{ lattice_, lattice_.settle() };
+        auto                                    eos_node_and_preceding_edge_costs1 = lattice_.settle();
+        const tetengo::lattice::n_best_iterator iterator1{ lattice_,
+                                                           std::move(eos_node_and_preceding_edge_costs1.first) };
 
         lattice_.push_back("[OmutaKumamoto]");
 
-        const tetengo::lattice::n_best_iterator iterator2{ lattice_, lattice_.settle() };
+        auto                                    eos_node_and_preceding_edge_costs2 = lattice_.settle();
+        const tetengo::lattice::n_best_iterator iterator2{ lattice_,
+                                                           std::move(eos_node_and_preceding_edge_costs2.first) };
 
         BOOST_CHECK(iterator1 != iterator2);
     }
@@ -344,7 +358,8 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
 
-        tetengo::lattice::n_best_iterator iterator{ lattice_, lattice_.settle() };
+        auto                              eos_node_and_preceding_edge_costs = lattice_.settle();
+        tetengo::lattice::n_best_iterator iterator{ lattice_, std::move(eos_node_and_preceding_edge_costs.first) };
         {
             const auto path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 3U);

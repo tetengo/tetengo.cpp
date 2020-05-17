@@ -178,10 +178,11 @@ int tetengo_lattice_vocabulary_findConnection(
             return 0;
         }
 
+        const std::vector<int>             cpp_preceding_edge_costs{};
         const tetengo::lattice::node       cpp_from{ std::string_view{ p_from->key.p_head, p_from->key.length },
                                                reinterpret_cast<const std::any*>(p_from->value_handle),
                                                p_from->preceding_step,
-                                               std::vector<int>{},
+                                               &cpp_preceding_edge_costs,
                                                p_from->best_preceding_node,
                                                p_from->node_cost,
                                                p_from->path_cost };

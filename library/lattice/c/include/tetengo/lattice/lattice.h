@@ -80,12 +80,15 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, const
     Modification of the lattice after settlement invalidate the EOS node.
 
     \param p_lattice A pointer to a lattice.
-    \param p_eos_node The storage for an output EOS node.
+    \param p_eos_node The storage for an output EOS node. Can be NULL.
+    \param p_preceding_edge_costs The storage for preceding edge costs of the EOS. Can be NULL.
 
-    \retval non-zero When an EOS node is stored.
-    \retval 0        Otherwise.
+    \return The preceding edge cost count.
 */
-int tetengo_lattice_lattice_settle(tetengo_lattice_lattice_t* p_lattice, tetengo_lattice_node_t* p_eos_node);
+size_t tetengo_lattice_lattice_settle(
+    tetengo_lattice_lattice_t* p_lattice,
+    tetengo_lattice_node_t*    p_eos_node,
+    int*                       p_preceding_edge_costs);
 
 
 #if defined(__cplusplus)
