@@ -615,7 +615,7 @@ BOOST_AUTO_TEST_CASE(settle)
         BOOST_TEST_REQUIRE(p_lattice);
 
         tetengo_lattice_node_t eos_node{};
-        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, &eos_node, nullptr);
+        const auto preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, &eos_node, nullptr);
         BOOST_TEST(preceding_edge_cost_count == 0U);
     }
 }
