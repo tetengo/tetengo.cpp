@@ -125,3 +125,35 @@ size_t tetengo_lattice_nBestIterator_get(
         return 0;
     }
 }
+
+int tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t* p_iterator)
+{
+    try
+    {
+        if (!p_iterator)
+        {
+            return 0;
+        }
+
+        return p_iterator->p_cpp_iterator_pair->first != p_iterator->p_cpp_iterator_pair->second ? 1 : 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+void tetengo_lattice_nBestIterator_next(tetengo_lattice_nBestIterator_t* p_iterator)
+{
+    try
+    {
+        if (!p_iterator)
+        {
+            return;
+        }
+
+        ++p_iterator->p_cpp_iterator_pair->first;
+    }
+    catch (...)
+    {}
+}

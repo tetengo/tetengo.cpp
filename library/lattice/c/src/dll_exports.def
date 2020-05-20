@@ -19,3 +19,5 @@ EXPORTS
 	tetengo_lattice_nBestIterator_create
 	tetengo_lattice_nBestIterator_destroy
 	tetengo_lattice_nBestIterator_get
+	tetengo_lattice_nBestIterator_hasNext
+	tetengo_lattice_nBestIterator_next
