@@ -290,6 +290,46 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
 
         BOOST_CHECK_THROW(*iterator, std::logic_error);
     }
+
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
+        tetengo_lattice_node_t eos_node{};
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
+        BOOST_SCOPE_EXIT(p_iterator)
+        {
+            tetengo_lattice_nBestIterator_destroy(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_iterator);
+
+        const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+        BOOST_TEST_REQUIRE(node_count == 3U);
+
+        std::vector<tetengo_lattice_node_t> nodes{ node_count };
+        const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+        BOOST_TEST(node_count_again == 3U);
+        BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+        BOOST_TEST(
+            *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) == "tsubame");
+        BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+    }
+    {
+        const auto node_count = tetengo_lattice_nBestIterator_get(nullptr, nullptr);
+        BOOST_TEST(node_count == 0U);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(operator_equal)
@@ -345,6 +385,63 @@ BOOST_AUTO_TEST_CASE(operator_equal)
                                                            std::move(eos_node_and_preceding_edge_costs2.first) };
 
         BOOST_CHECK(iterator1 != iterator2);
+    }
+
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
+        tetengo_lattice_node_t eos_node{};
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+        auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
+        BOOST_SCOPE_EXIT(p_iterator)
+        {
+            tetengo_lattice_nBestIterator_destroy(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_iterator);
+
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(tetengo_lattice_nBestIterator_hasNext(p_iterator));
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        BOOST_TEST(!tetengo_lattice_nBestIterator_hasNext(p_iterator));
+    }
+    {
+        BOOST_TEST(!tetengo_lattice_nBestIterator_hasNext(nullptr));
     }
 }
 
@@ -450,6 +547,189 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         BOOST_CHECK_THROW(*iterator, std::logic_error);
+    }
+
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
+        tetengo_lattice_node_t eos_node{};
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+        auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
+        BOOST_SCOPE_EXIT(p_iterator)
+        {
+            tetengo_lattice_nBestIterator_destroy(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_iterator);
+
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 3U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 3U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "tsubame");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 3U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 3U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "sakura");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "rapid811");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "local817");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "local415");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "local815");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "kamome");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "local815");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "ariake");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "local817");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 3U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 3U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "mizuho");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 5U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 5U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "local415");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "local813");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[3].value_handle)) ==
+                "local817");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[4].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 5U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 5U);
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[1].value_handle)) ==
+                "kamome");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[2].value_handle)) ==
+                "local813");
+            BOOST_TEST(
+                *reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(nodes[3].value_handle)) ==
+                "local817");
+            BOOST_TEST(!tetengo_lattice_entry_valueOf(nodes[4].value_handle));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST(node_count == 0U);
+        }
+    }
+    {
+        tetengo_lattice_nBestIterator_next(nullptr);
     }
 }
 

@@ -419,10 +419,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
+            const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
+                preceding_edge_costs.data(),
+                preceding_edge_costs.size(),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -444,10 +447,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
+            const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
+                preceding_edge_costs.data(),
+                preceding_edge_costs.size(),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -464,10 +470,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
+            const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
+                preceding_edge_costs.data(),
+                preceding_edge_costs.size(),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -498,10 +507,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
+            const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
+                preceding_edge_costs.data(),
+                preceding_edge_costs.size(),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -516,10 +528,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
+            const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
+                preceding_edge_costs.data(),
+                preceding_edge_costs.size(),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
