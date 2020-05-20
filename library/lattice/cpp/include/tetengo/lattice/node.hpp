@@ -31,6 +31,8 @@ namespace tetengo::lattice
             \param p_preceding_edge_costs A pointer to preceding edge costs.
 
             \return The BOS.
+
+            \throw std::invalid_argument When p_preceding_edge_costs is nullptr.
         */
         static node bos(const std::vector<int>* p_preceding_edge_costs);
 
@@ -43,6 +45,8 @@ namespace tetengo::lattice
             \param path_cost              A path cost.
 
             \return An EOS.
+
+            \throw std::invalid_argument When p_preceding_edge_costs is nullptr.
         */
         static node
         eos(std::size_t             preceding_step,

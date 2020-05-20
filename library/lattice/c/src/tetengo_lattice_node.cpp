@@ -149,6 +149,11 @@ int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
 {
     try
     {
+        if (!p_node)
+        {
+            return 0;
+        }
+
         const std::vector<int> cpp_preceding_edge_costs{
             p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count
         };
