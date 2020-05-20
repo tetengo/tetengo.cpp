@@ -148,6 +148,10 @@ size_t tetengo_lattice_lattice_settle(
         {
             return 0;
         }
+        if (p_eos_node && !p_preceding_edge_costs)
+        {
+            return 0;
+        }
 
         const auto cpp_eos_node_and_preceding_edge_costs = p_lattice->p_cpp_lattice->settle();
 
