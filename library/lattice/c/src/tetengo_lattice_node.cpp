@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <stdexcept>
 #include <string_view>
 #include <vector>
 
@@ -26,11 +27,13 @@ int tetengo_lattice_node_bos(
     {
         if (preceding_edge_count > 0 && !p_preceding_edge_costs)
         {
-            return 0;
+            throw std::invalid_argument{
+                "p_preceding_edge_costs is NULL though preceding_edge_count is greater than 0."
+            };
         }
         if (!p_bos)
         {
-            return 0;
+            throw std::invalid_argument{ "p_bos is NULL." };
         }
 
         const std::vector<int> cpp_preceding_edge_costs{};
@@ -66,11 +69,13 @@ int tetengo_lattice_node_eos(
     {
         if (preceding_edge_count > 0 && !p_preceding_edge_costs)
         {
-            return 0;
+            throw std::invalid_argument{
+                "p_preceding_edge_costs is NULL though preceding_edge_count is greater than 0."
+            };
         }
         if (!p_eos)
         {
-            return 0;
+            throw std::invalid_argument{ "p_eos is NULL." };
         }
 
         const std::vector<int> cpp_preceding_edge_costs{};
@@ -108,15 +113,17 @@ int tetengo_lattice_node_toNode(
     {
         if (!p_entry)
         {
-            return 0;
+            throw std::invalid_argument{ "p_entry is NULL." };
         }
         if (preceding_edge_count > 0 && !p_preceding_edge_costs)
         {
-            return 0;
+            throw std::invalid_argument{
+                "p_preceding_edge_costs is NULL though preceding_edge_count is greater than 0."
+            };
         }
         if (!p_node)
         {
-            return 0;
+            throw std::invalid_argument{ "p_node is NULL." };
         }
 
         const tetengo::lattice::entry_view cpp_entry{ std::string_view{ p_entry->key.p_head, p_entry->key.length },
@@ -151,7 +158,7 @@ int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
     {
         if (!p_node)
         {
-            return 0;
+            throw std::invalid_argument{ "p_node is NULL." };
         }
 
         const std::vector<int> cpp_preceding_edge_costs{

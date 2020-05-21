@@ -7,6 +7,7 @@
 #include <any>
 #include <cstddef>
 #include <memory>
+#include <stdexcept>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -48,11 +49,11 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
     {
         if (!p_lattice)
         {
-            return nullptr;
+            throw std::invalid_argument{ "p_lattice is NULL." };
         }
         if (!p_eos_node)
         {
-            return nullptr;
+            throw std::invalid_argument{ "p_eos_node is NULL." };
         }
 
         auto p_cpp_preceding_edge_costs = std::make_unique<std::vector<int>>(
@@ -97,7 +98,7 @@ size_t tetengo_lattice_nBestIterator_get(
     {
         if (!p_iterator)
         {
-            return 0;
+            throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
         const auto cpp_path = *p_iterator->p_cpp_iterator_pair->first;
@@ -132,7 +133,7 @@ int tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t*
     {
         if (!p_iterator)
         {
-            return 0;
+            throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
         return p_iterator->p_cpp_iterator_pair->first != p_iterator->p_cpp_iterator_pair->second ? 1 : 0;
@@ -149,7 +150,7 @@ void tetengo_lattice_nBestIterator_next(tetengo_lattice_nBestIterator_t* p_itera
     {
         if (!p_iterator)
         {
-            return;
+            throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
         ++p_iterator->p_cpp_iterator_pair->first;
