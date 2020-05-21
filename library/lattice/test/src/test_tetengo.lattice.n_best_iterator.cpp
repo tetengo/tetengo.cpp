@@ -25,6 +25,7 @@
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
+#include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -179,21 +180,70 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    std::vector<tetengo::lattice::node> nodes{ std::move(node) };
+    const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
 }
 
 BOOST_AUTO_TEST_CASE(operator_less)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    const std::vector<int>              preceding_edge_costs1{ 3, 1, 4, 1, 5, 9, 2, 6 };
+    const auto                          node1 = tetengo::lattice::node::eos(1, &preceding_edge_costs1, 5, 42);
+    std::vector<tetengo::lattice::node> nodes1{ std::move(node1) };
+    const tetengo::lattice::cap         cap1{ std::move(nodes1), 24, 42 };
+
+    const std::vector<int>              preceding_edge_costs2{ 3, 1, 4, 1, 5, 9, 2, 6 };
+    const auto                          node2 = tetengo::lattice::node::eos(1, &preceding_edge_costs2, 5, 42);
+    std::vector<tetengo::lattice::node> nodes2{ std::move(node2) };
+    const tetengo::lattice::cap         cap2{ std::move(nodes2), 24, 42 };
+
+    const std::vector<int>              preceding_edge_costs3{ 2, 7, 1, 8, 2, 8 };
+    const auto                          node3 = tetengo::lattice::node::eos(2, &preceding_edge_costs3, 3, 31);
+    std::vector<tetengo::lattice::node> nodes3{ std::move(node3) };
+    const tetengo::lattice::cap         cap3{ std::move(nodes3), 12, 4242 };
+
+    BOOST_CHECK(!(cap1 < cap2));
+    BOOST_CHECK(cap1 < cap3);
 }
 
-BOOST_AUTO_TEST_CASE(tail)
+BOOST_AUTO_TEST_CASE(tail_path)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    std::vector<tetengo::lattice::node> nodes{ std::move(node) };
+    const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
+
+    BOOST_TEST(cap_.tail_path().size() == 1U);
+    BOOST_TEST(&cap_.tail_path()[0].preceding_edge_costs() == &preceding_edge_costs);
+}
+
+BOOST_AUTO_TEST_CASE(tail_path_cost)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    std::vector<tetengo::lattice::node> nodes{ std::move(node) };
+    const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
+
+    BOOST_TEST(cap_.tail_path_cost() == 24);
+}
+
+BOOST_AUTO_TEST_CASE(whole_path_cost)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    std::vector<tetengo::lattice::node> nodes{ std::move(node) };
+    const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
+
+    BOOST_TEST(cap_.whole_path_cost() == 42);
 }
 
 
