@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cstddef>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <typeinfo>
@@ -40,11 +41,11 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
     {
         if (!p_entries || entry_count == 0)
         {
-            return nullptr;
+            throw std::invalid_argument{ "p_entries is NULL or entry_count is 0." };
         }
         if (!p_connections || connection_count == 0)
         {
-            return nullptr;
+            throw std::invalid_argument{ "p_connections is NULL or connection_count is 0." };
         }
 
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> cpp_entries{};
@@ -121,11 +122,11 @@ size_t tetengo_lattice_vocabulary_findEntries(
     {
         if (!p_vocabulary)
         {
-            return 0;
+            throw std::invalid_argument{ "p_vocabulary is NULL." };
         }
         if (!key)
         {
-            return 0;
+            throw std::invalid_argument{ "key is NULL." };
         }
 
         const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(key);
@@ -163,19 +164,19 @@ int tetengo_lattice_vocabulary_findConnection(
     {
         if (!p_vocabulary)
         {
-            return 0;
+            throw std::invalid_argument{ "p_vocabulary is NULL." };
         }
         if (!p_from)
         {
-            return 0;
+            throw std::invalid_argument{ "p_from is NULL." };
         }
         if (!p_to)
         {
-            return 0;
+            throw std::invalid_argument{ "p_to is NULL." };
         }
         if (!p_connection)
         {
-            return 0;
+            throw std::invalid_argument{ "p_connection is NULL." };
         }
 
         const std::vector<int>             cpp_preceding_edge_costs{};

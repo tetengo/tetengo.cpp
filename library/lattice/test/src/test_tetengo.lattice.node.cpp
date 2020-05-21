@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(bos)
 
     {
         const std::vector<int> preceding_edge_costs{};
-        const auto&            bos = tetengo::lattice::node::bos(&preceding_edge_costs);
+        const auto             bos = tetengo::lattice::node::bos(&preceding_edge_costs);
 
         BOOST_TEST(bos.key() == tetengo::lattice::entry_view::bos_eos().key());
         BOOST_TEST(!bos.value().has_value());
@@ -42,6 +42,9 @@ BOOST_AUTO_TEST_CASE(bos)
         BOOST_TEST(bos.best_preceding_node() == std::numeric_limits<std::size_t>::max());
         BOOST_TEST(bos.node_cost() == tetengo::lattice::entry_view::bos_eos().cost());
         BOOST_TEST(bos.path_cost() == 0);
+    }
+    {
+        BOOST_CHECK_THROW(tetengo::lattice::node::bos(nullptr), std::invalid_argument);
     }
 
     {
@@ -59,6 +62,16 @@ BOOST_AUTO_TEST_CASE(bos)
         BOOST_TEST(bos.best_preceding_node == std::numeric_limits<std::size_t>::max());
         BOOST_TEST(bos.node_cost == tetengo_lattice_entry_bosEos()->cost);
         BOOST_TEST(bos.path_cost == 0);
+    }
+    {
+        tetengo_lattice_node_t bos{};
+        const auto             result = tetengo_lattice_node_bos(nullptr, 3, &bos);
+        BOOST_TEST(!result);
+    }
+    {
+        const std::vector<int> preceding_edge_costs{};
+        const auto result = tetengo_lattice_node_bos(preceding_edge_costs.data(), preceding_edge_costs.size(), nullptr);
+        BOOST_TEST(!result);
     }
 }
 
@@ -78,6 +91,10 @@ BOOST_AUTO_TEST_CASE(eos)
         BOOST_TEST(eos.node_cost() == tetengo::lattice::entry_view::bos_eos().cost());
         BOOST_TEST(eos.path_cost() == 42);
     }
+    {
+        BOOST_CHECK_THROW(tetengo::lattice::node::eos(1, nullptr, 5, 42), std::invalid_argument);
+    }
+
 
     {
         const std::vector<int> preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
@@ -137,6 +154,11 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_CHECK_THROW(
             const tetengo::lattice::node node_("mizuho", nullptr, 1, &preceding_edge_costs, 5, 24, 2424),
             std::invalid_argument);
+    }
+    {
+        const std::any value{ 42 };
+        BOOST_CHECK_THROW(
+            const tetengo::lattice::node node_("mizuho", &value, 1, nullptr, 5, 24, 2424), std::invalid_argument);
     }
 
     {
@@ -478,6 +500,9 @@ BOOST_AUTO_TEST_CASE(is_bos)
                                             2424 };
 
         BOOST_TEST(!tetengo_lattice_node_isBos(&node_));
+    }
+    {
+        BOOST_TEST(!tetengo_lattice_node_isBos(nullptr));
     }
 }
 

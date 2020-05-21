@@ -79,8 +79,8 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, const
     You can modify the lattice after settlement.
     Modification of the lattice after settlement invalidate the EOS node.
 
-    \param p_lattice A pointer to a lattice.
-    \param p_eos_node The storage for an output EOS node. Can be NULL.
+    \param p_lattice              A pointer to a lattice.
+    \param p_eos_node             The storage for an output EOS node. Can be NULL.
     \param p_preceding_edge_costs The storage for preceding edge costs of the EOS. Can be NULL.
 
     \return The preceding edge cost count.

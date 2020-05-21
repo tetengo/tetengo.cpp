@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <iterator>
 #include <memory>
+#include <stdexcept>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -33,7 +34,7 @@ tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabu
     {
         if (!p_vocabulary)
         {
-            return nullptr;
+            throw std::invalid_argument{ "p_vocabulary is NULL." };
         }
 
         auto p_cpp_lattice = std::make_unique<tetengo::lattice::lattice>(std::move(p_vocabulary->p_cpp_vocabulary));
@@ -63,7 +64,7 @@ size_t tetengo_lattice_lattice_stepCount(const tetengo_lattice_lattice_t* const 
     {
         if (!p_lattice)
         {
-            return 0;
+            throw std::invalid_argument{ "p_lattice is NULL." };
         }
 
         return p_lattice->p_cpp_lattice->step_count();
@@ -83,11 +84,11 @@ size_t tetengo_lattice_lattice_nodesAt(
     {
         if (!p_lattice)
         {
-            return 0;
+            throw std::invalid_argument{ "p_lattice is NULL." };
         }
         if (step >= p_lattice->p_cpp_lattice->step_count())
         {
-            return 0;
+            throw std::invalid_argument{ "step is too large for the lattice." };
         }
 
         const auto& cpp_nodes = p_lattice->p_cpp_lattice->nodes_at(step);
@@ -120,11 +121,11 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice,
     {
         if (!p_lattice)
         {
-            return 0;
+            throw std::invalid_argument{ "p_lattice is NULL." };
         }
         if (!input)
         {
-            return 0;
+            throw std::invalid_argument{ "input is NULL." };
         }
 
         p_lattice->p_cpp_lattice->push_back(input);
@@ -146,11 +147,11 @@ size_t tetengo_lattice_lattice_settle(
     {
         if (!p_lattice)
         {
-            return 0;
+            throw std::invalid_argument{ "p_lattice is NULL." };
         }
         if (p_eos_node && !p_preceding_edge_costs)
         {
-            return 0;
+            throw std::invalid_argument{ "p_preceding_edge_costs is NULL though p_eos_node is specified." };
         }
 
         const auto cpp_eos_node_and_preceding_edge_costs = p_lattice->p_cpp_lattice->settle();

@@ -43,7 +43,7 @@ void tetengo_lattice_nBestIterator_destroy(const tetengo_lattice_nBestIterator_t
 /*!
     \brief Dereferences the iterator.
 
-    \param p_iterator A pointer to a iterator.
+    \param p_iterator A pointer to an iterator.
     \param p_path     The storage for an output path. Can be NULL.
 
     \return The node count of the path.
@@ -54,7 +54,7 @@ tetengo_lattice_nBestIterator_get(const tetengo_lattice_nBestIterator_t* p_itera
 /*!
     \brief Returns non-zero when the iterator will return more elements.
 
-    \param p_iterator A pointer to a iterator.
+    \param p_iterator A pointer to an iterator.
 
     \retval non-zero When the iterator will return more elements.
     \retval 0        Otherwise.
@@ -64,7 +64,7 @@ int tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t*
 /*!
     \brief Increments the iterator.
 
-    \param p_iterator A pointer to a iterator.
+    \param p_iterator A pointer to an iterator.
 */
 void tetengo_lattice_nBestIterator_next(tetengo_lattice_nBestIterator_t* p_iterator);
 

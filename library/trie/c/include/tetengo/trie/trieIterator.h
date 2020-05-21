@@ -37,7 +37,7 @@ void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator_t* p_iter
 /*!
     \brief Dereferences the iterator.
 
-    \param p_iterator A pointer to a iterator.
+    \param p_iterator A pointer to an iterator.
 
     \return The dereferenced value. Or NULL on error.
 */
@@ -46,7 +46,7 @@ const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator_t* p_i
 /*!
     \brief Returns non-zero when the iterator will return more elements.
 
-    \param p_iterator A pointer to a iterator.
+    \param p_iterator A pointer to an iterator.
 
     \retval non-zero When the iterator will return more elements.
     \retval 0        Otherwise.
@@ -56,7 +56,7 @@ int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator_t* p_itera
 /*!
     \brief Increments the iterator.
 
-    \param p_iterator A pointer to a iterator.
+    \param p_iterator A pointer to an iterator.
 */
 void tetengo_trie_trieIterator_next(tetengo_trie_trieIterator_t* p_iterator);
 
