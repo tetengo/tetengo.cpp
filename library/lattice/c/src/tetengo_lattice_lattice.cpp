@@ -5,7 +5,6 @@
 */
 
 #include <algorithm>
-#include <any>
 #include <cassert>
 #include <cstddef>
 #include <iterator>
@@ -17,6 +16,7 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
@@ -166,7 +166,7 @@ size_t tetengo_lattice_lattice_settle(
 
         if (p_eos_node)
         {
-            assert(!cpp_eos_node_and_preceding_edge_costs.first.value().has_value());
+            assert(!tetengo::lattice::temp::std_any_has_value(cpp_eos_node_and_preceding_edge_costs.first.value()));
             p_eos_node->key.p_head = cpp_eos_node_and_preceding_edge_costs.first.key().data();
             p_eos_node->key.length = cpp_eos_node_and_preceding_edge_costs.first.key().length();
             p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
