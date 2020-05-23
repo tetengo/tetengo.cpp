@@ -13,6 +13,37 @@
 
 namespace tetengo::lattice
 {
+    namespace temp
+    {
+#if defined(_MSC_VER)
+        using empty_type = struct
+        {};
+
+        const empty_type empty{};
+#endif
+
+        std::any empty_std_any()
+        {
+#if defined(_MSC_VER)
+            return std::any{ &empty };
+#else
+            return std::any{};
+#endif
+        }
+
+        bool std_any_has_value(const std::any& any_)
+        {
+#if defined(_MSC_VER)
+            return any_.has_value() && std::any_cast<const empty_type*>(any_) != &empty;
+#else
+            return any_.has_value();
+#endif
+        }
+
+
+    }
+
+
     template <>
     const basic_entry<std::string, std::any>& basic_entry<std::string, std::any>::bos_eos()
     {
@@ -23,7 +54,7 @@ namespace tetengo::lattice
     template <>
     const basic_entry<std::string_view, const std::any*>& basic_entry<std::string_view, const std::any*>::bos_eos()
     {
-        static const std::any    value_singleton{};
+        static const std::any    value_singleton = temp::empty_std_any();
         static const basic_entry singleton{ std::string_view{}, &value_singleton, 0 };
         return singleton;
     }

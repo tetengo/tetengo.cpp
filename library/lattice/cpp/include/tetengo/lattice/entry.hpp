@@ -14,6 +14,18 @@
 
 namespace tetengo::lattice
 {
+#if !defined(DOCUMENTATION)
+    namespace temp
+    {
+        std::any empty_std_any();
+
+        bool std_any_has_value(const std::any& any_);
+
+
+    }
+#endif
+
+
     /*!
         \brief A template of an entry.
 
