@@ -66,7 +66,7 @@ namespace tetengo::lattice
 
         std::vector<node> make_whole_path(
             const lattice&                                                       lattice_,
-            const cap                                                            opened,
+            const cap&                                                           opened,
             std::priority_queue<cap, std::vector<cap>, std::greater<cap>>* const p_caps)
         {
             auto path = opened.tail_path();
