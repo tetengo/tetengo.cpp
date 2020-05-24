@@ -128,7 +128,7 @@ namespace tetengo::lattice
         std::reverse(std::begin(m_path), std::end(m_path));
     }
 
-    std::vector<node> n_best_iterator::dereference() const
+    const std::vector<node>& n_best_iterator::dereference() const
     {
         if (m_caps.empty())
         {
