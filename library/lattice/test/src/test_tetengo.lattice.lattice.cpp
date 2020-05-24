@@ -43,15 +43,27 @@ namespace
                                             |                                 |
                                             +------------local815-------------+
                                                       path cost: 3550
-        (1) 3390  BOS - tsubame - EOS
-        (2) 3620  BOS - sakura - EOS
-        (3) 3760  BOS - rapid811 - local817 - EOS
-        (4) 4050  BOS - local415 - local815 - EOS
-        (5) 4320  BOS - kamome - local815 - EOS
-        (6) 4600  BOS - ariake - local817 - EOS
-        (7) 4670  BOS - mizuho - EOS
-        (8) 4680  BOS - local415 - local813 - local817 - EOS
-        (9) 4950  BOS - kamome - local813 - local817 - EOS
+
+        (0) 3390  BOS - tsubame - EOS
+            [ EOS(3390)                                                      ]
+        (1) 3620  BOS - sakura - EOS
+            [ sakura(3620),   local817(3760), local815(4050), mizuho(4670)   ]
+        (2) 3760  BOS - rapid811 - local817 - EOS
+            [ local817(3760), local815(4050), mizuho(4670)                   ]
+        (3) 4050  BOS - local415 - local815 - EOS
+            [ local815(4050), ariake(4600),   mizuho(4670),   local813(4680) ]
+        (4) 4320  BOS - kamome - local815 - EOS
+            [ kamome(4320),   ariake(4600),   mizuho(4670),   local813(4680) ]
+        (5) 4600  BOS - ariake - local817 - EOS
+            [ ariake(4600),   mizuho(4670),   local813(4680)                 ]
+        (6) 4670  BOS - mizuho - EOS
+            [ mizuho(4670),   local813(4680)                                 ]
+        (7) 4680  BOS - local415 - local813 - local817 - EOS
+            [ local813(4680)                                                 ]
+        (8) 4950  BOS - kamome - local813 - local817 - EOS
+            [ kamome(4950)                                                   ]
+        (9) ----  -
+            [                                                                ]
     */
     const std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
         { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
