@@ -111,17 +111,21 @@ namespace tetengo::lattice
 
     }
 
-    n_best_iterator::n_best_iterator() : m_p_lattice{}, m_caps{}, m_eos_hash{ 0 }, m_index{ 0 } {}
+    n_best_iterator::n_best_iterator() : m_p_lattice{}, m_caps{}, m_eos_hash{ 0 }, m_path{}, m_index{ 0 } {}
 
     n_best_iterator::n_best_iterator(const lattice& lattice_, node eos_node) :
     m_p_lattice{ &lattice_ },
         m_caps{},
         m_eos_hash{ calc_node_hash(eos_node) },
+        m_path{},
         m_index{ 0 }
     {
         const int tail_path_cost = eos_node.node_cost();
         const int whole_path_cost = eos_node.path_cost();
         m_caps.emplace(std::vector<node>{ std::move(eos_node) }, tail_path_cost, whole_path_cost);
+
+        m_path = make_whole_path(*m_p_lattice, m_caps.top(), nullptr);
+        std::reverse(std::begin(m_path), std::end(m_path));
     }
 
     std::vector<node> n_best_iterator::dereference() const
@@ -131,9 +135,7 @@ namespace tetengo::lattice
             throw std::logic_error{ "No more path." };
         }
 
-        std::vector<node> path = make_whole_path(*m_p_lattice, m_caps.top(), nullptr);
-        std::reverse(std::begin(path), std::end(path));
-        return path;
+        return m_path;
     }
 
     bool n_best_iterator::equal(const n_best_iterator& another) const
@@ -156,6 +158,16 @@ namespace tetengo::lattice
         const cap opened = m_caps.top();
         m_caps.pop();
         make_whole_path(*m_p_lattice, opened, &m_caps);
+
+        if (m_caps.empty())
+        {
+            m_path.clear();
+        }
+        else
+        {
+            m_path = make_whole_path(*m_p_lattice, m_caps.top(), nullptr);
+            std::reverse(std::begin(m_path), std::end(m_path));
+        }
         ++m_index;
     }
 

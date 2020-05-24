@@ -128,6 +128,8 @@ namespace tetengo::lattice
 
         std::size_t m_eos_hash;
 
+        std::vector<node> m_path;
+
         std::size_t m_index;
 
 
