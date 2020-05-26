@@ -101,7 +101,7 @@ size_t tetengo_lattice_nBestIterator_get(
             throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
-        const auto cpp_path = *p_iterator->p_cpp_iterator_pair->first;
+        const auto& cpp_path = *p_iterator->p_cpp_iterator_pair->first;
 
         if (p_path)
         {

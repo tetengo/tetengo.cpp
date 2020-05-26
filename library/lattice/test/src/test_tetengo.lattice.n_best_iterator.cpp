@@ -45,15 +45,27 @@ namespace
                                             |                                 |
                                             +------------local815-------------+
                                                       path cost: 3550
-        (1) 3390  BOS - tsubame - EOS
-        (2) 3620  BOS - sakura - EOS
-        (3) 3760  BOS - rapid811 - local817 - EOS
-        (4) 4050  BOS - local415 - local815 - EOS
-        (5) 4320  BOS - kamome - local815 - EOS
-        (6) 4600  BOS - ariake - local817 - EOS
-        (7) 4670  BOS - mizuho - EOS
-        (8) 4680  BOS - local415 - local813 - local817 - EOS
-        (9) 4950  BOS - kamome - local813 - local817 - EOS
+
+        (0) 3390  BOS - tsubame - EOS
+            [ sakura(3620),   local817(3760), local815(4050), mizuho(4670)   ]
+        (1) 3620  BOS - sakura - EOS
+            [ local817(3760), local815(4050), mizuho(4670)                   ]
+        (2) 3760  BOS - rapid811 - local817 - EOS
+            [ local815(4050), ariake(4600),   mizuho(4670),   local813(4680) ]
+        (3) 4050  BOS - local415 - local815 - EOS
+            [ kamome(4320),   ariake(4600),   mizuho(4670),   local813(4680) ]
+        (4) 4320  BOS - kamome - local815 - EOS
+            [ ariake(4600),   mizuho(4670),   local813(4680)                 ]
+        (5) 4600  BOS - ariake - local817 - EOS
+            [ mizuho(4670),   local813(4680)                                 ]
+        (6) 4670  BOS - mizuho - EOS
+            [ local813(4680)                                                 ]
+        (7) 4680  BOS - local415 - local813 - local817 - EOS
+            [ kamome(4950)                                                   ]
+        (8) 4950  BOS - kamome - local813 - local817 - EOS
+            [                                                                ]
+        (9) ----  -
+            [                                                                ]
     */
     const std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
         { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
@@ -181,7 +193,7 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    auto                                node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
     std::vector<tetengo::lattice::node> nodes{ std::move(node) };
     const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
 }
@@ -191,17 +203,17 @@ BOOST_AUTO_TEST_CASE(operator_less)
     BOOST_TEST_PASSPOINT();
 
     const std::vector<int>              preceding_edge_costs1{ 3, 1, 4, 1, 5, 9, 2, 6 };
-    const auto                          node1 = tetengo::lattice::node::eos(1, &preceding_edge_costs1, 5, 42);
+    auto                                node1 = tetengo::lattice::node::eos(1, &preceding_edge_costs1, 5, 42);
     std::vector<tetengo::lattice::node> nodes1{ std::move(node1) };
     const tetengo::lattice::cap         cap1{ std::move(nodes1), 24, 42 };
 
     const std::vector<int>              preceding_edge_costs2{ 3, 1, 4, 1, 5, 9, 2, 6 };
-    const auto                          node2 = tetengo::lattice::node::eos(1, &preceding_edge_costs2, 5, 42);
+    auto                                node2 = tetengo::lattice::node::eos(1, &preceding_edge_costs2, 5, 42);
     std::vector<tetengo::lattice::node> nodes2{ std::move(node2) };
     const tetengo::lattice::cap         cap2{ std::move(nodes2), 24, 42 };
 
     const std::vector<int>              preceding_edge_costs3{ 2, 7, 1, 8, 2, 8 };
-    const auto                          node3 = tetengo::lattice::node::eos(2, &preceding_edge_costs3, 3, 31);
+    auto                                node3 = tetengo::lattice::node::eos(2, &preceding_edge_costs3, 3, 31);
     std::vector<tetengo::lattice::node> nodes3{ std::move(node3) };
     const tetengo::lattice::cap         cap3{ std::move(nodes3), 12, 4242 };
 
@@ -214,7 +226,7 @@ BOOST_AUTO_TEST_CASE(tail_path)
     BOOST_TEST_PASSPOINT();
 
     const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    auto                                node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
     std::vector<tetengo::lattice::node> nodes{ std::move(node) };
     const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
 
@@ -227,7 +239,7 @@ BOOST_AUTO_TEST_CASE(tail_path_cost)
     BOOST_TEST_PASSPOINT();
 
     const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    auto                                node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
     std::vector<tetengo::lattice::node> nodes{ std::move(node) };
     const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
 
@@ -239,7 +251,7 @@ BOOST_AUTO_TEST_CASE(whole_path_cost)
     BOOST_TEST_PASSPOINT();
 
     const std::vector<int>              preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-    const auto                          node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
+    auto                                node = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
     std::vector<tetengo::lattice::node> nodes{ std::move(node) };
     const tetengo::lattice::cap         cap_{ std::move(nodes), 24, 42 };
 
@@ -329,7 +341,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         const tetengo::lattice::n_best_iterator iterator{ lattice_,
                                                           std::move(eos_node_and_preceding_edge_costs.first) };
 
-        const auto path = *iterator;
+        const auto& path = *iterator;
         BOOST_TEST_REQUIRE(path.size() == 3U);
         BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
         BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "tsubame");
@@ -508,7 +520,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         auto                              eos_node_and_preceding_edge_costs = lattice_.settle();
         tetengo::lattice::n_best_iterator iterator{ lattice_, std::move(eos_node_and_preceding_edge_costs.first) };
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 3U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "tsubame");
@@ -517,7 +529,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 3U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "sakura");
@@ -526,7 +538,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "rapid811");
@@ -536,7 +548,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local415");
@@ -546,7 +558,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "kamome");
@@ -556,7 +568,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 4U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "ariake");
@@ -566,7 +578,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 3U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "mizuho");
@@ -575,7 +587,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 5U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "local415");
@@ -586,7 +598,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         {
-            const auto path = *iterator;
+            const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 5U);
             BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path[0].value()));
             BOOST_TEST(std::any_cast<std::string>(path[1].value()) == "kamome");

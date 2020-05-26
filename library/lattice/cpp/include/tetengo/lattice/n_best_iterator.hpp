@@ -92,7 +92,7 @@ namespace tetengo::lattice
         \brief An N-best lattice path iterator.
     */
     class n_best_iterator :
-    public boost::iterator_facade<n_best_iterator, std::vector<node>, std::input_iterator_tag, std::vector<node>>
+    public boost::iterator_facade<n_best_iterator, std::vector<node>, std::forward_iterator_tag, std::vector<node>>
     {
     public:
         // friends
@@ -128,12 +128,14 @@ namespace tetengo::lattice
 
         std::size_t m_eos_hash;
 
+        std::vector<node> m_path;
+
         std::size_t m_index;
 
 
         // functions
 
-        std::vector<node> dereference() const;
+        const std::vector<node>& dereference() const;
 
         bool equal(const n_best_iterator& another) const;
 
