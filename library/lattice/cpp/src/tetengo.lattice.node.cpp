@@ -73,6 +73,13 @@ namespace tetengo::lattice
           best_preceding_node, entry.cost(),  path_cost }
     {}
 
+    bool operator==(const node& one, const node& another)
+    {
+        return one.key() == another.key() && one.preceding_step() == another.preceding_step() &&
+               one.best_preceding_node() == another.best_preceding_node() && one.node_cost() == another.node_cost() &&
+               one.path_cost() == another.path_cost();
+    }
+
     const std::string_view& node::key() const
     {
         return m_key;
@@ -114,9 +121,7 @@ namespace tetengo::lattice
     {
         static const std::vector<int> bos_preceding_edge_costs{};
         static const node             bos_ = bos(&bos_preceding_edge_costs);
-        return key() == bos_.key() && preceding_step() == bos_.preceding_step() &&
-               best_preceding_node() == bos_.best_preceding_node() && node_cost() == bos_.node_cost() &&
-               path_cost() == bos_.path_cost();
+        return *this == bos_;
     }
 
 

@@ -12,6 +12,8 @@
 #include <string_view>
 #include <vector>
 
+#include <boost/operators.hpp>
+
 #include <tetengo/lattice/entry.hpp>
 
 
@@ -20,7 +22,7 @@ namespace tetengo::lattice
     /*!
         \brief A node.
     */
-    class node
+    class node : public boost::equality_comparable<node>
     {
     public:
         // static functions
@@ -97,6 +99,17 @@ namespace tetengo::lattice
 
 
         // functions
+
+        /*!
+            \brief Returns true if one node is equal to another.
+
+            \param one     One node.
+            \param another Another node.
+
+            \retval true  When one node is equal to another.
+            \retval valse Otherwise.
+        */
+        friend bool operator==(const node& one, const node& another);
 
         /*!
             \brief Returns the key.

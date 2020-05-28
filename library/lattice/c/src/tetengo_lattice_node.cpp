@@ -152,6 +152,48 @@ int tetengo_lattice_node_toNode(
     }
 }
 
+int tetengo_lattice_node_equal(const tetengo_lattice_node_t* const p_one, const tetengo_lattice_node_t* const p_another)
+{
+    try
+    {
+        if (!p_one)
+        {
+            throw std::invalid_argument{ "p_one is NULL." };
+        }
+        if (!p_another)
+        {
+            throw std::invalid_argument{ "p_another is NULL." };
+        }
+
+        const std::vector<int> cpp_preceding_edge_costs_one{
+            p_one->p_preceding_edge_costs, p_one->p_preceding_edge_costs + p_one->preceding_edge_cost_count
+        };
+        const tetengo::lattice::node cpp_one{ std::string_view{ p_one->key.p_head, p_one->key.length },
+                                              reinterpret_cast<const std::any*>(p_one->value_handle),
+                                              p_one->preceding_step,
+                                              &cpp_preceding_edge_costs_one,
+                                              p_one->best_preceding_node,
+                                              p_one->node_cost,
+                                              p_one->path_cost };
+        const std::vector<int>       cpp_preceding_edge_costs_another{
+            p_another->p_preceding_edge_costs, p_another->p_preceding_edge_costs + p_another->preceding_edge_cost_count
+        };
+        const tetengo::lattice::node cpp_another{ std::string_view{ p_another->key.p_head, p_another->key.length },
+                                                  reinterpret_cast<const std::any*>(p_another->value_handle),
+                                                  p_another->preceding_step,
+                                                  &cpp_preceding_edge_costs_another,
+                                                  p_another->best_preceding_node,
+                                                  p_another->node_cost,
+                                                  p_another->path_cost };
+
+        return cpp_one == cpp_another ? 1 : 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
 int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
 {
     try
