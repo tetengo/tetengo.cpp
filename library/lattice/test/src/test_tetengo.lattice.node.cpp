@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <boost/core/ignore_unused.hpp>
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -246,6 +247,32 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto                        result = tetengo_lattice_node_toNode(
             &entry, 1, preceding_edge_costs.data(), preceding_edge_costs.size(), 5, 2424, nullptr);
         BOOST_TEST(!result);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const std::vector<int> preceding_edge_costs_bos{};
+        const auto             bos = tetengo::lattice::node::bos(&preceding_edge_costs_bos);
+
+        const std::vector<int> preceding_edge_costs_eos{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const auto             eos = tetengo::lattice::node::eos(1, &preceding_edge_costs_eos, 5, 42);
+
+        const std::any               value1{ 42 };
+        const std::vector<int>       preceding_edge_costs1{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo::lattice::node node1{ "mizuho", &value1, 1, &preceding_edge_costs1, 5, 24, 2424 };
+
+        const std::any               value2{ 42 };
+        const std::vector<int>       preceding_edge_costs2{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo::lattice::node node2{ "mizuho", &value2, 1, &preceding_edge_costs2, 5, 24, 2424 };
+
+        BOOST_CHECK(bos == bos);
+        BOOST_CHECK(bos != eos);
+        BOOST_CHECK(bos != node1);
+        BOOST_CHECK(node1 == node2);
     }
 }
 
