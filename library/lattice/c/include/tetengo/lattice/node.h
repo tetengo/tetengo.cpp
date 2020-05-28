@@ -114,6 +114,17 @@ int tetengo_lattice_node_toNode(
     tetengo_lattice_node_t*            p_node);
 
 /*!
+    \brief Returns true if one node is equal to another.
+
+    \param p_one     A pointer to one node.
+    \param p_another A pointer to another node.
+
+    \retval non-zero When one node is equal to another.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_node_equal(const tetengo_lattice_node_t* p_one, const tetengo_lattice_node_t* p_another);
+
+/*!
     \brief Returns true is this node is the BOS.
 
     \param p_node A pointer to node.
