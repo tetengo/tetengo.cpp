@@ -3,12 +3,16 @@
 
 pkg_headers = \
     lattice/connection.hpp \
+    lattice/constraint.hpp \
+    lattice/constraint_element.hpp \
     lattice/entry.hpp \
     lattice/lattice.hpp \
     lattice/n_best_iterator.hpp \
     lattice/node.hpp \
+    lattice/node_constraint_element.hpp \
     lattice/unordered_map_vocabulary.hpp \
-    lattice/vocabulary.hpp
+    lattice/vocabulary.hpp \
+    lattice/wildcard_constraint_element.hpp
 
 extra_headers = \
     lattice/0namespace.dox

@@ -37,6 +37,18 @@
     <ClCompile Include="src\test_tetengo.lattice.n_best_iterator.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\test_tetengo.lattice.constraint.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.lattice.constraint_element.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.lattice.node_constraint_element.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.lattice.wildcard_constraint_element.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
