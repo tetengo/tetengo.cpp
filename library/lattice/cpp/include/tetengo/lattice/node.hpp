@@ -70,7 +70,7 @@ namespace tetengo::lattice
             \param node_cost              A node cost.
             \param path_cost              A path cost.
 
-            \throw std::invalid_argument When p_value is nullptr.
+            \throw std::invalid_argument When p_value and/or p_preceding_edge_costs are nullptr.
         */
         node(
             std::string_view        key,
@@ -89,6 +89,8 @@ namespace tetengo::lattice
             \param p_preceding_edge_costs A pointer to preceding edge costs.
             \param best_preceding_node    An index of a best preceding node.
             \param path_cost              A path cost.
+
+            \throw std::invalid_argument When p_preceding_edge_costs is nullptr.
         */
         node(
             const entry_view&       entry,
