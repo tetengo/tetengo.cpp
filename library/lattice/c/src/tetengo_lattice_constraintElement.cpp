@@ -11,12 +11,15 @@
 #include <utility>
 #include <vector>
 
+#include <stddef.h>
+
 #include <tetengo/lattice/constraintElement.h>
 #include <tetengo/lattice/constraint_element.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/node_constraint_element.hpp>
 #include <tetengo/lattice/stringView.h>
+#include <tetengo/lattice/wildcard_constraint_element.hpp>
 
 
 struct tetengo_lattice_constraintElement_tag
@@ -52,6 +55,22 @@ tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_latt
 
         auto p_cpp_constraint_element =
             std::make_unique<tetengo::lattice::node_constraint_element>(std::move(cpp_node));
+
+        auto p_instance = std::make_unique<tetengo_lattice_constraintElement_t>(std::move(p_cpp_constraint_element));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+const tetengo_lattice_constraintElement_t*
+tetengo_lattice_constraintElement_createWildcardConstraintElement(const size_t preceding_step)
+{
+    try
+    {
+        auto p_cpp_constraint_element = std::make_unique<tetengo::lattice::wildcard_constraint_element>(preceding_step);
 
         auto p_instance = std::make_unique<tetengo_lattice_constraintElement_t>(std::move(p_cpp_constraint_element));
         return p_instance.release();

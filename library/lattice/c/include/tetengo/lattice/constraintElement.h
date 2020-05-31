@@ -7,6 +7,8 @@
 #if !defined(TETENGO_LATTICE_CONSTRAINTELEMENT_H)
 #define TETENGO_LATTICE_CONSTRAINTELEMENT_H
 
+#include <stddef.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -26,6 +28,16 @@ typedef struct tetengo_lattice_node_tag              tetengo_lattice_node_t;
 */
 const tetengo_lattice_constraintElement_t*
 tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_lattice_node_t* p_node);
+
+/*!
+    \brief Creates a node constraint element.
+
+    \param preceding_step An index of a preceding step.
+
+    \return A pointer to a node constraint element. Or NULL when p_node is NULL.
+*/
+const tetengo_lattice_constraintElement_t*
+tetengo_lattice_constraintElement_createWildcardConstraintElement(size_t preceding_step);
 
 /*!
     \brief Destroys a constraint element.

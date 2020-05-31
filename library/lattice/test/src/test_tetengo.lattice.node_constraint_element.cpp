@@ -50,7 +50,8 @@ BOOST_AUTO_TEST_CASE(construction)
                                                    5,
                                                    24,
                                                    2424 };
-        const auto* p_constraint_element = tetengo_lattice_constraintElement_createNodeConstraintElement(&element_node);
+        const auto* const            p_constraint_element =
+            tetengo_lattice_constraintElement_createNodeConstraintElement(&element_node);
         BOOST_SCOPE_EXIT(p_constraint_element)
         {
             tetengo_lattice_constraintElement_destroy(p_constraint_element);
@@ -59,7 +60,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_constraint_element);
     }
     {
-        const auto* p_constraint_element = tetengo_lattice_constraintElement_createNodeConstraintElement(nullptr);
+        const auto* const p_constraint_element = tetengo_lattice_constraintElement_createNodeConstraintElement(nullptr);
         BOOST_TEST(!p_constraint_element);
     }
 }
@@ -105,7 +106,8 @@ BOOST_AUTO_TEST_CASE(matches)
                                                    5,
                                                    24,
                                                    2424 };
-        const auto* p_constraint_element = tetengo_lattice_constraintElement_createNodeConstraintElement(&element_node);
+        const auto* const            p_constraint_element =
+            tetengo_lattice_constraintElement_createNodeConstraintElement(&element_node);
         BOOST_SCOPE_EXIT(p_constraint_element)
         {
             tetengo_lattice_constraintElement_destroy(p_constraint_element);
@@ -172,7 +174,8 @@ BOOST_AUTO_TEST_CASE(matches)
                                                    5,
                                                    24,
                                                    2424 };
-        const auto* p_constraint_element = tetengo_lattice_constraintElement_createNodeConstraintElement(&element_node);
+        const auto* const            p_constraint_element =
+            tetengo_lattice_constraintElement_createNodeConstraintElement(&element_node);
         BOOST_SCOPE_EXIT(p_constraint_element)
         {
             tetengo_lattice_constraintElement_destroy(p_constraint_element);
