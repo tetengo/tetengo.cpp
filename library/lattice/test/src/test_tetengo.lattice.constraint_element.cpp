@@ -24,13 +24,13 @@ namespace
 
         virtual int matches_impl(const tetengo::lattice::node& node_) const override
         {
-            if (node_.preceding_step() > 4)
+            if (node_.preceding_step() < 3)
             {
                 return -1;
             }
             else
             {
-                return 4 - static_cast<int>(node_.preceding_step());
+                return static_cast<int>(node_.preceding_step() - 3);
             }
         }
     };
@@ -65,12 +65,12 @@ BOOST_AUTO_TEST_CASE(matches)
             const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             const tetengo::lattice::node node_{ "mizuho", &value, 1, &preceding_edge_costs, 5, 24, 2424 };
 
-            BOOST_TEST(element.matches(node_) > 0);
+            BOOST_TEST(element.matches(node_) < 0);
         }
         {
             const std::any               value{ 42 };
             const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-            const tetengo::lattice::node node_{ "sakura", &value, 4, &preceding_edge_costs, 5, 24, 2424 };
+            const tetengo::lattice::node node_{ "sakura", &value, 3, &preceding_edge_costs, 5, 24, 2424 };
 
             BOOST_TEST(element.matches(node_) == 0);
         }
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             const tetengo::lattice::node node_{ "tsubame", &value, 5, &preceding_edge_costs, 5, 24, 2424 };
 
-            BOOST_TEST(element.matches(node_) < 0);
+            BOOST_TEST(element.matches(node_) > 0);
         }
     }
 }
