@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_SUITE(lattice)
 BOOST_AUTO_TEST_SUITE(wildcard_constraint_element)
 
 
-    BOOST_AUTO_TEST_CASE(construction)
+BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
