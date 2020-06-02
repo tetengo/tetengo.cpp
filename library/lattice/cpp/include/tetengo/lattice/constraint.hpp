@@ -16,6 +16,7 @@
 namespace tetengo::lattice
 {
     class constraint_element;
+    class node;
 
 
     /*!
@@ -37,6 +38,19 @@ namespace tetengo::lattice
             \brief Destroys the constraint.
         */
         ~constraint();
+
+
+        // functions
+
+        /*!
+            \brief Returns true when the path matches the pattern.
+
+            \param path A path.
+
+            \retval true  When the path matches the pattern.
+            \retval false Otherwise.
+        */
+        bool matches(const std::vector<node>& path) const;
 
 
     private:

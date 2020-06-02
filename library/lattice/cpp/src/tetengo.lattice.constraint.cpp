@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <cassert>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -12,6 +13,7 @@
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/constraint_element.hpp>
+#include <tetengo/lattice/node.hpp> // IWYU pragma: keep
 
 
 namespace tetengo::lattice
@@ -24,6 +26,33 @@ namespace tetengo::lattice
         explicit impl(std::vector<std::unique_ptr<constraint_element>>&& pattern) : m_pattern{ std::move(pattern) } {}
 
 
+        // functions
+
+        bool matches(const std::vector<node>& path) const
+        {
+            auto pattern_index = m_pattern.size();
+            for (auto path_index = path.size(); path_index > 0; --path_index)
+            {
+                const auto element_match = m_pattern[pattern_index - 1]->matches(path[path_index - 1]);
+                if (element_match < 0)
+                {
+                    return false;
+                }
+                else if (element_match == 0)
+                {
+                    if (pattern_index == 0)
+                    {
+                        return false;
+                    }
+                    --pattern_index;
+                }
+            }
+
+            assert(pattern_index == 0);
+            return true;
+        }
+
+
     private:
         // variables
 
@@ -31,11 +60,16 @@ namespace tetengo::lattice
     };
 
 
-    constraint ::constraint(std::vector<std::unique_ptr<constraint_element>>&& pattern) :
+    constraint::constraint(std::vector<std::unique_ptr<constraint_element>>&& pattern) :
     m_p_impl{ std::make_unique<impl>(std::move(pattern)) }
     {}
 
-    constraint ::~constraint() = default;
+    constraint::~constraint() = default;
+
+    bool constraint::matches(const std::vector<node>& path) const
+    {
+        return m_p_impl->matches(path);
+    }
 
 
 }
