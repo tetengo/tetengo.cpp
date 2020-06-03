@@ -5,6 +5,8 @@
  */
 
 #include <any>
+#include <cstddef>
+#include <limits>
 #include <memory>
 #include <string_view>
 #include <vector>
@@ -155,6 +157,14 @@ namespace
         return pattern;
     }
 
+    std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> make_pattern_w()
+    {
+        std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+        pattern.push_back(
+            std::make_unique<tetengo::lattice::wildcard_constraint_element>(std::numeric_limits<std::size_t>::max()));
+        return pattern;
+    }
+
 
 }
 
@@ -226,6 +236,15 @@ BOOST_AUTO_TEST_CASE(matches)
         const tetengo::lattice::constraint constraint_{ make_pattern_b_w_e() };
 
         BOOST_TEST(!constraint_.matches(path_b_e()));
+        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
+        BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
+        BOOST_TEST(constraint_.matches(path_b_h_t_e()));
+        BOOST_TEST(constraint_.matches(path_b_k_s_k_e()));
+    }
+    {
+        const tetengo::lattice::constraint constraint_{ make_pattern_w() };
+
+        BOOST_TEST(constraint_.matches(path_b_e()));
         BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
         BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
         BOOST_TEST(constraint_.matches(path_b_h_t_e()));

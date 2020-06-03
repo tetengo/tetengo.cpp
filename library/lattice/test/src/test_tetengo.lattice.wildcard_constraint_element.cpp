@@ -5,6 +5,8 @@
  */
 
 #include <any>
+#include <cstddef>
+#include <limits>
 #include <string_view>
 #include <vector>
 
@@ -71,6 +73,23 @@ BOOST_AUTO_TEST_CASE(matches)
             BOOST_TEST(element.matches(node_) > 0);
         }
     }
+    {
+        const tetengo::lattice::wildcard_constraint_element element{ std::numeric_limits<std::size_t>::max() };
+
+        {
+            const std::vector<int>       preceding_edge_costs{};
+            const tetengo::lattice::node node_ = tetengo::lattice::node::bos(&preceding_edge_costs);
+
+            BOOST_TEST(element.matches(node_) == 0);
+        }
+        {
+            const std::any               value{ 42 };
+            const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+            const tetengo::lattice::node node_{ "mizuho", &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+
+            BOOST_TEST(element.matches(node_) > 0);
+        }
+    }
 
     {
         const auto* const p_constraint_element = tetengo_lattice_constraintElement_createWildcardConstraintElement(3);
@@ -118,6 +137,39 @@ BOOST_AUTO_TEST_CASE(matches)
             const tetengo_lattice_node_t node{ { key.data(), key.length() },
                                                reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
                                                5,
+                                               preceding_edge_costs.data(),
+                                               preceding_edge_costs.size(),
+                                               5,
+                                               24,
+                                               2424 };
+
+            BOOST_TEST(tetengo_lattice_constraintElement_matches(p_constraint_element, &node) > 0);
+        }
+    }
+    {
+        const auto* const p_constraint_element =
+            tetengo_lattice_constraintElement_createWildcardConstraintElement(std::numeric_limits<size_t>::max());
+        BOOST_SCOPE_EXIT(p_constraint_element)
+        {
+            tetengo_lattice_constraintElement_destroy(p_constraint_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_constraint_element);
+
+        {
+            const std::vector<int> preceding_edge_costs{};
+            tetengo_lattice_node_t node{};
+            tetengo_lattice_node_bos(preceding_edge_costs.data(), preceding_edge_costs.size(), &node);
+
+            BOOST_TEST(tetengo_lattice_constraintElement_matches(p_constraint_element, &node) == 0);
+        }
+        {
+            const std::string_view       key{ "mizuho" };
+            const std::any               value{ reinterpret_cast<const void*>("MIZUHO") };
+            const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+            const tetengo_lattice_node_t node{ { key.data(), key.length() },
+                                               reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
+                                               1,
                                                preceding_edge_costs.data(),
                                                preceding_edge_costs.size(),
                                                5,

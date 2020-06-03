@@ -5,6 +5,7 @@
 */
 
 #include <cstddef>
+#include <limits>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -27,13 +28,27 @@ namespace tetengo::lattice
 
         int matches_impl(const node& node_) const
         {
-            if (node_.preceding_step() < m_preceding_step)
+            if (m_preceding_step == std::numeric_limits<std::size_t>::max())
             {
-                return -1;
+                if (node_.preceding_step() == std::numeric_limits<std::size_t>::max())
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
             }
             else
             {
-                return static_cast<int>(node_.preceding_step() - m_preceding_step);
+                if (node_.preceding_step() < m_preceding_step)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return static_cast<int>(node_.preceding_step() - m_preceding_step);
+                }
             }
         }
 
