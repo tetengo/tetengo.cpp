@@ -4,7 +4,8 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#include <cassert>
+#include <cstddef>
+#include <limits>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -30,26 +31,12 @@ namespace tetengo::lattice
 
         bool matches(const std::vector<node>& path) const
         {
-            auto pattern_index = m_pattern.size();
-            for (auto path_index = path.size(); path_index > 0; --path_index)
-            {
-                const auto element_match = m_pattern[pattern_index - 1]->matches(path[path_index - 1]);
-                if (element_match < 0)
-                {
-                    return false;
-                }
-                else if (element_match == 0)
-                {
-                    if (pattern_index == 0)
-                    {
-                        return false;
-                    }
-                    --pattern_index;
-                }
-            }
+            return matches_impl(path) == 0;
+        }
 
-            assert(pattern_index == 0);
-            return true;
+        bool matches_tail(const std::vector<node>& tail_path) const
+        {
+            return matches_impl(tail_path) != std::numeric_limits<std::size_t>::max();
         }
 
 
@@ -57,6 +44,32 @@ namespace tetengo::lattice
         // variables
 
         const std::vector<std::unique_ptr<constraint_element>> m_pattern;
+
+
+        // functions
+
+        std::size_t matches_impl(const std::vector<node>& path) const
+        {
+            auto pattern_index = m_pattern.size();
+            for (auto path_index = path.size(); path_index > 0; --path_index)
+            {
+                const auto element_match = m_pattern[pattern_index - 1]->matches(path[path_index - 1]);
+                if (element_match < 0)
+                {
+                    return std::numeric_limits<std::size_t>::max();
+                }
+                else if (element_match == 0)
+                {
+                    if (pattern_index == 0)
+                    {
+                        return std::numeric_limits<std::size_t>::max();
+                    }
+                    --pattern_index;
+                }
+            }
+
+            return pattern_index;
+        }
     };
 
 
@@ -69,6 +82,11 @@ namespace tetengo::lattice
     bool constraint::matches(const std::vector<node>& path) const
     {
         return m_p_impl->matches(path);
+    }
+
+    bool constraint::matches_tail(const std::vector<node>& tail_path) const
+    {
+        return m_p_impl->matches_tail(tail_path);
     }
 
 

@@ -52,6 +52,16 @@ namespace tetengo::lattice
         */
         bool matches(const std::vector<node>& path) const;
 
+        /*!
+            \brief Returns true when the tail path matches the tail of the pattern.
+
+            \param tail_path A tail path.
+
+            \retval true  When the tail path matches the tail of the pattern.
+            \retval false Otherwise.
+        */
+        bool matches_tail(const std::vector<node>& tail_path) const;
+
 
     private:
         // types
