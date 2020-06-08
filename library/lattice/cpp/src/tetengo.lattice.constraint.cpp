@@ -24,6 +24,8 @@ namespace tetengo::lattice
     public:
         // constructors and destructor
 
+        impl() : m_pattern{} {}
+
         explicit impl(std::vector<std::unique_ptr<constraint_element>>&& pattern) : m_pattern{ std::move(pattern) } {}
 
 
@@ -50,6 +52,11 @@ namespace tetengo::lattice
 
         std::size_t matches_impl(const std::vector<node>& path) const
         {
+            if (m_pattern.empty())
+            {
+                return 0;
+            }
+
             auto pattern_index = m_pattern.size();
             for (auto path_index = path.size(); path_index > 0; --path_index)
             {
@@ -72,6 +79,8 @@ namespace tetengo::lattice
         }
     };
 
+
+    constraint::constraint() : m_p_impl{ std::make_unique<impl>() } {}
 
     constraint::constraint(std::vector<std::unique_ptr<constraint_element>>&& pattern) :
     m_p_impl{ std::make_unique<impl>(std::move(pattern)) }

@@ -28,6 +28,13 @@ namespace tetengo::lattice
         // constructors and destructor
 
         /*!
+            \brief Creates an empty constraint.
+
+            It matches any path.
+        */
+        constraint();
+
+        /*!
             \brief Creates a constraint.
 
             \param pattern A pattern.

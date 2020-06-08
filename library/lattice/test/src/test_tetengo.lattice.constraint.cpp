@@ -189,6 +189,9 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
+        const tetengo::lattice::constraint constraint_{};
+    }
+    {
         const tetengo::lattice::constraint constraint_{ make_pattern_b_e() };
     }
 }
@@ -197,6 +200,15 @@ BOOST_AUTO_TEST_CASE(matches)
 {
     BOOST_TEST_PASSPOINT();
 
+    {
+        const tetengo::lattice::constraint constraint_{};
+
+        BOOST_TEST(constraint_.matches(path_b_e()));
+        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
+        BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
+        BOOST_TEST(constraint_.matches(path_b_h_t_e()));
+        BOOST_TEST(constraint_.matches(path_b_k_s_k_e()));
+    }
     {
         const tetengo::lattice::constraint constraint_{ make_pattern_b_e() };
 
@@ -266,6 +278,31 @@ BOOST_AUTO_TEST_CASE(matches_tail)
 {
     BOOST_TEST_PASSPOINT();
 
+    {
+        const tetengo::lattice::constraint constraint_{};
+
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 1)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 2)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 4)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 5)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 4)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 3)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 4)));
+        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 5)));
+    }
     {
         const tetengo::lattice::constraint constraint_{ make_pattern_b_e() };
 
