@@ -5,8 +5,10 @@
 */
 
 #include <algorithm>
+#include <any>
 #include <memory>
 #include <stdexcept>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -19,6 +21,8 @@
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/constraintElement.h>
 #include <tetengo/lattice/constraint_element.hpp>
+#include <tetengo/lattice/node.h>
+#include <tetengo/lattice/node.hpp>
 
 #include "tetengo_lattice_constraintElement.hpp" // IWYU pragma: keep
 
@@ -31,6 +35,34 @@ struct tetengo_lattice_constraint_tag
     p_cpp_constraint{ std::move(p_cpp_constraint) }
     {}
 };
+
+
+namespace
+{
+    void to_cpp_path(
+        const tetengo_lattice_node_t* const  p_path,
+        const size_t                         path_length,
+        std::vector<std::vector<int>>&       cpp_preceding_edge_cost_lists,
+        std::vector<tetengo::lattice::node>& cpp_path)
+    {
+        cpp_preceding_edge_cost_lists.reserve(path_length);
+        cpp_path.reserve(path_length);
+        std::for_each(p_path, p_path + path_length, [&cpp_preceding_edge_cost_lists, &cpp_path](const auto& node) {
+            cpp_preceding_edge_cost_lists.emplace_back(
+                node.p_preceding_edge_costs, node.p_preceding_edge_costs + node.preceding_edge_cost_count);
+            cpp_path.emplace_back(
+                std::string_view{ node.key.p_head, node.key.length },
+                reinterpret_cast<const std::any*>(node.value_handle),
+                node.preceding_step,
+                &cpp_preceding_edge_cost_lists.back(),
+                node.best_preceding_node,
+                node.node_cost,
+                node.path_cost);
+        });
+    }
+
+
+}
 
 
 const tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty()
@@ -97,4 +129,32 @@ void tetengo_lattice_constraint_destroy(const tetengo_lattice_constraint_t* cons
     }
     catch (...)
     {}
+}
+
+int tetengo_lattice_constraint_matches(
+    const tetengo_lattice_constraint_t* const p_constraint,
+    const tetengo_lattice_node_t* const       p_path,
+    const size_t                              path_length)
+{
+    try
+    {
+        if (!p_constraint)
+        {
+            throw std::invalid_argument{ "p_constraint is NULL." };
+        }
+        if (!p_path)
+        {
+            throw std::invalid_argument{ "p_path is NULL." };
+        }
+
+        std::vector<std::vector<int>>       cpp_preceding_edge_cost_lists{};
+        std::vector<tetengo::lattice::node> cpp_path{};
+        to_cpp_path(p_path, path_length, cpp_preceding_edge_cost_lists, cpp_path);
+
+        return p_constraint->p_cpp_constraint->matches(cpp_path) ? 1 : 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }

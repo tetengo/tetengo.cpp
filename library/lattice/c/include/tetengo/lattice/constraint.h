@@ -17,6 +17,7 @@ extern "C" {
 #if !defined(DOCUMENTATION)
 typedef struct tetengo_lattice_constraint_tag        tetengo_lattice_constraint_t;
 typedef struct tetengo_lattice_constraintElement_tag tetengo_lattice_constraintElement_t;
+typedef struct tetengo_lattice_node_tag              tetengo_lattice_node_t;
 #endif
 
 
@@ -49,6 +50,21 @@ tetengo_lattice_constraint_create(tetengo_lattice_constraintElement_t* const* pp
     \param p_constraint A pointer to a constraint.
 */
 void tetengo_lattice_constraint_destroy(const tetengo_lattice_constraint_t* p_constraint);
+
+/*!
+    \brief Returns non-zero when the path matches the pattern.
+
+    \param p_constraint A pointer to a constraint.
+    \param p_path       A pointer to a path.
+    \param path_length  A path length.
+
+    \retval non-zero When the path matches the pattern.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_constraint_matches(
+    const tetengo_lattice_constraint_t* p_constraint,
+    const tetengo_lattice_node_t*       p_path,
+    size_t                              path_length);
 
 
 #if defined(__cplusplus)
