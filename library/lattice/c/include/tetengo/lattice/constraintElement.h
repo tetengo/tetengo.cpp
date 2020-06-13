@@ -19,6 +19,7 @@ typedef struct tetengo_lattice_constraintElement_tag tetengo_lattice_constraintE
 typedef struct tetengo_lattice_node_tag              tetengo_lattice_node_t;
 #endif
 
+
 /*!
     \brief Creates a node constraint element.
 

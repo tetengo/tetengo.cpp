@@ -14,8 +14,10 @@
 #include <vector>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/constraint_element.hpp>
 #include <tetengo/lattice/node.hpp>
@@ -193,6 +195,16 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const tetengo::lattice::constraint constraint_{ make_pattern_b_e() };
+    }
+
+    {
+        const auto* const p_constraint = tetengo_lattice_constraint_createEmpty();
+        BOOST_SCOPE_EXIT(p_constraint)
+        {
+            tetengo_lattice_constraint_destroy(p_constraint);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_constraint);
     }
 }
 
