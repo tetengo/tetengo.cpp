@@ -37,13 +37,13 @@ tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_latt
         const std::vector<int> cpp_preceding_edge_costs{
             p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count
         };
-        const tetengo::lattice::node cpp_node{ std::string_view{ p_node->key.p_head, p_node->key.length },
-                                               reinterpret_cast<const std::any*>(p_node->value_handle),
-                                               p_node->preceding_step,
-                                               &cpp_preceding_edge_costs,
-                                               p_node->best_preceding_node,
-                                               p_node->node_cost,
-                                               p_node->path_cost };
+        tetengo::lattice::node cpp_node{ std::string_view{ p_node->key.p_head, p_node->key.length },
+                                         reinterpret_cast<const std::any*>(p_node->value_handle),
+                                         p_node->preceding_step,
+                                         &cpp_preceding_edge_costs,
+                                         p_node->best_preceding_node,
+                                         p_node->node_cost,
+                                         p_node->path_cost };
 
         auto p_cpp_constraint_element =
             std::make_unique<tetengo::lattice::node_constraint_element>(std::move(cpp_node));
