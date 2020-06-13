@@ -702,7 +702,7 @@ BOOST_AUTO_TEST_CASE(matches)
     }
 }
 
-BOOST_AUTO_TEST_CASE(matches_tail)
+BOOST_AUTO_TEST_CASE(matches_tail_cpp)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -871,6 +871,11 @@ BOOST_AUTO_TEST_CASE(matches_tail)
         BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 4)));
         BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 5)));
     }
+}
+
+BOOST_AUTO_TEST_CASE(matches_tail_c)
+{
+    BOOST_TEST_PASSPOINT();
 
     {
         const auto* const p_constraint = tetengo_lattice_constraint_createEmpty();
