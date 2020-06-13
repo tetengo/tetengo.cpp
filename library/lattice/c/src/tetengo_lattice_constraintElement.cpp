@@ -21,18 +21,10 @@
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/wildcard_constraint_element.hpp>
 
+#include "tetengo_lattice_constraintElement.hpp"
 
-struct tetengo_lattice_constraintElement_tag
-{
-    std::unique_ptr<tetengo::lattice::constraint_element> p_cpp_constraint_element;
 
-    explicit tetengo_lattice_constraintElement_tag(
-        std::unique_ptr<tetengo::lattice::constraint_element>&& p_cpp_constraint_element) :
-    p_cpp_constraint_element{ std::move(p_cpp_constraint_element) }
-    {}
-};
-
-const tetengo_lattice_constraintElement_t*
+tetengo_lattice_constraintElement_t*
 tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_lattice_node_t* const p_node)
 {
     try
@@ -65,7 +57,7 @@ tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_latt
     }
 }
 
-const tetengo_lattice_constraintElement_t*
+tetengo_lattice_constraintElement_t*
 tetengo_lattice_constraintElement_createWildcardConstraintElement(const size_t preceding_step)
 {
     try

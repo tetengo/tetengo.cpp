@@ -27,7 +27,7 @@ typedef struct tetengo_lattice_node_tag              tetengo_lattice_node_t;
 
     \return A pointer to a node constraint element. Or NULL when p_node is NULL.
 */
-const tetengo_lattice_constraintElement_t*
+tetengo_lattice_constraintElement_t*
 tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_lattice_node_t* p_node);
 
 /*!
@@ -37,7 +37,7 @@ tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_latt
 
     \return A pointer to a node constraint element. Or NULL when p_node is NULL.
 */
-const tetengo_lattice_constraintElement_t*
+tetengo_lattice_constraintElement_t*
 tetengo_lattice_constraintElement_createWildcardConstraintElement(size_t preceding_step);
 
 /*!

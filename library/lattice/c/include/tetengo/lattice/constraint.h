@@ -7,6 +7,8 @@
 #if !defined(TETENGO_LATTICE_CONSTRAINT_H)
 #define TETENGO_LATTICE_CONSTRAINT_H
 
+#include <stddef.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -26,6 +28,20 @@ typedef struct tetengo_lattice_constraintElement_tag tetengo_lattice_constraintE
     \return A pointer to an empty constraint.
 */
 const tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty();
+
+/*!
+    \brief Creates a constraint.
+
+    There is no need to destroy the constraint elements after calling this function.
+    But the array holding the constraint elements must be destroyed outside this function.
+
+    \param pp_pattern     A pointer to an array of pointers to constraint elements.
+    \param pattern_length A pattern length.
+
+    \return A pointer to constraint. Or NULL when pp_pattern is NULL or has NULL constraint elements.
+*/
+const tetengo_lattice_constraint_t*
+tetengo_lattice_constraint_create(tetengo_lattice_constraintElement_t* const* pp_pattern, size_t pattern_length);
 
 /*!
     \brief Destroys a constraint.

@@ -50,6 +50,9 @@
     <ClInclude Include="include\tetengo\lattice\constraintElement.h">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="src\tetengo_lattice_constraintElement.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo_lattice_vocabulary.cpp">
