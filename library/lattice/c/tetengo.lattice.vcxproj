@@ -121,6 +121,7 @@
     <ClInclude Include="include\tetengo\lattice\node.h" />
     <ClInclude Include="include\tetengo\lattice\stringView.h" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
+    <ClInclude Include="src\tetengo_lattice_constraint.hpp" />
     <ClInclude Include="src\tetengo_lattice_constraintElement.hpp" />
     <ClInclude Include="src\tetengo_lattice_lattice.hpp" />
     <ClInclude Include="src\tetengo_lattice_vocabulary.hpp" />

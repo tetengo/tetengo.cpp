@@ -28,11 +28,12 @@ typedef struct tetengo_lattice_node_tag              tetengo_lattice_node_t;
 
     \return A pointer to an empty constraint.
 */
-const tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty();
+tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty();
 
 /*!
     \brief Creates a constraint.
 
+    The ownership of the constraint elements pointed by pp_pattern is transferred into the constraint.
     There is no need to destroy the constraint elements after calling this function.
     But the array holding the constraint elements must be destroyed outside this function.
 
@@ -41,7 +42,7 @@ const tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty();
 
     \return A pointer to constraint. Or NULL when pp_pattern is NULL or has NULL constraint elements.
 */
-const tetengo_lattice_constraint_t*
+tetengo_lattice_constraint_t*
 tetengo_lattice_constraint_create(tetengo_lattice_constraintElement_t* const* pp_pattern, size_t pattern_length);
 
 /*!

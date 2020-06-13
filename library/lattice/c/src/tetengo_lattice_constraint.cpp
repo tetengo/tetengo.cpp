@@ -24,17 +24,8 @@
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 
+#include "tetengo_lattice_constraint.hpp"
 #include "tetengo_lattice_constraintElement.hpp" // IWYU pragma: keep
-
-
-struct tetengo_lattice_constraint_tag
-{
-    std::unique_ptr<tetengo::lattice::constraint> p_cpp_constraint;
-
-    explicit tetengo_lattice_constraint_tag(std::unique_ptr<tetengo::lattice::constraint>&& p_cpp_constraint) :
-    p_cpp_constraint{ std::move(p_cpp_constraint) }
-    {}
-};
 
 
 namespace
@@ -65,7 +56,7 @@ namespace
 }
 
 
-const tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty()
+tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty()
 {
     try
     {
@@ -80,7 +71,7 @@ const tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty()
     }
 }
 
-const tetengo_lattice_constraint_t* tetengo_lattice_constraint_create(
+tetengo_lattice_constraint_t* tetengo_lattice_constraint_create(
     tetengo_lattice_constraintElement_t* const* const pp_pattern,
     const size_t                                      pattern_length)
 {

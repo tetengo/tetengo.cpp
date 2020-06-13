@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <functional>
 #include <iterator>
+#include <memory>
 #include <queue>
 #include <stdexcept>
 #include <utility>
@@ -16,6 +17,7 @@
 #include <boost/container_hash/hash.hpp>
 #include <boost/operators.hpp>
 
+#include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.hpp>
@@ -105,12 +107,23 @@ namespace tetengo::lattice
 
     }
 
-    n_best_iterator::n_best_iterator() : m_p_lattice{}, m_caps{}, m_eos_hash{ 0 }, m_path{}, m_index{ 0 } {}
+    n_best_iterator::n_best_iterator() :
+    m_p_lattice{},
+        m_caps{},
+        m_eos_hash{ 0 },
+        m_p_constraint{ std::make_shared<constraint>() },
+        m_path{},
+        m_index{ 0 }
+    {}
 
-    n_best_iterator::n_best_iterator(const lattice& lattice_, node eos_node) :
+    n_best_iterator::n_best_iterator(
+        const lattice&                lattice_,
+        node                          eos_node,
+        std::unique_ptr<constraint>&& p_constraint) :
     m_p_lattice{ &lattice_ },
         m_caps{},
         m_eos_hash{ calc_node_hash(eos_node) },
+        m_p_constraint{ std::move(p_constraint) },
         m_path{},
         m_index{ 0 }
     {

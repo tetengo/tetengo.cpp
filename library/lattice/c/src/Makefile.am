@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
+    tetengo_lattice_constraint.hpp \
     tetengo_lattice_constraintElement.hpp \
     tetengo_lattice_lattice.hpp \
     tetengo_lattice_vocabulary.hpp
