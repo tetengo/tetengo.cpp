@@ -158,3 +158,31 @@ int tetengo_lattice_constraint_matches(
         return 0;
     }
 }
+
+int tetengo_lattice_constraint_matchesTail(
+    const tetengo_lattice_constraint_t* const p_constraint,
+    const tetengo_lattice_node_t* const       p_tail_path,
+    const size_t                              tail_path_length)
+{
+    try
+    {
+        if (!p_constraint)
+        {
+            throw std::invalid_argument{ "p_constraint is NULL." };
+        }
+        if (!p_tail_path)
+        {
+            throw std::invalid_argument{ "p_tail_path is NULL." };
+        }
+
+        std::vector<std::vector<int>>       cpp_preceding_edge_cost_lists{};
+        std::vector<tetengo::lattice::node> cpp_tail_path{};
+        to_cpp_path(p_tail_path, tail_path_length, cpp_preceding_edge_cost_lists, cpp_tail_path);
+
+        return p_constraint->p_cpp_constraint->matches_tail(cpp_tail_path) ? 1 : 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
