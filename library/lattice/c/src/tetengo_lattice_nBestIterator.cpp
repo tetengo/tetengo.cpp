@@ -66,6 +66,10 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
         {
             throw std::invalid_argument{ "p_eos_node is NULL." };
         }
+        if (!p_constraint)
+        {
+            throw std::invalid_argument{ "p_constraint is NULL." };
+        }
 
         auto p_cpp_preceding_edge_costs = std::make_unique<std::vector<int>>(
             p_eos_node->p_preceding_edge_costs,

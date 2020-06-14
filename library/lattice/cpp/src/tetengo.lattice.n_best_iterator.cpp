@@ -127,6 +127,11 @@ namespace tetengo::lattice
         m_path{},
         m_index{ 0 }
     {
+        if (!m_p_constraint)
+        {
+            throw std::invalid_argument{ "p_constraint is nullptr." };
+        }
+
         const int tail_path_cost = eos_node.node_cost();
         const int whole_path_cost = eos_node.path_cost();
         m_caps.emplace(std::vector<node>{ std::move(eos_node) }, tail_path_cost, whole_path_cost);

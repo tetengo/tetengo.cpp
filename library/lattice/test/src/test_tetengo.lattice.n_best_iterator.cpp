@@ -283,6 +283,20 @@ BOOST_AUTO_TEST_CASE(construction)
                                                           std::move(eos_node_and_preceding_edge_costs.first),
                                                           std::make_unique<tetengo::lattice::constraint>() };
     }
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
+
+        auto eos_node_and_preceding_edge_costs = lattice_.settle();
+        BOOST_CHECK_THROW(
+            const tetengo::lattice::n_best_iterator iterator(
+                lattice_,
+                std::move(eos_node_and_preceding_edge_costs.first),
+                std::unique_ptr<tetengo::lattice::constraint>()),
+            std::invalid_argument);
+    }
 
     {
         auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
@@ -329,6 +343,25 @@ BOOST_AUTO_TEST_CASE(construction)
 
         const auto* const p_iterator =
             tetengo_lattice_nBestIterator_create(p_lattice, nullptr, tetengo_lattice_constraint_createEmpty());
+        BOOST_TEST(!p_iterator);
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
+        tetengo_lattice_node_t eos_node{};
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node, nullptr);
         BOOST_TEST(!p_iterator);
     }
 }
