@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <functional>
 #include <iterator>
@@ -66,41 +67,68 @@ namespace tetengo::lattice
             return seed;
         }
 
-        std::vector<node>
-        open_cap(const lattice& lattice_, std::priority_queue<cap, std::vector<cap>, std::greater<cap>>& caps)
+        std::vector<node> open_cap(
+            const lattice&                                                 lattice_,
+            std::priority_queue<cap, std::vector<cap>, std::greater<cap>>& caps,
+            const constraint&                                              constraint_)
         {
-            const auto opened = caps.top();
-            caps.pop();
-
-            auto path = opened.tail_path();
-            auto tail_path_cost = opened.tail_path_cost();
-            for (const auto* p_node = &opened.tail_path().back(); !p_node->is_bos();)
+            std::vector<node> path{};
+            while (!caps.empty())
             {
-                const auto& preceding_nodes = lattice_.nodes_at(p_node->preceding_step());
-                for (auto i = static_cast<std::size_t>(0); i < preceding_nodes.size(); ++i)
+                const auto opened = caps.top();
+                caps.pop();
+
+                auto next_path = opened.tail_path();
+                auto tail_path_cost = opened.tail_path_cost();
+                bool nonconforming_path = false;
+                for (const auto* p_node = &opened.tail_path().back(); !p_node->is_bos();)
                 {
-                    if (i == p_node->best_preceding_node())
+                    const auto& preceding_nodes = lattice_.nodes_at(p_node->preceding_step());
+                    for (auto i = static_cast<std::size_t>(0); i < preceding_nodes.size(); ++i)
                     {
-                        continue;
+                        if (i == p_node->best_preceding_node())
+                        {
+                            continue;
+                        }
+                        const auto&       preceding_node = preceding_nodes[i];
+                        std::vector<node> cap_tail_path{ next_path };
+                        cap_tail_path.push_back(preceding_node);
+                        const std::vector<node> cap_tail_path_to_check{ std::rbegin(cap_tail_path),
+                                                                        std::rend(cap_tail_path) };
+                        if (!constraint_.matches_tail(cap_tail_path_to_check))
+                        {
+                            continue;
+                        }
+                        const auto preceding_edge_cost = p_node->preceding_edge_costs()[i];
+                        const auto cap_tail_path_cost =
+                            tail_path_cost + preceding_edge_cost + preceding_node.node_cost();
+                        const auto cap_whole_path_cost =
+                            tail_path_cost + preceding_edge_cost + preceding_node.path_cost();
+                        caps.emplace(std::move(cap_tail_path), cap_tail_path_cost, cap_whole_path_cost);
                     }
-                    const auto&       preceding_node = preceding_nodes[i];
-                    std::vector<node> cap_tail_path{ path };
-                    cap_tail_path.push_back(preceding_node);
-                    const auto preceding_edge_cost = p_node->preceding_edge_costs()[i];
-                    const auto cap_tail_path_cost = tail_path_cost + preceding_edge_cost + preceding_node.node_cost();
-                    const auto cap_whole_path_cost = tail_path_cost + preceding_edge_cost + preceding_node.path_cost();
-                    caps.emplace(std::move(cap_tail_path), cap_tail_path_cost, cap_whole_path_cost);
+
+                    const auto best_preceding_edge_cost = p_node->preceding_edge_costs()[p_node->best_preceding_node()];
+                    const auto& best_preceding_node = preceding_nodes[p_node->best_preceding_node()];
+                    next_path.push_back(best_preceding_node);
+                    const std::vector<node> next_path_to_check{ std::rbegin(next_path), std::rend(next_path) };
+                    if (!constraint_.matches_tail(next_path_to_check))
+                    {
+                        nonconforming_path = true;
+                        break;
+                    }
+                    tail_path_cost += best_preceding_edge_cost + best_preceding_node.node_cost();
+
+                    p_node = &best_preceding_node;
                 }
 
-                const auto  best_preceding_edge_cost = p_node->preceding_edge_costs()[p_node->best_preceding_node()];
-                const auto& best_preceding_node = preceding_nodes[p_node->best_preceding_node()];
-                path.push_back(best_preceding_node);
-                tail_path_cost += best_preceding_edge_cost + best_preceding_node.node_cost();
-
-                p_node = &best_preceding_node;
+                if (!nonconforming_path)
+                {
+                    path.assign(std::rbegin(next_path), std::rend(next_path));
+                    assert(constraint_.matches(path));
+                    break;
+                }
             }
 
-            std::reverse(std::begin(path), std::end(path));
             return path;
         }
 
@@ -136,7 +164,7 @@ namespace tetengo::lattice
         const int whole_path_cost = eos_node.path_cost();
         m_caps.emplace(std::vector<node>{ std::move(eos_node) }, tail_path_cost, whole_path_cost);
 
-        m_path = open_cap(*m_p_lattice, m_caps);
+        m_path = open_cap(*m_p_lattice, m_caps, *m_p_constraint);
     }
 
     const std::vector<node>& n_best_iterator::dereference() const
@@ -172,7 +200,7 @@ namespace tetengo::lattice
         }
         else
         {
-            m_path = open_cap(*m_p_lattice, m_caps);
+            m_path = open_cap(*m_p_lattice, m_caps, *m_p_constraint);
         }
         ++m_index;
     }
