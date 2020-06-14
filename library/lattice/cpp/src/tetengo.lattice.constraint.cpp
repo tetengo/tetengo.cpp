@@ -31,14 +31,14 @@ namespace tetengo::lattice
 
         // functions
 
-        bool matches(const std::vector<node>& path) const
+        bool matches(const std::vector<node>& reverse_path) const
         {
-            return matches_impl(path) == 0;
+            return matches_impl(reverse_path) == 0;
         }
 
-        bool matches_tail(const std::vector<node>& tail_path) const
+        bool matches_tail(const std::vector<node>& reverse_tail_path) const
         {
-            return matches_impl(tail_path) != std::numeric_limits<std::size_t>::max();
+            return matches_impl(reverse_tail_path) != std::numeric_limits<std::size_t>::max();
         }
 
 
@@ -50,7 +50,7 @@ namespace tetengo::lattice
 
         // functions
 
-        std::size_t matches_impl(const std::vector<node>& path) const
+        std::size_t matches_impl(const std::vector<node>& reverse_path) const
         {
             if (m_pattern.empty())
             {
@@ -58,9 +58,10 @@ namespace tetengo::lattice
             }
 
             auto pattern_index = m_pattern.size();
-            for (auto path_index = path.size(); path_index > 0; --path_index)
+            for (auto path_index = static_cast<std::size_t>(0); path_index < reverse_path.size() && pattern_index > 0;
+                 ++path_index)
             {
-                const auto element_match = m_pattern[pattern_index - 1]->matches(path[path_index - 1]);
+                const auto element_match = m_pattern[pattern_index - 1]->matches(reverse_path[path_index]);
                 if (element_match < 0)
                 {
                     return std::numeric_limits<std::size_t>::max();
@@ -88,14 +89,14 @@ namespace tetengo::lattice
 
     constraint::~constraint() = default;
 
-    bool constraint::matches(const std::vector<node>& path) const
+    bool constraint::matches(const std::vector<node>& reverse_path) const
     {
-        return m_p_impl->matches(path);
+        return m_p_impl->matches(reverse_path);
     }
 
-    bool constraint::matches_tail(const std::vector<node>& tail_path) const
+    bool constraint::matches_tail(const std::vector<node>& reverse_tail_path) const
     {
-        return m_p_impl->matches_tail(tail_path);
+        return m_p_impl->matches_tail(reverse_tail_path);
     }
 
 

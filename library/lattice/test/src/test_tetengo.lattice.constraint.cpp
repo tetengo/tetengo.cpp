@@ -122,11 +122,16 @@ namespace
         return c_node;
     }
 
-    std::vector<tetengo_lattice_node_t> to_c_path(const std::vector<tetengo::lattice::node>& cpp_path)
+    std::vector<tetengo::lattice::node> reverse_path(const std::vector<tetengo::lattice::node>& path)
+    {
+        return std::vector<tetengo::lattice::node>{ std::rbegin(path), std::rend(path) };
+    }
+
+    std::vector<tetengo_lattice_node_t> to_c_reverse_path(const std::vector<tetengo::lattice::node>& cpp_path)
     {
         std::vector<tetengo_lattice_node_t> c_path{};
         c_path.reserve(cpp_path.size());
-        std::transform(std::begin(cpp_path), std::end(cpp_path), std::back_inserter(c_path), to_c_node);
+        std::transform(std::rbegin(cpp_path), std::rend(cpp_path), std::back_inserter(c_path), to_c_node);
         return c_path;
     }
 
@@ -368,74 +373,74 @@ BOOST_AUTO_TEST_CASE(matches)
     {
         const tetengo::lattice::constraint constraint_{};
 
-        BOOST_TEST(constraint_.matches(path_b_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_e() };
 
-        BOOST_TEST(constraint_.matches(path_b_e()));
-        BOOST_TEST(!constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_m_s_t_e() };
 
-        BOOST_TEST(!constraint_.matches(path_b_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_m_w_t_e() };
 
-        BOOST_TEST(!constraint_.matches(path_b_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_w_t_e() };
 
-        BOOST_TEST(!constraint_.matches(path_b_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_w_s_w_e() };
 
-        BOOST_TEST(!constraint_.matches(path_b_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(!constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_w_e() };
 
-        BOOST_TEST(!constraint_.matches(path_b_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(!constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_w() };
 
-        BOOST_TEST(constraint_.matches(path_b_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_s_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_m_a_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_h_t_e()));
-        BOOST_TEST(constraint_.matches(path_b_k_s_k_e()));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_s_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_m_a_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_h_t_e())));
+        BOOST_TEST(constraint_.matches(reverse_path(path_b_k_s_k_e())));
     }
 
     {
@@ -448,23 +453,23 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
@@ -479,23 +484,23 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
@@ -510,23 +515,23 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
@@ -541,23 +546,23 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
@@ -572,23 +577,23 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
@@ -603,23 +608,23 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
@@ -634,23 +639,23 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(!tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
@@ -665,28 +670,28 @@ BOOST_AUTO_TEST_CASE(matches)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto path = to_c_path(path_b_e());
+            const auto path = to_c_reverse_path(path_b_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_s_t_e());
+            const auto path = to_c_reverse_path(path_b_m_s_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_m_a_t_e());
+            const auto path = to_c_reverse_path(path_b_m_a_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_h_t_e());
+            const auto path = to_c_reverse_path(path_b_h_t_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
         {
-            const auto path = to_c_path(path_b_k_s_k_e());
+            const auto path = to_c_reverse_path(path_b_k_s_k_e());
             BOOST_TEST(tetengo_lattice_constraint_matches(p_constraint, path.data(), path.size()));
         }
     }
     {
-        const auto path = to_c_path(path_b_e());
+        const auto path = to_c_reverse_path(path_b_e());
         BOOST_TEST(!tetengo_lattice_constraint_matches(nullptr, path.data(), path.size()));
     }
     {
@@ -709,167 +714,167 @@ BOOST_AUTO_TEST_CASE(matches_tail_cpp)
     {
         const tetengo::lattice::constraint constraint_{};
 
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 5)));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 5))));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_e() };
 
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 2)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 2))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_m_s_t_e() };
 
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 2))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 2))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 2))));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_m_w_t_e() };
 
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 2))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 2))));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_w_t_e() };
 
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 2))));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_w_s_w_e() };
 
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 5)));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 2))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 2))));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 5))));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_b_w_e() };
 
-        BOOST_TEST(!constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 5)));
+        BOOST_TEST(!constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 5))));
     }
     {
         const tetengo::lattice::constraint constraint_{ make_cpp_pattern_w() };
 
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_s_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_m_a_t_e(), 5)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_h_t_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 1)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 2)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 3)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 4)));
-        BOOST_TEST(constraint_.matches_tail(make_tail(path_b_k_s_k_e(), 5)));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_s_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_m_a_t_e(), 5))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_h_t_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 1))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 2))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 3))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 4))));
+        BOOST_TEST(constraint_.matches_tail(reverse_path(make_tail(path_b_k_s_k_e(), 5))));
     }
 }
 
@@ -887,88 +892,109 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
@@ -982,28 +1008,34 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
@@ -1017,60 +1049,74 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 3));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 3));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 2));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
@@ -1084,68 +1130,84 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 3));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 2));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
@@ -1159,72 +1221,89 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 2));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
@@ -1238,72 +1317,89 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 3));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 3));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
@@ -1317,84 +1413,104 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
@@ -1408,93 +1524,115 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_s_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_m_a_t_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_h_t_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 1));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 2));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 3));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 4));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
         {
-            const auto tail_path = to_c_path(make_tail(path_b_k_s_k_e(), 5));
-            BOOST_TEST(tetengo_lattice_constraint_matchesTail(p_constraint, tail_path.data(), tail_path.size()));
+            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            BOOST_TEST(tetengo_lattice_constraint_matchesTail(
+                p_constraint, reverse_tail_path.data(), reverse_tail_path.size()));
         }
     }
     {
-        const auto tail_path = to_c_path(make_tail(path_b_e(), 1));
-        BOOST_TEST(!tetengo_lattice_constraint_matchesTail(nullptr, tail_path.data(), tail_path.size()));
+        const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+        BOOST_TEST(
+            !tetengo_lattice_constraint_matchesTail(nullptr, reverse_tail_path.data(), reverse_tail_path.size()));
     }
     {
         const auto* const p_constraint = tetengo_lattice_constraint_createEmpty();

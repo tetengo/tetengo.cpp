@@ -52,22 +52,22 @@ namespace tetengo::lattice
         /*!
             \brief Returns true when the path matches the pattern.
 
-            \param path A path.
+            \param reverse_path A path in reverse order.
 
             \retval true  When the path matches the pattern.
             \retval false Otherwise.
         */
-        bool matches(const std::vector<node>& path) const;
+        bool matches(const std::vector<node>& reverse_path) const;
 
         /*!
             \brief Returns true when the tail path matches the tail of the pattern.
 
-            \param tail_path A tail path.
+            \param reverse_tail_path A tail path in reverse order.
 
             \retval true  When the tail path matches the tail of the pattern.
             \retval false Otherwise.
         */
-        bool matches_tail(const std::vector<node>& tail_path) const;
+        bool matches_tail(const std::vector<node>& reverse_tail_path) const;
 
 
     private:
