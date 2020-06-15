@@ -20,6 +20,7 @@
 #include <tetengo/lattice/connection.h> // IWYU pragma: keep
 #include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/constraint.hpp>
+#include <tetengo/lattice/constraint_element.hpp>
 #include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.h>
@@ -28,6 +29,7 @@
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/node_constraint_element.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -659,6 +661,66 @@ BOOST_AUTO_TEST_CASE(operator_increment)
 
         ++iterator;
         BOOST_CHECK_THROW(*iterator, std::logic_error);
+    }
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
+
+        auto                              eos_node_and_preceding_edge_costs = lattice_.settle();
+        tetengo::lattice::n_best_iterator iterator{ lattice_,
+                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                    std::make_unique<tetengo::lattice::constraint>() };
+
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 3U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(3);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[1]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[2]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+            const auto& constrained_path = *iterator;
+            BOOST_TEST(constrained_path == path);
+
+            ++constrained_iterator;
+            BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+        }
+
+        ++iterator;
+        ++iterator;
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[1]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[2]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+            const auto& constrained_path = *iterator;
+            BOOST_TEST(constrained_path == path);
+
+            ++constrained_iterator;
+            BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+        }
     }
 
     {

@@ -93,9 +93,7 @@ namespace tetengo::lattice
                         const auto&       preceding_node = preceding_nodes[i];
                         std::vector<node> cap_tail_path{ next_path };
                         cap_tail_path.push_back(preceding_node);
-                        const std::vector<node> cap_tail_path_to_check{ std::rbegin(cap_tail_path),
-                                                                        std::rend(cap_tail_path) };
-                        if (!constraint_.matches_tail(cap_tail_path_to_check))
+                        if (!constraint_.matches_tail(cap_tail_path))
                         {
                             continue;
                         }
@@ -110,8 +108,7 @@ namespace tetengo::lattice
                     const auto best_preceding_edge_cost = p_node->preceding_edge_costs()[p_node->best_preceding_node()];
                     const auto& best_preceding_node = preceding_nodes[p_node->best_preceding_node()];
                     next_path.push_back(best_preceding_node);
-                    const std::vector<node> next_path_to_check{ std::rbegin(next_path), std::rend(next_path) };
-                    if (!constraint_.matches_tail(next_path_to_check))
+                    if (!constraint_.matches_tail(next_path))
                     {
                         nonconforming_path = true;
                         break;
@@ -123,8 +120,8 @@ namespace tetengo::lattice
 
                 if (!nonconforming_path)
                 {
+                    assert(constraint_.matches(next_path));
                     path.assign(std::rbegin(next_path), std::rend(next_path));
-                    assert(constraint_.matches(path));
                     break;
                 }
             }
