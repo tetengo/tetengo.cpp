@@ -6,9 +6,11 @@
 
 #include <any>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -33,6 +35,7 @@
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
+#include <tetengo/lattice/wildcard_constraint_element.hpp>
 
 
 namespace
@@ -715,11 +718,104 @@ BOOST_AUTO_TEST_CASE(operator_increment)
                                                                     std::move(p_constraint) };
 
             BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
-            const auto& constrained_path = *iterator;
+            const auto& constrained_path = *constrained_iterator;
             BOOST_TEST(constrained_path == path);
 
             ++constrained_iterator;
             BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+        }
+
+        ++iterator;
+        ++iterator;
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[1]));
+            pattern.push_back(std::make_unique<tetengo::lattice::wildcard_constraint_element>(1));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST(constrained_path == path);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST_REQUIRE(constrained_path.size() == 5U);
+                BOOST_CHECK(constrained_path[0] == path[0]);
+                BOOST_CHECK(constrained_path[1] == path[1]);
+                BOOST_CHECK(constrained_path[2].key() == "Tosu-Omuta");
+                BOOST_CHECK(constrained_path[3].key() == "Omuta-Kumamoto");
+                BOOST_CHECK(constrained_path[4] == path[3]);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+            }
+        }
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::wildcard_constraint_element>(0));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[2]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST_REQUIRE(constrained_path.size() == 4U);
+                BOOST_CHECK(constrained_path[0] == path[0]);
+                BOOST_CHECK(std::any_cast<std::string>(constrained_path[1].value()) == "local415");
+                BOOST_CHECK(constrained_path[2] == path[2]);
+                BOOST_CHECK(constrained_path[3] == path[3]);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST(constrained_path == path);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+            }
+        }
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::wildcard_constraint_element>(0));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            BOOST_TEST(std::distance(constrained_iterator, tetengo::lattice::n_best_iterator{}) == 9);
         }
     }
 
