@@ -161,6 +161,11 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_CHECK_THROW(
             const tetengo::lattice::node node_("mizuho", &value, 1, nullptr, 5, 24, 2424), std::invalid_argument);
     }
+    {
+        const std::any                     entry_value{ 42 };
+        const tetengo::lattice::entry_view entry{ "mizuho", &entry_value, 24 };
+        BOOST_CHECK_THROW(const tetengo::lattice::node node_(entry, 1, nullptr, 5, 2424), std::invalid_argument);
+    }
 
     {
         const std::string_view       key{ "mizuho" };

@@ -6,9 +6,11 @@
 
 #include <any>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -18,6 +20,10 @@
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/lattice/connection.h> // IWYU pragma: keep
+#include <tetengo/lattice/constraint.h>
+#include <tetengo/lattice/constraint.hpp>
+#include <tetengo/lattice/constraintElement.h>
+#include <tetengo/lattice/constraint_element.hpp>
 #include <tetengo/lattice/entry.h> // IWYU pragma: keep
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.h>
@@ -26,9 +32,12 @@
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/node_constraint_element.hpp>
+#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
+#include <tetengo/lattice/wildcard_constraint_element.hpp>
 
 
 namespace
@@ -278,7 +287,22 @@ BOOST_AUTO_TEST_CASE(construction)
 
         auto                                    eos_node_and_preceding_edge_costs = lattice_.settle();
         const tetengo::lattice::n_best_iterator iterator{ lattice_,
-                                                          std::move(eos_node_and_preceding_edge_costs.first) };
+                                                          std::move(eos_node_and_preceding_edge_costs.first),
+                                                          std::make_unique<tetengo::lattice::constraint>() };
+    }
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
+
+        auto eos_node_and_preceding_edge_costs = lattice_.settle();
+        BOOST_CHECK_THROW(
+            const tetengo::lattice::n_best_iterator iterator(
+                lattice_,
+                std::move(eos_node_and_preceding_edge_costs.first),
+                std::unique_ptr<tetengo::lattice::constraint>()),
+            std::invalid_argument);
     }
 
     {
@@ -297,7 +321,8 @@ BOOST_AUTO_TEST_CASE(construction)
         tetengo_lattice_node_t eos_node{};
         std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
         tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
-        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
+        const auto* const p_iterator =
+            tetengo_lattice_nBestIterator_create(p_lattice, &eos_node, tetengo_lattice_constraint_createEmpty());
         BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_lattice_nBestIterator_destroy(p_iterator);
@@ -307,7 +332,8 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         tetengo_lattice_node_t eos_node{};
-        const auto* const      p_iterator = tetengo_lattice_nBestIterator_create(nullptr, &eos_node);
+        const auto* const      p_iterator =
+            tetengo_lattice_nBestIterator_create(nullptr, &eos_node, tetengo_lattice_constraint_createEmpty());
         BOOST_TEST(!p_iterator);
     }
     {
@@ -322,7 +348,27 @@ BOOST_AUTO_TEST_CASE(construction)
         tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
         tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
 
-        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, nullptr);
+        const auto* const p_iterator =
+            tetengo_lattice_nBestIterator_create(p_lattice, nullptr, tetengo_lattice_constraint_createEmpty());
+        BOOST_TEST(!p_iterator);
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
+        tetengo_lattice_node_t eos_node{};
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node, nullptr);
         BOOST_TEST(!p_iterator);
     }
 }
@@ -339,7 +385,8 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
 
         auto                                    eos_node_and_preceding_edge_costs = lattice_.settle();
         const tetengo::lattice::n_best_iterator iterator{ lattice_,
-                                                          std::move(eos_node_and_preceding_edge_costs.first) };
+                                                          std::move(eos_node_and_preceding_edge_costs.first),
+                                                          std::make_unique<tetengo::lattice::constraint>() };
 
         const auto& path = *iterator;
         BOOST_TEST_REQUIRE(path.size() == 3U);
@@ -369,7 +416,8 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         tetengo_lattice_node_t eos_node{};
         std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
         tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
-        const auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
+        const auto* const p_iterator =
+            tetengo_lattice_nBestIterator_create(p_lattice, &eos_node, tetengo_lattice_constraint_createEmpty());
         BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_lattice_nBestIterator_destroy(p_iterator);
@@ -406,12 +454,16 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         auto                                    eos_node_and_preceding_edge_costs1 = lattice_.settle();
         const tetengo::lattice::n_best_iterator iterator1{ lattice_,
-                                                           std::move(eos_node_and_preceding_edge_costs1.first) };
+                                                           std::move(eos_node_and_preceding_edge_costs1.first),
+                                                           std::make_unique<tetengo::lattice::constraint>() };
         auto                                    eos_node_and_preceding_edge_costs2 = lattice_.settle();
         const tetengo::lattice::n_best_iterator iterator2{ lattice_,
-                                                           std::move(eos_node_and_preceding_edge_costs2.first) };
+                                                           std::move(eos_node_and_preceding_edge_costs2.first),
+                                                           std::make_unique<tetengo::lattice::constraint>() };
         auto                                    eos_node_and_preceding_edge_costs3 = lattice_.settle();
-        tetengo::lattice::n_best_iterator iterator3{ lattice_, std::move(eos_node_and_preceding_edge_costs3.first) };
+        tetengo::lattice::n_best_iterator       iterator3{ lattice_,
+                                                     std::move(eos_node_and_preceding_edge_costs3.first),
+                                                     std::make_unique<tetengo::lattice::constraint>() };
         ++iterator3;
         const tetengo::lattice::n_best_iterator iterator_last{};
 
@@ -438,13 +490,15 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         auto                                    eos_node_and_preceding_edge_costs1 = lattice_.settle();
         const tetengo::lattice::n_best_iterator iterator1{ lattice_,
-                                                           std::move(eos_node_and_preceding_edge_costs1.first) };
+                                                           std::move(eos_node_and_preceding_edge_costs1.first),
+                                                           std::make_unique<tetengo::lattice::constraint>() };
 
         lattice_.push_back("[OmutaKumamoto]");
 
         auto                                    eos_node_and_preceding_edge_costs2 = lattice_.settle();
         const tetengo::lattice::n_best_iterator iterator2{ lattice_,
-                                                           std::move(eos_node_and_preceding_edge_costs2.first) };
+                                                           std::move(eos_node_and_preceding_edge_costs2.first),
+                                                           std::make_unique<tetengo::lattice::constraint>() };
 
         BOOST_CHECK(iterator1 != iterator2);
     }
@@ -465,7 +519,8 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         tetengo_lattice_node_t eos_node{};
         std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
         tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
-        auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
+        auto* const p_iterator =
+            tetengo_lattice_nBestIterator_create(p_lattice, &eos_node, tetengo_lattice_constraint_createEmpty());
         BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_lattice_nBestIterator_destroy(p_iterator);
@@ -518,7 +573,9 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         lattice_.push_back("[OmutaKumamoto]");
 
         auto                              eos_node_and_preceding_edge_costs = lattice_.settle();
-        tetengo::lattice::n_best_iterator iterator{ lattice_, std::move(eos_node_and_preceding_edge_costs.first) };
+        tetengo::lattice::n_best_iterator iterator{ lattice_,
+                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                    std::make_unique<tetengo::lattice::constraint>() };
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.size() == 3U);
@@ -610,6 +667,159 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         ++iterator;
         BOOST_CHECK_THROW(*iterator, std::logic_error);
     }
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        lattice_.push_back("[HakataTosu]");
+        lattice_.push_back("[TosuOmuta]");
+        lattice_.push_back("[OmutaKumamoto]");
+
+        auto                              eos_node_and_preceding_edge_costs = lattice_.settle();
+        tetengo::lattice::n_best_iterator iterator{ lattice_,
+                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                    std::make_unique<tetengo::lattice::constraint>() };
+
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 3U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(3);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[1]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[2]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+            const auto& constrained_path = *iterator;
+            BOOST_TEST(constrained_path == path);
+
+            ++constrained_iterator;
+            BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+        }
+
+        ++iterator;
+        ++iterator;
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[1]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[2]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+            const auto& constrained_path = *constrained_iterator;
+            BOOST_TEST(constrained_path == path);
+
+            ++constrained_iterator;
+            BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+        }
+
+        ++iterator;
+        ++iterator;
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[1]));
+            pattern.push_back(std::make_unique<tetengo::lattice::wildcard_constraint_element>(1));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST(constrained_path == path);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST_REQUIRE(constrained_path.size() == 5U);
+                BOOST_CHECK(constrained_path[0] == path[0]);
+                BOOST_CHECK(constrained_path[1] == path[1]);
+                BOOST_CHECK(constrained_path[2].key() == "Tosu-Omuta");
+                BOOST_CHECK(constrained_path[3].key() == "Omuta-Kumamoto");
+                BOOST_CHECK(constrained_path[4] == path[3]);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+            }
+        }
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::wildcard_constraint_element>(0));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[2]));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST_REQUIRE(constrained_path.size() == 4U);
+                BOOST_CHECK(constrained_path[0] == path[0]);
+                BOOST_CHECK(std::any_cast<std::string>(constrained_path[1].value()) == "local415");
+                BOOST_CHECK(constrained_path[2] == path[2]);
+                BOOST_CHECK(constrained_path[3] == path[3]);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_REQUIRE(constrained_iterator != tetengo::lattice::n_best_iterator{});
+                const auto& constrained_path = *constrained_iterator;
+                BOOST_TEST(constrained_path == path);
+            }
+            ++constrained_iterator;
+            {
+                BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
+            }
+        }
+        {
+            const auto& path = *iterator;
+            BOOST_TEST_REQUIRE(path.size() == 4U);
+
+            std::vector<std::unique_ptr<tetengo::lattice::constraint_element>> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[0]));
+            pattern.push_back(std::make_unique<tetengo::lattice::wildcard_constraint_element>(0));
+            pattern.push_back(std::make_unique<tetengo::lattice::node_constraint_element>(path[3]));
+            auto p_constraint = std::make_unique<tetengo::lattice::constraint>(std::move(pattern));
+
+            tetengo::lattice::n_best_iterator constrained_iterator{ lattice_,
+                                                                    std::move(eos_node_and_preceding_edge_costs.first),
+                                                                    std::move(p_constraint) };
+
+            BOOST_TEST(std::distance(constrained_iterator, tetengo::lattice::n_best_iterator{}) == 9);
+        }
+    }
 
     {
         auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
@@ -627,7 +837,8 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         tetengo_lattice_node_t eos_node{};
         std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
         tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
-        auto* const p_iterator = tetengo_lattice_nBestIterator_create(p_lattice, &eos_node);
+        auto* const p_iterator =
+            tetengo_lattice_nBestIterator_create(p_lattice, &eos_node, tetengo_lattice_constraint_createEmpty());
         BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_lattice_nBestIterator_destroy(p_iterator);
@@ -788,6 +999,296 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         {
             const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
             BOOST_TEST(node_count == 0U);
+        }
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+
+        const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
+        tetengo_lattice_node_t eos_node{};
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+        auto* const p_iterator =
+            tetengo_lattice_nBestIterator_create(p_lattice, &eos_node, tetengo_lattice_constraint_createEmpty());
+        BOOST_SCOPE_EXIT(p_iterator)
+        {
+            tetengo_lattice_nBestIterator_destroy(p_iterator);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_iterator);
+
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 3U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 3U);
+
+            std::vector<tetengo_lattice_constraintElement_t*> pattern{};
+            pattern.reserve(3);
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[0]));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[1]));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[2]));
+
+            auto* const p_constrained_iterator = tetengo_lattice_nBestIterator_create(
+                p_lattice, &eos_node, tetengo_lattice_constraint_create(pattern.data(), pattern.size()));
+            BOOST_SCOPE_EXIT(p_constrained_iterator)
+            {
+                tetengo_lattice_nBestIterator_destroy(p_constrained_iterator);
+            }
+            BOOST_SCOPE_EXIT_END;
+            BOOST_TEST_REQUIRE(p_constrained_iterator);
+
+            BOOST_TEST_REQUIRE(tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+            const auto constrained_node_count = tetengo_lattice_nBestIterator_get(p_constrained_iterator, nullptr);
+            BOOST_TEST_REQUIRE(constrained_node_count == 3U);
+            std::vector<tetengo_lattice_node_t> constrained_nodes{ constrained_node_count };
+            const auto                          constrained_node_count_again =
+                tetengo_lattice_nBestIterator_get(p_constrained_iterator, constrained_nodes.data());
+            BOOST_TEST(constrained_node_count_again == 3U);
+            BOOST_TEST(
+                tetengo_lattice_entry_valueOf(constrained_nodes[0].value_handle) ==
+                tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                tetengo_lattice_entry_valueOf(constrained_nodes[1].value_handle) ==
+                tetengo_lattice_entry_valueOf(nodes[1].value_handle));
+            BOOST_TEST(
+                tetengo_lattice_entry_valueOf(constrained_nodes[2].value_handle) ==
+                tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+
+            tetengo_lattice_nBestIterator_next(p_constrained_iterator);
+            BOOST_TEST(!tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+
+            std::vector<tetengo_lattice_constraintElement_t*> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[0]));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[1]));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[2]));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[3]));
+
+            auto* const p_constrained_iterator = tetengo_lattice_nBestIterator_create(
+                p_lattice, &eos_node, tetengo_lattice_constraint_create(pattern.data(), pattern.size()));
+            BOOST_SCOPE_EXIT(p_constrained_iterator)
+            {
+                tetengo_lattice_nBestIterator_destroy(p_constrained_iterator);
+            }
+            BOOST_SCOPE_EXIT_END;
+            BOOST_TEST_REQUIRE(p_constrained_iterator);
+
+            BOOST_TEST_REQUIRE(tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+            const auto constrained_node_count = tetengo_lattice_nBestIterator_get(p_constrained_iterator, nullptr);
+            BOOST_TEST_REQUIRE(constrained_node_count == 4U);
+            std::vector<tetengo_lattice_node_t> constrained_nodes{ constrained_node_count };
+            const auto                          constrained_node_count_again =
+                tetengo_lattice_nBestIterator_get(p_constrained_iterator, constrained_nodes.data());
+            BOOST_TEST(constrained_node_count_again == 4U);
+            BOOST_TEST(
+                tetengo_lattice_entry_valueOf(constrained_nodes[0].value_handle) ==
+                tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+            BOOST_TEST(
+                tetengo_lattice_entry_valueOf(constrained_nodes[1].value_handle) ==
+                tetengo_lattice_entry_valueOf(nodes[1].value_handle));
+            BOOST_TEST(
+                tetengo_lattice_entry_valueOf(constrained_nodes[2].value_handle) ==
+                tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+            BOOST_TEST(
+                tetengo_lattice_entry_valueOf(constrained_nodes[3].value_handle) ==
+                tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+
+            tetengo_lattice_nBestIterator_next(p_constrained_iterator);
+            BOOST_TEST(!tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+        }
+
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        tetengo_lattice_nBestIterator_next(p_iterator);
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+
+            std::vector<tetengo_lattice_constraintElement_t*> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[0]));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[1]));
+            pattern.push_back(tetengo_lattice_constraintElement_createWildcardConstraintElement(1));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[3]));
+
+            auto* const p_constrained_iterator = tetengo_lattice_nBestIterator_create(
+                p_lattice, &eos_node, tetengo_lattice_constraint_create(pattern.data(), pattern.size()));
+            BOOST_SCOPE_EXIT(p_constrained_iterator)
+            {
+                tetengo_lattice_nBestIterator_destroy(p_constrained_iterator);
+            }
+            BOOST_SCOPE_EXIT_END;
+            BOOST_TEST_REQUIRE(p_constrained_iterator);
+
+            {
+                BOOST_TEST_REQUIRE(tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+                const auto constrained_node_count = tetengo_lattice_nBestIterator_get(p_constrained_iterator, nullptr);
+                BOOST_TEST_REQUIRE(constrained_node_count == 4U);
+                std::vector<tetengo_lattice_node_t> constrained_nodes{ constrained_node_count };
+                const auto                          constrained_node_count_again =
+                    tetengo_lattice_nBestIterator_get(p_constrained_iterator, constrained_nodes.data());
+                BOOST_TEST(constrained_node_count_again == 4U);
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[0].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[1].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[1].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[2].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[3].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+            }
+            tetengo_lattice_nBestIterator_next(p_constrained_iterator);
+            {
+                BOOST_TEST_REQUIRE(tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+                const auto constrained_node_count = tetengo_lattice_nBestIterator_get(p_constrained_iterator, nullptr);
+                BOOST_TEST_REQUIRE(constrained_node_count == 5U);
+                std::vector<tetengo_lattice_node_t> constrained_nodes{ constrained_node_count };
+                const auto                          constrained_node_count_again =
+                    tetengo_lattice_nBestIterator_get(p_constrained_iterator, constrained_nodes.data());
+                BOOST_TEST(constrained_node_count_again == 5U);
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[0].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[1].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[1].value_handle));
+                BOOST_TEST(
+                    std::string_view(constrained_nodes[2].key.p_head, constrained_nodes[2].key.length) == "Tosu-Omuta");
+                BOOST_TEST(
+                    std::string_view(constrained_nodes[3].key.p_head, constrained_nodes[3].key.length) ==
+                    "Omuta-Kumamoto");
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[4].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+            }
+            tetengo_lattice_nBestIterator_next(p_constrained_iterator);
+            BOOST_TEST(!tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+        }
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+
+            std::vector<tetengo_lattice_constraintElement_t*> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[0]));
+            pattern.push_back(tetengo_lattice_constraintElement_createWildcardConstraintElement(0));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[2]));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[3]));
+
+            auto* const p_constrained_iterator = tetengo_lattice_nBestIterator_create(
+                p_lattice, &eos_node, tetengo_lattice_constraint_create(pattern.data(), pattern.size()));
+            BOOST_SCOPE_EXIT(p_constrained_iterator)
+            {
+                tetengo_lattice_nBestIterator_destroy(p_constrained_iterator);
+            }
+            BOOST_SCOPE_EXIT_END;
+            BOOST_TEST_REQUIRE(p_constrained_iterator);
+
+            {
+                BOOST_TEST_REQUIRE(tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+                const auto constrained_node_count = tetengo_lattice_nBestIterator_get(p_constrained_iterator, nullptr);
+                BOOST_TEST_REQUIRE(constrained_node_count == 4U);
+                std::vector<tetengo_lattice_node_t> constrained_nodes{ constrained_node_count };
+                const auto                          constrained_node_count_again =
+                    tetengo_lattice_nBestIterator_get(p_constrained_iterator, constrained_nodes.data());
+                BOOST_TEST(constrained_node_count_again == 4U);
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[0].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+                BOOST_TEST(
+                    *reinterpret_cast<const std::string*>(
+                        tetengo_lattice_entry_valueOf(constrained_nodes[1].value_handle)) == "local415");
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[2].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[3].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+            }
+            tetengo_lattice_nBestIterator_next(p_constrained_iterator);
+            {
+                BOOST_TEST_REQUIRE(tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+                const auto constrained_node_count = tetengo_lattice_nBestIterator_get(p_constrained_iterator, nullptr);
+                BOOST_TEST_REQUIRE(constrained_node_count == 4U);
+                std::vector<tetengo_lattice_node_t> constrained_nodes{ constrained_node_count };
+                const auto                          constrained_node_count_again =
+                    tetengo_lattice_nBestIterator_get(p_constrained_iterator, constrained_nodes.data());
+                BOOST_TEST(constrained_node_count_again == 4U);
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[0].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[0].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[1].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[1].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[2].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[2].value_handle));
+                BOOST_TEST(
+                    tetengo_lattice_entry_valueOf(constrained_nodes[3].value_handle) ==
+                    tetengo_lattice_entry_valueOf(nodes[3].value_handle));
+            }
+            tetengo_lattice_nBestIterator_next(p_constrained_iterator);
+            BOOST_TEST(!tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator));
+        }
+        {
+            const auto node_count = tetengo_lattice_nBestIterator_get(p_iterator, nullptr);
+            BOOST_TEST_REQUIRE(node_count == 4U);
+            std::vector<tetengo_lattice_node_t> nodes{ node_count };
+            const auto node_count_again = tetengo_lattice_nBestIterator_get(p_iterator, nodes.data());
+            BOOST_TEST(node_count_again == 4U);
+
+            std::vector<tetengo_lattice_constraintElement_t*> pattern{};
+            pattern.reserve(4);
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[0]));
+            pattern.push_back(tetengo_lattice_constraintElement_createWildcardConstraintElement(0));
+            pattern.push_back(tetengo_lattice_constraintElement_createNodeConstraintElement(&nodes[3]));
+
+            auto* const p_constrained_iterator = tetengo_lattice_nBestIterator_create(
+                p_lattice, &eos_node, tetengo_lattice_constraint_create(pattern.data(), pattern.size()));
+            BOOST_SCOPE_EXIT(p_constrained_iterator)
+            {
+                tetengo_lattice_nBestIterator_destroy(p_constrained_iterator);
+            }
+            BOOST_SCOPE_EXIT_END;
+            BOOST_TEST_REQUIRE(p_constrained_iterator);
+
+            auto path_count = static_cast<std::size_t>(0);
+            while (tetengo_lattice_nBestIterator_hasNext(p_constrained_iterator))
+            {
+                tetengo_lattice_nBestIterator_next(p_constrained_iterator);
+                ++path_count;
+            }
+            BOOST_TEST(path_count == 9U);
         }
     }
     {

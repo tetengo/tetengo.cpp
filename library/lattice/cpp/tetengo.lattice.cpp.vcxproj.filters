@@ -43,6 +43,18 @@
     <ClInclude Include="include\tetengo\lattice\n_best_iterator.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\constraint.hpp">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\constraint_element.hpp">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\node_constraint_element.hpp">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\wildcard_constraint_element.hpp">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp">
@@ -67,6 +79,18 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo.lattice.n_best_iterator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.constraint.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.constraint_element.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.node_constraint_element.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.wildcard_constraint_element.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

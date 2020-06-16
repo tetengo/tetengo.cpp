@@ -61,7 +61,7 @@ typedef struct tetengo_lattice_node_tag
     \param preceding_edge_count   A preceding edge count.
     \param p_bos                  The storage for an output BOS.
 
-    \retval non-zero When an EOS is stored.
+    \retval non-zero When an BOS is stored.
     \retval 0        Otherwise.
 */
 int tetengo_lattice_node_bos(
