@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.lattice.cpp", "libr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tetengo.lattice", "library\lattice\test\test_tetengo.lattice.vcxproj", "{3FED617D-365B-4DEA-ACC0-21A60741EBD3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "transfer_trains", "executable\transfer_trains\transfer_trains.vcxproj", "{8B106CC4-B645-4A2B-9807-38C8D185D40A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -109,6 +111,14 @@ Global
 		{3FED617D-365B-4DEA-ACC0-21A60741EBD3}.Release|x64.Build.0 = Release|x64
 		{3FED617D-365B-4DEA-ACC0-21A60741EBD3}.Release|x86.ActiveCfg = Release|Win32
 		{3FED617D-365B-4DEA-ACC0-21A60741EBD3}.Release|x86.Build.0 = Release|Win32
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Debug|x64.ActiveCfg = Debug|x64
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Debug|x64.Build.0 = Debug|x64
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Debug|x86.ActiveCfg = Debug|Win32
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Debug|x86.Build.0 = Debug|Win32
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Release|x64.ActiveCfg = Release|x64
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Release|x64.Build.0 = Release|x64
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Release|x86.ActiveCfg = Release|Win32
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +135,7 @@ Global
 		{2EE3983D-A0E0-429F-BC2F-5D46C93E1C81} = {983DE5D9-732F-4E41-87C5-EF551498AD47}
 		{65C6D977-AC51-4E28-8B15-178FBDF69168} = {983DE5D9-732F-4E41-87C5-EF551498AD47}
 		{3FED617D-365B-4DEA-ACC0-21A60741EBD3} = {983DE5D9-732F-4E41-87C5-EF551498AD47}
+		{8B106CC4-B645-4A2B-9807-38C8D185D40A} = {721A442D-34D8-457A-8D07-D21EB2C6A04C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1FDB91A-BB78-49E0-8D13-17726804EA86}
