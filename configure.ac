@@ -18,6 +18,8 @@ AC_CONFIG_FILES([
     executable/search_dict/src/Makefile
     executable/search_dict_c/Makefile
     executable/search_dict_c/src/Makefile
+    executable/transfer_trains/Makefile
+    executable/transfer_trains/src/Makefile
     library/Makefile
     library/lattice/Makefile
     library/lattice/c/Makefile

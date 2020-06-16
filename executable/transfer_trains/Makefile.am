@@ -2,10 +2,12 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
-    make_dict \
-    search_dict \
-    search_dict_c \
-    transfer_trains
+    src
+
+EXTRA_DIST = \
+    README.md \
+    transfer_trains.vcxproj \
+    transfer_trains.vcxproj.filters
 
 
 iwyu:
