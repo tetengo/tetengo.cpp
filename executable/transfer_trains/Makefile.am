@@ -1,9 +1,12 @@
 # Automake Settings
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
-SUBDIRS = \
-    data \
+SOURCE_SUBDIRS = \
     src
+
+SUBDIRS = \
+    ${SOURCE_SUBDIRS} \
+    data
 
 EXTRA_DIST = \
     README.md \
@@ -12,11 +15,11 @@ EXTRA_DIST = \
 
 
 iwyu:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
+	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
 
 clean-iwyu:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} clean-iwyu; cd ..; done
+	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} clean-iwyu; cd ..; done
 
 
 format:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done
+	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done
