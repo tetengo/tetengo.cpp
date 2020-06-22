@@ -13,9 +13,15 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\timetable_vocabulary.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timetable_vocabulary.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

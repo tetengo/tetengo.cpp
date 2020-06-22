@@ -11,6 +11,8 @@
 #include <memory>
 #include <string>
 
+#include "timetable_vocabulary.hpp"
+
 
 namespace
 {
@@ -36,7 +38,7 @@ int main(const int argc, char** const argv)
             return 0;
         }
 
-        const auto p_input_stream = create_input_stream(argv[1]);
+        const timetable_vocabulary vocabulary{ create_input_stream(argv[1]) };
 
         return 0;
     }

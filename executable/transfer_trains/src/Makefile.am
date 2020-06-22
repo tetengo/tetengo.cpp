@@ -1,17 +1,19 @@
 # Automake Settings
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    timetable_vocabulary.hpp
 
 sources = \
-    main.cpp
+    main.cpp \
+    timetable_vocabulary.cpp
 
 bin_PROGRAMS = transfer_trains
 
 transfer_trains_CPPFLAGS =
 transfer_trains_LDFLAGS =
 transfer_trains_LDADD =
-transfer_trains_SOURCES = ${sources}
+transfer_trains_SOURCES = ${headers} ${sources}
 
 
 IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
