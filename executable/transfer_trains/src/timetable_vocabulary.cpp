@@ -8,6 +8,7 @@
 #include <cassert>
 #include <istream>
 #include <iterator>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <stdexcept>
@@ -88,7 +89,8 @@ public:
     explicit impl(std::unique_ptr<std::istream>&& p_input_stream)
     {
         assert(p_input_stream);
-        const auto timetable = parse_input(*p_input_stream);
+        auto timetable = parse_input(*p_input_stream);
+        guess_arrival_times(timetable);
     }
 
 
@@ -214,6 +216,59 @@ private:
         return hour * 60 + minute;
     }
 
+    static void guess_arrival_times(timetable& timetable_)
+    {
+        for (auto from = static_cast<std::size_t>(0); from < timetable_.stations.size() - 1; ++from)
+        {
+            for (auto to = from + 1; to < timetable_.stations.size(); ++to)
+            {
+                /*const auto minimum_duration_ =*/minimum_duration(timetable_.trains, from, to);
+            }
+        }
+    }
+
+    static std::size_t minimum_duration(const std::vector<train>& trains, const std::size_t from, const std::size_t to)
+    {
+        auto minimum = std::numeric_limits<std::size_t>::max();
+        for (const auto& train: trains)
+        {
+            if (!all_passing(train.ad_times, from, to))
+            {
+                continue;
+            }
+            if (!train.ad_times[from].arrival && !train.ad_times[from].departure)
+            {
+                continue;
+            }
+            if (!train.ad_times[to].arrival && !train.ad_times[to].departure)
+            {
+                continue;
+            }
+
+            const auto from_time =
+                train.ad_times[from].departure ? *train.ad_times[from].departure : *train.ad_times[from].arrival;
+            const auto to_time =
+                train.ad_times[to].arrival ? *train.ad_times[to].arrival : *train.ad_times[to].departure;
+
+            if (to_time - from_time < minimum)
+            {
+                minimum = to_time - from_time;
+            }
+        }
+        return minimum;
+    }
+
+    static bool all_passing(const std::vector<ad_time>& ad_times, const std::size_t from, const std::size_t to)
+    {
+        for (auto i = from + 1; i + 1 < to + 1; ++i)
+        {
+            if (ad_times[i].arrival || ad_times[i].departure)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     // variables
 };
