@@ -1,12 +1,12 @@
-                ,Tokushima,Sako,Yoshinari,Shozui,Ikenotani,Bando,Awa-Kawabata,Itano,Awa-Omiya,Sanuki-Aioi,Hiketa,Sanuki-Shirotori,Sanbonmatsu
-                ,TOKU,SAKO,YONA, SUI,      ITA, TOO,KAHA,TANO,MIYA,  AO,     HIKE,SIRO,SAMA
+     ,          ,Tokushima,Sako,Yoshinari,Shozui,Ikenotani,Bando,Awa-Kawabata,Itano,Awa-Omiya,Sanuki-Aioi,Hiketa,Sanuki-Shirotori,Sanbonmatsu
+     ,          ,TOKU,SAKO,YONA, SUI,      ITA, TOO,KAHA,TANO,MIYA,  AO,     HIKE,SIRO,SAMA
 4302D,          ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,      454, 458, 501/
  306D,          ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,      547, 552, 555/
  308D,          ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,      602, 607, 610/
 3002D,Uzushio 2 , 541,   -,   -, 548, 551/ 552,   -,   -, 558,   -,   -, 608/ 609, 613, 617/
  310D,          , 547, 550, 556, 558, 602/ 602, 606, 610, 614, 620, 626, 629/ 630, 635, 638/
  312D,          , 602, 607, 613, 616, 619/ 620, 624, 627, 631, 637, 644, 647/ 654, 659, 702/
- 314D           ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,      711, 717, 721/
+ 314D,          ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,      711, 717, 721/
  316D,          , 637, 640, 646, 649, 653/ 654, 658, 702, 725, 734, 741, 745/ 747, 753, 758/
 3004D,Uzushio 4 , 659,   -,   -, 706, 709/ 711,   -,   -, 720,   -,   -, 730/ 730, 735, 738/
  522D,          , 705, 710, 720, 724, 728/ 734, 738, 742, 746/
