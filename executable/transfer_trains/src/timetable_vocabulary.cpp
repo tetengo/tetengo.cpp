@@ -33,8 +33,7 @@ namespace
         std::string telegram_code;
 
         station(std::string&& name, std::string&& telegram_code) :
-        name{ std::move(name) },
-            telegram_code{ std::move(telegram_code) }
+        name{ std::move(name) }, telegram_code{ std::move(telegram_code) }
         {}
     };
 
@@ -45,8 +44,7 @@ namespace
         std::optional<std::size_t> departure;
 
         ad_time(std::optional<std::size_t>&& arrival, std::optional<std::size_t>&& departure) :
-        arrival{ std::move(arrival) },
-            departure{ std::move(departure) }
+        arrival{ std::move(arrival) }, departure{ std::move(departure) }
         {}
     };
 
@@ -59,9 +57,7 @@ namespace
         std::vector<ad_time> ad_times;
 
         train(std::string&& number, std::string&& name, std::vector<ad_time>&& ad_times) :
-        number{ std::move(number) },
-            name{ std::move(name) },
-            ad_times{ std::move(ad_times) }
+        number{ std::move(number) }, name{ std::move(name) }, ad_times{ std::move(ad_times) }
         {}
     };
 
@@ -72,8 +68,7 @@ namespace
         std::vector<train> trains;
 
         timetable(std::vector<station>&& stations, std::vector<train>&& trains) :
-        stations{ std::move(stations) },
-            trains{ std::move(trains) }
+        stations{ std::move(stations) }, trains{ std::move(trains) }
         {}
     };
 
@@ -222,25 +217,34 @@ private:
         {
             for (auto to = from + 1; to < timetable_.stations.size(); ++to)
             {
-                /*const auto minimum_duration_ =*/minimum_duration(timetable_.trains, from, to);
+                const auto minimum_duration_ = minimum_duration(timetable_.trains, from, to);
+
+                for (auto& train: timetable_.trains)
+                {
+                    if (!all_passing(train.ad_times, from, to))
+                    {
+                        continue;
+                    }
+
+                    if (!train.ad_times[to].arrival)
+                    {
+                        train.ad_times[to].arrival = add_time(*train.ad_times[from].departure, minimum_duration_);
+                    }
+                    else if (!train.ad_times[from].departure)
+                    {
+                        train.ad_times[from].departure = add_time(*train.ad_times[to].arrival, -minimum_duration_);
+                    }
+                }
             }
         }
     }
 
-    static std::size_t minimum_duration(const std::vector<train>& trains, const std::size_t from, const std::size_t to)
+    static std::ptrdiff_t minimum_duration(const std::vector<train>& trains, const std::size_t from, const std::size_t to)
     {
-        auto minimum = std::numeric_limits<std::size_t>::max();
+        auto minimum = std::numeric_limits<std::ptrdiff_t>::max();
         for (const auto& train: trains)
         {
             if (!all_passing(train.ad_times, from, to))
-            {
-                continue;
-            }
-            if (!train.ad_times[from].arrival && !train.ad_times[from].departure)
-            {
-                continue;
-            }
-            if (!train.ad_times[to].arrival && !train.ad_times[to].departure)
             {
                 continue;
             }
@@ -250,9 +254,9 @@ private:
             const auto to_time =
                 train.ad_times[to].arrival ? *train.ad_times[to].arrival : *train.ad_times[to].departure;
 
-            if (to_time - from_time < minimum)
+            if (diff_time(to_time, from_time) < minimum)
             {
-                minimum = to_time - from_time;
+                minimum = diff_time(to_time, from_time);
             }
         }
         return minimum;
@@ -260,6 +264,14 @@ private:
 
     static bool all_passing(const std::vector<ad_time>& ad_times, const std::size_t from, const std::size_t to)
     {
+        if (!ad_times[from].arrival && !ad_times[from].departure)
+        {
+            return false;
+        }
+        if (!ad_times[to].arrival && !ad_times[to].departure)
+        {
+            return false;
+        }
         for (auto i = from + 1; i + 1 < to + 1; ++i)
         {
             if (ad_times[i].arrival || ad_times[i].departure)
@@ -269,6 +281,21 @@ private:
         }
         return true;
     }
+
+    static std::size_t add_time(const std::size_t time, const std::ptrdiff_t duration)
+    {
+        assert(0 <= time && time < 1440);
+        assert(-1440 < duration && duration < 1440);
+        return (time + 1440 + duration) % 1440;
+    }
+
+    static std::ptrdiff_t diff_time(const std::size_t time1, const std::size_t time2)
+    {
+        assert(0 <= time1 && time1 < 1440);
+        assert(0 <= time2 && time2 < 1440);
+        return (time1 + 1440 - time2) % 1440;
+    }
+
 
     // variables
 };
