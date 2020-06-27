@@ -10,9 +10,12 @@ sources = \
 
 bin_PROGRAMS = transfer_trains
 
-transfer_trains_CPPFLAGS =
-transfer_trains_LDFLAGS =
-transfer_trains_LDADD =
+transfer_trains_CPPFLAGS = \
+    -I${top_srcdir}/library/lattice/cpp/include
+transfer_trains_LDFLAGS = \
+    -L${top_builddir}/library/lattice/cpp/src
+transfer_trains_LDADD = \
+    -ltetengo.lattice.cpp
 transfer_trains_SOURCES = ${headers} ${sources}
 
 

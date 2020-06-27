@@ -21,6 +21,8 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include <tetengo/lattice/entry.hpp>
+
 #include "timetable_vocabulary.hpp"
 
 
@@ -86,6 +88,8 @@ public:
         assert(p_input_stream);
         auto timetable = parse_input(*p_input_stream);
         guess_arrival_times(timetable);
+
+        auto entries = build_entries(timetable);
     }
 
 
@@ -239,7 +243,8 @@ private:
         }
     }
 
-    static std::ptrdiff_t minimum_duration(const std::vector<train>& trains, const std::size_t from, const std::size_t to)
+    static std::ptrdiff_t
+    minimum_duration(const std::vector<train>& trains, const std::size_t from, const std::size_t to)
     {
         auto minimum = std::numeric_limits<std::ptrdiff_t>::max();
         for (const auto& train: trains)
@@ -260,6 +265,69 @@ private:
             }
         }
         return minimum;
+    }
+
+    static std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>
+    build_entries(const timetable& timetable_)
+    {
+        std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{};
+        for (const auto& train: timetable_.trains)
+        {
+            for (auto from = static_cast<std::size_t>(0); from + 1 < timetable_.stations.size(); ++from)
+            {
+                for (auto to = from + 1; to < timetable_.stations.size(); ++to)
+                {
+                    if (!all_passing(train.ad_times, from, to))
+                    {
+                        continue;
+                    }
+
+                    const auto section_name = make_section_name(timetable_.stations, from, to);
+                    auto       found = map.find(section_name);
+                    if (found == map.end())
+                    {
+                        auto inserted =
+                            map.insert(std::make_pair(section_name, std::vector<tetengo::lattice::entry>{}));
+                        found = inserted.first;
+                    }
+                    auto value = train.number;
+                    if (!train.name.empty())
+                    {
+                        value += " " + train.name;
+                    }
+                    const auto section_duration = make_section_duration(train.ad_times, from, to);
+                    found->second.emplace_back(
+                        std::move(section_name), std::move(value), static_cast<int>(section_duration));
+                }
+            }
+        }
+
+        std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{};
+        entries.reserve(map.size());
+        for (auto& map_entry: map)
+        {
+            entries.emplace_back(std::move(map_entry.first), std::move(map_entry.second));
+        }
+        return entries;
+    }
+
+    static std::string
+    make_section_name(const std::vector<station>& stations, const std::size_t from, const std::size_t to)
+    {
+        std::string name;
+        for (auto i = from; i <= to; ++i)
+        {
+            name += stations[i].telegram_code + "/";
+        }
+        return name;
+    }
+
+    static std::size_t
+    make_section_duration(const std::vector<ad_time>& ad_times, const std::size_t from, const std::size_t to)
+    {
+        assert(ad_times[from].departure);
+        assert(ad_times[to].arrival);
+        return diff_time(*ad_times[to].arrival, *ad_times[from].departure);
     }
 
     static bool all_passing(const std::vector<ad_time>& ad_times, const std::size_t from, const std::size_t to)
@@ -284,15 +352,15 @@ private:
 
     static std::size_t add_time(const std::size_t time, const std::ptrdiff_t duration)
     {
-        assert(0 <= time && time < 1440);
+        assert(time < 1440);
         assert(-1440 < duration && duration < 1440);
         return (time + 1440 + duration) % 1440;
     }
 
     static std::ptrdiff_t diff_time(const std::size_t time1, const std::size_t time2)
     {
-        assert(0 <= time1 && time1 < 1440);
-        assert(0 <= time2 && time2 < 1440);
+        assert(time1 < 1440);
+        assert(time2 < 1440);
         return (time1 + 1440 - time2) % 1440;
     }
 
