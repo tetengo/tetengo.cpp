@@ -5,6 +5,7 @@
  */
 
 #include <algorithm>
+#include <any>
 #include <cassert>
 #include <istream>
 #include <iterator>
@@ -80,6 +81,20 @@ namespace
         {}
     };
 
+    struct entry_value
+    {
+        const train* p_train;
+
+        std::size_t from;
+
+        std::size_t to;
+
+        entry_value(const train* const p_train, const std::size_t from, const std::size_t to) :
+        p_train{ p_train },
+            from{ from },
+            to{ to }
+        {}
+    };
 
 }
 
@@ -89,18 +104,24 @@ class timetable_vocabulary::impl : private boost::noncopyable
 public:
     // constructors and destructor
 
-    explicit impl(std::unique_ptr<std::istream>&& p_input_stream)
+    explicit impl(std::unique_ptr<std::istream>&& p_input_stream) :
+    m_timetable{ build_timetable(std::move(p_input_stream)) }
     {
-        assert(p_input_stream);
-        auto timetable = parse_input(*p_input_stream);
-        guess_arrival_times(timetable);
-
-        auto entries = build_entries(timetable);
+        auto entries = build_entries(m_timetable);
+        auto connections = build_connections(entries);
     }
 
 
 private:
     // static functions
+
+    static timetable build_timetable(std::unique_ptr<std::istream>&& p_input_stream)
+    {
+        assert(p_input_stream);
+        auto timetable = parse_input(*p_input_stream);
+        guess_arrival_times(timetable);
+        return timetable;
+    }
 
     static timetable parse_input(std::istream& input_stream)
     {
@@ -277,13 +298,13 @@ private:
     build_entries(const timetable& timetable_)
     {
         std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{};
-        for (const auto& train: timetable_.trains)
+        for (const auto& train_: timetable_.trains)
         {
             for (auto from = static_cast<std::size_t>(0); from + 1 < timetable_.stations.size(); ++from)
             {
                 for (auto to = from + 1; to < timetable_.stations.size(); ++to)
                 {
-                    if (!all_passing(train.ad_times, from, to))
+                    if (!all_passing(train_.ad_times, from, to))
                     {
                         continue;
                     }
@@ -296,12 +317,8 @@ private:
                             map.insert(std::make_pair(section_name, std::vector<tetengo::lattice::entry>{}));
                         found = inserted.first;
                     }
-                    auto value = train.number;
-                    if (!train.name.empty())
-                    {
-                        value += " " + train.name;
-                    }
-                    const auto section_duration = make_section_duration(train.ad_times, from, to);
+                    entry_value value{ &train_, from, to };
+                    const auto  section_duration = make_section_duration(train_.ad_times, from, to);
                     found->second.emplace_back(
                         std::move(section_name), std::move(value), static_cast<int>(section_duration));
                 }
@@ -356,6 +373,60 @@ private:
         return true;
     }
 
+    static std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>>
+    build_connections(const std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>& entries)
+    {
+        std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{};
+
+        for (const auto& from: entries)
+        {
+            for (const auto& to: entries)
+            {
+                for (const auto& from_entry: from.second)
+                {
+                    for (const auto& to_entry: to.second)
+                    {
+                        const auto* const p_from_value = std::any_cast<entry_value>(&from_entry.value());
+                        const auto* const p_to_value = std::any_cast<entry_value>(&to_entry.value());
+                        if (p_from_value->to != p_to_value->from)
+                        {
+                            continue;
+                        }
+
+                        const auto from_arrival_time = p_from_value->p_train->ad_times[p_from_value->to].arrival;
+                        const auto to_departure_time = p_to_value->p_train->ad_times[p_to_value->from].departure;
+                        assert(from_arrival_time);
+                        assert(to_departure_time);
+                        connections.emplace_back(
+                            std::make_pair(from_entry, to_entry),
+                            static_cast<int>(diff_time(*to_departure_time, *from_arrival_time)));
+                    }
+                }
+            }
+        }
+
+        for (const auto& key_and_entries: entries)
+        {
+            for (const auto& entry: key_and_entries.second)
+            {
+                const auto* const p_value = std::any_cast<entry_value>(&entry.value());
+                if (p_value->from == 0)
+                {
+                    const auto departure_time = p_value->p_train->ad_times[0].departure;
+                    assert(departure_time);
+                    connections.emplace_back(
+                        std::make_pair(tetengo::lattice::entry::bos_eos(), entry), static_cast<int>(*departure_time));
+                }
+                if (p_value->to == p_value->p_train->ad_times.size() - 1)
+                {
+                    connections.emplace_back(std::make_pair(entry, tetengo::lattice::entry::bos_eos()), 0);
+                }
+            }
+        }
+
+        return connections;
+    }
+
     static std::size_t add_time(const std::size_t time, const std::ptrdiff_t duration)
     {
         assert(time < 1440);
@@ -372,6 +443,8 @@ private:
 
 
     // variables
+
+    const timetable m_timetable;
 };
 
 
