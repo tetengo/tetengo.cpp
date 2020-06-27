@@ -282,7 +282,7 @@ private:
                         continue;
                     }
 
-                    const auto section_name = make_section_name(timetable_.stations, from, to);
+                    auto section_name = make_section_name(timetable_.stations, from, to);
                     auto       found = map.find(section_name);
                     if (found == map.end())
                     {
@@ -306,7 +306,7 @@ private:
         entries.reserve(map.size());
         for (auto& map_entry: map)
         {
-            entries.emplace_back(std::move(map_entry.first), std::move(map_entry.second));
+            entries.emplace_back(map_entry.first, std::move(map_entry.second));
         }
         return entries;
     }
