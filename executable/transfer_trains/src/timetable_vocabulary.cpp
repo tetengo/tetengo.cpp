@@ -24,6 +24,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/unordered_map_vocabulary.hpp>
 
 #include "timetable_vocabulary.hpp"
 
@@ -37,8 +38,7 @@ namespace
         std::string telegram_code;
 
         station(std::string&& name, std::string&& telegram_code) :
-        name{ std::move(name) },
-            telegram_code{ std::move(telegram_code) }
+        name{ std::move(name) }, telegram_code{ std::move(telegram_code) }
         {}
     };
 
@@ -49,8 +49,7 @@ namespace
         std::optional<std::size_t> departure;
 
         ad_time(std::optional<std::size_t>&& arrival, std::optional<std::size_t>&& departure) :
-        arrival{ std::move(arrival) },
-            departure{ std::move(departure) }
+        arrival{ std::move(arrival) }, departure{ std::move(departure) }
         {}
     };
 
@@ -63,9 +62,7 @@ namespace
         std::vector<ad_time> ad_times;
 
         train(std::string&& number, std::string&& name, std::vector<ad_time>&& ad_times) :
-        number{ std::move(number) },
-            name{ std::move(name) },
-            ad_times{ std::move(ad_times) }
+        number{ std::move(number) }, name{ std::move(name) }, ad_times{ std::move(ad_times) }
         {}
     };
 
@@ -76,8 +73,7 @@ namespace
         std::vector<train> trains;
 
         timetable(std::vector<station>&& stations, std::vector<train>&& trains) :
-        stations{ std::move(stations) },
-            trains{ std::move(trains) }
+        stations{ std::move(stations) }, trains{ std::move(trains) }
         {}
     };
 
@@ -90,9 +86,7 @@ namespace
         std::size_t to;
 
         entry_value(const train* const p_train, const std::size_t from, const std::size_t to) :
-        p_train{ p_train },
-            from{ from },
-            to{ to }
+        p_train{ p_train }, from{ from }, to{ to }
         {}
     };
 
@@ -105,11 +99,8 @@ public:
     // constructors and destructor
 
     explicit impl(std::unique_ptr<std::istream>&& p_input_stream) :
-    m_timetable{ build_timetable(std::move(p_input_stream)) }
-    {
-        auto entries = build_entries(m_timetable);
-        auto connections = build_connections(entries);
-    }
+    m_timetable{ build_timetable(std::move(p_input_stream)) }, m_p_vocabulary{ create_vocabulary(m_timetable) }
+    {}
 
 
 private:
@@ -294,6 +285,13 @@ private:
         return minimum;
     }
 
+    static std::unique_ptr<tetengo::lattice::unordered_map_vocabulary> create_vocabulary(const timetable& timetable_)
+    {
+        auto entries = build_entries(timetable_);
+        auto connections = build_connections(entries);
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(entries), std::move(connections));
+    }
+
     static std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>
     build_entries(const timetable& timetable_)
     {
@@ -445,6 +443,8 @@ private:
     // variables
 
     const timetable m_timetable;
+
+    const std::unique_ptr<tetengo::lattice::unordered_map_vocabulary> m_p_vocabulary;
 };
 
 
