@@ -39,8 +39,7 @@ namespace
         std::optional<std::size_t> departure;
 
         ad_time(std::optional<std::size_t>&& arrival, std::optional<std::size_t>&& departure) :
-        arrival{ std::move(arrival) },
-            departure{ std::move(departure) }
+        arrival{ std::move(arrival) }, departure{ std::move(departure) }
         {}
     };
 
@@ -53,9 +52,7 @@ namespace
         std::vector<ad_time> ad_times;
 
         train(std::string&& number, std::string&& name, std::vector<ad_time>&& ad_times) :
-        number{ std::move(number) },
-            name{ std::move(name) },
-            ad_times{ std::move(ad_times) }
+        number{ std::move(number) }, name{ std::move(name) }, ad_times{ std::move(ad_times) }
         {}
     };
 
@@ -66,8 +63,7 @@ namespace
         std::vector<train> trains;
 
         timetable_value(std::vector<station>&& stations, std::vector<train>&& trains) :
-        stations{ std::move(stations) },
-            trains{ std::move(trains) }
+        stations{ std::move(stations) }, trains{ std::move(trains) }
         {}
     };
 
@@ -80,9 +76,7 @@ namespace
         std::size_t to;
 
         entry_value(const train* const p_train, const std::size_t from, const std::size_t to) :
-        p_train{ p_train },
-            from{ from },
-            to{ to }
+        p_train{ p_train }, from{ from }, to{ to }
         {}
     };
 
@@ -90,8 +84,7 @@ namespace
 
 
 station::station(std::string name, std::string telegram_code) :
-m_name{ std::move(name) },
-    m_telegram_code{ std::move(telegram_code) }
+m_name{ std::move(name) }, m_telegram_code{ std::move(telegram_code) }
 {}
 
 const std::string& station::name() const
@@ -356,9 +349,9 @@ private:
     make_section_name(const std::vector<station>& stations, const std::size_t from, const std::size_t to)
     {
         std::string name;
-        for (auto i = from; i <= to; ++i)
+        for (auto i = from; i + 1 <= to; ++i)
         {
-            name += stations[i].telegram_code() + "/";
+            name += stations[i].telegram_code() + "-" + stations[i + 1].telegram_code() + "/";
         }
         return name;
     }

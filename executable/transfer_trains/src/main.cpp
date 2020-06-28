@@ -11,7 +11,12 @@
 #include <memory>
 #include <string>
 
+#include <boost/format.hpp>
+
+#include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/lattice.hpp>
+#include <tetengo/lattice/n_best_iterator.hpp>
+#include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/vocabulary.hpp> // IWYU pragma: keep
 
 #include "timetable.hpp"
@@ -28,6 +33,11 @@ namespace
         }
         return p_stream;
     }
+
+    std::string to_time_string(const int time_value) {
+        return (boost::format{ "%02d:%02d" } % (time_value / 60) % (time_value % 60)).str();
+    }
+
 }
 
 
@@ -44,11 +54,27 @@ int main(const int argc, char** const argv)
         const timetable timetable_{ create_input_stream(argv[1]) };
 
         tetengo::lattice::lattice lattice_{ timetable_.create_vocabulary() };
-        // for (const auto& station: timetable_.stations())
-        //{
-        //    lattice_.push_back(station.telegram_code() + "/");
-        //}
-        // const auto eos_and_precedings = lattice_.settle();
+        for (auto i = static_cast<std::size_t>(0); i + 1 < timetable_.stations().size(); ++i)
+        {
+            const auto key =
+                timetable_.stations()[i].telegram_code() + "-" + timetable_.stations()[i + 1].telegram_code() + "/";
+            lattice_.push_back(key);
+        }
+        const auto eos_and_precedings = lattice_.settle();
+
+        tetengo::lattice::n_best_iterator       iter{ lattice_,
+                                                eos_and_precedings.first,
+                                                std::make_unique<tetengo::lattice::constraint>() };
+        const tetengo::lattice::n_best_iterator last{};
+        for (auto i = static_cast<std::size_t>(0); i < 10 && iter != last; ++i, ++iter)
+        {
+            const auto& path = *iter;
+            for (const auto& node: path)
+            {
+                std::cout << to_time_string(node.path_cost()) << "\t" << node.key() << std::endl;
+            }
+            std::cout << "--------" << std::endl;
+        }
 
         return 0;
     }
