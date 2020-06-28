@@ -34,14 +34,20 @@ namespace tetengo::lattice
         // constructors and destructor
 
         impl(
-            std::vector<std::pair<std::string, std::vector<entry>>> entries,
-            std::vector<std::pair<std::pair<entry, entry>, int>>    connections,
-            std::function<std::size_t(const entry_view&)>           entry_hash) :
+            std::vector<std::pair<std::string, std::vector<entry>>>   entries,
+            std::vector<std::pair<std::pair<entry, entry>, int>>      connections,
+            std::function<std::size_t(const entry_view&)>             entry_hash,
+            std::function<bool(const entry_view&, const entry_view&)> entry_equal_to) :
         m_entry_map{ make_entry_map(std::move(entries)) },
             m_connection_keys{},
             m_connection_map{}
         {
-            build_connection_map(std::move(connections), entry_hash, m_connection_keys, m_connection_map);
+            build_connection_map(
+                std::move(connections),
+                std::move(entry_hash),
+                std::move(entry_equal_to),
+                m_connection_keys,
+                m_connection_map);
         }
 
 
@@ -116,6 +122,7 @@ namespace tetengo::lattice
         static void build_connection_map(
             std::vector<std::pair<std::pair<entry, entry>, int>> connections,
             std::function<std::size_t(const entry_view&)> /*entry_hash*/,
+            std::function<bool(const entry_view&, const entry_view&)> /*entry_equal_to*/,
             std::vector<std::pair<entry, entry>>& connection_keys,
             connection_map_type&                  connection_map)
         {
@@ -154,10 +161,15 @@ namespace tetengo::lattice
 
 
     unordered_map_vocabulary::unordered_map_vocabulary(
-        std::vector<std::pair<std::string, std::vector<entry>>> entries,
-        std::vector<std::pair<std::pair<entry, entry>, int>>    connections,
-        std::function<std::size_t(const entry_view&)>           entry_hash) :
-    m_p_impl{ std::make_unique<impl>(std::move(entries), std::move(connections), std::move(entry_hash)) }
+        std::vector<std::pair<std::string, std::vector<entry>>>   entries,
+        std::vector<std::pair<std::pair<entry, entry>, int>>      connections,
+        std::function<std::size_t(const entry_view&)>             entry_hash,
+        std::function<bool(const entry_view&, const entry_view&)> entry_equal_to) :
+    m_p_impl{ std::make_unique<impl>(
+        std::move(entries),
+        std::move(connections),
+        std::move(entry_hash),
+        std::move(entry_equal_to)) }
     {}
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;

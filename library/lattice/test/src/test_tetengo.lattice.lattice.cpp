@@ -118,14 +118,28 @@ namespace
         return 42;
     }
 
+    bool
+    cpp_entry_equal_to(const tetengo::lattice::entry_view& /*one*/, const tetengo::lattice::entry_view& /*another*/)
+    {
+        return false;
+    }
+
     std::unique_ptr<tetengo::lattice::vocabulary> create_cpp_vocabulary()
     {
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(entries, connections, cpp_entry_hash);
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
+            entries, connections, cpp_entry_hash, cpp_entry_equal_to);
     }
 
     size_t c_entry_hash(const tetengo_lattice_entryView_t* const /*p_entry*/)
     {
         return 42;
+    }
+
+    int c_entry_equal_to(
+        const tetengo_lattice_entryView_t* const /*p_one*/,
+        const tetengo_lattice_entryView_t* const /*p_another*/)
+    {
+        return 0;
     }
 
     tetengo_lattice_vocabulary_t* create_c_vocabulary()
@@ -185,7 +199,8 @@ namespace
             key_entries_pairs.size(),
             entries_connection_cost_pairs.data(),
             entries_connection_cost_pairs.size(),
-            c_entry_hash);
+            c_entry_hash,
+            c_entry_equal_to);
     }
 
 

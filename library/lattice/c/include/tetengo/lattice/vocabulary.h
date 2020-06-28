@@ -32,6 +32,7 @@ typedef struct tetengo_lattice_entriesConnectionCostPair_tag tetengo_lattice_ent
     \param p_connections    A pointer to connections.
     \param connection_count A connection count.
     \param p_entry_hash     A pointer to a hash function for an entry.
+    \param p_entry_equal_to A pointer to a eqaul_to function for an entry.
 
     \return A pointer to an unordered_map vocabulary. Or NULL when p_entries and/or p_connections are NULL.
 */
@@ -40,7 +41,8 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
     size_t                                             entry_count,
     const tetengo_lattice_entriesConnectionCostPair_t* p_connections,
     size_t                                             connection_count,
-    size_t (*p_entry_hash)(const tetengo_lattice_entryView_t*));
+    size_t (*p_entry_hash)(const tetengo_lattice_entryView_t*),
+    int (*p_entry_equal_to)(const tetengo_lattice_entryView_t*, const tetengo_lattice_entryView_t*));
 
 /*!
     \brief Destroys a vocabulary.
