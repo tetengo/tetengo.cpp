@@ -13,7 +13,7 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\timetable_vocabulary.cpp">
+    <ClCompile Include="src\timetable.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -21,7 +21,7 @@
     <ClInclude Include="..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\timetable_vocabulary.hpp">
+    <ClInclude Include="src\timetable.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

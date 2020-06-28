@@ -116,11 +116,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\timetable_vocabulary.cpp" />
+    <ClCompile Include="src\timetable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h" />
-    <ClInclude Include="src\timetable_vocabulary.hpp" />
+    <ClInclude Include="src\timetable.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\library\lattice\cpp\tetengo.lattice.cpp.vcxproj">

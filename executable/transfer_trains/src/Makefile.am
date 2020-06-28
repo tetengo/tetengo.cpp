@@ -2,11 +2,11 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
-    timetable_vocabulary.hpp
+    timetable.hpp
 
 sources = \
     main.cpp \
-    timetable_vocabulary.cpp
+    timetable.cpp
 
 bin_PROGRAMS = transfer_trains
 

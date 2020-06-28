@@ -11,7 +11,7 @@
 #include <memory>
 #include <string>
 
-#include "timetable_vocabulary.hpp"
+#include "timetable.hpp"
 
 
 namespace
