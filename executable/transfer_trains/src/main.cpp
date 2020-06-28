@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 
+#include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/vocabulary.hpp> // IWYU pragma: keep
 
 #include "timetable.hpp"
@@ -40,8 +41,8 @@ int main(const int argc, char** const argv)
             return 0;
         }
 
-        const timetable timetable_{ create_input_stream(argv[1]) };
-        timetable_.create_vocabulary();
+        const timetable           timetable_{ create_input_stream(argv[1]) };
+        tetengo::lattice::lattice lattice_{ timetable_.create_vocabulary() };
 
         return 0;
     }
