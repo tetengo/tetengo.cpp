@@ -113,10 +113,14 @@ namespace
         { { { "Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 600 },
     };
 
+    std::size_t cpp_entry_hash(const tetengo::lattice::entry_view& /*entry*/)
+    {
+        return 42;
+    }
+
     std::unique_ptr<tetengo::lattice::vocabulary> create_cpp_vocabulary()
     {
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
-            entries, connections, [](const tetengo::lattice::entry_view&) { return 42; });
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(entries, connections, cpp_entry_hash);
     }
 
     size_t c_entry_hash(const tetengo_lattice_entryView_t* const /*p_entry*/)
