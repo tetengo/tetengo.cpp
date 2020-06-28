@@ -1,5 +1,5 @@
 /*! \file
-    \brief A timetable vocabulary.
+    \brief A timetable_value vocabulary.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
@@ -25,6 +25,7 @@
 
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
+#include <tetengo/lattice/vocabulary.hpp>
 
 #include "timetable.hpp"
 
@@ -70,13 +71,13 @@ namespace
         {}
     };
 
-    struct timetable
+    struct timetable_value
     {
         std::vector<station> stations;
 
         std::vector<train> trains;
 
-        timetable(std::vector<station>&& stations, std::vector<train>&& trains) :
+        timetable_value(std::vector<station>&& stations, std::vector<train>&& trains) :
         stations{ std::move(stations) },
             trains{ std::move(trains) }
         {}
@@ -100,29 +101,38 @@ namespace
 }
 
 
-class timetable_vocabulary::impl : private boost::noncopyable
+class timetable::impl : private boost::noncopyable
 {
 public:
     // constructors and destructor
 
     explicit impl(std::unique_ptr<std::istream>&& p_input_stream) :
-    m_timetable{ build_timetable(std::move(p_input_stream)) },
-        m_p_vocabulary{ create_vocabulary(m_timetable) }
+    m_timetable{ build_timetable(std::move(p_input_stream)) }
     {}
+
+
+    // functions
+
+    std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary() const
+    {
+        auto entries = build_entries(m_timetable);
+        auto connections = build_connections(entries);
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(entries), std::move(connections));
+    }
 
 
 private:
     // static functions
 
-    static timetable build_timetable(std::unique_ptr<std::istream>&& p_input_stream)
+    static timetable_value build_timetable(std::unique_ptr<std::istream>&& p_input_stream)
     {
         assert(p_input_stream);
-        auto timetable = parse_input(*p_input_stream);
-        guess_arrival_times(timetable);
-        return timetable;
+        auto timetable_value = parse_input(*p_input_stream);
+        guess_arrival_times(timetable_value);
+        return timetable_value;
     }
 
-    static timetable parse_input(std::istream& input_stream)
+    static timetable_value parse_input(std::istream& input_stream)
     {
         if (!input_stream)
         {
@@ -142,7 +152,7 @@ private:
             trains.push_back(parse_train(read_line(input_stream), stations.size()));
         }
 
-        return timetable{ std::move(stations), std::move(trains) };
+        return timetable_value{ std::move(stations), std::move(trains) };
     }
 
     static std::vector<std::string> read_line(std::istream& input_stream)
@@ -241,7 +251,7 @@ private:
         return hour * 60 + minute;
     }
 
-    static void guess_arrival_times(timetable& timetable_)
+    static void guess_arrival_times(timetable_value& timetable_)
     {
         for (auto from = static_cast<std::size_t>(0); from < timetable_.stations.size() - 1; ++from)
         {
@@ -293,15 +303,8 @@ private:
         return minimum;
     }
 
-    static std::unique_ptr<tetengo::lattice::unordered_map_vocabulary> create_vocabulary(const timetable& timetable_)
-    {
-        auto entries = build_entries(timetable_);
-        auto connections = build_connections(entries);
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(entries), std::move(connections));
-    }
-
     static std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>
-    build_entries(const timetable& timetable_)
+    build_entries(const timetable_value& timetable_)
     {
         std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{};
         for (const auto& train_: timetable_.trains)
@@ -450,14 +453,17 @@ private:
 
     // variables
 
-    const timetable m_timetable;
-
-    const std::unique_ptr<tetengo::lattice::unordered_map_vocabulary> m_p_vocabulary;
+    const timetable_value m_timetable;
 };
 
 
-timetable_vocabulary::timetable_vocabulary(std::unique_ptr<std::istream>&& p_input_stream) :
+timetable::timetable(std::unique_ptr<std::istream>&& p_input_stream) :
 m_p_impl{ std::make_unique<impl>(std::move(p_input_stream)) }
 {}
 
-timetable_vocabulary::~timetable_vocabulary() = default;
+timetable::~timetable() = default;
+
+std::unique_ptr<tetengo::lattice::vocabulary> timetable::create_vocabulary() const
+{
+    return m_p_impl->create_vocabulary();
+}

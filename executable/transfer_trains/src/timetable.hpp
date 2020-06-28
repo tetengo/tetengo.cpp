@@ -12,11 +12,16 @@
 
 #include <boost/core/noncopyable.hpp>
 
+namespace tetengo::lattice
+{
+    class vocabulary;
+}
+
 
 /*!
     \brief A timetable vocabulary.
 */
-class timetable_vocabulary : private boost::noncopyable
+class timetable : private boost::noncopyable
 {
 public:
     // constructors and destructor
@@ -26,12 +31,22 @@ public:
 
         \param p_input_stream A unique pointer to an input stream.
     */
-    explicit timetable_vocabulary(std::unique_ptr<std::istream>&& p_input_stream);
+    explicit timetable(std::unique_ptr<std::istream>&& p_input_stream);
 
     /*!
         \brief Destroys the timetable vocabulary.
     */
-    ~timetable_vocabulary();
+    ~timetable();
+
+
+    // functions
+
+    /*!
+        \brief Creates a vocabulary.
+
+        \return A vocabulary.
+    */
+    std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary() const;
 
 
 private:
