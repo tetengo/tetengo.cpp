@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <functional>
 #include <iterator>
 #include <limits>
 #include <memory>
@@ -34,7 +35,8 @@ namespace tetengo::lattice
 
         impl(
             std::vector<std::pair<std::string, std::vector<entry>>> entries,
-            std::vector<std::pair<std::pair<entry, entry>, int>>    connections) :
+            std::vector<std::pair<std::pair<entry, entry>, int>>    connections,
+            std::function<std::size_t(const entry_view&)> /*entry_hash*/) :
         m_entry_map{ make_entry_map(std::move(entries)) },
             m_connection_map{ make_connection_map(std::move(connections)) }
         {}
@@ -119,8 +121,9 @@ namespace tetengo::lattice
 
     unordered_map_vocabulary::unordered_map_vocabulary(
         std::vector<std::pair<std::string, std::vector<entry>>> entries,
-        std::vector<std::pair<std::pair<entry, entry>, int>>    connections) :
-    m_p_impl{ std::make_unique<impl>(std::move(entries), std::move(connections)) }
+        std::vector<std::pair<std::pair<entry, entry>, int>>    connections,
+        std::function<std::size_t(const entry_view&)>           entry_hash) :
+    m_p_impl{ std::make_unique<impl>(std::move(entries), std::move(connections), std::move(entry_hash)) }
     {}
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;

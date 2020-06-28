@@ -126,7 +126,8 @@ namespace
 
     std::unique_ptr<tetengo::lattice::vocabulary> create_cpp_vocabulary()
     {
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(entries, connections);
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
+            entries, connections, [](const tetengo::lattice::entry_view&) { return 42; });
     }
 
     tetengo_lattice_vocabulary_t* create_c_vocabulary()

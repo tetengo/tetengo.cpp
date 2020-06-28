@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cstddef>
+#include <functional>
 #include <limits>
 #include <memory>
 #include <string>
@@ -78,7 +79,9 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>                entries{};
         std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{};
-        const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entries), std::move(connections) };
+        const tetengo::lattice::unordered_map_vocabulary                                         vocabulary{
+            std::move(entries), std::move(connections), [](const tetengo::lattice::entry_view&) { return 42; }
+        };
     }
     {
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
@@ -91,7 +94,9 @@ BOOST_AUTO_TEST_CASE(construction)
                   tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
               4242 }
         };
-        const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entries), std::move(connections) };
+        const tetengo::lattice::unordered_map_vocabulary vocabulary{
+            std::move(entries), std::move(connections), [](const tetengo::lattice::entry_view&) { return 42; }
+        };
     }
 
     {
@@ -226,7 +231,9 @@ BOOST_AUTO_TEST_CASE(find_entries)
     {
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>                entries{};
         std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{};
-        const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entries), std::move(connections) };
+        const tetengo::lattice::unordered_map_vocabulary                                         vocabulary{
+            std::move(entries), std::move(connections), [](const tetengo::lattice::entry_view&) { return 42; }
+        };
 
         {
             const auto found = vocabulary.find_entries(key_mizuho);
@@ -248,7 +255,9 @@ BOOST_AUTO_TEST_CASE(find_entries)
                   tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
               4242 }
         };
-        const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entries), std::move(connections) };
+        const tetengo::lattice::unordered_map_vocabulary vocabulary{
+            std::move(entries), std::move(connections), [](const tetengo::lattice::entry_view&) { return 42; }
+        };
 
         {
             const auto found = vocabulary.find_entries(key_mizuho);
@@ -362,7 +371,9 @@ BOOST_AUTO_TEST_CASE(find_connection)
                   tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
               4242 }
         };
-        const tetengo::lattice::unordered_map_vocabulary vocabulary{ std::move(entries), std::move(connections) };
+        const tetengo::lattice::unordered_map_vocabulary vocabulary{
+            std::move(entries), std::move(connections), [](const tetengo::lattice::entry_view&) { return 42; }
+        };
 
         const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
         BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);

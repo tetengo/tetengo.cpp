@@ -92,7 +92,7 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
         }
 
         auto p_cpp_vocabulary = std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
-            std::move(cpp_entries), std::move(cpp_connections));
+            std::move(cpp_entries), std::move(cpp_connections), [](const tetengo::lattice::entry_view&) { return 42; });
 
         auto p_instance = std::make_unique<tetengo_lattice_vocabulary_t>(std::move(p_cpp_vocabulary));
         return p_instance.release();
