@@ -41,8 +41,14 @@ int main(const int argc, char** const argv)
             return 0;
         }
 
-        const timetable           timetable_{ create_input_stream(argv[1]) };
+        const timetable timetable_{ create_input_stream(argv[1]) };
+
         tetengo::lattice::lattice lattice_{ timetable_.create_vocabulary() };
+        // for (const auto& station: timetable_.stations())
+        //{
+        //    lattice_.push_back(station.telegram_code() + "/");
+        //}
+        // const auto eos_and_precedings = lattice_.settle();
 
         return 0;
     }

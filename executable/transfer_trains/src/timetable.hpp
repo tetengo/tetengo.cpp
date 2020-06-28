@@ -9,6 +9,8 @@
 
 #include <istream>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -16,6 +18,47 @@ namespace tetengo::lattice
 {
     class vocabulary;
 }
+
+/*!
+    \brief A station.
+*/
+class station
+{
+public:
+    // constructors and destructor
+
+    /*!
+        \brief Creates a station.
+
+        \param name          A name.
+        \param telegram_code A telegram code.
+    */
+    station(std::string name, std::string telegram_code);
+
+    // functions
+
+    /*!
+        \brief Returns the name.
+
+        \return The name.
+    */
+    const std::string& name() const;
+
+    /*!
+        \brief Returns the telegram code.
+
+        \return The telegram code.
+    */
+    const std::string& telegram_code() const;
+
+
+private:
+    // variables
+
+    std::string m_name;
+
+    std::string m_telegram_code;
+};
 
 
 /*!
@@ -40,6 +83,13 @@ public:
 
 
     // functions
+
+    /*!
+        \brief Returns the stations.
+
+        \return The stations.
+    */
+    const std::vector<station>& stations() const;
 
     /*!
         \brief Creates a vocabulary.

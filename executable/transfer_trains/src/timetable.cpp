@@ -32,18 +32,6 @@
 
 namespace
 {
-    struct station
-    {
-        std::string name;
-
-        std::string telegram_code;
-
-        station(std::string&& name, std::string&& telegram_code) :
-        name{ std::move(name) },
-            telegram_code{ std::move(telegram_code) }
-        {}
-    };
-
     struct ad_time
     {
         std::optional<std::size_t> arrival;
@@ -101,6 +89,22 @@ namespace
 }
 
 
+station::station(std::string name, std::string telegram_code) :
+m_name{ std::move(name) },
+    m_telegram_code{ std::move(telegram_code) }
+{}
+
+const std::string& station::name() const
+{
+    return m_name;
+}
+
+const std::string& station::telegram_code() const
+{
+    return m_telegram_code;
+}
+
+
 class timetable::impl : private boost::noncopyable
 {
 public:
@@ -112,6 +116,11 @@ public:
 
 
     // functions
+
+    const std::vector<station>& stations() const
+    {
+        return m_timetable.stations;
+    }
 
     std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary() const
     {
@@ -349,7 +358,7 @@ private:
         std::string name;
         for (auto i = from; i <= to; ++i)
         {
-            name += stations[i].telegram_code + "/";
+            name += stations[i].telegram_code() + "/";
         }
         return name;
     }
@@ -462,6 +471,11 @@ m_p_impl{ std::make_unique<impl>(std::move(p_input_stream)) }
 {}
 
 timetable::~timetable() = default;
+
+const std::vector<station>& timetable::stations() const
+{
+    return m_p_impl->stations();
+}
 
 std::unique_ptr<tetengo::lattice::vocabulary> timetable::create_vocabulary() const
 {
