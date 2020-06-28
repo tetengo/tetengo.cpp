@@ -119,6 +119,11 @@ namespace
             entries, connections, [](const tetengo::lattice::entry_view&) { return 42; });
     }
 
+    size_t c_entry_hash(const tetengo_lattice_entryView_t* const /*p_entry*/)
+    {
+        return 42;
+    }
+
     tetengo_lattice_vocabulary_t* create_c_vocabulary()
     {
         std::vector<tetengo_lattice_entry_t> entry_values{};
@@ -175,7 +180,8 @@ namespace
             key_entries_pairs.data(),
             key_entries_pairs.size(),
             entries_connection_cost_pairs.data(),
-            entries_connection_cost_pairs.size());
+            entries_connection_cost_pairs.size(),
+            c_entry_hash);
     }
 
 

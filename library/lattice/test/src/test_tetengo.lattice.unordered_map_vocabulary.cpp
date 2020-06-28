@@ -63,6 +63,11 @@ namespace
                                        std::numeric_limits<int>::max() };
     }
 
+    size_t c_entry_hash(const tetengo_lattice_entryView_t* const /*p_entry*/)
+    {
+        return 42;
+    }
+
 
 }
 
@@ -122,8 +127,8 @@ BOOST_AUTO_TEST_CASE(construction)
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
-        const auto* const p_vocabulary =
-            tetengo_lattice_vocabulary_createUnorderedMapVocabulary(entries.data(), 2, connections.data(), 1);
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+            entries.data(), 2, connections.data(), 1, c_entry_hash);
         BOOST_SCOPE_EXIT(p_vocabulary)
         {
             tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -155,8 +160,8 @@ BOOST_AUTO_TEST_CASE(construction)
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
-        const auto* const p_vocabulary =
-            tetengo_lattice_vocabulary_createUnorderedMapVocabulary(entries.data(), 0, connections.data(), 1);
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+            entries.data(), 0, connections.data(), 1, c_entry_hash);
 
         BOOST_TEST(!p_vocabulary);
     }
@@ -172,7 +177,7 @@ BOOST_AUTO_TEST_CASE(construction)
         };
 
         const auto* const p_vocabulary =
-            tetengo_lattice_vocabulary_createUnorderedMapVocabulary(nullptr, 42, connections.data(), 1);
+            tetengo_lattice_vocabulary_createUnorderedMapVocabulary(nullptr, 42, connections.data(), 1, c_entry_hash);
 
         BOOST_TEST(!p_vocabulary);
     }
@@ -199,8 +204,8 @@ BOOST_AUTO_TEST_CASE(construction)
             { &connection_key_mizuho, &connection_key_sakura, 4242 }
         };
 
-        const auto* const p_vocabulary =
-            tetengo_lattice_vocabulary_createUnorderedMapVocabulary(entries.data(), 2, connections.data(), 0);
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+            entries.data(), 2, connections.data(), 0, c_entry_hash);
 
         BOOST_TEST(!p_vocabulary);
     }
@@ -218,7 +223,7 @@ BOOST_AUTO_TEST_CASE(construction)
         };
 
         const auto* const p_vocabulary =
-            tetengo_lattice_vocabulary_createUnorderedMapVocabulary(entries.data(), 2, nullptr, 1);
+            tetengo_lattice_vocabulary_createUnorderedMapVocabulary(entries.data(), 2, nullptr, 1, c_entry_hash);
 
         BOOST_TEST(!p_vocabulary);
     }
@@ -302,7 +307,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-            entries.data(), entries.size(), connections.data(), connections.size());
+            entries.data(), entries.size(), connections.data(), connections.size(), c_entry_hash);
         BOOST_SCOPE_EXIT(p_vocabulary)
         {
             tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -416,7 +421,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-            entries.data(), entries.size(), connections.data(), connections.size());
+            entries.data(), entries.size(), connections.data(), connections.size(), c_entry_hash);
         BOOST_SCOPE_EXIT(p_vocabulary)
         {
             tetengo_lattice_vocabulary_destroy(p_vocabulary);

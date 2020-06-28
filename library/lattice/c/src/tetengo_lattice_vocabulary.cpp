@@ -35,7 +35,8 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
     const tetengo_lattice_keyEntriesPair_t* const            p_entries,
     const size_t                                             entry_count,
     const tetengo_lattice_entriesConnectionCostPair_t* const p_connections,
-    const size_t                                             connection_count)
+    const size_t                                             connection_count,
+    size_t (*p_entry_hash)(const tetengo_lattice_entryView_t*))
 {
     try
     {
@@ -92,7 +93,17 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
         }
 
         auto p_cpp_vocabulary = std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
-            std::move(cpp_entries), std::move(cpp_connections), [](const tetengo::lattice::entry_view&) { return 42; });
+            std::move(cpp_entries),
+            std::move(cpp_connections),
+            [p_entry_hash](const tetengo::lattice::entry_view& cpp_entry) {
+                tetengo_lattice_entryView_t entry{};
+                entry.key.p_head = cpp_entry.key().data();
+                entry.key.length = cpp_entry.key().length();
+                assert(cpp_entry.value()->type() == typeid(const void*));
+                entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
+                entry.cost = cpp_entry.cost();
+                return p_entry_hash(&entry);
+            });
 
         auto p_instance = std::make_unique<tetengo_lattice_vocabulary_t>(std::move(p_cpp_vocabulary));
         return p_instance.release();
