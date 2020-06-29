@@ -40,14 +40,14 @@ namespace tetengo::lattice
             std::function<bool(const entry_view&, const entry_view&)> entry_equal_to) :
         m_entry_map{ make_entry_map(std::move(entries)) },
             m_connection_keys{},
-            m_connection_map{}
+            m_p_connection_map{}
         {
             build_connection_map(
                 std::move(connections),
                 std::move(entry_hash),
                 std::move(entry_equal_to),
                 m_connection_keys,
-                m_connection_map);
+                m_p_connection_map);
         }
 
 
@@ -70,8 +70,8 @@ namespace tetengo::lattice
         connection find_connection_impl(const node& from, const entry_view& to) const
         {
             const entry_view from_entry_view{ from.key(), &from.value(), from.node_cost() };
-            const auto       found = m_connection_map.find(std::make_pair(from_entry_view, to));
-            if (found == m_connection_map.end())
+            const auto       found = m_p_connection_map->find(std::make_pair(from_entry_view, to));
+            if (found == m_p_connection_map->end())
             {
                 return connection{ std::numeric_limits<int>::max() };
             }
@@ -86,6 +86,11 @@ namespace tetengo::lattice
 
         struct connection_map_hash
         {
+            std::function<std::size_t(const entry_view&)> hash;
+
+            explicit connection_map_hash(std::function<std::size_t(const entry_view&)> hash) : hash{ std::move(hash) }
+            {}
+
             std::size_t operator()(const std::pair<entry_view, entry_view>& key) const
             {
                 return boost::hash_value(std::make_pair(key.first.key(), key.second.key()));
@@ -94,6 +99,12 @@ namespace tetengo::lattice
 
         struct connection_map_key_eq
         {
+            std::function<bool(const entry_view&, const entry_view&)> key_eq;
+
+            explicit connection_map_key_eq(std::function<bool(const entry_view&, const entry_view&)> key_eq) :
+            key_eq{ std::move(key_eq) }
+            {}
+
             bool operator()(
                 const std::pair<entry_view, entry_view>& one,
                 const std::pair<entry_view, entry_view>& another) const
@@ -120,11 +131,11 @@ namespace tetengo::lattice
         }
 
         static void build_connection_map(
-            std::vector<std::pair<std::pair<entry, entry>, int>> connections,
-            std::function<std::size_t(const entry_view&)> /*entry_hash*/,
-            std::function<bool(const entry_view&, const entry_view&)> /*entry_equal_to*/,
-            std::vector<std::pair<entry, entry>>& connection_keys,
-            connection_map_type&                  connection_map)
+            std::vector<std::pair<std::pair<entry, entry>, int>>      connections,
+            std::function<std::size_t(const entry_view&)>             entry_hash,
+            std::function<bool(const entry_view&, const entry_view&)> entry_equal_to,
+            std::vector<std::pair<entry, entry>>&                     connection_keys,
+            std::unique_ptr<connection_map_type>&                     p_connection_map)
         {
             connection_keys.reserve(connections.size());
             for (auto&& e: connections)
@@ -132,8 +143,11 @@ namespace tetengo::lattice
                 connection_keys.push_back(std::move(e.first));
             }
 
-            connection_map_type map{};
-            map.reserve(connections.size());
+            auto p_map = std::make_unique<connection_map_type>(
+                connections.size(),
+                connection_map_hash{ std::move(entry_hash) },
+                connection_map_key_eq{ std::move(entry_equal_to) });
+            p_map->reserve(connections.size());
             for (auto i = static_cast<std::size_t>(0); i < connections.size(); ++i)
             {
                 const auto&      connection_key = connection_keys[i];
@@ -143,10 +157,10 @@ namespace tetengo::lattice
                 const entry_view to{ connection_key.second.key(),
                                      &connection_key.second.value(),
                                      connection_key.second.cost() };
-                map.insert(std::make_pair(std::make_pair(from, to), connections[i].second));
+                p_map->insert(std::make_pair(std::make_pair(from, to), connections[i].second));
             }
 
-            connection_map = std::move(map);
+            p_connection_map = std::move(p_map);
         }
 
 
@@ -156,7 +170,7 @@ namespace tetengo::lattice
 
         std::vector<std::pair<entry, entry>> m_connection_keys;
 
-        connection_map_type m_connection_map;
+        std::unique_ptr<connection_map_type> m_p_connection_map;
     };
 
 
