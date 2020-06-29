@@ -100,7 +100,6 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
                 tetengo_lattice_entryView_t entry{};
                 entry.key.p_head = cpp_entry.key().data();
                 entry.key.length = cpp_entry.key().length();
-                assert(cpp_entry.value()->type() == typeid(const void*));
                 entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
                 entry.cost = cpp_entry.cost();
                 return p_entry_hash(&entry);
@@ -110,14 +109,12 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
                 tetengo_lattice_entryView_t entry1{};
                 entry1.key.p_head = cpp_entry1.key().data();
                 entry1.key.length = cpp_entry1.key().length();
-                assert(cpp_entry1.value()->type() == typeid(const void*));
                 entry1.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry1.value());
                 entry1.cost = cpp_entry1.cost();
 
                 tetengo_lattice_entryView_t entry2{};
                 entry2.key.p_head = cpp_entry2.key().data();
                 entry2.key.length = cpp_entry2.key().length();
-                assert(cpp_entry2.value()->type() == typeid(const void*));
                 entry2.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry2.value());
                 entry2.cost = cpp_entry2.cost();
 

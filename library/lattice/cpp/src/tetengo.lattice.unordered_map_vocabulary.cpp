@@ -17,7 +17,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/container_hash/hash.hpp>
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/lattice/connection.hpp>
@@ -93,7 +92,7 @@ namespace tetengo::lattice
 
             std::size_t operator()(const std::pair<entry_view, entry_view>& key) const
             {
-                return boost::hash_value(std::make_pair(key.first.key(), key.second.key()));
+                return hash(key.first) ^ hash(key.second);
             }
         };
 
@@ -109,7 +108,7 @@ namespace tetengo::lattice
                 const std::pair<entry_view, entry_view>& one,
                 const std::pair<entry_view, entry_view>& another) const
             {
-                return one.first.key() == another.first.key() && one.second.key() == another.second.key();
+                return key_eq(one.first, another.first) && key_eq(one.second, another.second);
             }
         };
 

@@ -5,11 +5,13 @@
  */
 
 #include <any>
+#include <cassert>
 #include <cstddef>
 #include <functional>
 #include <limits>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -63,27 +65,42 @@ namespace
                                        std::numeric_limits<int>::max() };
     }
 
-    std::size_t cpp_entry_hash(const tetengo::lattice::entry_view& /*entry*/)
+    std::size_t cpp_entry_hash(const tetengo::lattice::entry_view& entry)
     {
-        return 42;
+        return std::hash<std::string_view>{}(entry.key());
     }
 
-    bool
-    cpp_entry_equal_to(const tetengo::lattice::entry_view& /*one*/, const tetengo::lattice::entry_view& /*another*/)
+    bool cpp_entry_equal_to(const tetengo::lattice::entry_view& one, const tetengo::lattice::entry_view& another)
     {
-        return false;
+        return one.key() == another.key();
     }
 
-    size_t c_entry_hash(const tetengo_lattice_entryView_t* const /*p_entry*/)
+    size_t c_entry_hash(const tetengo_lattice_entryView_t* const p_entry)
     {
-        return 42;
+        if (p_entry)
+        {
+            return std::hash<std::string_view>{}(std::string_view{ p_entry->key.p_head, p_entry->key.length });
+        }
+        else
+        {
+            assert(false);
+            return 0;
+        }
     }
 
-    int c_entry_equal_to(
-        const tetengo_lattice_entryView_t* const /*p_one*/,
-        const tetengo_lattice_entryView_t* const /*p_another*/)
+    int
+    c_entry_equal_to(const tetengo_lattice_entryView_t* const p_one, const tetengo_lattice_entryView_t* const p_another)
     {
-        return 0;
+        if (p_one && p_another)
+        {
+            return std::string_view{ p_one->key.p_head, p_one->key.length } ==
+                   std::string_view{ p_another->key.p_head, p_another->key.length };
+        }
+        else
+        {
+            assert(false);
+            return 0;
+        }
     }
 
 
