@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_UNORDEREDMAPVOCABULARY_HPP)
 #define TETENGO_LATTICE_UNORDEREDMAPVOCABULARY_HPP
 
+#include <cstddef>
 #include <functional> // IWYU pragma: keep
 #include <memory>
 #include <string>
@@ -35,12 +36,16 @@ namespace tetengo::lattice
         /*!
             \brief Creates an unordered_map vocabulary.
 
-            \param entries     Entries.
-            \param connections Connections.
+            \param entries        Entries.
+            \param connections    Connections.
+            \param entry_hash     A hash function for an entry.
+            \param entry_equal_to A eqaul_to function for an entry.
         */
         unordered_map_vocabulary(
-            std::vector<std::pair<std::string, std::vector<entry>>> entries,
-            std::vector<std::pair<std::pair<entry, entry>, int>>    connections);
+            std::vector<std::pair<std::string, std::vector<entry>>>   entries,
+            std::vector<std::pair<std::pair<entry, entry>, int>>      connections,
+            std::function<std::size_t(const entry_view&)>             entry_hash,
+            std::function<bool(const entry_view&, const entry_view&)> entry_equal_to);
 
         /*!
             \brief Destroys the unordered_map vocabulary.
