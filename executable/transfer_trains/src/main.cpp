@@ -34,7 +34,9 @@ namespace
         return p_stream;
     }
 
-    std::string to_time_string(const int time_value) {
+    std::string to_time_string(const int time_value)
+    {
+        assert(0 <= time_value && time_value < 1440);
         return (boost::format{ "%02d:%02d" } % (time_value / 60) % (time_value % 60)).str();
     }
 

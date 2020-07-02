@@ -80,6 +80,65 @@ namespace
         {}
     };
 
+    std::size_t entry_hash(const tetengo::lattice::entry_view& entry)
+    {
+        const std::size_t key_hash = std::hash<std::string_view>{}(entry.key());
+        std::size_t       entry_train_number_hash = std::hash<std::string_view>{}(std::string_view{});
+        std::size_t       entry_train_name_hash = std::hash<std::string_view>{}(std::string_view{});
+        std::size_t       entry_from_hash = std::hash<std::size_t>{}(0);
+        std::size_t       entry_to_hash = std::hash<std::size_t>{}(0);
+        if (entry.value()->has_value())
+        {
+            const auto* const p_value = std::any_cast<entry_value>(entry.value());
+            if (p_value)
+            {
+                entry_train_number_hash = std::hash<std::string>{}(p_value->p_train->number);
+                entry_train_name_hash = std::hash<std::string>{}(p_value->p_train->name);
+                entry_from_hash = std::hash<std::size_t>{}(p_value->from);
+                entry_to_hash = std::hash<std::size_t>{}(p_value->to);
+            }
+        }
+        return key_hash ^ entry_train_number_hash ^ entry_train_name_hash ^ entry_from_hash ^ entry_to_hash;
+    }
+
+    bool entry_equal_to(const tetengo::lattice::entry_view& one, const tetengo::lattice::entry_view& another)
+    {
+        if (one.value()->has_value() && another.value()->has_value())
+        {
+            const auto* const p_one_value = std::any_cast<entry_value>(one.value());
+            const auto* const p_another_value = std::any_cast<entry_value>(another.value());
+            if (p_one_value && p_another_value)
+            {
+                return one.key() == another.key() && p_one_value->p_train->number == p_another_value->p_train->number &&
+                       p_one_value->p_train->name == p_another_value->p_train->name &&
+                       p_one_value->from == p_another_value->from && p_one_value->to == p_another_value->to;
+            }
+            else if (p_one_value || p_another_value)
+            {
+                return false;
+            }
+            else
+            {
+                return one.key() == another.key();
+            }
+        }
+        else if (one.value()->has_value())
+        {
+            const auto* const p_one_value = std::any_cast<entry_value>(one.value());
+            return !p_one_value;
+        }
+        else if (another.value()->has_value())
+        {
+            const auto* const p_another_value = std::any_cast<entry_value>(another.value());
+            return !p_another_value;
+        }
+        else
+        {
+            return one.key() == another.key();
+        }
+    }
+
+
 }
 
 
@@ -119,7 +178,8 @@ public:
     {
         auto entries = build_entries(m_timetable);
         auto connections = build_connections(entries);
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(std::move(entries), std::move(connections));
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
+            std::move(entries), std::move(connections), entry_hash, entry_equal_to);
     }
 
 
