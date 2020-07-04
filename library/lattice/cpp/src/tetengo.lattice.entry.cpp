@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <cassert> // IWYU pragma: keep
 #include <string>
 #include <string_view>
 
