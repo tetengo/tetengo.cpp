@@ -39,7 +39,8 @@ namespace
         std::optional<std::size_t> departure;
 
         ad_time(std::optional<std::size_t>&& arrival, std::optional<std::size_t>&& departure) :
-        arrival{ std::move(arrival) }, departure{ std::move(departure) }
+        arrival{ std::move(arrival) },
+            departure{ std::move(departure) }
         {}
     };
 
@@ -52,7 +53,9 @@ namespace
         std::vector<ad_time> ad_times;
 
         train(std::string&& number, std::string&& name, std::vector<ad_time>&& ad_times) :
-        number{ std::move(number) }, name{ std::move(name) }, ad_times{ std::move(ad_times) }
+        number{ std::move(number) },
+            name{ std::move(name) },
+            ad_times{ std::move(ad_times) }
         {}
     };
 
@@ -63,7 +66,8 @@ namespace
         std::vector<train> trains;
 
         timetable_value(std::vector<station>&& stations, std::vector<train>&& trains) :
-        stations{ std::move(stations) }, trains{ std::move(trains) }
+        stations{ std::move(stations) },
+            trains{ std::move(trains) }
         {}
     };
 
@@ -76,7 +80,9 @@ namespace
         std::size_t to;
 
         entry_value(const train* const p_train, const std::size_t from, const std::size_t to) :
-        p_train{ p_train }, from{ from }, to{ to }
+        p_train{ p_train },
+            from{ from },
+            to{ to }
         {}
     };
 
@@ -103,7 +109,8 @@ namespace
 
     bool entry_equal_to(const tetengo::lattice::entry_view& one, const tetengo::lattice::entry_view& another)
     {
-        if (one.value()->has_value() && another.value()->has_value())
+        if (tetengo::lattice::temp::std_any_has_value(*one.value()) &&
+            tetengo::lattice::temp::std_any_has_value(*another.value()))
         {
             const auto* const p_one_value = std::any_cast<entry_value>(one.value());
             const auto* const p_another_value = std::any_cast<entry_value>(another.value());
@@ -113,24 +120,17 @@ namespace
                        p_one_value->p_train->name == p_another_value->p_train->name &&
                        p_one_value->from == p_another_value->from && p_one_value->to == p_another_value->to;
             }
-            else if (p_one_value || p_another_value)
-            {
-                return false;
-            }
             else
             {
-                return one.key() == another.key();
+                assert(false);
+                throw std::logic_error{ "Unexpected entry value." };
             }
         }
-        else if (one.value()->has_value())
+        else if (
+            tetengo::lattice::temp::std_any_has_value(*one.value()) ||
+            tetengo::lattice::temp::std_any_has_value(*another.value()))
         {
-            const auto* const p_one_value = std::any_cast<entry_value>(one.value());
-            return !p_one_value;
-        }
-        else if (another.value()->has_value())
-        {
-            const auto* const p_another_value = std::any_cast<entry_value>(another.value());
-            return !p_another_value;
+            return false;
         }
         else
         {
@@ -143,7 +143,8 @@ namespace
 
 
 station::station(std::string name, std::string telegram_code) :
-m_name{ std::move(name) }, m_telegram_code{ std::move(telegram_code) }
+m_name{ std::move(name) },
+    m_telegram_code{ std::move(telegram_code) }
 {}
 
 const std::string& station::name() const
