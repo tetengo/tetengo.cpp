@@ -4,14 +4,19 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <cassert>
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
 
 #include <boost/format.hpp>
+#include <boost/iterator/iterator_facade.hpp>
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/lattice.hpp>
