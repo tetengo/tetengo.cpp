@@ -18,20 +18,26 @@ extern "C" {
 typedef struct tetengo_lattice_nBestIterator_tag tetengo_lattice_nBestIterator_t;
 typedef struct tetengo_lattice_lattice_tag       tetengo_lattice_lattice_t;
 typedef struct tetengo_lattice_node_tag          tetengo_lattice_node_t;
+typedef struct tetengo_lattice_constraint_tag    tetengo_lattice_constraint_t;
 #endif
 
 
 /*!
     \brief Creates an iterator.
 
-    \param p_lattice  A pointer to a lattice.
-    \param p_eos_node A pointer to an EOS node.
+    The ownership of the constraint pointed by p_constraint is transferred into the iterator.
+    There is no need to destroy the constraint after calling this function.
+
+    \param p_lattice    A pointer to a lattice.
+    \param p_eos_node   A pointer to an EOS node.
+    \param p_constraint A pointer to a constraint.
 
     \return A pointer to an iterator. Or NULL on error.
 */
 tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
     const tetengo_lattice_lattice_t* p_lattice,
-    const tetengo_lattice_node_t*    p_eos_node);
+    const tetengo_lattice_node_t*    p_eos_node,
+    tetengo_lattice_constraint_t*    p_constraint);
 
 /*!
     \brief Destroys an iterator.

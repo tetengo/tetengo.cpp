@@ -13,7 +13,10 @@
 #include <vector>
 
 #include <boost/iterator/iterator_facade.hpp>
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 
+#include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
@@ -21,6 +24,7 @@
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
+#include "tetengo_lattice_constraint.hpp" // IWYU pragma: keep
 #include "tetengo_lattice_lattice.hpp"
 #include "tetengo_lattice_vocabulary.hpp" // IWYU pragma: keep
 
@@ -43,10 +47,17 @@ struct tetengo_lattice_nBestIterator_tag
 
 tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
     const tetengo_lattice_lattice_t* const p_lattice,
-    const tetengo_lattice_node_t* const    p_eos_node)
+    const tetengo_lattice_node_t* const    p_eos_node,
+    tetengo_lattice_constraint_t* const    p_constraint)
 {
     try
     {
+        BOOST_SCOPE_EXIT(p_constraint)
+        {
+            tetengo_lattice_constraint_destroy(p_constraint);
+        }
+        BOOST_SCOPE_EXIT_END;
+
         if (!p_lattice)
         {
             throw std::invalid_argument{ "p_lattice is NULL." };
@@ -54,6 +65,10 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
         if (!p_eos_node)
         {
             throw std::invalid_argument{ "p_eos_node is NULL." };
+        }
+        if (!p_constraint)
+        {
+            throw std::invalid_argument{ "p_constraint is NULL." };
         }
 
         auto p_cpp_preceding_edge_costs = std::make_unique<std::vector<int>>(
@@ -69,7 +84,8 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
 
         auto p_instance = std::make_unique<tetengo_lattice_nBestIterator_t>(
             std::make_unique<std::pair<tetengo::lattice::n_best_iterator, tetengo::lattice::n_best_iterator>>(
-                tetengo::lattice::n_best_iterator{ *p_lattice->p_cpp_lattice, std::move(cpp_eos_node) },
+                tetengo::lattice::n_best_iterator{
+                    *p_lattice->p_cpp_lattice, std::move(cpp_eos_node), std::move(p_constraint->p_cpp_constraint) },
                 tetengo::lattice::n_best_iterator{}),
             std::move(p_cpp_preceding_edge_costs));
         return p_instance.release();
@@ -101,7 +117,7 @@ size_t tetengo_lattice_nBestIterator_get(
             throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
-        const auto cpp_path = *p_iterator->p_cpp_iterator_pair->first;
+        const auto& cpp_path = *p_iterator->p_cpp_iterator_pair->first;
 
         if (p_path)
         {

@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <functional>
 #include <iterator>
 #include <limits>
 #include <memory>
@@ -16,7 +17,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/container_hash/hash.hpp>
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/lattice/connection.hpp>
@@ -33,11 +33,21 @@ namespace tetengo::lattice
         // constructors and destructor
 
         impl(
-            std::vector<std::pair<std::string, std::vector<entry>>> entries,
-            std::vector<std::pair<std::pair<entry, entry>, int>>    connections) :
+            std::vector<std::pair<std::string, std::vector<entry>>>   entries,
+            std::vector<std::pair<std::pair<entry, entry>, int>>      connections,
+            std::function<std::size_t(const entry_view&)>             entry_hash,
+            std::function<bool(const entry_view&, const entry_view&)> entry_equal_to) :
         m_entry_map{ make_entry_map(std::move(entries)) },
-            m_connection_map{ make_connection_map(std::move(connections)) }
-        {}
+            m_connection_keys{},
+            m_p_connection_map{}
+        {
+            build_connection_map(
+                std::move(connections),
+                std::move(entry_hash),
+                std::move(entry_equal_to),
+                m_connection_keys,
+                m_p_connection_map);
+        }
 
 
         // functions
@@ -58,9 +68,9 @@ namespace tetengo::lattice
 
         connection find_connection_impl(const node& from, const entry_view& to) const
         {
-            const auto found =
-                m_connection_map.find(std::make_pair(std::string{ from.key() }, std::string{ to.key() }));
-            if (found == m_connection_map.end())
+            const entry_view from_entry_view{ from.key(), &from.value(), from.node_cost() };
+            const auto       found = m_p_connection_map->find(std::make_pair(from_entry_view, to));
+            if (found == m_p_connection_map->end())
             {
                 return connection{ std::numeric_limits<int>::max() };
             }
@@ -75,13 +85,35 @@ namespace tetengo::lattice
 
         struct connection_map_hash
         {
-            std::size_t operator()(const std::pair<std::string, std::string>& key) const
+            std::function<std::size_t(const entry_view&)> hash;
+
+            explicit connection_map_hash(std::function<std::size_t(const entry_view&)> hash) : hash{ std::move(hash) }
+            {}
+
+            std::size_t operator()(const std::pair<entry_view, entry_view>& key) const
             {
-                return boost::hash_value(key);
+                return hash(key.first) ^ hash(key.second);
             }
         };
 
-        using connection_map_type = std::unordered_map<std::pair<std::string, std::string>, int, connection_map_hash>;
+        struct connection_map_key_eq
+        {
+            std::function<bool(const entry_view&, const entry_view&)> key_eq;
+
+            explicit connection_map_key_eq(std::function<bool(const entry_view&, const entry_view&)> key_eq) :
+            key_eq{ std::move(key_eq) }
+            {}
+
+            bool operator()(
+                const std::pair<entry_view, entry_view>& one,
+                const std::pair<entry_view, entry_view>& another) const
+            {
+                return key_eq(one.first, another.first) && key_eq(one.second, another.second);
+            }
+        };
+
+        using connection_map_type =
+            std::unordered_map<std::pair<entry_view, entry_view>, int, connection_map_hash, connection_map_key_eq>;
 
 
         // static functions
@@ -97,15 +129,37 @@ namespace tetengo::lattice
             return map;
         }
 
-        static connection_map_type make_connection_map(std::vector<std::pair<std::pair<entry, entry>, int>> connections)
+        static void build_connection_map(
+            std::vector<std::pair<std::pair<entry, entry>, int>>      connections,
+            std::function<std::size_t(const entry_view&)>             entry_hash,
+            std::function<bool(const entry_view&, const entry_view&)> entry_equal_to,
+            std::vector<std::pair<entry, entry>>&                     connection_keys,
+            std::unique_ptr<connection_map_type>&                     p_connection_map)
         {
-            connection_map_type map{};
-            map.reserve(connections.size());
+            connection_keys.reserve(connections.size());
             for (auto&& e: connections)
             {
-                map.insert(std::make_pair(std::make_pair(e.first.first.key(), e.first.second.key()), e.second));
+                connection_keys.push_back(std::move(e.first));
             }
-            return map;
+
+            auto p_map = std::make_unique<connection_map_type>(
+                connections.size(),
+                connection_map_hash{ std::move(entry_hash) },
+                connection_map_key_eq{ std::move(entry_equal_to) });
+            p_map->reserve(connections.size());
+            for (auto i = static_cast<std::size_t>(0); i < connections.size(); ++i)
+            {
+                const auto&      connection_key = connection_keys[i];
+                const entry_view from{ connection_key.first.key(),
+                                       &connection_key.first.value(),
+                                       connection_key.first.cost() };
+                const entry_view to{ connection_key.second.key(),
+                                     &connection_key.second.value(),
+                                     connection_key.second.cost() };
+                p_map->insert(std::make_pair(std::make_pair(from, to), connections[i].second));
+            }
+
+            p_connection_map = std::move(p_map);
         }
 
 
@@ -113,14 +167,22 @@ namespace tetengo::lattice
 
         const entry_map_type m_entry_map;
 
-        const connection_map_type m_connection_map;
+        std::vector<std::pair<entry, entry>> m_connection_keys;
+
+        std::unique_ptr<connection_map_type> m_p_connection_map;
     };
 
 
     unordered_map_vocabulary::unordered_map_vocabulary(
-        std::vector<std::pair<std::string, std::vector<entry>>> entries,
-        std::vector<std::pair<std::pair<entry, entry>, int>>    connections) :
-    m_p_impl{ std::make_unique<impl>(std::move(entries), std::move(connections)) }
+        std::vector<std::pair<std::string, std::vector<entry>>>   entries,
+        std::vector<std::pair<std::pair<entry, entry>, int>>      connections,
+        std::function<std::size_t(const entry_view&)>             entry_hash,
+        std::function<bool(const entry_view&, const entry_view&)> entry_equal_to) :
+    m_p_impl{ std::make_unique<impl>(
+        std::move(entries),
+        std::move(connections),
+        std::move(entry_hash),
+        std::move(entry_equal_to)) }
     {}
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;

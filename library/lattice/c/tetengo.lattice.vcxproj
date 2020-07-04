@@ -113,12 +113,16 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\lattice\connection.h" />
+    <ClInclude Include="include\tetengo\lattice\constraint.h" />
+    <ClInclude Include="include\tetengo\lattice\constraintElement.h" />
     <ClInclude Include="include\tetengo\lattice\entry.h" />
     <ClInclude Include="include\tetengo\lattice\lattice.h" />
     <ClInclude Include="include\tetengo\lattice\nBestIterator.h" />
     <ClInclude Include="include\tetengo\lattice\node.h" />
     <ClInclude Include="include\tetengo\lattice\stringView.h" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
+    <ClInclude Include="src\tetengo_lattice_constraint.hpp" />
+    <ClInclude Include="src\tetengo_lattice_constraintElement.hpp" />
     <ClInclude Include="src\tetengo_lattice_lattice.hpp" />
     <ClInclude Include="src\tetengo_lattice_vocabulary.hpp" />
   </ItemGroup>
@@ -127,6 +131,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo_lattice_constraint.cpp" />
+    <ClCompile Include="src\tetengo_lattice_constraintElement.cpp" />
     <ClCompile Include="src\tetengo_lattice_entry.cpp" />
     <ClCompile Include="src\tetengo_lattice_lattice.cpp" />
     <ClCompile Include="src\tetengo_lattice_nBestIterator.cpp" />

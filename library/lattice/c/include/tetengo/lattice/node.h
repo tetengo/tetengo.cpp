@@ -61,7 +61,7 @@ typedef struct tetengo_lattice_node_tag
     \param preceding_edge_count   A preceding edge count.
     \param p_bos                  The storage for an output BOS.
 
-    \retval non-zero When an EOS is stored.
+    \retval non-zero When an BOS is stored.
     \retval 0        Otherwise.
 */
 int tetengo_lattice_node_bos(
@@ -112,6 +112,17 @@ int tetengo_lattice_node_toNode(
     size_t                             best_preceding_node,
     int                                path_cost,
     tetengo_lattice_node_t*            p_node);
+
+/*!
+    \brief Returns true if one node is equal to another.
+
+    \param p_one     A pointer to one node.
+    \param p_another A pointer to another node.
+
+    \retval non-zero When one node is equal to another.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_node_equal(const tetengo_lattice_node_t* p_one, const tetengo_lattice_node_t* p_another);
 
 /*!
     \brief Returns true is this node is the BOS.

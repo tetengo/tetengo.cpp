@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <functional>
 #include <iterator>
+#include <memory>
 #include <queue>
 #include <vector>
 
@@ -21,6 +22,7 @@
 
 namespace tetengo::lattice
 {
+    class constraint;
     class lattice;
 
 
@@ -92,7 +94,7 @@ namespace tetengo::lattice
         \brief An N-best lattice path iterator.
     */
     class n_best_iterator :
-    public boost::iterator_facade<n_best_iterator, std::vector<node>, std::input_iterator_tag, std::vector<node>>
+    public boost::iterator_facade<n_best_iterator, std::vector<node>, std::forward_iterator_tag, std::vector<node>>
     {
     public:
         // friends
@@ -113,10 +115,13 @@ namespace tetengo::lattice
         /*!
             \brief Creates an iterator.
 
-            \param lattice_ A lattice.
-            \param eos_node An EOS node.
+            \param lattice_     A lattice.
+            \param eos_node     An EOS node.
+            \param p_constraint A unique pointer to a constraint.
+
+            \throw std::invalid_argument When p_constraint is nullptr.
         */
-        n_best_iterator(const lattice& lattice_, node eos_node);
+        n_best_iterator(const lattice& lattice_, node eos_node, std::unique_ptr<constraint>&& p_constraint);
 
 
     private:
@@ -128,12 +133,16 @@ namespace tetengo::lattice
 
         std::size_t m_eos_hash;
 
+        std::shared_ptr<constraint> m_p_constraint;
+
+        std::vector<node> m_path;
+
         std::size_t m_index;
 
 
         // functions
 
-        std::vector<node> dereference() const;
+        const std::vector<node>& dereference() const;
 
         bool equal(const n_best_iterator& another) const;
 

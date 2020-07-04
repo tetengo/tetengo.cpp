@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <boost/core/ignore_unused.hpp>
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -160,6 +161,11 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_CHECK_THROW(
             const tetengo::lattice::node node_("mizuho", &value, 1, nullptr, 5, 24, 2424), std::invalid_argument);
     }
+    {
+        const std::any                     entry_value{ 42 };
+        const tetengo::lattice::entry_view entry{ "mizuho", &entry_value, 24 };
+        BOOST_CHECK_THROW(const tetengo::lattice::node node_(entry, 1, nullptr, 5, 2424), std::invalid_argument);
+    }
 
     {
         const std::string_view       key{ "mizuho" };
@@ -246,6 +252,78 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto                        result = tetengo_lattice_node_toNode(
             &entry, 1, preceding_edge_costs.data(), preceding_edge_costs.size(), 5, 2424, nullptr);
         BOOST_TEST(!result);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const std::vector<int> preceding_edge_costs_bos{};
+        const auto             bos = tetengo::lattice::node::bos(&preceding_edge_costs_bos);
+
+        const std::vector<int> preceding_edge_costs_eos{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const auto             eos = tetengo::lattice::node::eos(1, &preceding_edge_costs_eos, 5, 42);
+
+        const std::any               value1{ 42 };
+        const std::vector<int>       preceding_edge_costs1{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo::lattice::node node1{ "mizuho", &value1, 1, &preceding_edge_costs1, 5, 24, 2424 };
+
+        const std::any               value2{ 42 };
+        const std::vector<int>       preceding_edge_costs2{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo::lattice::node node2{ "mizuho", &value2, 1, &preceding_edge_costs2, 5, 24, 2424 };
+
+        BOOST_CHECK(bos == bos);
+        BOOST_CHECK(bos != eos);
+        BOOST_CHECK(bos != node1);
+        BOOST_CHECK(node1 == node2);
+    }
+
+    {
+        const std::vector<int> preceding_edge_costs_bos{};
+        tetengo_lattice_node_t bos{};
+        const auto             result_bos =
+            tetengo_lattice_node_bos(preceding_edge_costs_bos.data(), preceding_edge_costs_bos.size(), &bos);
+        BOOST_TEST_REQUIRE(result_bos);
+
+        const std::vector<int> preceding_edge_costs_eos{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        tetengo_lattice_node_t eos{};
+        const auto             result_eos =
+            tetengo_lattice_node_eos(1, preceding_edge_costs_eos.data(), preceding_edge_costs_eos.size(), 5, 42, &eos);
+        BOOST_TEST_REQUIRE(result_eos);
+
+        const std::string_view       key1{ "mizuho" };
+        const std::any               value1{ reinterpret_cast<const void*>("MIZUHO") };
+        const std::vector<int>       preceding_edge_costs1{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo_lattice_node_t node1{ { key1.data(), key1.length() },
+                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value1),
+                                            1,
+                                            preceding_edge_costs1.data(),
+                                            preceding_edge_costs1.size(),
+                                            5,
+                                            24,
+                                            2424 };
+
+        const std::string_view       key2{ "mizuho" };
+        const std::any               value2{ reinterpret_cast<const void*>("MIZUHO") };
+        const std::vector<int>       preceding_edge_costs2{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo_lattice_node_t node2{ { key2.data(), key2.length() },
+                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value2),
+                                            1,
+                                            preceding_edge_costs2.data(),
+                                            preceding_edge_costs2.size(),
+                                            5,
+                                            24,
+                                            2424 };
+
+        BOOST_TEST(tetengo_lattice_node_equal(&bos, &bos));
+        BOOST_TEST(!tetengo_lattice_node_equal(&bos, &eos));
+        BOOST_TEST(!tetengo_lattice_node_equal(&bos, &node1));
+        BOOST_TEST(tetengo_lattice_node_equal(&node1, &node2));
+        BOOST_TEST(!tetengo_lattice_node_equal(nullptr, &node2));
+        BOOST_TEST(!tetengo_lattice_node_equal(&node1, nullptr));
+        BOOST_TEST(!tetengo_lattice_node_equal(nullptr, nullptr));
     }
 }
 

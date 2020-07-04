@@ -3,6 +3,8 @@
 
 pkg_headers = \
     lattice/connection.h \
+    lattice/constraint.h \
+    lattice/constraintElement.h \
     lattice/entry.h \
     lattice/lattice.h \
     lattice/nBestIterator.h \

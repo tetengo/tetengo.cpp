@@ -119,13 +119,17 @@
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.connection.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.constraint.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.constraint_element.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.entry.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.lattice.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.node.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.node_constraint_element.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.n_best_iterator.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.string_view.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.unordered_map_vocabulary.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.vocabulary.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.wildcard_constraint_element.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />

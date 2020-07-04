@@ -5,11 +5,13 @@
  */
 
 #include <any>
+#include <cassert>
 #include <cstddef>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -24,6 +26,7 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -43,15 +46,27 @@ namespace
                                             |                                 |
                                             +------------local815-------------+
                                                       path cost: 3550
-        (1) 3390  BOS - tsubame - EOS
-        (2) 3620  BOS - sakura - EOS
-        (3) 3760  BOS - rapid811 - local817 - EOS
-        (4) 4050  BOS - local415 - local815 - EOS
-        (5) 4320  BOS - kamome - local815 - EOS
-        (6) 4600  BOS - ariake - local817 - EOS
-        (7) 4670  BOS - mizuho - EOS
-        (8) 4680  BOS - local415 - local813 - local817 - EOS
-        (9) 4950  BOS - kamome - local813 - local817 - EOS
+
+        (0) 3390  BOS - tsubame - EOS
+            [ sakura(3620),   local817(3760), local815(4050), mizuho(4670)   ]
+        (1) 3620  BOS - sakura - EOS
+            [ local817(3760), local815(4050), mizuho(4670)                   ]
+        (2) 3760  BOS - rapid811 - local817 - EOS
+            [ local815(4050), ariake(4600),   mizuho(4670),   local813(4680) ]
+        (3) 4050  BOS - local415 - local815 - EOS
+            [ kamome(4320),   ariake(4600),   mizuho(4670),   local813(4680) ]
+        (4) 4320  BOS - kamome - local815 - EOS
+            [ ariake(4600),   mizuho(4670),   local813(4680)                 ]
+        (5) 4600  BOS - ariake - local817 - EOS
+            [ mizuho(4670),   local813(4680)                                 ]
+        (6) 4670  BOS - mizuho - EOS
+            [ local813(4680)                                                 ]
+        (7) 4680  BOS - local415 - local813 - local817 - EOS
+            [ kamome(4950)                                                   ]
+        (8) 4950  BOS - kamome - local813 - local817 - EOS
+            [                                                                ]
+        (9) ----  -
+            [                                                                ]
     */
     const std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
         { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
@@ -101,9 +116,48 @@ namespace
         { { { "Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 600 },
     };
 
+    std::size_t cpp_entry_hash(const tetengo::lattice::entry_view& entry)
+    {
+        return std::hash<std::string_view>{}(entry.key());
+    }
+
+    bool cpp_entry_equal_to(const tetengo::lattice::entry_view& one, const tetengo::lattice::entry_view& another)
+    {
+        return one.key() == another.key();
+    }
+
     std::unique_ptr<tetengo::lattice::vocabulary> create_cpp_vocabulary()
     {
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(entries, connections);
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
+            entries, connections, cpp_entry_hash, cpp_entry_equal_to);
+    }
+
+    size_t c_entry_hash(const tetengo_lattice_entryView_t* const p_entry)
+    {
+        if (p_entry)
+        {
+            return std::hash<std::string_view>{}(std::string_view{ p_entry->key.p_head, p_entry->key.length });
+        }
+        else
+        {
+            assert(false);
+            return 0;
+        }
+    }
+
+    int
+    c_entry_equal_to(const tetengo_lattice_entryView_t* const p_one, const tetengo_lattice_entryView_t* const p_another)
+    {
+        if (p_one && p_another)
+        {
+            return std::string_view{ p_one->key.p_head, p_one->key.length } ==
+                   std::string_view{ p_another->key.p_head, p_another->key.length };
+        }
+        else
+        {
+            assert(false);
+            return 0;
+        }
     }
 
     tetengo_lattice_vocabulary_t* create_c_vocabulary()
@@ -162,7 +216,9 @@ namespace
             key_entries_pairs.data(),
             key_entries_pairs.size(),
             entries_connection_cost_pairs.data(),
-            entries_connection_cost_pairs.size());
+            entries_connection_cost_pairs.size(),
+            c_entry_hash,
+            c_entry_equal_to);
     }
 
 
