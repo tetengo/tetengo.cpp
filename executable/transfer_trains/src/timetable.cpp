@@ -33,33 +33,6 @@
 
 namespace
 {
-    struct ad_time
-    {
-        std::optional<std::size_t> arrival;
-
-        std::optional<std::size_t> departure;
-
-        ad_time(std::optional<std::size_t>&& arrival, std::optional<std::size_t>&& departure) :
-        arrival{ std::move(arrival) },
-            departure{ std::move(departure) }
-        {}
-    };
-
-    struct train
-    {
-        std::string number;
-
-        std::string name;
-
-        std::vector<ad_time> ad_times;
-
-        train(std::string&& number, std::string&& name, std::vector<ad_time>&& ad_times) :
-        number{ std::move(number) },
-            name{ std::move(name) },
-            ad_times{ std::move(ad_times) }
-        {}
-    };
-
     struct timetable_value
     {
         std::vector<station> stations;
@@ -72,21 +45,6 @@ namespace
         {}
     };
 
-    struct entry_value
-    {
-        const train* p_train;
-
-        std::size_t from;
-
-        std::size_t to;
-
-        entry_value(const train* const p_train, const std::size_t from, const std::size_t to) :
-        p_train{ p_train },
-            from{ from },
-            to{ to }
-        {}
-    };
-
     std::size_t entry_hash(const tetengo::lattice::entry_view& entry)
     {
         const std::size_t key_hash = std::hash<std::string_view>{}(entry.key());
@@ -96,13 +54,13 @@ namespace
         std::size_t       entry_to_hash = std::hash<std::size_t>{}(0);
         if (entry.value()->has_value())
         {
-            const auto* const p_value = std::any_cast<entry_value>(entry.value());
-            if (p_value)
+            const auto* const p_section = std::any_cast<section>(entry.value());
+            if (p_section)
             {
-                entry_train_number_hash = std::hash<std::string>{}(p_value->p_train->number);
-                entry_train_name_hash = std::hash<std::string>{}(p_value->p_train->name);
-                entry_from_hash = std::hash<std::size_t>{}(p_value->from);
-                entry_to_hash = std::hash<std::size_t>{}(p_value->to);
+                entry_train_number_hash = std::hash<std::string>{}(p_section->p_train()->number());
+                entry_train_name_hash = std::hash<std::string>{}(p_section->p_train()->name());
+                entry_from_hash = std::hash<std::size_t>{}(p_section->from());
+                entry_to_hash = std::hash<std::size_t>{}(p_section->to());
             }
         }
         return key_hash ^ entry_train_number_hash ^ entry_train_name_hash ^ entry_from_hash ^ entry_to_hash;
@@ -113,13 +71,15 @@ namespace
         if (tetengo::lattice::temp::std_any_has_value(*one.value()) &&
             tetengo::lattice::temp::std_any_has_value(*another.value()))
         {
-            const auto* const p_one_value = std::any_cast<entry_value>(one.value());
-            const auto* const p_another_value = std::any_cast<entry_value>(another.value());
-            if (p_one_value && p_another_value)
+            const auto* const p_one_section = std::any_cast<section>(one.value());
+            const auto* const p_another_section = std::any_cast<section>(another.value());
+            if (p_one_section && p_another_section)
             {
-                return one.key() == another.key() && p_one_value->p_train->number == p_another_value->p_train->number &&
-                       p_one_value->p_train->name == p_another_value->p_train->name &&
-                       p_one_value->from == p_another_value->from && p_one_value->to == p_another_value->to;
+                return one.key() == another.key() &&
+                       p_one_section->p_train()->number() == p_another_section->p_train()->number() &&
+                       p_one_section->p_train()->name() == p_another_section->p_train()->name() &&
+                       p_one_section->from() == p_another_section->from() &&
+                       p_one_section->to() == p_another_section->to();
             }
             else
             {
@@ -156,6 +116,81 @@ const std::string& station::name() const
 const std::string& station::telegram_code() const
 {
     return m_telegram_code;
+}
+
+
+stop::stop(std::optional<std::size_t> arrival_time, std::optional<std::size_t> departure_time) :
+m_arrival_time{ std::move(arrival_time) },
+    m_departure_time{ std::move(departure_time) }
+{}
+
+std::optional<std::size_t> stop::arrival_time() const
+{
+    return m_arrival_time;
+}
+
+void stop::set_arrival_time(const std::size_t time)
+{
+    m_arrival_time = time;
+}
+
+std::optional<std::size_t> stop::departure_time() const
+{
+    return m_departure_time;
+}
+
+void stop::set_departure_time(std::size_t time)
+{
+    m_departure_time = time;
+}
+
+
+train::train(std::string number, std::string name, std::vector<stop> stops) :
+m_number{ std::move(number) },
+    m_name{ std::move(name) },
+    m_stops{ std::move(stops) }
+{}
+
+const std::string& train::number() const
+{
+    return m_number;
+}
+
+const std::string& train::name() const
+{
+    return m_name;
+}
+
+const std::vector<stop>& train::stops() const
+{
+    return m_stops;
+}
+
+std::vector<stop>& train::stops()
+{
+    return m_stops;
+}
+
+
+section::section(const train* const p_train, const std::size_t from, const std::size_t to) :
+m_p_train{ p_train },
+    m_from{ from },
+    m_to{ to }
+{}
+
+const train* section::p_train() const
+{
+    return m_p_train;
+}
+
+std::size_t section::from() const
+{
+    return m_from;
+}
+
+std::size_t section::to() const
+{
+    return m_to;
 }
 
 
@@ -260,15 +295,15 @@ private:
         }
         line.resize(station_count + 2);
 
-        std::vector<ad_time> ad_times{};
-        ad_times.reserve(station_count);
-        std::transform(std::next(std::begin(line), 2), std::end(line), std::back_inserter(ad_times), [](auto&& e) {
+        std::vector<stop> stops{};
+        stops.reserve(station_count);
+        std::transform(std::next(std::begin(line), 2), std::end(line), std::back_inserter(stops), [](auto&& e) {
             return to_ad_time(std::move(e));
         });
-        return train{ std::move(line[0]), std::move(line[1]), std::move(ad_times) };
+        return train{ std::move(line[0]), std::move(line[1]), std::move(stops) };
     }
 
-    static ad_time to_ad_time(std::string&& element)
+    static stop to_ad_time(std::string&& element)
     {
         std::vector<std::string> string_times{};
         boost::algorithm::split(string_times, std::move(element), boost::is_any_of("/"));
@@ -279,12 +314,12 @@ private:
         }
         else if (string_times.size() == 1)
         {
-            return ad_time{ std::nullopt, to_minutes(std::move(string_times[0])) };
+            return stop{ std::nullopt, to_minutes(std::move(string_times[0])) };
         }
         else
         {
             assert(string_times.size() == 2);
-            return ad_time{ to_minutes(std::move(string_times[0])), to_minutes(std::move(string_times[1])) };
+            return stop{ to_minutes(std::move(string_times[0])), to_minutes(std::move(string_times[1])) };
         }
     }
 
@@ -325,18 +360,20 @@ private:
 
                 for (auto& train: timetable_.trains)
                 {
-                    if (!all_passing(train.ad_times, from, to))
+                    if (!all_passing(train.stops(), from, to))
                     {
                         continue;
                     }
 
-                    if (!train.ad_times[to].arrival)
+                    if (!train.stops()[to].arrival_time())
                     {
-                        train.ad_times[to].arrival = add_time(*train.ad_times[from].departure, minimum_duration_);
+                        train.stops()[to].set_arrival_time(
+                            add_time(*train.stops()[from].departure_time(), minimum_duration_));
                     }
-                    else if (!train.ad_times[from].departure)
+                    else if (!train.stops()[from].departure_time())
                     {
-                        train.ad_times[from].departure = add_time(*train.ad_times[to].arrival, -minimum_duration_);
+                        train.stops()[from].set_departure_time(
+                            add_time(*train.stops()[to].arrival_time(), -minimum_duration_));
                     }
                 }
             }
@@ -349,15 +386,15 @@ private:
         auto minimum = std::numeric_limits<std::ptrdiff_t>::max();
         for (const auto& train: trains)
         {
-            if (!all_passing(train.ad_times, from, to))
+            if (!all_passing(train.stops(), from, to))
             {
                 continue;
             }
 
-            const auto from_time =
-                train.ad_times[from].departure ? *train.ad_times[from].departure : *train.ad_times[from].arrival;
-            const auto to_time =
-                train.ad_times[to].arrival ? *train.ad_times[to].arrival : *train.ad_times[to].departure;
+            const auto from_time = train.stops()[from].departure_time() ? *train.stops()[from].departure_time() :
+                                                                          *train.stops()[from].arrival_time();
+            const auto to_time = train.stops()[to].arrival_time() ? *train.stops()[to].arrival_time() :
+                                                                    *train.stops()[to].departure_time();
 
             if (diff_time(to_time, from_time) < minimum)
             {
@@ -377,7 +414,7 @@ private:
             {
                 for (auto to = from + 1; to < timetable_.stations.size(); ++to)
                 {
-                    if (!all_passing(train_.ad_times, from, to))
+                    if (!all_passing(train_.stops(), from, to))
                     {
                         continue;
                     }
@@ -390,10 +427,10 @@ private:
                             map.insert(std::make_pair(section_name, std::vector<tetengo::lattice::entry>{}));
                         found = inserted.first;
                     }
-                    entry_value value{ &train_, from, to };
-                    const auto  section_duration = make_section_duration(train_.ad_times, from, to);
+                    section    section_{ &train_, from, to };
+                    const auto section_duration = make_section_duration(train_.stops(), from, to);
                     found->second.emplace_back(
-                        std::move(section_name), std::move(value), static_cast<int>(section_duration));
+                        std::move(section_name), std::move(section_), static_cast<int>(section_duration));
                 }
             }
         }
@@ -419,26 +456,26 @@ private:
     }
 
     static std::size_t
-    make_section_duration(const std::vector<ad_time>& ad_times, const std::size_t from, const std::size_t to)
+    make_section_duration(const std::vector<stop>& stops, const std::size_t from, const std::size_t to)
     {
-        assert(ad_times[from].departure);
-        assert(ad_times[to].arrival);
-        return diff_time(*ad_times[to].arrival, *ad_times[from].departure);
+        assert(stops[from].departure_time());
+        assert(stops[to].arrival_time());
+        return diff_time(*stops[to].arrival_time(), *stops[from].departure_time());
     }
 
-    static bool all_passing(const std::vector<ad_time>& ad_times, const std::size_t from, const std::size_t to)
+    static bool all_passing(const std::vector<stop>& stops, const std::size_t from, const std::size_t to)
     {
-        if (!ad_times[from].arrival && !ad_times[from].departure)
+        if (!stops[from].arrival_time() && !stops[from].departure_time())
         {
             return false;
         }
-        if (!ad_times[to].arrival && !ad_times[to].departure)
+        if (!stops[to].arrival_time() && !stops[to].departure_time())
         {
             return false;
         }
         for (auto i = from + 1; i + 1 < to + 1; ++i)
         {
-            if (ad_times[i].arrival || ad_times[i].departure)
+            if (stops[i].arrival_time() || stops[i].departure_time())
             {
                 return false;
             }
@@ -459,15 +496,17 @@ private:
                 {
                     for (const auto& to_entry: to.second)
                     {
-                        const auto* const p_from_value = std::any_cast<entry_value>(&from_entry.value());
-                        const auto* const p_to_value = std::any_cast<entry_value>(&to_entry.value());
-                        if (p_from_value->to != p_to_value->from)
+                        const auto* const p_from_value = std::any_cast<section>(&from_entry.value());
+                        const auto* const p_to_value = std::any_cast<section>(&to_entry.value());
+                        if (p_from_value->to() != p_to_value->from())
                         {
                             continue;
                         }
 
-                        const auto from_arrival_time = p_from_value->p_train->ad_times[p_from_value->to].arrival;
-                        const auto to_departure_time = p_to_value->p_train->ad_times[p_to_value->from].departure;
+                        const auto from_arrival_time =
+                            p_from_value->p_train()->stops()[p_from_value->to()].arrival_time();
+                        const auto to_departure_time =
+                            p_to_value->p_train()->stops()[p_to_value->from()].departure_time();
                         assert(from_arrival_time);
                         assert(to_departure_time);
                         connections.emplace_back(
@@ -482,15 +521,15 @@ private:
         {
             for (const auto& entry: key_and_entries.second)
             {
-                const auto* const p_value = std::any_cast<entry_value>(&entry.value());
-                if (p_value->from == 0)
+                const auto* const p_section = std::any_cast<section>(&entry.value());
+                if (p_section->from() == 0)
                 {
-                    const auto departure_time = p_value->p_train->ad_times[0].departure;
+                    const auto departure_time = p_section->p_train()->stops()[0].departure_time();
                     assert(departure_time);
                     connections.emplace_back(
                         std::make_pair(tetengo::lattice::entry::bos_eos(), entry), static_cast<int>(*departure_time));
                 }
-                if (p_value->to == p_value->p_train->ad_times.size() - 1)
+                if (p_section->to() == p_section->p_train()->stops().size() - 1)
                 {
                     connections.emplace_back(std::make_pair(entry, tetengo::lattice::entry::bos_eos()), 0);
                 }
