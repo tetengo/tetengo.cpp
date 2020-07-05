@@ -4,12 +4,14 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <any>
 #include <cassert>
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -78,7 +80,20 @@ int main(const int argc, char** const argv)
             const auto& path = *iter;
             for (const auto& node: path)
             {
-                std::cout << to_time_string(node.path_cost()) << "\t" << node.key() << std::endl;
+                std::cout << to_time_string(node.path_cost()) << "\t" << node.key();
+
+                const auto* const p_section = std::any_cast<section>(&node.value());
+                if (p_section)
+                {
+                    std::cout << "\t" << p_section->p_train()->number() << "\t" << p_section->p_train()->name() << "\t"
+                              << to_time_string(static_cast<int>(
+                                     *p_section->p_train()->stops()[p_section->from()].departure_time()))
+                              << "->"
+                              << to_time_string(
+                                     static_cast<int>(*p_section->p_train()->stops()[p_section->to()].arrival_time()));
+                }
+
+                std::cout << std::endl;
             }
             std::cout << "--------" << std::endl;
         }
