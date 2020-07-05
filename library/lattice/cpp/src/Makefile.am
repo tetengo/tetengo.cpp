@@ -12,6 +12,7 @@ sources = \
     tetengo.lattice.n_best_iterator.cpp \
     tetengo.lattice.node.cpp \
     tetengo.lattice.node_constraint_element.cpp \
+    tetengo.lattice.path.cpp \
     tetengo.lattice.unordered_map_vocabulary.cpp \
     tetengo.lattice.vocabulary.cpp \
     tetengo.lattice.wildcard_constraint_element.cpp

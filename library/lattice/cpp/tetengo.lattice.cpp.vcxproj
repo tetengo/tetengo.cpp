@@ -31,6 +31,7 @@
     <ClInclude Include="include\tetengo\lattice\node.hpp" />
     <ClInclude Include="include\tetengo\lattice\node_constraint_element.hpp" />
     <ClInclude Include="include\tetengo\lattice\n_best_iterator.hpp" />
+    <ClInclude Include="include\tetengo\lattice\path.hpp" />
     <ClInclude Include="include\tetengo\lattice\unordered_map_vocabulary.hpp" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.hpp" />
     <ClInclude Include="include\tetengo\lattice\wildcard_constraint_element.hpp" />
@@ -48,6 +49,7 @@
     <ClCompile Include="src\tetengo.lattice.node.cpp" />
     <ClCompile Include="src\tetengo.lattice.node_constraint_element.cpp" />
     <ClCompile Include="src\tetengo.lattice.n_best_iterator.cpp" />
+    <ClCompile Include="src\tetengo.lattice.path.cpp" />
     <ClCompile Include="src\tetengo.lattice.unordered_map_vocabulary.cpp" />
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp" />
     <ClCompile Include="src\tetengo.lattice.wildcard_constraint_element.cpp" />
