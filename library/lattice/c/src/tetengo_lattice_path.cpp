@@ -100,7 +100,7 @@ void tetengo_lattice_path_destroy(const tetengo_lattice_path_t* const p_path)
     {}
 }
 
-size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* p_path, tetengo_lattice_node_t* p_nodes)
+size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* const p_path, tetengo_lattice_node_t* const p_nodes)
 {
     try
     {
@@ -131,6 +131,23 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* p_path, tetengo
         }
 
         return p_path->p_cpp_path->nodes().size();
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+size_t tetengo_lattice_path_cost(const tetengo_lattice_path_t* const p_path)
+{
+    try
+    {
+        if (!p_path)
+        {
+            throw std::invalid_argument{ "p_path is NULL." };
+        }
+
+        return p_path->p_cpp_path->cost();
     }
     catch (...)
     {

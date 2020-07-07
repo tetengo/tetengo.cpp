@@ -51,6 +51,15 @@ void tetengo_lattice_path_destroy(const tetengo_lattice_path_t* p_path);
 */
 size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* p_path, tetengo_lattice_node_t* p_nodes);
 
+/*!
+    \brief Returns the cost.
+
+    \param p_path  A pointer to a path.
+
+    \return The cost. Or 0 when p_path is NULL.
+*/
+size_t tetengo_lattice_path_cost(const tetengo_lattice_path_t* p_path);
+
 
 #if defined(__cplusplus)
 }

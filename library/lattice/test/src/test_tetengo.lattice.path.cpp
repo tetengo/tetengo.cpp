@@ -174,6 +174,20 @@ BOOST_AUTO_TEST_CASE(cost)
 
         BOOST_TEST(path_.cost() == 42U);
     }
+
+    {
+        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_lattice_path_cost(p_path) == 42U);
+    }
+    {
+        BOOST_TEST(tetengo_lattice_path_cost(nullptr) == 0U);
+    }
 }
 
 
