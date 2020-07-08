@@ -24,6 +24,11 @@ namespace tetengo::lattice
         // constructors and destructor
 
         /*!
+            \brief Creates an empty path.
+        */
+        path();
+
+        /*!
             \brief Creates a path.
 
             \param nodes Nodes.

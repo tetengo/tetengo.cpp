@@ -14,6 +14,8 @@
 
 namespace tetengo::lattice
 {
+    path::path() : m_nodes{}, m_cost{ 0 } {}
+
     path::path(std::vector<node> nodes, const std::size_t cost) : m_nodes{ std::move(nodes) }, m_cost{ cost } {}
 
     const std::vector<node>& path::nodes() const

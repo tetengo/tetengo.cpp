@@ -22,6 +22,7 @@ EXPORTS
 	tetengo_lattice_nBestIterator_get
 	tetengo_lattice_nBestIterator_hasNext
 	tetengo_lattice_nBestIterator_next
+	tetengo_lattice_path_createEmpty
 	tetengo_lattice_path_create
 	tetengo_lattice_path_destroy
 	tetengo_lattice_path_pNodes

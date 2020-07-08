@@ -114,6 +114,9 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
+        const tetengo::lattice::path path_{};
+    }
+    {
         const tetengo::lattice::path path_{ cpp_nodes(), 42 };
     }
 
@@ -139,11 +142,27 @@ BOOST_AUTO_TEST_CASE(nodes)
     BOOST_TEST_PASSPOINT();
 
     {
+        const tetengo::lattice::path path_{};
+
+        BOOST_CHECK(path_.nodes().empty());
+    }
+    {
         const tetengo::lattice::path path_{ cpp_nodes(), 42 };
 
         BOOST_CHECK(path_.nodes() == cpp_nodes());
     }
 
+    {
+        const auto* const p_path = tetengo_lattice_path_createEmpty();
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto node_count = tetengo_lattice_path_pNodes(p_path, nullptr);
+        BOOST_TEST(node_count == 0);
+    }
     {
         const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
         BOOST_SCOPE_EXIT(p_path)
@@ -170,11 +189,26 @@ BOOST_AUTO_TEST_CASE(cost)
     BOOST_TEST_PASSPOINT();
 
     {
+        const tetengo::lattice::path path_{};
+
+        BOOST_CHECK(path_.cost() == 0U);
+    }
+    {
         const tetengo::lattice::path path_{ cpp_nodes(), 42 };
 
         BOOST_TEST(path_.cost() == 42U);
     }
 
+    {
+        const auto* const p_path = tetengo_lattice_path_createEmpty();
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_lattice_path_cost(p_path) == 0U);
+    }
     {
         const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
         BOOST_SCOPE_EXIT(p_path)

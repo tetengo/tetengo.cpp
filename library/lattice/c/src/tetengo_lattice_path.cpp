@@ -38,6 +38,22 @@ struct tetengo_lattice_path_tag
 };
 
 
+tetengo_lattice_path_t* tetengo_lattice_path_createEmpty()
+{
+    try
+    {
+        auto p_cpp_path = std::make_unique<tetengo::lattice::path>();
+
+        auto p_instance =
+            std::make_unique<tetengo_lattice_path_t>(std::vector<std::vector<int>>{}, std::move(p_cpp_path));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
 tetengo_lattice_path_t*
 tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const size_t node_count, const size_t cost)
 {
