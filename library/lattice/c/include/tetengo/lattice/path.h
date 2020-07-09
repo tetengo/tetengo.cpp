@@ -47,6 +47,16 @@ tetengo_lattice_path_create(const tetengo_lattice_node_t* p_nodes, size_t node_c
 void tetengo_lattice_path_destroy(const tetengo_lattice_path_t* p_path);
 
 /*!
+    \brief Returns non-zero when this path is empty.
+
+    \param p_path A pointer to a path.
+
+    \retval non-zero When this path is empty.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_path_empty(const tetengo_lattice_path_t* p_path);
+
+/*!
     \brief Returns the nodes.
 
     The second and the latter nodes follows the head node continuously.
@@ -61,7 +71,7 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* p_path, tetengo
 /*!
     \brief Returns the cost.
 
-    \param p_path  A pointer to a path.
+    \param p_path A pointer to a path.
 
     \return The cost. Or 0 when p_path is NULL.
 */

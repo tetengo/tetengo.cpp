@@ -137,6 +137,46 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(empty)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::path path_{};
+
+        BOOST_TEST(path_.empty());
+    }
+    {
+        const tetengo::lattice::path path_{ cpp_nodes(), 42 };
+
+        BOOST_TEST(!path_.empty());
+    }
+
+    {
+        const auto* const p_path = tetengo_lattice_path_createEmpty();
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_lattice_path_empty(p_path));
+    }
+    {
+        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(!tetengo_lattice_path_empty(p_path));
+    }
+    {
+        BOOST_TEST(!tetengo_lattice_path_empty(nullptr));
+    }
+}
+
 BOOST_AUTO_TEST_CASE(nodes)
 {
     BOOST_TEST_PASSPOINT();
@@ -144,7 +184,7 @@ BOOST_AUTO_TEST_CASE(nodes)
     {
         const tetengo::lattice::path path_{};
 
-        BOOST_CHECK(path_.nodes().empty());
+        BOOST_TEST(path_.nodes().empty());
     }
     {
         const tetengo::lattice::path path_{ cpp_nodes(), 42 };
@@ -191,7 +231,7 @@ BOOST_AUTO_TEST_CASE(cost)
     {
         const tetengo::lattice::path path_{};
 
-        BOOST_CHECK(path_.cost() == 0U);
+        BOOST_TEST(path_.cost() == 0U);
     }
     {
         const tetengo::lattice::path path_{ cpp_nodes(), 42 };

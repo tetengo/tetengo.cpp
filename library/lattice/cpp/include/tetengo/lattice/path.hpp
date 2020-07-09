@@ -40,6 +40,14 @@ namespace tetengo::lattice
         // functions
 
         /*!
+            \brief Returns true when this path is empty.
+
+            \retval true  When this path is empty.
+            \retval false Otherwise.
+        */
+        bool empty() const;
+
+        /*!
             \brief Returns the nodes.
 
             \return The nodes.

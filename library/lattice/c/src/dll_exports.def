@@ -25,6 +25,7 @@ EXPORTS
 	tetengo_lattice_path_createEmpty
 	tetengo_lattice_path_create
 	tetengo_lattice_path_destroy
+	tetengo_lattice_path_empty
 	tetengo_lattice_path_pNodes
 	tetengo_lattice_path_cost
 	tetengo_lattice_constraint_createEmpty

@@ -116,6 +116,23 @@ void tetengo_lattice_path_destroy(const tetengo_lattice_path_t* const p_path)
     {}
 }
 
+int tetengo_lattice_path_empty(const tetengo_lattice_path_t* const p_path)
+{
+    try
+    {
+        if (!p_path)
+        {
+            throw std::invalid_argument{ "p_path is NULL." };
+        }
+
+        return p_path->p_cpp_path->empty();
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
 size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* const p_path, tetengo_lattice_node_t* const p_nodes)
 {
     try
