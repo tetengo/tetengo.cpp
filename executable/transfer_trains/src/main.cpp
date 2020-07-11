@@ -81,21 +81,22 @@ int main(const int argc, char** const argv)
             const auto& path = *iter;
             for (const auto& node: path.nodes())
             {
-                std::cout << to_time_string(node.path_cost()) << "\t" << node.key();
-
                 const auto* const p_section = std::any_cast<section>(&node.value());
-                if (p_section)
+                if (!p_section)
                 {
-                    std::cout << "\t" << p_section->p_train()->number() << "\t" << p_section->p_train()->name() << "\t"
-                              << to_time_string(static_cast<int>(
-                                     *p_section->p_train()->stops()[p_section->from()].departure_time()))
-                              << "->"
-                              << to_time_string(
-                                     static_cast<int>(*p_section->p_train()->stops()[p_section->to()].arrival_time()));
+                    continue;
                 }
-
-                std::cout << std::endl;
+                std::cout << boost::format("    %5s %-16s %5s->%5s %s") % p_section->p_train()->number() %
+                                 p_section->p_train()->name() %
+                                 to_time_string(static_cast<int>(
+                                     *p_section->p_train()->stops()[p_section->from()].departure_time())) %
+                                 to_time_string(
+                                     static_cast<int>(*p_section->p_train()->stops()[p_section->to()].arrival_time())) %
+                                 node.key()
+                          << std::endl;
             }
+            std::cout << to_time_string(path.cost()) << std::endl;
+            ;
             std::cout << "--------" << std::endl;
         }
 

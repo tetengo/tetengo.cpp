@@ -298,12 +298,12 @@ private:
         std::vector<stop> stops{};
         stops.reserve(station_count);
         std::transform(std::next(std::begin(line), 2), std::end(line), std::back_inserter(stops), [](auto&& e) {
-            return to_ad_time(std::move(e));
+            return to_stop(std::move(e));
         });
         return train{ std::move(line[0]), std::move(line[1]), std::move(stops) };
     }
 
-    static stop to_ad_time(std::string&& element)
+    static stop to_stop(std::string&& element)
     {
         std::vector<std::string> string_times{};
         boost::algorithm::split(string_times, std::move(element), boost::is_any_of("/"));
@@ -527,7 +527,7 @@ private:
                     const auto departure_time = p_section->p_train()->stops()[0].departure_time();
                     assert(departure_time);
                     connections.emplace_back(
-                        std::make_pair(tetengo::lattice::entry::bos_eos(), entry), static_cast<int>(*departure_time));
+                        std::make_pair(tetengo::lattice::entry::bos_eos(), entry), 0);
                 }
                 if (p_section->to() == p_section->p_train()->stops().size() - 1)
                 {
