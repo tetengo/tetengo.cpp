@@ -131,12 +131,20 @@ namespace
                     continue;
                 }
 
-                trip_.sections.push_back({ p_section->p_train()->number(),
-                                           p_section->p_train()->name(),
-                                           *p_section->p_train()->stops()[p_section->from()].departure_time(),
-                                           p_section->from(),
-                                           *p_section->p_train()->stops()[p_section->to()].arrival_time(),
-                                           p_section->to() });
+                if (trip_.sections.empty() || trip_.sections.back().train_number != p_section->p_train()->number())
+                {
+                    trip_.sections.push_back({ p_section->p_train()->number(),
+                                               p_section->p_train()->name(),
+                                               *p_section->p_train()->stops()[p_section->from()].departure_time(),
+                                               p_section->from(),
+                                               *p_section->p_train()->stops()[p_section->to()].arrival_time(),
+                                               p_section->to() });
+                }
+                else
+                {
+                    trip_.sections.back().arrival_time = *p_section->p_train()->stops()[p_section->to()].arrival_time();
+                    trip_.sections.back().arrival_station = p_section->to();
+                }
             }
             trip_.cost = path.cost();
 
