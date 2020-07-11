@@ -211,6 +211,22 @@ public:
         return m_timetable.stations;
     }
 
+    std::size_t station_index(const std::string& name_or_telegram_code) const
+    {
+        for (auto i = static_cast<std::size_t>(0); i < m_timetable.stations.size(); ++i)
+        {
+            const auto& station = m_timetable.stations[i];
+            if (boost::algorithm::to_lower_copy(station.name()) ==
+                    boost::algorithm::to_lower_copy(name_or_telegram_code) ||
+                boost::algorithm::to_upper_copy(station.telegram_code()) ==
+                    boost::algorithm::to_upper_copy(name_or_telegram_code))
+            {
+                return i;
+            }
+        }
+        return m_timetable.stations.size();
+    }
+
     std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary() const
     {
         auto entries = build_entries(m_timetable);
@@ -521,18 +537,8 @@ private:
         {
             for (const auto& entry: key_and_entries.second)
             {
-                const auto* const p_section = std::any_cast<section>(&entry.value());
-                if (p_section->from() == 0)
-                {
-                    const auto departure_time = p_section->p_train()->stops()[0].departure_time();
-                    assert(departure_time);
-                    connections.emplace_back(
-                        std::make_pair(tetengo::lattice::entry::bos_eos(), entry), 0);
-                }
-                if (p_section->to() == p_section->p_train()->stops().size() - 1)
-                {
-                    connections.emplace_back(std::make_pair(entry, tetengo::lattice::entry::bos_eos()), 0);
-                }
+                connections.emplace_back(std::make_pair(tetengo::lattice::entry::bos_eos(), entry), 0);
+                connections.emplace_back(std::make_pair(entry, tetengo::lattice::entry::bos_eos()), 0);
             }
         }
 
@@ -569,6 +575,11 @@ timetable::~timetable() = default;
 const std::vector<station>& timetable::stations() const
 {
     return m_p_impl->stations();
+}
+
+std::size_t timetable::station_index(const std::string& name_or_telegram_code) const
+{
+    return m_p_impl->station_index(name_or_telegram_code);
 }
 
 std::unique_ptr<tetengo::lattice::vocabulary> timetable::create_vocabulary() const

@@ -264,6 +264,15 @@ public:
     const std::vector<station>& stations() const;
 
     /*!
+        \brief Returns the station index.
+
+        \param name_or_telegram_code A name or telegram code.
+
+        \return The index. Or stations().size() when no station is found.
+    */
+    std::size_t station_index(const std::string& name_or_telegram_code) const;
+
+    /*!
         \brief Creates a vocabulary.
 
         \return A vocabulary.
