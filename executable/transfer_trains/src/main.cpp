@@ -82,13 +82,29 @@ namespace
         }
     }
 
-    std::string to_time_string(const int time_value)
+    struct trip_section
     {
-        assert(0 <= time_value && time_value < 1440);
-        return (boost::format{ "%02d:%02d" } % (time_value / 60) % (time_value % 60)).str();
-    }
+        std::string_view train_number;
 
-    void enumerate_paths(
+        std::string_view train_name;
+
+        std::size_t departure_time;
+
+        std::size_t departure_station;
+
+        std::size_t arrival_time;
+
+        std::size_t arrival_station;
+    };
+
+    struct trip
+    {
+        std::vector<trip_section> sections;
+
+        int cost;
+    };
+
+    std::vector<trip> enumerate_trips(
         const tetengo::lattice::lattice&                                            lattice_,
         const std::pair<tetengo::lattice::node, std::unique_ptr<std::vector<int>>>& eos_and_precedings)
     {
@@ -96,13 +112,17 @@ namespace
                                                 eos_and_precedings.first,
                                                 std::make_unique<tetengo::lattice::constraint>() };
         const tetengo::lattice::n_best_iterator last{};
-        for (auto i = static_cast<std::size_t>(0); i < 20 && iter != last; ++i, ++iter)
+        std::vector<trip>                       trips{};
+        trips.reserve(20);
+        for (; trips.size() < 20 && iter != last; ++iter)
         {
             const auto& path = *iter;
             if (path.cost() >= 1440)
             {
                 continue;
             }
+
+            trip trip_{};
             for (const auto& node: path.nodes())
             {
                 const auto* const p_section = std::any_cast<section>(&node.value());
@@ -110,17 +130,42 @@ namespace
                 {
                     continue;
                 }
-                std::cout << boost::format("    %5s %-16s %5s->%5s %s") % p_section->p_train()->number() %
-                                 p_section->p_train()->name() %
-                                 to_time_string(static_cast<int>(
-                                     *p_section->p_train()->stops()[p_section->from()].departure_time())) %
-                                 to_time_string(
-                                     static_cast<int>(*p_section->p_train()->stops()[p_section->to()].arrival_time())) %
-                                 node.key()
+
+                trip_.sections.push_back({ p_section->p_train()->number(),
+                                           p_section->p_train()->name(),
+                                           *p_section->p_train()->stops()[p_section->from()].departure_time(),
+                                           p_section->from(),
+                                           *p_section->p_train()->stops()[p_section->to()].arrival_time(),
+                                           p_section->to() });
+            }
+            trip_.cost = path.cost();
+
+            trips.push_back(std::move(trip_));
+        }
+
+        return trips;
+    }
+
+    std::string to_time_string(const int time_value)
+    {
+        assert(0 <= time_value && time_value < 1440);
+        return (boost::format{ "%02d:%02d" } % (time_value / 60) % (time_value % 60)).str();
+    }
+
+    void print_trips(const std::vector<trip>& trips, const timetable& timetable_)
+    {
+        for (const auto& trip_: trips)
+        {
+            for (const auto& section: trip_.sections)
+            {
+                std::cout << boost::format("    %5s %-16s %5s->%5s %s->%s") % section.train_number %
+                                 section.train_name % to_time_string(static_cast<int>(section.departure_time)) %
+                                 to_time_string(static_cast<int>(section.arrival_time)) %
+                                 timetable_.stations()[section.departure_station].name() %
+                                 timetable_.stations()[section.arrival_station].name()
                           << std::endl;
             }
-            std::cout << to_time_string(path.cost()) << std::endl;
-            ;
+            std::cout << to_time_string(trip_.cost) << std::endl;
             std::cout << "--------" << std::endl;
         }
     }
@@ -153,7 +198,9 @@ int main(const int argc, char** const argv)
             build_lattice(*departure_and_arrival, timetable_, lattice_);
             const auto eos_and_precedings = lattice_.settle();
 
-            enumerate_paths(lattice_, eos_and_precedings);
+            const auto trips = enumerate_trips(lattice_, eos_and_precedings);
+
+            print_trips(trips, timetable_);
         }
         return 0;
     }
