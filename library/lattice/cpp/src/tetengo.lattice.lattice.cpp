@@ -119,16 +119,19 @@ namespace tetengo::lattice
                                                  m_input.length() - step.input_tail() };
                 const auto             found = m_p_vocabulary->find_entries(node_key);
 
+                std::vector<std::size_t> preceding_edge_cost_indexes{};
+                preceding_edge_cost_indexes.reserve(found.size());
                 for (const auto& e: found)
                 {
                     auto p_preceding_edge_costs = preceding_edge_costs(step, e);
+                    preceding_edge_cost_indexes.push_back(p_node_preceding_edge_costs.size());
                     p_node_preceding_edge_costs.push_back(std::move(p_preceding_edge_costs));
                 }
 
                 for (auto j = static_cast<std::size_t>(0); j < found.size(); ++j)
                 {
                     const auto& entry = found[j];
-                    const auto& preceding_edge_costs = *p_node_preceding_edge_costs.back();
+                    const auto& preceding_edge_costs = *p_node_preceding_edge_costs[preceding_edge_cost_indexes[j]];
 
                     const auto best_preceding_node_index_ = best_preceding_node_index(step, preceding_edge_costs);
                     const auto best_preceding_path_cost = step.nodes()[best_preceding_node_index_].path_cost() +

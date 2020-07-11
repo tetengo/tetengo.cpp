@@ -14,6 +14,7 @@ sources = \
     tetengo_lattice_lattice.cpp \
     tetengo_lattice_nBestIterator.cpp \
     tetengo_lattice_node.cpp \
+    tetengo_lattice_path.cpp \
     tetengo_lattice_vocabulary.cpp
 
 lib_LTLIBRARIES = libtetengo.lattice.la

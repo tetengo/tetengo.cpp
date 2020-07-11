@@ -10,6 +10,7 @@ pkg_headers = \
     lattice/n_best_iterator.hpp \
     lattice/node.hpp \
     lattice/node_constraint_element.hpp \
+    lattice/path.hpp \
     lattice/unordered_map_vocabulary.hpp \
     lattice/vocabulary.hpp \
     lattice/wildcard_constraint_element.hpp

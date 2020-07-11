@@ -13,6 +13,7 @@ sources = \
     test_tetengo.lattice.n_best_iterator.cpp \
     test_tetengo.lattice.node.cpp \
     test_tetengo.lattice.node_constraint_element.cpp \
+    test_tetengo.lattice.path.cpp \
     test_tetengo.lattice.string_view.cpp \
     test_tetengo.lattice.unordered_map_vocabulary.cpp \
     test_tetengo.lattice.vocabulary.cpp \
