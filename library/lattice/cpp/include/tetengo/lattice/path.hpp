@@ -7,7 +7,6 @@
 #if !defined(TETENGO_LATTICE_PATH_HPP)
 #define TETENGO_LATTICE_PATH_HPP
 
-#include <cstddef>
 #include <vector>
 
 #include <tetengo/lattice/node.hpp>
@@ -34,7 +33,7 @@ namespace tetengo::lattice
             \param nodes Nodes.
             \param cost  A cost.
         */
-        path(std::vector<node> nodes, std::size_t cost);
+        path(std::vector<node> nodes, int cost);
 
 
         // functions
@@ -59,7 +58,7 @@ namespace tetengo::lattice
 
             \return The cost.
         */
-        std::size_t cost() const;
+        int cost() const;
 
 
     private:
@@ -67,7 +66,7 @@ namespace tetengo::lattice
 
         std::vector<node> m_nodes;
 
-        std::size_t m_cost;
+        int m_cost;
     };
 
 

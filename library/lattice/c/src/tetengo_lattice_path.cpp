@@ -55,7 +55,7 @@ tetengo_lattice_path_t* tetengo_lattice_path_createEmpty()
 }
 
 tetengo_lattice_path_t*
-tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const size_t node_count, const size_t cost)
+tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const size_t node_count, const int cost)
 {
     try
     {
@@ -171,7 +171,7 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* const p_path, t
     }
 }
 
-size_t tetengo_lattice_path_cost(const tetengo_lattice_path_t* const p_path)
+int tetengo_lattice_path_cost(const tetengo_lattice_path_t* const p_path)
 {
     try
     {

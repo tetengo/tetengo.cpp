@@ -21,6 +21,7 @@
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/path.hpp>
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
@@ -121,21 +122,22 @@ size_t tetengo_lattice_nBestIterator_get(
 
         if (p_path)
         {
-            for (auto i = static_cast<std::size_t>(0); i < cpp_path.size(); ++i)
+            for (auto i = static_cast<std::size_t>(0); i < cpp_path.nodes().size(); ++i)
             {
-                p_path[i].key.p_head = cpp_path[i].key().data();
-                p_path[i].key.length = cpp_path[i].key().length();
-                p_path[i].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_path[i].value());
-                p_path[i].preceding_step = cpp_path[i].preceding_step();
-                p_path[i].p_preceding_edge_costs = cpp_path[i].preceding_edge_costs().data();
-                p_path[i].preceding_edge_cost_count = cpp_path[i].preceding_edge_costs().size();
-                p_path[i].best_preceding_node = cpp_path[i].best_preceding_node();
-                p_path[i].node_cost = cpp_path[i].node_cost();
-                p_path[i].path_cost = cpp_path[i].path_cost();
+                p_path[i].key.p_head = cpp_path.nodes()[i].key().data();
+                p_path[i].key.length = cpp_path.nodes()[i].key().length();
+                p_path[i].value_handle =
+                    reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_path.nodes()[i].value());
+                p_path[i].preceding_step = cpp_path.nodes()[i].preceding_step();
+                p_path[i].p_preceding_edge_costs = cpp_path.nodes()[i].preceding_edge_costs().data();
+                p_path[i].preceding_edge_cost_count = cpp_path.nodes()[i].preceding_edge_costs().size();
+                p_path[i].best_preceding_node = cpp_path.nodes()[i].best_preceding_node();
+                p_path[i].node_cost = cpp_path.nodes()[i].node_cost();
+                p_path[i].path_cost = cpp_path.nodes()[i].path_cost();
             }
         }
 
-        return cpp_path.size();
+        return cpp_path.nodes().size();
     }
     catch (...)
     {

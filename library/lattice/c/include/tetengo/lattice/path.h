@@ -36,8 +36,7 @@ tetengo_lattice_path_t* tetengo_lattice_path_createEmpty();
 
     \return A pointer to a path. Or NULL when p_nodes is NULL.
 */
-tetengo_lattice_path_t*
-tetengo_lattice_path_create(const tetengo_lattice_node_t* p_nodes, size_t node_count, size_t cost);
+tetengo_lattice_path_t* tetengo_lattice_path_create(const tetengo_lattice_node_t* p_nodes, size_t node_count, int cost);
 
 /*!
     \brief Destroys a path.
@@ -75,7 +74,7 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* p_path, tetengo
 
     \return The cost. Or 0 when p_path is NULL.
 */
-size_t tetengo_lattice_path_cost(const tetengo_lattice_path_t* p_path);
+int tetengo_lattice_path_cost(const tetengo_lattice_path_t* p_path);
 
 
 #if defined(__cplusplus)
