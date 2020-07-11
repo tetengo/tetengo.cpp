@@ -7,8 +7,6 @@
 #if !defined(TETENGO_LATTICE_NBESTITERATOR_H)
 #define TETENGO_LATTICE_NBESTITERATOR_H
 
-#include <stddef.h>
-
 
 #if defined(__cplusplus)
 extern "C" {
@@ -19,6 +17,7 @@ typedef struct tetengo_lattice_nBestIterator_tag tetengo_lattice_nBestIterator_t
 typedef struct tetengo_lattice_lattice_tag       tetengo_lattice_lattice_t;
 typedef struct tetengo_lattice_node_tag          tetengo_lattice_node_t;
 typedef struct tetengo_lattice_constraint_tag    tetengo_lattice_constraint_t;
+typedef struct tetengo_lattice_path_tag          tetengo_lattice_path_t;
 #endif
 
 
@@ -50,12 +49,10 @@ void tetengo_lattice_nBestIterator_destroy(const tetengo_lattice_nBestIterator_t
     \brief Dereferences the iterator.
 
     \param p_iterator A pointer to an iterator.
-    \param p_path     The storage for an output path. Can be NULL.
 
-    \return The node count of the path.
+    \return A pointer to the path. Or NULL when p_iterator is NULL.
 */
-size_t
-tetengo_lattice_nBestIterator_get(const tetengo_lattice_nBestIterator_t* p_iterator, tetengo_lattice_node_t* p_path);
+tetengo_lattice_path_t* tetengo_lattice_nBestIterator_createPath(const tetengo_lattice_nBestIterator_t* p_iterator);
 
 /*!
     \brief Returns non-zero when the iterator will return more elements.
