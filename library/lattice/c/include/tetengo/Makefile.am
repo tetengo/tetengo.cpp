@@ -9,6 +9,7 @@ pkg_headers = \
     lattice/lattice.h \
     lattice/nBestIterator.h \
     lattice/node.h \
+    lattice/path.h \
     lattice/stringView.h \
     lattice/vocabulary.h
 

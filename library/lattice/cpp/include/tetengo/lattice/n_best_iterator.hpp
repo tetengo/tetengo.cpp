@@ -18,6 +18,7 @@
 #include <boost/operators.hpp>
 
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/path.hpp>
 
 
 namespace tetengo::lattice
@@ -93,8 +94,7 @@ namespace tetengo::lattice
     /*!
         \brief An N-best lattice path iterator.
     */
-    class n_best_iterator :
-    public boost::iterator_facade<n_best_iterator, std::vector<node>, std::forward_iterator_tag, std::vector<node>>
+    class n_best_iterator : public boost::iterator_facade<n_best_iterator, path, std::forward_iterator_tag, path>
     {
     public:
         // friends
@@ -135,14 +135,14 @@ namespace tetengo::lattice
 
         std::shared_ptr<constraint> m_p_constraint;
 
-        std::vector<node> m_path;
+        path m_path;
 
         std::size_t m_index;
 
 
         // functions
 
-        const std::vector<node>& dereference() const;
+        const path& dereference() const;
 
         bool equal(const n_best_iterator& another) const;
 

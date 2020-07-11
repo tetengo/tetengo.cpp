@@ -22,6 +22,7 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/path.hpp>
 
 
 namespace tetengo::lattice
@@ -67,12 +68,12 @@ namespace tetengo::lattice
             return seed;
         }
 
-        std::vector<node> open_cap(
+        path open_cap(
             const lattice&                                                 lattice_,
             std::priority_queue<cap, std::vector<cap>, std::greater<cap>>& caps,
             const constraint&                                              constraint_)
         {
-            std::vector<node> path{};
+            path path_{};
             while (!caps.empty())
             {
                 const auto opened = caps.top();
@@ -121,12 +122,13 @@ namespace tetengo::lattice
                 if (!nonconforming_path)
                 {
                     assert(constraint_.matches(next_path));
-                    path.assign(std::rbegin(next_path), std::rend(next_path));
+                    path_ = path{ std::vector<node>{ std::rbegin(next_path), std::rend(next_path) },
+                                  opened.whole_path_cost() };
                     break;
                 }
             }
 
-            return path;
+            return path_;
         }
 
 
@@ -164,7 +166,7 @@ namespace tetengo::lattice
         m_path = open_cap(*m_p_lattice, m_caps, *m_p_constraint);
     }
 
-    const std::vector<node>& n_best_iterator::dereference() const
+    const path& n_best_iterator::dereference() const
     {
         if (m_path.empty())
         {
@@ -193,7 +195,7 @@ namespace tetengo::lattice
 
         if (m_caps.empty())
         {
-            m_path.clear();
+            m_path = path{};
         }
         else
         {

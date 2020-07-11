@@ -5,7 +5,6 @@
 */
 
 #include <any>
-#include <cstddef>
 #include <memory>
 #include <stdexcept>
 #include <string_view>
@@ -21,6 +20,8 @@
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/path.h>
+#include <tetengo/lattice/path.hpp>
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
@@ -106,9 +107,8 @@ void tetengo_lattice_nBestIterator_destroy(const tetengo_lattice_nBestIterator_t
     {}
 }
 
-size_t tetengo_lattice_nBestIterator_get(
-    const tetengo_lattice_nBestIterator_t* const p_iterator,
-    tetengo_lattice_node_t* const                p_path)
+tetengo_lattice_path_t*
+tetengo_lattice_nBestIterator_createPath(const tetengo_lattice_nBestIterator_t* const p_iterator)
 {
     try
     {
@@ -119,27 +119,25 @@ size_t tetengo_lattice_nBestIterator_get(
 
         const auto& cpp_path = *p_iterator->p_cpp_iterator_pair->first;
 
-        if (p_path)
+        std::vector<tetengo_lattice_node_t> nodes{};
+        nodes.reserve(cpp_path.nodes().size());
+        for (const auto& cpp_node: cpp_path.nodes())
         {
-            for (auto i = static_cast<std::size_t>(0); i < cpp_path.size(); ++i)
-            {
-                p_path[i].key.p_head = cpp_path[i].key().data();
-                p_path[i].key.length = cpp_path[i].key().length();
-                p_path[i].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_path[i].value());
-                p_path[i].preceding_step = cpp_path[i].preceding_step();
-                p_path[i].p_preceding_edge_costs = cpp_path[i].preceding_edge_costs().data();
-                p_path[i].preceding_edge_cost_count = cpp_path[i].preceding_edge_costs().size();
-                p_path[i].best_preceding_node = cpp_path[i].best_preceding_node();
-                p_path[i].node_cost = cpp_path[i].node_cost();
-                p_path[i].path_cost = cpp_path[i].path_cost();
-            }
+            nodes.push_back({ { cpp_node.key().data(), cpp_node.key().length() },
+                              reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value()),
+                              cpp_node.preceding_step(),
+                              cpp_node.preceding_edge_costs().data(),
+                              cpp_node.preceding_edge_costs().size(),
+                              cpp_node.best_preceding_node(),
+                              cpp_node.node_cost(),
+                              cpp_node.path_cost() });
         }
 
-        return cpp_path.size();
+        return tetengo_lattice_path_create(nodes.data(), nodes.size(), cpp_path.cost());
     }
     catch (...)
     {
-        return 0;
+        return nullptr;
     }
 }
 
