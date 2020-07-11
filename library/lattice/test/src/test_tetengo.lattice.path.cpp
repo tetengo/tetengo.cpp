@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(nodes)
         BOOST_SCOPE_EXIT_END;
 
         const auto node_count = tetengo_lattice_path_pNodes(p_path, nullptr);
-        BOOST_TEST(node_count == 0);
+        BOOST_TEST(node_count == 0U);
     }
     {
         const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
