@@ -24,6 +24,7 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/path.hpp>
 #include <tetengo/lattice/vocabulary.hpp> // IWYU pragma: keep
 
 #include "timetable.hpp"
@@ -78,7 +79,7 @@ int main(const int argc, char** const argv)
         for (auto i = static_cast<std::size_t>(0); i < 10 && iter != last; ++i, ++iter)
         {
             const auto& path = *iter;
-            for (const auto& node: path)
+            for (const auto& node: path.nodes())
             {
                 std::cout << to_time_string(node.path_cost()) << "\t" << node.key();
 
