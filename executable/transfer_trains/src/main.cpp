@@ -14,12 +14,13 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <boost/iterator/iterator_facade.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/lattice.hpp>
@@ -52,29 +53,68 @@ namespace
         return timetable_.station_index(input);
     }
 
-    std::optional<std::pair<std::size_t, std::size_t>> get_departure_and_arrival(const timetable& timetable_)
+    std::size_t get_time(const std::string& prompt)
     {
-        const auto departure_station_index = get_station_index("Departure", timetable_);
+        std::cout << prompt << ": ";
+        std::string input{};
+        std::cin >> input;
+
+        std::vector<std::string> elements{};
+        boost::split(elements, input, boost::is_any_of(":"));
+        if (elements.size() != 2)
+        {
+            return 1440;
+        }
+        auto hour = static_cast<std::size_t>(0);
+        auto minute = static_cast<std::size_t>(0);
+        try
+        {
+            hour = boost::lexical_cast<std::size_t>(elements[0]);
+            minute = boost::lexical_cast<std::size_t>(elements[1]);
+        }
+        catch (const boost::bad_lexical_cast&)
+        {
+            return 1440;
+        }
+        if (hour >= 24 || minute >= 60)
+        {
+            return 1440;
+        }
+        return hour * 60 + minute;
+    }
+
+    std::optional<std::pair<std::pair<std::size_t, std::size_t>, std::size_t>>
+    get_departure_and_arrival(const timetable& timetable_)
+    {
+        const auto departure_station_index = get_station_index("Departure Station", timetable_);
         if (departure_station_index >= timetable_.stations().size())
         {
             std::cout << "No departure station is found." << std::endl;
             return std::nullopt;
         }
-        const auto arrival_station_index = get_station_index("Arrival", timetable_);
+
+        const auto departure_time = get_time("Departure Time");
+        if (departure_station_index >= 1440)
+        {
+            std::cout << "Wrong time format." << std::endl;
+            return std::nullopt;
+        }
+
+        const auto arrival_station_index = get_station_index("Arrival Station", timetable_);
         if (arrival_station_index >= timetable_.stations().size())
         {
             std::cout << "No arrival station is found." << std::endl;
             return std::nullopt;
         }
-        return std::make_pair(departure_station_index, arrival_station_index);
+        return std::make_pair(std::make_pair(departure_station_index, departure_time), arrival_station_index);
     }
 
     void build_lattice(
-        const std::pair<std::size_t, std::size_t>& departure_and_arrival,
-        const timetable&                           timetable_,
-        tetengo::lattice::lattice&                 lattice_)
+        const std::pair<std::pair<std::size_t, std::size_t>, std::size_t>& departure_and_arrival,
+        const timetable&                                                   timetable_,
+        tetengo::lattice::lattice&                                         lattice_)
     {
-        for (auto i = departure_and_arrival.first; i < departure_and_arrival.second; ++i)
+        for (auto i = departure_and_arrival.first.first; i < departure_and_arrival.second; ++i)
         {
             const auto key =
                 timetable_.stations()[i].telegram_code() + "-" + timetable_.stations()[i + 1].telegram_code() + "/";
@@ -202,7 +242,7 @@ int main(const int argc, char** const argv)
                 continue;
             }
 
-            tetengo::lattice::lattice lattice_{ timetable_.create_vocabulary() };
+            tetengo::lattice::lattice lattice_{ timetable_.create_vocabulary(departure_and_arrival->first.second) };
             build_lattice(*departure_and_arrival, timetable_, lattice_);
             const auto eos_and_precedings = lattice_.settle();
 

@@ -275,9 +275,11 @@ public:
     /*!
         \brief Creates a vocabulary.
 
+        \param departure_time A departure time.
+
         \return A vocabulary.
     */
-    std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary() const;
+    std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary(std::size_t departure_time) const;
 
 
 private:

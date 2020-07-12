@@ -227,10 +227,10 @@ public:
         return m_timetable.stations.size();
     }
 
-    std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary() const
+    std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary(const std::size_t departure_time) const
     {
         auto entries = build_entries(m_timetable);
-        auto connections = build_connections(entries);
+        auto connections = build_connections(entries, departure_time);
         return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
             std::move(entries), std::move(connections), entry_hash, entry_equal_to);
     }
@@ -499,8 +499,9 @@ private:
         return true;
     }
 
-    static std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>>
-    build_connections(const std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>& entries)
+    static std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> build_connections(
+        const std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>& entries,
+        const std::size_t                                                                departure_time)
     {
         std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{};
 
@@ -537,7 +538,12 @@ private:
         {
             for (const auto& entry: key_and_entries.second)
             {
-                connections.emplace_back(std::make_pair(tetengo::lattice::entry::bos_eos(), entry), 0);
+                const auto* const p_section = std::any_cast<section>(&entry.value());
+                const auto        section_departure_time =
+                    p_section ? *p_section->p_train()->stops()[p_section->from()].departure_time() : 0;
+                connections.emplace_back(
+                    std::make_pair(tetengo::lattice::entry::bos_eos(), entry),
+                    static_cast<int>(diff_time(section_departure_time, departure_time)));
                 connections.emplace_back(std::make_pair(entry, tetengo::lattice::entry::bos_eos()), 0);
             }
         }
@@ -582,7 +588,7 @@ std::size_t timetable::station_index(const std::string& name_or_telegram_code) c
     return m_p_impl->station_index(name_or_telegram_code);
 }
 
-std::unique_ptr<tetengo::lattice::vocabulary> timetable::create_vocabulary() const
+std::unique_ptr<tetengo::lattice::vocabulary> timetable::create_vocabulary(const std::size_t departure_time) const
 {
-    return m_p_impl->create_vocabulary();
+    return m_p_impl->create_vocabulary(departure_time);
 }
