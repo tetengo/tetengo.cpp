@@ -264,7 +264,12 @@ private:
         std::vector<train> trains{};
         while (input_stream)
         {
-            trains.push_back(parse_train(read_line(input_stream), stations.size()));
+            auto line = read_line(input_stream);
+            if (line.empty() || (line.size() == 1 && line[0].empty()))
+            {
+                continue;
+            }
+            trains.push_back(parse_train(std::move(line), stations.size()));
         }
 
         return timetable_value{ std::move(stations), std::move(trains) };
@@ -277,10 +282,6 @@ private:
 
         std::vector<std::string> elements;
         boost::algorithm::split(elements, std::move(line), boost::is_any_of(","));
-        if (elements.empty())
-        {
-            throw std::runtime_error{ "Input file format error: Empty line found." };
-        }
         std::for_each(
             std::begin(elements), std::end(elements), [](auto& element) { return boost::algorithm::trim(element); });
         return elements;
