@@ -41,13 +41,13 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
 {
     try
     {
-        if (!p_entries || entry_count == 0)
+        if (!p_entries && entry_count > 0)
         {
-            throw std::invalid_argument{ "p_entries is NULL or entry_count is 0." };
+            throw std::invalid_argument{ "p_entries is NULL." };
         }
-        if (!p_connections || connection_count == 0)
+        if (!p_connections && connection_count > 0)
         {
-            throw std::invalid_argument{ "p_connections is NULL or connection_count is 0." };
+            throw std::invalid_argument{ "p_connections is NULL." };
         }
 
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> cpp_entries{};
