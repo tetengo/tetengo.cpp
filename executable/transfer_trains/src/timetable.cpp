@@ -528,6 +528,10 @@ private:
                         assert(from_arrival_time);
                         assert(to_departure_time);
                         auto cost = static_cast<int>(diff_time(*to_departure_time, *from_arrival_time));
+                        if (cost > 60)
+                        {
+                            continue;
+                        }
                         if (p_from_value->p_train()->number() != p_to_value->p_train()->number())
                         {
                             cost += 1;
@@ -546,9 +550,11 @@ private:
                 const auto* const p_section = std::any_cast<section>(&entry.value());
                 const auto        section_departure_time =
                     p_section ? *p_section->p_train()->stops()[p_section->from()].departure_time() : 0;
-                connections.emplace_back(
-                    std::make_pair(tetengo::lattice::entry::bos_eos(), entry),
-                    static_cast<int>(diff_time(section_departure_time, departure_time)));
+                const auto bos_cost = static_cast<int>(diff_time(section_departure_time, departure_time));
+                if (bos_cost <= 240)
+                {
+                    connections.emplace_back(std::make_pair(tetengo::lattice::entry::bos_eos(), entry), bos_cost);
+                }
                 connections.emplace_back(std::make_pair(entry, tetengo::lattice::entry::bos_eos()), 0);
             }
         }
