@@ -132,6 +132,15 @@ namespace
             entries, connections, cpp_entry_hash, cpp_entry_equal_to);
     }
 
+    std::unique_ptr<tetengo::lattice::vocabulary> create_cpp_empty_vocabulary()
+    {
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
+            std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>>{},
+            std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>>{},
+            cpp_entry_hash,
+            cpp_entry_equal_to);
+    }
+
     size_t c_entry_hash(const tetengo_lattice_entryView_t* const p_entry)
     {
         if (p_entry)
@@ -212,6 +221,19 @@ namespace
             entries_connection_cost_pairs.push_back({ &from, &to, connection.second });
         }
 
+        return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+            key_entries_pairs.data(),
+            key_entries_pairs.size(),
+            entries_connection_cost_pairs.data(),
+            entries_connection_cost_pairs.size(),
+            c_entry_hash,
+            c_entry_equal_to);
+    }
+
+    tetengo_lattice_vocabulary_t* create_c_empty_vocabulary()
+    {
+        const std::vector<tetengo_lattice_keyEntriesPair_t>      key_entries_pairs{};
+        std::vector<tetengo_lattice_entriesConnectionCostPair_t> entries_connection_cost_pairs{};
         return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
             key_entries_pairs.data(),
             key_entries_pairs.size(),
@@ -457,6 +479,11 @@ BOOST_AUTO_TEST_CASE(push_back)
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
     }
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_empty_vocabulary() };
+
+        BOOST_CHECK_THROW(lattice_.push_back("[HakataTosu]"), std::invalid_argument);
+    }
 
     {
         auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
@@ -470,6 +497,17 @@ BOOST_AUTO_TEST_CASE(push_back)
         BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]"));
         BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]"));
         BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]"));
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_empty_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+
+        BOOST_TEST(!tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]"));
     }
     {
         auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
@@ -554,6 +592,11 @@ BOOST_AUTO_TEST_CASE(settle)
                 std::begin(expected_preceding_edge_costs),
                 std::end(expected_preceding_edge_costs));
         }
+    }
+    {
+        tetengo::lattice::lattice lattice_{ create_cpp_empty_vocabulary() };
+
+        const auto eos_node_and_preceding_edge_costs = lattice_.settle();
     }
 
     {
@@ -655,6 +698,24 @@ BOOST_AUTO_TEST_CASE(settle)
                 std::begin(expected_preceding_edge_costs),
                 std::end(expected_preceding_edge_costs));
         }
+    }
+    {
+        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_empty_vocabulary());
+        BOOST_SCOPE_EXIT(p_lattice)
+        {
+            tetengo_lattice_lattice_destroy(p_lattice);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_lattice);
+
+        const auto preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
+        BOOST_TEST(preceding_edge_cost_count == 1U);
+
+        tetengo_lattice_node_t eos_node{};
+        std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
+        const auto             preceding_edge_cost_count_again =
+            tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+        BOOST_TEST_REQUIRE(preceding_edge_cost_count_again == 1U);
     }
     {
         tetengo_lattice_node_t eos_node{};
