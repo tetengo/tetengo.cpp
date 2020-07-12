@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <functional>
 #include <iterator>
+#include <limits>
 #include <memory>
 #include <queue>
 #include <stdexcept>
@@ -99,6 +100,10 @@ namespace tetengo::lattice
                             continue;
                         }
                         const auto preceding_edge_cost = p_node->preceding_edge_costs()[i];
+                        if (preceding_edge_cost == std::numeric_limits<int>::max())
+                        {
+                            continue;
+                        }
                         const auto cap_tail_path_cost =
                             tail_path_cost + preceding_edge_cost + preceding_node.node_cost();
                         const auto cap_whole_path_cost =
@@ -107,6 +112,11 @@ namespace tetengo::lattice
                     }
 
                     const auto best_preceding_edge_cost = p_node->preceding_edge_costs()[p_node->best_preceding_node()];
+                    if (best_preceding_edge_cost == std::numeric_limits<int>::max())
+                    {
+                        nonconforming_path = true;
+                        break;
+                    }
                     const auto& best_preceding_node = preceding_nodes[p_node->best_preceding_node()];
                     next_path.push_back(best_preceding_node);
                     if (!constraint_.matches_tail(next_path))
