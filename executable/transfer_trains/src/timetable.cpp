@@ -526,9 +526,13 @@ private:
                             p_to_value->p_train()->stops()[p_to_value->from()].departure_time();
                         assert(from_arrival_time);
                         assert(to_departure_time);
-                        connections.emplace_back(
-                            std::make_pair(from_entry, to_entry),
-                            static_cast<int>(diff_time(*to_departure_time, *from_arrival_time)));
+                        auto cost = static_cast<int>(diff_time(*to_departure_time, *from_arrival_time));
+                        if (p_from_value->p_train()->number() != p_to_value->p_train()->number())
+                        {
+                            cost += 1;
+                        }
+
+                        connections.emplace_back(std::make_pair(from_entry, to_entry), cost);
                     }
                 }
             }

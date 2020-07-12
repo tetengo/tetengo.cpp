@@ -94,7 +94,7 @@ namespace
         }
 
         const auto departure_time = get_time("Departure Time");
-        if (departure_station_index >= 1440)
+        if (departure_time >= 1440)
         {
             std::cout << "Wrong time format." << std::endl;
             return std::nullopt;
@@ -146,15 +146,16 @@ namespace
 
     std::vector<trip> enumerate_trips(
         const tetengo::lattice::lattice&                                            lattice_,
-        const std::pair<tetengo::lattice::node, std::unique_ptr<std::vector<int>>>& eos_and_precedings)
+        const std::pair<tetengo::lattice::node, std::unique_ptr<std::vector<int>>>& eos_and_precedings,
+        const std::size_t                                                           trip_capacity)
     {
         tetengo::lattice::n_best_iterator       iter{ lattice_,
                                                 eos_and_precedings.first,
                                                 std::make_unique<tetengo::lattice::constraint>() };
         const tetengo::lattice::n_best_iterator last{};
         std::vector<trip>                       trips{};
-        trips.reserve(20);
-        for (; trips.size() < 20 && iter != last; ++iter)
+        trips.reserve(trip_capacity);
+        for (; trips.size() < trip_capacity && iter != last; ++iter)
         {
             const auto& path = *iter;
             if (path.cost() >= 1440)
@@ -204,6 +205,8 @@ namespace
     {
         for (const auto& trip_: trips)
         {
+            std::cout << "--------" << std::endl;
+
             for (const auto& section: trip_.sections)
             {
                 std::cout << boost::format("    %5s %-16s %5s->%5s %s->%s") % section.train_number %
@@ -213,9 +216,10 @@ namespace
                                  timetable_.stations()[section.arrival_station].name()
                           << std::endl;
             }
-            std::cout << to_time_string(trip_.cost) << std::endl;
-            std::cout << "--------" << std::endl;
+            std::cout << "Cost: " << trip_.cost << std::endl;
         }
+
+        std::cout << "--------------------------------" << std::endl;
     }
 
 
@@ -246,7 +250,7 @@ int main(const int argc, char** const argv)
             build_lattice(*departure_and_arrival, timetable_, lattice_);
             const auto eos_and_precedings = lattice_.settle();
 
-            const auto trips = enumerate_trips(lattice_, eos_and_precedings);
+            const auto trips = enumerate_trips(lattice_, eos_and_precedings, 5);
 
             print_trips(trips, timetable_);
         }
