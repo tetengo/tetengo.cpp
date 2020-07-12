@@ -14,6 +14,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -155,6 +156,7 @@ namespace
         const tetengo::lattice::n_best_iterator last{};
         std::vector<trip>                       trips{};
         trips.reserve(trip_capacity);
+        std::unordered_set<std::string_view> duplication_checker{};
         for (; trips.size() < trip_capacity && iter != last; ++iter)
         {
             const auto& path = *iter;
@@ -189,6 +191,14 @@ namespace
             }
             trip_.cost = path.cost();
 
+            if (duplication_checker.find(trip_.sections.front().train_number) != duplication_checker.end() ||
+                duplication_checker.find(trip_.sections.back().train_number) != duplication_checker.end())
+            {
+                continue;
+            }
+
+            duplication_checker.insert(trip_.sections.front().train_number);
+            duplication_checker.insert(trip_.sections.back().train_number);
             trips.push_back(std::move(trip_));
         }
 
