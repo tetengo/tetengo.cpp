@@ -110,7 +110,7 @@ namespace tetengo::lattice
             m_input += input;
 
             std::vector<node> nodes{};
-            auto              p_node_preceding_edge_costs = std::vector<std::unique_ptr<std::vector<int>>>();
+            auto              p_node_preceding_edge_costs = std::vector<std::unique_ptr<std::vector<int>>>{};
             for (auto i = static_cast<std::size_t>(0); i < m_graph.size(); ++i)
             {
                 const auto& step = m_graph[i];
@@ -144,6 +144,10 @@ namespace tetengo::lattice
                         best_preceding_node_index_,
                         best_preceding_path_cost + entry.cost());
                 }
+            }
+            if (nodes.empty())
+            {
+                throw std::invalid_argument{ "No node is found for the input." };
             }
 
             m_graph.emplace_back(m_input.length(), std::move(nodes), std::move(p_node_preceding_edge_costs));
