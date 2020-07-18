@@ -36,7 +36,7 @@ departure times.
 Here is the format of arrival and departure time cells:
 
 - `HH:MM/HH:MM`
-  - Arrival time/Departure time
+  - Arrival time/Departure time.
 - `HH:MM`
   - Departure time. Arrival time is guessed automatically.
 - `HH:MM/`
