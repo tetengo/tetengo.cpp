@@ -69,6 +69,18 @@ namespace tetengo::lattice
             return seed;
         }
 
+        int add_cost(const int one, const int another)
+        {
+            if (one == std::numeric_limits<int>::max() || another == std::numeric_limits<int>::max())
+            {
+                return std::numeric_limits<int>::max();
+            }
+            else
+            {
+                return one + another;
+            }
+        }
+
         path open_cap(
             const lattice&                                                 lattice_,
             std::priority_queue<cap, std::vector<cap>, std::greater<cap>>& caps,
@@ -105,18 +117,13 @@ namespace tetengo::lattice
                             continue;
                         }
                         const auto cap_tail_path_cost =
-                            tail_path_cost + preceding_edge_cost + preceding_node.node_cost();
+                            add_cost(add_cost(tail_path_cost, preceding_edge_cost), preceding_node.node_cost());
                         const auto cap_whole_path_cost =
-                            tail_path_cost + preceding_edge_cost + preceding_node.path_cost();
+                            add_cost(add_cost(tail_path_cost, preceding_edge_cost), preceding_node.path_cost());
                         caps.emplace(std::move(cap_tail_path), cap_tail_path_cost, cap_whole_path_cost);
                     }
 
                     const auto best_preceding_edge_cost = p_node->preceding_edge_costs()[p_node->best_preceding_node()];
-                    if (best_preceding_edge_cost == std::numeric_limits<int>::max())
-                    {
-                        nonconforming_path = true;
-                        break;
-                    }
                     const auto& best_preceding_node = preceding_nodes[p_node->best_preceding_node()];
                     next_path.push_back(best_preceding_node);
                     if (!constraint_.matches_tail(next_path))
@@ -124,7 +131,8 @@ namespace tetengo::lattice
                         nonconforming_path = true;
                         break;
                     }
-                    tail_path_cost += best_preceding_edge_cost + best_preceding_node.node_cost();
+                    tail_path_cost =
+                        add_cost(tail_path_cost, add_cost(best_preceding_edge_cost, best_preceding_node.node_cost()));
 
                     p_node = &best_preceding_node;
                 }
