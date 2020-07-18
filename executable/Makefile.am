@@ -4,7 +4,8 @@
 SUBDIRS = \
     make_dict \
     search_dict \
-    search_dict_c
+    search_dict_c \
+    transfer_trains
 
 
 iwyu:
