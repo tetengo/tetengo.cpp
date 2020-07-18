@@ -162,7 +162,7 @@ namespace
             const auto& path = *iter;
             if (path.cost() >= 1440)
             {
-                continue;
+                break;
             }
 
             trip trip_{};
