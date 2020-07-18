@@ -112,14 +112,18 @@ namespace tetengo::lattice
                             continue;
                         }
                         const auto preceding_edge_cost = p_node->preceding_edge_costs()[i];
-                        if (preceding_edge_cost == std::numeric_limits<int>::max())
+                        const auto cap_tail_path_cost =
+                            add_cost(add_cost(tail_path_cost, preceding_edge_cost), preceding_node.node_cost());
+                        if (cap_tail_path_cost == std::numeric_limits<int>::max())
                         {
                             continue;
                         }
-                        const auto cap_tail_path_cost =
-                            add_cost(add_cost(tail_path_cost, preceding_edge_cost), preceding_node.node_cost());
                         const auto cap_whole_path_cost =
                             add_cost(add_cost(tail_path_cost, preceding_edge_cost), preceding_node.path_cost());
+                        if (cap_whole_path_cost == std::numeric_limits<int>::max())
+                        {
+                            continue;
+                        }
                         caps.emplace(std::move(cap_tail_path), cap_tail_path_cost, cap_whole_path_cost);
                     }
 
