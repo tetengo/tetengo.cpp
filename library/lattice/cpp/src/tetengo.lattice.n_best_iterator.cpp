@@ -124,11 +124,6 @@ namespace tetengo::lattice
                     }
 
                     const auto best_preceding_edge_cost = p_node->preceding_edge_costs()[p_node->best_preceding_node()];
-                    if (best_preceding_edge_cost == std::numeric_limits<int>::max())
-                    {
-                        nonconforming_path = true;
-                        break;
-                    }
                     const auto& best_preceding_node = preceding_nodes[p_node->best_preceding_node()];
                     next_path.push_back(best_preceding_node);
                     if (!constraint_.matches_tail(next_path))
@@ -136,7 +131,8 @@ namespace tetengo::lattice
                         nonconforming_path = true;
                         break;
                     }
-                    tail_path_cost += best_preceding_edge_cost + best_preceding_node.node_cost();
+                    tail_path_cost =
+                        add_cost(tail_path_cost, add_cost(best_preceding_edge_cost, best_preceding_node.node_cost()));
 
                     p_node = &best_preceding_node;
                 }
