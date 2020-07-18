@@ -162,7 +162,7 @@ namespace
             const auto& path = *iter;
             if (path.cost() >= 1440)
             {
-                continue;
+                break;
             }
 
             trip trip_{};
@@ -213,20 +213,21 @@ namespace
 
     void print_trips(const std::vector<trip>& trips, const timetable& timetable_)
     {
-        for (const auto& trip_: trips)
+        for (auto i = static_cast<std::size_t>(0); i < trips.size(); ++i)
         {
-            std::cout << "--------" << std::endl;
+            const auto& trip_ = trips[i];
+
+            std::cout << boost::format("[%d] Cost: %d") % (i + 1) % trip_.cost << std::endl;
 
             for (const auto& section: trip_.sections)
             {
-                std::cout << boost::format("    %5s %-16s %5s->%5s %s->%s") % section.train_number %
+                std::cout << boost::format("    %5s %-40s %5s->%5s %s->%s") % section.train_number %
                                  section.train_name % to_time_string(static_cast<int>(section.departure_time)) %
                                  to_time_string(static_cast<int>(section.arrival_time)) %
                                  timetable_.stations()[section.departure_station].name() %
                                  timetable_.stations()[section.arrival_station].name()
                           << std::endl;
             }
-            std::cout << "Cost: " << trip_.cost << std::endl;
         }
 
         std::cout << "--------------------------------" << std::endl;
