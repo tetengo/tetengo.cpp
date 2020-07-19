@@ -392,6 +392,26 @@ BOOST_AUTO_TEST_CASE(construction)
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
             nullptr,
+            0,
+            sizeof(int),
+            adding_observer,
+            &added_serialized_keys,
+            done_observer,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+
+        BOOST_TEST(p_trie);
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
+    }
+    {
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            nullptr,
             1,
             sizeof(int),
             adding_observer,
