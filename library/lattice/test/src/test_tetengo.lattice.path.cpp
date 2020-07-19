@@ -132,6 +132,16 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const auto* const p_path = tetengo_lattice_path_create(nullptr, 0, 42);
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_path);
+    }
+    {
+        const auto* const p_path = tetengo_lattice_path_create(nullptr, 3, 42);
 
         BOOST_TEST(!p_path);
     }
@@ -171,6 +181,16 @@ BOOST_AUTO_TEST_CASE(empty)
         BOOST_SCOPE_EXIT_END;
 
         BOOST_TEST(!tetengo_lattice_path_empty(p_path));
+    }
+    {
+        const auto* const p_path = tetengo_lattice_path_create(nullptr, 0, 42);
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_lattice_path_empty(p_path));
     }
     {
         BOOST_TEST(!tetengo_lattice_path_empty(nullptr));
@@ -219,6 +239,17 @@ BOOST_AUTO_TEST_CASE(nodes)
         BOOST_TEST(equal_nodes(nodes, c_nodes()));
     }
     {
+        const auto* const p_path = tetengo_lattice_path_create(nullptr, 0, 42);
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto node_count = tetengo_lattice_path_pNodes(p_path, nullptr);
+        BOOST_TEST(node_count == 0U);
+    }
+    {
         const auto node_count = tetengo_lattice_path_pNodes(nullptr, nullptr);
         BOOST_TEST(node_count == 0U);
     }
@@ -251,6 +282,16 @@ BOOST_AUTO_TEST_CASE(cost)
     }
     {
         const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
+        BOOST_SCOPE_EXIT(p_path)
+        {
+            tetengo_lattice_path_destroy(p_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(tetengo_lattice_path_cost(p_path) == 42);
+    }
+    {
+        const auto* const p_path = tetengo_lattice_path_create(nullptr, 0, 42);
         BOOST_SCOPE_EXIT(p_path)
         {
             tetengo_lattice_path_destroy(p_path);

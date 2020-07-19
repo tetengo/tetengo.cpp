@@ -34,7 +34,7 @@ tetengo_lattice_path_t* tetengo_lattice_path_createEmpty();
     \param node_count A node count.
     \param cost       A cost.
 
-    \return A pointer to a path. Or NULL when p_nodes is NULL.
+    \return A pointer to a path. Or NULL when p_nodes is NULL and noce_count is greater than 0.
 */
 tetengo_lattice_path_t* tetengo_lattice_path_create(const tetengo_lattice_node_t* p_nodes, size_t node_count, int cost);
 
