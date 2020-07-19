@@ -97,15 +97,15 @@ namespace
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
 
-    void adding_observer(const char* const key, void* const context)
+    void adding_observer(const char* const key, void* const p_context)
     {
-        std::vector<std::string>* const p_added_serialized_keys = static_cast<std::vector<std::string>*>(context);
+        std::vector<std::string>* const p_added_serialized_keys = static_cast<std::vector<std::string>*>(p_context);
         p_added_serialized_keys->push_back(key);
     }
 
-    void done_observer(void* const context)
+    void done_observer(void* const p_context)
     {
-        bool* const p_done = static_cast<bool*>(context);
+        bool* const p_done = static_cast<bool*>(p_context);
         *p_done = true;
     }
 
