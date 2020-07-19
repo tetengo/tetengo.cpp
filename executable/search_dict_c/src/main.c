@@ -103,8 +103,16 @@ typedef struct
 
 static size_t to_size_t(const char* const p_bytes, size_t* const p_byte_offset)
 {
-    assert(p_bytes);
-    assert(p_byte_offset);
+    if (!p_bytes)
+    {
+        assert(0);
+        return 0;
+    }
+    if (!p_byte_offset)
+    {
+        assert(0);
+        return 0;
+    }
 
     size_t value = 0;
     for (size_t i = 0; i < 4; ++i)
@@ -141,7 +149,11 @@ static void to_array_of_lex_span(
 {
     assert(p_bytes);
     assert(p_byte_offset);
-    assert(p_lex_spans);
+    if (!p_lex_spans)
+    {
+        assert(0);
+        return;
+    }
 
     for (size_t i = 0; i < lex_span_count; ++i)
     {
