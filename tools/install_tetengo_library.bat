@@ -20,6 +20,9 @@ if not ""%INSTALL_PATH%""=="""" (
     
     echo Installing tetengo...
     
+    xcopy /s /i /f /y "%~dp0"..\library\lattice\c\include\tetengo\lattice   %INSTALL_PATH%\include\tetengo\lattice\
+    xcopy /s /i /f /y "%~dp0"..\library\lattice\cpp\include\tetengo\lattice %INSTALL_PATH%\include.cpp\tetengo\lattice\
+    
     xcopy /s /i /f /y "%~dp0"..\library\trie\c\include\tetengo\trie   %INSTALL_PATH%\include\tetengo\trie\
     xcopy /s /i /f /y "%~dp0"..\library\trie\cpp\include\tetengo\trie %INSTALL_PATH%\include.cpp\tetengo\trie\
     
@@ -44,6 +47,11 @@ if not ""%INSTALL_PATH%""=="""" (
     xcopy /i /f /y "%~dp0"..\bin\Release.x64\search_dict_c.exe   %INSTALL_PATH%\tool\search_dict_c.x64\
     xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.trie.dll    %INSTALL_PATH%\tool\search_dict_c.x64\
     xcopy /i /f /y "%~dp0"..\executable\search_dict_c\README.md  %INSTALL_PATH%\tool\search_dict_c.x64\
+    
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\transfer_trains.exe %INSTALL_PATH%\tool\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\README.md  %INSTALL_PATH%\tool\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\transfer_trains.exe   %INSTALL_PATH%\tool\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\README.md  %INSTALL_PATH%\tool\transfer_trains.x64\
     
     xcopy /f /y "%~dp0"..\README.md %INSTALL_PATH%\
     xcopy /f /y "%~dp0"..\COPYING   %INSTALL_PATH%\
