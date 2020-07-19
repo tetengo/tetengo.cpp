@@ -48,10 +48,14 @@ if not ""%INSTALL_PATH%""=="""" (
     xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.trie.dll    %INSTALL_PATH%\tool\search_dict_c.x64\
     xcopy /i /f /y "%~dp0"..\executable\search_dict_c\README.md  %INSTALL_PATH%\tool\search_dict_c.x64\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\transfer_trains.exe %INSTALL_PATH%\tool\transfer_trains.Win32\
-    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\README.md  %INSTALL_PATH%\tool\transfer_trains.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\transfer_trains.exe   %INSTALL_PATH%\tool\transfer_trains.x64\
-    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\README.md  %INSTALL_PATH%\tool\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\transfer_trains.exe              %INSTALL_PATH%\tool\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\data\kagoshima_down.txt %INSTALL_PATH%\tool\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\data\kotoku_up.txt      %INSTALL_PATH%\tool\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\README.md               %INSTALL_PATH%\tool\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\transfer_trains.exe                %INSTALL_PATH%\tool\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\data\kagoshima_down.txt %INSTALL_PATH%\tool\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\data\kotoku_up.txt      %INSTALL_PATH%\tool\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\executable\transfer_trains\README.md               %INSTALL_PATH%\tool\transfer_trains.x64\
     
     xcopy /f /y "%~dp0"..\README.md %INSTALL_PATH%\
     xcopy /f /y "%~dp0"..\COPYING   %INSTALL_PATH%\
