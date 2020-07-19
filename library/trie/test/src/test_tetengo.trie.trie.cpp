@@ -97,15 +97,15 @@ namespace
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
 
-    void adding_observer(const char* const key, void* const context)
+    void adding_observer(const char* const key, void* const p_context)
     {
-        std::vector<std::string>* const p_added_serialized_keys = static_cast<std::vector<std::string>*>(context);
+        std::vector<std::string>* const p_added_serialized_keys = static_cast<std::vector<std::string>*>(p_context);
         p_added_serialized_keys->push_back(key);
     }
 
-    void done_observer(void* const context)
+    void done_observer(void* const p_context)
     {
-        bool* const p_done = static_cast<bool*>(context);
+        bool* const p_done = static_cast<bool*>(p_context);
         *p_done = true;
     }
 
@@ -180,7 +180,7 @@ namespace
             }
         }
 
-        copy_detector(copy_detector&& another) : value{ std::move(another.value) } {}
+        copy_detector(copy_detector&& another) noexcept : value{ std::move(another.value) } {}
     };
 
     template <typename T>
@@ -386,6 +386,26 @@ BOOST_AUTO_TEST_CASE(construction)
 
         const auto* const p_trie2 = tetengo_trie_trie_createWithStorage(p_storage);
         BOOST_TEST(!p_trie2);
+    }
+    {
+        std::vector<std::string> added_serialized_keys{};
+        auto                     done = false;
+        const auto* const        p_trie = tetengo_trie_trie_create(
+            nullptr,
+            0,
+            sizeof(int),
+            adding_observer,
+            &added_serialized_keys,
+            done_observer,
+            &done,
+            tetengo_trie_trie_defaultDoubleArrayDensityFactor());
+
+        BOOST_TEST(p_trie);
+        BOOST_SCOPE_EXIT((p_trie))
+        {
+            tetengo_trie_trie_destroy(p_trie);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
     {
         std::vector<std::string> added_serialized_keys{};

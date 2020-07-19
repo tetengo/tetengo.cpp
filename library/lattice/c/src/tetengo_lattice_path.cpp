@@ -59,7 +59,7 @@ tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const s
 {
     try
     {
-        if (!p_nodes)
+        if (!p_nodes && node_count > 0)
         {
             throw std::invalid_argument{ "p_nodes is NULL." };
         }

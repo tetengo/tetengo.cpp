@@ -39,7 +39,7 @@ typedef struct tetengo_trie_trie_element_tag
     \param serialized_key A serialized key.
     \param p_context      A pointer to the context.
 */
-typedef void (*tetengo_trie_trie_addingObserver_t)(const char* serialized_key, void* context);
+typedef void (*tetengo_trie_trie_addingObserver_t)(const char* serialized_key, void* p_context);
 
 /*!
     \brief A null adding observer.
@@ -51,7 +51,7 @@ void tetengo_trie_trie_nullAddingObserver(const char*, void*);
 
     \param p_context A pointer to the context.
 */
-typedef void (*tetengo_trie_trie_doneObserver_t)(void* context);
+typedef void (*tetengo_trie_trie_doneObserver_t)(void* p_context);
 
 /*!
     \brief A null done observer.
