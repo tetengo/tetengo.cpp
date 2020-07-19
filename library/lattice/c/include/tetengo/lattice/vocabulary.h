@@ -34,7 +34,9 @@ typedef struct tetengo_lattice_entriesConnectionCostPair_tag tetengo_lattice_ent
     \param p_entry_hash     A pointer to a hash function for an entry.
     \param p_entry_equal_to A pointer to a eqaul_to function for an entry.
 
-    \return A pointer to an unordered_map vocabulary. Or NULL when p_entries and/or p_connections are NULL.
+    \return A pointer to an unordered_map vocabulary.
+            Or NULL when p_entries and/or p_connections are NULL, and entry_count and/or connection_count are greater
+            than 0.
 */
 tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
     const tetengo_lattice_keyEntriesPair_t*            p_entries,

@@ -184,9 +184,53 @@ BOOST_AUTO_TEST_CASE(construction)
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+            nullptr, 0, connections.data(), 1, c_entry_hash, c_entry_equal_to);
+        BOOST_SCOPE_EXIT(p_vocabulary)
+        {
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_vocabulary);
+    }
+    {
+        const tetengo_lattice_entry_t connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
+                                                             &surface_mizuho,
+                                                             42 };
+        const tetengo_lattice_entry_t connection_key_sakura{ { key_sakura.c_str(), key_sakura.length() },
+                                                             &surface_sakura1,
+                                                             24 };
+        std::vector<tetengo_lattice_entriesConnectionCostPair_t> connections{
+            { &connection_key_mizuho, &connection_key_sakura, 4242 }
+        };
+
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
             nullptr, 42, connections.data(), 1, c_entry_hash, c_entry_equal_to);
 
         BOOST_TEST(!p_vocabulary);
+    }
+    {
+        const std::vector<tetengo_lattice_entry_t> entries_mizuho{
+            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
+        };
+        const std::vector<tetengo_lattice_entry_t> entries_sakura{
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
+        };
+        const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+        };
+
+        const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+            entries.data(), 2, nullptr, 0, c_entry_hash, c_entry_equal_to);
+        BOOST_SCOPE_EXIT(p_vocabulary)
+        {
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        BOOST_TEST(p_vocabulary);
     }
     {
         const std::vector<tetengo_lattice_entry_t> entries_mizuho{
