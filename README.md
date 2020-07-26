@@ -10,15 +10,13 @@ It provides class-based libraries for C++ and function-based libraries for C.
 Features
 --------
 
-### tetengo::trie
+### tetengo::json
 
-A trie library.
+A JSON parser library.
 
-The trie is an associative data structure.
-Given a key, it returns the corresponding value in a constant time.
-
-The trie is also able to perform a prefix search.
-It has a method to enumerates the values with the same prefix.
+It is a pull-style parser based on
+[RFC 8259](https://tools.ietf.org/html/rfc8259), plus an extensional support
+for UNIX shell style comments.
 
 ### tetengo::lattice
 
@@ -29,6 +27,16 @@ path in the lattice consisted of the observed event nodes.
 
 This library also provides the A* search algorithm for the lattice created by
 the Viterbi search.
+
+### tetengo::trie
+
+A trie library.
+
+The trie is an associative data structure.
+Given a key, it returns the corresponding value in a constant time.
+
+The trie is also able to perform a prefix search.
+It has a method to enumerates the values with the same prefix.
 
 How to Build and Install
 ------------------------

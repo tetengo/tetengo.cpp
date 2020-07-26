@@ -20,32 +20,32 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{2EE3983D-A0E0-429F-BC2F-5D46C93E1C81}</ProjectGuid>
-    <RootNamespace>tetengolattice</RootNamespace>
+    <ProjectGuid>{0aaf49d5-d4fe-4cda-bbc3-a1cdc25f8816}</ProjectGuid>
+    <RootNamespace>testtetengojson</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -62,7 +62,7 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_Win32.props" />
     <Import Project="..\..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\..\vsprops\dynamic_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
@@ -70,7 +70,7 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_x64.props" />
     <Import Project="..\..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\..\vsprops\dynamic_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
@@ -78,7 +78,7 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_Win32.props" />
     <Import Project="..\..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\..\vsprops\dynamic_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
@@ -86,68 +86,28 @@
     <Import Project="..\..\..\vsprops\compilation.props" />
     <Import Project="..\..\..\vsprops\compilation_x64.props" />
     <Import Project="..\..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\..\vsprops\dynamic_lib.props" />
+    <Import Project="..\..\..\vsprops\test.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
-    <ClInclude Include="include\tetengo\lattice\connection.h" />
-    <ClInclude Include="include\tetengo\lattice\constraint.h" />
-    <ClInclude Include="include\tetengo\lattice\constraintElement.h" />
-    <ClInclude Include="include\tetengo\lattice\entry.h" />
-    <ClInclude Include="include\tetengo\lattice\lattice.h" />
-    <ClInclude Include="include\tetengo\lattice\nBestIterator.h" />
-    <ClInclude Include="include\tetengo\lattice\node.h" />
-    <ClInclude Include="include\tetengo\lattice\path.h" />
-    <ClInclude Include="include\tetengo\lattice\stringView.h" />
-    <ClInclude Include="include\tetengo\lattice\vocabulary.h" />
-    <ClInclude Include="src\tetengo_lattice_constraint.hpp" />
-    <ClInclude Include="src\tetengo_lattice_constraintElement.hpp" />
-    <ClInclude Include="src\tetengo_lattice_lattice.hpp" />
-    <ClInclude Include="src\tetengo_lattice_vocabulary.hpp" />
-  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\tetengo_lattice_constraint.cpp" />
-    <ClCompile Include="src\tetengo_lattice_constraintElement.cpp" />
-    <ClCompile Include="src\tetengo_lattice_entry.cpp" />
-    <ClCompile Include="src\tetengo_lattice_lattice.cpp" />
-    <ClCompile Include="src\tetengo_lattice_nBestIterator.cpp" />
-    <ClCompile Include="src\tetengo_lattice_node.cpp" />
-    <ClCompile Include="src\tetengo_lattice_path.cpp" />
-    <ClCompile Include="src\tetengo_lattice_vocabulary.cpp" />
+    <ClCompile Include="src\master.cpp" />
+    <ClCompile Include="src\test_tetengo.json.json_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\dll_exports.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\cpp\tetengo.lattice.cpp.vcxproj">
-      <Project>{65c6d977-ac51-4e28-8b15-178fbdf69168}</Project>
-    </ProjectReference>
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

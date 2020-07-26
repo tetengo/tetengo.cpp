@@ -814,6 +814,8 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = docsrc \
+                         library/json/c/include \
+                         library/json/cpp/include \
                          library/lattice/c/include \
                          library/lattice/cpp/include \
                          library/trie/c/include \
