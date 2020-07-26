@@ -105,6 +105,8 @@
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.json.json_parser.cpp" />
+    <ClCompile Include="src\test_tetengo.json.reader.cpp" />
+    <ClCompile Include="src\test_tetengo.json.stream_reader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />

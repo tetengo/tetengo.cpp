@@ -4,7 +4,9 @@
 headers =
 
 sources = \
-    tetengo.json.json_parser.cpp
+    tetengo.json.json_parser.cpp \
+    tetengo.json.reader.cpp \
+    tetengo.json.stream_reader.cpp
 
 lib_LIBRARIES = libtetengo.json.cpp.a
 
