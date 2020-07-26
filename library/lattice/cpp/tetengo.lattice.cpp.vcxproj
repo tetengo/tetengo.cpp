@@ -18,42 +18,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="include\tetengo\lattice\0namespace.dox" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
-    <ClInclude Include="include\tetengo\lattice\connection.hpp" />
-    <ClInclude Include="include\tetengo\lattice\constraint.hpp" />
-    <ClInclude Include="include\tetengo\lattice\constraint_element.hpp" />
-    <ClInclude Include="include\tetengo\lattice\entry.hpp" />
-    <ClInclude Include="include\tetengo\lattice\lattice.hpp" />
-    <ClInclude Include="include\tetengo\lattice\node.hpp" />
-    <ClInclude Include="include\tetengo\lattice\node_constraint_element.hpp" />
-    <ClInclude Include="include\tetengo\lattice\n_best_iterator.hpp" />
-    <ClInclude Include="include\tetengo\lattice\path.hpp" />
-    <ClInclude Include="include\tetengo\lattice\unordered_map_vocabulary.hpp" />
-    <ClInclude Include="include\tetengo\lattice\vocabulary.hpp" />
-    <ClInclude Include="include\tetengo\lattice\wildcard_constraint_element.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="src\tetengo.lattice.connection.cpp" />
-    <ClCompile Include="src\tetengo.lattice.constraint.cpp" />
-    <ClCompile Include="src\tetengo.lattice.constraint_element.cpp" />
-    <ClCompile Include="src\tetengo.lattice.entry.cpp" />
-    <ClCompile Include="src\tetengo.lattice.lattice.cpp" />
-    <ClCompile Include="src\tetengo.lattice.node.cpp" />
-    <ClCompile Include="src\tetengo.lattice.node_constraint_element.cpp" />
-    <ClCompile Include="src\tetengo.lattice.n_best_iterator.cpp" />
-    <ClCompile Include="src\tetengo.lattice.path.cpp" />
-    <ClCompile Include="src\tetengo.lattice.unordered_map_vocabulary.cpp" />
-    <ClCompile Include="src\tetengo.lattice.vocabulary.cpp" />
-    <ClCompile Include="src\tetengo.lattice.wildcard_constraint_element.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{65C6D977-AC51-4E28-8B15-178FBDF69168}</ProjectGuid>
@@ -130,6 +94,42 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <ItemGroup>
+    <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\lattice\connection.hpp" />
+    <ClInclude Include="include\tetengo\lattice\constraint.hpp" />
+    <ClInclude Include="include\tetengo\lattice\constraint_element.hpp" />
+    <ClInclude Include="include\tetengo\lattice\entry.hpp" />
+    <ClInclude Include="include\tetengo\lattice\lattice.hpp" />
+    <ClInclude Include="include\tetengo\lattice\node.hpp" />
+    <ClInclude Include="include\tetengo\lattice\node_constraint_element.hpp" />
+    <ClInclude Include="include\tetengo\lattice\n_best_iterator.hpp" />
+    <ClInclude Include="include\tetengo\lattice\path.hpp" />
+    <ClInclude Include="include\tetengo\lattice\unordered_map_vocabulary.hpp" />
+    <ClInclude Include="include\tetengo\lattice\vocabulary.hpp" />
+    <ClInclude Include="include\tetengo\lattice\wildcard_constraint_element.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.lattice.connection.cpp" />
+    <ClCompile Include="src\tetengo.lattice.constraint.cpp" />
+    <ClCompile Include="src\tetengo.lattice.constraint_element.cpp" />
+    <ClCompile Include="src\tetengo.lattice.entry.cpp" />
+    <ClCompile Include="src\tetengo.lattice.lattice.cpp" />
+    <ClCompile Include="src\tetengo.lattice.node.cpp" />
+    <ClCompile Include="src\tetengo.lattice.node_constraint_element.cpp" />
+    <ClCompile Include="src\tetengo.lattice.n_best_iterator.cpp" />
+    <ClCompile Include="src\tetengo.lattice.path.cpp" />
+    <ClCompile Include="src\tetengo.lattice.unordered_map_vocabulary.cpp" />
+    <ClCompile Include="src\tetengo.lattice.vocabulary.cpp" />
+    <ClCompile Include="src\tetengo.lattice.wildcard_constraint_element.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\tetengo\lattice\0namespace.dox" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
