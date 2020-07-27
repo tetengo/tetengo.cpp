@@ -4,8 +4,14 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <istream>
+#include <iterator>
 #include <memory>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
+#include <boost/circular_buffer.hpp>
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/json/stream_reader.hpp>
@@ -18,30 +24,72 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        impl() {}
+        impl(std::unique_ptr<std::istream>&& p_stream, const std::size_t buffer_capacity) :
+        m_p_stream{ std::move(p_stream) },
+            m_buffer{ buffer_capacity }
+        {}
 
 
         // functions
 
         bool has_next_impl() const
         {
-            return false;
+            ensure_buffer_filled();
+            return !m_buffer.empty();
         }
 
         char get_impl() const
         {
-            return 0;
+            ensure_buffer_filled();
+            if (m_buffer.empty())
+            {
+                throw std::logic_error{ "No more element." };
+            }
+            return m_buffer.front();
         }
 
-        void next_impl() {}
+        void next_impl()
+        {
+            ensure_buffer_filled();
+            if (m_buffer.empty())
+            {
+                throw std::logic_error{ "No more element." };
+            }
+            m_buffer.pop_front();
+        }
 
 
     private:
         // variables
+
+        const std::unique_ptr<std::istream> m_p_stream;
+
+        mutable boost::circular_buffer<char> m_buffer;
+
+
+        // functions
+
+        void ensure_buffer_filled() const
+        {
+            if (!m_buffer.empty())
+            {
+                return;
+            }
+
+            std::vector<char> chars(m_buffer.capacity(), '\0');
+            m_p_stream->read(chars.data(), chars.size());
+            const auto read_size = m_p_stream->gcount();
+
+            m_buffer.insert(std::end(m_buffer), std::begin(chars), std::next(std::begin(chars), read_size));
+        }
     };
 
 
-    stream_reader::stream_reader() : m_p_impl{ std::make_unique<impl>() } {}
+    stream_reader::stream_reader(
+        std::unique_ptr<std::istream>&& p_stream,
+        const std::size_t               buffer_capacity /*= 4096*/) :
+    m_p_impl{ std::make_unique<impl>(std::move(p_stream), buffer_capacity) }
+    {}
 
     stream_reader::~stream_reader() = default;
 

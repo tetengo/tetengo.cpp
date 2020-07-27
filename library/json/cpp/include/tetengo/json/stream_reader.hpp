@@ -7,6 +7,7 @@
 #if !defined(TETENGO_JSON_STREAMREADER_HPP)
 #define TETENGO_JSON_STREAMREADER_HPP
 
+#include <istream>
 #include <memory>
 
 #include <tetengo/json/reader.hpp>
@@ -24,8 +25,11 @@ namespace tetengo::json
 
         /*!
             \brief Creates a stream reader.
+
+            \param p_stream        A unique pointer to an input stream.
+            \param buffer_capacity A buffer capacity.
         */
-        stream_reader();
+        explicit stream_reader(std::unique_ptr<std::istream>&& p_stream, std::size_t buffer_capacity = 4096);
 
         /*!
             \brief Destroys the stream reader.
