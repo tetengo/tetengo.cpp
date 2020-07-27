@@ -7,6 +7,8 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/json/stream_reader.hpp>
+
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(json)
@@ -17,7 +19,9 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const tetengo::json::stream_reader reader{};
+    }
 }
 
 
