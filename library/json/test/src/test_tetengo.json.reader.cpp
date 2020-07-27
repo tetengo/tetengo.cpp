@@ -38,7 +38,7 @@ namespace
 
         virtual bool has_next_impl() const override
         {
-            return m_index + 1 < m_values.length();
+            return m_index < m_values.length();
         }
 
         virtual char get_impl() const override
@@ -100,17 +100,20 @@ BOOST_AUTO_TEST_CASE(next)
 
     concrete_reader reader{};
 
-    reader.next();
-    BOOST_TEST(reader.get() == 'B');
     BOOST_TEST_REQUIRE(reader.has_next());
-
+    BOOST_TEST(reader.get() == 'A');
     reader.next();
+
+    BOOST_TEST_REQUIRE(reader.has_next());
+    BOOST_TEST(reader.get() == 'B');
+    reader.next();
+
+    BOOST_TEST_REQUIRE(reader.has_next());
     BOOST_TEST(reader.get() == 'C');
-    BOOST_TEST(!reader.has_next());
-
     reader.next();
-    BOOST_CHECK_THROW(reader.get(), std::logic_error);
 
+    BOOST_TEST(!reader.has_next());
+    BOOST_CHECK_THROW(reader.get(), std::logic_error);
     BOOST_CHECK_THROW(reader.next(), std::logic_error);
 }
 
