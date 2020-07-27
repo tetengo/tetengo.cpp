@@ -2,7 +2,8 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    json/jsonParser.h
+    json/jsonParser.h \
+    json/reader.h
 
 extra_headers =
 

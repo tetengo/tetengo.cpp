@@ -2,7 +2,9 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    json/json_parser.hpp
+    json/json_parser.hpp \
+    json/reader.hpp \
+    json/stream_reader.hpp
 
 extra_headers = \
     json/0namespace.dox

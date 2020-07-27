@@ -20,12 +20,18 @@
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo_json_reader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\json\jsonParser.h">
+      <Filter>header\tetengo::json</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\json\reader.h">
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
   </ItemGroup>

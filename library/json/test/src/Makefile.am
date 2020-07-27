@@ -5,7 +5,9 @@ headers =
 
 sources = \
     master.cpp \
-    test_tetengo.json.json_parser.cpp
+    test_tetengo.json.json_parser.cpp \
+    test_tetengo.json.reader.cpp \
+    test_tetengo.json.stream_reader.cpp
 
 check_PROGRAMS = test_tetengo.json
 
