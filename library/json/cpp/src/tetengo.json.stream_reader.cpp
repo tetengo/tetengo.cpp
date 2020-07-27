@@ -80,7 +80,10 @@ namespace tetengo::json
             m_p_stream->read(chars.data(), chars.size());
             const auto read_size = m_p_stream->gcount();
 
-            m_buffer.insert(std::end(m_buffer), std::begin(chars), std::next(std::begin(chars), read_size));
+            m_buffer.insert(
+                std::end(m_buffer),
+                std::begin(chars),
+                std::next(std::begin(chars), static_cast<std::ptrdiff_t>(read_size)));
         }
     };
 
