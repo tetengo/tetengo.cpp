@@ -85,6 +85,10 @@ BOOST_AUTO_TEST_CASE(construction)
         auto                               p_stream = std::make_unique<std::istringstream>(stream_value);
         const tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
     }
+    {
+        auto p_stream = std::make_unique<std::istringstream>(stream_value);
+        BOOST_CHECK_THROW(const tetengo::json::stream_reader reader(std::move(p_stream), 0), std::invalid_argument);
+    }
 
     {
         const temporary_file file{ stream_value };
