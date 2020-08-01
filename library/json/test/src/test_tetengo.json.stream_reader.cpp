@@ -11,8 +11,10 @@
 #include <utility>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/json/reader.h>
 #include <tetengo/json/stream_reader.hpp>
 
 
@@ -36,6 +38,16 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         auto                               p_stream = std::make_unique<std::istringstream>(stream_value);
         const tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
+    }
+
+    {
+        const auto* const p_reader = tetengo_json_reader_createStreamReader(nullptr, 10);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        // BOOST_TEST(p_reader);
     }
 }
 
