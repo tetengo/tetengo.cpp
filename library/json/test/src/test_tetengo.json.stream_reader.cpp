@@ -101,6 +101,20 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST(p_reader);
     }
+    {
+        const auto* const p_reader = tetengo_json_reader_createStreamReader("NONEXISTENT_FILE", 10);
+        BOOST_TEST(!p_reader);
+    }
+    {
+        const auto* const p_reader = tetengo_json_reader_createStreamReader(nullptr, 10);
+        BOOST_TEST(!p_reader);
+    }
+    {
+        const temporary_file file{ stream_value };
+
+        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 0);
+        BOOST_TEST(!p_reader);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(has_next)
