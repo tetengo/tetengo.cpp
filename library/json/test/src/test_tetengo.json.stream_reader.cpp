@@ -4,12 +4,14 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
+#include <filesystem>
+#include <fstream>
 #include <memory>
-#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <utility>
 
+#include <boost/core/noncopyable.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -21,6 +23,50 @@
 namespace
 {
     const std::string stream_value{ "Shikoku Mannaka" };
+
+    class temporary_file : private boost::noncopyable
+    {
+    public:
+        explicit temporary_file(const std::string& content) : m_path{ make_temporary_path() }
+        {
+            write_content_to_file(m_path, content);
+        }
+
+        ~temporary_file()
+        {
+            std::filesystem::remove(m_path);
+        }
+
+        const std::filesystem::path path() const
+        {
+            return m_path;
+        }
+
+    private:
+        static std::filesystem::path make_temporary_path()
+        {
+            auto path = std::filesystem::temp_directory_path();
+            path /= "test_tetengo.json.stream_reader";
+            return path;
+        }
+
+        static void write_content_to_file(const std::filesystem::path& path, const std::string& content)
+        {
+            if (std::filesystem::exists(path))
+            {
+                throw std::runtime_error{ "The temporary file already exists. Remove it if possible." };
+            }
+            std::ofstream stream{ path };
+            if (!stream)
+            {
+                throw std::runtime_error{ "Can't create a temporary file." };
+            }
+
+            stream.write(content.data(), content.length());
+        }
+
+        const std::filesystem::path m_path;
+    };
 
 
 }
@@ -41,13 +87,15 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const auto* const p_reader = tetengo_json_reader_createStreamReader(nullptr, 10);
+        const temporary_file file{ stream_value };
+
+        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
         }
         BOOST_SCOPE_EXIT_END;
-        // BOOST_TEST(p_reader);
+        BOOST_TEST(p_reader);
     }
 }
 
