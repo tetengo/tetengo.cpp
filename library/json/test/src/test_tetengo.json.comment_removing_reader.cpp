@@ -22,7 +22,11 @@
 
 namespace
 {
-    const std::string stream_value{ "Shikoku Mannaka" };
+    const std::string stream_value0{};
+
+    const std::string stream_value1{ "REMREN" };
+
+    const std::string stream_value2{ "RENREMREN" };
 
     class temporary_file : private boost::noncopyable
     {
@@ -68,12 +72,13 @@ namespace
         const std::filesystem::path m_path;
     };
 
-    std::unique_ptr<tetengo::json::reader> create_cpp_base_reader()
+    std::unique_ptr<tetengo::json::reader> create_cpp_base_reader(const std::string& stream_value)
     {
         auto p_stream = std::make_unique<std::stringstream>(stream_value);
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::move(p_stream));
         return p_reader;
     }
+
 
 }
 
@@ -88,13 +93,19 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        auto                                         p_base_reader = create_cpp_base_reader();
-        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader) };
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value0);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
     }
     {
         std::unique_ptr<tetengo::json::reader> p_base_reader{};
         BOOST_CHECK_THROW(
-            const tetengo::json::comment_removing_reader reader(std::move(p_base_reader)), std::invalid_argument);
+            const tetengo::json::comment_removing_reader reader(std::move(p_base_reader), "REM"),
+            std::invalid_argument);
+    }
+    {
+        auto p_base_reader = create_cpp_base_reader(stream_value0);
+        BOOST_CHECK_THROW(
+            const tetengo::json::comment_removing_reader reader(std::move(p_base_reader), ""), std::invalid_argument);
     }
 }
 
@@ -102,7 +113,24 @@ BOOST_AUTO_TEST_CASE(has_next)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value0);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
+
+        BOOST_TEST(!reader.has_next());
+    }
+    {
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value1);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
+
+        BOOST_TEST(!reader.has_next());
+    }
+    {
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value2);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
+
+        BOOST_TEST(reader.has_next());
+    }
 }
 
 BOOST_AUTO_TEST_CASE(get)

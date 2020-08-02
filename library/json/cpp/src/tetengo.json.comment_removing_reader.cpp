@@ -4,8 +4,12 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
+#include <iterator>
 #include <memory>
+#include <queue>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -21,11 +25,18 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        explicit impl(std::unique_ptr<reader>&& p_base_reader) : m_p_base_reader{ std::move(p_base_reader) }
+        impl(std::unique_ptr<reader>&& p_base_reader, std::string single_line_begin) :
+        m_p_base_reader{ std::move(p_base_reader) },
+            m_single_line_begin{ std::move(single_line_begin) },
+            m_queue{}
         {
             if (!m_p_base_reader)
             {
                 throw std::invalid_argument{ "p_base_reader is nullptr." };
+            }
+            if (m_single_line_begin.empty())
+            {
+                throw std::invalid_argument{ "single_line_begin is empty." };
             }
         }
 
@@ -34,7 +45,8 @@ namespace tetengo::json
 
         bool has_next_impl() const
         {
-            return false;
+            ensure_buffer_filled();
+            return !m_queue.empty();
         }
 
         char get_impl() const
@@ -49,11 +61,62 @@ namespace tetengo::json
         // variables
 
         const std::unique_ptr<reader> m_p_base_reader;
+
+        const std::string m_single_line_begin;
+
+        mutable std::queue<char> m_queue;
+
+
+        // functions
+
+        void ensure_buffer_filled() const
+        {
+            if (!m_queue.empty())
+            {
+                return;
+            }
+            while (m_p_base_reader->has_next() && m_queue.empty())
+            {
+                auto line = read_line();
+                line = remove_comment(std::move(line));
+                std::for_each(std::begin(line), std::end(line), [this](const auto c) { m_queue.push(c); });
+            }
+        }
+
+        std::string read_line() const
+        {
+            std::string line{};
+            while (m_p_base_reader->has_next())
+            {
+                const auto char_ = m_p_base_reader->get();
+                m_p_base_reader->next();
+                line.push_back(char_);
+                if (char_ == '\n')
+                {
+                    break;
+                }
+            }
+            return line;
+        }
+
+        std::string remove_comment(std::string line) const
+        {
+            const auto  single_line_begin_offset = line.find(m_single_line_begin);
+            const auto  line_feed_offset = line.find('\n');
+            std::string comment_removed = line.substr(0, single_line_begin_offset);
+            if (line_feed_offset < line.length())
+            {
+                comment_removed += line.substr(line_feed_offset);
+            }
+            return comment_removed;
+        }
     };
 
 
-    comment_removing_reader::comment_removing_reader(std::unique_ptr<reader>&& p_reader) :
-    m_p_impl{ std::make_unique<impl>(std::move(p_reader)) }
+    comment_removing_reader::comment_removing_reader(
+        std::unique_ptr<reader>&& p_reader,
+        std::string               single_line_begin) :
+    m_p_impl{ std::make_unique<impl>(std::move(p_reader), std::move(single_line_begin)) }
     {}
 
     comment_removing_reader::~comment_removing_reader() = default;

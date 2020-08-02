@@ -35,6 +35,10 @@ tetengo_json_reader_t* tetengo_json_reader_createStreamReader(const char* const 
 {
     try
     {
+        if (!file_path)
+        {
+            throw std::invalid_argument{ "file_path is NULL." };
+        }
         auto p_stream = std::make_unique<std::ifstream>(file_path);
         if (!*p_stream)
         {

@@ -8,6 +8,7 @@
 #define TETENGO_JSON_COMMENTREMOVINGREADER_HPP
 
 #include <memory>
+#include <string>
 
 #include <tetengo/json/reader.hpp>
 
@@ -25,11 +26,12 @@ namespace tetengo::json
         /*!
             \brief Creates a comment removing reader.
 
-            \param p_base_reader A unique pointer to a base reader.
+            \param p_base_reader     A unique pointer to a base reader.
+            \param single_line_begin A beginning of a single line comment.
 
-            \throw std::invalid_argument When p_base_reader is nullptr.
+            \throw std::invalid_argument When p_base_reader is nullptr or single_line_begin is empty.
         */
-        explicit comment_removing_reader(std::unique_ptr<reader>&& p_base_reader);
+        comment_removing_reader(std::unique_ptr<reader>&& p_base_reader, std::string single_line_begin);
 
         /*!
             \brief Destroys the comment removing reader.
