@@ -36,6 +36,10 @@ namespace tetengo::json
         m_p_stream{ std::move(p_stream) },
             m_buffer{ buffer_capacity }
         {
+            if (!m_p_stream)
+            {
+                throw std::invalid_argument{ "p_stream is nullptr." };
+            }
             if (buffer_capacity == 0)
             {
                 throw std::invalid_argument{ "buffer_capacity is 0." };
