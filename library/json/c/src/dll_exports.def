@@ -3,3 +3,6 @@ EXPORTS
 	tetengo_json_reader_streamReaderDefaultBufferCapacity
 	tetengo_json_reader_createStreamReader
 	tetengo_json_reader_destroy
+	tetengo_json_reader_hasNext
+	tetengo_json_reader_get
+	tetengo_json_reader_next

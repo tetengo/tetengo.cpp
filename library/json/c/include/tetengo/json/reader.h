@@ -43,6 +43,33 @@ tetengo_json_reader_t* tetengo_json_reader_createStreamReader(const char* file_p
 */
 void tetengo_json_reader_destroy(const tetengo_json_reader_t* p_reader);
 
+/*!
+    \brief Returns non-zero when the next character exists.
+
+    \param p_reader A pointer to a reader.
+
+    \return non-zero When the next character exists.
+    \return 0        Otherwise.
+*/
+int tetengo_json_reader_hasNext(const tetengo_json_reader_t* p_reader);
+
+/*!
+    \brief Returns the current character.
+
+    \param p_reader A pointer to a reader.
+
+    \return The current character. Or 0 when current position is beyond the
+            termination point.
+*/
+char tetengo_json_reader_get(const tetengo_json_reader_t* p_reader);
+
+/*!
+    \brief Moves to the next character.
+
+    \param p_reader A pointer to a reader.
+*/
+void tetengo_json_reader_next(tetengo_json_reader_t* p_reader);
+
 
 #if defined(__cplusplus)
 }

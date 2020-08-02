@@ -61,3 +61,52 @@ void tetengo_json_reader_destroy(const tetengo_json_reader_t* const p_reader)
     catch (...)
     {}
 }
+
+int tetengo_json_reader_hasNext(const tetengo_json_reader_t* const p_reader)
+{
+    try
+    {
+        if (!p_reader)
+        {
+            throw std::invalid_argument{ "p_reader is NULL." };
+        }
+
+        return p_reader->p_cpp_reader->has_next() ? 1 : 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+char tetengo_json_reader_get(const tetengo_json_reader_t* const p_reader)
+{
+    try
+    {
+        if (!p_reader)
+        {
+            throw std::invalid_argument{ "p_reader is NULL." };
+        }
+
+        return p_reader->p_cpp_reader->get();
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+void tetengo_json_reader_next(tetengo_json_reader_t* const p_reader)
+{
+    try
+    {
+        if (!p_reader)
+        {
+            throw std::invalid_argument{ "p_reader is NULL." };
+        }
+
+        p_reader->p_cpp_reader->next();
+    }
+    catch (...)
+    {}
+}
