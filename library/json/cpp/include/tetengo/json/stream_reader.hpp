@@ -39,7 +39,7 @@ namespace tetengo::json
             \param p_stream        A unique pointer to an input stream.
             \param buffer_capacity A buffer capacity.
 
-            \throw std::invalid_argument When buffer_capacity is 0.
+            \throw std::invalid_argument When p_stream is nullptr or buffer_capacity is 0.
         */
         explicit stream_reader(
             std::unique_ptr<std::istream>&& p_stream,
