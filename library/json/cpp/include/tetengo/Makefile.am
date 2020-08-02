@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    json/comment_removing_reader.hpp \
     json/json_parser.hpp \
     json/reader.hpp \
     json/stream_reader.hpp

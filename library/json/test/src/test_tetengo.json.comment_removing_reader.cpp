@@ -1,0 +1,105 @@
+/*! \file
+    \brief A comment removing reader.
+
+    Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+ */
+
+#include <filesystem>
+#include <fstream>
+#include <stdexcept>
+#include <string>
+
+#include <boost/core/noncopyable.hpp>
+#include <boost/preprocessor.hpp>
+#include <boost/test/unit_test.hpp>
+
+
+namespace
+{
+    const std::string stream_value{ "Shikoku Mannaka" };
+
+    class temporary_file : private boost::noncopyable
+    {
+    public:
+        explicit temporary_file(const std::string& content) : m_path{ make_temporary_path() }
+        {
+            write_content_to_file(m_path, content);
+        }
+
+        ~temporary_file()
+        {
+            std::filesystem::remove(m_path);
+        }
+
+        const std::filesystem::path path() const
+        {
+            return m_path;
+        }
+
+    private:
+        static std::filesystem::path make_temporary_path()
+        {
+            auto path = std::filesystem::temp_directory_path();
+            path /= "test_tetengo.json.stream_reader";
+            return path;
+        }
+
+        static void write_content_to_file(const std::filesystem::path& path, const std::string& content)
+        {
+            if (std::filesystem::exists(path))
+            {
+                throw std::runtime_error{ "The temporary file already exists. Remove it if possible." };
+            }
+            std::ofstream stream{ path };
+            if (!stream)
+            {
+                throw std::runtime_error{ "Can't create a temporary file." };
+            }
+
+            stream.write(content.data(), content.length());
+        }
+
+        const std::filesystem::path m_path;
+    };
+
+
+}
+
+
+BOOST_AUTO_TEST_SUITE(test_tetengo)
+BOOST_AUTO_TEST_SUITE(json)
+BOOST_AUTO_TEST_SUITE(comment_removing_reader)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(has_next)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(get)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(next)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()
