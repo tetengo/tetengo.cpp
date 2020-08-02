@@ -77,6 +77,21 @@ BOOST_AUTO_TEST_SUITE(json)
 BOOST_AUTO_TEST_SUITE(stream_reader)
 
 
+BOOST_AUTO_TEST_CASE(default_buffer_capacity)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        BOOST_TEST(tetengo::json::stream_reader::default_buffer_capacity() == 4096U);
+    }
+
+    {
+        BOOST_TEST(
+            tetengo_json_reader_streamReaderDefaultBufferCapacity() ==
+            tetengo::json::stream_reader::default_buffer_capacity());
+    }
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
