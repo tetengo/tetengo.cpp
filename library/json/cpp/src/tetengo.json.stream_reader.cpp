@@ -22,6 +22,14 @@ namespace tetengo::json
     class stream_reader::impl : private boost::noncopyable
     {
     public:
+        // static functions
+
+        static std::size_t default_buffer_capacity()
+        {
+            return 4096;
+        }
+
+
         // constructors and destructor
 
         impl(std::unique_ptr<std::istream>&& p_stream, const std::size_t buffer_capacity) :
@@ -93,9 +101,14 @@ namespace tetengo::json
     };
 
 
+    std::size_t stream_reader::default_buffer_capacity()
+    {
+        return impl::default_buffer_capacity();
+    }
+
     stream_reader::stream_reader(
         std::unique_ptr<std::istream>&& p_stream,
-        const std::size_t               buffer_capacity /*= 4096*/) :
+        const std::size_t               buffer_capacity /*= default_buffer_capacity()*/) :
     m_p_impl{ std::make_unique<impl>(std::move(p_stream), buffer_capacity) }
     {}
 
