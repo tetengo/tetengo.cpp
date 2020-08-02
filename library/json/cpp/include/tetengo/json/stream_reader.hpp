@@ -21,6 +21,16 @@ namespace tetengo::json
     class stream_reader : public reader
     {
     public:
+        // static functions
+
+        /*!
+            \brief Returns the default buffer capacity.
+
+            \return The default buffer capacity.
+        */
+        static std::size_t default_buffer_capacity();
+
+
         // constructors and destructor
 
         /*!
@@ -31,7 +41,9 @@ namespace tetengo::json
 
             \throw std::invalid_argument When buffer_capacity is 0.
         */
-        explicit stream_reader(std::unique_ptr<std::istream>&& p_stream, std::size_t buffer_capacity = 4096);
+        explicit stream_reader(
+            std::unique_ptr<std::istream>&& p_stream,
+            std::size_t                     buffer_capacity = default_buffer_capacity());
 
         /*!
             \brief Destroys the stream reader.

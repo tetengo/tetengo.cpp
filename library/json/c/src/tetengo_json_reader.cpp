@@ -28,7 +28,7 @@ struct tetengo_json_reader_tag
 
 size_t tetengo_json_reader_streamReaderDefaultBufferCapacity()
 {
-    return 4096;
+    return tetengo::json::stream_reader::default_buffer_capacity();
 }
 
 tetengo_json_reader_t* tetengo_json_reader_createStreamReader(const char* const file_path, const size_t buffer_capacity)
