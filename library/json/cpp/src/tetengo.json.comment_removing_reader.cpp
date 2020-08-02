@@ -5,24 +5,29 @@
 */
 
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/json/comment_removing_reader.hpp>
+#include <tetengo/json/reader.hpp>
 
 
 namespace tetengo::json
 {
-    class reader;
-
-
     class comment_removing_reader::impl : private boost::noncopyable
     {
     public:
         // constructors and destructor
 
-        explicit impl(std::unique_ptr<reader>&& /*p_reader*/) {}
+        explicit impl(std::unique_ptr<reader>&& p_base_reader) : m_p_base_reader{ std::move(p_base_reader) }
+        {
+            if (!m_p_base_reader)
+            {
+                throw std::invalid_argument{ "p_base_reader is nullptr." };
+            }
+        }
 
 
         // functions
@@ -42,6 +47,8 @@ namespace tetengo::json
 
     private:
         // variables
+
+        const std::unique_ptr<reader> m_p_base_reader;
     };
 
 

@@ -48,7 +48,7 @@ namespace tetengo::json
         /*!
             \brief Destroys the stream reader.
         */
-        ~stream_reader();
+        virtual ~stream_reader();
 
 
     private:

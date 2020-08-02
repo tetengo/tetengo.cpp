@@ -6,12 +6,18 @@
 
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
+
+#include <tetengo/json/comment_removing_reader.hpp>
+#include <tetengo/json/reader.hpp>
+#include <tetengo/json/stream_reader.hpp>
 
 
 namespace
@@ -62,6 +68,12 @@ namespace
         const std::filesystem::path m_path;
     };
 
+    std::unique_ptr<tetengo::json::reader> create_cpp_base_reader()
+    {
+        auto p_stream = std::make_unique<std::stringstream>(stream_value);
+        auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::move(p_stream));
+        return p_reader;
+    }
 
 }
 
@@ -75,7 +87,15 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto                                         p_base_reader = create_cpp_base_reader();
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader) };
+    }
+    {
+        std::unique_ptr<tetengo::json::reader> p_base_reader{};
+        BOOST_CHECK_THROW(
+            const tetengo::json::comment_removing_reader reader(std::move(p_base_reader)), std::invalid_argument);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(has_next)

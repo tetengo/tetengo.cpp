@@ -25,16 +25,16 @@ namespace tetengo::json
         /*!
             \brief Creates a comment removing reader.
 
-            \param p_reader A unique pointer to a reader.
+            \param p_base_reader A unique pointer to a base reader.
 
-            \throw std::invalid_argument When p_reader is nullptr.
+            \throw std::invalid_argument When p_base_reader is nullptr.
         */
-        explicit comment_removing_reader(std::unique_ptr<reader>&& p_reader);
+        explicit comment_removing_reader(std::unique_ptr<reader>&& p_base_reader);
 
         /*!
             \brief Destroys the comment removing reader.
         */
-        ~comment_removing_reader();
+        virtual ~comment_removing_reader();
 
 
     private:
