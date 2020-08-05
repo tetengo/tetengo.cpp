@@ -5,11 +5,13 @@
 */
 
 #include <algorithm>
+#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <queue>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -59,10 +61,64 @@ namespace tetengo::json
             return m_queue.front();
         }
 
-        void next_impl() {}
+        void next_impl()
+        {
+            ensure_buffer_filled();
+            if (m_queue.empty())
+            {
+                throw std::logic_error{ "The current position is beyond the termination point." };
+            }
+            m_queue.pop();
+        }
 
 
     private:
+        // static functions
+
+        static std::size_t find_substring(const std::string_view& string_, const std::string_view& substring)
+        {
+            if (string_.length() < substring.length())
+            {
+                return std::string_view::npos;
+            }
+
+            auto quote = '\0';
+            for (auto i = static_cast<std::size_t>(0); i < string_.length() - substring.length(); ++i)
+            {
+                if (quote == '\0' && (string_[i] == '\'' || string_[i] == '"'))
+                {
+                    quote = string_[i];
+                    continue;
+                }
+                else if (quote != '\0')
+                {
+                    if (quote == string_[i])
+                    {
+                        quote = '\0';
+                    }
+                    continue;
+                }
+
+                auto found = true;
+                for (auto j = static_cast<std::size_t>(0); j < substring.length(); ++j)
+                {
+                    if (string_[i + j] != substring[j])
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    return i;
+                }
+            }
+
+            return std::string_view::npos;
+        }
+
+
         // variables
 
         const std::unique_ptr<reader> m_p_base_reader;
@@ -83,7 +139,7 @@ namespace tetengo::json
             while (m_p_base_reader->has_next() && m_queue.empty())
             {
                 auto line = read_line();
-                line = remove_comment(std::move(line));
+                line = remove_comment(line);
                 std::for_each(std::begin(line), std::end(line), [this](const auto c) { m_queue.push(c); });
             }
         }
@@ -104,16 +160,19 @@ namespace tetengo::json
             return line;
         }
 
-        std::string remove_comment(std::string line) const
+        std::string remove_comment(const std::string_view& line) const
         {
-            const auto  single_line_begin_offset = line.find(m_single_line_begin);
-            const auto  line_feed_offset = line.find('\n');
-            std::string comment_removed = line.substr(0, single_line_begin_offset);
-            if (line_feed_offset < line.length())
+            const auto single_line_begin_offset = find_substring(line, m_single_line_begin);
+            const auto line_feed_offset = line.find_first_of("\r\n");
+            const auto comment_removed = line.substr(0, single_line_begin_offset);
+            if (single_line_begin_offset != std::string_view::npos && line_feed_offset < line.length())
             {
-                comment_removed += line.substr(line_feed_offset);
+                return std::string{ comment_removed } + std::string{ line.substr(line_feed_offset) };
             }
-            return comment_removed;
+            else
+            {
+                return std::string{ comment_removed };
+            }
         }
     };
 
