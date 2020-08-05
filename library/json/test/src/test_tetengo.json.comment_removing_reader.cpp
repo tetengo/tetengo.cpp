@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(has_next)
     }
 }
 
-BOOST_AUTO_TEST_CASE(get)
+BOOST_AUTO_TEST_CASE(peek)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -141,19 +141,19 @@ BOOST_AUTO_TEST_CASE(get)
         auto                                         p_base_reader = create_cpp_base_reader(stream_value0);
         const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
 
-        BOOST_CHECK_THROW(reader.get(), std::logic_error);
+        BOOST_CHECK_THROW(reader.peek(), std::logic_error);
     }
     {
         auto                                         p_base_reader = create_cpp_base_reader(stream_value1);
         const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
 
-        BOOST_CHECK_THROW(reader.get(), std::logic_error);
+        BOOST_CHECK_THROW(reader.peek(), std::logic_error);
     }
     {
         auto                                         p_base_reader = create_cpp_base_reader(stream_value2);
         const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
 
-        BOOST_TEST(reader.get() == 'R');
+        BOOST_TEST(reader.peek() == 'R');
     }
 }
 

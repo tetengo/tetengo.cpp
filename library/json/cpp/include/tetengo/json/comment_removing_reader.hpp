@@ -54,7 +54,7 @@ namespace tetengo::json
 
         virtual bool has_next_impl() const override;
 
-        virtual char get_impl() const override;
+        virtual char peek_impl() const override;
 
         virtual void next_impl() override;
     };

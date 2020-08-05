@@ -83,7 +83,7 @@ int tetengo_json_reader_hasNext(const tetengo_json_reader_t* const p_reader)
     }
 }
 
-char tetengo_json_reader_get(const tetengo_json_reader_t* const p_reader)
+char tetengo_json_reader_peek(const tetengo_json_reader_t* const p_reader)
 {
     try
     {
@@ -92,7 +92,7 @@ char tetengo_json_reader_get(const tetengo_json_reader_t* const p_reader)
             throw std::invalid_argument{ "p_reader is NULL." };
         }
 
-        return p_reader->p_cpp_reader->get();
+        return p_reader->p_cpp_reader->peek();
     }
     catch (...)
     {

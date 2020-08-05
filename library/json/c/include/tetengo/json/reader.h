@@ -61,7 +61,7 @@ int tetengo_json_reader_hasNext(const tetengo_json_reader_t* p_reader);
     \return The current character. Or 0 when current position is beyond the
             termination point.
 */
-char tetengo_json_reader_get(const tetengo_json_reader_t* p_reader);
+char tetengo_json_reader_peek(const tetengo_json_reader_t* p_reader);
 
 /*!
     \brief Moves to the next character.

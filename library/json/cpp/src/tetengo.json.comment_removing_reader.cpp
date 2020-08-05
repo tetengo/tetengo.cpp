@@ -49,7 +49,7 @@ namespace tetengo::json
             return !m_queue.empty();
         }
 
-        char get_impl() const
+        char peek_impl() const
         {
             ensure_buffer_filled();
             if (m_queue.empty())
@@ -93,7 +93,7 @@ namespace tetengo::json
             std::string line{};
             while (m_p_base_reader->has_next())
             {
-                const auto char_ = m_p_base_reader->get();
+                const auto char_ = m_p_base_reader->peek();
                 m_p_base_reader->next();
                 line.push_back(char_);
                 if (char_ == '\n')
@@ -131,9 +131,9 @@ namespace tetengo::json
         return m_p_impl->has_next_impl();
     }
 
-    char comment_removing_reader::get_impl() const
+    char comment_removing_reader::peek_impl() const
     {
-        return m_p_impl->get_impl();
+        return m_p_impl->peek_impl();
     }
 
     void comment_removing_reader::next_impl()
