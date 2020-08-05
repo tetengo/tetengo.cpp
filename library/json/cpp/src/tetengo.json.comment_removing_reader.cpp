@@ -51,7 +51,12 @@ namespace tetengo::json
 
         char get_impl() const
         {
-            return 0;
+            ensure_buffer_filled();
+            if (m_queue.empty())
+            {
+                throw std::logic_error{ "The current position is beyond the termination point." };
+            }
+            return m_queue.front();
         }
 
         void next_impl() {}

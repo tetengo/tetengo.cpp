@@ -137,7 +137,24 @@ BOOST_AUTO_TEST_CASE(get)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value0);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
+
+        BOOST_CHECK_THROW(reader.get(), std::logic_error);
+    }
+    {
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value1);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
+
+        BOOST_CHECK_THROW(reader.get(), std::logic_error);
+    }
+    {
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value2);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
+
+        BOOST_TEST(reader.get() == 'R');
+    }
 }
 
 BOOST_AUTO_TEST_CASE(next)
