@@ -16,7 +16,7 @@ namespace tetengo::lattice
 {
     namespace temp
     {
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1927
         using empty_type = struct
         {};
 
@@ -25,7 +25,7 @@ namespace tetengo::lattice
 
         std::any empty_std_any()
         {
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1927
             return std::any{ &empty };
 #else
             return std::any{};
@@ -34,7 +34,7 @@ namespace tetengo::lattice
 
         bool std_any_has_value(const std::any& any_)
         {
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1927
             assert(any_.has_value());
             const auto* const* const pp_empty_value = std::any_cast<const empty_type*>(&any_);
             return !pp_empty_value || *pp_empty_value != &empty;
