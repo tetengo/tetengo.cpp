@@ -55,7 +55,7 @@ namespace tetengo::lattice
         std::vector<entry_view> find_entries_impl(const std::string_view& key) const
         {
             const auto found = m_entry_map.find(std::string{ key });
-            if (found == m_entry_map.end())
+            if (found == std::end(m_entry_map))
             {
                 return std::vector<entry_view>{};
             }
@@ -70,7 +70,7 @@ namespace tetengo::lattice
         {
             const entry_view from_entry_view{ from.key(), &from.value(), from.node_cost() };
             const auto       found = m_p_connection_map->find(std::make_pair(from_entry_view, to));
-            if (found == m_p_connection_map->end())
+            if (found == std::end(*m_p_connection_map))
             {
                 return connection{ std::numeric_limits<int>::max() };
             }

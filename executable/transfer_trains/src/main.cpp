@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -192,8 +193,8 @@ namespace
             }
             trip_.cost = path.cost();
 
-            if (duplication_checker.find(trip_.sections.front().train_number) != duplication_checker.end() ||
-                duplication_checker.find(trip_.sections.back().train_number) != duplication_checker.end())
+            if (duplication_checker.find(trip_.sections.front().train_number) != std::end(duplication_checker) ||
+                duplication_checker.find(trip_.sections.back().train_number) != std::end(duplication_checker))
             {
                 continue;
             }
