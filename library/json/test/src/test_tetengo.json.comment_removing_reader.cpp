@@ -361,6 +361,133 @@ BOOST_AUTO_TEST_CASE(next)
 
         BOOST_TEST(read == expected_value6);
     }
+
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        tetengo_json_reader_next(p_reader);
+    }
+    {
+        const temporary_file file{ stream_value1 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        tetengo_json_reader_next(p_reader);
+    }
+    {
+        const temporary_file file{ stream_value2 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        std::string read{};
+        while (tetengo_json_reader_hasNext(p_reader))
+        {
+            read.push_back(tetengo_json_reader_peek(p_reader));
+            tetengo_json_reader_next(p_reader);
+        }
+
+        BOOST_TEST(read == expected_value2);
+    }
+    {
+        const temporary_file file{ stream_value3 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        std::string read{};
+        while (tetengo_json_reader_hasNext(p_reader))
+        {
+            read.push_back(tetengo_json_reader_peek(p_reader));
+            tetengo_json_reader_next(p_reader);
+        }
+
+        BOOST_TEST(read == expected_value3);
+    }
+    {
+        const temporary_file file{ stream_value4 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        std::string read{};
+        while (tetengo_json_reader_hasNext(p_reader))
+        {
+            read.push_back(tetengo_json_reader_peek(p_reader));
+            tetengo_json_reader_next(p_reader);
+        }
+
+        BOOST_TEST(read == expected_value4);
+    }
+    {
+        const temporary_file file{ stream_value5 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        std::string read{};
+        while (tetengo_json_reader_hasNext(p_reader))
+        {
+            read.push_back(tetengo_json_reader_peek(p_reader));
+            tetengo_json_reader_next(p_reader);
+        }
+
+        BOOST_TEST(read == expected_value5);
+    }
+    {
+        const temporary_file file{ stream_value6 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        std::string read{};
+        while (tetengo_json_reader_hasNext(p_reader))
+        {
+            read.push_back(tetengo_json_reader_peek(p_reader));
+            tetengo_json_reader_next(p_reader);
+        }
+
+        BOOST_TEST(read == expected_value6);
+    }
 }
 
 
