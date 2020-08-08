@@ -146,6 +146,12 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const temporary_file file{ stream_value0 };
         auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "");
+        BOOST_TEST(!p_reader);
+    }
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
         const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, nullptr);
         BOOST_TEST(!p_reader);
     }

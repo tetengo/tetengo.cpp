@@ -7,6 +7,7 @@
 #include <fstream>
 #include <memory>
 #include <stdexcept>
+#include <string_view>
 #include <utility>
 
 #include <stddef.h>
@@ -79,6 +80,10 @@ tetengo_json_reader_t* tetengo_json_reader_createCommentRemovingReader(
         if (!single_line_begin)
         {
             throw std::invalid_argument{ "single_line_begin is NULL." };
+        }
+        if (std::string_view{ single_line_begin }.empty())
+        {
+            throw std::invalid_argument{ "single_line_begin is empty." };
         }
 
         auto p_cpp_reader = std::make_unique<tetengo::json::comment_removing_reader>(
