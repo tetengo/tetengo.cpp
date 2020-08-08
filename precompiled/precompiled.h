@@ -54,6 +54,7 @@
 
 // Boost
 #include <boost/algorithm/string.hpp>
+#include <boost/circular_buffer.hpp>
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/core/noncopyable.hpp>

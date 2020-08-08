@@ -16,9 +16,9 @@ namespace tetengo::json
         return has_next_impl();
     }
 
-    char reader::get() const
+    char reader::peek() const
     {
-        return get_impl();
+        return peek_impl();
     }
 
     void reader::next()

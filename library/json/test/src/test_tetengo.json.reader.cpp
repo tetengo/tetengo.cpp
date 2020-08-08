@@ -41,7 +41,7 @@ namespace
             return m_index < m_values.length();
         }
 
-        virtual char get_impl() const override
+        virtual char peek_impl() const override
         {
             if (m_index >= m_values.length())
             {
@@ -85,13 +85,13 @@ BOOST_AUTO_TEST_CASE(has_next)
     BOOST_TEST(reader.has_next());
 }
 
-BOOST_AUTO_TEST_CASE(get)
+BOOST_AUTO_TEST_CASE(peek)
 {
     BOOST_TEST_PASSPOINT();
 
     const concrete_reader reader{};
 
-    BOOST_TEST(reader.get() == 'A');
+    BOOST_TEST(reader.peek() == 'A');
 }
 
 BOOST_AUTO_TEST_CASE(next)
@@ -101,19 +101,19 @@ BOOST_AUTO_TEST_CASE(next)
     concrete_reader reader{};
 
     BOOST_TEST_REQUIRE(reader.has_next());
-    BOOST_TEST(reader.get() == 'A');
+    BOOST_TEST(reader.peek() == 'A');
     reader.next();
 
     BOOST_TEST_REQUIRE(reader.has_next());
-    BOOST_TEST(reader.get() == 'B');
+    BOOST_TEST(reader.peek() == 'B');
     reader.next();
 
     BOOST_TEST_REQUIRE(reader.has_next());
-    BOOST_TEST(reader.get() == 'C');
+    BOOST_TEST(reader.peek() == 'C');
     reader.next();
 
     BOOST_TEST(!reader.has_next());
-    BOOST_CHECK_THROW(reader.get(), std::logic_error);
+    BOOST_CHECK_THROW(reader.peek(), std::logic_error);
     BOOST_CHECK_THROW(reader.next(), std::logic_error);
 }
 

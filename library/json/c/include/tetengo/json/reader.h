@@ -37,6 +37,21 @@ size_t tetengo_json_reader_streamReaderDefaultBufferCapacity();
 tetengo_json_reader_t* tetengo_json_reader_createStreamReader(const char* file_path, size_t buffer_capacity);
 
 /*!
+    \brief Creates a comment removing reader.
+
+    There is no need to destroy the base reader after calling this function.
+
+    \param p_base_reader     A pointer to a base reader.
+    \param single_line_begin A beginning of a single line comment.
+
+    \throw std::invalid_argument When p_base_reader is nullptr or single_line_begin is empty.
+
+    \return A pointer to a reader. Or NULL when p_base_reader and/or single_line_begin are NULL.
+*/
+tetengo_json_reader_t*
+tetengo_json_reader_createCommentRemovingReader(tetengo_json_reader_t* p_base_reader, const char* single_line_begin);
+
+/*!
     \brief Destroys a reader.
 
     \param p_reader A pointer to a reader.
@@ -61,7 +76,7 @@ int tetengo_json_reader_hasNext(const tetengo_json_reader_t* p_reader);
     \return The current character. Or 0 when current position is beyond the
             termination point.
 */
-char tetengo_json_reader_get(const tetengo_json_reader_t* p_reader);
+char tetengo_json_reader_peek(const tetengo_json_reader_t* p_reader);
 
 /*!
     \brief Moves to the next character.

@@ -44,7 +44,7 @@ namespace tetengo::json
             \throw std::logic_error When current position is beyond the
                                     termination point.
         */
-        char get() const;
+        char peek() const;
 
         /*!
             \brief Moves to the next character.
@@ -60,7 +60,7 @@ namespace tetengo::json
 
         virtual bool has_next_impl() const = 0;
 
-        virtual char get_impl() const = 0;
+        virtual char peek_impl() const = 0;
 
         virtual void next_impl() = 0;
     };

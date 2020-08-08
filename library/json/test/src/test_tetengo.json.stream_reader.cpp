@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(has_next)
     }
 }
 
-BOOST_AUTO_TEST_CASE(get)
+BOOST_AUTO_TEST_CASE(peek)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(get)
         auto                               p_stream = std::make_unique<std::istringstream>(stream_value);
         const tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
 
-        BOOST_TEST(reader.get() == 'S');
+        BOOST_TEST(reader.peek() == 'S');
     }
 
     {
@@ -187,10 +187,10 @@ BOOST_AUTO_TEST_CASE(get)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_reader);
 
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'S');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'S');
     }
     {
-        BOOST_TEST(tetengo_json_reader_get(nullptr) == 0);
+        BOOST_TEST(tetengo_json_reader_peek(nullptr) == 0);
     }
 }
 
@@ -203,67 +203,67 @@ BOOST_AUTO_TEST_CASE(next)
         tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'S');
+        BOOST_TEST(reader.peek() == 'S');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'h');
+        BOOST_TEST(reader.peek() == 'h');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'i');
+        BOOST_TEST(reader.peek() == 'i');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'k');
+        BOOST_TEST(reader.peek() == 'k');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'o');
+        BOOST_TEST(reader.peek() == 'o');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'k');
+        BOOST_TEST(reader.peek() == 'k');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'u');
+        BOOST_TEST(reader.peek() == 'u');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == ' ');
+        BOOST_TEST(reader.peek() == ' ');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'M');
+        BOOST_TEST(reader.peek() == 'M');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'a');
+        BOOST_TEST(reader.peek() == 'a');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'n');
+        BOOST_TEST(reader.peek() == 'n');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'n');
+        BOOST_TEST(reader.peek() == 'n');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'a');
+        BOOST_TEST(reader.peek() == 'a');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'k');
+        BOOST_TEST(reader.peek() == 'k');
         reader.next();
 
         BOOST_TEST_REQUIRE(reader.has_next());
-        BOOST_TEST(reader.get() == 'a');
+        BOOST_TEST(reader.peek() == 'a');
         reader.next();
 
         BOOST_TEST(!reader.has_next());
-        BOOST_CHECK_THROW(reader.get(), std::logic_error);
+        BOOST_CHECK_THROW(reader.peek(), std::logic_error);
         BOOST_CHECK_THROW(reader.next(), std::logic_error);
     }
 
@@ -279,67 +279,67 @@ BOOST_AUTO_TEST_CASE(next)
         BOOST_TEST_REQUIRE(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'S');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'S');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'h');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'h');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'i');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'i');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'k');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'k');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'o');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'o');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'k');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'k');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'u');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'u');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == ' ');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == ' ');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'M');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'M');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'a');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'a');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'n');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'n');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'n');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'n');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'a');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'a');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'k');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'k');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST_REQUIRE(tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 'a');
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'a');
         tetengo_json_reader_next(p_reader);
 
         BOOST_TEST(!tetengo_json_reader_hasNext(p_reader));
-        BOOST_TEST(tetengo_json_reader_get(p_reader) == 0);
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 0);
         tetengo_json_reader_next(p_reader);
     }
     {

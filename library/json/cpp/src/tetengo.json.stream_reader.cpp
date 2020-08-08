@@ -55,7 +55,7 @@ namespace tetengo::json
             return !m_buffer.empty();
         }
 
-        char get_impl() const
+        char peek_impl() const
         {
             ensure_buffer_filled();
             if (m_buffer.empty())
@@ -123,9 +123,9 @@ namespace tetengo::json
         return m_p_impl->has_next_impl();
     }
 
-    char stream_reader::get_impl() const
+    char stream_reader::peek_impl() const
     {
-        return m_p_impl->get_impl();
+        return m_p_impl->peek_impl();
     }
 
     void stream_reader::next_impl()
