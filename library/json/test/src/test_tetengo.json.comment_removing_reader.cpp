@@ -13,9 +13,11 @@
 
 #include <boost/core/noncopyable.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/json/comment_removing_reader.hpp>
+#include <tetengo/json/reader.h>
 #include <tetengo/json/reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
 
@@ -68,7 +70,7 @@ namespace
         static std::filesystem::path make_temporary_path()
         {
             auto path = std::filesystem::temp_directory_path();
-            path /= "test_tetengo.json.stream_reader";
+            path /= "test_tetengo.json.comment_removing_reader";
             return path;
         }
 
@@ -124,6 +126,28 @@ BOOST_AUTO_TEST_CASE(construction)
         auto p_base_reader = create_cpp_base_reader(stream_value0);
         BOOST_CHECK_THROW(
             const tetengo::json::comment_removing_reader reader(std::move(p_base_reader), ""), std::invalid_argument);
+    }
+
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_reader);
+    }
+    {
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(nullptr, "REM");
+        BOOST_TEST(!p_reader);
+    }
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, nullptr);
+        BOOST_TEST(!p_reader);
     }
 }
 

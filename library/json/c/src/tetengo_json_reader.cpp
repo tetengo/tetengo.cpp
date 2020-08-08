@@ -11,6 +11,10 @@
 
 #include <stddef.h>
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
+#include <tetengo/json/comment_removing_reader.hpp>
 #include <tetengo/json/reader.h>
 #include <tetengo/json/reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
@@ -46,6 +50,39 @@ tetengo_json_reader_t* tetengo_json_reader_createStreamReader(const char* const 
         }
 
         auto p_cpp_reader = std::make_unique<tetengo::json::stream_reader>(std::move(p_stream), buffer_capacity);
+
+        auto p_instance = std::make_unique<tetengo_json_reader_t>(std::move(p_cpp_reader));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+tetengo_json_reader_t* tetengo_json_reader_createCommentRemovingReader(
+    tetengo_json_reader_t* const p_base_reader,
+    const char* const            single_line_begin)
+{
+    try
+    {
+        BOOST_SCOPE_EXIT(p_base_reader)
+        {
+            tetengo_json_reader_destroy(p_base_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        if (!p_base_reader)
+        {
+            throw std::invalid_argument{ "p_base_reader is NULL." };
+        }
+        if (!single_line_begin)
+        {
+            throw std::invalid_argument{ "single_line_begin is NULL." };
+        }
+
+        auto p_cpp_reader = std::make_unique<tetengo::json::comment_removing_reader>(
+            std::move(p_base_reader->p_cpp_reader), single_line_begin);
 
         auto p_instance = std::make_unique<tetengo_json_reader_t>(std::move(p_cpp_reader));
         return p_instance.release();
