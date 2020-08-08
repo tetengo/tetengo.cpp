@@ -188,14 +188,14 @@ BOOST_AUTO_TEST_CASE(construction)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_storage = tetengo_trie_storage_createStorage(p_trie);
-        BOOST_SCOPE_EXIT((p_storage))
+        BOOST_SCOPE_EXIT(p_storage)
         {
             tetengo_trie_storage_destroy(p_storage);
         }
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const auto file_path = temporary_file_path(serialized_c_if);
-        BOOST_SCOPE_EXIT((&file_path))
+        BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
         }
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2U);
 
         const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
-        BOOST_SCOPE_EXIT((&p_trie))
+        BOOST_SCOPE_EXIT(&p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -315,7 +315,7 @@ BOOST_AUTO_TEST_CASE(size)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -369,7 +369,7 @@ BOOST_AUTO_TEST_CASE(filling_rate)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -493,7 +493,7 @@ BOOST_AUTO_TEST_CASE(serialize)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -503,7 +503,7 @@ BOOST_AUTO_TEST_CASE(serialize)
 
         {
             const auto file_path = temporary_file_path();
-            BOOST_SCOPE_EXIT((&file_path))
+            BOOST_SCOPE_EXIT(&file_path)
             {
                 std::filesystem::remove(file_path);
             }
@@ -543,7 +543,7 @@ BOOST_AUTO_TEST_CASE(serialize)
     }
     {
         const auto file_path = temporary_file_path();
-        BOOST_SCOPE_EXIT((&file_path))
+        BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
         }
@@ -569,7 +569,7 @@ BOOST_AUTO_TEST_CASE(serialize)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -615,7 +615,7 @@ BOOST_AUTO_TEST_CASE(clone)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -626,7 +626,7 @@ BOOST_AUTO_TEST_CASE(clone)
         BOOST_TEST(tetengo_trie_storage_size(p_storage) == tetengo_trie_storage_size(p_cloned));
 
         const auto* const p_cloned_trie = tetengo_trie_trie_createWithStorage(p_cloned);
-        BOOST_SCOPE_EXIT((p_cloned_trie))
+        BOOST_SCOPE_EXIT(p_cloned_trie)
         {
             tetengo_trie_trie_destroy(p_cloned_trie);
         }

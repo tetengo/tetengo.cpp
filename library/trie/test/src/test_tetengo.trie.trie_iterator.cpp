@@ -159,14 +159,14 @@ BOOST_AUTO_TEST_CASE(construction)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_iteartor = tetengo_trie_trieIterator_create(p_trie);
-        BOOST_SCOPE_EXIT((p_iteartor))
+        BOOST_SCOPE_EXIT(p_iteartor)
         {
             tetengo_trie_trieIterator_destroy(p_iteartor);
         }
@@ -215,14 +215,14 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
-        BOOST_SCOPE_EXIT((p_iterator))
+        BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
         }
@@ -289,14 +289,14 @@ BOOST_AUTO_TEST_CASE(operator_equal)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
-        BOOST_SCOPE_EXIT((p_iterator))
+        BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
         }
@@ -319,14 +319,14 @@ BOOST_AUTO_TEST_CASE(operator_equal)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
-        BOOST_SCOPE_EXIT((p_iterator))
+        BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
         }
@@ -393,14 +393,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
-        BOOST_SCOPE_EXIT((p_iterator))
+        BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
         }

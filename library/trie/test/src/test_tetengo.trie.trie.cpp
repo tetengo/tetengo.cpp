@@ -328,7 +328,7 @@ BOOST_AUTO_TEST_CASE(construction)
             done_observer,
             &done,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -341,7 +341,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const auto file_path = temporary_file_path(serialized_c_if);
-        BOOST_SCOPE_EXIT((&file_path))
+        BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
         }
@@ -351,7 +351,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2U);
 
         const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
-        BOOST_SCOPE_EXIT((&p_trie))
+        BOOST_SCOPE_EXIT(&p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -376,7 +376,7 @@ BOOST_AUTO_TEST_CASE(construction)
             done_observer,
             &done,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -401,7 +401,7 @@ BOOST_AUTO_TEST_CASE(construction)
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
 
         BOOST_TEST(p_trie);
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -525,7 +525,7 @@ BOOST_AUTO_TEST_CASE(empty)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -548,7 +548,7 @@ BOOST_AUTO_TEST_CASE(empty)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -618,7 +618,7 @@ BOOST_AUTO_TEST_CASE(size)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -639,7 +639,7 @@ BOOST_AUTO_TEST_CASE(size)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -662,7 +662,7 @@ BOOST_AUTO_TEST_CASE(size)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -734,7 +734,7 @@ BOOST_AUTO_TEST_CASE(contains)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -757,7 +757,7 @@ BOOST_AUTO_TEST_CASE(contains)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -785,7 +785,7 @@ BOOST_AUTO_TEST_CASE(contains)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -872,7 +872,7 @@ BOOST_AUTO_TEST_CASE(find)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -896,7 +896,7 @@ BOOST_AUTO_TEST_CASE(find)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -925,7 +925,7 @@ BOOST_AUTO_TEST_CASE(find)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -994,14 +994,14 @@ BOOST_AUTO_TEST_CASE(begin_end)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
-        BOOST_SCOPE_EXIT((p_iterator))
+        BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
         }
@@ -1024,14 +1024,14 @@ BOOST_AUTO_TEST_CASE(begin_end)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_iterator = tetengo_trie_trie_createIterator(p_trie);
-        BOOST_SCOPE_EXIT((p_iterator))
+        BOOST_SCOPE_EXIT(p_iterator)
         {
             tetengo_trie_trie_destroyIterator(p_iterator);
         }
@@ -1161,7 +1161,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -1169,7 +1169,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
 
         {
             const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Tama");
-            BOOST_SCOPE_EXIT((p_subtrie))
+            BOOST_SCOPE_EXIT(p_subtrie)
             {
                 tetengo_trie_trie_destroy(p_subtrie);
             }
@@ -1178,7 +1178,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
             BOOST_TEST_REQUIRE(p_subtrie);
 
             auto* const p_subtrie_iterator = tetengo_trie_trie_createIterator(p_subtrie);
-            BOOST_SCOPE_EXIT((p_subtrie_iterator))
+            BOOST_SCOPE_EXIT(p_subtrie_iterator)
             {
                 tetengo_trie_trie_destroyIterator(p_subtrie_iterator);
             }
@@ -1196,7 +1196,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
         }
         {
             const auto* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "Uto");
-            BOOST_SCOPE_EXIT((p_subtrie))
+            BOOST_SCOPE_EXIT(p_subtrie)
             {
                 tetengo_trie_trie_destroy(p_subtrie);
             }
@@ -1226,7 +1226,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
@@ -1291,7 +1291,7 @@ BOOST_AUTO_TEST_CASE(get_storage)
             tetengo_trie_trie_nullDoneObserver,
             nullptr,
             tetengo_trie_trie_defaultDoubleArrayDensityFactor());
-        BOOST_SCOPE_EXIT((p_trie))
+        BOOST_SCOPE_EXIT(p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }

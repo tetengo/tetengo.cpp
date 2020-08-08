@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const auto file_path = temporary_file_path(serialized_c_if);
-        BOOST_SCOPE_EXIT((&file_path))
+        BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
         }
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2U);
 
         const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
-        BOOST_SCOPE_EXIT((&p_trie))
+        BOOST_SCOPE_EXIT(&p_trie)
         {
             tetengo_trie_trie_destroy(p_trie);
         }
