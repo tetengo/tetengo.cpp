@@ -438,7 +438,7 @@ private:
 
                     auto section_name = make_section_name(timetable_.stations, from, to);
                     auto found = map.find(section_name);
-                    if (found == map.end())
+                    if (found == std::end(map))
                     {
                         auto inserted =
                             map.insert(std::make_pair(section_name, std::vector<tetengo::lattice::entry>{}));
