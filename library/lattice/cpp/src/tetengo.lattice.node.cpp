@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <limits>
 #include <stdexcept>
+#include <string> // IWYU pragma: keep
 #include <string_view>
 #include <utility>
 #include <vector>
