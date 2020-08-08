@@ -179,6 +179,46 @@ BOOST_AUTO_TEST_CASE(has_next)
 
         BOOST_TEST(reader.has_next());
     }
+
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(!tetengo_json_reader_hasNext(p_reader));
+    }
+    {
+        const temporary_file file{ stream_value1 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(!tetengo_json_reader_hasNext(p_reader));
+    }
+    {
+        const temporary_file file{ stream_value2 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(tetengo_json_reader_hasNext(p_reader));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(peek)
@@ -202,6 +242,46 @@ BOOST_AUTO_TEST_CASE(peek)
         const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
 
         BOOST_TEST(reader.peek() == 'R');
+    }
+
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 0);
+    }
+    {
+        const temporary_file file{ stream_value1 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 0);
+    }
+    {
+        const temporary_file file{ stream_value2 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(tetengo_json_reader_peek(p_reader) == 'R');
     }
 }
 
