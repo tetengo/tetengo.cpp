@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cassert>
+#include <cstddef> // IWYU pragma: keep
 #include <exception>
 #include <filesystem>
 #include <fstream>

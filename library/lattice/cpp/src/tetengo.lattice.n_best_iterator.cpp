@@ -13,7 +13,7 @@
 #include <memory>
 #include <queue>
 #include <stdexcept>
-#include <utility>
+#include <utility> // IWYU pragma: keep
 #include <vector>
 
 #include <boost/container_hash/hash.hpp>
