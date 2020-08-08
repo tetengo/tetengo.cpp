@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
                 BOOST_CHECK(!o_found);
             }
             {
-                auto iterator = o_subtrie->begin();
+                auto iterator = std::begin(*o_subtrie);
 
                 BOOST_TEST(*iterator == 24);
 
@@ -372,7 +372,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
                 BOOST_TEST(*iterator == 2424);
 
                 ++iterator;
-                BOOST_CHECK(iterator == o_subtrie->end());
+                BOOST_CHECK(iterator == std::end(*o_subtrie));
             }
 
             const auto o_subtrie2 = o_subtrie->subtrie("TI");

@@ -85,8 +85,8 @@ tetengo_trie_trie_t* tetengo_trie_trie_create(
             [done_observer, p_done_observer_context]() { done_observer(p_done_observer_context); }
         };
         auto p_cpp_trie = std::make_unique<cpp_trie_type>(
-            elements.begin(),
-            elements.end(),
+            std::begin(elements),
+            std::end(elements),
             tetengo::trie::default_serializer<std::string_view>{},
             observer_set,
             double_array_density_factor);

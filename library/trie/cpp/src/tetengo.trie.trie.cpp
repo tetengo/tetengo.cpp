@@ -126,7 +126,7 @@ namespace tetengo::trie
 
         trie_iterator_impl begin() const
         {
-            return trie_iterator_impl{ m_p_double_array->begin(), m_p_double_array->get_storage() };
+            return trie_iterator_impl{ std::begin(*m_p_double_array), m_p_double_array->get_storage() };
         }
 
         trie_iterator_impl end() const
