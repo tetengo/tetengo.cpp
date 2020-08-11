@@ -29,6 +29,9 @@
     <ClCompile Include="src\tetengo.json.comment_removing_reader.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.json.json_grammar.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\tetengo.json.reader_iterator.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -47,6 +50,9 @@
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\json\comment_removing_reader.hpp">
+      <Filter>header\tetengo::json</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\json\json_grammar.hpp">
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\json\reader_iterator.hpp">
