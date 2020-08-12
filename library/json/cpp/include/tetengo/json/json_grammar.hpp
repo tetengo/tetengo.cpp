@@ -7,14 +7,55 @@
 #if !defined(TETENGO_JSON_JSONGRAMMAR_HPP)
 #define TETENGO_JSON_JSONGRAMMAR_HPP
 
+#include <memory>
+
+#include <boost/core/noncopyable.hpp>
+
 
 namespace tetengo::json
 {
+    class reader;
+
+
     /*!
         \brief A JSON grammar.
     */
-    class json_grammar
-    {};
+    class json_grammar : private boost::noncopyable
+    {
+    public:
+        // constructors and destructor
+
+        /*!
+            \brief Creates a JSON grammar.
+        */
+        json_grammar();
+
+        /*!
+            \brief Destroys the JSON grammar.
+        */
+        ~json_grammar();
+
+
+        // functions
+
+        /*!
+            \brief Parses a text.
+
+            \param reader_ A reader.
+        */
+        void parse(reader& reader_) const;
+
+
+    private:
+        // types
+
+        class impl;
+
+
+        // variables
+
+        std::unique_ptr<impl> m_p_impl;
+    };
 
 
 }
