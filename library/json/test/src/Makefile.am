@@ -8,6 +8,7 @@ sources = \
     test_tetengo.json.comment_removing_reader.cpp \
     test_tetengo.json.json_parser.cpp \
     test_tetengo.json.reader.cpp \
+    test_tetengo.json.reader_iterator.cpp \
     test_tetengo.json.stream_reader.cpp
 
 check_PROGRAMS = test_tetengo.json

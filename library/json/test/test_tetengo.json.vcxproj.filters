@@ -25,6 +25,9 @@
     <ClCompile Include="src\test_tetengo.json.comment_removing_reader.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\test_tetengo.json.reader_iterator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">

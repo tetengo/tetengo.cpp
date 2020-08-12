@@ -5,6 +5,7 @@ pkg_headers = \
     json/comment_removing_reader.hpp \
     json/json_parser.hpp \
     json/reader.hpp \
+    json/reader_iterator.hpp \
     json/stream_reader.hpp
 
 extra_headers = \

@@ -7,6 +7,7 @@ sources = \
     tetengo.json.comment_removing_reader.cpp \
     tetengo.json.json_parser.cpp \
     tetengo.json.reader.cpp \
+    tetengo.json.reader_iterator.cpp \
     tetengo.json.stream_reader.cpp
 
 lib_LIBRARIES = libtetengo.json.cpp.a

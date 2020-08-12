@@ -102,6 +102,7 @@
     <ClCompile Include="src\tetengo.json.comment_removing_reader.cpp" />
     <ClCompile Include="src\tetengo.json.json_parser.cpp" />
     <ClCompile Include="src\tetengo.json.reader.cpp" />
+    <ClCompile Include="src\tetengo.json.reader_iterator.cpp" />
     <ClCompile Include="src\tetengo.json.stream_reader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +110,7 @@
     <ClInclude Include="include\tetengo\json\comment_removing_reader.hpp" />
     <ClInclude Include="include\tetengo\json\json_parser.hpp" />
     <ClInclude Include="include\tetengo\json\reader.hpp" />
+    <ClInclude Include="include\tetengo\json\reader_iterator.hpp" />
     <ClInclude Include="include\tetengo\json\stream_reader.hpp" />
   </ItemGroup>
   <ItemGroup>
