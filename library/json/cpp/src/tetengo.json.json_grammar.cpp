@@ -7,8 +7,11 @@
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
+#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/support_multi_pass.hpp>
 
 #include <tetengo/json/json_grammar.hpp>
+#include <tetengo/json/reader_iterator.hpp>
 
 
 namespace tetengo::json
@@ -21,7 +24,10 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        impl() {}
+        impl() : m_json_text{}, m_ws{}
+        {
+            define_rules();
+        }
 
 
         // functions
@@ -33,6 +39,29 @@ namespace tetengo::json
 
 
     private:
+        // types
+
+        using iterator_type = boost::spirit::multi_pass<reader_iterator>;
+
+        using rule_type = boost::spirit::qi::rule<iterator_type>;
+
+
+        // variables
+
+        rule_type m_json_text;
+
+        rule_type m_ws;
+
+
+        // functions
+
+        void define_rules()
+        {
+            namespace qi = boost::spirit::qi;
+
+            m_ws = qi::char_(' ');
+            m_json_text = m_ws;
+        }
     };
 
 

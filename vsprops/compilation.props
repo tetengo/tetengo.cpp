@@ -18,7 +18,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(BOOST_INCLUDE);$(SolutionDir)precompiled;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <DisableSpecificWarnings>4459</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4459;4819</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

@@ -65,6 +65,7 @@
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
+#include <boost/spirit/include/qi.hpp>
 
 #endif
 
