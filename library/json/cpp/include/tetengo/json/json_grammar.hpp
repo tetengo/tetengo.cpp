@@ -42,8 +42,11 @@ namespace tetengo::json
             \brief Parses a text.
 
             \param reader_ A reader.
+
+            \retval true  When parsing is successful.
+            \retval false Otherwise.
         */
-        void parse(reader& reader_) const;
+        bool parse(reader& reader_) const;
 
 
     private:

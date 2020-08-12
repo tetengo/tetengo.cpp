@@ -26,7 +26,10 @@ namespace tetengo::json
 
         // functions
 
-        void parse(reader& /*reader_*/) const {}
+        bool parse(reader& /*reader_*/) const
+        {
+            return false;
+        }
 
 
     private:
@@ -37,9 +40,9 @@ namespace tetengo::json
 
     json_grammar::~json_grammar() = default;
 
-    void json_grammar::parse(reader& reader_) const
+    bool json_grammar::parse(reader& reader_) const
     {
-        m_p_impl->parse(reader_);
+        return m_p_impl->parse(reader_);
     }
 
 
