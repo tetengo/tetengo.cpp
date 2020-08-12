@@ -27,22 +27,41 @@ namespace tetengo::json
 
     bool reader_iterator::equal(const reader_iterator& another) const
     {
-        if (m_p_reader != another.m_p_reader)
+        if (m_p_reader && another.m_p_reader)
         {
-            return false;
+            if (m_p_reader == another.m_p_reader)
+            {
+                return m_p_reader->has_next() == another.m_p_reader->has_next() &&
+                       m_increment_count == another.m_increment_count;
+            }
+            else
+            {
+                return false;
+            }
         }
-
-        if (m_p_reader && m_p_reader->has_next())
+        else if (m_p_reader)
         {
-            return m_increment_count == another.m_increment_count;
+            return !m_p_reader->has_next();
+        }
+        else if (another.m_p_reader)
+        {
+            return !another.m_p_reader->has_next();
         }
         else
         {
-            return !another.m_p_reader || !another.m_p_reader->has_next();
+            return true;
         }
     }
 
-    void reader_iterator::increment() {}
+    void reader_iterator::increment()
+    {
+        if (!m_p_reader || !m_p_reader->has_next())
+        {
+            throw std::logic_error{ "No more character." };
+        }
+        m_p_reader->next();
+        ++m_increment_count;
+    }
 
 
 }

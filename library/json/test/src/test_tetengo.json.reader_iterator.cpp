@@ -107,13 +107,96 @@ BOOST_AUTO_TEST_CASE(equal)
 
         BOOST_CHECK(iterator1 != iterator2);
     }
+    {
+        auto                                 p_stream = std::make_unique<std::istringstream>(stream_value);
+        tetengo::json::stream_reader         reader{ std::move(p_stream), 10 };
+        tetengo::json::reader_iterator       iterator1{ reader };
+        const tetengo::json::reader_iterator iterator2{ iterator1 };
+
+        ++iterator1;
+
+        BOOST_CHECK(iterator1 != iterator2);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(increment)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto                           p_stream = std::make_unique<std::istringstream>(stream_value);
+        tetengo::json::stream_reader   reader{ std::move(p_stream), 10 };
+        tetengo::json::reader_iterator iterator{ reader };
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'S');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'h');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'i');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'k');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'o');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'k');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'u');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == ' ');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'M');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'a');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'n');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'n');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'a');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'k');
+        ++iterator;
+
+        BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
+        BOOST_TEST(*iterator == 'a');
+        ++iterator;
+
+        BOOST_CHECK(iterator == tetengo::json::reader_iterator{});
+        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW(++iterator, std::logic_error);
+    }
+    {
+        tetengo::json::reader_iterator iterator{};
+
+        BOOST_CHECK_THROW(++iterator, std::logic_error);
+    }
 }
 
 
