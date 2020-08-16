@@ -4,6 +4,8 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#if !defined(IWYU) // Boost.Spirit crashes IWYU 0.11
+
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -76,3 +78,5 @@ namespace tetengo::json
 
 
 }
+
+#endif
