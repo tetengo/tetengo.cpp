@@ -13,8 +13,8 @@ on:
 env:
   CACHE_REV:     0
   DOXYGEN_VER:   1.8.18
-  BOOST_VER:     1_73_0
-  BOOST_VER_DOT: 1.73.0
+  BOOST_VER:     1_74_0
+  BOOST_VER_DOT: 1.74.0
 
 jobs:
   build:
