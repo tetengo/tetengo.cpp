@@ -117,6 +117,7 @@
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.json.comment_removing_reader.cpp" />
+    <ClCompile Include="src\test_tetengo.json.json_grammar.cpp" />
     <ClCompile Include="src\test_tetengo.json.json_parser.cpp" />
     <ClCompile Include="src\test_tetengo.json.reader.cpp" />
     <ClCompile Include="src\test_tetengo.json.reader_iterator.cpp" />
