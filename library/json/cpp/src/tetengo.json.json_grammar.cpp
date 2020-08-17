@@ -69,7 +69,9 @@ namespace tetengo::json
             auto       first = boost::spirit::make_default_multi_pass(reader_iterator{ reader_ });
             const auto last = boost::spirit::make_default_multi_pass(reader_iterator{});
 
-            return boost::spirit::qi::parse(first, last, m_json_text);
+            const auto parsing_succeeded = boost::spirit::qi::parse(first, last, m_json_text);
+            const auto all_consumed = first == last;
+            return parsing_succeeded && all_consumed;
         }
 
 
