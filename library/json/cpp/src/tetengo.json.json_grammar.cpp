@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <unordered_map>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -35,11 +36,18 @@ namespace tetengo::json
 
         using primitive_handler_type = json_grammar::primitive_handler_type;
 
+        using structure_type_type = json_grammar::structure_type_type;
+
+        using structure_open_close_type = json_grammar::structure_open_close_type;
+
+        using structure_handler_type = json_grammar::structure_handler_type;
+
 
         // constructors and destructor
 
-        explicit impl(primitive_handler_type primitive_handler) :
+        impl(primitive_handler_type primitive_handler, structure_handler_type structure_handler) :
         m_primitive_handler{ std::move(primitive_handler) },
+            m_structure_handler{ std::move(structure_handler) },
             m_json_text{},
             m_begin_array{},
             m_begin_object{},
@@ -101,32 +109,64 @@ namespace tetengo::json
 
             primitive_type_type m_type;
 
-            explicit call_primitieve_handler_type(
-                const primitive_handler_type& handler,
-                const primitive_type_type     type) :
+            call_primitieve_handler_type(const primitive_handler_type& handler, const primitive_type_type type) :
             m_handler{ handler },
                 m_type{ type }
             {}
 
             void operator()(const std::string& attribute, const boost::spirit::qi::unused_type&, bool& pass) const
             {
-                std::string_view value = attribute;
-                if (m_type == primitive_type_type::string)
-                {
-                    assert(value.length() >= 2);
-                    assert(value.front() == '"');
-                    assert(value.back() == '"');
-                    value = value.substr(1, value.length() - 2);
-                }
-
+                const std::string_view value =
+                    m_type == primitive_type_type::string ? remove_quoration_marks(attribute) : attribute;
                 pass = m_handler(m_type, value);
             }
         };
+
+        struct call_structure_handler_type
+        {
+            const structure_handler_type& m_handler;
+
+            structure_type_type m_type;
+
+            structure_open_close_type m_open_close;
+
+            call_structure_handler_type(
+                const structure_handler_type&   handler,
+                const structure_type_type       type,
+                const structure_open_close_type open_close) :
+            m_handler{ handler },
+                m_type{ type },
+                m_open_close{ open_close }
+            {}
+
+            void operator()(const std::string& attribute, const boost::spirit::qi::unused_type&, bool& pass) const
+            {
+                std::unordered_map<std::string_view, std::string_view> attributes{};
+                if (m_type == structure_type_type::member && m_open_close == structure_open_close_type::open)
+                {
+                    attributes.insert(std::make_pair("name", remove_quoration_marks(attribute)));
+                }
+                pass = m_handler(m_type, m_open_close, attributes);
+            }
+        };
+
+
+        // static functions
+
+        static std::string_view remove_quoration_marks(const std::string_view& string_)
+        {
+            assert(string_.length() >= 2);
+            assert(string_.front() == '"');
+            assert(string_.back() == '"');
+            return string_.substr(1, string_.length() - 2);
+        }
 
 
         // variables
 
         primitive_handler_type m_primitive_handler;
+
+        structure_handler_type m_structure_handler;
 
         rule_type m_json_text;
 
@@ -217,11 +257,23 @@ namespace tetengo::json
             m_true = qi::string("true");
 
             // 4. Objects
-            m_object = m_begin_object >> -(m_member >> *(m_value_separator >> m_member)) >> m_end_object;
-            m_member = m_string >> m_name_separator >> m_value;
+            m_object = m_begin_object[call_structure_handler_type{
+                           m_structure_handler, structure_type_type::object, structure_open_close_type::open }] >>
+                       -(m_member >> *(m_value_separator >> m_member)) >>
+                       m_end_object[call_structure_handler_type{
+                           m_structure_handler, structure_type_type::object, structure_open_close_type::close }];
+            m_member = m_string[call_structure_handler_type{
+                           m_structure_handler, structure_type_type::member, structure_open_close_type::open }] >>
+                       m_name_separator >>
+                       m_value[call_structure_handler_type{
+                           m_structure_handler, structure_type_type::member, structure_open_close_type::close }];
 
             // 5. Arrays
-            m_array = m_begin_array >> -(m_value >> *(m_value_separator >> m_value)) >> m_end_array;
+            m_array = m_begin_array[call_structure_handler_type{
+                          m_structure_handler, structure_type_type::array, structure_open_close_type::open }] >>
+                      -(m_value >> *(m_value_separator >> m_value)) >>
+                      m_end_array[call_structure_handler_type{
+                          m_structure_handler, structure_type_type::array, structure_open_close_type::close }];
 
             // 6. Numbers
             m_number = -m_minus >> m_int >> -m_frac >> -m_exp;
@@ -248,8 +300,8 @@ namespace tetengo::json
     };
 
 
-    json_grammar::json_grammar(primitive_handler_type primitive_handler) :
-    m_p_impl{ std::make_unique<impl>(std::move(primitive_handler)) }
+    json_grammar::json_grammar(primitive_handler_type primitive_handler, structure_handler_type structure_handler) :
+    m_p_impl{ std::make_unique<impl>(std::move(primitive_handler), std::move(structure_handler)) }
     {}
 
     json_grammar::~json_grammar() = default;

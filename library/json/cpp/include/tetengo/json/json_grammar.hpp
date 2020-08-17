@@ -10,6 +10,7 @@
 #include <functional>
 #include <memory>
 #include <string_view>
+#include <unordered_map>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -38,8 +39,46 @@ namespace tetengo::json
             null, //!< A null.
         };
 
-        //! The primitive handler type.
-        using primitive_handler_type = std::function<bool(primitive_type_type, const std::string_view&)>;
+        /*!
+            \brief The primitive handler type.
+
+            \param type  A type.
+            \param value A value.
+
+            \retval true  When the parsing is successful.
+            \retval false Otherwise.
+        */
+        using primitive_handler_type = std::function<bool(primitive_type_type type, const std::string_view& value)>;
+
+        //! The structure type type.
+        enum class structure_type_type
+        {
+            object, //!< An object.
+            member, //!< A member.
+            array, //!< An array.
+        };
+
+        //! The structure open-close type.
+        enum class structure_open_close_type
+        {
+            open, //!< Opening.
+            close, //!< Closing.
+        };
+
+        /*!
+            \brief The structure handler type.
+
+            \param type       A type.
+            \param open_close An open or close state.
+            \param value      A value.
+
+            \retval true  When the parsing is successful.
+            \retval false Otherwise.
+        */
+        using structure_handler_type = std::function<bool(
+            structure_type_type                                           type,
+            structure_open_close_type                                     open_close,
+            const std::unordered_map<std::string_view, std::string_view>& attributes)>;
 
 
         // constructors and destructor
@@ -48,8 +87,9 @@ namespace tetengo::json
             \brief Creates a JSON grammar.
 
             \param primitive_handler A primitive element handler.
+            \param structure_handler A structure element handler.
         */
-        explicit json_grammar(primitive_handler_type primitive_handler);
+        json_grammar(primitive_handler_type primitive_handler, structure_handler_type structure_handler);
 
         /*!
             \brief Destroys the JSON grammar.

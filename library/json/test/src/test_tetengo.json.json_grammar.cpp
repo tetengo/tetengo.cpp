@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <unordered_map>
 #include <utility>
 
 #include <boost/preprocessor.hpp>
@@ -25,11 +26,19 @@ namespace
 
     std::string json2{ "false true" };
 
-    std::string json3{ "[ 1, true, 3.1415926, \"hoge\" ]" };
+    std::string json3{ "[ 42, true, 3.1415926, \"hoge\", { \"Aso\": 1592, \"Tsurugi\": 1955 } ]" };
 
     bool primitive_handler(
         const tetengo::json::json_grammar::primitive_type_type /*type*/,
         const std::string_view& /*value*/)
+    {
+        return true;
+    }
+
+    bool structure_handler(
+        const tetengo::json::json_grammar::structure_type_type /*type*/,
+        const tetengo::json::json_grammar::structure_open_close_type /*open_close*/,
+        const std::unordered_map<std::string_view, std::string_view>& /*attributes*/)
     {
         return true;
     }
@@ -47,14 +56,14 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::json_grammar grammar{ primitive_handler };
+    const tetengo::json::json_grammar grammar{ primitive_handler, structure_handler };
 }
 
 BOOST_AUTO_TEST_CASE(parse)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::json_grammar grammar{ primitive_handler };
+    const tetengo::json::json_grammar grammar{ primitive_handler, structure_handler };
 
     {
         auto                         p_stream = std::make_unique<std::istringstream>(json0);
