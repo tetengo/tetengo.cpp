@@ -20,6 +20,10 @@ namespace
 {
     std::string json0{};
 
+    std::string json1{ "false" };
+
+    std::string json2{ "[ 1, true, 3.1415926, \"hoge\" ]" };
+
 
 }
 
@@ -47,6 +51,18 @@ BOOST_AUTO_TEST_CASE(parse)
         tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
         const auto                   successful = grammar.parse(reader);
         BOOST_TEST(!successful);
+    }
+    {
+        auto                         p_stream = std::make_unique<std::istringstream>(json1);
+        tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
+        const auto                   successful = grammar.parse(reader);
+        BOOST_TEST(successful);
+    }
+    {
+        auto                         p_stream = std::make_unique<std::istringstream>(json2);
+        tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
+        const auto                   successful = grammar.parse(reader);
+        BOOST_TEST(successful);
     }
 }
 

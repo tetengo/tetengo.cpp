@@ -64,9 +64,12 @@ namespace tetengo::json
 
         // functions
 
-        bool parse(reader& /*reader_*/) const
+        bool parse(reader& reader_) const
         {
-            return false;
+            auto       first = boost::spirit::make_default_multi_pass(reader_iterator{ reader_ });
+            const auto last = boost::spirit::make_default_multi_pass(reader_iterator{});
+
+            return boost::spirit::qi::parse(first, last, m_json_text);
         }
 
 
