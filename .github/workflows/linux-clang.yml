@@ -12,7 +12,7 @@ on:
 
 env:
   CACHE_REV:     0
-  DOXYGEN_VER:   1.8.18
+  DOXYGEN_VER:   1.8.19
   BOOST_VER:     1_74_0
   BOOST_VER_DOT: 1.74.0
 
