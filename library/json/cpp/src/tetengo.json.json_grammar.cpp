@@ -6,7 +6,12 @@
 
 #if !defined(IWYU) // Boost.Spirit crashes IWYU 0.11
 
+#include <cassert>
+#include <functional>
 #include <memory>
+#include <string>
+#include <string_view>
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 #include <boost/spirit/include/qi.hpp>
@@ -24,10 +29,18 @@ namespace tetengo::json
     class json_grammar::impl : private boost::noncopyable
     {
     public:
+        // types
+
+        using primitive_type_type = json_grammar::primitive_type_type;
+
+        using primitive_handler_type = json_grammar::primitive_handler_type;
+
+
         // constructors and destructor
 
-        impl() :
-        m_json_text{},
+        explicit impl(primitive_handler_type primitive_handler) :
+        m_primitive_handler{ std::move(primitive_handler) },
+            m_json_text{},
             m_begin_array{},
             m_begin_object{},
             m_end_array{},
@@ -80,10 +93,40 @@ namespace tetengo::json
 
         using iterator_type = boost::spirit::multi_pass<reader_iterator>;
 
-        using rule_type = boost::spirit::qi::rule<iterator_type>;
+        using rule_type = boost::spirit::qi::rule<iterator_type, std::string()>;
+
+        struct call_primitieve_handler_type
+        {
+            const primitive_handler_type& m_handler;
+
+            primitive_type_type m_type;
+
+            explicit call_primitieve_handler_type(
+                const primitive_handler_type& handler,
+                const primitive_type_type     type) :
+            m_handler{ handler },
+                m_type{ type }
+            {}
+
+            void operator()(const std::string& attribute, const boost::spirit::qi::unused_type&, bool& pass) const
+            {
+                std::string_view value = attribute;
+                if (m_type == primitive_type_type::string)
+                {
+                    assert(value.length() >= 2);
+                    assert(value.front() == '"');
+                    assert(value.back() == '"');
+                    value = value.substr(1, value.length() - 2);
+                }
+
+                pass = m_handler(m_type, value);
+            }
+        };
 
 
         // variables
+
+        primitive_handler_type m_primitive_handler;
 
         rule_type m_json_text;
 
@@ -163,7 +206,12 @@ namespace tetengo::json
             m_ws = *(qi::char_(' ') | qi::char_('\t') | qi::char_('\n') | qi::char_('\r'));
 
             // 3. Values
-            m_value = m_false | m_null | m_true | m_object | m_array | m_number | m_string;
+            m_value = m_false[call_primitieve_handler_type{ m_primitive_handler, primitive_type_type::boolean }] |
+                      m_null[call_primitieve_handler_type{ m_primitive_handler, primitive_type_type::null }] |
+                      m_true[call_primitieve_handler_type{ m_primitive_handler, primitive_type_type::boolean }] |
+                      m_object | m_array |
+                      m_number[call_primitieve_handler_type{ m_primitive_handler, primitive_type_type::number }] |
+                      m_string[call_primitieve_handler_type{ m_primitive_handler, primitive_type_type::string }];
             m_false = qi::string("false");
             m_null = qi::string("null");
             m_true = qi::string("true");
@@ -200,7 +248,9 @@ namespace tetengo::json
     };
 
 
-    json_grammar::json_grammar() : m_p_impl{ std::make_unique<impl>() } {}
+    json_grammar::json_grammar(primitive_handler_type primitive_handler) :
+    m_p_impl{ std::make_unique<impl>(std::move(primitive_handler)) }
+    {}
 
     json_grammar::~json_grammar() = default;
 

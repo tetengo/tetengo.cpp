@@ -7,6 +7,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <boost/preprocessor.hpp>
@@ -26,6 +27,13 @@ namespace
 
     std::string json3{ "[ 1, true, 3.1415926, \"hoge\" ]" };
 
+    bool primitive_handler(
+        const tetengo::json::json_grammar::primitive_type_type /*type*/,
+        const std::string_view& /*value*/)
+    {
+        return true;
+    }
+
 
 }
 
@@ -39,14 +47,14 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::json_grammar grammar{};
+    const tetengo::json::json_grammar grammar{ primitive_handler };
 }
 
 BOOST_AUTO_TEST_CASE(parse)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::json_grammar grammar{};
+    const tetengo::json::json_grammar grammar{ primitive_handler };
 
     {
         auto                         p_stream = std::make_unique<std::istringstream>(json0);

@@ -7,7 +7,9 @@
 #if !defined(TETENGO_JSON_JSONGRAMMAR_HPP)
 #define TETENGO_JSON_JSONGRAMMAR_HPP
 
+#include <functional>
 #include <memory>
+#include <string_view>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -25,12 +27,29 @@ namespace tetengo::json
     class json_grammar : private boost::noncopyable
     {
     public:
+        // types
+
+        //! The primitive type type.
+        enum class primitive_type_type
+        {
+            string, //!< A string.
+            number, //!< A number.
+            boolean, //!< A boolean.
+            null, //!< A null.
+        };
+
+        //! The primitive handler type.
+        using primitive_handler_type = std::function<bool(primitive_type_type, const std::string_view&)>;
+
+
         // constructors and destructor
 
         /*!
             \brief Creates a JSON grammar.
+
+            \param primitive_handler A primitive element handler.
         */
-        json_grammar();
+        explicit json_grammar(primitive_handler_type primitive_handler);
 
         /*!
             \brief Destroys the JSON grammar.
