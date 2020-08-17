@@ -66,6 +66,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/support_multi_pass.hpp>
 
 #endif
 
