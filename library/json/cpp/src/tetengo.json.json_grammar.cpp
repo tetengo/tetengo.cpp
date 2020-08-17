@@ -26,7 +26,37 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        impl() : m_json_text{}, m_ws{}
+        impl() :
+        m_json_text{},
+            m_begin_array{},
+            m_begin_object{},
+            m_end_array{},
+            m_end_object{},
+            m_name_separator{},
+            m_value_separator{},
+            m_ws{},
+            m_value{},
+            m_false{},
+            m_null{},
+            m_true{},
+            m_object{},
+            m_member{},
+            m_array{},
+            m_number{},
+            m_decimal_point{},
+            m_digit1_9{},
+            m_e{},
+            m_exp{},
+            m_frac{},
+            m_int{},
+            m_minus{},
+            m_plus{},
+            m_zero{},
+            m_string{},
+            m_char{},
+            m_escape{},
+            m_quotation_mark{},
+            m_unescaped{}
         {
             define_rules();
         }
@@ -52,7 +82,63 @@ namespace tetengo::json
 
         rule_type m_json_text;
 
+        rule_type m_begin_array;
+
+        rule_type m_begin_object;
+
+        rule_type m_end_array;
+
+        rule_type m_end_object;
+
+        rule_type m_name_separator;
+
+        rule_type m_value_separator;
+
         rule_type m_ws;
+
+        rule_type m_value;
+
+        rule_type m_false;
+
+        rule_type m_null;
+
+        rule_type m_true;
+
+        rule_type m_object;
+
+        rule_type m_member;
+
+        rule_type m_array;
+
+        rule_type m_number;
+
+        rule_type m_decimal_point;
+
+        rule_type m_digit1_9;
+
+        rule_type m_e;
+
+        rule_type m_exp;
+
+        rule_type m_frac;
+
+        rule_type m_int;
+
+        rule_type m_minus;
+
+        rule_type m_plus;
+
+        rule_type m_zero;
+
+        rule_type m_string;
+
+        rule_type m_char;
+
+        rule_type m_escape;
+
+        rule_type m_quotation_mark;
+
+        rule_type m_unescaped;
 
 
         // functions
@@ -61,8 +147,50 @@ namespace tetengo::json
         {
             namespace qi = boost::spirit::qi;
 
-            m_ws = qi::char_(' ');
-            m_json_text = m_ws;
+            // 2. Grammar
+            m_json_text = m_ws >> m_value >> m_ws;
+            m_begin_array = m_ws >> qi::char_('[') >> m_ws;
+            m_begin_object = m_ws >> qi::char_('{') >> m_ws;
+            m_end_array = m_ws >> qi::char_(']') >> m_ws;
+            m_end_object = m_ws >> qi::char_('}') >> m_ws;
+            m_name_separator = m_ws >> qi::char_(':') >> m_ws;
+            m_value_separator = m_ws >> qi::char_(',') >> m_ws;
+            m_ws = *(qi::char_(' ') | qi::char_('\t') | qi::char_('\n') | qi::char_('\r'));
+
+            // 3. Values
+            m_value = m_false | m_null | m_true | m_object | m_array | m_number | m_string;
+            m_false = qi::string("false");
+            m_null = qi::string("null");
+            m_true = qi::string("true");
+
+            // 4. Objects
+            m_object = m_begin_object >> -(m_member >> *(m_value_separator >> m_member)) >> m_end_object;
+            m_member = m_string >> m_name_separator >> m_value;
+
+            // 5. Arrays
+            m_array = m_begin_array >> -(m_value >> *(m_value_separator >> m_value)) >> m_end_array;
+
+            // 6. Numbers
+            m_number = -m_minus >> m_int >> -m_frac >> -m_exp;
+            m_decimal_point = qi::char_('.');
+            m_digit1_9 = qi::char_('1', '9');
+            m_e = qi::char_('e') | qi::char_('E');
+            m_exp = m_e >> -(m_minus | m_plus) >> +qi::digit;
+            m_frac = m_decimal_point >> +qi::digit;
+            m_int = m_zero | (m_digit1_9 >> *qi::digit);
+            m_minus = qi::char_('-');
+            m_plus = qi::char_('+');
+            m_zero = qi::char_('0');
+
+            // 7. Strings
+            m_string = m_quotation_mark >> *m_char >> m_quotation_mark;
+            m_char = m_unescaped | (m_escape >> (qi::char_('"') | qi::char_('\\') | qi::char_('/') | qi::char_('b') |
+                                                 qi::char_('f') | qi::char_('n') | qi::char_('r') | qi::char_('t') |
+                                                 (qi::char_('u') >> qi::repeat(4)[qi::xdigit])));
+            m_escape = qi::char_('\\');
+            m_quotation_mark = qi::char_('"');
+            m_unescaped =
+                qi::char_ - qi::char_(static_cast<char>(0x00), static_cast<char>(0x19)) - m_quotation_mark - m_escape;
         }
     };
 
