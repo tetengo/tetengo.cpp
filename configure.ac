@@ -112,7 +112,7 @@ test -z $DOXYGEN && \
     AC_MSG_WARN([You cannot generate documents for lack of Doxygen.])
 
 #### Library Checks ####
-AX_BOOST_BASE([1.73.0])
+AX_BOOST_BASE([1.74.0])
 AX_BOOST_UNIT_TEST_FRAMEWORK
 AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
 AC_SUBST([LIBS], "${LIBS} -lstdc++fs -lstdc++")
