@@ -34,7 +34,9 @@ namespace
 
     const std::vector<std::string> expected_parsed2{ "boolean false" };
 
-    const std::string json3{ "[ 42, true, 3.1415926, \"hoge\", { \"Aso\": 1592, \"Tsurugi\": 1955 } ]" };
+    const std::string json3{
+        "[ 42, true, 3.1415926, \"hoge\", { \"Aso\": 1592, \"Tsurugi\": 1955 }, [ null, 3.0e+5 ] ]"
+    };
 
     const std::vector<std::string> expected_parsed3{
         "array open" /*                                                      */,
@@ -50,6 +52,10 @@ namespace
         "number 1955" /*                                                     */,
         "member close" /*                                                    */,
         "object close" /*                                                    */,
+        "array open" /*                                                      */,
+        "null null" /*                                                       */,
+        "number 3.0e+5" /*                                                   */,
+        "array close" /*                                                     */,
         "array close" /*                                                     */,
     };
 
