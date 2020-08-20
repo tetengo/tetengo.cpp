@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\json\element.h" />
     <ClInclude Include="include\tetengo\json\jsonParser.h" />
     <ClInclude Include="include\tetengo\json\reader.h" />
   </ItemGroup>

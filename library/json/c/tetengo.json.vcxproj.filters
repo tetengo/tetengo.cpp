@@ -34,6 +34,9 @@
     <ClInclude Include="include\tetengo\json\reader.h">
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\json\element.h">
+      <Filter>header\tetengo::json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def">
