@@ -20,6 +20,27 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_WARN_MESSAGE(false, "Implement it.");
 }
 
+BOOST_AUTO_TEST_CASE(type)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(value)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(attributes)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
