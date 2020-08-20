@@ -24,13 +24,13 @@ namespace tetengo::json
         //! The type name type.
         enum class type_name_type
         {
-            string, //!< A string.
-            number, //!< A number.
-            boolean, //!< A boolean.
-            null, //!< A null.
-            object, //!< An object.
-            member, //!< A member.
-            array, //!< An array.
+            string, //!< A string. primitive.
+            number, //!< A number. primitive.
+            boolean, //!< A boolean. primitive.
+            null, //!< A null. primitive.
+            object, //!< An object. structure.
+            member, //!< A member. structure.
+            array, //!< An array. structure.
         };
 
         //! The type category type.
@@ -60,6 +60,8 @@ namespace tetengo::json
             \param type       A type.
             \param value      A value.
             \param attributes Attributes.
+
+            \throw std::invalid_argument When the arguments are mismatched.
         */
         element(type_type type, std::string value, std::unordered_map<std::string, std::string> attributes);
 
