@@ -115,6 +115,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo_json_element.cpp" />
     <ClCompile Include="src\tetengo_json_jsonParser.cpp" />
     <ClCompile Include="src\tetengo_json_reader.cpp" />
   </ItemGroup>
