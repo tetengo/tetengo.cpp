@@ -4,6 +4,7 @@
 headers =
 
 sources = \
+    tetengo_json_element.cpp \
     tetengo_json_jsonParser.cpp \
     tetengo_json_reader.cpp
 

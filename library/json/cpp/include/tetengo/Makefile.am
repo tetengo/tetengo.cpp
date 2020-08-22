@@ -3,6 +3,7 @@
 
 pkg_headers = \
     json/comment_removing_reader.hpp \
+    json/element.hpp \
     json/json_grammar.hpp \
     json/json_parser.hpp \
     json/reader.hpp \
