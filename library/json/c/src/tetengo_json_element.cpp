@@ -120,6 +120,26 @@ tetengo_json_element_t* tetengo_json_element_create(
     }
 }
 
+tetengo_json_element_t* tetengo_json_element_copy(const tetengo_json_element_t* const p_another)
+{
+    try
+    {
+        if (!p_another)
+        {
+            throw std::invalid_argument{ "p_another is NULL." };
+        }
+
+        auto p_cpp_element = std::make_unique<tetengo::json::element>(*p_another->p_cpp_element);
+
+        auto p_instance = std::make_unique<tetengo_json_element_t>(std::move(p_cpp_element));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
 void tetengo_json_element_destroy(const tetengo_json_element_t* const p_element)
 {
     try

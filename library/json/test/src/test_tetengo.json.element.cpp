@@ -207,6 +207,31 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto* const p_element = tetengo_json_element_create(&type, "", attributes.data(), attributes.size());
         BOOST_TEST(!p_element);
     }
+    {
+        const tetengo_json_element_type_t type{ tetengo_json_element_typeName_string(),
+                                                tetengo_json_element_typeCategory_primitive() };
+        const auto* const                 p_element1 = tetengo_json_element_create(&type, "test", nullptr, 0);
+        BOOST_SCOPE_EXIT(p_element1)
+        {
+            tetengo_json_element_destroy(p_element1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element1);
+
+        const auto* const p_element2 = tetengo_json_element_copy(p_element1);
+        BOOST_SCOPE_EXIT(p_element2)
+        {
+            tetengo_json_element_destroy(p_element2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element2);
+
+        // TODO equivalence checks
+    }
+    {
+        const auto* const p_element = tetengo_json_element_copy(nullptr);
+        BOOST_TEST(!p_element);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(type)

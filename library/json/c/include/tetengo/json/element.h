@@ -126,6 +126,15 @@ tetengo_json_element_t* tetengo_json_element_create(
     size_t                                          attribute_count);
 
 /*!
+    \brief Copies an element.
+
+    \param p_another A pointer to another element.
+
+    \return A pointer to an element. Or NULL on error.
+*/
+tetengo_json_element_t* tetengo_json_element_copy(const tetengo_json_element_t* p_another);
+
+/*!
     \brief Destroys an element.
 
     \param p_element A pointer to an element.
