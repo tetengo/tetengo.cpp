@@ -17,3 +17,5 @@ EXPORTS
 	tetengo_json_element_typeCategory_primitive
 	tetengo_json_element_typeCategory_structureOpen
 	tetengo_json_element_typeCategory_structureClose
+	tetengo_json_element_create
+	tetengo_json_element_destroy
