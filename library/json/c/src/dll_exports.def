@@ -22,3 +22,5 @@ EXPORTS
 	tetengo_json_element_destroy
 	tetengo_json_element_type
 	tetengo_json_element_value
+	tetengo_json_element_attributeKeys
+	tetengo_json_element_attributeValueOf

@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
@@ -160,7 +161,7 @@ const tetengo_json_element_type_t* tetengo_json_element_type(const tetengo_json_
     {
         if (!p_element)
         {
-            throw std::invalid_argument{ "p_another is NULL." };
+            throw std::invalid_argument{ "p_element is NULL." };
         }
 
         auto* const p_mutable_element = const_cast<tetengo_json_element_t*>(p_element);
@@ -174,24 +175,72 @@ const tetengo_json_element_type_t* tetengo_json_element_type(const tetengo_json_
     }
 }
 
-size_t tetengo_json_element_value(const tetengo_json_element_t* const p_element, char* const p_value)
+const char* tetengo_json_element_value(const tetengo_json_element_t* const p_element)
 {
     try
     {
         if (!p_element)
         {
-            throw std::invalid_argument{ "p_another is NULL." };
+            throw std::invalid_argument{ "p_element is NULL." };
         }
 
-        if (p_value)
+        return p_element->p_cpp_element->value().c_str();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+size_t tetengo_json_element_attributeKeys(const tetengo_json_element_t* const p_element, const char** const p_keys)
+{
+    try
+    {
+        if (!p_element)
         {
-            std::copy(
-                std::begin(p_element->p_cpp_element->value()), std::end(p_element->p_cpp_element->value()), p_value);
+            throw std::invalid_argument{ "p_element is NULL." };
         }
-        return p_element->p_cpp_element->value().length();
+
+        if (p_keys)
+        {
+            auto index = static_cast<std::size_t>(0);
+            for (const auto& key_value: p_element->p_cpp_element->attributes())
+            {
+                p_keys[index] = key_value.first.c_str();
+                ++index;
+            }
+        }
+        return p_element->p_cpp_element->attributes().size();
     }
     catch (...)
     {
         return 0;
+    }
+}
+
+const char* tetengo_json_element_attributeValueOf(const tetengo_json_element_t* const p_element, const char* const key)
+{
+    try
+    {
+        if (!p_element)
+        {
+            throw std::invalid_argument{ "p_element is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+
+        const auto found = p_element->p_cpp_element->attributes().find(key);
+        if (found == std::end(p_element->p_cpp_element->attributes()))
+        {
+            throw std::invalid_argument{ "key is not found." };
+        }
+
+        return found->second.c_str();
+    }
+    catch (...)
+    {
+        return nullptr;
     }
 }

@@ -154,11 +154,30 @@ const tetengo_json_element_type_t* tetengo_json_element_type(const tetengo_json_
     \brief Returns the value.
 
     \param p_element A pointer to an element.
-    \param p_value   The storage for a value. Can be NULL.
 
-    \return The value length. Or 0 when p_element is NULL.
+    \return The value. Or NULL when p_element is NULL.
 */
-size_t tetengo_json_element_value(const tetengo_json_element_t* p_element, char* p_value);
+const char* tetengo_json_element_value(const tetengo_json_element_t* p_element);
+
+/*!
+    \brief Returns the attribute keys.
+
+    \param p_element A pointer to an element.
+    \param p_keys    The storage for a keys. Can be NULL.
+
+    \return The attribute count (== The key count). Or 0 when p_element is NULL.
+*/
+size_t tetengo_json_element_attributeKeys(const tetengo_json_element_t* p_element, const char** p_keys);
+
+/*!
+    \brief Returns the attribute value.
+
+    \param p_element A pointer to an element.
+    \param key       A key.
+
+    \return The value. Or nullptr when p_element is NULL or key is NULL or key is not found.
+*/
+const char* tetengo_json_element_attributeValueOf(const tetengo_json_element_t* p_element, const char* key);
 
 
 #if defined(__cplusplus)

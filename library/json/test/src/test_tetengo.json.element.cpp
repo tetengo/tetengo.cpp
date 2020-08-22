@@ -362,12 +362,9 @@ BOOST_AUTO_TEST_CASE(value)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_element);
 
-        const auto value_length = tetengo_json_element_value(p_element, nullptr);
-        BOOST_TEST_REQUIRE(value_length == 4U);
-        std::vector<char> value(value_length + 1, 0);
-        const auto        value_length_again = tetengo_json_element_value(p_element, value.data());
-        BOOST_TEST(value_length_again == value_length);
-        BOOST_TEST(std::string_view(value.data()) == "test");
+        const auto* const value = tetengo_json_element_value(p_element);
+        BOOST_TEST_REQUIRE(value);
+        BOOST_TEST(std::string_view(value) == "test");
     }
     {
         const tetengo_json_element_type_t type{ tetengo_json_element_typeName_object(),
@@ -380,8 +377,9 @@ BOOST_AUTO_TEST_CASE(value)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_element);
 
-        const auto value_length = tetengo_json_element_value(p_element, nullptr);
-        BOOST_TEST(value_length == 0U);
+        const auto* const value = tetengo_json_element_value(p_element);
+        BOOST_TEST_REQUIRE(value);
+        BOOST_TEST(std::string_view(value) == "");
     }
     {
         const tetengo_json_element_type_t                           type{ tetengo_json_element_typeName_member(),
@@ -395,12 +393,13 @@ BOOST_AUTO_TEST_CASE(value)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_element);
 
-        const auto value_length = tetengo_json_element_value(p_element, nullptr);
-        BOOST_TEST(value_length == 0U);
+        const auto* const value = tetengo_json_element_value(p_element);
+        BOOST_TEST_REQUIRE(value);
+        BOOST_TEST(std::string_view(value) == "");
     }
     {
-        const auto value_length = tetengo_json_element_value(nullptr, nullptr);
-        BOOST_TEST(value_length == 0U);
+        const auto* const value = tetengo_json_element_value(nullptr);
+        BOOST_TEST(!value);
     }
 }
 
@@ -433,6 +432,96 @@ BOOST_AUTO_TEST_CASE(attributes)
         BOOST_TEST(element.attributes().size() == 1U);
         BOOST_CHECK(element.attributes().find("name") != element.attributes().end());
         BOOST_TEST(element.attributes().find("name")->second == "value");
+    }
+
+    {
+        const tetengo_json_element_type_t type{ tetengo_json_element_typeName_string(),
+                                                tetengo_json_element_typeCategory_primitive() };
+        const auto* const                 p_element = tetengo_json_element_create(&type, "test", nullptr, 0);
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto attribute_count = tetengo_json_element_attributeKeys(p_element, nullptr);
+        BOOST_TEST(attribute_count == 0U);
+    }
+    {
+        const tetengo_json_element_type_t type{ tetengo_json_element_typeName_object(),
+                                                tetengo_json_element_typeCategory_structureClose() };
+        const auto* const                 p_element = tetengo_json_element_create(&type, "", nullptr, 0);
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto attribute_count = tetengo_json_element_attributeKeys(p_element, nullptr);
+        BOOST_TEST(attribute_count == 0U);
+    }
+    {
+        const tetengo_json_element_type_t                           type{ tetengo_json_element_typeName_member(),
+                                                tetengo_json_element_typeCategory_structureOpen() };
+        const std::vector<tetengo_json_element_attributeKeyValue_t> attributes{ { "name", "value" } };
+        const auto* const p_element = tetengo_json_element_create(&type, "", attributes.data(), attributes.size());
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto attribute_count = tetengo_json_element_attributeKeys(p_element, nullptr);
+        BOOST_TEST_REQUIRE(attribute_count == 1U);
+        std::vector<const char*> attribute_keys(attribute_count, nullptr);
+        const auto attribute_count_again = tetengo_json_element_attributeKeys(p_element, attribute_keys.data());
+        BOOST_TEST(attribute_count_again == attribute_count);
+        BOOST_TEST_REQUIRE(attribute_keys[0]);
+        BOOST_TEST(std::string_view(attribute_keys[0]) == "name");
+        const auto* const attribute_value = tetengo_json_element_attributeValueOf(p_element, attribute_keys[0]);
+        BOOST_TEST_REQUIRE(attribute_value);
+        BOOST_TEST(std::string_view(attribute_value) == "value");
+    }
+    {
+        const auto attribute_count = tetengo_json_element_attributeKeys(nullptr, nullptr);
+        BOOST_TEST(attribute_count == 0U);
+    }
+    {
+        const auto* const attribute_value = tetengo_json_element_attributeValueOf(nullptr, "name");
+        BOOST_TEST(!attribute_value);
+    }
+    {
+        const tetengo_json_element_type_t                           type{ tetengo_json_element_typeName_member(),
+                                                tetengo_json_element_typeCategory_structureOpen() };
+        const std::vector<tetengo_json_element_attributeKeyValue_t> attributes{ { "name", "value" } };
+        const auto* const p_element = tetengo_json_element_create(&type, "", attributes.data(), attributes.size());
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto* const attribute_value = tetengo_json_element_attributeValueOf(p_element, nullptr);
+        BOOST_TEST(!attribute_value);
+    }
+    {
+        const tetengo_json_element_type_t                           type{ tetengo_json_element_typeName_member(),
+                                                tetengo_json_element_typeCategory_structureOpen() };
+        const std::vector<tetengo_json_element_attributeKeyValue_t> attributes{ { "name", "value" } };
+        const auto* const p_element = tetengo_json_element_create(&type, "", attributes.data(), attributes.size());
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto* const attribute_value = tetengo_json_element_attributeValueOf(p_element, "key");
+        BOOST_TEST(!attribute_value);
     }
 }
 
