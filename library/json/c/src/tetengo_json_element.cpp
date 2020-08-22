@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -170,5 +171,27 @@ const tetengo_json_element_type_t* tetengo_json_element_type(const tetengo_json_
     catch (...)
     {
         return nullptr;
+    }
+}
+
+size_t tetengo_json_element_value(const tetengo_json_element_t* const p_element, char* const p_value)
+{
+    try
+    {
+        if (!p_element)
+        {
+            throw std::invalid_argument{ "p_another is NULL." };
+        }
+
+        if (p_value)
+        {
+            std::copy(
+                std::begin(p_element->p_cpp_element->value()), std::end(p_element->p_cpp_element->value()), p_value);
+        }
+        return p_element->p_cpp_element->value().length();
+    }
+    catch (...)
+    {
+        return 0;
     }
 }

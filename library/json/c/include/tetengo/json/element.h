@@ -146,9 +146,19 @@ void tetengo_json_element_destroy(const tetengo_json_element_t* p_element);
 
     \param p_element A pointer to an element.
 
-    \return The pointer to the type.
+    \return The pointer to the type. Or NULL when p_element is NULL.
 */
 const tetengo_json_element_type_t* tetengo_json_element_type(const tetengo_json_element_t* p_element);
+
+/*!
+    \brief Returns the value.
+
+    \param p_element A pointer to an element.
+    \param p_value   The storage for a value. Can be NULL.
+
+    \return The value length. Or 0 when p_element is NULL.
+*/
+size_t tetengo_json_element_value(const tetengo_json_element_t* p_element, char* p_value);
 
 
 #if defined(__cplusplus)
