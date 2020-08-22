@@ -244,9 +244,8 @@ BOOST_AUTO_TEST_CASE(type)
                                     "test",
                                     std::unordered_map<std::string, std::string>{} };
 
-        BOOST_CHECK(
-            element.type().name == element_type::type_name_type::string &&
-            element.type().category == element_type::type_category_type::primitive);
+        BOOST_CHECK(element.type().name == element_type::type_name_type::string);
+        BOOST_CHECK(element.type().category == element_type::type_category_type::primitive);
     }
     {
         const element_type element{ element_type::type_type{ element_type::type_name_type::object,
@@ -254,9 +253,8 @@ BOOST_AUTO_TEST_CASE(type)
                                     std::string{},
                                     std::unordered_map<std::string, std::string>{} };
 
-        BOOST_CHECK(
-            element.type().name == element_type::type_name_type::object &&
-            element.type().category == element_type::type_category_type::structure_close);
+        BOOST_CHECK(element.type().name == element_type::type_name_type::object);
+        BOOST_CHECK(element.type().category == element_type::type_category_type::structure_close);
     }
     {
         const element_type element{ element_type::type_type{ element_type::type_name_type::member,
@@ -264,9 +262,62 @@ BOOST_AUTO_TEST_CASE(type)
                                     std::string{},
                                     std::unordered_map<std::string, std::string>{ { "name", "value" } } };
 
-        BOOST_CHECK(
-            element.type().name == element_type::type_name_type::member &&
-            element.type().category == element_type::type_category_type::structure_open);
+        BOOST_CHECK(element.type().name == element_type::type_name_type::member);
+        BOOST_CHECK(element.type().category == element_type::type_category_type::structure_open);
+    }
+
+    {
+        const tetengo_json_element_type_t type{ tetengo_json_element_typeName_string(),
+                                                tetengo_json_element_typeCategory_primitive() };
+        const auto* const                 p_element = tetengo_json_element_create(&type, "test", nullptr, 0);
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto* const p_type = tetengo_json_element_type(p_element);
+        BOOST_TEST_REQUIRE(p_type);
+        BOOST_TEST(p_type->name == tetengo_json_element_typeName_string());
+        BOOST_TEST(p_type->category == tetengo_json_element_typeCategory_primitive());
+    }
+    {
+        const tetengo_json_element_type_t type{ tetengo_json_element_typeName_object(),
+                                                tetengo_json_element_typeCategory_structureClose() };
+        const auto* const                 p_element = tetengo_json_element_create(&type, "", nullptr, 0);
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto* const p_type = tetengo_json_element_type(p_element);
+        BOOST_TEST_REQUIRE(p_type);
+        BOOST_TEST(p_type->name == tetengo_json_element_typeName_object());
+        BOOST_TEST(p_type->category == tetengo_json_element_typeCategory_structureClose());
+    }
+    {
+        const tetengo_json_element_type_t                           type{ tetengo_json_element_typeName_member(),
+                                                tetengo_json_element_typeCategory_structureOpen() };
+        const std::vector<tetengo_json_element_attributeKeyValue_t> attributes{ { "name", "value" } };
+        const auto* const p_element = tetengo_json_element_create(&type, "", attributes.data(), attributes.size());
+        BOOST_SCOPE_EXIT(p_element)
+        {
+            tetengo_json_element_destroy(p_element);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_element);
+
+        const auto* const p_type = tetengo_json_element_type(p_element);
+        BOOST_TEST_REQUIRE(p_type);
+        BOOST_TEST(p_type->name == tetengo_json_element_typeName_member());
+        BOOST_TEST(p_type->category == tetengo_json_element_typeCategory_structureOpen());
+    }
+    {
+        const auto* const p_type = tetengo_json_element_type(nullptr);
+        BOOST_TEST(!p_type);
     }
 }
 

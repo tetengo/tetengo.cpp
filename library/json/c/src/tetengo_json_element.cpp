@@ -21,8 +21,11 @@ struct tetengo_json_element_tag
 {
     std::unique_ptr<tetengo::json::element> p_cpp_element;
 
+    tetengo_json_element_type_t type;
+
     tetengo_json_element_tag(std::unique_ptr<tetengo::json::element>&& p_cpp_element) :
-    p_cpp_element{ std::move(p_cpp_element) }
+    p_cpp_element{ std::move(p_cpp_element) },
+        type{}
     {}
 };
 
@@ -148,4 +151,24 @@ void tetengo_json_element_destroy(const tetengo_json_element_t* const p_element)
     }
     catch (...)
     {}
+}
+
+const tetengo_json_element_type_t* tetengo_json_element_type(const tetengo_json_element_t* const p_element)
+{
+    try
+    {
+        if (!p_element)
+        {
+            throw std::invalid_argument{ "p_another is NULL." };
+        }
+
+        auto* const p_mutable_element = const_cast<tetengo_json_element_t*>(p_element);
+        p_mutable_element->type.name = static_cast<int>(p_element->p_cpp_element->type().name);
+        p_mutable_element->type.category = static_cast<int>(p_element->p_cpp_element->type().category);
+        return &p_element->type;
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
 }

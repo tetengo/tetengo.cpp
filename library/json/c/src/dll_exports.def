@@ -20,3 +20,4 @@ EXPORTS
 	tetengo_json_element_create
 	tetengo_json_element_copy
 	tetengo_json_element_destroy
+	tetengo_json_element_type

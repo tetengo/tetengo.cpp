@@ -130,7 +130,7 @@ tetengo_json_element_t* tetengo_json_element_create(
 
     \param p_another A pointer to another element.
 
-    \return A pointer to an element. Or NULL on error.
+    \return A pointer to an element. Or NULL when p_another is NULL.
 */
 tetengo_json_element_t* tetengo_json_element_copy(const tetengo_json_element_t* p_another);
 
@@ -140,6 +140,15 @@ tetengo_json_element_t* tetengo_json_element_copy(const tetengo_json_element_t* 
     \param p_element A pointer to an element.
 */
 void tetengo_json_element_destroy(const tetengo_json_element_t* p_element);
+
+/*!
+    \brief Returns the type.
+
+    \param p_element A pointer to an element.
+
+    \return The pointer to the type.
+*/
+const tetengo_json_element_type_t* tetengo_json_element_type(const tetengo_json_element_t* p_element);
 
 
 #if defined(__cplusplus)
