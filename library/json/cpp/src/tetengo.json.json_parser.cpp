@@ -5,6 +5,7 @@
 */
 
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -20,7 +21,13 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        explicit impl(std::unique_ptr<reader>&& p_reader) : m_p_reader{ std::move(p_reader) } {}
+        explicit impl(std::unique_ptr<reader>&& p_reader) : m_p_reader{ std::move(p_reader) }
+        {
+            if (!m_p_reader)
+            {
+                throw std::invalid_argument{ "p_reader is nullptr." };
+            }
+        }
 
 
     private:

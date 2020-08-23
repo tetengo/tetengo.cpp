@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -73,6 +74,11 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json0), 10);
         const tetengo::json::json_parser parser{ std::move(p_reader) };
+    }
+    {
+        BOOST_CHECK_THROW(
+            const tetengo::json::json_parser parser{ std::unique_ptr<tetengo::json::reader>{} }, std::invalid_argument);
+        ;
     }
 }
 
