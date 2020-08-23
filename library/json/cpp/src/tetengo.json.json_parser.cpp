@@ -7,12 +7,15 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
+#include <thread>
 #include <unordered_map>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/json/element.hpp>
+#include <tetengo/json/json_grammar.hpp>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/json/reader.hpp>
 
@@ -24,11 +27,20 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        explicit impl(std::unique_ptr<reader>&& p_reader) : m_p_reader{ std::move(p_reader) }
+        explicit impl(std::unique_ptr<reader>&& p_reader) : m_p_reader{ std::move(p_reader) }, m_p_worker{}
         {
             if (!m_p_reader)
             {
                 throw std::invalid_argument{ "p_reader is nullptr." };
+            }
+            m_p_worker = std::make_unique<std::thread>(&impl::worker_precedure, this);
+        }
+
+        ~impl()
+        {
+            if (m_p_worker && m_p_worker->joinable())
+            {
+                m_p_worker->join();
             }
         }
 
@@ -55,6 +67,46 @@ namespace tetengo::json
         // variables
 
         const std::unique_ptr<reader> m_p_reader;
+
+        std::unique_ptr<std::thread> m_p_worker;
+
+
+        // functions
+
+        void worker_precedure()
+        {
+            try
+            {
+                const json_grammar grammar_{
+                    [this](const json_grammar::primitive_type_type type, const std::string_view& value) {
+                        return on_primitive(type, value);
+                    },
+                    [this](
+                        const json_grammar::structure_type_type                       type,
+                        const json_grammar::structure_open_close_type                 open_close,
+                        const std::unordered_map<std::string_view, std::string_view>& attributes) {
+                        return on_structure(type, open_close, attributes);
+                    }
+                };
+
+                grammar_.parse(*m_p_reader);
+            }
+            catch (...)
+            {}
+        }
+
+        bool on_primitive(const json_grammar::primitive_type_type /*type*/, const std::string_view& /*value*/)
+        {
+            return true;
+        }
+
+        bool on_structure(
+            const json_grammar::structure_type_type /*type*/,
+            const json_grammar::structure_open_close_type /*open_close*/,
+            const std::unordered_map<std::string_view, std::string_view>& /*attributes*/)
+        {
+            return true;
+        }
     };
 
 
