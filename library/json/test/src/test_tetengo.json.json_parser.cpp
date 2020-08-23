@@ -82,6 +82,27 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(has_next)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(peek)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(next)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

@@ -14,6 +14,7 @@
 
 namespace tetengo::json
 {
+    class element;
     class reader;
 
 
@@ -38,6 +39,35 @@ namespace tetengo::json
             \brief Destroys the JSON parser.
         */
         ~json_parser();
+
+
+        // functions
+
+        /*!
+            \brief Returns true when the next element exists.
+
+            \return true  When the next element exists.
+            \return false Otherwise.
+        */
+        bool has_next() const;
+
+        /*!
+            \brief Returns the current element.
+
+            \return The current element.
+
+            \throw std::logic_error When current position is beyond the
+                                    termination point.
+        */
+        const element& peek() const;
+
+        /*!
+            \brief Moves to the next element.
+
+            \throw std::logic_error When current position is beyond the
+                                    termination point.
+        */
+        void next();
 
 
     private:
