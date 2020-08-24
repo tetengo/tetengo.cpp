@@ -7,6 +7,7 @@
 #if !defined(TETENGO_JSON_CHANNEL_HPP)
 #define TETENGO_JSON_CHANNEL_HPP
 
+#include <cstddef>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -24,8 +25,10 @@ namespace tetengo::json
 
         /*!
             \brief Creates a channel.
+
+            \param capacity A capacity.
         */
-        channel();
+        explicit channel(std::size_t capacity);
 
         /*!
             \brief Destroys the JSON parser.
