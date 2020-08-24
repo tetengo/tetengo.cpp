@@ -99,6 +99,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.json.channel.cpp" />
     <ClCompile Include="src\tetengo.json.comment_removing_reader.cpp" />
     <ClCompile Include="src\tetengo.json.element.cpp" />
     <ClCompile Include="src\tetengo.json.json_grammar.cpp" />
@@ -109,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\json\channel.hpp" />
     <ClInclude Include="include\tetengo\json\comment_removing_reader.hpp" />
     <ClInclude Include="include\tetengo\json\element.hpp" />
     <ClInclude Include="include\tetengo\json\json_grammar.hpp" />

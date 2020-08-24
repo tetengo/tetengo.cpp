@@ -5,6 +5,7 @@ headers =
 
 sources = \
     master.cpp \
+    test_tetengo.json.channel.cpp \
     test_tetengo.json.comment_removing_reader.cpp \
     test_tetengo.json.element.cpp \
     test_tetengo.json.json_grammar.cpp \

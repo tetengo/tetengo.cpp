@@ -116,6 +116,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
+    <ClCompile Include="src\test_tetengo.json.channel.cpp" />
     <ClCompile Include="src\test_tetengo.json.comment_removing_reader.cpp" />
     <ClCompile Include="src\test_tetengo.json.element.cpp" />
     <ClCompile Include="src\test_tetengo.json.json_grammar.cpp" />
