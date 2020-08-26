@@ -22,6 +22,55 @@ BOOST_AUTO_TEST_CASE(construction)
     const tetengo::json::channel channel_{ 42 };
 }
 
+BOOST_AUTO_TEST_CASE(insert)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::channel channel_{ 42 };
+}
+
+BOOST_AUTO_TEST_CASE(peek)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::channel channel_{ 42 };
+}
+
+BOOST_AUTO_TEST_CASE(take)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::channel channel_{ 42 };
+}
+
+BOOST_AUTO_TEST_CASE(close_requested)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::channel channel_{ 42 };
+}
+
+BOOST_AUTO_TEST_CASE(request_close)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::channel channel_{ 42 };
+}
+
+BOOST_AUTO_TEST_CASE(closed)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::channel channel_{ 42 };
+}
+
+BOOST_AUTO_TEST_CASE(close)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::channel channel_{ 42 };
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

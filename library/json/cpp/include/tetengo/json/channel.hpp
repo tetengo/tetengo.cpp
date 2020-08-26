@@ -8,6 +8,7 @@
 #define TETENGO_JSON_CHANNEL_HPP
 
 #include <cstddef>
+#include <exception>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -15,6 +16,9 @@
 
 namespace tetengo::json
 {
+    class element;
+
+
     /*!
         \brief A channel.
     */
@@ -34,6 +38,70 @@ namespace tetengo::json
             \brief Destroys the JSON parser.
         */
         ~channel();
+
+
+        // functions
+
+        /*!
+            \brief Inserts an element.
+
+            The element inserted after a close() call are just discarded.
+
+            \param element_ An element.
+        */
+        void insert(element element_);
+
+        /*!
+            \brief Inserts an exception.
+
+            The exception inserted after a close() call are just discarded.
+
+            \param p_exception An exception pointer.
+        */
+        void insert(std::exception_ptr&& p_exception);
+
+        /*!
+            \brief Returns the front element.
+
+            \return The front element.
+
+            \throw unspecified      An exception inserted with insert(std::exception_ptr&&).
+            \throw std::logic_error When the channel is already closed.
+        */
+        const element& peek() const;
+
+        /*!
+            \brief Takes an element.
+
+            \throw std::logic_error When the channel is already closed.
+        */
+        void take();
+
+        /*!
+            \brief Returns true the channel close is requested.
+
+            \retval true  When the channel close is requested.
+            \retval false Otherwise.
+        */
+        bool close_requested() const;
+
+        /*!
+            \brief Request the channel to close.
+        */
+        void request_close();
+
+        /*!
+            \brief Returns true the channel is closed.
+
+            \retval true  When the channel is closed.
+            \retval false Otherwise.
+        */
+        bool closed() const;
+
+        /*!
+            \brief Closes the channel.
+        */
+        void close();
 
 
     private:
