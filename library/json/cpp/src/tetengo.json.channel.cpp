@@ -81,7 +81,7 @@ namespace tetengo::json
         const element& peek() const
         {
             std::unique_lock<std::mutex> lock{ m_mutex };
-            m_condition_variable.wait(lock, [this]() { return this->can_take(); });
+            m_condition_variable.wait(lock, [this]() { return can_take(); });
             if (closed())
             {
                 throw(std::logic_error{ "The channel is already closed." });
@@ -98,7 +98,19 @@ namespace tetengo::json
             }
         }
 
-        void take() {}
+        void take()
+        {
+            std::unique_lock<std::mutex> lock{ m_mutex };
+            m_condition_variable.wait(lock, [this]() { return can_take(); });
+            if (closed())
+            {
+                throw(std::logic_error{ "The channel is already closed." });
+            }
+
+            m_queue.pop();
+
+            m_condition_variable.notify_all();
+        }
 
         bool close_requested() const
         {

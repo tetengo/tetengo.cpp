@@ -7,6 +7,7 @@
 #include <exception>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #include <utility>
 
@@ -92,7 +93,43 @@ BOOST_AUTO_TEST_CASE(take)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::channel channel_{ 42 };
+    tetengo::json::channel channel_{ 2 };
+
+    std::thread inserter{ [&channel_]() {
+        channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
+                                                               element_type::type_category_type::primitive },
+                                      "tateno",
+                                      std::unordered_map<std::string, std::string>{} });
+        channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
+                                                               element_type::type_category_type::primitive },
+                                      "akamizu",
+                                      std::unordered_map<std::string, std::string>{} });
+        channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
+                                                               element_type::type_category_type::primitive },
+                                      "ichinokawa",
+                                      std::unordered_map<std::string, std::string>{} });
+        channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
+                                                               element_type::type_category_type::primitive },
+                                      "uchinomaki",
+                                      std::unordered_map<std::string, std::string>{} });
+        channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
+                                                               element_type::type_category_type::primitive },
+                                      "aso",
+                                      std::unordered_map<std::string, std::string>{} });
+    } };
+
+    BOOST_TEST(channel_.peek().value() == "tateno");
+    channel_.take();
+    BOOST_TEST(channel_.peek().value() == "akamizu");
+    channel_.take();
+    BOOST_TEST(channel_.peek().value() == "ichinokawa");
+    channel_.take();
+    BOOST_TEST(channel_.peek().value() == "uchinomaki");
+    channel_.take();
+    BOOST_TEST(channel_.peek().value() == "aso");
+    channel_.take();
+
+    inserter.join();
 }
 
 BOOST_AUTO_TEST_CASE(close_requested)
