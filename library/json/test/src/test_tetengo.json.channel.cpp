@@ -137,13 +137,19 @@ BOOST_AUTO_TEST_CASE(close_requested)
     BOOST_TEST_PASSPOINT();
 
     const tetengo::json::channel channel_{ 42 };
+
+    BOOST_TEST(!channel_.close_requested());
 }
 
 BOOST_AUTO_TEST_CASE(request_close)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::channel channel_{ 42 };
+    tetengo::json::channel channel_{ 42 };
+
+    channel_.request_close();
+
+    BOOST_TEST(channel_.close_requested());
 }
 
 BOOST_AUTO_TEST_CASE(closed)

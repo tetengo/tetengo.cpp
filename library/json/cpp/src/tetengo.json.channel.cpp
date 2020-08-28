@@ -114,10 +114,15 @@ namespace tetengo::json
 
         bool close_requested() const
         {
-            return false;
+            std::unique_lock<std::mutex> lock{ m_mutex };
+            return m_close_requested;
         }
 
-        void request_close() {}
+        void request_close()
+        {
+            std::unique_lock<std::mutex> lock{ m_mutex };
+            m_close_requested = true;
+        }
 
         bool closed() const
         {
