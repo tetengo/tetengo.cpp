@@ -30,7 +30,9 @@ namespace tetengo::json
         /*!
             \brief Creates a channel.
 
-            \param capacity A capacity.
+            \param capacity A capacity. Must be greater than 0.
+
+            \throw std::invalid_argument When capacity is 0.
         */
         explicit channel(std::size_t capacity);
 

@@ -4,13 +4,18 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <cassert>
+#include <condition_variable>
 #include <cstddef>
 #include <exception>
 #include <memory>
+#include <mutex>
+#include <optional>
 #include <queue>
 #include <stdexcept>
 #include <utility>
 #include <variant>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -25,18 +30,72 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        explicit impl(const std::size_t capacity) : m_capacity{ capacity }, m_queue{} {}
+        explicit impl(const std::size_t capacity) :
+        m_capacity{ capacity },
+            m_queue{},
+            m_mutex{},
+            m_condition_variable{},
+            m_close_requested{ false }
+        {
+            if (m_capacity == 0)
+            {
+                throw std::invalid_argument{ "capacity is 0." };
+            }
+        }
 
 
         // functions
 
-        void insert(element /*element_*/) {}
+        void insert(element element_)
+        {
+            std::unique_lock lock{ m_mutex };
+            m_condition_variable.wait(lock, [this]() { return can_insert(); });
 
-        void insert(std::exception_ptr&& /*p_exception*/) {}
+            if (can_take() && !m_queue.back())
+            {
+                m_condition_variable.notify_all();
+                return;
+            }
+
+            m_queue.emplace(std::move(element_));
+
+            m_condition_variable.notify_all();
+        }
+
+        void insert(std::exception_ptr&& p_exception)
+        {
+            std::unique_lock<std::mutex> lock{ m_mutex };
+            m_condition_variable.wait(lock, [this]() { return can_insert(); });
+
+            if (can_take() && !m_queue.back())
+            {
+                m_condition_variable.notify_all();
+                return;
+            }
+
+            m_queue.emplace(std::move(p_exception));
+
+            m_condition_variable.notify_all();
+        }
 
         const element& peek() const
         {
-            throw std::logic_error{ "Not implemented yet." };
+            std::unique_lock<std::mutex> lock{ m_mutex };
+            m_condition_variable.wait(lock, [this]() { return this->can_take(); });
+            if (closed())
+            {
+                throw(std::logic_error{ "The channel is already closed." });
+            }
+
+            if (std::holds_alternative<element>(*m_queue.front()))
+            {
+                return std::get<element>(*m_queue.front());
+            }
+            else
+            {
+                assert(std::holds_alternative<std::exception_ptr>(*m_queue.front()));
+                std::rethrow_exception(std::get<std::exception_ptr>(*m_queue.front()));
+            }
         }
 
         void take() {}
@@ -61,14 +120,25 @@ namespace tetengo::json
 
         const std::size_t m_capacity;
 
-        std::queue<std::variant<element, std::exception_ptr>> m_queue;
+        std::queue<std::optional<std::variant<element, std::exception_ptr>>> m_queue;
+
+        mutable std::mutex m_mutex;
+
+        mutable std::condition_variable m_condition_variable;
+
+        bool m_close_requested;
 
 
         // functions
 
         bool can_insert() const
         {
-            return 42 < m_capacity;
+            return m_queue.size() < m_capacity;
+        }
+
+        bool can_take() const
+        {
+            return !m_queue.empty();
         }
     };
 
