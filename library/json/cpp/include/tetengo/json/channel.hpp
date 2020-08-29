@@ -80,19 +80,6 @@ namespace tetengo::json
         void take();
 
         /*!
-            \brief Returns true the channel close is requested.
-
-            \retval true  When the channel close is requested.
-            \retval false Otherwise.
-        */
-        bool close_requested() const;
-
-        /*!
-            \brief Request the channel to close.
-        */
-        void request_close();
-
-        /*!
             \brief Returns true the channel is closed.
 
             \retval true  When the channel is closed.

@@ -30,12 +30,7 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        explicit impl(const std::size_t capacity) :
-        m_capacity{ capacity },
-            m_queue{},
-            m_mutex{},
-            m_condition_variable{},
-            m_close_requested{ false }
+        explicit impl(const std::size_t capacity) : m_capacity{ capacity }, m_queue{}, m_mutex{}, m_condition_variable{}
         {
             if (m_capacity == 0)
             {
@@ -82,7 +77,7 @@ namespace tetengo::json
         {
             std::unique_lock<std::mutex> lock{ m_mutex };
             m_condition_variable.wait(lock, [this]() { return can_take(); });
-            if (closed())
+            if (closed_impl())
             {
                 throw(std::logic_error{ "The channel is already closed." });
             }
@@ -102,7 +97,7 @@ namespace tetengo::json
         {
             std::unique_lock<std::mutex> lock{ m_mutex };
             m_condition_variable.wait(lock, [this]() { return can_take(); });
-            if (closed())
+            if (closed_impl())
             {
                 throw(std::logic_error{ "The channel is already closed." });
             }
@@ -112,24 +107,23 @@ namespace tetengo::json
             m_condition_variable.notify_all();
         }
 
-        bool close_requested() const
-        {
-            std::unique_lock<std::mutex> lock{ m_mutex };
-            return m_close_requested;
-        }
-
-        void request_close()
-        {
-            std::unique_lock<std::mutex> lock{ m_mutex };
-            m_close_requested = true;
-        }
-
         bool closed() const
         {
-            return false;
+            std::unique_lock<std::mutex> lock{ m_mutex };
+            m_condition_variable.wait(lock, [this]() { return can_take(); });
+            return closed_impl();
         }
 
-        void close() {}
+        void close()
+        {
+            std::unique_lock<std::mutex> lock{ m_mutex };
+            m_condition_variable.wait(lock, [this]() { return can_insert(); });
+            if (!can_take() || m_queue.back())
+            {
+                m_queue.push(std::nullopt);
+            }
+            m_condition_variable.notify_all();
+        }
 
 
     private:
@@ -143,8 +137,6 @@ namespace tetengo::json
 
         mutable std::condition_variable m_condition_variable;
 
-        bool m_close_requested;
-
 
         // functions
 
@@ -156,6 +148,11 @@ namespace tetengo::json
         bool can_take() const
         {
             return !m_queue.empty();
+        }
+
+        bool closed_impl() const
+        {
+            return !m_queue.empty() && !m_queue.front();
         }
     };
 
@@ -182,16 +179,6 @@ namespace tetengo::json
     void channel::take()
     {
         m_p_impl->take();
-    }
-
-    bool channel::close_requested() const
-    {
-        return m_p_impl->close_requested();
-    }
-
-    void channel::request_close()
-    {
-        m_p_impl->request_close();
     }
 
     bool channel::closed() const

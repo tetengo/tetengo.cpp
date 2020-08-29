@@ -132,38 +132,36 @@ BOOST_AUTO_TEST_CASE(take)
     inserter.join();
 }
 
-BOOST_AUTO_TEST_CASE(close_requested)
-{
-    BOOST_TEST_PASSPOINT();
-
-    const tetengo::json::channel channel_{ 42 };
-
-    BOOST_TEST(!channel_.close_requested());
-}
-
-BOOST_AUTO_TEST_CASE(request_close)
+BOOST_AUTO_TEST_CASE(closed)
 {
     BOOST_TEST_PASSPOINT();
 
     tetengo::json::channel channel_{ 42 };
 
-    channel_.request_close();
+    channel_.insert(element_type{
+        element_type::type_type{ element_type::type_name_type::string, element_type::type_category_type::primitive },
+        "tateno",
+        std::unordered_map<std::string, std::string>{} });
 
-    BOOST_TEST(channel_.close_requested());
-}
-
-BOOST_AUTO_TEST_CASE(closed)
-{
-    BOOST_TEST_PASSPOINT();
-
-    const tetengo::json::channel channel_{ 42 };
+    BOOST_TEST(!channel_.closed());
 }
 
 BOOST_AUTO_TEST_CASE(close)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::channel channel_{ 42 };
+    tetengo::json::channel channel_{ 42 };
+
+    channel_.close();
+
+    BOOST_TEST(channel_.closed());
+
+    channel_.insert(element_type{
+        element_type::type_type{ element_type::type_name_type::string, element_type::type_category_type::primitive },
+        "tateno",
+        std::unordered_map<std::string, std::string>{} });
+
+    BOOST_CHECK_THROW(channel_.peek(), std::logic_error);
 }
 
 
