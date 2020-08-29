@@ -38,6 +38,9 @@
     <ClCompile Include="src\tetengo.json.element.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.json.channel.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
@@ -62,6 +65,9 @@
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\json\element.hpp">
+      <Filter>header\tetengo::json</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\json\channel.hpp">
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
   </ItemGroup>
