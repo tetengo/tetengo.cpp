@@ -434,9 +434,9 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
 
         const auto& path = *iterator;
         BOOST_TEST_REQUIRE(path.nodes().size() == 3U);
-        BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+        BOOST_TEST(!path.nodes()[0].value().has_value());
         BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "tsubame");
-        BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[2].value()));
+        BOOST_TEST(!path.nodes()[2].value().has_value());
     }
     {
         const tetengo::lattice::n_best_iterator iterator{};
@@ -631,89 +631,89 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 3U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "tsubame");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[2].value()));
+            BOOST_TEST(!path.nodes()[2].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 3U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "sakura");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[2].value()));
+            BOOST_TEST(!path.nodes()[2].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "rapid811");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local817");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[3].value()));
+            BOOST_TEST(!path.nodes()[3].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "local415");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local815");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[3].value()));
+            BOOST_TEST(!path.nodes()[3].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "kamome");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local815");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[3].value()));
+            BOOST_TEST(!path.nodes()[3].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "ariake");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local817");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[3].value()));
+            BOOST_TEST(!path.nodes()[3].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 3U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "mizuho");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[2].value()));
+            BOOST_TEST(!path.nodes()[2].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 5U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "local415");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local813");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[3].value()) == "local817");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[4].value()));
+            BOOST_TEST(!path.nodes()[4].value().has_value());
         }
 
         ++iterator;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 5U);
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[0].value()));
+            BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "kamome");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local813");
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[3].value()) == "local817");
-            BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(path.nodes()[4].value()));
+            BOOST_TEST(!path.nodes()[4].value().has_value());
         }
 
         ++iterator;
