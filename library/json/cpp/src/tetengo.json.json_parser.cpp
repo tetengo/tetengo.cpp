@@ -6,6 +6,7 @@
 
 #include <cassert>
 #include <exception>
+#include <functional>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -146,15 +147,9 @@ namespace tetengo::json
             try
             {
                 const json_grammar grammar_{
-                    [this](const json_grammar::primitive_type_type type, const std::string_view& value) {
-                        return on_primitive(type, value);
-                    },
-                    [this](
-                        const json_grammar::structure_type_type                       type,
-                        const json_grammar::structure_open_close_type                 open_close,
-                        const std::unordered_map<std::string_view, std::string_view>& attributes) {
-                        return on_structure(type, open_close, attributes);
-                    }
+                    std::bind(&impl::on_primitive, this, std::placeholders::_1, std::placeholders::_2),
+                    std::bind(
+                        &impl::on_structure, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
                 };
 
                 grammar_.parse(*m_p_reader);
