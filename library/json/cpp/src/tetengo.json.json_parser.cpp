@@ -69,7 +69,7 @@ namespace tetengo::json
 
         bool has_next() const
         {
-            return false;
+            return !m_channel.closed();
         }
 
         const element& peek() const
