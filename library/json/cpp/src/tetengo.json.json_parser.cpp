@@ -8,6 +8,7 @@
 #include <exception>
 #include <functional>
 #include <memory>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -34,7 +35,9 @@ namespace tetengo::json
         explicit impl(std::unique_ptr<reader>&& p_reader) :
         m_p_reader{ std::move(p_reader) },
             m_p_worker{},
-            m_channel{ 10 }
+            m_channel{ 10 },
+            m_parsing_abortion_requested{ false },
+            m_mutex{}
         {
             if (!m_p_reader)
             {
@@ -47,6 +50,7 @@ namespace tetengo::json
         {
             try
             {
+                request_parsing_abortion();
                 while (!m_channel.closed())
                 {
                     m_channel.take();
@@ -139,6 +143,10 @@ namespace tetengo::json
 
         channel m_channel;
 
+        bool m_parsing_abortion_requested;
+
+        mutable std::mutex m_mutex;
+
 
         // functions
 
@@ -164,6 +172,11 @@ namespace tetengo::json
 
         bool on_primitive(const json_grammar::primitive_type_type type, const std::string_view& value)
         {
+            if (parsing_abortion_requested())
+            {
+                return false;
+            }
+
             element element_{ to_element_type(type),
                               std::string{ value },
                               std::unordered_map<std::string, std::string>{} };
@@ -176,9 +189,26 @@ namespace tetengo::json
             const json_grammar::structure_open_close_type                 open_close,
             const std::unordered_map<std::string_view, std::string_view>& attributes)
         {
+            if (parsing_abortion_requested())
+            {
+                return false;
+            }
+
             element element_{ to_element_type(type, open_close), std::string{}, to_element_attributes(attributes) };
             m_channel.insert(std::move(element_));
             return true;
+        }
+
+        bool parsing_abortion_requested() const
+        {
+            const std::unique_lock<std::mutex> lock{ m_mutex };
+            return m_parsing_abortion_requested;
+        }
+
+        void request_parsing_abortion()
+        {
+            const std::unique_lock<std::mutex> lock{ m_mutex };
+            m_parsing_abortion_requested = true;
         }
     };
 
