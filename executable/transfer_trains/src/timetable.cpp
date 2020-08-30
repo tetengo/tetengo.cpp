@@ -68,8 +68,7 @@ namespace
 
     bool entry_equal_to(const tetengo::lattice::entry_view& one, const tetengo::lattice::entry_view& another)
     {
-        if (tetengo::lattice::temp::std_any_has_value(*one.value()) &&
-            tetengo::lattice::temp::std_any_has_value(*another.value()))
+        if (one.value()->has_value() && another.value()->has_value())
         {
             const auto* const p_one_section = std::any_cast<section>(one.value());
             const auto* const p_another_section = std::any_cast<section>(another.value());
@@ -87,9 +86,7 @@ namespace
                 throw std::logic_error{ "Unexpected entry value." };
             }
         }
-        else if (
-            tetengo::lattice::temp::std_any_has_value(*one.value()) ||
-            tetengo::lattice::temp::std_any_has_value(*another.value()))
+        else if (one.value()->has_value() || another.value()->has_value())
         {
             return false;
         }
