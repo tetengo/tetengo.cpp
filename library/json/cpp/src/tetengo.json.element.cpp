@@ -43,7 +43,7 @@ namespace tetengo::json
             }
             if (m_type.name == type_name_type::member && m_type.category == type_category_type::structure_open)
             {
-                if (m_attributes.size() != 1U || m_attributes.find("name") == m_attributes.end())
+                if (m_attributes.size() != 1U || m_attributes.find("name") == std::end(m_attributes))
                 {
                     throw std::invalid_argument{ "Mismatch between type and attributes." };
                 }

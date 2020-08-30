@@ -74,13 +74,21 @@ namespace tetengo::json
 
         const element& peek() const
         {
-            static const element element_{ { element::type_name_type::string, element::type_category_type::primitive },
-                                           "",
-                                           std::unordered_map<std::string, std::string>{} };
-            return element_;
+            if (!has_next())
+            {
+                throw std::logic_error{ "No more element." };
+            }
+            return m_channel.peek();
         }
 
-        void next() {}
+        void next()
+        {
+            if (!has_next())
+            {
+                throw std::logic_error{ "No more element." };
+            }
+            m_channel.take();
+        }
 
 
     private:
