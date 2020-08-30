@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(bos_eos)
         static auto& bos_eos_ = tetengo::lattice::entry::bos_eos();
 
         BOOST_TEST(bos_eos_.key().empty());
-        BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(bos_eos_.value()));
+        BOOST_TEST(!bos_eos_.value().has_value());
         BOOST_TEST(bos_eos_.cost() == 0);
     }
 
