@@ -79,7 +79,7 @@ namespace tetengo::json
             m_condition_variable.wait(lock, [this]() { return can_take(); });
             if (closed_impl())
             {
-                throw(std::logic_error{ "The channel is already closed." });
+                throw std::logic_error{ "The channel is already closed." };
             }
 
             if (std::holds_alternative<element>(*m_queue.front()))
@@ -99,7 +99,7 @@ namespace tetengo::json
             m_condition_variable.wait(lock, [this]() { return can_take(); });
             if (closed_impl())
             {
-                throw(std::logic_error{ "The channel is already closed." });
+                throw std::logic_error{ "The channel is already closed." };
             }
 
             m_queue.pop();

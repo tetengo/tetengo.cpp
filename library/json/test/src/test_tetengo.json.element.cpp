@@ -430,7 +430,7 @@ BOOST_AUTO_TEST_CASE(attributes)
                                     std::unordered_map<std::string, std::string>{ { "name", "value" } } };
 
         BOOST_TEST(element.attributes().size() == 1U);
-        BOOST_CHECK(element.attributes().find("name") != element.attributes().end());
+        BOOST_CHECK(element.attributes().find("name") != std::end(element.attributes()));
         BOOST_TEST(element.attributes().find("name")->second == "value");
     }
 
