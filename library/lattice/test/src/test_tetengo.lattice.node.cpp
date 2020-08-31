@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(bos)
         const auto             bos = tetengo::lattice::node::bos(&preceding_edge_costs);
 
         BOOST_TEST(bos.key() == tetengo::lattice::entry_view::bos_eos().key());
-        BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(bos.value()));
+        BOOST_TEST(!bos.value().has_value());
         BOOST_TEST(bos.preceding_step() == std::numeric_limits<std::size_t>::max());
         BOOST_TEST(&bos.preceding_edge_costs() == &preceding_edge_costs);
         BOOST_TEST(bos.best_preceding_node() == std::numeric_limits<std::size_t>::max());
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(eos)
         const auto             eos = tetengo::lattice::node::eos(1, &preceding_edge_costs, 5, 42);
 
         BOOST_TEST(eos.key() == tetengo::lattice::entry_view::bos_eos().key());
-        BOOST_TEST(!tetengo::lattice::temp::std_any_has_value(eos.value()));
+        BOOST_TEST(!eos.value().has_value());
         BOOST_TEST(eos.preceding_step() == 1U);
         BOOST_TEST(&eos.preceding_edge_costs() == &preceding_edge_costs);
         BOOST_TEST(eos.best_preceding_node() == 5U);
