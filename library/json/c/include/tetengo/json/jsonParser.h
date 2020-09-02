@@ -37,6 +37,16 @@ tetengo_json_jsonParser_t* tetengo_json_jsonParser_create(tetengo_json_reader_t*
 */
 void tetengo_json_jsonParser_destroy(const tetengo_json_jsonParser_t* p_parser);
 
+/*!
+    \brief Returns non-zero when the next element exists.
+
+    \param p_parser A pointer to a perser.
+
+    \return non-zero When the next element exists.
+    \return 0        Otherwise.
+*/
+int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* p_parser);
+
 
 #if defined(__cplusplus)
 }

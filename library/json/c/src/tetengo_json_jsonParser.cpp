@@ -63,3 +63,20 @@ void tetengo_json_jsonParser_destroy(const tetengo_json_jsonParser_t* const p_pa
     catch (...)
     {}
 }
+
+int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* const p_parser)
+{
+    try
+    {
+        if (!p_parser)
+        {
+            throw std::invalid_argument{ "p_parser is NULL." };
+        }
+
+        return p_parser->p_cpp_parser->has_next() ? 1 : 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
