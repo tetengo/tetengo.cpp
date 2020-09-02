@@ -124,6 +124,7 @@
     <ClInclude Include="include\tetengo\json\element.h" />
     <ClInclude Include="include\tetengo\json\jsonParser.h" />
     <ClInclude Include="include\tetengo\json\reader.h" />
+    <ClInclude Include="src\tetengo_json_reader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def" />

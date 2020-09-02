@@ -44,8 +44,6 @@ tetengo_json_reader_t* tetengo_json_reader_createStreamReader(const char* file_p
     \param p_base_reader     A pointer to a base reader.
     \param single_line_begin A beginning of a single line comment.
 
-    \throw std::invalid_argument When p_base_reader is nullptr or single_line_begin is empty.
-
     \return A pointer to a reader. Or NULL when p_base_reader and/or single_line_begin are NULL.
 */
 tetengo_json_reader_t*

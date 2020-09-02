@@ -1,5 +1,7 @@
 LIBRARY tetengo.json.dll
 EXPORTS
+	tetengo_json_jsonParser_create
+	tetengo_json_jsonParser_destroy
 	tetengo_json_reader_streamReaderDefaultBufferCapacity
 	tetengo_json_reader_createStreamReader
 	tetengo_json_reader_createCommentRemovingReader
