@@ -93,6 +93,19 @@ BOOST_AUTO_TEST_SUITE(json)
 BOOST_AUTO_TEST_SUITE(json_parser)
 
 
+BOOST_AUTO_TEST_CASE(default_buffer_capacity)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        BOOST_TEST(tetengo::json::json_parser::default_buffer_capacity() > 0);
+    }
+    {
+        BOOST_TEST(
+            tetengo_json_jsonParser_defaultBufferCapacity() == tetengo::json::json_parser::default_buffer_capacity());
+    }
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
@@ -111,7 +124,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json3), 10);
-        const tetengo::json::json_parser parser{ std::move(p_reader) };
+        const tetengo::json::json_parser parser{ std::move(p_reader), 42 };
     }
     {
         BOOST_CHECK_THROW(
@@ -121,7 +134,8 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const temporary_file file{ json0 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -132,7 +146,8 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const temporary_file file{ json1 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -143,7 +158,8 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const temporary_file file{ json2 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -154,7 +170,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const temporary_file file{ json3 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader, 42);
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -163,7 +179,8 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_parser);
     }
     {
-        const auto* const p_parser = tetengo_json_jsonParser_create(nullptr);
+        const auto* const p_parser =
+            tetengo_json_jsonParser_create(nullptr, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_TEST(!p_parser);
     }
 }
@@ -200,7 +217,8 @@ BOOST_AUTO_TEST_CASE(has_next)
     {
         const temporary_file file{ json0 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -213,7 +231,8 @@ BOOST_AUTO_TEST_CASE(has_next)
     {
         const temporary_file file{ json1 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -226,7 +245,8 @@ BOOST_AUTO_TEST_CASE(has_next)
     {
         const temporary_file file{ json2 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -239,7 +259,8 @@ BOOST_AUTO_TEST_CASE(has_next)
     {
         const temporary_file file{ json3 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -298,7 +319,8 @@ BOOST_AUTO_TEST_CASE(peek)
     {
         const temporary_file file{ json0 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -311,7 +333,8 @@ BOOST_AUTO_TEST_CASE(peek)
     {
         const temporary_file file{ json1 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -333,7 +356,8 @@ BOOST_AUTO_TEST_CASE(peek)
     {
         const temporary_file file{ json2 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -355,7 +379,8 @@ BOOST_AUTO_TEST_CASE(peek)
     {
         const temporary_file file{ json3 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_parser = tetengo_json_jsonParser_create(p_reader);
+        const auto* const    p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -554,7 +579,8 @@ BOOST_AUTO_TEST_CASE(next)
     {
         const temporary_file file{ json0 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_parser = tetengo_json_jsonParser_create(p_reader);
+        auto* const          p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -567,7 +593,8 @@ BOOST_AUTO_TEST_CASE(next)
     {
         const temporary_file file{ json1 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_parser = tetengo_json_jsonParser_create(p_reader);
+        auto* const          p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -581,7 +608,8 @@ BOOST_AUTO_TEST_CASE(next)
     {
         const temporary_file file{ json2 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_parser = tetengo_json_jsonParser_create(p_reader);
+        auto* const          p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);
@@ -595,7 +623,8 @@ BOOST_AUTO_TEST_CASE(next)
     {
         const temporary_file file{ json3 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_parser = tetengo_json_jsonParser_create(p_reader);
+        auto* const          p_parser =
+            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         BOOST_SCOPE_EXIT(p_parser)
         {
             tetengo_json_jsonParser_destroy(p_parser);

@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include <stddef.h>
+
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 
@@ -33,7 +35,20 @@ struct tetengo_json_jsonParser_tag
 };
 
 
-tetengo_json_jsonParser_t* tetengo_json_jsonParser_create(tetengo_json_reader_t* const p_reader)
+size_t tetengo_json_jsonParser_defaultBufferCapacity(void)
+{
+    try
+    {
+        return tetengo::json::json_parser::default_buffer_capacity();
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+tetengo_json_jsonParser_t*
+tetengo_json_jsonParser_create(tetengo_json_reader_t* const p_reader, const size_t buffer_capacity)
 {
     try
     {
@@ -48,7 +63,8 @@ tetengo_json_jsonParser_t* tetengo_json_jsonParser_create(tetengo_json_reader_t*
             throw std::invalid_argument{ "p_reader is NULL." };
         }
 
-        auto p_cpp_parser = std::make_unique<tetengo::json::json_parser>(std::move(p_reader->p_cpp_reader));
+        auto p_cpp_parser =
+            std::make_unique<tetengo::json::json_parser>(std::move(p_reader->p_cpp_reader), buffer_capacity);
 
         auto p_instance = std::make_unique<tetengo_json_jsonParser_t>(std::move(p_cpp_parser));
         return p_instance.release();

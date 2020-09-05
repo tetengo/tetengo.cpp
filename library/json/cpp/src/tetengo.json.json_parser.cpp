@@ -5,6 +5,7 @@
 */
 
 #include <cassert>
+#include <cstddef>
 #include <exception>
 #include <functional>
 #include <memory>
@@ -30,12 +31,20 @@ namespace tetengo::json
     class json_parser::impl : private boost::noncopyable
     {
     public:
+        // static functions
+
+        static std::size_t default_buffer_capacity()
+        {
+            return 100;
+        }
+
+
         // constructors and destructor
 
-        explicit impl(std::unique_ptr<reader>&& p_reader) :
+        impl(std::unique_ptr<reader>&& p_reader, const std::size_t buffer_capacity) :
         m_p_reader{ std::move(p_reader) },
             m_p_worker{},
-            m_channel{ 10 },
+            m_channel{ buffer_capacity },
             m_parsing_abortion_requested{ false },
             m_mutex{}
         {
@@ -221,8 +230,15 @@ namespace tetengo::json
     };
 
 
-    json_parser::json_parser(std::unique_ptr<reader>&& p_reader) :
-    m_p_impl{ std::make_unique<impl>(std::move(p_reader)) }
+    std::size_t json_parser::default_buffer_capacity()
+    {
+        return impl::default_buffer_capacity();
+    }
+
+    json_parser::json_parser(
+        std::unique_ptr<reader>&& p_reader,
+        const std::size_t         buffer_capacity /*= default_buffer_capacity()*/) :
+    m_p_impl{ std::make_unique<impl>(std::move(p_reader), buffer_capacity) }
     {}
 
     json_parser::~json_parser() = default;

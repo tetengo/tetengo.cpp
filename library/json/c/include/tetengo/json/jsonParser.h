@@ -7,6 +7,8 @@
 #if !defined(TETENGO_JSON_JSONPARSER_H)
 #define TETENGO_JSON_JSONPARSER_H
 
+#include <stddef.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -20,15 +22,23 @@ typedef struct tetengo_json_jsonParser_tag tetengo_json_jsonParser_t;
 
 
 /*!
+    \brief Returns the default buffer capacity.
+
+    \return The default buffer capacity.
+*/
+size_t tetengo_json_jsonParser_defaultBufferCapacity(void);
+
+/*!
     \brief Creates a JSON parser.
 
     There is no need to destroy the reader after calling this function.
 
-    \param p_reader A pointer to a reader.
+    \param p_reader        A pointer to a reader.
+    \param buffer_capacity A buffer capacity.
 
     \return A pointer to a JSON parser. Or NULL when p_reader is NULL.
 */
-tetengo_json_jsonParser_t* tetengo_json_jsonParser_create(tetengo_json_reader_t* p_reader);
+tetengo_json_jsonParser_t* tetengo_json_jsonParser_create(tetengo_json_reader_t* p_reader, size_t buffer_capacity);
 
 /*!
     \brief Destroys a JSON parser.
