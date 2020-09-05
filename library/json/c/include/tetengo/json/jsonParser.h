@@ -47,6 +47,16 @@ void tetengo_json_jsonParser_destroy(const tetengo_json_jsonParser_t* p_parser);
 */
 int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* p_parser);
 
+/*!
+    \brief Returns the current element.
+
+    \param p_parser A pointer to a perser.
+
+    \return The pointer to the current element. Or NULL when p_parser is NULL and/or the current position is beyond the
+            termination point.
+*/
+const tetengo_json_element_t* tetengo_json_jsonParser_peek(const tetengo_json_jsonParser_t* p_parser);
+
 
 #if defined(__cplusplus)
 }

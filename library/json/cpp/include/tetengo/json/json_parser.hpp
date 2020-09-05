@@ -56,16 +56,14 @@ namespace tetengo::json
 
             \return The current element.
 
-            \throw std::logic_error When current position is beyond the
-                                    termination point.
+            \throw std::logic_error When the current position is beyond the termination point.
         */
         const element& peek() const;
 
         /*!
             \brief Moves to the next element.
 
-            \throw std::logic_error When current position is beyond the
-                                    termination point.
+            \throw std::logic_error When the current position is beyond the termination point.
         */
         void next();
 

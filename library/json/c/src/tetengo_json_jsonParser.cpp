@@ -11,10 +11,12 @@
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 
+#include <tetengo/json/element.h> // IWYU pragma: keep
 #include <tetengo/json/jsonParser.h>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/json/reader.h>
 
+#include "tetengo_json_element.hpp"
 #include "tetengo_json_reader.hpp" // IWYU pragma: keep
 
 
@@ -22,8 +24,11 @@ struct tetengo_json_jsonParser_tag
 {
     std::unique_ptr<tetengo::json::json_parser> p_cpp_parser;
 
+    mutable std::unique_ptr<const tetengo_json_element_t> p_current_element;
+
     tetengo_json_jsonParser_tag(std::unique_ptr<tetengo::json::json_parser>&& p_cpp_parser) :
-    p_cpp_parser{ std::move(p_cpp_parser) }
+    p_cpp_parser{ std::move(p_cpp_parser) },
+        p_current_element{}
     {}
 };
 
@@ -78,5 +83,23 @@ int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* const p_par
     catch (...)
     {
         return 0;
+    }
+}
+
+const tetengo_json_element_t* tetengo_json_jsonParser_peek(const tetengo_json_jsonParser_t* const p_parser)
+{
+    try
+    {
+        if (!p_parser)
+        {
+            throw std::invalid_argument{ "p_parser is NULL." };
+        }
+
+        p_parser->p_current_element = std::make_unique<tetengo_json_element_t>(&p_parser->p_cpp_parser->peek());
+        return p_parser->p_current_element.get();
+    }
+    catch (...)
+    {
+        return nullptr;
     }
 }

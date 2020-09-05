@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
+    tetengo_json_element.hpp \
     tetengo_json_reader.hpp
 
 sources = \
