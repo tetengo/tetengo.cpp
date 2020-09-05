@@ -103,3 +103,18 @@ const tetengo_json_element_t* tetengo_json_jsonParser_peek(const tetengo_json_js
         return nullptr;
     }
 }
+
+void tetengo_json_jsonParser_next(tetengo_json_jsonParser_t* const p_parser)
+{
+    try
+    {
+        if (!p_parser)
+        {
+            throw std::invalid_argument{ "p_parser is NULL." };
+        }
+
+        p_parser->p_cpp_parser->next();
+    }
+    catch (...)
+    {}
+}

@@ -57,6 +57,13 @@ int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* p_parser);
 */
 const tetengo_json_element_t* tetengo_json_jsonParser_peek(const tetengo_json_jsonParser_t* p_parser);
 
+/*!
+    \brief Moves to the next element.
+
+    \param p_parser A pointer to a perser.
+*/
+void tetengo_json_jsonParser_next(tetengo_json_jsonParser_t* p_parser);
+
 
 #if defined(__cplusplus)
 }
