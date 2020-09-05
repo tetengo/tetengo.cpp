@@ -62,7 +62,7 @@ namespace
         static std::filesystem::path make_temporary_path()
         {
             auto path = std::filesystem::temp_directory_path();
-            path /= "test_tetengo.json.stream_reader";
+            path /= "test_tetengo.json.json_parser";
             return path;
         }
 
