@@ -11,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/double_array.hpp>
@@ -86,8 +86,19 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         BOOST_CHECK_THROW(*iterator, std::logic_error);
     }
     {
+        tetengo::trie::double_array_iterator iterator{};
+
+        BOOST_CHECK_THROW(*iterator, std::logic_error);
+    }
+    {
         const tetengo::trie::double_array double_array_{ expected_base_values };
         const auto                        iterator = std::begin(double_array_);
+
+        BOOST_TEST(*iterator == 42);
+    }
+    {
+        const tetengo::trie::double_array double_array_{ expected_base_values };
+        auto                              iterator = std::begin(double_array_);
 
         BOOST_TEST(*iterator == 42);
     }
