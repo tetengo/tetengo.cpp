@@ -7,6 +7,7 @@
 #if !defined(TETENGO_JSON_JSONPARSER_HPP)
 #define TETENGO_JSON_JSONPARSER_HPP
 
+#include <cstddef>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -24,16 +25,29 @@ namespace tetengo::json
     class json_parser : private boost::noncopyable
     {
     public:
+        // static functions
+
+        /*!
+            \brief Returns the default buffer capacity.
+
+            \return The default buffer capacity.
+        */
+        static std::size_t default_buffer_capacity();
+
+
         // constructors and destructor
 
         /*!
             \brief Creates a JSON parser.
 
-            \param p_reader A unique pointer to a reader.
+            \param p_reader        A unique pointer to a reader.
+            \param buffer_capacity A buffer capacity.
 
             \throw std::invalid_argument When p_reader is nullptr.
         */
-        explicit json_parser(std::unique_ptr<reader>&& p_reader);
+        explicit json_parser(
+            std::unique_ptr<reader>&& p_reader,
+            std::size_t               buffer_capacity = default_buffer_capacity());
 
         /*!
             \brief Destroys the JSON parser.
@@ -56,16 +70,14 @@ namespace tetengo::json
 
             \return The current element.
 
-            \throw std::logic_error When current position is beyond the
-                                    termination point.
+            \throw std::logic_error When the current position is beyond the termination point.
         */
         const element& peek() const;
 
         /*!
             \brief Moves to the next element.
 
-            \throw std::logic_error When current position is beyond the
-                                    termination point.
+            \throw std::logic_error When the current position is beyond the termination point.
         */
         void next();
 

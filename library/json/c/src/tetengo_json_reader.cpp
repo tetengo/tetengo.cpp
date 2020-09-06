@@ -20,15 +20,7 @@
 #include <tetengo/json/reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
 
-
-struct tetengo_json_reader_tag
-{
-    std::unique_ptr<tetengo::json::reader> p_cpp_reader;
-
-    tetengo_json_reader_tag(std::unique_ptr<tetengo::json::reader>&& p_cpp_reader) :
-    p_cpp_reader{ std::move(p_cpp_reader) }
-    {}
-};
+#include "tetengo_json_reader.hpp"
 
 
 size_t tetengo_json_reader_streamReaderDefaultBufferCapacity()

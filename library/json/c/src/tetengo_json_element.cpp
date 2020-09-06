@@ -18,18 +18,7 @@
 #include <tetengo/json/element.h>
 #include <tetengo/json/element.hpp>
 
-
-struct tetengo_json_element_tag
-{
-    std::unique_ptr<tetengo::json::element> p_cpp_element;
-
-    tetengo_json_element_type_t type;
-
-    tetengo_json_element_tag(std::unique_ptr<tetengo::json::element>&& p_cpp_element) :
-    p_cpp_element{ std::move(p_cpp_element) },
-        type{}
-    {}
-};
+#include "tetengo_json_element.hpp"
 
 
 int tetengo_json_element_typeName_string()
