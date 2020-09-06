@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(default_buffer_capacity)
     BOOST_TEST_PASSPOINT();
 
     {
-        BOOST_TEST(tetengo::json::json_parser::default_buffer_capacity() > 0);
+        BOOST_TEST(tetengo::json::json_parser::default_buffer_capacity() > 0U);
     }
     {
         BOOST_TEST(
