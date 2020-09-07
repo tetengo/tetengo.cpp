@@ -64,13 +64,13 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/format.hpp>
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_multi_pass.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #endif
 
