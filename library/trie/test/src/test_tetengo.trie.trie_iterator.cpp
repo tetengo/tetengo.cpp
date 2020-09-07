@@ -11,9 +11,9 @@
 #include <vector>
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/trie.h>
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         BOOST_REQUIRE(iterator != std::end(trie_));
         BOOST_TEST(iterator->value == tamana1);
 
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator == std::end(trie_));
     }

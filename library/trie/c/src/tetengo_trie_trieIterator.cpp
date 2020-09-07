@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include <boost/iterator/iterator_facade.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/trie/storage.h> // IWYU pragma: keep
 #include <tetengo/trie/trie.h> // IWYU pragma: keep

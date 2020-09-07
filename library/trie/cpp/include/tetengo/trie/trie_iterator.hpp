@@ -11,7 +11,7 @@
 #include <iterator>
 #include <utility>
 
-#include <boost/iterator/iterator_facade.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/trie/double_array_iterator.hpp>
 
@@ -50,26 +50,36 @@ namespace tetengo::trie
         // functions
 
         /*!
-            \brief Dereferences this iterator.
+            \brief Dereferences the iterator.
 
             \return The dereferenced value.
         */
-        std::any& dereference() const;
+        const std::any& operator*() const;
 
         /*!
-            \brief Returns true when this iterator is equal to another.
+            \brief Dereferences the iterator.
 
+            \return The dereferenced value.
+        */
+        std::any& operator*();
+
+        /*!
+            \brief Returns true when one iterator is equal to another.
+
+            \param one   One iterator.
             \param another Another iterator.
 
-            \retval true  When this iterator is equal to another.
+            \retval true  When one is equal to another.
             \retval false Otherwise.
         */
-        bool equal(const trie_iterator_impl& another) const;
+        friend bool operator==(const trie_iterator_impl& one, const trie_iterator_impl& another);
 
         /*!
-            \brief Increments this iterator.
+            \brief Increments the iterator.
+
+            \return This iterator.
         */
-        void increment();
+        trie_iterator_impl& operator++();
 
 
     private:
@@ -88,19 +98,13 @@ namespace tetengo::trie
     */
     template <typename Value>
     class trie_iterator :
-    public boost::iterators::iterator_facade<trie_iterator<Value>, Value, std ::forward_iterator_tag>
+    public boost::stl_interfaces::iterator_interface<trie_iterator<Value>, std ::forward_iterator_tag, Value>
     {
     public:
         // types
 
         //! The value type.
         using value_type = Value;
-
-
-        // friends
-
-        //! Allows boost::iterator_facade to access the private members.
-        friend class boost::iterators::iterator_core_access;
 
 
         // constructors and destructor
@@ -113,28 +117,61 @@ namespace tetengo::trie
         trie_iterator(trie_iterator_impl&& impl) : m_impl{ std::move(impl) } {}
 
 
+        // functions
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        const value_type& operator*() const
+        {
+            return *std::any_cast<value_type>(&*m_impl);
+        }
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        value_type& operator*()
+        {
+            return *std::any_cast<value_type>(&*m_impl);
+        }
+
+        /*!
+            \brief Returns true when one iterator is equal to another.
+
+            \param one   One iterator.
+            \param another Another iterator.
+
+            \retval true  When one is equal to another.
+            \retval false Otherwise.
+        */
+        friend bool operator==(const trie_iterator& one, const trie_iterator& another)
+        {
+            return one.m_impl == another.m_impl;
+        }
+
+        /*!
+            \brief Increments the iterator.
+
+            \return This iterator.
+        */
+        trie_iterator& operator++()
+        {
+            ++m_impl;
+            return *this;
+        }
+
+        //! Makes operator++(int) visible.
+        using boost::stl_interfaces::iterator_interface<trie_iterator, std ::forward_iterator_tag, Value>::operator++;
+
+
     private:
         // variables
 
         trie_iterator_impl m_impl;
-
-
-        // functions
-
-        value_type& dereference() const
-        {
-            return *std::any_cast<value_type>(&m_impl.dereference());
-        }
-
-        bool equal(const trie_iterator& another) const
-        {
-            return m_impl.equal(another.m_impl);
-        }
-
-        void increment()
-        {
-            m_impl.increment();
-        }
     };
 
 

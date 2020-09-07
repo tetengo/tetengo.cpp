@@ -31,32 +31,42 @@ namespace tetengo::trie
             std::make_pair(root_base_check_index, std::string{}) } },
         m_current{}
     {
-        increment();
+        operator++();
     }
 
-    std::int32_t& double_array_iterator::dereference() const
+    const std::int32_t& double_array_iterator::operator*() const
     {
         if (!m_current)
         {
             throw std::logic_error{ "Iterator not dereferenceable." };
         }
-        return const_cast<std::int32_t&>(*m_current);
+        return *m_current;
     }
 
-    bool double_array_iterator::equal(const double_array_iterator& another) const
+    std::int32_t& double_array_iterator::operator*()
     {
-        if ((!m_p_storage || !another.m_p_storage) && m_base_check_index_key_stack.empty() &&
-            another.m_base_check_index_key_stack.empty() && !m_current && !another.m_current)
+        if (!m_current)
+        {
+            throw std::logic_error{ "Iterator not dereferenceable." };
+        }
+        return *m_current;
+    }
+
+    bool operator==(const double_array_iterator& one, const double_array_iterator& another)
+    {
+        if ((!one.m_p_storage || !another.m_p_storage) && one.m_base_check_index_key_stack.empty() &&
+            another.m_base_check_index_key_stack.empty() && !one.m_current && !another.m_current)
         {
             return true;
         }
-        return m_p_storage == another.m_p_storage &&
-               m_base_check_index_key_stack == another.m_base_check_index_key_stack;
+        return one.m_p_storage == another.m_p_storage &&
+               one.m_base_check_index_key_stack == another.m_base_check_index_key_stack;
     }
 
-    void double_array_iterator::increment()
+    double_array_iterator& double_array_iterator::operator++()
     {
         m_current = next();
+        return *this;
     }
 
     std::optional<std::int32_t> double_array_iterator::next()

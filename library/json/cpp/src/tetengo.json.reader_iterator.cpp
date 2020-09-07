@@ -16,7 +16,7 @@ namespace tetengo::json
 
     reader_iterator::reader_iterator(reader& reader_) : m_p_reader{ &reader_ }, m_increment_count{ 0 } {}
 
-    char reader_iterator::dereference() const
+    char reader_iterator::operator*() const
     {
         if (!m_p_reader || !m_p_reader->has_next())
         {
@@ -25,23 +25,32 @@ namespace tetengo::json
         return m_p_reader->peek();
     }
 
-    bool reader_iterator::equal(const reader_iterator& another) const
+    char reader_iterator::operator*()
     {
-        if (m_p_reader && another.m_p_reader)
+        if (!m_p_reader || !m_p_reader->has_next())
         {
-            if (m_p_reader == another.m_p_reader)
+            throw std::logic_error{ "No more character." };
+        }
+        return m_p_reader->peek();
+    }
+
+    bool operator==(const reader_iterator& one, const reader_iterator& another)
+    {
+        if (one.m_p_reader && another.m_p_reader)
+        {
+            if (one.m_p_reader == another.m_p_reader)
             {
-                return m_p_reader->has_next() == another.m_p_reader->has_next() &&
-                       m_increment_count == another.m_increment_count;
+                return one.m_p_reader->has_next() == another.m_p_reader->has_next() &&
+                       one.m_increment_count == another.m_increment_count;
             }
             else
             {
                 return false;
             }
         }
-        else if (m_p_reader)
+        else if (one.m_p_reader)
         {
-            return !m_p_reader->has_next();
+            return !one.m_p_reader->has_next();
         }
         else if (another.m_p_reader)
         {
@@ -53,7 +62,7 @@ namespace tetengo::json
         }
     }
 
-    void reader_iterator::increment()
+    reader_iterator& reader_iterator::operator++()
     {
         if (!m_p_reader || !m_p_reader->has_next())
         {
@@ -61,6 +70,8 @@ namespace tetengo::json
         }
         m_p_reader->next();
         ++m_increment_count;
+
+        return *this;
     }
 
 

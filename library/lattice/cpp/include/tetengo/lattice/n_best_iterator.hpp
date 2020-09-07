@@ -14,8 +14,8 @@
 #include <queue>
 #include <vector>
 
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/operators.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.hpp>
@@ -94,15 +94,10 @@ namespace tetengo::lattice
     /*!
         \brief An N-best lattice path iterator.
     */
-    class n_best_iterator : public boost::iterator_facade<n_best_iterator, path, std::forward_iterator_tag, path>
+    class n_best_iterator :
+    public boost::stl_interfaces::iterator_interface<n_best_iterator, std::forward_iterator_tag, path>
     {
     public:
-        // friends
-
-        //! Allows boost::iterator_facade to access the private members.
-        friend class boost::iterators::iterator_core_access;
-
-
         // constructors and destructor
 
         /*!
@@ -124,6 +119,44 @@ namespace tetengo::lattice
         n_best_iterator(const lattice& lattice_, node eos_node, std::unique_ptr<constraint>&& p_constraint);
 
 
+        // functions
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        const path& operator*() const;
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        path& operator*();
+
+        /*!
+            \brief Returns true when one iterator is equal to another.
+
+            \param one   One iterator.
+            \param another Another iterator.
+
+            \retval true  When one is equal to another.
+            \retval false Otherwise.
+        */
+        friend bool operator==(const n_best_iterator& one, const n_best_iterator& another);
+
+        /*!
+            \brief Increments the iterator.
+
+            \return This iterator.
+        */
+        n_best_iterator& operator++();
+
+        //! Makes operator++(int) visible.
+        using boost::stl_interfaces::iterator_interface<n_best_iterator, std::forward_iterator_tag, path>::operator++;
+
+
     private:
         // variables
 
@@ -138,15 +171,6 @@ namespace tetengo::lattice
         path m_path;
 
         std::size_t m_index;
-
-
-        // functions
-
-        const path& dereference() const;
-
-        bool equal(const n_best_iterator& another) const;
-
-        void increment();
     };
 
 

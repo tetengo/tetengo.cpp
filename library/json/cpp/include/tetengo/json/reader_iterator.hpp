@@ -10,7 +10,7 @@
 #include <cstddef>
 #include <iterator>
 
-#include <boost/iterator/iterator_facade.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 
 namespace tetengo::json
@@ -21,15 +21,10 @@ namespace tetengo::json
     /*!
         \brief A reader iterator.
     */
-    class reader_iterator : public boost::iterator_facade<reader_iterator, char, std::input_iterator_tag, char>
+    class reader_iterator :
+    public boost::stl_interfaces::iterator_interface<reader_iterator, std::input_iterator_tag, char, char>
     {
     public:
-        // friends
-
-        //! Allows boost::iterator_facade to access the private members.
-        friend class boost::iterators::iterator_core_access;
-
-
         // constructors and destructor
 
         /*!
@@ -47,21 +42,51 @@ namespace tetengo::json
         explicit reader_iterator(reader& reader_);
 
 
+        // functions
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        char operator*() const;
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        char operator*();
+
+        /*!
+            \brief Returns true when one iterator is equal to another.
+
+            \param one   One iterator.
+            \param another Another iterator.
+
+            \retval true  When one is equal to another.
+            \retval false Otherwise.
+        */
+        friend bool operator==(const reader_iterator& one, const reader_iterator& another);
+
+        /*!
+            \brief Increments the iterator.
+
+            \return This iterator.
+        */
+        reader_iterator& operator++();
+
+        //! Makes operator++(int) visible.
+        using boost::stl_interfaces::iterator_interface<reader_iterator, std::input_iterator_tag, char, char>::
+        operator++;
+
+
     private:
         // variables
 
         reader* m_p_reader;
 
         std::size_t m_increment_count;
-
-
-        // functions
-
-        char dereference() const;
-
-        bool equal(const reader_iterator& another) const;
-
-        void increment();
     };
 
 

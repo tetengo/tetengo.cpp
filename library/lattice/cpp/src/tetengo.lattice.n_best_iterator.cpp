@@ -187,7 +187,7 @@ namespace tetengo::lattice
         m_path = open_cap(*m_p_lattice, m_caps, *m_p_constraint);
     }
 
-    const path& n_best_iterator::dereference() const
+    const path& n_best_iterator::operator*() const
     {
         if (m_path.empty())
         {
@@ -197,17 +197,28 @@ namespace tetengo::lattice
         return m_path;
     }
 
-    bool n_best_iterator::equal(const n_best_iterator& another) const
+    path& n_best_iterator::operator*()
     {
-        if (m_path.empty() && another.m_path.empty())
+        if (m_path.empty())
+        {
+            throw std::logic_error{ "No more path." };
+        }
+
+        return m_path;
+    }
+
+    bool operator==(const n_best_iterator& one, const n_best_iterator& another)
+    {
+        if (one.m_path.empty() && another.m_path.empty())
         {
             return true;
         }
 
-        return m_p_lattice == another.m_p_lattice && m_eos_hash == another.m_eos_hash && m_index == another.m_index;
+        return one.m_p_lattice == another.m_p_lattice && one.m_eos_hash == another.m_eos_hash &&
+               one.m_index == another.m_index;
     }
 
-    void n_best_iterator::increment()
+    n_best_iterator& n_best_iterator::operator++()
     {
         if (m_path.empty())
         {
@@ -223,6 +234,8 @@ namespace tetengo::lattice
             m_path = open_cap(*m_p_lattice, m_caps, *m_p_constraint);
         }
         ++m_index;
+
+        return *this;
     }
 
 

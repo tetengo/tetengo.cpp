@@ -22,8 +22,8 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/lattice.hpp>

@@ -16,7 +16,7 @@
 #include <utility>
 #include <vector>
 
-#include <boost/iterator/iterator_facade.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 
 namespace tetengo::trie
@@ -28,15 +28,9 @@ namespace tetengo::trie
         \brief A double array iterator.
     */
     class double_array_iterator :
-    public boost::iterators::iterator_facade<double_array_iterator, std::int32_t, std ::forward_iterator_tag>
+    public boost::stl_interfaces::iterator_interface<double_array_iterator, std ::forward_iterator_tag, std::int32_t>
     {
     public:
-        // friends
-
-        //! Allows boost::iterator_facade to access the private members.
-        friend class boost::iterators::iterator_core_access;
-
-
         // constructors and destructor
 
         /*!
@@ -55,6 +49,45 @@ namespace tetengo::trie
         double_array_iterator(const storage& storage_, std::size_t root_base_check_index);
 
 
+        // functions
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        const std::int32_t& operator*() const;
+
+        /*!
+            \brief Dereferences the iterator.
+
+            \return The dereferenced value.
+        */
+        std::int32_t& operator*();
+
+        /*!
+            \brief Returns true when one iterator is equal to another.
+
+            \param one   One iterator.
+            \param another Another iterator.
+
+            \retval true  When one is equal to another.
+            \retval false Otherwise.
+        */
+        friend bool operator==(const double_array_iterator& one, const double_array_iterator& another);
+
+        /*!
+            \brief Increments the iterator.
+
+            \return This iterator.
+        */
+        double_array_iterator& operator++();
+
+        //! Makes operator++(int) visible.
+        using boost::stl_interfaces::
+            iterator_interface<double_array_iterator, std ::forward_iterator_tag, std::int32_t>::operator++;
+
+
     private:
         // variables
 
@@ -67,12 +100,6 @@ namespace tetengo::trie
 
 
         // functions
-
-        std::int32_t& dereference() const;
-
-        bool equal(const double_array_iterator& another) const;
-
-        void increment();
 
         std::optional<std::int32_t> next();
     };
