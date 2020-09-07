@@ -10,8 +10,8 @@
 #include <string>
 #include <utility>
 
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/json/reader_iterator.hpp>
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'h');
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'i');
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'k');
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'o');
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'k');
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'u');
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == ' ');
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'M');
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'a');
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'n');
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'n');
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'a');
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(increment)
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'k');
-        ++iterator;
+        iterator++;
 
         BOOST_CHECK(iterator != tetengo::json::reader_iterator{});
         BOOST_TEST(*iterator == 'a');

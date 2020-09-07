@@ -21,9 +21,9 @@
 #include <stddef.h> // IWYU pragma: keep
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>

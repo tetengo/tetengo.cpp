@@ -11,9 +11,9 @@
 #include <utility>
 #include <vector>
 
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/nBestIterator.h>
