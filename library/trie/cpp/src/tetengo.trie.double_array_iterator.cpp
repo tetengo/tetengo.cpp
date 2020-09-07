@@ -34,7 +34,7 @@ namespace tetengo::trie
         operator++();
     }
 
-    std::int32_t& double_array_iterator::operator*()
+    const std::int32_t& double_array_iterator::operator*() const
     {
         if (!m_current)
         {
@@ -43,7 +43,7 @@ namespace tetengo::trie
         return *m_current;
     }
 
-    const std::int32_t& double_array_iterator::operator*() const
+    std::int32_t& double_array_iterator::operator*()
     {
         if (!m_current)
         {

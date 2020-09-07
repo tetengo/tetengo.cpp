@@ -7,8 +7,6 @@
 #include <any>
 #include <utility>
 
-#include <boost/iterator/iterator_facade.hpp>
-
 #include <tetengo/trie/double_array_iterator.hpp>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie_iterator.hpp>
@@ -23,19 +21,25 @@ namespace tetengo::trie
 
     trie_iterator_impl::trie_iterator_impl() : m_double_array_iterator{}, m_p_storage{ nullptr } {}
 
-    std::any& trie_iterator_impl::dereference() const
+    std::any& trie_iterator_impl::operator*()
     {
         return const_cast<std::any&>(*m_p_storage->value_at(*m_double_array_iterator));
     }
 
-    bool trie_iterator_impl::equal(const trie_iterator_impl& another) const
+    const std::any& trie_iterator_impl::operator*() const
     {
-        return m_double_array_iterator == another.m_double_array_iterator;
+        return *m_p_storage->value_at(*m_double_array_iterator);
     }
 
-    void trie_iterator_impl::increment()
+    bool operator==(const trie_iterator_impl& one, const trie_iterator_impl& another)
+    {
+        return one.m_double_array_iterator == another.m_double_array_iterator;
+    }
+
+    trie_iterator_impl& trie_iterator_impl::operator++()
     {
         ++m_double_array_iterator;
+        return *this;
     }
 
 
