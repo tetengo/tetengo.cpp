@@ -15,9 +15,9 @@
 #include <utility>
 #include <vector>
 
-#include <boost/iterator/iterator_facade.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/lattice/connection.h> // IWYU pragma: keep
@@ -645,7 +645,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(!path.nodes()[2].value().has_value());
         }
 
-        ++iterator;
+        iterator++;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
@@ -665,7 +665,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(!path.nodes()[3].value().has_value());
         }
 
-        ++iterator;
+        iterator++;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
@@ -685,7 +685,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(!path.nodes()[3].value().has_value());
         }
 
-        ++iterator;
+        iterator++;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 3U);
@@ -705,7 +705,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(!path.nodes()[4].value().has_value());
         }
 
-        ++iterator;
+        iterator++;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 5U);
@@ -754,7 +754,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         }
 
         ++iterator;
-        ++iterator;
+        iterator++;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
@@ -775,12 +775,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             const auto& constrained_path = *constrained_iterator;
             BOOST_TEST(constrained_path.nodes() == path.nodes());
 
-            ++constrained_iterator;
+            constrained_iterator++;
             BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
         }
 
         ++iterator;
-        ++iterator;
+        iterator++;
         {
             const auto& path = *iterator;
             BOOST_TEST_REQUIRE(path.nodes().size() == 4U);
@@ -813,7 +813,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
                 BOOST_CHECK(constrained_path.nodes()[3].key() == "Omuta-Kumamoto");
                 BOOST_CHECK(constrained_path.nodes()[4] == path.nodes()[3]);
             }
-            ++constrained_iterator;
+            constrained_iterator++;
             {
                 BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
             }
@@ -849,7 +849,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
                 const auto& constrained_path = *constrained_iterator;
                 BOOST_TEST(constrained_path.nodes() == path.nodes());
             }
-            ++constrained_iterator;
+            constrained_iterator++;
             {
                 BOOST_CHECK(constrained_iterator == tetengo::lattice::n_best_iterator{});
             }
