@@ -52,7 +52,7 @@ namespace tetengo::trie
         return *m_current;
     }
 
-    bool operator==(const double_array_iterator& one, const double_array_iterator another)
+    bool operator==(const double_array_iterator& one, const double_array_iterator& another)
     {
         if ((!one.m_p_storage || !another.m_p_storage) && one.m_base_check_index_key_stack.empty() &&
             another.m_base_check_index_key_stack.empty() && !one.m_current && !another.m_current)

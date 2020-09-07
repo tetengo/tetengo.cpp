@@ -74,7 +74,7 @@ namespace tetengo::trie
             \retval true  When one is equal to another.
             \retval false Otherwise.
         */
-        friend bool operator==(const double_array_iterator& one, const double_array_iterator another);
+        friend bool operator==(const double_array_iterator& one, const double_array_iterator& another);
 
         /*!
             \brief Increments the iterator.
@@ -86,6 +86,7 @@ namespace tetengo::trie
         //! Makes operator++(int) visible.
         using boost::stl_interfaces::
             iterator_interface<double_array_iterator, std ::forward_iterator_tag, std::int32_t>::operator++;
+
 
     private:
         // variables

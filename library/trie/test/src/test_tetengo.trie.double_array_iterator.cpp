@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         BOOST_REQUIRE(iterator != std::end(double_array_));
         BOOST_TEST(*iterator == 24);
 
-        ++iterator;
+        iterator++;
 
         BOOST_REQUIRE(iterator != std::end(double_array_));
         BOOST_TEST(*iterator == 2424);
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(*iterator == 24);
         }
         {
-            ++iterator;
+            iterator++;
 
             BOOST_CHECK(iterator == std::end(double_array_));
         }
