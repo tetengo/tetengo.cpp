@@ -33,7 +33,7 @@ namespace tetengo::json
     public:
         // static functions
 
-        static std::size_t default_buffer_capacity()
+        static constexpr std::size_t default_buffer_capacity()
         {
             return 100;
         }
