@@ -312,8 +312,8 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -360,8 +360,8 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_trie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -423,8 +423,8 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(!p_trie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -443,8 +443,8 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(!p_trie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -534,8 +534,8 @@ BOOST_AUTO_TEST_CASE(empty)
         BOOST_TEST(tetengo_trie_trie_empty(p_trie));
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -627,7 +627,7 @@ BOOST_AUTO_TEST_CASE(size)
         BOOST_TEST(tetengo_trie_trie_size(p_trie) == 0U);
     }
     {
-        const int                                kumamoto_value = 42;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
@@ -648,8 +648,8 @@ BOOST_AUTO_TEST_CASE(size)
         BOOST_TEST(tetengo_trie_trie_size(p_trie) == 1U);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -743,8 +743,8 @@ BOOST_AUTO_TEST_CASE(contains)
         BOOST_TEST(!tetengo_trie_trie_contains(p_trie, "Kumamoto"));
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -771,8 +771,8 @@ BOOST_AUTO_TEST_CASE(contains)
         BOOST_TEST(!tetengo_trie_trie_contains(nullptr, "Kumamoto"));
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -882,8 +882,8 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_TEST(!p_found);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -911,8 +911,8 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_TEST(!p_found);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -1010,8 +1010,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
         BOOST_TEST(p_iterator);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
@@ -1145,9 +1145,9 @@ BOOST_AUTO_TEST_CASE(subtrie)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
-        const int                                tamarai_value = 35;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
+        constexpr auto                           tamarai_value = static_cast<int>(35);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value },
                                                            { "Tamarai", &tamarai_value } };
@@ -1210,9 +1210,9 @@ BOOST_AUTO_TEST_CASE(subtrie)
         BOOST_TEST(!p_subtrie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
-        const int                                tamarai_value = 35;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
+        constexpr auto                           tamarai_value = static_cast<int>(35);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value },
                                                            { "Tamarai", &tamarai_value } };
@@ -1275,9 +1275,9 @@ BOOST_AUTO_TEST_CASE(get_storage)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
-        const int                                tamarai_value = 35;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
+        constexpr auto                           tamarai_value = static_cast<int>(35);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value },
                                                            { "Tamarai", &tamarai_value } };

@@ -49,7 +49,7 @@ namespace tetengo::trie
         template <typename T>
         T from_bytes(const char* const p_head, const std::size_t size)
         {
-            assert(size >= sizeof(T) && size <= 2 * sizeof(T));
+            assert(sizeof(T) <= size && size <= 2 * sizeof(T));
             auto object = static_cast<T>(0);
             if constexpr (sizeof(T) > 1)
             {
