@@ -7,6 +7,7 @@ pkg_headers = \
     json/element.hpp \
     json/json_grammar.hpp \
     json/json_parser.hpp \
+    json/line_counting_reader.hpp \
     json/reader.hpp \
     json/reader_iterator.hpp \
     json/stream_reader.hpp
