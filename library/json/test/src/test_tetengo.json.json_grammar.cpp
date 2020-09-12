@@ -5,6 +5,7 @@
  */
 
 #include <cassert>
+#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -124,7 +125,7 @@ namespace
             std::string stringized{};
             for (const auto& entry: attributes)
             {
-                if (!stringized.empty())
+                if (!std::empty(stringized))
                 {
                     stringized += " ";
                 }
@@ -143,7 +144,7 @@ namespace
             const std::string stringized_attributes = to_string(attributes);
             parsed.push_back(
                 to_string(type) + " " + to_string(open_close) +
-                (stringized_attributes.empty() ? "" : " " + stringized_attributes));
+                (std::empty(stringized_attributes) ? "" : " " + stringized_attributes));
             return true;
         }
     };

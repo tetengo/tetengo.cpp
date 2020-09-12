@@ -262,7 +262,7 @@ private:
         while (input_stream)
         {
             auto line = read_line(input_stream);
-            if (line.empty() || (std::size(line) == 1 && line[0].empty()))
+            if (std::empty(line) || (std::size(line) == 1 && std::empty(line[0])))
             {
                 continue;
             }
@@ -339,7 +339,7 @@ private:
 
     static std::optional<std::size_t> to_minutes(std::string&& string_time)
     {
-        if (string_time.empty() || string_time == "-")
+        if (std::empty(string_time) || string_time == "-")
         {
             return std::nullopt;
         }

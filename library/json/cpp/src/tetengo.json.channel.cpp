@@ -148,12 +148,12 @@ namespace tetengo::json
 
         bool can_take() const
         {
-            return !m_queue.empty();
+            return !std::empty(m_queue);
         }
 
         bool closed_impl() const
         {
-            return !m_queue.empty() && !m_queue.front();
+            return !std::empty(m_queue) && !m_queue.front();
         }
     };
 

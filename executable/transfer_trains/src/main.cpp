@@ -176,7 +176,7 @@ namespace
                     continue;
                 }
 
-                if (trip_.sections.empty() || trip_.sections.back().train_number != p_section->p_train()->number())
+                if (std::empty(trip_.sections) || trip_.sections.back().train_number != p_section->p_train()->number())
                 {
                     trip_.sections.push_back({ p_section->p_train()->number(),
                                                p_section->p_train()->name(),

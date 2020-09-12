@@ -53,7 +53,7 @@ namespace tetengo::lattice
 
         std::size_t matches_impl(const std::vector<node>& reverse_path) const
         {
-            if (m_pattern.empty())
+            if (std::empty(m_pattern))
             {
                 return 0;
             }

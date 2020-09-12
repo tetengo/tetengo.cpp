@@ -146,7 +146,7 @@ namespace tetengo::lattice
                         add_cost(best_preceding_path_cost, entry.cost()));
                 }
             }
-            if (nodes.empty())
+            if (std::empty(nodes))
             {
                 throw std::invalid_argument{ "No node is found for the input." };
             }
@@ -184,7 +184,7 @@ namespace tetengo::lattice
 
         static std::size_t best_preceding_node_index(const graph_step& step, const std::vector<int>& edge_costs)
         {
-            assert(!step.nodes().empty());
+            assert(!std::empty(step.nodes()));
             auto min_index = static_cast<std::size_t>(0);
             for (auto i = static_cast<std::size_t>(1); i < std::size(step.nodes()); ++i)
             {
@@ -224,7 +224,7 @@ namespace tetengo::lattice
         std::unique_ptr<std::vector<int>>
         preceding_edge_costs(const graph_step& step, const entry_view& next_entry) const
         {
-            assert(!step.nodes().empty());
+            assert(!std::empty(step.nodes()));
             std::vector<int> costs{};
             costs.reserve(std::size(step.nodes()));
             std::transform(

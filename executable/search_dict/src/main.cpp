@@ -128,7 +128,7 @@ int main(const int argc, char** const argv)
             std::cerr << ">> " << std::flush;
             std::string key{};
             std::getline(std::cin, key);
-            if (key.empty())
+            if (std::empty(key))
             {
                 continue;
             }

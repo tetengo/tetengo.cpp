@@ -363,7 +363,7 @@ namespace tetengo::trie
         */
         bool empty() const
         {
-            return m_impl.empty();
+            return std::empty(m_impl);
         }
 
         /*!

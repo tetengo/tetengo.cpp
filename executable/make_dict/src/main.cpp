@@ -119,7 +119,7 @@ namespace
         {
             std::string line{};
             std::getline(stream, line);
-            if (line.empty())
+            if (std::empty(line))
             {
                 line_head += line.length() + 1;
                 continue;

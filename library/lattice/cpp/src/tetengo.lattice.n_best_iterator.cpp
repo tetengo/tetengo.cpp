@@ -86,7 +86,7 @@ namespace tetengo::lattice
             const constraint&                                              constraint_)
         {
             path path_{};
-            while (!caps.empty())
+            while (!std::empty(caps))
             {
                 const auto opened = caps.top();
                 caps.pop();
@@ -189,7 +189,7 @@ namespace tetengo::lattice
 
     const path& n_best_iterator::operator*() const
     {
-        if (m_path.empty())
+        if (std::empty(m_path))
         {
             throw std::logic_error{ "No more path." };
         }
@@ -199,7 +199,7 @@ namespace tetengo::lattice
 
     path& n_best_iterator::operator*()
     {
-        if (m_path.empty())
+        if (std::empty(m_path))
         {
             throw std::logic_error{ "No more path." };
         }
@@ -209,7 +209,7 @@ namespace tetengo::lattice
 
     bool operator==(const n_best_iterator& one, const n_best_iterator& another)
     {
-        if (one.m_path.empty() && another.m_path.empty())
+        if (std::empty(one.m_path) && std::empty(another.m_path))
         {
             return true;
         }
@@ -220,12 +220,12 @@ namespace tetengo::lattice
 
     n_best_iterator& n_best_iterator::operator++()
     {
-        if (m_path.empty())
+        if (std::empty(m_path))
         {
             throw std::logic_error{ "No more path." };
         }
 
-        if (m_caps.empty())
+        if (std::empty(m_caps))
         {
             m_path = path{};
         }

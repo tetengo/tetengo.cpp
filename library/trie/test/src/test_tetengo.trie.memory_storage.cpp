@@ -552,7 +552,7 @@ BOOST_AUTO_TEST_CASE(serialize)
         tetengo_trie_storage_serialize(nullptr, file_path.c_str());
 
         const auto serialized = file_content(file_path);
-        BOOST_TEST(serialized.empty());
+        BOOST_TEST(std::empty(serialized));
     }
     {
         constexpr auto                           kumamoto_value = static_cast<int>(42);

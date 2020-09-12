@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
         {
             const auto entries = vocabulary.find_entries(key_mizuho);
 
-            BOOST_TEST_REQUIRE(!entries.empty());
+            BOOST_TEST_REQUIRE(!std::empty(entries));
             BOOST_TEST(entries[0].key() == key_mizuho);
             BOOST_TEST(*std::any_cast<std::string>(entries[0].value()) == surface_mizuho);
             BOOST_TEST(entries[0].cost() == 42);
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
         {
             const auto entries = vocabulary.find_entries(key_sakura);
 
-            BOOST_TEST(entries.empty());
+            BOOST_TEST(std::empty(entries));
         }
     }
 }

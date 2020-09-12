@@ -266,11 +266,11 @@ BOOST_AUTO_TEST_CASE(find_entries)
 
         {
             const auto found = vocabulary.find_entries(key_mizuho);
-            BOOST_TEST(found.empty());
+            BOOST_TEST(std::empty(found));
         }
         {
             const auto found = vocabulary.find_entries(key_sakura);
-            BOOST_TEST(found.empty());
+            BOOST_TEST(std::empty(found));
         }
     }
     {

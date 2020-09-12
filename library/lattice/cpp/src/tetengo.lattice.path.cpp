@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <iterator>
 #include <utility>
 #include <vector>
 
@@ -19,7 +20,7 @@ namespace tetengo::lattice
 
     bool path::empty() const
     {
-        return m_nodes.empty();
+        return std::empty(m_nodes);
     }
 
     const std::vector<node>& path::nodes() const

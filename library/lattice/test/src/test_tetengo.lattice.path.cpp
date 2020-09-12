@@ -154,12 +154,12 @@ BOOST_AUTO_TEST_CASE(empty)
     {
         const tetengo::lattice::path path_{};
 
-        BOOST_TEST(path_.empty());
+        BOOST_TEST(std::empty(path_));
     }
     {
         const tetengo::lattice::path path_{ cpp_nodes(), 42 };
 
-        BOOST_TEST(!path_.empty());
+        BOOST_TEST(!std::empty(path_));
     }
 
     {
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE(nodes)
     {
         const tetengo::lattice::path path_{};
 
-        BOOST_TEST(path_.nodes().empty());
+        BOOST_TEST(std::empty(path_.nodes()));
     }
     {
         const tetengo::lattice::path path_{ cpp_nodes(), 42 };

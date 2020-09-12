@@ -43,7 +43,7 @@ namespace tetengo::trie
 
         auto p_storage = std::make_unique<memory_storage>();
 
-        if (!elements.empty())
+        if (!std::empty(elements))
         {
             std::unordered_set<std::int32_t> base_uniquer{};
             build_iter(
@@ -140,7 +140,7 @@ namespace tetengo::trie
 
             child_first = child_last;
         }
-        assert(!firsts.empty());
+        assert(!std::empty(firsts));
         return firsts;
     }
 

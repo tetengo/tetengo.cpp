@@ -125,7 +125,7 @@ int tetengo_lattice_path_empty(const tetengo_lattice_path_t* const p_path)
             throw std::invalid_argument{ "p_path is NULL." };
         }
 
-        return p_path->p_cpp_path->empty();
+        return std::empty(*p_path->p_cpp_path);
     }
     catch (...)
     {

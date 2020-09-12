@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE(value)
                                     std::string{},
                                     std::unordered_map<std::string, std::string>{} };
 
-        BOOST_TEST(element.value().empty());
+        BOOST_TEST(std::empty(element.value()));
     }
     {
         const element_type element{ element_type::type_type{ element_type::type_name_type::member,
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(value)
                                     std::string{},
                                     std::unordered_map<std::string, std::string>{ { "name", "value" } } };
 
-        BOOST_TEST(element.value().empty());
+        BOOST_TEST(std::empty(element.value()));
     }
 
     {
@@ -421,7 +421,7 @@ BOOST_AUTO_TEST_CASE(attributes)
                                     "test",
                                     std::unordered_map<std::string, std::string>{} };
 
-        BOOST_TEST(element.attributes().empty());
+        BOOST_TEST(std::empty(element.attributes()));
     }
     {
         const element_type element{ element_type::type_type{ element_type::type_name_type::object,
@@ -429,7 +429,7 @@ BOOST_AUTO_TEST_CASE(attributes)
                                     std::string{},
                                     std::unordered_map<std::string, std::string>{} };
 
-        BOOST_TEST(element.attributes().empty());
+        BOOST_TEST(std::empty(element.attributes()));
     }
     {
         const element_type element{ element_type::type_type{ element_type::type_name_type::member,

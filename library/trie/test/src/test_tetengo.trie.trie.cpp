@@ -474,28 +474,28 @@ BOOST_AUTO_TEST_CASE(empty)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
 
-        BOOST_TEST(trie_.empty());
+        BOOST_TEST(std::empty(trie_));
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 } };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
 
     {
         const tetengo::trie::trie<std::string_view, int> trie_{};
 
-        BOOST_TEST(trie_.empty());
+        BOOST_TEST(std::empty(trie_));
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
 
     {
@@ -503,7 +503,7 @@ BOOST_AUTO_TEST_CASE(empty)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(trie_.empty());
+        BOOST_TEST(std::empty(trie_));
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
@@ -511,7 +511,7 @@ BOOST_AUTO_TEST_CASE(empty)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
 
     {

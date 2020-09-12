@@ -5,6 +5,7 @@
  */
 
 #include <any>
+#include <iterator>
 #include <string>
 
 #include <boost/preprocessor.hpp>
@@ -43,7 +44,7 @@ BOOST_AUTO_TEST_CASE(bos_eos)
     {
         static auto& bos_eos_ = tetengo::lattice::entry::bos_eos();
 
-        BOOST_TEST(bos_eos_.key().empty());
+        BOOST_TEST(std::empty(bos_eos_.key()));
         BOOST_TEST(!bos_eos_.value().has_value());
         BOOST_TEST(bos_eos_.cost() == 0);
     }

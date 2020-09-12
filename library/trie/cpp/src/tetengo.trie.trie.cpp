@@ -197,7 +197,7 @@ namespace tetengo::trie
 
     bool trie_impl::empty() const
     {
-        return m_p_impl->empty();
+        return std::empty(*m_p_impl);
     }
 
     std::size_t trie_impl::size() const

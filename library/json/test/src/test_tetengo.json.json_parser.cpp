@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::boolean);
         BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
         BOOST_TEST(parsed.value() == "false");
-        BOOST_TEST(parsed.attributes().empty());
+        BOOST_TEST(std::empty(parsed.attributes()));
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json2), 10);
@@ -303,7 +303,7 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::boolean);
         BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
         BOOST_TEST(parsed.value() == "false");
-        BOOST_TEST(parsed.attributes().empty());
+        BOOST_TEST(std::empty(parsed.attributes()));
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json3), 10);
@@ -312,8 +312,8 @@ BOOST_AUTO_TEST_CASE(peek)
         const auto& parsed = parser.peek();
         BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::array);
         BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_open);
-        BOOST_TEST(parsed.value().empty());
-        BOOST_TEST(parsed.attributes().empty());
+        BOOST_TEST(std::empty(parsed.value()));
+        BOOST_TEST(std::empty(parsed.attributes()));
     }
 
     {
@@ -396,7 +396,7 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureOpen());
         const auto* const value = tetengo_json_element_value(p_parsed);
         BOOST_TEST_REQUIRE(value);
-        BOOST_TEST(std::string_view{ value }.empty());
+        BOOST_TEST(std::empty(std::string_view{ value }));
         BOOST_TEST(tetengo_json_element_attributeKeys(p_parsed, nullptr) == 0U);
     }
     {

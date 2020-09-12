@@ -53,13 +53,13 @@ namespace tetengo::json
         bool has_next_impl() const
         {
             ensure_buffer_filled();
-            return !m_buffer.empty();
+            return !std::empty(m_buffer);
         }
 
         char peek_impl() const
         {
             ensure_buffer_filled();
-            if (m_buffer.empty())
+            if (std::empty(m_buffer))
             {
                 throw std::logic_error{ "No more element." };
             }
@@ -69,7 +69,7 @@ namespace tetengo::json
         void next_impl()
         {
             ensure_buffer_filled();
-            if (m_buffer.empty())
+            if (std::empty(m_buffer))
             {
                 throw std::logic_error{ "No more element." };
             }
@@ -89,7 +89,7 @@ namespace tetengo::json
 
         void ensure_buffer_filled() const
         {
-            if (!m_buffer.empty())
+            if (!std::empty(m_buffer))
             {
                 return;
             }
