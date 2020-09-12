@@ -7,6 +7,7 @@
 #include <any>
 #include <cassert>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -98,7 +99,7 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             std::move(cpp_connections),
             [p_entry_hash](const tetengo::lattice::entry_view& cpp_entry) {
                 tetengo_lattice_entryView_t entry{};
-                entry.key.p_head = cpp_entry.key().data();
+                entry.key.p_head = std::data(cpp_entry.key());
                 entry.key.length = cpp_entry.key().length();
                 entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
                 entry.cost = cpp_entry.cost();
@@ -107,13 +108,13 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             [p_entry_equal_to](
                 const tetengo::lattice::entry_view& cpp_entry1, const tetengo::lattice::entry_view& cpp_entry2) {
                 tetengo_lattice_entryView_t entry1{};
-                entry1.key.p_head = cpp_entry1.key().data();
+                entry1.key.p_head = std::data(cpp_entry1.key());
                 entry1.key.length = cpp_entry1.key().length();
                 entry1.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry1.value());
                 entry1.cost = cpp_entry1.cost();
 
                 tetengo_lattice_entryView_t entry2{};
-                entry2.key.p_head = cpp_entry2.key().data();
+                entry2.key.p_head = std::data(cpp_entry2.key());
                 entry2.key.length = cpp_entry2.key().length();
                 entry2.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry2.value());
                 entry2.cost = cpp_entry2.cost();
@@ -160,12 +161,12 @@ size_t tetengo_lattice_vocabulary_findEntries(
 
         if (p_entries)
         {
-            for (auto i = static_cast<std::size_t>(0); i < found.size(); ++i)
+            for (auto i = static_cast<std::size_t>(0); i < std::size(found); ++i)
             {
                 const auto& cpp_entry = found[i];
                 auto&       entry = p_entries[i];
 
-                entry.key.p_head = cpp_entry.key().data();
+                entry.key.p_head = std::data(cpp_entry.key());
                 entry.key.length = cpp_entry.key().length();
                 assert(cpp_entry.value()->type() == typeid(const void*));
                 entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
@@ -173,7 +174,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
             }
         }
 
-        return found.size();
+        return std::size(found);
     }
     catch (...)
     {

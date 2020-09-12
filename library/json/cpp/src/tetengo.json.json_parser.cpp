@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <exception>
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -33,7 +34,7 @@ namespace tetengo::json
     public:
         // static functions
 
-        static std::size_t default_buffer_capacity()
+        static constexpr std::size_t default_buffer_capacity()
         {
             return 100;
         }
@@ -123,11 +124,11 @@ namespace tetengo::json
             const json_grammar::structure_type_type       structure_type,
             const json_grammar::structure_open_close_type structure_open_close)
         {
-            const element::type_category_type element_category =
-                structure_open_close == json_grammar::structure_open_close_type::open ?
-                    element::type_category_type::structure_open :
-                    element::type_category_type::structure_close;
-            switch (structure_type)
+            switch (const element::type_category_type element_category =
+                        structure_open_close == json_grammar::structure_open_close_type::open ?
+                            element::type_category_type::structure_open :
+                            element::type_category_type::structure_close;
+                    structure_type)
             {
             case json_grammar::structure_type_type::object:
                 return { element::type_name_type::object, element_category };
@@ -143,7 +144,7 @@ namespace tetengo::json
         to_element_attributes(const std::unordered_map<std::string_view, std::string_view>& structure_attributes)
         {
             std::unordered_map<std::string, std::string> element_attributes{};
-            element_attributes.reserve(structure_attributes.size());
+            element_attributes.reserve(std::size(structure_attributes));
             for (const auto& i: structure_attributes)
             {
                 element_attributes.insert(i);
@@ -177,7 +178,7 @@ namespace tetengo::json
                         &impl::on_structure, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
                 };
 
-                grammar_.parse(*m_p_reader);
+                [[maybe_unused]] const auto successful = grammar_.parse(*m_p_reader);
                 m_channel.close();
             }
             catch (...)

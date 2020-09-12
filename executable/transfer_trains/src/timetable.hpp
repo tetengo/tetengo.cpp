@@ -45,14 +45,14 @@ public:
 
         \return The name.
     */
-    const std::string& name() const;
+    [[nodiscard]] const std::string& name() const;
 
     /*!
         \brief Returns the telegram code.
 
         \return The telegram code.
     */
-    const std::string& telegram_code() const;
+    [[nodiscard]] const std::string& telegram_code() const;
 
 
 private:
@@ -88,7 +88,7 @@ public:
 
         \return The arrival time.
     */
-    std::optional<std::size_t> arrival_time() const;
+    [[nodiscard]] std::optional<std::size_t> arrival_time() const;
 
     /*!
         \brief Sets an arrival time.
@@ -102,7 +102,7 @@ public:
 
         \return The departure time.
     */
-    std::optional<std::size_t> departure_time() const;
+    [[nodiscard]] std::optional<std::size_t> departure_time() const;
 
     /*!
         \brief Sets a departure time.
@@ -146,28 +146,28 @@ public:
 
         \return The number.
     */
-    const std::string& number() const;
+    [[nodiscard]] const std::string& number() const;
 
     /*!
         \brief Returns the name.
 
         \return The name.
     */
-    const std::string& name() const;
+    [[nodiscard]] const std::string& name() const;
 
     /*!
         \brief Returns the stops.
 
         \return The stops.
     */
-    const std::vector<stop>& stops() const;
+    [[nodiscard]] const std::vector<stop>& stops() const;
 
     /*!
         \brief Returns the stops.
 
         \return The stops.
     */
-    std::vector<stop>& stops();
+    [[nodiscard]] std::vector<stop>& stops();
 
 
 private:
@@ -206,21 +206,21 @@ public:
 
         \return A pointer to the train.
     */
-    const train* p_train() const;
+    [[nodiscard]] const train* p_train() const;
 
     /*!
         \brief Returns the departure station index.
 
         \return The departure station index.
     */
-    std::size_t from() const;
+    [[nodiscard]] std::size_t from() const;
 
     /*!
         \brief Returns the arrival station index.
 
         \return The arrival station index.
     */
-    std::size_t to() const;
+    [[nodiscard]] std::size_t to() const;
 
 
 private:
@@ -262,16 +262,16 @@ public:
 
         \return The stations.
     */
-    const std::vector<station>& stations() const;
+    [[nodiscard]] const std::vector<station>& stations() const;
 
     /*!
         \brief Returns the station index.
 
         \param name_or_telegram_code A name or telegram code.
 
-        \return The index. Or stations().size() when no station is found.
+        \return The index. Or std::size(stations()) when no station is found.
     */
-    std::size_t station_index(const std::string& name_or_telegram_code) const;
+    [[nodiscard]] std::size_t station_index(const std::string& name_or_telegram_code) const;
 
     /*!
         \brief Creates a vocabulary.
@@ -280,7 +280,7 @@ public:
 
         \return A vocabulary.
     */
-    std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary(std::size_t departure_time) const;
+    [[nodiscard]] std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary(std::size_t departure_time) const;
 
 
 private:

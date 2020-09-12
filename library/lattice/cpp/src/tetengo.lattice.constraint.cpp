@@ -5,6 +5,7 @@
 */
 
 #include <cstddef>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <utility>
@@ -52,13 +53,14 @@ namespace tetengo::lattice
 
         std::size_t matches_impl(const std::vector<node>& reverse_path) const
         {
-            if (m_pattern.empty())
+            if (std::empty(m_pattern))
             {
                 return 0;
             }
 
-            auto pattern_index = m_pattern.size();
-            for (auto path_index = static_cast<std::size_t>(0); path_index < reverse_path.size() && pattern_index > 0;
+            auto pattern_index = std::size(m_pattern);
+            for (auto path_index = static_cast<std::size_t>(0);
+                 path_index < std::size(reverse_path) && pattern_index > 0;
                  ++path_index)
             {
                 const auto element_match = m_pattern[pattern_index - 1]->matches(reverse_path[path_index]);

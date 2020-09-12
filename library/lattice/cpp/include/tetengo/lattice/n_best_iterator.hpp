@@ -63,21 +63,21 @@ namespace tetengo::lattice
 
             \return The tail path.
         */
-        const std::vector<node>& tail_path() const;
+        [[nodiscard]] const std::vector<node>& tail_path() const;
 
         /*!
             \brief Returns the tail path cost.
 
             \return The tail path cost.
         */
-        int tail_path_cost() const;
+        [[nodiscard]] int tail_path_cost() const;
 
         /*!
             \brief Returns the whole path cost.
 
             \return The whole path cost.
         */
-        int whole_path_cost() const;
+        [[nodiscard]] int whole_path_cost() const;
 
 
     private:
@@ -126,14 +126,14 @@ namespace tetengo::lattice
 
             \return The dereferenced value.
         */
-        const path& operator*() const;
+        [[nodiscard]] const path& operator*() const;
 
         /*!
             \brief Dereferences the iterator.
 
             \return The dereferenced value.
         */
-        path& operator*();
+        [[nodiscard]] path& operator*();
 
         /*!
             \brief Returns true when one iterator is equal to another.

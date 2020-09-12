@@ -37,8 +37,7 @@ namespace
     {
         std::vector<std::string_view> elements{};
 
-        auto first = static_cast<std::size_t>(0);
-        for (;;)
+        for (auto first = static_cast<std::size_t>(0);;)
         {
             if (first < string.length() && string[first] == '"')
             {
@@ -89,18 +88,14 @@ namespace
         i_value->second.emplace_back(offset, length);
     }
 
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
 
-    const std::string string_kigo{
-        to_c(0xE8), to_c(0xA8), to_c(0x98), to_c(0xE5), to_c(0x8F), to_c(0xB7)
-    }; // "kigo" in Kanji in UTF-8
+    const std::string string_kigo{ 0xE8_c, 0xA8_c, 0x98_c, 0xE5_c, 0x8F_c, 0xB7_c }; // "kigo" in Kanji in UTF-8
 
-    const std::string string_hojo{
-        to_c(0xE8), to_c(0xA3), to_c(0x9C), to_c(0xE5), to_c(0x8A), to_c(0xA9)
-    }; // "hojo" in Kanji in UTF-8
+    const std::string string_hojo{ 0xE8_c, 0xA3_c, 0x9C_c, 0xE5_c, 0x8A_c, 0xA9_c }; // "hojo" in Kanji in UTF-8
 
     std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>
     load_lex_csv(const std::filesystem::path& lex_csv_path)
@@ -119,13 +114,13 @@ namespace
         {
             std::string line{};
             std::getline(stream, line);
-            if (line.empty())
+            if (std::empty(line))
             {
                 line_head += line.length() + 1;
                 continue;
             }
             const auto elements = split(line, ',');
-            if (elements.size() != 33)
+            if (std::size(elements) != 33)
             {
                 std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \n" << std::flush;
                 throw std::runtime_error{ "Invalid UniDic lex.csv format." };
@@ -216,9 +211,9 @@ namespace
     std::vector<char> serialize_vector_of_pair_of_size_t(const std::vector<std::pair<std::size_t, std::size_t>>& vps)
     {
         std::vector<char> serialized{};
-        serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * vps.size()));
+        serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * std::size(vps)));
 
-        const auto serialized_size = serialize_size_t(vps.size());
+        const auto serialized_size = serialize_size_t(std::size(vps));
         serialized.insert(std::end(serialized), std::begin(serialized_size), std::end(serialized_size));
         for (const auto& ps: vps)
         {

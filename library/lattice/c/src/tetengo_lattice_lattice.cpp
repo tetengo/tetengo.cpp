@@ -94,20 +94,20 @@ size_t tetengo_lattice_lattice_nodesAt(
         const auto& cpp_nodes = p_lattice->p_cpp_lattice->nodes_at(step);
         if (p_nodes)
         {
-            for (auto i = static_cast<std::size_t>(0); i < cpp_nodes.size(); ++i)
+            for (auto i = static_cast<std::size_t>(0); i < std::size(cpp_nodes); ++i)
             {
-                p_nodes[i].key.p_head = cpp_nodes[i].key().data();
+                p_nodes[i].key.p_head = std::data(cpp_nodes[i].key());
                 p_nodes[i].key.length = cpp_nodes[i].key().length();
                 p_nodes[i].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_nodes[i].value());
                 p_nodes[i].preceding_step = cpp_nodes[i].preceding_step();
-                p_nodes[i].p_preceding_edge_costs = cpp_nodes[i].preceding_edge_costs().data();
-                p_nodes[i].preceding_edge_cost_count = cpp_nodes[i].preceding_edge_costs().size();
+                p_nodes[i].p_preceding_edge_costs = std::data(cpp_nodes[i].preceding_edge_costs());
+                p_nodes[i].preceding_edge_cost_count = std::size(cpp_nodes[i].preceding_edge_costs());
                 p_nodes[i].best_preceding_node = cpp_nodes[i].best_preceding_node();
                 p_nodes[i].node_cost = cpp_nodes[i].node_cost();
                 p_nodes[i].path_cost = cpp_nodes[i].path_cost();
             }
         }
-        return cpp_nodes.size();
+        return std::size(cpp_nodes);
     }
     catch (...)
     {
@@ -167,19 +167,19 @@ size_t tetengo_lattice_lattice_settle(
         if (p_eos_node)
         {
             assert(!cpp_eos_node_and_preceding_edge_costs.first.value().has_value());
-            p_eos_node->key.p_head = cpp_eos_node_and_preceding_edge_costs.first.key().data();
+            p_eos_node->key.p_head = std::data(cpp_eos_node_and_preceding_edge_costs.first.key());
             p_eos_node->key.length = cpp_eos_node_and_preceding_edge_costs.first.key().length();
             p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                 &cpp_eos_node_and_preceding_edge_costs.first.value());
             p_eos_node->preceding_step = cpp_eos_node_and_preceding_edge_costs.first.preceding_step();
             p_eos_node->p_preceding_edge_costs = p_preceding_edge_costs;
-            p_eos_node->preceding_edge_cost_count = cpp_eos_node_and_preceding_edge_costs.second->size();
+            p_eos_node->preceding_edge_cost_count = std::size(*cpp_eos_node_and_preceding_edge_costs.second);
             p_eos_node->best_preceding_node = cpp_eos_node_and_preceding_edge_costs.first.best_preceding_node();
             p_eos_node->node_cost = cpp_eos_node_and_preceding_edge_costs.first.node_cost();
             p_eos_node->path_cost = cpp_eos_node_and_preceding_edge_costs.first.path_cost();
         }
 
-        return cpp_eos_node_and_preceding_edge_costs.second->size();
+        return std::size(*cpp_eos_node_and_preceding_edge_costs.second);
     }
     catch (...)
     {

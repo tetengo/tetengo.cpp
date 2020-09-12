@@ -36,7 +36,7 @@ namespace tetengo::json
             {
                 throw std::invalid_argument{ "p_base_reader is nullptr." };
             }
-            if (m_single_line_begin.empty())
+            if (std::empty(m_single_line_begin))
             {
                 throw std::invalid_argument{ "single_line_begin is empty." };
             }
@@ -48,13 +48,13 @@ namespace tetengo::json
         bool has_next_impl() const
         {
             ensure_buffer_filled();
-            return !m_queue.empty();
+            return !std::empty(m_queue);
         }
 
         char peek_impl() const
         {
             ensure_buffer_filled();
-            if (m_queue.empty())
+            if (std::empty(m_queue))
             {
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
@@ -64,7 +64,7 @@ namespace tetengo::json
         void next_impl()
         {
             ensure_buffer_filled();
-            if (m_queue.empty())
+            if (std::empty(m_queue))
             {
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
@@ -132,11 +132,11 @@ namespace tetengo::json
 
         void ensure_buffer_filled() const
         {
-            if (!m_queue.empty())
+            if (!std::empty(m_queue))
             {
                 return;
             }
-            while (m_p_base_reader->has_next() && m_queue.empty())
+            while (m_p_base_reader->has_next() && std::empty(m_queue))
             {
                 auto line = read_line();
                 line = remove_comment(line);

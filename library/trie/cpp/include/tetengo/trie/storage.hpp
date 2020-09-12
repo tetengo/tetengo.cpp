@@ -48,7 +48,7 @@ namespace tetengo::trie
 
             \return The base value.
         */
-        std::int32_t base_at(std::size_t base_check_index) const;
+        [[nodiscard]] std::int32_t base_at(std::size_t base_check_index) const;
 
         /*!
             \brief Sets a base value.
@@ -65,7 +65,7 @@ namespace tetengo::trie
 
             \return The check value.
         */
-        std::uint8_t check_at(std::size_t base_check_index) const;
+        [[nodiscard]] std::uint8_t check_at(std::size_t base_check_index) const;
 
         /*!
             \brief Sets a check value.
@@ -80,21 +80,21 @@ namespace tetengo::trie
 
             \return The size.
         */
-        std::size_t size() const;
+        [[nodiscard]] std::size_t size() const;
 
         /*!
             \brief Returns the filling rate.
 
             \return The filling rate.
         */
-        double filling_rate() const;
+        [[nodiscard]] double filling_rate() const;
 
         /*!
             \brief Returns the base-check array.
 
             \return The base-check array.
         */
-        const std::vector<std::uint32_t>& base_check_array() const;
+        [[nodiscard]] const std::vector<std::uint32_t>& base_check_array() const;
 
         /*!
             \brief Returns the value object.
@@ -103,7 +103,7 @@ namespace tetengo::trie
 
             \return A pointer to the value object. Or nullptr when there is no corresponding value object.
         */
-        const std::any* value_at(std::size_t value_index) const;
+        [[nodiscard]] const std::any* value_at(std::size_t value_index) const;
 
         /*!
             \brief Adds a value storage index mapping.
@@ -128,7 +128,7 @@ namespace tetengo::trie
 
             \return A unique pointer to a clone of this storage.
         */
-        std::unique_ptr<storage> clone() const;
+        [[nodiscard]] std::unique_ptr<storage> clone() const;
 
 
     private:

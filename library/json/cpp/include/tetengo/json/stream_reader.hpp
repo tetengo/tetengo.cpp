@@ -29,7 +29,7 @@ namespace tetengo::json
 
             \return The default buffer capacity.
         */
-        static std::size_t default_buffer_capacity();
+        [[nodiscard]] static std::size_t default_buffer_capacity();
 
 
         // constructors and destructor

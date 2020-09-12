@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(next)
     reader.next();
 
     BOOST_TEST(!reader.has_next());
-    BOOST_CHECK_THROW(reader.peek(), std::logic_error);
+    BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = reader.peek(), std::logic_error);
     BOOST_CHECK_THROW(reader.next(), std::logic_error);
 }
 

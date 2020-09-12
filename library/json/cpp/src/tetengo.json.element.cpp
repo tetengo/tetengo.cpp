@@ -27,7 +27,7 @@ namespace tetengo::json
             {
                 throw std::invalid_argument{ "Mismatch between type name and type category." };
             }
-            if (!m_attributes.empty())
+            if (!std::empty(m_attributes))
             {
                 throw std::invalid_argument{ "Mismatch between type and attributes." };
             }
@@ -38,20 +38,20 @@ namespace tetengo::json
             {
                 throw std::invalid_argument{ "Mismatch between type name and type category." };
             }
-            if (!m_value.empty())
+            if (!std::empty(m_value))
             {
                 throw std::invalid_argument{ "Mismatch between type and value." };
             }
             if (m_type.name == type_name_type::member && m_type.category == type_category_type::structure_open)
             {
-                if (m_attributes.size() != 1U || m_attributes.find("name") == std::end(m_attributes))
+                if (std::size(m_attributes) != 1U || m_attributes.find("name") == std::end(m_attributes))
                 {
                     throw std::invalid_argument{ "Mismatch between type and attributes." };
                 }
             }
             else
             {
-                if (!m_attributes.empty())
+                if (!std::empty(m_attributes))
                 {
                     throw std::invalid_argument{ "Mismatch between type and attributes." };
                 }

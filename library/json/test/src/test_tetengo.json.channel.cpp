@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(peek)
 
         channel_.insert(std::make_exception_ptr(std::runtime_error{ "seta" }));
 
-        BOOST_CHECK_THROW(channel_.peek(), std::runtime_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = channel_.peek(), std::runtime_error);
     }
 }
 
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(close)
         "tateno",
         std::unordered_map<std::string, std::string>{} });
 
-    BOOST_CHECK_THROW(channel_.peek(), std::logic_error);
+    BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = channel_.peek(), std::logic_error);
 }
 
 

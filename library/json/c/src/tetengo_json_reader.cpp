@@ -5,6 +5,7 @@
 */
 
 #include <fstream>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string_view>
@@ -73,7 +74,7 @@ tetengo_json_reader_t* tetengo_json_reader_createCommentRemovingReader(
         {
             throw std::invalid_argument{ "single_line_begin is NULL." };
         }
-        if (std::string_view{ single_line_begin }.empty())
+        if (std::empty(std::string_view{ single_line_begin }))
         {
             throw std::invalid_argument{ "single_line_begin is empty." };
         }

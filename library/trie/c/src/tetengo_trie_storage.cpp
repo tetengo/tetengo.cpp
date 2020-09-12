@@ -7,6 +7,7 @@
 #include <any>
 #include <cstddef>
 #include <fstream>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <stdexcept>
@@ -58,7 +59,7 @@ tetengo_trie_storage_t* tetengo_trie_storage_createMemoryStorage(const path_char
             stream, [&element_value_size](const std::vector<char>& serialized) {
                 if (element_value_size == std::numeric_limits<std::size_t>::max())
                 {
-                    element_value_size = serialized.size();
+                    element_value_size = std::size(serialized);
                 }
                 return serialized;
             });
@@ -86,7 +87,7 @@ tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_char
             stream, [&element_value_size](const std::vector<char>& serialized) {
                 if (element_value_size == std::numeric_limits<std::size_t>::max())
                 {
-                    element_value_size = serialized.size();
+                    element_value_size = std::size(serialized);
                 }
                 return serialized;
             });
@@ -118,7 +119,7 @@ size_t tetengo_trie_storage_size(const tetengo_trie_storage_t* const p_storage)
             throw std::invalid_argument{ "p_storage is NULL." };
         }
 
-        return p_storage->p_cpp_storage()->size();
+        return std::size(*p_storage->p_cpp_storage());
     }
     catch (...)
     {

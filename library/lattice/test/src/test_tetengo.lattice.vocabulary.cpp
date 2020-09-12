@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cstddef>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <string>
@@ -23,25 +24,22 @@
 
 namespace
 {
-    constexpr char to_c(unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
-        return uc;
+        return static_cast<char>(uc);
     }
 
-    const std::string key_mizuho{ to_c(0xE3), to_c(0x81), to_c(0xBF), to_c(0xE3), to_c(0x81),
-                                  to_c(0x9A), to_c(0xE3), to_c(0x81), to_c(0xBB) };
+    const std::string key_mizuho{ 0xE3_c, 0x81_c, 0xBF_c, 0xE3_c, 0x81_c, 0x9A_c, 0xE3_c, 0x81_c, 0xBB_c };
 
-    const std::string surface_mizuho{ to_c(0xE7), to_c(0x91), to_c(0x9E), to_c(0xE7), to_c(0xA9), to_c(0x82) };
+    const std::string surface_mizuho{ 0xE7_c, 0x91_c, 0x9E_c, 0xE7_c, 0xA9_c, 0x82_c };
 
     const std::any value_mizuho{ surface_mizuho };
 
-    const std::string key_sakura{ to_c(0xE3), to_c(0x81), to_c(0x95), to_c(0xE3), to_c(0x81),
-                                  to_c(0x8F), to_c(0xE3), to_c(0x82), to_c(0x89) };
+    const std::string key_sakura{ 0xE3_c, 0x81_c, 0x95_c, 0xE3_c, 0x81_c, 0x8F_c, 0xE3_c, 0x82_c, 0x89_c };
 
-    const std::string key_tsubame{ to_c(0xE3), to_c(0x81), to_c(0xA4), to_c(0xE3), to_c(0x81),
-                                   to_c(0xB0), to_c(0xE3), to_c(0x82), to_c(0x81) };
+    const std::string key_tsubame{ 0xE3_c, 0x81_c, 0xA4_c, 0xE3_c, 0x81_c, 0xB0_c, 0xE3_c, 0x82_c, 0x81_c };
 
-    const std::string surface_tsubame{ to_c(0xE7), to_c(0x87), to_c(0x95) };
+    const std::string surface_tsubame{ 0xE7_c, 0x87_c, 0x95_c };
 
     const std::any value_tsubame{ surface_tsubame };
 
@@ -128,7 +126,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
         {
             const auto entries = vocabulary.find_entries(key_mizuho);
 
-            BOOST_TEST_REQUIRE(!entries.empty());
+            BOOST_TEST_REQUIRE(!std::empty(entries));
             BOOST_TEST(entries[0].key() == key_mizuho);
             BOOST_TEST(*std::any_cast<std::string>(entries[0].value()) == surface_mizuho);
             BOOST_TEST(entries[0].cost() == 42);
@@ -136,7 +134,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
         {
             const auto entries = vocabulary.find_entries(key_sakura);
 
-            BOOST_TEST(entries.empty());
+            BOOST_TEST(std::empty(entries));
         }
     }
 }
@@ -150,7 +148,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
 
         {
             const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
-            BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
 
             const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_mizuho[0]);
 
@@ -158,9 +156,9 @@ BOOST_AUTO_TEST_CASE(find_connection)
         }
         {
             const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
-            BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
             const auto entries_tsubame = vocabulary.find_entries(key_tsubame);
-            BOOST_TEST_REQUIRE(entries_tsubame.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(entries_tsubame) == 1U);
 
             const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_tsubame[0]);
 

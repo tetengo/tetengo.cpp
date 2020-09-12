@@ -52,7 +52,7 @@ namespace tetengo::lattice
 
             \return The BOS/EOS entry.
         */
-        static const basic_entry& bos_eos();
+        [[nodiscard]] static const basic_entry& bos_eos();
 
 
         // constructors
@@ -85,21 +85,21 @@ namespace tetengo::lattice
 
             \return The key.
         */
-        const key_type& key() const;
+        [[nodiscard]] const key_type& key() const;
 
         /*!
             \brief Returns the value.
 
             \return The value.
         */
-        const value_type& value() const;
+        [[nodiscard]] const value_type& value() const;
 
         /*!
             \brief Returns the cost.
 
             \return The cost.
         */
-        int cost() const;
+        [[nodiscard]] int cost() const;
 
 
     private:

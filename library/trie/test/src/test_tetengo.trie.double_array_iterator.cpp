@@ -21,7 +21,7 @@
 
 namespace
 {
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
@@ -31,8 +31,8 @@ namespace
                                                                                   { "SETA", 42 } };
 
     const std::vector<std::pair<std::string, std::int32_t>> expected_base_values2{
-        { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) }, 24 }, // "Akase" in Kanji
-        { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) }, 42 }, // "Akamizu" in Kanji
+        { { 0xE8_c, 0xB5_c, 0xA4_c, 0xE7_c, 0x80_c, 0xAC_c }, 24 }, // "Akase" in Kanji
+        { { 0xE8_c, 0xB5_c, 0xA4_c, 0xE6_c, 0xB0_c, 0xB4_c }, 42 }, // "Akamizu" in Kanji
     };
 
 }
@@ -83,12 +83,12 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
     {
         const tetengo::trie::double_array_iterator iterator{};
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
     {
         tetengo::trie::double_array_iterator iterator{};
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
     {
         const tetengo::trie::double_array double_array_{ expected_base_values };
@@ -178,18 +178,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         auto                              iterator = std::begin(double_array_);
 
         {
-            const std::string expected_key{
-                to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4)
-            }; // "Akamizu" in Kanji
+            const std::string expected_key{ 0xE8_c, 0xB5_c, 0xA4_c, 0xE6_c, 0xB0_c, 0xB4_c }; // "Akamizu" in Kanji
             BOOST_REQUIRE(iterator != std::end(double_array_));
             BOOST_TEST(*iterator == 42);
         }
         {
             ++iterator;
 
-            const std::string expected_key{
-                to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC)
-            }; // "Akase" in Kanji
+            const std::string expected_key{ 0xE8_c, 0xB5_c, 0xA4_c, 0xE7_c, 0x80_c, 0xAC_c }; // "Akase" in Kanji
             BOOST_REQUIRE(iterator != std::end(double_array_));
             BOOST_TEST(*iterator == 24);
         }

@@ -59,8 +59,8 @@ namespace tetengo::trie
         m_p_double_array{}
         {
             std::vector<std::pair<std::string_view, std::int32_t>> double_array_contents{};
-            double_array_contents.reserve(elements.size());
-            for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(elements.size()); ++i)
+            double_array_contents.reserve(std::size(elements));
+            for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(std::size(elements)); ++i)
             {
                 double_array_contents.emplace_back(std::move(elements[i].first), i);
             }
@@ -75,7 +75,7 @@ namespace tetengo::trie
             m_p_double_array = std::make_unique<double_array>(
                 double_array_contents, double_array_building_observer_set, double_array_density_factor);
 
-            for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(elements.size()); ++i)
+            for (auto i = static_cast<std::int32_t>(0); i < static_cast<std::int32_t>(std::size(elements)); ++i)
             {
                 m_p_double_array->get_storage().add_value_at(i, std::move(elements[i].second));
             }
@@ -101,12 +101,12 @@ namespace tetengo::trie
 
         bool empty() const
         {
-            return m_p_double_array->get_storage().size() == 0;
+            return std::size(m_p_double_array->get_storage()) == 0;
         }
 
         std::size_t size() const
         {
-            return m_p_double_array->get_storage().size();
+            return std::size(m_p_double_array->get_storage());
         }
 
         bool contains(const std::string_view& key) const
@@ -191,18 +191,18 @@ namespace tetengo::trie
     m_p_impl{ std::make_unique<impl>(std::move(p_double_array)) }
     {}
 
-    trie_impl::trie_impl(trie_impl&& another) : m_p_impl{ std::move(another.m_p_impl) } {}
+    trie_impl::trie_impl(trie_impl&& another) noexcept : m_p_impl{ std::move(another.m_p_impl) } {}
 
     trie_impl::~trie_impl() = default;
 
     bool trie_impl::empty() const
     {
-        return m_p_impl->empty();
+        return std::empty(*m_p_impl);
     }
 
     std::size_t trie_impl::size() const
     {
-        return m_p_impl->size();
+        return std::size(*m_p_impl);
     }
 
     bool trie_impl::contains(const std::string_view& key) const

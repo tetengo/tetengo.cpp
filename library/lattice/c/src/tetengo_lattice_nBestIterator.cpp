@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string_view>
@@ -120,20 +121,20 @@ tetengo_lattice_nBestIterator_createPath(const tetengo_lattice_nBestIterator_t* 
         const auto& cpp_path = *p_iterator->p_cpp_iterator_pair->first;
 
         std::vector<tetengo_lattice_node_t> nodes{};
-        nodes.reserve(cpp_path.nodes().size());
+        nodes.reserve(std::size(cpp_path.nodes()));
         for (const auto& cpp_node: cpp_path.nodes())
         {
-            nodes.push_back({ { cpp_node.key().data(), cpp_node.key().length() },
+            nodes.push_back({ { std::data(cpp_node.key()), cpp_node.key().length() },
                               reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value()),
                               cpp_node.preceding_step(),
-                              cpp_node.preceding_edge_costs().data(),
-                              cpp_node.preceding_edge_costs().size(),
+                              std::data(cpp_node.preceding_edge_costs()),
+                              std::size(cpp_node.preceding_edge_costs()),
                               cpp_node.best_preceding_node(),
                               cpp_node.node_cost(),
                               cpp_node.path_cost() });
         }
 
-        return tetengo_lattice_path_create(nodes.data(), nodes.size(), cpp_path.cost());
+        return tetengo_lattice_path_create(std::data(nodes), std::size(nodes), cpp_path.cost());
     }
     catch (...)
     {

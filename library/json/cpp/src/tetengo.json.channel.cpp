@@ -8,6 +8,7 @@
 #include <condition_variable>
 #include <cstddef>
 #include <exception>
+#include <iterator>
 #include <memory>
 #include <mutex>
 #include <optional>
@@ -142,17 +143,17 @@ namespace tetengo::json
 
         bool can_insert() const
         {
-            return m_queue.size() < m_capacity;
+            return std::size(m_queue) < m_capacity;
         }
 
         bool can_take() const
         {
-            return !m_queue.empty();
+            return !std::empty(m_queue);
         }
 
         bool closed_impl() const
         {
-            return !m_queue.empty() && !m_queue.front();
+            return !std::empty(m_queue) && !m_queue.front();
         }
     };
 

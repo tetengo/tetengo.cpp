@@ -31,10 +31,10 @@ namespace tetengo::json
         /*!
             \brief Returns true when the next character exists.
 
-            \return true  When the next character exists.
-            \return false Otherwise.
+            \retval true  When the next character exists.
+            \retval false Otherwise.
         */
-        bool has_next() const;
+        [[nodiscard]] bool has_next() const;
 
         /*!
             \brief Returns the current character.
@@ -44,7 +44,7 @@ namespace tetengo::json
             \throw std::logic_error When current position is beyond the
                                     termination point.
         */
-        char peek() const;
+        [[nodiscard]] char peek() const;
 
         /*!
             \brief Moves to the next character.

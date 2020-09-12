@@ -64,7 +64,7 @@ namespace
 
         std::vector<std::string> elements{};
         boost::split(elements, input, boost::is_any_of(":"));
-        if (elements.size() != 2)
+        if (std::size(elements) != 2)
         {
             return 1440;
         }
@@ -90,7 +90,7 @@ namespace
     get_departure_and_arrival(const timetable& timetable_)
     {
         const auto departure_station_index = get_station_index("Departure Station", timetable_);
-        if (departure_station_index >= timetable_.stations().size())
+        if (departure_station_index >= std::size(timetable_.stations()))
         {
             std::cout << "No departure station is found." << std::endl;
             return std::nullopt;
@@ -104,7 +104,7 @@ namespace
         }
 
         const auto arrival_station_index = get_station_index("Arrival Station", timetable_);
-        if (arrival_station_index >= timetable_.stations().size())
+        if (arrival_station_index >= std::size(timetable_.stations()))
         {
             std::cout << "No arrival station is found." << std::endl;
             return std::nullopt;
@@ -159,7 +159,7 @@ namespace
         std::vector<trip>                       trips{};
         trips.reserve(trip_capacity);
         std::unordered_set<std::string_view> duplication_checker{};
-        for (; trips.size() < trip_capacity && iter != last; ++iter)
+        for (; std::size(trips) < trip_capacity && iter != last; ++iter)
         {
             const auto& path = *iter;
             if (path.cost() >= 1440)
@@ -176,7 +176,7 @@ namespace
                     continue;
                 }
 
-                if (trip_.sections.empty() || trip_.sections.back().train_number != p_section->p_train()->number())
+                if (std::empty(trip_.sections) || trip_.sections.back().train_number != p_section->p_train()->number())
                 {
                     trip_.sections.push_back({ p_section->p_train()->number(),
                                                p_section->p_train()->name(),
@@ -215,7 +215,7 @@ namespace
 
     void print_trips(const std::vector<trip>& trips, const timetable& timetable_)
     {
-        for (auto i = static_cast<std::size_t>(0); i < trips.size(); ++i)
+        for (auto i = static_cast<std::size_t>(0); i < std::size(trips); ++i)
         {
             const auto& trip_ = trips[i];
 

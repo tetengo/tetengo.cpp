@@ -20,7 +20,6 @@
 
 #include <stddef.h> // IWYU pragma: keep
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/stl_interfaces/iterator_interface.hpp>
@@ -39,28 +38,22 @@
 
 namespace
 {
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
 
     constexpr char nul_byte()
     {
-        return to_c(0xFE);
+        return 0xFE_c;
     }
 
 
-    static const std::string kumamoto1{
-        to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x6), to_c(0x9C), to_c(0xAC) // Kumamoto in Kanji in UTF-8
-    };
+    static const std::string kumamoto1{ 0xE7_c, 0x86_c, 0x8A_c, 0x6_c, 0x9C_c, 0xAC_c }; // Kumamoto in Kanji in UTF-8
 
-    static const std::string tamana1{
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D) // Tamana in Kanji in UTF-8
-    };
+    static const std::string tamana1{ 0xE7_c, 0x8E_c, 0x89_c, 0xE5_c, 0x90_c, 0x8D_c }; // Tamana in Kanji in UTF-8
 
-    static const std::string tamarai1{
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE6), to_c(0x9D), to_c(0xA5) // Tamarai in Kanji in UTF-8
-    };
+    static const std::string tamarai1{ 0xE7_c, 0x8E_c, 0x89_c, 0xE6_c, 0x9D_c, 0xA5_c }; // Tamarai in Kanji in UTF-8
 
     static const std::wstring kumamoto2{ 0x718A, 0x672C }; // Kumamoto in Kanji in UTF-16/32
 
@@ -73,23 +66,28 @@ namespace
     static const std::wstring uto2{ 0x5B87, 0x571F }; // Uto in Kanji in UTF-16/32
 
     const std::vector<char> serialized{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x0B), /*  base check array                                          */
-        to_c(0xFF), to_c(0xFF), to_c(0x90), to_c(0xFF), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x78), to_c(0x71), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x9D), to_c(0x8A), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x7E), to_c(0x73), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xD9), to_c(0x67), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x06), to_c(0x2C), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xB4), to_c(0x89), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xFC), to_c(0x54), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x0A), to_c(0x0D), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x01), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* value array                                                */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
-        to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x06), to_c(0x9C), to_c(0xAC), /*                                    */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D), /*                                    */
+        // clang-format off
+        // base check array
+        nul_byte(), nul_byte(), nul_byte(), 0x0B_c,
+        0xFF_c,     0xFF_c,     0x90_c,     0xFF_c,
+        0xFF_c,     0xFF_c,     0x78_c,     0x71_c,
+        0xFF_c,     0xFF_c,     0x9D_c,     0x8A_c,
+        0xFF_c,     0xFF_c,     0x7E_c,     0x73_c,
+        0xFF_c,     0xFF_c,     0xD9_c,     0x67_c,
+        nul_byte(), nul_byte(), 0x06_c,     0x2C_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
+        0xFF_c,     0xFF_c,     0xB4_c,     0x89_c,
+        0xFF_c,     0xFF_c,     0xFC_c,     0x54_c,
+        nul_byte(), nul_byte(), 0x0A_c,     0x0D_c,
+        nul_byte(), nul_byte(), 0x01_c,     nul_byte(),
+
+        // value array
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x06_c,
+        0xE7_c,     0x86_c,     0x8A_c,     0x06_c,     0x9C_c, 0xAC_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x06_c,
+        0xE7_c,     0x8E_c,     0x89_c,     0xE5_c,     0x90_c, 0x8D_c,
+        // clang-format on
     };
 
     std::unique_ptr<std::istream> create_input_stream()
@@ -110,29 +108,31 @@ namespace
     }
 
     const std::vector<char> serialized_c_if{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x11), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xB6), to_c(0xFF), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x8D), to_c(0x4B), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x96), to_c(0x75), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xA3), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x98), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x97), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x93), to_c(0x6F), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x99), to_c(0x74), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x09), to_c(0x6F), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0xFE), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAA), to_c(0x54), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x9F), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAC), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xA0), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAE), to_c(0x6E), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x10), to_c(0x61), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x01), to_c(0xFE), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x2A), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x18), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        // clang-format off
+        nul_byte(), nul_byte(), nul_byte(), 0x11_c,
+        0xFF_c,     0xFF_c,     0xB6_c,     0xFF_c,
+        0xFF_c,     0xFF_c,     0x8D_c,     0x4B_c,
+        0xFF_c,     0xFF_c,     0x96_c,     0x75_c,
+        0xFF_c,     0xFF_c,     0xA3_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0x98_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0x97_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0x93_c,     0x6F_c,
+        0xFF_c,     0xFF_c,     0x99_c,     0x74_c,
+        nul_byte(), nul_byte(), 0x09_c,     0x6F_c,
+        nul_byte(), nul_byte(), nul_byte(), 0xFE_c,
+        0xFF_c,     0xFF_c,     0xAA_c,     0x54_c,
+        0xFF_c,     0xFF_c,     0x9F_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0xAC_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0xA0_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0xAE_c,     0x6E_c,
+        nul_byte(), nul_byte(), 0x10_c,     0x61_c,
+        nul_byte(), nul_byte(), 0x01_c,     0xFE_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x2A_c,     0x00_c,     0x00_c,     0x00_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x18_c,     0x00_c,     0x00_c,     0x00_c,
+        // clang-format on
     };
 
     std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
@@ -141,7 +141,7 @@ namespace
 
         {
             std::ofstream stream{ path, std::ios_base::binary };
-            stream.write(initial_content.data(), initial_content.size());
+            stream.write(std::data(initial_content), std::size(initial_content));
         }
 
         return path;
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::trie<std::string, int>::null_building_observer_set();
+    [[maybe_unused]] const auto& observer_set = tetengo::trie::trie<std::string, int>::null_building_observer_set();
 
     tetengo_trie_trie_nullAddingObserver("hoge", nullptr);
     tetengo_trie_trie_nullDoneObserver(nullptr);
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(construction)
         };
 
         static const tetengo::trie::default_deserializer<std::string> key_deserializer{};
-        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2U);
+        BOOST_TEST_REQUIRE(std::size(added_serialized_keys) == 2U);
         BOOST_TEST(key_deserializer(added_serialized_keys[0]) == "Kumamoto");
         BOOST_TEST(key_deserializer(added_serialized_keys[1]) == "Tamana");
         BOOST_TEST(done);
@@ -312,16 +312,16 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         std::vector<std::string> added_serialized_keys{};
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             adding_observer,
             &added_serialized_keys,
@@ -334,7 +334,7 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
 
-        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2U);
+        BOOST_TEST_REQUIRE(std::size(added_serialized_keys) == 2U);
         BOOST_TEST(added_serialized_keys[0] == "Kumamoto");
         BOOST_TEST(added_serialized_keys[1] == "Tamana");
         BOOST_TEST(done);
@@ -360,16 +360,16 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_trie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         std::vector<std::string> added_serialized_keys{};
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             adding_observer,
             &added_serialized_keys,
@@ -423,16 +423,16 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(!p_trie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         std::vector<std::string> added_serialized_keys{};
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             nullptr,
             &added_serialized_keys,
@@ -443,16 +443,16 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(!p_trie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         std::vector<std::string> added_serialized_keys{};
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             adding_observer,
             &added_serialized_keys,
@@ -475,28 +475,28 @@ BOOST_AUTO_TEST_CASE(empty)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
 
-        BOOST_TEST(trie_.empty());
+        BOOST_TEST(std::empty(trie_));
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 } };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
 
     {
         const tetengo::trie::trie<std::string_view, int> trie_{};
 
-        BOOST_TEST(trie_.empty());
+        BOOST_TEST(std::empty(trie_));
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
 
     {
@@ -504,7 +504,7 @@ BOOST_AUTO_TEST_CASE(empty)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(trie_.empty());
+        BOOST_TEST(std::empty(trie_));
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
@@ -512,7 +512,7 @@ BOOST_AUTO_TEST_CASE(empty)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(!trie_.empty());
+        BOOST_TEST(!std::empty(trie_));
     }
 
     {
@@ -534,14 +534,14 @@ BOOST_AUTO_TEST_CASE(empty)
         BOOST_TEST(tetengo_trie_trie_empty(p_trie));
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -568,28 +568,28 @@ BOOST_AUTO_TEST_CASE(size)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
 
-        BOOST_TEST(trie_.size() == 0U);
+        BOOST_TEST(std::size(trie_) == 0U);
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 } };
 
-        BOOST_TEST(trie_.size() == 1U);
+        BOOST_TEST(std::size(trie_) == 1U);
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        BOOST_TEST(trie_.size() == 2U);
+        BOOST_TEST(std::size(trie_) == 2U);
     }
 
     {
         const tetengo::trie::trie<std::string_view, int> trie_{};
 
-        BOOST_TEST(trie_.size() == 0U);
+        BOOST_TEST(std::size(trie_) == 0U);
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        BOOST_TEST(trie_.size() == 1U);
+        BOOST_TEST(std::size(trie_) == 1U);
     }
 
     {
@@ -597,7 +597,7 @@ BOOST_AUTO_TEST_CASE(size)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(trie_.size() == 0U);
+        BOOST_TEST(std::size(trie_) == 0U);
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
@@ -605,7 +605,7 @@ BOOST_AUTO_TEST_CASE(size)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(trie_.size() == 2U);
+        BOOST_TEST(std::size(trie_) == 2U);
     }
 
     {
@@ -627,12 +627,12 @@ BOOST_AUTO_TEST_CASE(size)
         BOOST_TEST(tetengo_trie_trie_size(p_trie) == 0U);
     }
     {
-        const int                                kumamoto_value = 42;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -648,14 +648,14 @@ BOOST_AUTO_TEST_CASE(size)
         BOOST_TEST(tetengo_trie_trie_size(p_trie) == 1U);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -743,14 +743,14 @@ BOOST_AUTO_TEST_CASE(contains)
         BOOST_TEST(!tetengo_trie_trie_contains(p_trie, "Kumamoto"));
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -771,14 +771,14 @@ BOOST_AUTO_TEST_CASE(contains)
         BOOST_TEST(!tetengo_trie_trie_contains(nullptr, "Kumamoto"));
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -882,14 +882,14 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_TEST(!p_found);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -911,14 +911,14 @@ BOOST_AUTO_TEST_CASE(find)
         BOOST_TEST(!p_found);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -943,27 +943,27 @@ BOOST_AUTO_TEST_CASE(begin_end)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
 
     {
         const tetengo::trie::trie<std::string_view, int> trie_{};
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
 
     {
@@ -971,8 +971,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
@@ -980,8 +980,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
 
     {
@@ -1010,14 +1010,14 @@ BOOST_AUTO_TEST_CASE(begin_end)
         BOOST_TEST(p_iterator);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -1145,16 +1145,16 @@ BOOST_AUTO_TEST_CASE(subtrie)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
-        const int                                tamarai_value = 35;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
+        constexpr auto                           tamarai_value = static_cast<int>(35);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value },
                                                            { "Tamarai", &tamarai_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -1210,16 +1210,16 @@ BOOST_AUTO_TEST_CASE(subtrie)
         BOOST_TEST(!p_subtrie);
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
-        const int                                tamarai_value = 35;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
+        constexpr auto                           tamarai_value = static_cast<int>(35);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value },
                                                            { "Tamarai", &tamarai_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -1244,12 +1244,12 @@ BOOST_AUTO_TEST_CASE(get_storage)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        trie_.get_storage();
+        [[maybe_unused]] const auto& storage = trie_.get_storage();
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        trie_.get_storage();
+        [[maybe_unused]] const auto& storage = trie_.get_storage();
     }
     {
         auto p_input_stream = create_input_stream();
@@ -1275,16 +1275,16 @@ BOOST_AUTO_TEST_CASE(get_storage)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
-        const int                                tamarai_value = 35;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
+        constexpr auto                           tamarai_value = static_cast<int>(35);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value },
                                                            { "Tamarai", &tamarai_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,

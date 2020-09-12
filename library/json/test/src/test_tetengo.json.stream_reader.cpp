@@ -7,6 +7,7 @@
 #include <cstddef> // IWYU pragma: keep
 #include <filesystem>
 #include <fstream>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -63,7 +64,7 @@ namespace
                 throw std::runtime_error{ "Can't create a temporary file." };
             }
 
-            stream.write(content.data(), content.length());
+            stream.write(std::data(content), content.length());
         }
 
         const std::filesystem::path m_path;
@@ -264,7 +265,7 @@ BOOST_AUTO_TEST_CASE(next)
         reader.next();
 
         BOOST_TEST(!reader.has_next());
-        BOOST_CHECK_THROW(reader.peek(), std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = reader.peek(), std::logic_error);
         BOOST_CHECK_THROW(reader.next(), std::logic_error);
     }
 

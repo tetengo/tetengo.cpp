@@ -5,9 +5,9 @@
  */
 
 #include <any>
+#include <iterator>
 #include <string>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -18,15 +18,14 @@
 
 namespace
 {
-    constexpr char to_c(unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
-        return uc;
+        return static_cast<char>(uc);
     }
 
-    const std::string key_mizuho{ to_c(0xE3), to_c(0x81), to_c(0xBF), to_c(0xE3), to_c(0x81),
-                                  to_c(0x9A), to_c(0xE3), to_c(0x81), to_c(0xBB) };
+    const std::string key_mizuho{ 0xE3_c, 0x81_c, 0xBF_c, 0xE3_c, 0x81_c, 0x9A_c, 0xE3_c, 0x81_c, 0xBB_c };
 
-    const std::string surface_mizuho{ to_c(0xE7), to_c(0x91), to_c(0x9E), to_c(0xE7), to_c(0xA9), to_c(0x82) };
+    const std::string surface_mizuho{ 0xE7_c, 0x91_c, 0x9E_c, 0xE7_c, 0xA9_c, 0x82_c };
 
 
 }
@@ -44,7 +43,7 @@ BOOST_AUTO_TEST_CASE(bos_eos)
     {
         static auto& bos_eos_ = tetengo::lattice::entry::bos_eos();
 
-        BOOST_TEST(bos_eos_.key().empty());
+        BOOST_TEST(std::empty(bos_eos_.key()));
         BOOST_TEST(!bos_eos_.value().has_value());
         BOOST_TEST(bos_eos_.cost() == 0);
     }
@@ -70,15 +69,16 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo_lattice_entry_t entry{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
-        boost::ignore_unused(entry);
+        [[maybe_unused]] const tetengo_lattice_entry_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
+                                                              &surface_mizuho,
+                                                              42 };
     }
     {
-        const std::any                    value{ reinterpret_cast<const void*>(&surface_mizuho) };
-        const tetengo_lattice_entryView_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
-                                                 42 };
-        boost::ignore_unused(entry);
+        const std::any                                     value{ reinterpret_cast<const void*>(&surface_mizuho) };
+        [[maybe_unused]] const tetengo_lattice_entryView_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
+                                                                  reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
+                                                                      &value),
+                                                                  42 };
     }
 }
 

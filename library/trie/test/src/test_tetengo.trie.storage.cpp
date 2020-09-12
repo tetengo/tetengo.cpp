@@ -8,6 +8,7 @@
 #include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -133,7 +134,7 @@ BOOST_AUTO_TEST_CASE(size)
 
     concrete_storage storage_{};
 
-    BOOST_TEST(storage_.size() == 3U);
+    BOOST_TEST(std::size(storage_) == 3U);
 }
 
 BOOST_AUTO_TEST_CASE(filling_rate)

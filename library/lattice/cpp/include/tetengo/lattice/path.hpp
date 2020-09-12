@@ -44,21 +44,21 @@ namespace tetengo::lattice
             \retval true  When this path is empty.
             \retval false Otherwise.
         */
-        bool empty() const;
+        [[nodiscard]] bool empty() const;
 
         /*!
             \brief Returns the nodes.
 
             \return The nodes.
         */
-        const std::vector<node>& nodes() const;
+        [[nodiscard]] const std::vector<node>& nodes() const;
 
         /*!
             \brief Returns the cost.
 
             \return The cost.
         */
-        int cost() const;
+        [[nodiscard]] int cost() const;
 
 
     private:

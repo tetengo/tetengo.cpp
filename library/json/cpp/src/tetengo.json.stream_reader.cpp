@@ -25,7 +25,7 @@ namespace tetengo::json
     public:
         // static functions
 
-        static std::size_t default_buffer_capacity()
+        static constexpr std::size_t default_buffer_capacity()
         {
             return 4096;
         }
@@ -53,13 +53,13 @@ namespace tetengo::json
         bool has_next_impl() const
         {
             ensure_buffer_filled();
-            return !m_buffer.empty();
+            return !std::empty(m_buffer);
         }
 
         char peek_impl() const
         {
             ensure_buffer_filled();
-            if (m_buffer.empty())
+            if (std::empty(m_buffer))
             {
                 throw std::logic_error{ "No more element." };
             }
@@ -69,7 +69,7 @@ namespace tetengo::json
         void next_impl()
         {
             ensure_buffer_filled();
-            if (m_buffer.empty())
+            if (std::empty(m_buffer))
             {
                 throw std::logic_error{ "No more element." };
             }
@@ -89,13 +89,13 @@ namespace tetengo::json
 
         void ensure_buffer_filled() const
         {
-            if (!m_buffer.empty())
+            if (!std::empty(m_buffer))
             {
                 return;
             }
 
             std::vector<char> chars(m_buffer.capacity(), '\0');
-            m_p_stream->read(chars.data(), chars.size());
+            m_p_stream->read(std::data(chars), std::size(chars));
             const auto read_size = m_p_stream->gcount();
 
             m_buffer.insert(

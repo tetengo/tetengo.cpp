@@ -5,6 +5,7 @@
  */
 
 #include <cassert>
+#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -39,24 +40,26 @@ namespace
     };
 
     const std::vector<std::string> expected_parsed3{
-        "array open" /*                                                      */,
-        "number 42" /*                                                       */,
-        "boolean true" /*                                                    */,
-        "number 3.1415926" /*                                                */,
-        "string hoge" /*                                                     */,
-        "object open" /*                                                     */,
-        "member open name:Aso" /*                                            */,
-        "number 1592" /*                                                     */,
-        "member close" /*                                                    */,
-        "member open name:Tsurugi" /*                                        */,
-        "number 1955" /*                                                     */,
-        "member close" /*                                                    */,
-        "object close" /*                                                    */,
-        "array open" /*                                                      */,
-        "null null" /*                                                       */,
-        "number 3.0e+5" /*                                                   */,
-        "array close" /*                                                     */,
-        "array close" /*                                                     */,
+        // clang-format off
+        "array open",
+        "number 42",
+        "boolean true",
+        "number 3.1415926",
+        "string hoge",
+        "object open",
+        "member open name:Aso",
+        "number 1592",
+        "member close",
+        "member open name:Tsurugi",
+        "number 1955",
+        "member close",
+        "object close",
+        "array open",
+        "null null",
+        "number 3.0e+5",
+        "array close",
+        "array close",
+        // clang-format on
     };
 
     struct primitive_handler_type
@@ -124,7 +127,7 @@ namespace
             std::string stringized{};
             for (const auto& entry: attributes)
             {
-                if (!stringized.empty())
+                if (!std::empty(stringized))
                 {
                     stringized += " ";
                 }
@@ -143,7 +146,7 @@ namespace
             const std::string stringized_attributes = to_string(attributes);
             parsed.push_back(
                 to_string(type) + " " + to_string(open_close) +
-                (stringized_attributes.empty() ? "" : " " + stringized_attributes));
+                (std::empty(stringized_attributes) ? "" : " " + stringized_attributes));
             return true;
         }
     };

@@ -57,7 +57,7 @@ namespace tetengo::lattice
             \retval true  When the path matches the pattern.
             \retval false Otherwise.
         */
-        bool matches(const std::vector<node>& reverse_path) const;
+        [[nodiscard]] bool matches(const std::vector<node>& reverse_path) const;
 
         /*!
             \brief Returns true when the tail path matches the tail of the pattern.
@@ -67,7 +67,7 @@ namespace tetengo::lattice
             \retval true  When the tail path matches the tail of the pattern.
             \retval false Otherwise.
         */
-        bool matches_tail(const std::vector<node>& reverse_tail_path) const;
+        [[nodiscard]] bool matches_tail(const std::vector<node>& reverse_tail_path) const;
 
 
     private:

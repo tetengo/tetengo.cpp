@@ -24,7 +24,7 @@
 
 namespace
 {
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
@@ -127,8 +127,8 @@ namespace
     */
 
     const std::vector<std::pair<std::string, std::int32_t>> expected_values4{
-        { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) }, 24 }, // "Akase" in Kanji
-        { { to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) }, 42 }, // "Akamizu" in Kanji
+        { { 0xE8_c, 0xB5_c, 0xA4_c, 0xE7_c, 0x80_c, 0xAC_c }, 24 }, // "Akase" in Kanji
+        { { 0xE8_c, 0xB5_c, 0xA4_c, 0xE6_c, 0xB0_c, 0xB4_c }, 42 }, // "Akamizu" in Kanji
     };
 
     const std::vector<std::uint32_t> expected_base_check_array4{
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::double_array::null_building_observer_set();
+    [[maybe_unused]] const auto& observer_set = tetengo::trie::double_array::null_building_observer_set();
 }
 
 BOOST_AUTO_TEST_CASE(default_density_factor)
@@ -283,27 +283,18 @@ BOOST_AUTO_TEST_CASE(find)
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
         {
-            const auto o_found = double_array_.find(
-                std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE7), to_c(0x80), to_c(0xAC) });
+            const auto o_found = double_array_.find(std::string{ 0xE8_c, 0xB5_c, 0xA4_c, 0xE7_c, 0x80_c, 0xAC_c });
             BOOST_REQUIRE(o_found);
             BOOST_TEST(*o_found == 24);
         }
         {
-            const auto o_found = double_array_.find(
-                std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6), to_c(0xB0), to_c(0xB4) });
+            const auto o_found = double_array_.find(std::string{ 0xE8_c, 0xB5_c, 0xA4_c, 0xE6_c, 0xB0_c, 0xB4_c });
             BOOST_REQUIRE(o_found);
             BOOST_TEST(*o_found == 42);
         }
         {
-            const std::string key{ { to_c(0xE6),
-                                     to_c(0xB0),
-                                     to_c(0xB4),
-                                     to_c(0xE5),
-                                     to_c(0x89),
-                                     to_c(0x8D),
-                                     to_c(0xE5),
-                                     to_c(0xAF),
-                                     to_c(0xBA) } }; // "Suizenji" in Kanji
+            // "Suizenji" in Kanji
+            const std::string key{ { 0xE6_c, 0xB0_c, 0xB4_c, 0xE5_c, 0x89_c, 0x8D_c, 0xE5_c, 0xAF_c, 0xBA_c } };
             const auto        o_found = double_array_.find(key);
             BOOST_CHECK(!o_found);
         }
@@ -389,10 +380,10 @@ BOOST_AUTO_TEST_CASE(subtrie)
     {
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
-        const auto o_subtrie = double_array_.subtrie(std::string{ to_c(0xE8), to_c(0xB5), to_c(0xA4), to_c(0xE6) });
+        const auto o_subtrie = double_array_.subtrie(std::string{ 0xE8_c, 0xB5_c, 0xA4_c, 0xE6_c });
         BOOST_CHECK(o_subtrie);
         {
-            const auto o_found = o_subtrie->find(std::string{ to_c(0xB0), to_c(0xB4) });
+            const auto o_found = o_subtrie->find(std::string{ 0xB0_c, 0xB4_c });
             BOOST_REQUIRE(o_found);
             BOOST_TEST(*o_found == 42);
         }

@@ -70,7 +70,7 @@ namespace tetengo::json
             \throw unspecified      An exception inserted with insert(std::exception_ptr&&).
             \throw std::logic_error When the channel is already closed.
         */
-        const element& peek() const;
+        [[nodiscard]] const element& peek() const;
 
         /*!
             \brief Takes an element.
@@ -85,7 +85,7 @@ namespace tetengo::json
             \retval true  When the channel is closed.
             \retval false Otherwise.
         */
-        bool closed() const;
+        [[nodiscard]] bool closed() const;
 
         /*!
             \brief Closes the channel.

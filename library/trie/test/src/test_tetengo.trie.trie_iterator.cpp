@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/stl_interfaces/iterator_interface.hpp>
@@ -24,18 +23,14 @@
 
 namespace
 {
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
 
-    static const std::string kumamoto1{
-        to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x6), to_c(0x9C), to_c(0xAC) // Kumamoto in Kanji in UTF-8
-    };
+    static const std::string kumamoto1{ 0xE7_c, 0x86_c, 0x8A_c, 0x6_c, 0x9C_c, 0xAC_c }; // Kumamoto in Kanji in UTF-8
 
-    static const std::string tamana1{
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D) // Tamana in Kanji in UTF-8
-    };
+    static const std::string tamana1{ 0xE7_c, 0x8E_c, 0x89_c, 0xE5_c, 0x90_c, 0x8D_c }; // Tamana in Kanji in UTF-8
 
     static const std::wstring kumamoto2{ 0x718A, 0x672C }; // Kumamoto in Kanji in UTF-16/32
 
@@ -75,7 +70,7 @@ namespace
             }
         }
 
-        copy_detector(copy_detector&& another) : value{ std::move(another.value) } {}
+        copy_detector(copy_detector&& another) noexcept : value{ std::move(another.value) } {}
     };
 
     template <typename T>
@@ -111,8 +106,8 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
         begin_copy_detection();
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
 
         end_copy_detection();
     }
@@ -122,8 +117,8 @@ BOOST_AUTO_TEST_CASE(construction)
         };
         begin_copy_detection();
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
 
         end_copy_detection();
     }
@@ -145,14 +140,14 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -185,7 +180,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
         const auto                                                          iterator = std::begin(trie_);
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
@@ -201,14 +196,14 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -305,14 +300,14 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         BOOST_TEST(!tetengo_trie_trieIterator_hasNext(p_iterator));
     }
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -379,14 +374,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
     }
 
     {
-        const int                                kumamoto_value = 42;
-        const int                                tamana_value = 24;
+        constexpr auto                           kumamoto_value = static_cast<int>(42);
+        constexpr auto                           tamana_value = static_cast<int>(24);
         std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
-            elements.size(),
+            std::data(elements),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,

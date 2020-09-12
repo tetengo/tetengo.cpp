@@ -33,7 +33,7 @@ namespace tetengo::lattice
 
             \return The cost.
         */
-        int cost() const;
+        [[nodiscard]] int cost() const;
 
 
     private:

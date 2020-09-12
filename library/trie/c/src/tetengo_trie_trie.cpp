@@ -146,7 +146,7 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie_t* const p_trie)
             throw std::invalid_argument{ "p_trie is NULL." };
         }
 
-        return p_trie->p_cpp_trie->empty() ? 1 : 0;
+        return std::empty(*p_trie->p_cpp_trie) ? 1 : 0;
     }
     catch (...)
     {
@@ -163,7 +163,7 @@ size_t tetengo_trie_trie_size(const tetengo_trie_trie_t* const p_trie)
             throw std::invalid_argument{ "p_trie is NULL." };
         }
 
-        return p_trie->p_cpp_trie->size();
+        return std::size(*p_trie->p_cpp_trie);
     }
     catch (...)
     {
@@ -210,7 +210,7 @@ const void* tetengo_trie_trie_find(const tetengo_trie_trie_t* const p_trie, cons
         {
             return nullptr;
         }
-        return p_found->data();
+        return std::data(*p_found);
     }
     catch (...)
     {

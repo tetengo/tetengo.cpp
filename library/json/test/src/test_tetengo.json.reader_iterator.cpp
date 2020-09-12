@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(dereference)
     {
         const tetengo::json::reader_iterator iterator{};
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto dereferenced = *iterator, std::logic_error);
     }
 }
 
@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(increment)
         ++iterator;
 
         BOOST_CHECK(iterator == tetengo::json::reader_iterator{});
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto dereferenced = *iterator, std::logic_error);
         BOOST_CHECK_THROW(++iterator, std::logic_error);
     }
     {

@@ -49,7 +49,7 @@ namespace tetengo::lattice
 
             \return Entry views.
         */
-        std::vector<entry_view> find_entries(const std::string_view& key) const;
+        [[nodiscard]] std::vector<entry_view> find_entries(const std::string_view& key) const;
 
         /*!
             \brief Finds a connection between an origin node and a destination entry.
@@ -59,7 +59,7 @@ namespace tetengo::lattice
 
             \return A connection between the origin node and the destination entry.
         */
-        connection find_connection(const node& from, const entry_view& to) const;
+        [[nodiscard]] connection find_connection(const node& from, const entry_view& to) const;
 
 
     private:

@@ -8,9 +8,6 @@
 #include <memory>
 #include <stdexcept>
 #include <utility>
-#include <vector>
-
-#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/trie/storage.h> // IWYU pragma: keep
 #include <tetengo/trie/trie.h> // IWYU pragma: keep
@@ -70,7 +67,7 @@ const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator_t* p_i
             throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
-        return p_iterator->p_cpp_iterator_pair->first->data();
+        return std::data(*p_iterator->p_cpp_iterator_pair->first);
     }
     catch (...)
     {

@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <functional>
 #include <istream>
+#include <iterator>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -59,7 +60,7 @@ namespace tetengo::trie
 
         std::size_t size_impl() const
         {
-            return m_p_entity->size();
+            return std::size(*m_p_entity);
         }
 
         double filling_rate_impl() const
