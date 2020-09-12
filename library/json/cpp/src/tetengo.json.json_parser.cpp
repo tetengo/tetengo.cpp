@@ -124,11 +124,11 @@ namespace tetengo::json
             const json_grammar::structure_type_type       structure_type,
             const json_grammar::structure_open_close_type structure_open_close)
         {
-            const element::type_category_type element_category =
-                structure_open_close == json_grammar::structure_open_close_type::open ?
-                    element::type_category_type::structure_open :
-                    element::type_category_type::structure_close;
-            switch (structure_type)
+            switch (const element::type_category_type element_category =
+                        structure_open_close == json_grammar::structure_open_close_type::open ?
+                            element::type_category_type::structure_open :
+                            element::type_category_type::structure_close;
+                    structure_type)
             {
             case json_grammar::structure_type_type::object:
                 return { element::type_name_type::object, element_category };
