@@ -37,8 +37,7 @@ namespace
     {
         std::vector<std::string_view> elements{};
 
-        auto first = static_cast<std::size_t>(0);
-        for (;;)
+        for (auto first = static_cast<std::size_t>(0);;)
         {
             if (first < string.length() && string[first] == '"')
             {

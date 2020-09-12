@@ -27,9 +27,9 @@ namespace tetengo::trie
             bytes.reserve(sizeof(T));
             for (auto i = static_cast<std::size_t>(0); i < sizeof(T); ++i)
             {
-                const auto byte_ =
-                    static_cast<char>(static_cast<unsigned char>(value >> (sizeof(T) - i - 1) * 8) & 0xFF);
-                if (byte_ == static_cast<char>(0x00))
+                if (const auto byte_ =
+                        static_cast<char>(static_cast<unsigned char>(value >> (sizeof(T) - i - 1) * 8) & 0xFF);
+                    byte_ == static_cast<char>(0x00))
                 {
                     bytes.push_back(static_cast<char>(0xFE));
                 }
@@ -64,8 +64,8 @@ namespace tetengo::trie
                         if (i + 1 < size)
                         {
                             ++i;
-                            const auto byte2 = p_head[i];
-                            if (byte2 == static_cast<char>(0xFD) || byte2 == static_cast<char>(0xFE))
+                            if (const auto byte2 = p_head[i];
+                                byte2 == static_cast<char>(0xFD) || byte2 == static_cast<char>(0xFE))
                             {
                                 original_byte = byte2;
                             }
@@ -94,8 +94,8 @@ namespace tetengo::trie
                 {
                     if (size > 1)
                     {
-                        const auto byte2 = p_head[1];
-                        if (byte2 == static_cast<char>(0xFD) || byte2 == static_cast<char>(0xFE))
+                        if (const auto byte2 = p_head[1];
+                            byte2 == static_cast<char>(0xFD) || byte2 == static_cast<char>(0xFE))
                         {
                             original_byte = byte2;
                         }

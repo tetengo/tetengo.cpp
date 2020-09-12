@@ -54,8 +54,7 @@ namespace
         std::size_t       entry_to_hash = std::hash<std::size_t>{}(0);
         if (entry.value()->has_value())
         {
-            const auto* const p_section = std::any_cast<section>(entry.value());
-            if (p_section)
+            if (const auto* const p_section = std::any_cast<section>(entry.value()); p_section)
             {
                 entry_train_number_hash = std::hash<std::string>{}(p_section->p_train()->number());
                 entry_train_name_hash = std::hash<std::string>{}(p_section->p_train()->name());
@@ -212,8 +211,8 @@ public:
     {
         for (auto i = static_cast<std::size_t>(0); i < std::size(m_timetable.stations); ++i)
         {
-            const auto& station = m_timetable.stations[i];
-            if (boost::algorithm::to_lower_copy(station.name()) ==
+            if (const auto& station = m_timetable.stations[i];
+                boost::algorithm::to_lower_copy(station.name()) ==
                     boost::algorithm::to_lower_copy(name_or_telegram_code) ||
                 boost::algorithm::to_upper_copy(station.telegram_code()) ==
                     boost::algorithm::to_upper_copy(name_or_telegram_code))
@@ -547,8 +546,8 @@ private:
                 const auto* const p_section = std::any_cast<section>(&entry.value());
                 const auto        section_departure_time =
                     p_section ? *p_section->p_train()->stops()[p_section->from()].departure_time() : 0;
-                const auto bos_cost = static_cast<int>(diff_time(section_departure_time, departure_time));
-                if (bos_cost <= 240)
+                if (const auto bos_cost = static_cast<int>(diff_time(section_departure_time, departure_time));
+                    bos_cost <= 240)
                 {
                     connections.emplace_back(std::make_pair(tetengo::lattice::entry::bos_eos(), entry), bos_cost);
                 }
