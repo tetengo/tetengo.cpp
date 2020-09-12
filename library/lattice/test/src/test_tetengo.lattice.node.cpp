@@ -45,7 +45,8 @@ BOOST_AUTO_TEST_CASE(bos)
         BOOST_TEST(bos.path_cost() == 0);
     }
     {
-        BOOST_CHECK_THROW(tetengo::lattice::node::bos(nullptr), std::invalid_argument);
+        BOOST_CHECK_THROW(
+            [[maybe_unused]] const auto bos_ = tetengo::lattice::node::bos(nullptr), std::invalid_argument);
     }
 
     {
@@ -109,7 +110,8 @@ BOOST_AUTO_TEST_CASE(eos)
         BOOST_TEST(eos.path_cost() == 42);
     }
     {
-        BOOST_CHECK_THROW(tetengo::lattice::node::eos(1, nullptr, 5, 42), std::invalid_argument);
+        BOOST_CHECK_THROW(
+            [[maybe_unused]] const auto eos_ = tetengo::lattice::node::eos(1, nullptr, 5, 42), std::invalid_argument);
     }
 
 

@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::trie<std::string, int>::null_building_observer_set();
+    [[maybe_unused]] const auto& observer_set = tetengo::trie::trie<std::string, int>::null_building_observer_set();
 
     tetengo_trie_trie_nullAddingObserver("hoge", nullptr);
     tetengo_trie_trie_nullDoneObserver(nullptr);
@@ -1244,12 +1244,12 @@ BOOST_AUTO_TEST_CASE(get_storage)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        trie_.get_storage();
+        [[maybe_unused]] const auto& storage = trie_.get_storage();
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        trie_.get_storage();
+        [[maybe_unused]] const auto& storage = trie_.get_storage();
     }
     {
         auto p_input_stream = create_input_stream();

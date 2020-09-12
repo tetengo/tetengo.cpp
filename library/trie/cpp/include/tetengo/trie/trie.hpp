@@ -64,14 +64,14 @@ namespace tetengo::trie
 
             \return The null bulding observer set.
         */
-        static const building_observer_set_type& null_building_observer_set();
+        [[nodiscard]] static const building_observer_set_type& null_building_observer_set();
 
         /*!
             \brief Returns the default double array density factor.
 
             \return The default double array density factor.
         */
-        static std::size_t default_double_array_density_factor();
+        [[nodiscard]] static std::size_t default_double_array_density_factor();
 
 
         // constructors and destructor
@@ -140,14 +140,14 @@ namespace tetengo::trie
             \retval true  When the trie is empty.
             \retval false Otherwise.
         */
-        bool empty() const;
+        [[nodiscard]] bool empty() const;
 
         /*!
             \brief Returns the size of the trie.
 
             \return The size.
         */
-        std::size_t size() const;
+        [[nodiscard]] std::size_t size() const;
 
         /*!
             \brief Returns true when the trie contains the given key.
@@ -157,7 +157,7 @@ namespace tetengo::trie
             \retval true  When the trie contains the given key.
             \retval false Otherwise.
         */
-        bool contains(const std::string_view& key) const;
+        [[nodiscard]] bool contains(const std::string_view& key) const;
 
         /*!
             \brief Finds the value object correspoinding the given key.
@@ -166,21 +166,21 @@ namespace tetengo::trie
 
             \return A pointer to the value object. Or nullptr when the trie does not have the given key.
         */
-        const std::any* find(const std::string_view& key) const;
+        [[nodiscard]] const std::any* find(const std::string_view& key) const;
 
         /*!
             \brief Returns the first iterator.
 
             \return The first iterator.
         */
-        trie_iterator_impl begin() const;
+        [[nodiscard]] trie_iterator_impl begin() const;
 
         /*!
             \brief Returns the last iterator.
 
             \return The last iterator.
         */
-        trie_iterator_impl end() const;
+        [[nodiscard]] trie_iterator_impl end() const;
 
         /*!
             \brief Returns a subtrie.
@@ -190,14 +190,14 @@ namespace tetengo::trie
             \return A unique pointer to a subtrie.
                     Or nullptr when the trie does not have the given key prefix.
         */
-        std::unique_ptr<trie_impl> subtrie(const std::string_view& key_prefix) const;
+        [[nodiscard]] std::unique_ptr<trie_impl> subtrie(const std::string_view& key_prefix) const;
 
         /*!
             \brief Returns the storage.
 
             \return The storage.
         */
-        const storage& get_storage() const;
+        [[nodiscard]] const storage& get_storage() const;
 
 
     private:
@@ -248,7 +248,7 @@ namespace tetengo::trie
 
             \return The null bulding observer set.
         */
-        static const building_observer_set_type& null_building_observer_set()
+        [[nodiscard]] static const building_observer_set_type& null_building_observer_set()
         {
             return trie_impl::null_building_observer_set();
         }
@@ -258,7 +258,7 @@ namespace tetengo::trie
 
             \return The default double array density factor.
         */
-        static std::size_t default_double_array_density_factor()
+        [[nodiscard]] static std::size_t default_double_array_density_factor()
         {
             return trie_impl::default_double_array_density_factor();
         }
@@ -361,7 +361,7 @@ namespace tetengo::trie
             \retval true  When the trie is empty.
             \retval false Otherwise.
         */
-        bool empty() const
+        [[nodiscard]] bool empty() const
         {
             return std::empty(m_impl);
         }
@@ -371,7 +371,7 @@ namespace tetengo::trie
 
             \return The size.
         */
-        std::size_t size() const
+        [[nodiscard]] std::size_t size() const
         {
             return std::size(m_impl);
         }
@@ -384,7 +384,7 @@ namespace tetengo::trie
             \retval true  When the trie contains the given key.
             \retval false Otherwise.
         */
-        bool contains(const key_type& key) const
+        [[nodiscard]] bool contains(const key_type& key) const
         {
             if constexpr (std::is_same_v<key_type, std::string_view> || std::is_same_v<key_type, std::string>)
             {
@@ -404,7 +404,7 @@ namespace tetengo::trie
 
             \return A pointer to the value object. Or nullptr when the trie does not have the given key.
         */
-        const value_type* find(const key_type& key) const
+        [[nodiscard]] const value_type* find(const key_type& key) const
         {
             const auto* const p_found = [this, &key]() {
                 if constexpr (std::is_same_v<key_type, std::string_view> || std::is_same_v<key_type, std::string>)
@@ -429,7 +429,7 @@ namespace tetengo::trie
 
             \return The first iterator.
         */
-        iterator begin() const
+        [[nodiscard]] iterator begin() const
         {
             return iterator{ std::move(std::begin(m_impl)) };
         }
@@ -439,7 +439,7 @@ namespace tetengo::trie
 
             \return The last iterator.
         */
-        iterator end() const
+        [[nodiscard]] iterator end() const
         {
             return iterator{ std::move(std::end(m_impl)) };
         }
@@ -452,7 +452,7 @@ namespace tetengo::trie
             \return A unique pointer to a subtrie.
                     Or nullptr when the trie does not have the given key prefix.
         */
-        std::unique_ptr<trie> subtrie(const key_type& key_prefix) const
+        [[nodiscard]] std::unique_ptr<trie> subtrie(const key_type& key_prefix) const
         {
             auto p_trie_impl = [this, &key_prefix]() {
                 if constexpr (std::is_same_v<key_type, std::string_view> || std::is_same_v<key_type, std::string>)
@@ -479,7 +479,7 @@ namespace tetengo::trie
 
             \return The storage.
         */
-        const storage& get_storage() const
+        [[nodiscard]] const storage& get_storage() const
         {
             return m_impl.get_storage();
         }

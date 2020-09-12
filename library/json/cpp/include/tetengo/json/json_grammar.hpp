@@ -107,7 +107,7 @@ namespace tetengo::json
             \retval true  When parsing is successful.
             \retval false Otherwise.
         */
-        bool parse(reader& reader_) const;
+        [[nodiscard]] bool parse(reader& reader_) const;
 
 
     private:

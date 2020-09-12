@@ -59,28 +59,28 @@ namespace tetengo::trie
 
             \return The null bulding observer set.
         */
-        static const building_observer_set_type& null_building_observer_set();
+        [[nodiscard]] static const building_observer_set_type& null_building_observer_set();
 
         /*!
             \brief Returns the default density factor.
 
             \return The default density factor.
         */
-        static std::size_t default_density_factor();
+        [[nodiscard]] static std::size_t default_density_factor();
 
         /*!
             \brief Returns the key terminator.
 
             \return The key terminator.
         */
-        static char key_terminator();
+        [[nodiscard]] static char key_terminator();
 
         /*!
             \brief Returns the check value for a vacant element.
 
             \return The check value for a vacant element.
         */
-        static std::uint8_t vacant_check_value();
+        [[nodiscard]] static std::uint8_t vacant_check_value();
 
 
         // constructors and destructor
@@ -164,21 +164,21 @@ namespace tetengo::trie
 
             \return The value. Or std::nullpot when the double array does not have the given key.
         */
-        std::optional<std::int32_t> find(const std::string_view& key) const;
+        [[nodiscard]] std::optional<std::int32_t> find(const std::string_view& key) const;
 
         /*!
             \brief Returns a first iterator.
 
             \return A first double array iterator.
         */
-        double_array_iterator begin() const;
+        [[nodiscard]] double_array_iterator begin() const;
 
         /*!
             \brief Returns a last iterator.
 
             \return A last double array iterator.
         */
-        double_array_iterator end() const;
+        [[nodiscard]] double_array_iterator end() const;
 
         /*!
             \brief Returns a subtrie.
@@ -188,21 +188,21 @@ namespace tetengo::trie
             \return A unique pointer to a double array of the subtrie.
                     Or nullptr when the double array does not have the given key prefix.
         */
-        std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const;
+        [[nodiscard]] std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const;
 
         /*!
             \brief Returns the storage.
 
             \return The storage.
         */
-        const storage& get_storage() const;
+        [[nodiscard]] const storage& get_storage() const;
 
         /*!
             \brief Returns the storage.
 
             \return The storage.
         */
-        storage& get_storage();
+        [[nodiscard]] storage& get_storage();
 
 
     private:

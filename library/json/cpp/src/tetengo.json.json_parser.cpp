@@ -178,7 +178,7 @@ namespace tetengo::json
                         &impl::on_structure, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
                 };
 
-                grammar_.parse(*m_p_reader);
+                [[maybe_unused]] const auto successful = grammar_.parse(*m_p_reader);
                 m_channel.close();
             }
             catch (...)

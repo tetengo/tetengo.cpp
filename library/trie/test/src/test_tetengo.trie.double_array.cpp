@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(null_building_observer_set)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::trie::double_array::null_building_observer_set();
+    [[maybe_unused]] const auto& observer_set = tetengo::trie::double_array::null_building_observer_set();
 }
 
 BOOST_AUTO_TEST_CASE(default_density_factor)

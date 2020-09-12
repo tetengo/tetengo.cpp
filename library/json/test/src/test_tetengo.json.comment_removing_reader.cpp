@@ -230,13 +230,13 @@ BOOST_AUTO_TEST_CASE(peek)
         auto                                         p_base_reader = create_cpp_base_reader(stream_value0);
         const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
 
-        BOOST_CHECK_THROW(reader.peek(), std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = reader.peek(), std::logic_error);
     }
     {
         auto                                         p_base_reader = create_cpp_base_reader(stream_value1);
         const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
 
-        BOOST_CHECK_THROW(reader.peek(), std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = reader.peek(), std::logic_error);
     }
     {
         auto                                         p_base_reader = create_cpp_base_reader(stream_value2);

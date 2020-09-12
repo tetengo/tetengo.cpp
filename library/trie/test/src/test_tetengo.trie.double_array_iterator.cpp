@@ -83,12 +83,12 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
     {
         const tetengo::trie::double_array_iterator iterator{};
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
     {
         tetengo::trie::double_array_iterator iterator{};
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
     {
         const tetengo::trie::double_array double_array_{ expected_base_values };

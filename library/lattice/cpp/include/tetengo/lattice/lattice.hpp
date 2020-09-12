@@ -50,7 +50,7 @@ namespace tetengo::lattice
 
             \return The step count.
         */
-        std::size_t step_count() const;
+        [[nodiscard]] std::size_t step_count() const;
 
         /*!
             \brief Returns the nodes at the specified step.
@@ -61,7 +61,7 @@ namespace tetengo::lattice
 
             \throw std::out_of_rage When step is too large.
         */
-        const std::vector<node>& nodes_at(std::size_t step) const;
+        [[nodiscard]] const std::vector<node>& nodes_at(std::size_t step) const;
 
         /*!
             \brief Pushes back an input.
@@ -78,7 +78,7 @@ namespace tetengo::lattice
 
             \return The EOS node and its preceding edge costs.
         */
-        std::pair<node, std::unique_ptr<std::vector<int>>> settle();
+        [[nodiscard]] std::pair<node, std::unique_ptr<std::vector<int>>> settle();
 
 
     private:

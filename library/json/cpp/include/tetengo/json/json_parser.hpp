@@ -32,7 +32,7 @@ namespace tetengo::json
 
             \return The default buffer capacity.
         */
-        static std::size_t default_buffer_capacity();
+        [[nodiscard]] static std::size_t default_buffer_capacity();
 
 
         // constructors and destructor
@@ -60,10 +60,10 @@ namespace tetengo::json
         /*!
             \brief Returns true when the next element exists.
 
-            \return true  When the next element exists.
-            \return false Otherwise.
+            \retval true  When the next element exists.
+            \retval false Otherwise.
         */
-        bool has_next() const;
+        [[nodiscard]] bool has_next() const;
 
         /*!
             \brief Returns the current element.
@@ -72,7 +72,7 @@ namespace tetengo::json
 
             \throw std::logic_error When the current position is beyond the termination point.
         */
-        const element& peek() const;
+        [[nodiscard]] const element& peek() const;
 
         /*!
             \brief Moves to the next element.

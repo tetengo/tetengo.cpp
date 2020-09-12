@@ -73,21 +73,21 @@ namespace tetengo::json
 
             \return The type.
         */
-        const type_type& type() const;
+        [[nodiscard]] const type_type& type() const;
 
         /*!
             \brief Returns the value.
 
             \return The value.
         */
-        const std::string& value() const;
+        [[nodiscard]] const std::string& value() const;
 
         /*!
             \brief Returns the attributes.
 
             \return The attributes.
         */
-        const std::unordered_map<std::string, std::string>& attributes() const;
+        [[nodiscard]] const std::unordered_map<std::string, std::string>& attributes() const;
 
 
     private:

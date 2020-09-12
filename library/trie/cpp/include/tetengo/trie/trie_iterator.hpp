@@ -54,14 +54,14 @@ namespace tetengo::trie
 
             \return The dereferenced value.
         */
-        const std::any& operator*() const;
+        [[nodiscard]] const std::any& operator*() const;
 
         /*!
             \brief Dereferences the iterator.
 
             \return The dereferenced value.
         */
-        std::any& operator*();
+        [[nodiscard]] std::any& operator*();
 
         /*!
             \brief Returns true when one iterator is equal to another.
@@ -124,7 +124,7 @@ namespace tetengo::trie
 
             \return The dereferenced value.
         */
-        const value_type& operator*() const
+        [[nodiscard]] const value_type& operator*() const
         {
             return *std::any_cast<value_type>(&*m_impl);
         }
@@ -134,7 +134,7 @@ namespace tetengo::trie
 
             \return The dereferenced value.
         */
-        value_type& operator*()
+        [[nodiscard]] value_type& operator*()
         {
             return *std::any_cast<value_type>(&*m_impl);
         }

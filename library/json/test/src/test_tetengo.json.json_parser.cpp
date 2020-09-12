@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(peek)
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json0), 10);
         const tetengo::json::json_parser parser{ std::move(p_reader) };
 
-        BOOST_CHECK_THROW(parser.peek(), std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = parser.peek(), std::logic_error);
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json1), 10);

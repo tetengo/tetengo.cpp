@@ -56,14 +56,14 @@ namespace tetengo::trie
 
             \return The dereferenced value.
         */
-        const std::int32_t& operator*() const;
+        [[nodiscard]] const std::int32_t& operator*() const;
 
         /*!
             \brief Dereferences the iterator.
 
             \return The dereferenced value.
         */
-        std::int32_t& operator*();
+        [[nodiscard]] std::int32_t& operator*();
 
         /*!
             \brief Returns true when one iterator is equal to another.

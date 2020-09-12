@@ -371,7 +371,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST(std::any_cast<std::string>(nodes[4].value()) == "local817");
         }
         {
-            BOOST_CHECK_THROW(lattice_.nodes_at(4), std::out_of_range);
+            BOOST_CHECK_THROW([[maybe_unused]] const auto& nodes = lattice_.nodes_at(4), std::out_of_range);
         }
     }
 

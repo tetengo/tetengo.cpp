@@ -49,14 +49,14 @@ namespace tetengo::json
 
             \return The dereferenced value.
         */
-        char operator*() const;
+        [[nodiscard]] char operator*() const;
 
         /*!
             \brief Dereferences the iterator.
 
             \return The dereferenced value.
         */
-        char operator*();
+        [[nodiscard]] char operator*();
 
         /*!
             \brief Returns true when one iterator is equal to another.

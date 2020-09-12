@@ -36,7 +36,7 @@ namespace tetengo::lattice
 
             \throw std::invalid_argument When p_preceding_edge_costs is nullptr.
         */
-        static node bos(const std::vector<int>* p_preceding_edge_costs);
+        [[nodiscard]] static node bos(const std::vector<int>* p_preceding_edge_costs);
 
         /*!
             \brief Returns an EOS (End of Sequence).
@@ -50,7 +50,7 @@ namespace tetengo::lattice
 
             \throw std::invalid_argument When p_preceding_edge_costs is nullptr.
         */
-        static node
+        [[nodiscard]] static node
         eos(std::size_t             preceding_step,
             const std::vector<int>* p_preceding_edge_costs,
             std::size_t             best_preceding_node,
@@ -118,49 +118,49 @@ namespace tetengo::lattice
 
             \return The key.
         */
-        const std::string_view& key() const;
+        [[nodiscard]] const std::string_view& key() const;
 
         /*!
             \brief Returns the value.
 
             \return The value.
         */
-        const std::any& value() const;
+        [[nodiscard]] const std::any& value() const;
 
         /*!
             \brief Returns the index of the preceding step.
 
             \return The index of the preceding step.
         */
-        std::size_t preceding_step() const;
+        [[nodiscard]] std::size_t preceding_step() const;
 
         /*!
             \brief Returns the preceding edge costs.
 
             \return The preceding edge costs.
         */
-        const std::vector<int>& preceding_edge_costs() const;
+        [[nodiscard]] const std::vector<int>& preceding_edge_costs() const;
 
         /*!
             \brief Returns the index of the best preceding node.
 
             \return The index of the best preceding node.
         */
-        std::size_t best_preceding_node() const;
+        [[nodiscard]] std::size_t best_preceding_node() const;
 
         /*!
             \brief Returns the node cost.
 
             \return The node cost.
         */
-        int node_cost() const;
+        [[nodiscard]] int node_cost() const;
 
         /*!
             \brief Returns the path cost.
 
             \return The path cost.
         */
-        int path_cost() const;
+        [[nodiscard]] int path_cost() const;
 
         /*!
             \brief Returns true is this node is the BOS.
@@ -168,7 +168,7 @@ namespace tetengo::lattice
             \retval true  When this node is the BOS.
             \retval false Otherwise.
         */
-        bool is_bos() const;
+        [[nodiscard]] bool is_bos() const;
 
 
     private:

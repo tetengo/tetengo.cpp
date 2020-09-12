@@ -441,7 +441,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
     {
         const tetengo::lattice::n_best_iterator iterator{};
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
 
     {
@@ -717,7 +717,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         }
 
         ++iterator;
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
     {
         tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };

@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
         const auto                                                          iterator = std::begin(trie_);
 
-        BOOST_CHECK_THROW(*iterator, std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& dereferenced = *iterator, std::logic_error);
     }
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{
