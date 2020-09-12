@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/stl_interfaces/iterator_interface.hpp>
@@ -111,8 +110,8 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
         begin_copy_detection();
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
 
         end_copy_detection();
     }
@@ -122,8 +121,8 @@ BOOST_AUTO_TEST_CASE(construction)
         };
         begin_copy_detection();
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
 
         end_copy_detection();
     }

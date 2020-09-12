@@ -4,7 +4,6 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
  */
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -26,8 +25,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo_lattice_connection_t connection_{ 42 };
-        boost::ignore_unused(connection_);
+        [[maybe_unused]] const tetengo_lattice_connection_t connection_{ 42 };
     }
 }
 

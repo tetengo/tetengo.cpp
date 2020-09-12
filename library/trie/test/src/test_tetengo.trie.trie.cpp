@@ -20,7 +20,6 @@
 
 #include <stddef.h> // IWYU pragma: keep
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/stl_interfaces/iterator_interface.hpp>
@@ -943,27 +942,27 @@ BOOST_AUTO_TEST_CASE(begin_end)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
 
     {
         const tetengo::trie::trie<std::string_view, int> trie_{};
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
 
     {
@@ -971,8 +970,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
@@ -980,8 +979,8 @@ BOOST_AUTO_TEST_CASE(begin_end)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        boost::ignore_unused(std::begin(trie_));
-        boost::ignore_unused(std::end(trie_));
+        const auto first = std::begin(trie_);
+        const auto last = std::end(trie_);
     }
 
     {

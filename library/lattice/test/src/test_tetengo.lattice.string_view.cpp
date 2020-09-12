@@ -6,7 +6,6 @@
 
 #include <string>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -35,8 +34,7 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_stringView_t string_view{ string_value.c_str(), string_value.length() };
-    boost::ignore_unused(string_view);
+    [[maybe_unused]] const tetengo_lattice_stringView_t string_view{ string_value.c_str(), string_value.length() };
 }
 
 BOOST_AUTO_TEST_CASE(p_head)

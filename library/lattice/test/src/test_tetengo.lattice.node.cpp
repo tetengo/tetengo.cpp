@@ -11,7 +11,6 @@
 #include <string_view>
 #include <vector>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
@@ -196,18 +195,18 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const std::string_view       key{ "mizuho" };
-        const std::any               value{ reinterpret_cast<const void*>("MIZUHO") };
-        const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo_lattice_node_t node{ { key.data(), key.length() },
-                                           reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
-                                           1,
-                                           preceding_edge_costs.data(),
-                                           preceding_edge_costs.size(),
-                                           5,
-                                           24,
-                                           2424 };
-        boost::ignore_unused(node);
+        const std::string_view                        key{ "mizuho" };
+        const std::any                                value{ reinterpret_cast<const void*>("MIZUHO") };
+        const std::vector<int>                        preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        [[maybe_unused]] const tetengo_lattice_node_t node{ { key.data(), key.length() },
+                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
+                                                                &value),
+                                                            1,
+                                                            preceding_edge_costs.data(),
+                                                            preceding_edge_costs.size(),
+                                                            5,
+                                                            24,
+                                                            2424 };
     }
     {
         const std::string_view            key{ "mizuho" };

@@ -7,7 +7,6 @@
 #include <any>
 #include <string>
 
-#include <boost/core/ignore_unused.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -70,15 +69,16 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const tetengo_lattice_entry_t entry{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
-        boost::ignore_unused(entry);
+        [[maybe_unused]] const tetengo_lattice_entry_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
+                                                              &surface_mizuho,
+                                                              42 };
     }
     {
-        const std::any                    value{ reinterpret_cast<const void*>(&surface_mizuho) };
-        const tetengo_lattice_entryView_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
-                                                 42 };
-        boost::ignore_unused(entry);
+        const std::any                                     value{ reinterpret_cast<const void*>(&surface_mizuho) };
+        [[maybe_unused]] const tetengo_lattice_entryView_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
+                                                                  reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
+                                                                      &value),
+                                                                  42 };
     }
 }
 
