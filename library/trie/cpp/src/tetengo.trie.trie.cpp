@@ -191,7 +191,7 @@ namespace tetengo::trie
     m_p_impl{ std::make_unique<impl>(std::move(p_double_array)) }
     {}
 
-    trie_impl::trie_impl(trie_impl&& another) : m_p_impl{ std::move(another.m_p_impl) } {}
+    trie_impl::trie_impl(trie_impl&& another) noexcept : m_p_impl{ std::move(another.m_p_impl) } {}
 
     trie_impl::~trie_impl() = default;
 

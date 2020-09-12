@@ -74,7 +74,7 @@ namespace
             }
         }
 
-        copy_detector(copy_detector&& another) : value{ std::move(another.value) } {}
+        copy_detector(copy_detector&& another) noexcept : value{ std::move(another.value) } {}
     };
 
     template <typename T>

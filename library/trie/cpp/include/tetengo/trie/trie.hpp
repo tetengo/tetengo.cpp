@@ -124,7 +124,7 @@ namespace tetengo::trie
 
             \param another Another trie.
         */
-        trie_impl(trie_impl&& another);
+        trie_impl(trie_impl&& another) noexcept;
 
         /*!
             \brief Destroys an implementation of trie.
