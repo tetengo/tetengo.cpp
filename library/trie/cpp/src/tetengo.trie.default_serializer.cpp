@@ -269,7 +269,7 @@ namespace tetengo::trie
     Integer default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::
             operator()(const std::vector<char>& bytes) const
     {
-        return from_bytes<Integer>(bytes.data(), std::size(bytes));
+        return from_bytes<Integer>(std::data(bytes), std::size(bytes));
     }
 
     template bool default_deserializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::

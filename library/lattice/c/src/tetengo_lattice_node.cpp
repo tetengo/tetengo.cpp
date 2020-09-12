@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <iterator>
 #include <stdexcept>
 #include <string_view>
 #include <vector>
@@ -39,7 +40,7 @@ int tetengo_lattice_node_bos(
         const std::vector<int> cpp_preceding_edge_costs{};
         const auto             cpp_bos = tetengo::lattice::node::bos(&cpp_preceding_edge_costs);
 
-        p_bos->key.p_head = cpp_bos.key().data();
+        p_bos->key.p_head = std::data(cpp_bos.key());
         p_bos->key.length = cpp_bos.key().length();
         p_bos->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_bos.value());
         p_bos->preceding_step = cpp_bos.preceding_step();
@@ -82,7 +83,7 @@ int tetengo_lattice_node_eos(
         const auto             cpp_eos =
             tetengo::lattice::node::eos(preceding_step, &cpp_preceding_edge_costs, best_preceding_node, path_cost);
 
-        p_eos->key.p_head = cpp_eos.key().data();
+        p_eos->key.p_head = std::data(cpp_eos.key());
         p_eos->key.length = cpp_eos.key().length();
         p_eos->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_eos.value());
         p_eos->preceding_step = cpp_eos.preceding_step();
@@ -134,7 +135,7 @@ int tetengo_lattice_node_toNode(
             cpp_entry, preceding_step, &cpp_preceding_edge_costs, best_preceding_node, path_cost
         };
 
-        p_node->key.p_head = cpp_node.key().data();
+        p_node->key.p_head = std::data(cpp_node.key());
         p_node->key.length = cpp_node.key().length();
         p_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value());
         p_node->preceding_step = cpp_node.preceding_step();

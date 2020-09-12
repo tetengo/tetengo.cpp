@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <iterator>
 #include <string_view>
 
 #include <tetengo/lattice/entry.h>
@@ -15,7 +16,7 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos()
 {
     try
     {
-        static const tetengo_lattice_entryView_t singleton{ { tetengo::lattice::entry_view::bos_eos().key().data(),
+        static const tetengo_lattice_entryView_t singleton{ { std::data(tetengo::lattice::entry_view::bos_eos().key()),
                                                               tetengo::lattice::entry_view::bos_eos().key().length() },
                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 tetengo::lattice::entry_view::bos_eos().value()),

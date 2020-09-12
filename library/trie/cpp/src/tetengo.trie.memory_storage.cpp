@@ -159,7 +159,7 @@ namespace tetengo::trie
                     const auto serialized = value_serializer(*v);
                     assert(std::size(serialized) < std::numeric_limits<std::uint32_t>::max());
                     write_uint32(output_stream, static_cast<std::uint32_t>(std::size(serialized)));
-                    output_stream.write(serialized.data(), std::size(serialized));
+                    output_stream.write(std::data(serialized), std::size(serialized));
                 }
                 else
                 {
@@ -173,7 +173,7 @@ namespace tetengo::trie
             static const default_serializer<std::uint32_t> uint32_serializer{};
 
             const auto serialized = uint32_serializer(value);
-            output_stream.write(serialized.data(), std::size(serialized));
+            output_stream.write(std::data(serialized), std::size(serialized));
         }
 
         static void deserialize(
@@ -210,7 +210,7 @@ namespace tetengo::trie
                 if (element_size > 0)
                 {
                     std::vector<char> to_deserialize(element_size, 0);
-                    input_stream.read(to_deserialize.data(), element_size);
+                    input_stream.read(std::data(to_deserialize), element_size);
                     if (input_stream.gcount() < static_cast<std::streamsize>(element_size))
                     {
                         throw std::ios_base::failure("Can't read value.");

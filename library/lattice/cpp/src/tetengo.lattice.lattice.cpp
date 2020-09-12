@@ -115,7 +115,7 @@ namespace tetengo::lattice
             {
                 const auto& step = m_graph[i];
 
-                const std::string_view node_key{ std::next(m_input.data(), step.input_tail()),
+                const std::string_view node_key{ std::next(std::data(m_input), step.input_tail()),
                                                  m_input.length() - step.input_tail() };
                 const auto             found = m_p_vocabulary->find_entries(node_key);
 

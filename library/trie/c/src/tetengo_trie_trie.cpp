@@ -210,7 +210,7 @@ const void* tetengo_trie_trie_find(const tetengo_trie_trie_t* const p_trie, cons
         {
             return nullptr;
         }
-        return p_found->data();
+        return std::data(*p_found);
     }
     catch (...)
     {

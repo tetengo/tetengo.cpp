@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(construction)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -310,7 +310,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -384,7 +384,7 @@ BOOST_AUTO_TEST_CASE(operator_increment)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,

@@ -112,7 +112,7 @@ namespace
 
         {
             std::ofstream stream{ path, std::ios_base::binary };
-            stream.write(initial_content.data(), std::size(initial_content));
+            stream.write(std::data(initial_content), std::size(initial_content));
         }
 
         return path;
@@ -123,7 +123,7 @@ namespace
         const auto        file_size = std::filesystem::file_size(path);
         std::ifstream     stream{ path, std::ios_base::binary };
         std::vector<char> content(static_cast<std::size_t>(file_size), 0);
-        stream.read(content.data(), file_size);
+        stream.read(std::data(content), file_size);
         assert(stream.gcount() == static_cast<std::streamsize>(file_size));
         return content;
     }
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(construction)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -307,7 +307,7 @@ BOOST_AUTO_TEST_CASE(size)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(filling_rate)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -485,7 +485,7 @@ BOOST_AUTO_TEST_CASE(serialize)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -561,7 +561,7 @@ BOOST_AUTO_TEST_CASE(serialize)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
@@ -607,7 +607,7 @@ BOOST_AUTO_TEST_CASE(clone)
                                                            { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
-            elements.data(),
+            std::data(elements),
             std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,

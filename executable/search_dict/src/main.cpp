@@ -35,7 +35,7 @@ namespace
         const auto lex_csv_size = std::filesystem::file_size(lex_csv_path);
 
         std::vector<char> buffer(static_cast<std::size_t>(lex_csv_size), '\0');
-        stream.read(buffer.data(), lex_csv_size);
+        stream.read(std::data(buffer), lex_csv_size);
         if (stream.gcount() != static_cast<std::streamsize>(lex_csv_size))
         {
             throw std::ios_base::failure{ "Can't read the whole of lex.csv file." };

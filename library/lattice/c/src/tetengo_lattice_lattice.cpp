@@ -96,11 +96,11 @@ size_t tetengo_lattice_lattice_nodesAt(
         {
             for (auto i = static_cast<std::size_t>(0); i < std::size(cpp_nodes); ++i)
             {
-                p_nodes[i].key.p_head = cpp_nodes[i].key().data();
+                p_nodes[i].key.p_head = std::data(cpp_nodes[i].key());
                 p_nodes[i].key.length = cpp_nodes[i].key().length();
                 p_nodes[i].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_nodes[i].value());
                 p_nodes[i].preceding_step = cpp_nodes[i].preceding_step();
-                p_nodes[i].p_preceding_edge_costs = cpp_nodes[i].preceding_edge_costs().data();
+                p_nodes[i].p_preceding_edge_costs = std::data(cpp_nodes[i].preceding_edge_costs());
                 p_nodes[i].preceding_edge_cost_count = std::size(cpp_nodes[i].preceding_edge_costs());
                 p_nodes[i].best_preceding_node = cpp_nodes[i].best_preceding_node();
                 p_nodes[i].node_cost = cpp_nodes[i].node_cost();
@@ -167,7 +167,7 @@ size_t tetengo_lattice_lattice_settle(
         if (p_eos_node)
         {
             assert(!cpp_eos_node_and_preceding_edge_costs.first.value().has_value());
-            p_eos_node->key.p_head = cpp_eos_node_and_preceding_edge_costs.first.key().data();
+            p_eos_node->key.p_head = std::data(cpp_eos_node_and_preceding_edge_costs.first.key());
             p_eos_node->key.length = cpp_eos_node_and_preceding_edge_costs.first.key().length();
             p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                 &cpp_eos_node_and_preceding_edge_costs.first.value());

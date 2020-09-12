@@ -393,7 +393,7 @@ namespace tetengo::trie
             else
             {
                 const auto serialized_key = m_key_serializer(key);
-                return m_impl.contains(std::string_view{ serialized_key.data(), std::size(serialized_key) });
+                return m_impl.contains(std::string_view{ std::data(serialized_key), std::size(serialized_key) });
             }
         }
 
@@ -414,7 +414,7 @@ namespace tetengo::trie
                 else
                 {
                     const auto serialized_key = m_key_serializer(key);
-                    return m_impl.find(std::string_view{ serialized_key.data(), std::size(serialized_key) });
+                    return m_impl.find(std::string_view{ std::data(serialized_key), std::size(serialized_key) });
                 }
             }();
             if (!p_found)
@@ -463,7 +463,7 @@ namespace tetengo::trie
                 {
                     const auto serialized_key_prefix = m_key_serializer(key_prefix);
                     return m_impl.subtrie(
-                        std::string_view{ serialized_key_prefix.data(), std::size(serialized_key_prefix) });
+                        std::string_view{ std::data(serialized_key_prefix), std::size(serialized_key_prefix) });
                 }
             }();
             if (!p_trie_impl)

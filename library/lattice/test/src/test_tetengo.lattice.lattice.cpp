@@ -222,9 +222,9 @@ namespace
         }
 
         return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-            key_entries_pairs.data(),
+            std::data(key_entries_pairs),
             std::size(key_entries_pairs),
-            entries_connection_cost_pairs.data(),
+            std::data(entries_connection_cost_pairs),
             std::size(entries_connection_cost_pairs),
             c_entry_hash,
             c_entry_equal_to);
@@ -235,9 +235,9 @@ namespace
         const std::vector<tetengo_lattice_keyEntriesPair_t>      key_entries_pairs{};
         std::vector<tetengo_lattice_entriesConnectionCostPair_t> entries_connection_cost_pairs{};
         return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-            key_entries_pairs.data(),
+            std::data(key_entries_pairs),
             std::size(key_entries_pairs),
-            entries_connection_cost_pairs.data(),
+            std::data(entries_connection_cost_pairs),
             std::size(entries_connection_cost_pairs),
             c_entry_hash,
             c_entry_equal_to);
@@ -392,12 +392,12 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST_REQUIRE(node_count == 1U);
 
             std::vector<tetengo_lattice_node_t> nodes{ node_count };
-            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 0, nodes.data());
+            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 0, std::data(nodes));
             BOOST_TEST(node_count_again == 1U);
 
             const std::vector<int> preceding_edge_costs{};
             tetengo_lattice_node_t bos{};
-            tetengo_lattice_node_bos(preceding_edge_costs.data(), std::size(preceding_edge_costs), &bos);
+            tetengo_lattice_node_bos(std::data(preceding_edge_costs), std::size(preceding_edge_costs), &bos);
             BOOST_TEST(nodes[0].value_handle == bos.value_handle);
         }
         {
@@ -405,7 +405,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST_REQUIRE(node_count == 2U);
 
             std::vector<tetengo_lattice_node_t> nodes{ node_count };
-            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 1, nodes.data());
+            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 1, std::data(nodes));
             BOOST_TEST(node_count_again == 2U);
 
             BOOST_TEST(
@@ -420,7 +420,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST_REQUIRE(node_count == 3U);
 
             std::vector<tetengo_lattice_node_t> nodes{ node_count };
-            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 2, nodes.data());
+            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 2, std::data(nodes));
             BOOST_TEST(node_count_again == 3U);
 
             BOOST_TEST(
@@ -438,7 +438,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST_REQUIRE(node_count == 5U);
 
             std::vector<tetengo_lattice_node_t> nodes{ node_count };
-            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 3, nodes.data());
+            const auto node_count_again = tetengo_lattice_lattice_nodesAt(p_lattice, 3, std::data(nodes));
             BOOST_TEST(node_count_again == 5U);
 
             BOOST_TEST(
@@ -615,7 +615,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
             const auto             preceding_edge_cost_count_again =
-                tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+                tetengo_lattice_lattice_settle(p_lattice, &eos_node, std::data(preceding_edge_costs));
             BOOST_TEST_REQUIRE(preceding_edge_cost_count_again == 1U);
 
             BOOST_TEST(eos_node.preceding_step == 0U);
@@ -638,7 +638,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
             const auto             preceding_edge_cost_count_again =
-                tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+                tetengo_lattice_lattice_settle(p_lattice, &eos_node, std::data(preceding_edge_costs));
             BOOST_TEST_REQUIRE(preceding_edge_cost_count_again == 2U);
 
             BOOST_TEST(eos_node.preceding_step == 1U);
@@ -661,7 +661,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
             const auto             preceding_edge_cost_count_again =
-                tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+                tetengo_lattice_lattice_settle(p_lattice, &eos_node, std::data(preceding_edge_costs));
             BOOST_TEST_REQUIRE(preceding_edge_cost_count_again == 3U);
 
             BOOST_TEST(eos_node.preceding_step == 2U);
@@ -684,7 +684,7 @@ BOOST_AUTO_TEST_CASE(settle)
             tetengo_lattice_node_t eos_node{};
             std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
             const auto             preceding_edge_cost_count_again =
-                tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+                tetengo_lattice_lattice_settle(p_lattice, &eos_node, std::data(preceding_edge_costs));
             BOOST_TEST_REQUIRE(preceding_edge_cost_count_again == 5U);
 
             BOOST_TEST(eos_node.preceding_step == 3U);
@@ -714,13 +714,13 @@ BOOST_AUTO_TEST_CASE(settle)
         tetengo_lattice_node_t eos_node{};
         std::vector<int>       preceding_edge_costs(preceding_edge_cost_count, 0);
         const auto             preceding_edge_cost_count_again =
-            tetengo_lattice_lattice_settle(p_lattice, &eos_node, preceding_edge_costs.data());
+            tetengo_lattice_lattice_settle(p_lattice, &eos_node, std::data(preceding_edge_costs));
         BOOST_TEST_REQUIRE(preceding_edge_cost_count_again == 1U);
     }
     {
         tetengo_lattice_node_t eos_node{};
         std::vector<int>       preceding_edge_costs(42, 0);
-        BOOST_TEST(tetengo_lattice_lattice_settle(nullptr, &eos_node, preceding_edge_costs.data()) == 0U);
+        BOOST_TEST(tetengo_lattice_lattice_settle(nullptr, &eos_node, std::data(preceding_edge_costs)) == 0U);
     }
     {
         auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());

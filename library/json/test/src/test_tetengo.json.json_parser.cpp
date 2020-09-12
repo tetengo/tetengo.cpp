@@ -78,7 +78,7 @@ namespace
                 throw std::runtime_error{ "Can't create a temporary file." };
             }
 
-            stream.write(content.data(), content.length());
+            stream.write(std::data(content), content.length());
         }
 
         const std::filesystem::path m_path;

@@ -95,7 +95,7 @@ namespace tetengo::json
             }
 
             std::vector<char> chars(m_buffer.capacity(), '\0');
-            m_p_stream->read(chars.data(), std::size(chars));
+            m_p_stream->read(std::data(chars), std::size(chars));
             const auto read_size = m_p_stream->gcount();
 
             m_buffer.insert(

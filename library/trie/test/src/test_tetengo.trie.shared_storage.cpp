@@ -106,7 +106,7 @@ namespace
 
         {
             std::ofstream stream{ path, std::ios_base::binary };
-            stream.write(initial_content.data(), std::size(initial_content));
+            stream.write(std::data(initial_content), std::size(initial_content));
         }
 
         return path;
