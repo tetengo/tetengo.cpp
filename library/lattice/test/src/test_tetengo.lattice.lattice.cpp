@@ -173,11 +173,11 @@ namespace
     {
         std::vector<tetengo_lattice_entry_t> entry_values{};
         std::vector<std::size_t>             entry_value_offsets{};
-        entry_value_offsets.reserve(entries.size() + 1);
+        entry_value_offsets.reserve(std::size(entries) + 1);
         for (const auto& e: entries)
         {
-            entry_values.reserve(entry_values.size() + e.second.size());
-            entry_value_offsets.push_back(entry_values.size());
+            entry_values.reserve(std::size(entry_values) + std::size(e.second));
+            entry_value_offsets.push_back(std::size(entry_values));
 
             for (const auto& ev: e.second)
             {
@@ -185,11 +185,11 @@ namespace
                     { { ev.key().c_str(), ev.key().length() }, std::any_cast<std::string>(&ev.value()), ev.cost() });
             }
         }
-        entry_value_offsets.push_back(entry_values.size());
+        entry_value_offsets.push_back(std::size(entry_values));
 
         std::vector<tetengo_lattice_keyEntriesPair_t> key_entries_pairs{};
-        key_entries_pairs.reserve(entries.size());
-        for (auto i = static_cast<std::size_t>(0); i < entries.size(); ++i)
+        key_entries_pairs.reserve(std::size(entries));
+        for (auto i = static_cast<std::size_t>(0); i < std::size(entries); ++i)
         {
             const auto& entry = entries[i];
             key_entries_pairs.push_back({ { entry.first.c_str(), entry.first.length() },
@@ -198,9 +198,9 @@ namespace
         }
 
         std::vector<tetengo_lattice_entry_t> connection_froms{};
-        connection_froms.reserve(connections.size());
+        connection_froms.reserve(std::size(connections));
         std::vector<tetengo_lattice_entry_t> connection_tos{};
-        connection_tos.reserve(connections.size());
+        connection_tos.reserve(std::size(connections));
         for (const auto& c: connections)
         {
             connection_froms.push_back({ { c.first.first.key().c_str(), c.first.first.key().length() },
@@ -212,8 +212,8 @@ namespace
         }
 
         std::vector<tetengo_lattice_entriesConnectionCostPair_t> entries_connection_cost_pairs{};
-        entries_connection_cost_pairs.reserve(connections.size());
-        for (auto i = static_cast<std::size_t>(0); i < connections.size(); ++i)
+        entries_connection_cost_pairs.reserve(std::size(connections));
+        for (auto i = static_cast<std::size_t>(0); i < std::size(connections); ++i)
         {
             const auto& connection = connections[i];
             const auto& from = connection_froms[i];
@@ -223,9 +223,9 @@ namespace
 
         return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
             key_entries_pairs.data(),
-            key_entries_pairs.size(),
+            std::size(key_entries_pairs),
             entries_connection_cost_pairs.data(),
-            entries_connection_cost_pairs.size(),
+            std::size(entries_connection_cost_pairs),
             c_entry_hash,
             c_entry_equal_to);
     }
@@ -236,9 +236,9 @@ namespace
         std::vector<tetengo_lattice_entriesConnectionCostPair_t> entries_connection_cost_pairs{};
         return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
             key_entries_pairs.data(),
-            key_entries_pairs.size(),
+            std::size(key_entries_pairs),
             entries_connection_cost_pairs.data(),
-            entries_connection_cost_pairs.size(),
+            std::size(entries_connection_cost_pairs),
             c_entry_hash,
             c_entry_equal_to);
     }
@@ -340,7 +340,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
         {
             const auto& nodes = lattice_.nodes_at(0);
 
-            BOOST_TEST_REQUIRE(nodes.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(nodes) == 1U);
             const std::vector<int> preceding_edge_costs{};
             BOOST_TEST(
                 nodes[0].value().has_value() == tetengo::lattice::node::bos(&preceding_edge_costs).value().has_value());
@@ -348,14 +348,14 @@ BOOST_AUTO_TEST_CASE(nodes_at)
         {
             const auto& nodes = lattice_.nodes_at(1);
 
-            BOOST_TEST_REQUIRE(nodes.size() == 2U);
+            BOOST_TEST_REQUIRE(std::size(nodes) == 2U);
             BOOST_TEST(std::any_cast<std::string>(nodes[0].value()) == "kamome");
             BOOST_TEST(std::any_cast<std::string>(nodes[1].value()) == "local415");
         }
         {
             const auto& nodes = lattice_.nodes_at(2);
 
-            BOOST_TEST_REQUIRE(nodes.size() == 3U);
+            BOOST_TEST_REQUIRE(std::size(nodes) == 3U);
             BOOST_TEST(std::any_cast<std::string>(nodes[0].value()) == "ariake");
             BOOST_TEST(std::any_cast<std::string>(nodes[1].value()) == "rapid811");
             BOOST_TEST(std::any_cast<std::string>(nodes[2].value()) == "local813");
@@ -363,7 +363,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
         {
             const auto& nodes = lattice_.nodes_at(3);
 
-            BOOST_TEST_REQUIRE(nodes.size() == 5U);
+            BOOST_TEST_REQUIRE(std::size(nodes) == 5U);
             BOOST_TEST(std::any_cast<std::string>(nodes[0].value()) == "mizuho");
             BOOST_TEST(std::any_cast<std::string>(nodes[1].value()) == "sakura");
             BOOST_TEST(std::any_cast<std::string>(nodes[2].value()) == "tsubame");
@@ -397,7 +397,7 @@ BOOST_AUTO_TEST_CASE(nodes_at)
 
             const std::vector<int> preceding_edge_costs{};
             tetengo_lattice_node_t bos{};
-            tetengo_lattice_node_bos(preceding_edge_costs.data(), preceding_edge_costs.size(), &bos);
+            tetengo_lattice_node_bos(preceding_edge_costs.data(), std::size(preceding_edge_costs), &bos);
             BOOST_TEST(nodes[0].value_handle == bos.value_handle);
         }
         {

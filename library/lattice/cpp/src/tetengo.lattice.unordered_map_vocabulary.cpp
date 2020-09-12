@@ -61,7 +61,7 @@ namespace tetengo::lattice
             }
 
             std::vector<entry_view> entries{};
-            entries.reserve(found->second.size());
+            entries.reserve(std::size(found->second));
             std::copy(std::begin(found->second), std::end(found->second), std::back_inserter(entries));
             return entries;
         }
@@ -121,7 +121,7 @@ namespace tetengo::lattice
         static entry_map_type make_entry_map(std::vector<std::pair<std::string, std::vector<entry>>> entries)
         {
             entry_map_type map{};
-            map.reserve(entries.size());
+            map.reserve(std::size(entries));
             for (auto&& e: entries)
             {
                 map.insert(std::make_pair(std::move(e.first), std::move(e.second)));
@@ -136,18 +136,18 @@ namespace tetengo::lattice
             std::vector<std::pair<entry, entry>>&                     connection_keys,
             std::unique_ptr<connection_map_type>&                     p_connection_map)
         {
-            connection_keys.reserve(connections.size());
+            connection_keys.reserve(std::size(connections));
             for (auto&& e: connections)
             {
                 connection_keys.push_back(std::move(e.first));
             }
 
             auto p_map = std::make_unique<connection_map_type>(
-                connections.size(),
+                std::size(connections),
                 connection_map_hash{ std::move(entry_hash) },
                 connection_map_key_eq{ std::move(entry_equal_to) });
-            p_map->reserve(connections.size());
-            for (auto i = static_cast<std::size_t>(0); i < connections.size(); ++i)
+            p_map->reserve(std::size(connections));
+            for (auto i = static_cast<std::size_t>(0); i < std::size(connections); ++i)
             {
                 const auto&      connection_key = connection_keys[i];
                 const entry_view from{ connection_key.first.key(),

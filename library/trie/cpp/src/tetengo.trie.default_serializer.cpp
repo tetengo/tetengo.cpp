@@ -246,7 +246,7 @@ namespace tetengo::trie
     std::basic_string<Char> default_deserializer<std::basic_string<Char>>::
                             operator()(const std::vector<char>& bytes) const
     {
-        assert(bytes.size() % sizeof(Char) == 0);
+        assert(std::size(bytes) % sizeof(Char) == 0);
         std::basic_string<Char> object{};
         for (auto i = std::begin(bytes); i != std::end(bytes); i += sizeof(Char))
         {
@@ -269,7 +269,7 @@ namespace tetengo::trie
     Integer default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::
             operator()(const std::vector<char>& bytes) const
     {
-        return from_bytes<Integer>(bytes.data(), bytes.size());
+        return from_bytes<Integer>(bytes.data(), std::size(bytes));
     }
 
     template bool default_deserializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::

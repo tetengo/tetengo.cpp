@@ -8,6 +8,7 @@
 #include <cassert>
 #include <cstddef>
 #include <functional>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <string>
@@ -148,8 +149,8 @@ BOOST_AUTO_TEST_CASE(construction)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
-            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), std::size(entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), std::size(entries_sakura) }
         };
 
         const tetengo_lattice_entry_t connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
@@ -218,8 +219,8 @@ BOOST_AUTO_TEST_CASE(construction)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
-            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), std::size(entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), std::size(entries_sakura) }
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
@@ -241,8 +242,8 @@ BOOST_AUTO_TEST_CASE(construction)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
-            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), std::size(entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), std::size(entries_sakura) }
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
@@ -289,14 +290,14 @@ BOOST_AUTO_TEST_CASE(find_entries)
 
         {
             const auto found = vocabulary.find_entries(key_mizuho);
-            BOOST_TEST_REQUIRE(found.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(found) == 1U);
             BOOST_TEST(found[0].key() == key_mizuho);
             BOOST_TEST(*std::any_cast<std::string>(found[0].value()) == surface_mizuho);
             BOOST_TEST(found[0].cost() == 42);
         }
         {
             const auto found = vocabulary.find_entries(key_sakura);
-            BOOST_TEST_REQUIRE(found.size() == 2U);
+            BOOST_TEST_REQUIRE(std::size(found) == 2U);
             BOOST_TEST(found[0].key() == key_sakura);
             BOOST_TEST(*std::any_cast<std::string>(found[0].value()) == surface_sakura1);
             BOOST_TEST(found[0].cost() == 24);
@@ -315,8 +316,8 @@ BOOST_AUTO_TEST_CASE(find_entries)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
-            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), std::size(entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), std::size(entries_sakura) }
         };
 
         const tetengo_lattice_entry_t connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
@@ -330,7 +331,12 @@ BOOST_AUTO_TEST_CASE(find_entries)
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-            entries.data(), entries.size(), connections.data(), connections.size(), c_entry_hash, c_entry_equal_to);
+            entries.data(),
+            std::size(entries),
+            connections.data(),
+            std::size(connections),
+            c_entry_hash,
+            c_entry_equal_to);
         BOOST_SCOPE_EXIT(p_vocabulary)
         {
             tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -404,9 +410,9 @@ BOOST_AUTO_TEST_CASE(find_connection)
         };
 
         const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
-        BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
+        BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
         const auto entries_sakura = vocabulary.find_entries(key_sakura);
-        BOOST_TEST_REQUIRE(entries_sakura.size() == 2U);
+        BOOST_TEST_REQUIRE(std::size(entries_sakura) == 2U);
 
         {
             const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_sakura[0]);
@@ -429,8 +435,8 @@ BOOST_AUTO_TEST_CASE(find_connection)
             { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), entries_mizuho.size() },
-            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), entries_sakura.size() }
+            { { key_mizuho.c_str(), key_mizuho.length() }, entries_mizuho.data(), std::size(entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, entries_sakura.data(), std::size(entries_sakura) }
         };
 
         const tetengo_lattice_entry_t connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
@@ -444,7 +450,12 @@ BOOST_AUTO_TEST_CASE(find_connection)
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-            entries.data(), entries.size(), connections.data(), connections.size(), c_entry_hash, c_entry_equal_to);
+            entries.data(),
+            std::size(entries),
+            connections.data(),
+            std::size(connections),
+            c_entry_hash,
+            c_entry_equal_to);
         BOOST_SCOPE_EXIT(p_vocabulary)
         {
             tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -464,7 +475,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
                 preceding_edge_costs.data(),
-                preceding_edge_costs.size(),
+                std::size(preceding_edge_costs),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -492,7 +503,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
                 preceding_edge_costs.data(),
-                preceding_edge_costs.size(),
+                std::size(preceding_edge_costs),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -515,7 +526,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
                 preceding_edge_costs.data(),
-                preceding_edge_costs.size(),
+                std::size(preceding_edge_costs),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -552,7 +563,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
                 preceding_edge_costs.data(),
-                preceding_edge_costs.size(),
+                std::size(preceding_edge_costs),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));
@@ -573,7 +584,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
                 &entry_mizuho,
                 std::numeric_limits<size_t>::max(),
                 preceding_edge_costs.data(),
-                preceding_edge_costs.size(),
+                std::size(preceding_edge_costs),
                 std::numeric_limits<size_t>::max(),
                 std::numeric_limits<int>::max(),
                 &node_mizuho));

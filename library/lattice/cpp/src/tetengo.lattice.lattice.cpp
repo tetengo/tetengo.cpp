@@ -57,7 +57,7 @@ namespace tetengo::lattice
 
         const std::vector<int>& preceding_edge_costs(const std::size_t index) const
         {
-            assert(index < m_p_preceding_edge_costs.size());
+            assert(index < std::size(m_p_preceding_edge_costs));
             assert(m_p_preceding_edge_costs[index]);
             return *m_p_preceding_edge_costs[index];
         }
@@ -92,12 +92,12 @@ namespace tetengo::lattice
 
         std::size_t step_count() const
         {
-            return m_graph.size();
+            return std::size(m_graph);
         }
 
         const std::vector<node>& nodes_at(const std::size_t step) const
         {
-            if (step >= m_graph.size())
+            if (step >= std::size(m_graph))
             {
                 throw std::out_of_range{ "step is too large." };
             }
@@ -111,7 +111,7 @@ namespace tetengo::lattice
 
             std::vector<node> nodes{};
             auto              p_node_preceding_edge_costs = std::vector<std::unique_ptr<std::vector<int>>>{};
-            for (auto i = static_cast<std::size_t>(0); i < m_graph.size(); ++i)
+            for (auto i = static_cast<std::size_t>(0); i < std::size(m_graph); ++i)
             {
                 const auto& step = m_graph[i];
 
@@ -120,15 +120,15 @@ namespace tetengo::lattice
                 const auto             found = m_p_vocabulary->find_entries(node_key);
 
                 std::vector<std::size_t> preceding_edge_cost_indexes{};
-                preceding_edge_cost_indexes.reserve(found.size());
+                preceding_edge_cost_indexes.reserve(std::size(found));
                 for (const auto& e: found)
                 {
                     auto p_preceding_edge_costs = preceding_edge_costs(step, e);
-                    preceding_edge_cost_indexes.push_back(p_node_preceding_edge_costs.size());
+                    preceding_edge_cost_indexes.push_back(std::size(p_node_preceding_edge_costs));
                     p_node_preceding_edge_costs.push_back(std::move(p_preceding_edge_costs));
                 }
 
-                for (auto j = static_cast<std::size_t>(0); j < found.size(); ++j)
+                for (auto j = static_cast<std::size_t>(0); j < std::size(found); ++j)
                 {
                     const auto& entry = found[j];
                     const auto& preceding_edge_costs = *p_node_preceding_edge_costs[preceding_edge_cost_indexes[j]];
@@ -163,7 +163,7 @@ namespace tetengo::lattice
                 (*p_preceding_edge_costs)[best_preceding_node_index_]);
 
             node eos_node{ node::eos(
-                m_graph.size() - 1,
+                std::size(m_graph) - 1,
                 p_preceding_edge_costs.get(),
                 best_preceding_node_index_,
                 best_preceding_path_cost) };
@@ -186,7 +186,7 @@ namespace tetengo::lattice
         {
             assert(!step.nodes().empty());
             auto min_index = static_cast<std::size_t>(0);
-            for (auto i = static_cast<std::size_t>(1); i < step.nodes().size(); ++i)
+            for (auto i = static_cast<std::size_t>(1); i < std::size(step.nodes()); ++i)
             {
                 if (add_cost(step.nodes()[i].path_cost(), edge_costs[i]) <
                     add_cost(step.nodes()[min_index].path_cost(), edge_costs[min_index]))
@@ -226,7 +226,7 @@ namespace tetengo::lattice
         {
             assert(!step.nodes().empty());
             std::vector<int> costs{};
-            costs.reserve(step.nodes().size());
+            costs.reserve(std::size(step.nodes()));
             std::transform(
                 std::begin(step.nodes()),
                 std::end(step.nodes()),

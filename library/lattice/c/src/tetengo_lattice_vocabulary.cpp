@@ -7,6 +7,7 @@
 #include <any>
 #include <cassert>
 #include <cstddef>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -160,7 +161,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
 
         if (p_entries)
         {
-            for (auto i = static_cast<std::size_t>(0); i < found.size(); ++i)
+            for (auto i = static_cast<std::size_t>(0); i < std::size(found); ++i)
             {
                 const auto& cpp_entry = found[i];
                 auto&       entry = p_entries[i];
@@ -173,7 +174,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
             }
         }
 
-        return found.size();
+        return std::size(found);
     }
     catch (...)
     {

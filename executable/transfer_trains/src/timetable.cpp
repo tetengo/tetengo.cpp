@@ -210,7 +210,7 @@ public:
 
     std::size_t station_index(const std::string& name_or_telegram_code) const
     {
-        for (auto i = static_cast<std::size_t>(0); i < m_timetable.stations.size(); ++i)
+        for (auto i = static_cast<std::size_t>(0); i < std::size(m_timetable.stations); ++i)
         {
             const auto& station = m_timetable.stations[i];
             if (boost::algorithm::to_lower_copy(station.name()) ==
@@ -221,7 +221,7 @@ public:
                 return i;
             }
         }
-        return m_timetable.stations.size();
+        return std::size(m_timetable.stations);
     }
 
     std::unique_ptr<tetengo::lattice::vocabulary> create_vocabulary(const std::size_t departure_time) const
@@ -262,11 +262,11 @@ private:
         while (input_stream)
         {
             auto line = read_line(input_stream);
-            if (line.empty() || (line.size() == 1 && line[0].empty()))
+            if (line.empty() || (std::size(line) == 1 && line[0].empty()))
             {
                 continue;
             }
-            trains.push_back(parse_train(std::move(line), stations.size()));
+            trains.push_back(parse_train(std::move(line), std::size(stations)));
         }
 
         return timetable_value{ std::move(stations), std::move(trains) };
@@ -288,13 +288,13 @@ private:
     {
         line1.erase(std::begin(line1), std::next(std::begin(line1), 2));
         line2.erase(std::begin(line2), std::next(std::begin(line2), 2));
-        if (line1.size() != line2.size())
+        if (std::size(line1) != std::size(line2))
         {
             throw std::runtime_error{ "Input file format error: Station names and telegram codes unmatch." };
         }
         std::vector<station> stations{};
-        stations.reserve(line1.size());
-        for (auto i = static_cast<std::size_t>(0); i < line1.size(); ++i)
+        stations.reserve(std::size(line1));
+        for (auto i = static_cast<std::size_t>(0); i < std::size(line1); ++i)
         {
             stations.emplace_back(std::move(line1[i]), std::move(line2[i]));
         }
@@ -303,7 +303,7 @@ private:
 
     static train parse_train(std::vector<std::string>&& line, const std::size_t station_count)
     {
-        if (line.size() > station_count + 2)
+        if (std::size(line) > station_count + 2)
         {
             throw std::runtime_error{ "Input file format error: Invalid train line found." };
         }
@@ -322,17 +322,17 @@ private:
         std::vector<std::string> string_times{};
         boost::algorithm::split(string_times, std::move(element), boost::is_any_of("/"));
         std::for_each(std::begin(string_times), std::end(string_times), [](auto&& e) { return boost::trim(e); });
-        if (string_times.size() == 0 || string_times.size() > 2)
+        if (std::size(string_times) == 0 || std::size(string_times) > 2)
         {
             throw std::runtime_error{ "Input file format error: Invalid arrival/depature time found." };
         }
-        else if (string_times.size() == 1)
+        else if (std::size(string_times) == 1)
         {
             return stop{ std::nullopt, to_minutes(std::move(string_times[0])) };
         }
         else
         {
-            assert(string_times.size() == 2);
+            assert(std::size(string_times) == 2);
             return stop{ to_minutes(std::move(string_times[0])), to_minutes(std::move(string_times[1])) };
         }
     }
@@ -366,9 +366,9 @@ private:
 
     static void guess_arrival_times(timetable_value& timetable_)
     {
-        for (auto from = static_cast<std::size_t>(0); from < timetable_.stations.size() - 1; ++from)
+        for (auto from = static_cast<std::size_t>(0); from < std::size(timetable_.stations) - 1; ++from)
         {
-            for (auto to = from + 1; to < timetable_.stations.size(); ++to)
+            for (auto to = from + 1; to < std::size(timetable_.stations); ++to)
             {
                 const auto minimum_duration_ = minimum_duration(timetable_.trains, from, to);
 
@@ -424,9 +424,9 @@ private:
         std::unordered_map<std::string, std::vector<tetengo::lattice::entry>> map{};
         for (const auto& train_: timetable_.trains)
         {
-            for (auto from = static_cast<std::size_t>(0); from + 1 < timetable_.stations.size(); ++from)
+            for (auto from = static_cast<std::size_t>(0); from + 1 < std::size(timetable_.stations); ++from)
             {
-                for (auto to = from + 1; to < timetable_.stations.size(); ++to)
+                for (auto to = from + 1; to < std::size(timetable_.stations); ++to)
                 {
                     if (!all_passing(train_.stops(), from, to))
                     {
@@ -450,7 +450,7 @@ private:
         }
 
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{};
-        entries.reserve(map.size());
+        entries.reserve(std::size(map));
         for (auto& map_entry: map)
         {
             entries.emplace_back(map_entry.first, std::move(map_entry.second));

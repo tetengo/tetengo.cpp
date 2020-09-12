@@ -76,14 +76,14 @@ namespace tetengo::trie
 
         std::size_t size_impl() const
         {
-            return m_value_array.size();
+            return std::size(m_value_array);
         }
 
         double filling_rate_impl() const
         {
             const auto empty_count =
                 std::count(std::begin(m_base_check_array), std::end(m_base_check_array), 0x000000FFU);
-            return 1.0 - static_cast<double>(empty_count) / m_base_check_array.size();
+            return 1.0 - static_cast<double>(empty_count) / std::size(m_base_check_array);
         }
 
         const std::vector<std::uint32_t>& base_check_array_impl() const
@@ -93,7 +93,7 @@ namespace tetengo::trie
 
         const std::any* value_at_impl(const std::size_t value_index) const
         {
-            if (value_index >= m_value_array.size() || !m_value_array[value_index])
+            if (value_index >= std::size(m_value_array) || !m_value_array[value_index])
             {
                 return nullptr;
             }
@@ -102,7 +102,7 @@ namespace tetengo::trie
 
         void add_value_at_impl(const std::size_t value_index, std::any value)
         {
-            if (value_index >= m_value_array.size())
+            if (value_index >= std::size(m_value_array))
             {
                 m_value_array.resize(value_index + 1, std::nullopt);
             }
@@ -137,8 +137,8 @@ namespace tetengo::trie
         static void
         serialize_base_check_array(std::ostream& output_stream, const std::vector<std::uint32_t>& base_check_array)
         {
-            assert(base_check_array.size() < std::numeric_limits<std::uint32_t>::max());
-            write_uint32(output_stream, static_cast<std::uint32_t>(base_check_array.size()));
+            assert(std::size(base_check_array) < std::numeric_limits<std::uint32_t>::max());
+            write_uint32(output_stream, static_cast<std::uint32_t>(std::size(base_check_array)));
             for (const auto v: base_check_array)
             {
                 write_uint32(output_stream, v);
@@ -150,16 +150,16 @@ namespace tetengo::trie
             const std::function<std::vector<char>(const std::any&)>& value_serializer,
             const std::vector<std::optional<std::any>>&              value_array)
         {
-            assert(value_array.size() < std::numeric_limits<std::uint32_t>::max());
-            write_uint32(output_stream, static_cast<std::uint32_t>(value_array.size()));
+            assert(std::size(value_array) < std::numeric_limits<std::uint32_t>::max());
+            write_uint32(output_stream, static_cast<std::uint32_t>(std::size(value_array)));
             for (const auto& v: value_array)
             {
                 if (v)
                 {
                     const auto serialized = value_serializer(*v);
-                    assert(serialized.size() < std::numeric_limits<std::uint32_t>::max());
-                    write_uint32(output_stream, static_cast<std::uint32_t>(serialized.size()));
-                    output_stream.write(serialized.data(), serialized.size());
+                    assert(std::size(serialized) < std::numeric_limits<std::uint32_t>::max());
+                    write_uint32(output_stream, static_cast<std::uint32_t>(std::size(serialized)));
+                    output_stream.write(serialized.data(), std::size(serialized));
                 }
                 else
                 {
@@ -173,7 +173,7 @@ namespace tetengo::trie
             static const default_serializer<std::uint32_t> uint32_serializer{};
 
             const auto serialized = uint32_serializer(value);
-            output_stream.write(serialized.data(), serialized.size());
+            output_stream.write(serialized.data(), std::size(serialized));
         }
 
         static void deserialize(
@@ -266,7 +266,7 @@ namespace tetengo::trie
 
         void ensure_size(const std::size_t size) const
         {
-            if (size > m_base_check_array.size())
+            if (size > std::size(m_base_check_array))
             {
                 m_base_check_array.resize(size, 0x00000000U | double_array::vacant_check_value());
             }

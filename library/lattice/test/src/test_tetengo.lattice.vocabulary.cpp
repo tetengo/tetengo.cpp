@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cstddef>
+#include <iterator>
 #include <limits>
 #include <memory>
 #include <string>
@@ -150,7 +151,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
 
         {
             const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
-            BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
 
             const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_mizuho[0]);
 
@@ -158,9 +159,9 @@ BOOST_AUTO_TEST_CASE(find_connection)
         }
         {
             const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
-            BOOST_TEST_REQUIRE(entries_mizuho.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
             const auto entries_tsubame = vocabulary.find_entries(key_tsubame);
-            BOOST_TEST_REQUIRE(entries_tsubame.size() == 1U);
+            BOOST_TEST_REQUIRE(std::size(entries_tsubame) == 1U);
 
             const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_tsubame[0]);
 

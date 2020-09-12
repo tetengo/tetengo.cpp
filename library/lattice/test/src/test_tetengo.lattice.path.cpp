@@ -63,7 +63,7 @@ namespace
         c_node.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value());
         c_node.preceding_step = cpp_node.preceding_step();
         c_node.p_preceding_edge_costs = cpp_node.preceding_edge_costs().data();
-        c_node.preceding_edge_cost_count = cpp_node.preceding_edge_costs().size();
+        c_node.preceding_edge_cost_count = std::size(cpp_node.preceding_edge_costs());
         c_node.best_preceding_node = cpp_node.best_preceding_node();
         c_node.node_cost = cpp_node.node_cost();
         c_node.path_cost = cpp_node.path_cost();
@@ -75,7 +75,7 @@ namespace
     {
         static const std::vector<tetengo_lattice_node_t> singleton{ []() {
             std::vector<tetengo_lattice_node_t>          nodes{};
-            nodes.reserve(cpp_nodes().size());
+            nodes.reserve(std::size(cpp_nodes()));
             std::transform(std::begin(cpp_nodes()), std::end(cpp_nodes()), std::back_inserter(nodes), to_c_node);
             return nodes;
         }() };
@@ -84,12 +84,12 @@ namespace
 
     bool equal_nodes(const std::vector<tetengo_lattice_node_t>& one, const std::vector<tetengo_lattice_node_t>& another)
     {
-        if (one.size() != another.size())
+        if (std::size(one) != std::size(another))
         {
             return false;
         }
 
-        for (auto i = static_cast<std::size_t>(0); i < one.size(); ++i)
+        for (auto i = static_cast<std::size_t>(0); i < std::size(one); ++i)
         {
             if (!tetengo_lattice_node_equal(&one[i], &another[i]))
             {
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
+        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), std::size(c_nodes()), 42);
         BOOST_SCOPE_EXIT(p_path)
         {
             tetengo_lattice_path_destroy(p_path);
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(empty)
         BOOST_TEST(tetengo_lattice_path_empty(p_path));
     }
     {
-        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
+        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), std::size(c_nodes()), 42);
         BOOST_SCOPE_EXIT(p_path)
         {
             tetengo_lattice_path_destroy(p_path);
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(nodes)
         BOOST_TEST(node_count == 0U);
     }
     {
-        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
+        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), std::size(c_nodes()), 42);
         BOOST_SCOPE_EXIT(p_path)
         {
             tetengo_lattice_path_destroy(p_path);
@@ -232,10 +232,10 @@ BOOST_AUTO_TEST_CASE(nodes)
         BOOST_SCOPE_EXIT_END;
 
         const auto node_count = tetengo_lattice_path_pNodes(p_path, nullptr);
-        BOOST_TEST_REQUIRE(node_count == c_nodes().size());
+        BOOST_TEST_REQUIRE(node_count == std::size(c_nodes()));
         std::vector<tetengo_lattice_node_t> nodes{ node_count };
         const auto                          node_count_again = tetengo_lattice_path_pNodes(p_path, nodes.data());
-        BOOST_TEST(node_count_again == c_nodes().size());
+        BOOST_TEST(node_count_again == std::size(c_nodes()));
         BOOST_TEST(equal_nodes(nodes, c_nodes()));
     }
     {
@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(cost)
         BOOST_TEST(tetengo_lattice_path_cost(p_path) == 0);
     }
     {
-        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), c_nodes().size(), 42);
+        const auto* const p_path = tetengo_lattice_path_create(c_nodes().data(), std::size(c_nodes()), 42);
         BOOST_SCOPE_EXIT(p_path)
         {
             tetengo_lattice_path_destroy(p_path);

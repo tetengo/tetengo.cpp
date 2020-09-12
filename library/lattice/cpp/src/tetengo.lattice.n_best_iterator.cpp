@@ -97,7 +97,7 @@ namespace tetengo::lattice
                 for (const auto* p_node = &opened.tail_path().back(); !p_node->is_bos();)
                 {
                     const auto& preceding_nodes = lattice_.nodes_at(p_node->preceding_step());
-                    for (auto i = static_cast<std::size_t>(0); i < preceding_nodes.size(); ++i)
+                    for (auto i = static_cast<std::size_t>(0); i < std::size(preceding_nodes); ++i)
                     {
                         if (i == p_node->best_preceding_node())
                         {

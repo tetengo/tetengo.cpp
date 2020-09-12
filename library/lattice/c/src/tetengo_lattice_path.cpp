@@ -155,7 +155,7 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* const p_path, t
                     c_node.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value());
                     c_node.preceding_step = cpp_node.preceding_step();
                     c_node.p_preceding_edge_costs = cpp_node.preceding_edge_costs().data();
-                    c_node.preceding_edge_cost_count = cpp_node.preceding_edge_costs().size();
+                    c_node.preceding_edge_cost_count = std::size(cpp_node.preceding_edge_costs());
                     c_node.best_preceding_node = cpp_node.best_preceding_node();
                     c_node.node_cost = cpp_node.node_cost();
                     c_node.path_cost = cpp_node.path_cost();
@@ -163,7 +163,7 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* const p_path, t
                 });
         }
 
-        return p_path->p_cpp_path->nodes().size();
+        return std::size(p_path->p_cpp_path->nodes());
     }
     catch (...)
     {

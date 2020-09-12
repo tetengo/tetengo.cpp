@@ -140,7 +140,7 @@ namespace
 
         {
             std::ofstream stream{ path, std::ios_base::binary };
-            stream.write(initial_content.data(), initial_content.size());
+            stream.write(initial_content.data(), std::size(initial_content));
         }
 
         return path;
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(construction)
         };
 
         static const tetengo::trie::default_deserializer<std::string> key_deserializer{};
-        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2U);
+        BOOST_TEST_REQUIRE(std::size(added_serialized_keys) == 2U);
         BOOST_TEST(key_deserializer(added_serialized_keys[0]) == "Kumamoto");
         BOOST_TEST(key_deserializer(added_serialized_keys[1]) == "Tamana");
         BOOST_TEST(done);
@@ -320,7 +320,7 @@ BOOST_AUTO_TEST_CASE(construction)
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             adding_observer,
             &added_serialized_keys,
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
 
-        BOOST_TEST_REQUIRE(added_serialized_keys.size() == 2U);
+        BOOST_TEST_REQUIRE(std::size(added_serialized_keys) == 2U);
         BOOST_TEST(added_serialized_keys[0] == "Kumamoto");
         BOOST_TEST(added_serialized_keys[1] == "Tamana");
         BOOST_TEST(done);
@@ -368,7 +368,7 @@ BOOST_AUTO_TEST_CASE(construction)
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             adding_observer,
             &added_serialized_keys,
@@ -431,7 +431,7 @@ BOOST_AUTO_TEST_CASE(construction)
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             nullptr,
             &added_serialized_keys,
@@ -451,7 +451,7 @@ BOOST_AUTO_TEST_CASE(construction)
         auto                     done = false;
         const auto* const        p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             adding_observer,
             &added_serialized_keys,
@@ -540,7 +540,7 @@ BOOST_AUTO_TEST_CASE(empty)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -567,28 +567,28 @@ BOOST_AUTO_TEST_CASE(size)
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{};
 
-        BOOST_TEST(trie_.size() == 0U);
+        BOOST_TEST(std::size(trie_) == 0U);
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 } };
 
-        BOOST_TEST(trie_.size() == 1U);
+        BOOST_TEST(std::size(trie_) == 1U);
     }
     {
         const tetengo::trie::trie<std::wstring, std::string> trie_{ { kumamoto2, kumamoto1 }, { tamana2, tamana1 } };
 
-        BOOST_TEST(trie_.size() == 2U);
+        BOOST_TEST(std::size(trie_) == 2U);
     }
 
     {
         const tetengo::trie::trie<std::string_view, int> trie_{};
 
-        BOOST_TEST(trie_.size() == 0U);
+        BOOST_TEST(std::size(trie_) == 0U);
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 } };
 
-        BOOST_TEST(trie_.size() == 1U);
+        BOOST_TEST(std::size(trie_) == 1U);
     }
 
     {
@@ -596,7 +596,7 @@ BOOST_AUTO_TEST_CASE(size)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(trie_.size() == 0U);
+        BOOST_TEST(std::size(trie_) == 0U);
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
@@ -604,7 +604,7 @@ BOOST_AUTO_TEST_CASE(size)
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
-        BOOST_TEST(trie_.size() == 2U);
+        BOOST_TEST(std::size(trie_) == 2U);
     }
 
     {
@@ -631,7 +631,7 @@ BOOST_AUTO_TEST_CASE(size)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -654,7 +654,7 @@ BOOST_AUTO_TEST_CASE(size)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -749,7 +749,7 @@ BOOST_AUTO_TEST_CASE(contains)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -777,7 +777,7 @@ BOOST_AUTO_TEST_CASE(contains)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -888,7 +888,7 @@ BOOST_AUTO_TEST_CASE(find)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -917,7 +917,7 @@ BOOST_AUTO_TEST_CASE(find)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -1016,7 +1016,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -1153,7 +1153,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -1218,7 +1218,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -1283,7 +1283,7 @@ BOOST_AUTO_TEST_CASE(get_storage)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,

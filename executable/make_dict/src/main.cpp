@@ -125,7 +125,7 @@ namespace
                 continue;
             }
             const auto elements = split(line, ',');
-            if (elements.size() != 33)
+            if (std::size(elements) != 33)
             {
                 std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \n" << std::flush;
                 throw std::runtime_error{ "Invalid UniDic lex.csv format." };
@@ -216,9 +216,9 @@ namespace
     std::vector<char> serialize_vector_of_pair_of_size_t(const std::vector<std::pair<std::size_t, std::size_t>>& vps)
     {
         std::vector<char> serialized{};
-        serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * vps.size()));
+        serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * std::size(vps)));
 
-        const auto serialized_size = serialize_size_t(vps.size());
+        const auto serialized_size = serialize_size_t(std::size(vps));
         serialized.insert(std::end(serialized), std::begin(serialized_size), std::end(serialized_size));
         for (const auto& ps: vps)
         {

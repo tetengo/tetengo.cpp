@@ -112,7 +112,7 @@ namespace
 
         {
             std::ofstream stream{ path, std::ios_base::binary };
-            stream.write(initial_content.data(), initial_content.size());
+            stream.write(initial_content.data(), std::size(initial_content));
         }
 
         return path;
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -288,16 +288,16 @@ BOOST_AUTO_TEST_CASE(size)
 
     {
         tetengo::trie::memory_storage storage_{};
-        BOOST_TEST(storage_.size() == 0U);
+        BOOST_TEST(std::size(storage_) == 0U);
 
         storage_.add_value_at(24, std::make_any<std::string>("hoge"));
-        BOOST_TEST(storage_.size() == 25U);
+        BOOST_TEST(std::size(storage_) == 25U);
 
         storage_.add_value_at(42, std::make_any<std::string>("fuga"));
-        BOOST_TEST(storage_.size() == 43U);
+        BOOST_TEST(std::size(storage_) == 43U);
 
         storage_.add_value_at(0, std::make_any<std::string>("piyo"));
-        BOOST_TEST(storage_.size() == 43U);
+        BOOST_TEST(std::size(storage_) == 43U);
     }
 
     {
@@ -308,7 +308,7 @@ BOOST_AUTO_TEST_CASE(size)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -486,7 +486,7 @@ BOOST_AUTO_TEST_CASE(serialize)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -562,7 +562,7 @@ BOOST_AUTO_TEST_CASE(serialize)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,
@@ -608,7 +608,7 @@ BOOST_AUTO_TEST_CASE(clone)
 
         const auto* const p_trie = tetengo_trie_trie_create(
             elements.data(),
-            elements.size(),
+            std::size(elements),
             sizeof(int),
             tetengo_trie_trie_nullAddingObserver,
             nullptr,

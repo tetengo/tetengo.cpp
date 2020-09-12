@@ -199,7 +199,7 @@ size_t tetengo_json_element_attributeKeys(const tetengo_json_element_t* const p_
                 ++index;
             }
         }
-        return p_element->p_cpp_element->attributes().size();
+        return std::size(p_element->p_cpp_element->attributes());
     }
     catch (...)
     {

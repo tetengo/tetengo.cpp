@@ -483,7 +483,7 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::member);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_open);
-            BOOST_TEST(parsed.attributes().size() == 1U);
+            BOOST_TEST(std::size(parsed.attributes()) == 1U);
             BOOST_TEST(std::begin(parsed.attributes())->first == "name");
             BOOST_TEST(std::begin(parsed.attributes())->second == "Aso");
             parser.next();
@@ -508,7 +508,7 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::member);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_open);
-            BOOST_TEST(parsed.attributes().size() == 1U);
+            BOOST_TEST(std::size(parsed.attributes()) == 1U);
             BOOST_TEST(std::begin(parsed.attributes())->first == "name");
             BOOST_TEST(std::begin(parsed.attributes())->second == "Tsurugi");
             parser.next();

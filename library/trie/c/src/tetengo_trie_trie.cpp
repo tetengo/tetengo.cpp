@@ -163,7 +163,7 @@ size_t tetengo_trie_trie_size(const tetengo_trie_trie_t* const p_trie)
             throw std::invalid_argument{ "p_trie is NULL." };
         }
 
-        return p_trie->p_cpp_trie->size();
+        return std::size(*p_trie->p_cpp_trie);
     }
     catch (...)
     {
