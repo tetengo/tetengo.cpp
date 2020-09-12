@@ -25,14 +25,14 @@ namespace
         std::vector<char> m_member;
     };
 
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
 
     constexpr char nul_byte()
     {
-        return to_c(0xFE);
+        return 0xFE_c;
     }
 
 }
@@ -108,10 +108,10 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         const auto              expected_serialized = []() {
             static_assert(sizeof(wchar_t) >= 2);
             std::vector<char> expected(sizeof(wchar_t) * 2, nul_byte());
-            expected[sizeof(wchar_t) - 2] = to_c(0x68);
-            expected[sizeof(wchar_t) - 1] = to_c(0x5C);
-            expected[sizeof(wchar_t) * 2 - 2] = to_c(0x75);
-            expected[sizeof(wchar_t) * 2 - 1] = to_c(0x3A);
+            expected[sizeof(wchar_t) - 2] = 0x68_c;
+            expected[sizeof(wchar_t) - 1] = 0x5C_c;
+            expected[sizeof(wchar_t) * 2 - 2] = 0x75_c;
+            expected[sizeof(wchar_t) * 2 - 1] = 0x3A_c;
             return expected;
         }();
         const auto serialized = serialize(object);
@@ -127,10 +127,10 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         const auto         expected_serialized = []() {
             static_assert(sizeof(wchar_t) >= 2);
             std::vector<char> expected(sizeof(wchar_t) * 2, nul_byte());
-            expected[sizeof(wchar_t) - 2] = to_c(0x68);
-            expected[sizeof(wchar_t) - 1] = to_c(0x5C);
-            expected[sizeof(wchar_t) * 2 - 2] = to_c(0x75);
-            expected[sizeof(wchar_t) * 2 - 1] = to_c(0x3A);
+            expected[sizeof(wchar_t) - 2] = 0x68_c;
+            expected[sizeof(wchar_t) - 1] = 0x5C_c;
+            expected[sizeof(wchar_t) * 2 - 2] = 0x75_c;
+            expected[sizeof(wchar_t) * 2 - 1] = 0x3A_c;
             return expected;
         }();
         const auto serialized = serialize(object);
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         const tetengo::trie::default_serializer<std::int32_t> serialize{};
 
         const auto              object = static_cast<std::int32_t>(0x001234AB);
-        const std::vector<char> expected_serialized{ nul_byte(), to_c(0x12), to_c(0x34), to_c(0xAB) };
+        const std::vector<char> expected_serialized{ nul_byte(), 0x12_c, 0x34_c, 0xAB_c };
         const auto              serialized = serialize(object);
         BOOST_TEST(serialized == expected_serialized);
         BOOST_CHECK(
@@ -154,8 +154,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         const tetengo::trie::default_serializer<std::int32_t> serialize{};
 
         const auto              object = static_cast<std::int32_t>(0xFCFDFEFF);
-        const std::vector<char> expected_serialized{ to_c(0xFC), to_c(0xFD), to_c(0xFD),
-                                                     to_c(0xFD), to_c(0xFE), to_c(0xFF) };
+        const std::vector<char> expected_serialized{ 0xFC_c, 0xFD_c, 0xFD_c, 0xFD_c, 0xFE_c, 0xFF_c };
         const auto              serialized = serialize(object);
         BOOST_TEST(serialized == expected_serialized);
         BOOST_CHECK(
@@ -198,10 +197,10 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         const auto serialized = []() {
             static_assert(sizeof(wchar_t) >= 2);
             std::vector<char> expected(sizeof(wchar_t) * 2, nul_byte());
-            expected[sizeof(wchar_t) - 2] = to_c(0x68);
-            expected[sizeof(wchar_t) - 1] = to_c(0x5C);
-            expected[sizeof(wchar_t) * 2 - 2] = to_c(0x75);
-            expected[sizeof(wchar_t) * 2 - 1] = to_c(0x3A);
+            expected[sizeof(wchar_t) - 2] = 0x68_c;
+            expected[sizeof(wchar_t) - 1] = 0x5C_c;
+            expected[sizeof(wchar_t) * 2 - 2] = 0x75_c;
+            expected[sizeof(wchar_t) * 2 - 1] = 0x3A_c;
             return expected;
         }();
         const std::wstring expected_object{ 0x685C, 0x753A };
@@ -211,7 +210,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
     {
         const tetengo::trie::default_deserializer<std::int32_t> deserialize{};
 
-        const std::vector<char> serialized{ nul_byte(), to_c(0x12), to_c(0x34), to_c(0xAB) };
+        const std::vector<char> serialized{ nul_byte(), 0x12_c, 0x34_c, 0xAB_c };
         const auto              expected_object = static_cast<std::int32_t>(0x001234AB);
         const auto              object = deserialize(serialized);
         BOOST_TEST(object == expected_object);
@@ -219,7 +218,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
     {
         const tetengo::trie::default_deserializer<std::int32_t> deserialize{};
 
-        const std::vector<char> serialized{ to_c(0xFC), to_c(0xFD), to_c(0xFD), to_c(0xFD), to_c(0xFE), to_c(0xFF) };
+        const std::vector<char> serialized{ 0xFC_c, 0xFD_c, 0xFD_c, 0xFD_c, 0xFE_c, 0xFF_c };
         const auto              expected_object = static_cast<std::int32_t>(0xFCFDFEFF);
         const auto              object = deserialize(serialized);
         BOOST_TEST(object == expected_object);

@@ -23,18 +23,14 @@
 
 namespace
 {
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
 
-    static const std::string kumamoto1{
-        to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x6), to_c(0x9C), to_c(0xAC) // Kumamoto in Kanji in UTF-8
-    };
+    static const std::string kumamoto1{ 0xE7_c, 0x86_c, 0x8A_c, 0x6_c, 0x9C_c, 0xAC_c }; // Kumamoto in Kanji in UTF-8
 
-    static const std::string tamana1{
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D) // Tamana in Kanji in UTF-8
-    };
+    static const std::string tamana1{ 0xE7_c, 0x8E_c, 0x89_c, 0xE5_c, 0x90_c, 0x8D_c }; // Tamana in Kanji in UTF-8
 
     static const std::wstring kumamoto2{ 0x718A, 0x672C }; // Kumamoto in Kanji in UTF-16/32
 

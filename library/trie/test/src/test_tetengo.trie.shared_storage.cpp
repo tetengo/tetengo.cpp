@@ -32,29 +32,31 @@
 
 namespace
 {
-    constexpr char to_c(unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
-        return uc;
+        return static_cast<char>(uc);
     }
 
     constexpr char nul_byte()
     {
-        return to_c(0xFE);
+        return 0xFE_c;
     }
 
     const std::vector<char> serialized{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x2A), to_c(0xFF), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0xFD), to_c(0xFE), to_c(0x18), /*                                                */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x05), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
+        // clang-format off
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), 0x2A_c,     0xFF_c,
+        nul_byte(), nul_byte(), 0xFD_c,     0xFE_c,     0x18_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x05_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x70_c,     0x69_c,     0x79_c,     0x6F_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x66_c,     0x75_c,     0x67_c,     0x61_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x68_c,     0x6F_c,     0x67_c,     0x65_c,
+        // clang-format on
     };
 
     const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
@@ -65,7 +67,11 @@ namespace
     }
 
     const std::vector<char> serialized_broken{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), to_c(0x01), to_c(0x23), to_c(0x45), to_c(0x67), to_c(0x89),
+        // clang-format off
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        0x01_c,     0x23_c,     0x45_c,     0x67_c,
+        0x89_c,
+        // clang-format on
     };
 
     std::unique_ptr<std::istream> create_broken_input_stream()
@@ -75,29 +81,31 @@ namespace
     }
 
     const std::vector<char> serialized_c_if{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x11), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xB6), to_c(0xFF), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x8D), to_c(0x4B), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x96), to_c(0x75), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xA3), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x98), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x97), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x93), to_c(0x6F), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x99), to_c(0x74), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x09), to_c(0x6F), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0xFE), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAA), to_c(0x54), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x9F), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAC), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xA0), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAE), to_c(0x6E), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x10), to_c(0x61), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x01), to_c(0xFE), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x2A), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x18), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        // clang-format off
+        nul_byte(), nul_byte(), nul_byte(), 0x11_c,
+        0xFF_c,     0xFF_c,     0xB6_c,     0xFF_c,
+        0xFF_c,     0xFF_c,     0x8D_c,     0x4B_c,
+        0xFF_c,     0xFF_c,     0x96_c,     0x75_c,
+        0xFF_c,     0xFF_c,     0xA3_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0x98_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0x97_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0x93_c,     0x6F_c,
+        0xFF_c,     0xFF_c,     0x99_c,     0x74_c,
+        nul_byte(), nul_byte(), 0x09_c,     0x6F_c,
+        nul_byte(), nul_byte(), nul_byte(), 0xFE_c,
+        0xFF_c,     0xFF_c,     0xAA_c,     0x54_c,
+        0xFF_c,     0xFF_c,     0x9F_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0xAC_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0xA0_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0xAE_c,     0x6E_c,
+        nul_byte(), nul_byte(), 0x10_c,     0x61_c,
+        nul_byte(), nul_byte(), 0x01_c,     0xFE_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x2A_c,     0x00_c,     0x00_c,     0x00_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x18_c,     0x00_c,     0x00_c,     0x00_c,
+        // clang-format on
     };
 
     std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
@@ -347,18 +355,20 @@ BOOST_AUTO_TEST_CASE(serialize)
     });
 
     static const std::string expected{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x2A), to_c(0xFF), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0xFD), to_c(0xFE), to_c(0x18), /*                                                */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x05), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x70), to_c(0x69), to_c(0x79), to_c(0x6F), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x66), to_c(0x75), to_c(0x67), to_c(0x61), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x68), to_c(0x6F), to_c(0x67), to_c(0x65), /*                                                            */
+        // clang-format off
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), 0x2A_c,     0xFF_c,
+        nul_byte(), nul_byte(), 0xFD_c,     0xFE_c,     0x18_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x05_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x70_c,     0x69_c,     0x79_c,     0x6F_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x66_c,     0x75_c,     0x67_c,     0x61_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x68_c,     0x6F_c,     0x67_c,     0x65_c,
+        // clang-format on
     };
     const std::string serialized = output_stream.str();
     BOOST_CHECK_EQUAL_COLLECTIONS(

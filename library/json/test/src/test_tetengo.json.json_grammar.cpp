@@ -40,24 +40,26 @@ namespace
     };
 
     const std::vector<std::string> expected_parsed3{
-        "array open" /*                                                      */,
-        "number 42" /*                                                       */,
-        "boolean true" /*                                                    */,
-        "number 3.1415926" /*                                                */,
-        "string hoge" /*                                                     */,
-        "object open" /*                                                     */,
-        "member open name:Aso" /*                                            */,
-        "number 1592" /*                                                     */,
-        "member close" /*                                                    */,
-        "member open name:Tsurugi" /*                                        */,
-        "number 1955" /*                                                     */,
-        "member close" /*                                                    */,
-        "object close" /*                                                    */,
-        "array open" /*                                                      */,
-        "null null" /*                                                       */,
-        "number 3.0e+5" /*                                                   */,
-        "array close" /*                                                     */,
-        "array close" /*                                                     */,
+        // clang-format off
+        "array open",
+        "number 42",
+        "boolean true",
+        "number 3.1415926",
+        "string hoge",
+        "object open",
+        "member open name:Aso",
+        "number 1592",
+        "member close",
+        "member open name:Tsurugi",
+        "number 1955",
+        "member close",
+        "object close",
+        "array open",
+        "null null",
+        "number 3.0e+5",
+        "array close",
+        "array close",
+        // clang-format on
     };
 
     struct primitive_handler_type

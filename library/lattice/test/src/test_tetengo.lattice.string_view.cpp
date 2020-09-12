@@ -14,13 +14,12 @@
 
 namespace
 {
-    constexpr char to_c(unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
-        return uc;
+        return static_cast<char>(uc);
     }
 
-    const std::string string_value{ to_c(0xE3), to_c(0x81), to_c(0xBF), to_c(0xE3), to_c(0x81),
-                                    to_c(0x9A), to_c(0xE3), to_c(0x81), to_c(0xBB) };
+    const std::string string_value{ 0xE3_c, 0x81_c, 0xBF_c, 0xE3_c, 0x81_c, 0x9A_c, 0xE3_c, 0x81_c, 0xBB_c };
 
 }
 

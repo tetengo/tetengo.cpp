@@ -38,28 +38,22 @@
 
 namespace
 {
-    constexpr char to_c(const unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
     }
 
     constexpr char nul_byte()
     {
-        return to_c(0xFE);
+        return 0xFE_c;
     }
 
 
-    static const std::string kumamoto1{
-        to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x6), to_c(0x9C), to_c(0xAC) // Kumamoto in Kanji in UTF-8
-    };
+    static const std::string kumamoto1{ 0xE7_c, 0x86_c, 0x8A_c, 0x6_c, 0x9C_c, 0xAC_c }; // Kumamoto in Kanji in UTF-8
 
-    static const std::string tamana1{
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D) // Tamana in Kanji in UTF-8
-    };
+    static const std::string tamana1{ 0xE7_c, 0x8E_c, 0x89_c, 0xE5_c, 0x90_c, 0x8D_c }; // Tamana in Kanji in UTF-8
 
-    static const std::string tamarai1{
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE6), to_c(0x9D), to_c(0xA5) // Tamarai in Kanji in UTF-8
-    };
+    static const std::string tamarai1{ 0xE7_c, 0x8E_c, 0x89_c, 0xE6_c, 0x9D_c, 0xA5_c }; // Tamarai in Kanji in UTF-8
 
     static const std::wstring kumamoto2{ 0x718A, 0x672C }; // Kumamoto in Kanji in UTF-16/32
 
@@ -72,23 +66,28 @@ namespace
     static const std::wstring uto2{ 0x5B87, 0x571F }; // Uto in Kanji in UTF-16/32
 
     const std::vector<char> serialized{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x0B), /*  base check array                                          */
-        to_c(0xFF), to_c(0xFF), to_c(0x90), to_c(0xFF), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x78), to_c(0x71), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x9D), to_c(0x8A), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x7E), to_c(0x73), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xD9), to_c(0x67), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x06), to_c(0x2C), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xB4), to_c(0x89), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xFC), to_c(0x54), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x0A), to_c(0x0D), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x01), nul_byte(), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /* value array                                                */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
-        to_c(0xE7), to_c(0x86), to_c(0x8A), to_c(0x06), to_c(0x9C), to_c(0xAC), /*                                    */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x06), /*                                                            */
-        to_c(0xE7), to_c(0x8E), to_c(0x89), to_c(0xE5), to_c(0x90), to_c(0x8D), /*                                    */
+        // clang-format off
+        // base check array
+        nul_byte(), nul_byte(), nul_byte(), 0x0B_c,
+        0xFF_c,     0xFF_c,     0x90_c,     0xFF_c,
+        0xFF_c,     0xFF_c,     0x78_c,     0x71_c,
+        0xFF_c,     0xFF_c,     0x9D_c,     0x8A_c,
+        0xFF_c,     0xFF_c,     0x7E_c,     0x73_c,
+        0xFF_c,     0xFF_c,     0xD9_c,     0x67_c,
+        nul_byte(), nul_byte(), 0x06_c,     0x2C_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
+        0xFF_c,     0xFF_c,     0xB4_c,     0x89_c,
+        0xFF_c,     0xFF_c,     0xFC_c,     0x54_c,
+        nul_byte(), nul_byte(), 0x0A_c,     0x0D_c,
+        nul_byte(), nul_byte(), 0x01_c,     nul_byte(),
+
+        // value array
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x06_c,
+        0xE7_c,     0x86_c,     0x8A_c,     0x06_c,     0x9C_c, 0xAC_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x06_c,
+        0xE7_c,     0x8E_c,     0x89_c,     0xE5_c,     0x90_c, 0x8D_c,
+        // clang-format on
     };
 
     std::unique_ptr<std::istream> create_input_stream()
@@ -109,29 +108,31 @@ namespace
     }
 
     const std::vector<char> serialized_c_if{
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x11), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xB6), to_c(0xFF), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x8D), to_c(0x4B), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x96), to_c(0x75), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xA3), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x98), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x97), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x93), to_c(0x6F), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x99), to_c(0x74), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x09), to_c(0x6F), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0xFE), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAA), to_c(0x54), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0x9F), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAC), to_c(0x6D), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xA0), to_c(0x61), /*                                                            */
-        to_c(0xFF), to_c(0xFF), to_c(0xAE), to_c(0x6E), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x10), to_c(0x61), /*                                                            */
-        nul_byte(), nul_byte(), to_c(0x01), to_c(0xFE), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x02), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x2A), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
-        nul_byte(), nul_byte(), nul_byte(), to_c(0x04), /*                                                            */
-        to_c(0x18), to_c(0x00), to_c(0x00), to_c(0x00), /*                                                            */
+        // clang-format off
+        nul_byte(), nul_byte(), nul_byte(), 0x11_c,
+        0xFF_c,     0xFF_c,     0xB6_c,     0xFF_c,
+        0xFF_c,     0xFF_c,     0x8D_c,     0x4B_c,
+        0xFF_c,     0xFF_c,     0x96_c,     0x75_c,
+        0xFF_c,     0xFF_c,     0xA3_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0x98_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0x97_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0x93_c,     0x6F_c,
+        0xFF_c,     0xFF_c,     0x99_c,     0x74_c,
+        nul_byte(), nul_byte(), 0x09_c,     0x6F_c,
+        nul_byte(), nul_byte(), nul_byte(), 0xFE_c,
+        0xFF_c,     0xFF_c,     0xAA_c,     0x54_c,
+        0xFF_c,     0xFF_c,     0x9F_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0xAC_c,     0x6D_c,
+        0xFF_c,     0xFF_c,     0xA0_c,     0x61_c,
+        0xFF_c,     0xFF_c,     0xAE_c,     0x6E_c,
+        nul_byte(), nul_byte(), 0x10_c,     0x61_c,
+        nul_byte(), nul_byte(), 0x01_c,     0xFE_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x2A_c,     0x00_c,     0x00_c,     0x00_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0x18_c,     0x00_c,     0x00_c,     0x00_c,
+        // clang-format on
     };
 
     std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})

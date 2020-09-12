@@ -18,15 +18,14 @@
 
 namespace
 {
-    constexpr char to_c(unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
-        return uc;
+        return static_cast<char>(uc);
     }
 
-    const std::string key_mizuho{ to_c(0xE3), to_c(0x81), to_c(0xBF), to_c(0xE3), to_c(0x81),
-                                  to_c(0x9A), to_c(0xE3), to_c(0x81), to_c(0xBB) };
+    const std::string key_mizuho{ 0xE3_c, 0x81_c, 0xBF_c, 0xE3_c, 0x81_c, 0x9A_c, 0xE3_c, 0x81_c, 0xBB_c };
 
-    const std::string surface_mizuho{ to_c(0xE7), to_c(0x91), to_c(0x9E), to_c(0xE7), to_c(0xA9), to_c(0x82) };
+    const std::string surface_mizuho{ 0xE7_c, 0x91_c, 0x9E_c, 0xE7_c, 0xA9_c, 0x82_c };
 
 
 }

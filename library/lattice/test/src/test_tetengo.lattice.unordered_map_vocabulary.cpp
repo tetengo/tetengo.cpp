@@ -33,28 +33,24 @@
 
 namespace
 {
-    constexpr char to_c(unsigned char uc)
+    constexpr char operator""_c(const unsigned long long int uc)
     {
-        return uc;
+        return static_cast<char>(uc);
     }
 
-    const std::string key_mizuho{ to_c(0xE3), to_c(0x81), to_c(0xBF), to_c(0xE3), to_c(0x81),
-                                  to_c(0x9A), to_c(0xE3), to_c(0x81), to_c(0xBB) };
+    const std::string key_mizuho{ 0xE3_c, 0x81_c, 0xBF_c, 0xE3_c, 0x81_c, 0x9A_c, 0xE3_c, 0x81_c, 0xBB_c };
 
-    const std::string surface_mizuho{ to_c(0xE7), to_c(0x91), to_c(0x9E), to_c(0xE7), to_c(0xA9), to_c(0x82) };
+    const std::string surface_mizuho{ 0xE7_c, 0x91_c, 0x9E_c, 0xE7_c, 0xA9_c, 0x82_c };
 
-    const std::string key_sakura{ to_c(0xE3), to_c(0x81), to_c(0x95), to_c(0xE3), to_c(0x81),
-                                  to_c(0x8F), to_c(0xE3), to_c(0x82), to_c(0x89) };
+    const std::string key_sakura{ 0xE3_c, 0x81_c, 0x95_c, 0xE3_c, 0x81_c, 0x8F_c, 0xE3_c, 0x82_c, 0x89_c };
 
-    const std::string surface_sakura1{ to_c(0xE6), to_c(0xA1), to_c(0x9C) };
+    const std::string surface_sakura1{ 0xE6_c, 0xA1_c, 0x9C_c };
 
-    const std::string surface_sakura2{ to_c(0xE3), to_c(0x81), to_c(0x95), to_c(0xE3), to_c(0x81),
-                                       to_c(0x8F), to_c(0xE3), to_c(0x82), to_c(0x89) };
+    const std::string surface_sakura2{ 0xE3_c, 0x81_c, 0x95_c, 0xE3_c, 0x81_c, 0x8F_c, 0xE3_c, 0x82_c, 0x89_c };
 
-    const std::string key_tsubame{ to_c(0xE3), to_c(0x81), to_c(0xA4), to_c(0xE3), to_c(0x81),
-                                   to_c(0xB0), to_c(0xE3), to_c(0x82), to_c(0x81) };
+    const std::string key_tsubame{ 0xE3_c, 0x81_c, 0xA4_c, 0xE3_c, 0x81_c, 0xB0_c, 0xE3_c, 0x82_c, 0x81_c };
 
-    const std::string surface_tsubame{ to_c(0xE7), to_c(0x87), to_c(0x95) };
+    const std::string surface_tsubame{ 0xE7_c, 0x87_c, 0x95_c };
 
     tetengo::lattice::node make_node(const tetengo::lattice::entry_view& entry)
     {
