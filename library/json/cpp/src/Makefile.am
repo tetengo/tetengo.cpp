@@ -9,6 +9,7 @@ sources = \
     tetengo.json.element.cpp \
     tetengo.json.json_grammar.cpp \
     tetengo.json.json_parser.cpp \
+    tetengo.json.line_counting_reader.cpp \
     tetengo.json.reader.cpp \
     tetengo.json.reader_iterator.cpp \
     tetengo.json.stream_reader.cpp
