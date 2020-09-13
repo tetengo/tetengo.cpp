@@ -52,7 +52,7 @@ namespace
         static std::filesystem::path make_temporary_path()
         {
             auto path = std::filesystem::temp_directory_path();
-            path /= "test_tetengo.json.comment_removing_reader";
+            path /= "test_tetengo.json.line_counting_reader";
             return path;
         }
 
