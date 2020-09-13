@@ -26,6 +26,12 @@ namespace tetengo::json
         m_column_index{ column_index }
     {}
 
+    bool operator==(const location& one, const location& another)
+    {
+        return one.m_line == another.m_line && one.m_line_index == another.m_line_index &&
+               one.m_column_index == another.m_column_index;
+    }
+
     const std::string_view& location::line() const
     {
         return m_line;
@@ -50,6 +56,7 @@ namespace tetengo::json
         explicit impl(std::unique_ptr<reader>&& p_base_reader) :
         m_p_base_reader{ std::move(p_base_reader) },
             m_line{},
+            m_line_count{ 0 },
             m_current_position{ std::end(m_line) }
         {
             if (!m_p_base_reader)
@@ -60,6 +67,18 @@ namespace tetengo::json
 
 
         // functions
+
+        location get_location() const
+        {
+            ensure_line_loaded();
+            if (m_current_position == std::end(m_line))
+            {
+                throw std::logic_error{ "The current position is beyond the termination point." };
+            }
+            return location{ std::string_view{ std::data(m_line), m_line.size() },
+                             m_line_count,
+                             static_cast<std::size_t>(std::distance(std::cbegin(m_line), m_current_position)) + 1 };
+        }
 
         bool has_next_impl() const
         {
@@ -95,6 +114,8 @@ namespace tetengo::json
 
         mutable std::vector<char> m_line;
 
+        mutable std::size_t m_line_count;
+
         mutable std::vector<char>::const_iterator m_current_position;
 
 
@@ -114,6 +135,7 @@ namespace tetengo::json
                 m_p_base_reader->next();
             }
 
+            ++m_line_count;
             m_current_position = std::begin(m_line);
         }
     };
@@ -124,6 +146,11 @@ namespace tetengo::json
     {}
 
     line_counting_reader::~line_counting_reader() = default;
+
+    location line_counting_reader::get_location() const
+    {
+        return m_p_impl->get_location();
+    }
 
     bool line_counting_reader::has_next_impl() const
     {
@@ -139,6 +166,4 @@ namespace tetengo::json
     {
         m_p_impl->next_impl();
     }
-
-
 }

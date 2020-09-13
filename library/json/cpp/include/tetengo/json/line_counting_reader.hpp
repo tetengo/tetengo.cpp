@@ -11,6 +11,8 @@
 #include <memory>
 #include <string_view>
 
+#include <boost/operators.hpp>
+
 #include <tetengo/json/reader.hpp>
 
 
@@ -19,7 +21,7 @@ namespace tetengo::json
     /*!
         \brief A location.
     */
-    class location
+    class location : public boost::equality_comparable<location>
     {
     public:
         // constructors and destructor
@@ -35,6 +37,17 @@ namespace tetengo::json
 
 
         // functions
+
+        /*!
+            \brief Returns true when one location is equal to another.
+
+            \param one   One location.
+            \param another Another location.
+
+            \retval true  When one is equal to another.
+            \retval false Otherwise.
+        */
+        friend bool operator==(const location& one, const location& another);
 
         /*!
             \brief Returns the line.
@@ -90,6 +103,16 @@ namespace tetengo::json
             \brief Destroys the line counting reader.
         */
         virtual ~line_counting_reader();
+
+
+        // functions
+
+        /*!
+            Returns the location.
+
+            \return The location.
+        */
+        [[nodiscard]] location get_location() const;
 
 
     private:
