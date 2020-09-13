@@ -10,6 +10,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -86,6 +87,45 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(json)
+BOOST_AUTO_TEST_SUITE(location)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::location location_{ "hoge", 42, 2 };
+}
+
+BOOST_AUTO_TEST_CASE(line)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::location location_{ "hoge", 42, 2 };
+
+    BOOST_TEST(location_.line() == "hoge");
+}
+
+BOOST_AUTO_TEST_CASE(line_index)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::location location_{ "hoge", 42, 2 };
+
+    BOOST_TEST(location_.line_index() == 42U);
+}
+
+BOOST_AUTO_TEST_CASE(column_index)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::location location_{ "hoge", 42, 2 };
+
+    BOOST_TEST(location_.column_index() == 2U);
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(line_counting_reader)
 
 

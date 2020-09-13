@@ -4,9 +4,11 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -18,6 +20,28 @@
 
 namespace tetengo::json
 {
+    location::location(std::string_view line, const std::size_t line_index, const std::size_t column_index) :
+    m_line{ std::move(line) },
+        m_line_index{ line_index },
+        m_column_index{ column_index }
+    {}
+
+    const std::string_view& location::line() const
+    {
+        return m_line;
+    }
+
+    std::size_t location::line_index() const
+    {
+        return m_line_index;
+    }
+
+    std::size_t location::column_index() const
+    {
+        return m_column_index;
+    }
+
+
     class line_counting_reader::impl : private boost::noncopyable
     {
     public:

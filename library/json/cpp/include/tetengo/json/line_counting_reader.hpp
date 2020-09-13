@@ -7,13 +7,68 @@
 #if !defined(TETENGO_JSON_LINECOUNTINGREADER_HPP)
 #define TETENGO_JSON_LINECOUNTINGREADER_HPP
 
+#include <cstddef>
 #include <memory>
+#include <string_view>
 
 #include <tetengo/json/reader.hpp>
 
 
 namespace tetengo::json
 {
+    /*!
+        \brief A location.
+    */
+    class location
+    {
+    public:
+        // constructors and destructor
+
+        /*!
+            \brief Creates a location.
+
+            \param line         A line.
+            \param line_index   A line index. 1-origin.
+            \param column_index A column index. 1-origin.
+        */
+        location(std::string_view line, std::size_t line_index, std::size_t column_index);
+
+
+        // functions
+
+        /*!
+            \brief Returns the line.
+
+            \return The line.
+        */
+        [[nodiscard]] const std::string_view& line() const;
+
+        /*!
+            \brief Returns the line index.
+
+            \return The line index.
+        */
+        [[nodiscard]] std::size_t line_index() const;
+
+        /*!
+            \brief Returns the column index.
+
+            \return The column index.
+        */
+        [[nodiscard]] std::size_t column_index() const;
+
+
+    private:
+        // variables
+
+        std::string_view m_line;
+
+        std::size_t m_line_index;
+
+        std::size_t m_column_index;
+    };
+
+
     /*!
         \brief A line counting reader.
     */
