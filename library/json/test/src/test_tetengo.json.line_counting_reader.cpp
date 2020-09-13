@@ -25,6 +25,10 @@ namespace
 {
     const std::string stream_value0{};
 
+    const std::string stream_value1{ "hoge" };
+
+    const std::string stream_value2{ "fuga\npi\n\nyo\n" };
+
     class temporary_file : private boost::noncopyable
     {
     public:
@@ -104,21 +108,85 @@ BOOST_AUTO_TEST_CASE(has_next)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto                                      p_base_reader = create_cpp_base_reader(stream_value0);
+        const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        BOOST_TEST(!reader.has_next());
+    }
+    {
+        auto                                      p_base_reader = create_cpp_base_reader(stream_value1);
+        const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        BOOST_TEST(reader.has_next());
+    }
+    {
+        auto                                      p_base_reader = create_cpp_base_reader(stream_value2);
+        const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        BOOST_TEST(reader.has_next());
+    }
 }
 
 BOOST_AUTO_TEST_CASE(peek)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto                                      p_base_reader = create_cpp_base_reader(stream_value0);
+        const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        BOOST_CHECK_THROW([[maybe_unused]] const auto peeked = reader.peek(), std::logic_error);
+    }
+    {
+        auto                                      p_base_reader = create_cpp_base_reader(stream_value1);
+        const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        BOOST_TEST(reader.peek() == 'h');
+    }
+    {
+        auto                                      p_base_reader = create_cpp_base_reader(stream_value2);
+        const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        BOOST_TEST(reader.peek() == 'f');
+    }
 }
 
 BOOST_AUTO_TEST_CASE(next)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto                                p_base_reader = create_cpp_base_reader(stream_value0);
+        tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        BOOST_CHECK_THROW(reader.next(), std::logic_error);
+    }
+    {
+        auto                                p_base_reader = create_cpp_base_reader(stream_value1);
+        tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+        std::string                         read{};
+        while (reader.has_next())
+        {
+            read.push_back(reader.peek());
+            reader.next();
+        }
+
+        BOOST_TEST(read == stream_value1);
+    }
+    {
+        auto                                p_base_reader = create_cpp_base_reader(stream_value2);
+        tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        std::string read{};
+        while (reader.has_next())
+        {
+            read.push_back(reader.peek());
+            reader.next();
+        }
+
+        BOOST_TEST(read == stream_value2);
+    }
 }
 
 

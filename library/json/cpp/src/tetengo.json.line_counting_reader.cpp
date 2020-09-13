@@ -4,9 +4,11 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -21,7 +23,10 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        explicit impl(std::unique_ptr<reader>&& p_base_reader) : m_p_base_reader{ std::move(p_base_reader) }
+        explicit impl(std::unique_ptr<reader>&& p_base_reader) :
+        m_p_base_reader{ std::move(p_base_reader) },
+            m_line{},
+            m_current_position{ std::end(m_line) }
         {
             if (!m_p_base_reader)
             {
@@ -34,17 +39,28 @@ namespace tetengo::json
 
         bool has_next_impl() const
         {
-            throw std::logic_error{ "Implement it." };
+            ensure_line_loaded();
+            return m_current_position != std::end(m_line);
         }
 
         char peek_impl() const
         {
-            throw std::logic_error{ "Implement it." };
+            ensure_line_loaded();
+            if (m_current_position == std::end(m_line))
+            {
+                throw std::logic_error{ "The current position is beyond the termination point." };
+            }
+            return *m_current_position;
         }
 
         void next_impl()
         {
-            throw std::logic_error{ "Implement it." };
+            ensure_line_loaded();
+            if (m_current_position == std::end(m_line))
+            {
+                throw std::logic_error{ "The current position is beyond the termination point." };
+            }
+            ++m_current_position;
         }
 
 
@@ -52,6 +68,30 @@ namespace tetengo::json
         // variables
 
         const std::unique_ptr<reader> m_p_base_reader;
+
+        mutable std::vector<char> m_line;
+
+        mutable std::vector<char>::const_iterator m_current_position;
+
+
+        // functions
+
+        void ensure_line_loaded() const
+        {
+            if (m_current_position != std::end(m_line))
+            {
+                return;
+            }
+
+            m_line.clear();
+            while (m_p_base_reader->has_next() && (std::empty(m_line) || m_line.back() != '\n'))
+            {
+                m_line.push_back(m_p_base_reader->peek());
+                m_p_base_reader->next();
+            }
+
+            m_current_position = std::begin(m_line);
+        }
     };
 
 
