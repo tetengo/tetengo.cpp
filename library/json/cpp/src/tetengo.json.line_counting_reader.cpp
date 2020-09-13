@@ -21,7 +21,7 @@ namespace tetengo::json
     public:
         // constructors and destructor
 
-        impl(std::unique_ptr<reader>&& p_base_reader) : m_p_base_reader{ std::move(p_base_reader) }
+        explicit impl(std::unique_ptr<reader>&& p_base_reader) : m_p_base_reader{ std::move(p_base_reader) }
         {
             if (!m_p_base_reader)
             {
