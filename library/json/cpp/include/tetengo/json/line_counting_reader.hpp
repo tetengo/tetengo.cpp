@@ -95,7 +95,7 @@ namespace tetengo::json
 
             \param p_base_reader A unique pointer to a base reader.
 
-            \throw std::invalid_argument When p_base_reader is nullptr or single_line_begin is empty.
+            \throw std::invalid_argument When p_base_reader is nullptr.
         */
         explicit line_counting_reader(std::unique_ptr<reader>&& p_base_reader);
 

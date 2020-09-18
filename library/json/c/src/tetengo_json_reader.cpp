@@ -91,6 +91,18 @@ tetengo_json_reader_t* tetengo_json_reader_createCommentRemovingReader(
     }
 }
 
+tetengo_json_reader_t* tetengo_json_reader_createLineCountingReader(tetengo_json_reader_t* const /*p_base_reader*/)
+{
+    try
+    {
+        return nullptr;
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
 void tetengo_json_reader_destroy(const tetengo_json_reader_t* const p_reader)
 {
     try
@@ -99,6 +111,20 @@ void tetengo_json_reader_destroy(const tetengo_json_reader_t* const p_reader)
     }
     catch (...)
     {}
+}
+
+int tetengo_json_reader_location(
+    const tetengo_json_reader_t* const /*p_line_counting_reader*/,
+    tetengo_json_location_t* const /*p_location*/)
+{
+    try
+    {
+        return 0;
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 int tetengo_json_reader_hasNext(const tetengo_json_reader_t* const p_reader)
