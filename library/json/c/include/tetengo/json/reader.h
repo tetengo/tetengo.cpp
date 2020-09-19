@@ -24,8 +24,11 @@ typedef struct tetengo_json_reader_tag tetengo_json_reader_t;
 */
 typedef struct tetengo_json_location_tag
 {
-    //! A line.
+    //! A line. Not necessarily NUL-terminated.
     const char* line;
+
+    //! A line length.
+    size_t line_length;
 
     //! A line index.
     size_t line_index;
@@ -91,10 +94,11 @@ void tetengo_json_reader_destroy(const tetengo_json_reader_t* p_reader);
     \param p_location             The storage for a location.
 
     \retval non-zero When a location has been stored.
-    \retval 0        p_line_counting_reader is NULL or not a line counting reader.
-                     And/or p_location is NULL.
+    \retval 0        When p_line_counting_reader is NULL or not a line counting reader.
+                     And/or when p_location is NULL.
+                     And/or when current position is beyond the termination point.
 */
-int tetengo_json_reader_location(
+int tetengo_json_reader_getLocation(
     const tetengo_json_reader_t* p_line_counting_reader,
     tetengo_json_location_t*     p_location);
 

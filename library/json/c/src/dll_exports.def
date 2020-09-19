@@ -11,7 +11,7 @@ EXPORTS
 	tetengo_json_reader_createCommentRemovingReader
 	tetengo_json_reader_createLineCountingReader
 	tetengo_json_reader_destroy
-	tetengo_json_reader_location
+	tetengo_json_reader_getLocation
 	tetengo_json_reader_hasNext
 	tetengo_json_reader_peek
 	tetengo_json_reader_next

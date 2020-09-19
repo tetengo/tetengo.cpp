@@ -111,6 +111,8 @@ namespace tetengo::json
             Returns the location.
 
             \return The location.
+
+            \throw std::logic_error When current position is beyond the termination point.
         */
         [[nodiscard]] location get_location() const;
 

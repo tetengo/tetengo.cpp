@@ -17,6 +17,7 @@
 #include <boost/scope_exit.hpp>
 
 #include <tetengo/json/comment_removing_reader.hpp>
+#include <tetengo/json/line_counting_reader.hpp>
 #include <tetengo/json/reader.h>
 #include <tetengo/json/reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
@@ -91,11 +92,26 @@ tetengo_json_reader_t* tetengo_json_reader_createCommentRemovingReader(
     }
 }
 
-tetengo_json_reader_t* tetengo_json_reader_createLineCountingReader(tetengo_json_reader_t* const /*p_base_reader*/)
+tetengo_json_reader_t* tetengo_json_reader_createLineCountingReader(tetengo_json_reader_t* const p_base_reader)
 {
     try
     {
-        return nullptr;
+        BOOST_SCOPE_EXIT(p_base_reader)
+        {
+            tetengo_json_reader_destroy(p_base_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        if (!p_base_reader)
+        {
+            throw std::invalid_argument{ "p_base_reader is NULL." };
+        }
+
+        auto p_cpp_reader =
+            std::make_unique<tetengo::json::line_counting_reader>(std::move(p_base_reader->p_cpp_reader));
+
+        auto p_instance = std::make_unique<tetengo_json_reader_t>(std::move(p_cpp_reader));
+        return p_instance.release();
     }
     catch (...)
     {
@@ -113,13 +129,35 @@ void tetengo_json_reader_destroy(const tetengo_json_reader_t* const p_reader)
     {}
 }
 
-int tetengo_json_reader_location(
-    const tetengo_json_reader_t* const /*p_line_counting_reader*/,
-    tetengo_json_location_t* const /*p_location*/)
+int tetengo_json_reader_getLocation(
+    const tetengo_json_reader_t* const p_line_counting_reader,
+    tetengo_json_location_t* const     p_location)
 {
     try
     {
-        return 0;
+        if (!p_line_counting_reader)
+        {
+            throw std::invalid_argument{ "p_line_counting_reader is NULL." };
+        }
+        if (!p_location)
+        {
+            throw std::invalid_argument{ "p_location is NULL." };
+        }
+
+        const auto* const p_cpp_line_counting_reader =
+            dynamic_cast<const tetengo::json::line_counting_reader*>(p_line_counting_reader->p_cpp_reader.get());
+        if (!p_cpp_line_counting_reader)
+        {
+            throw std::invalid_argument{ "p_line_counting_reader is not a line counting reader." };
+        }
+
+        const auto cpp_location = p_cpp_line_counting_reader->get_location();
+        p_location->line = cpp_location.line().data();
+        p_location->line_length = cpp_location.line().length();
+        p_location->line_index = cpp_location.line_index();
+        p_location->column_index = cpp_location.column_index();
+
+        return 1;
     }
     catch (...)
     {

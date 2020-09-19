@@ -16,9 +16,11 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/json/line_counting_reader.hpp>
+#include <tetengo/json/reader.h>
 #include <tetengo/json/reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
 
@@ -161,6 +163,22 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_CHECK_THROW(
             const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) }, std::invalid_argument);
     }
+
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createLineCountingReader(p_base_reader);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_reader);
+    }
+    {
+        const auto* const p_reader = tetengo_json_reader_createLineCountingReader(nullptr);
+        BOOST_TEST(!p_reader);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(get_location)
@@ -190,6 +208,93 @@ BOOST_AUTO_TEST_CASE(get_location)
         BOOST_TEST(location.line() == "fuga\n");
         BOOST_TEST(location.line_index() == 1U);
         BOOST_TEST(location.column_index() == 1U);
+    }
+
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createLineCountingReader(p_base_reader);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        tetengo_json_location_t location{};
+        const auto              result = tetengo_json_reader_getLocation(p_reader, &location);
+        BOOST_TEST(!result);
+    }
+    {
+        const temporary_file file{ stream_value1 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createLineCountingReader(p_base_reader);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        tetengo_json_location_t location{};
+        const auto              result = tetengo_json_reader_getLocation(p_reader, &location);
+        BOOST_TEST_REQUIRE(result);
+
+        BOOST_TEST((std::string_view{ location.line, location.line_length } == "hoge"));
+        BOOST_TEST(location.line_index == 1U);
+        BOOST_TEST(location.column_index == 1U);
+    }
+    {
+        const temporary_file file{ stream_value2 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createLineCountingReader(p_base_reader);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        tetengo_json_location_t location{};
+        const auto              result = tetengo_json_reader_getLocation(p_reader, &location);
+        BOOST_TEST_REQUIRE(result);
+
+        BOOST_TEST((std::string_view{ location.line, location.line_length } == "fuga\n"));
+        BOOST_TEST(location.line_index == 1U);
+        BOOST_TEST(location.column_index == 1U);
+    }
+    {
+        tetengo_json_location_t location{};
+        const auto              result = tetengo_json_reader_getLocation(nullptr, &location);
+        BOOST_TEST(!result);
+    }
+    {
+        const temporary_file file{ stream_value1 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createLineCountingReader(p_base_reader);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        const auto result = tetengo_json_reader_getLocation(p_reader, nullptr);
+        BOOST_TEST(!result);
+    }
+    {
+        const temporary_file file{ stream_value1 };
+        auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        tetengo_json_location_t location{};
+        const auto              result = tetengo_json_reader_getLocation(p_reader, &location);
+        BOOST_TEST(!result);
     }
 }
 
