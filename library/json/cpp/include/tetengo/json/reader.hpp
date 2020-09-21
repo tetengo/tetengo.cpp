@@ -41,16 +41,14 @@ namespace tetengo::json
 
             \return The current character.
 
-            \throw std::logic_error When current position is beyond the
-                                    termination point.
+            \throw std::logic_error When current position is beyond the termination point.
         */
         [[nodiscard]] char peek() const;
 
         /*!
             \brief Moves to the next character.
 
-            \throw std::logic_error When current position is beyond the
-                                    termination point.
+            \throw std::logic_error When current position is beyond the termination point.
         */
         void next();
 
