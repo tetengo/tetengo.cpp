@@ -3,6 +3,7 @@
 
 pkg_headers = \
     cli/character_width.hpp \
+    cli/default_character_width.hpp \
     cli/terminal_string_width.hpp
 
 extra_headers = \

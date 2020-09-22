@@ -5,6 +5,7 @@ headers =
 
 sources = \
     tetengo.cli.character_width.cpp \
+    tetengo.cli.default_character_width.cpp \
     tetengo.cli.terminal_string_width.cpp
 
 lib_LIBRARIES = libtetengo.cli.cpp.a

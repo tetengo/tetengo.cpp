@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\cli\character_width.hpp" />
+    <ClInclude Include="include\tetengo\cli\default_character_width.hpp" />
     <ClInclude Include="include\tetengo\cli\terminal_string_width.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +109,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\tetengo.cli.character_width.cpp" />
+    <ClCompile Include="src\tetengo.cli.default_character_width.cpp" />
     <ClCompile Include="src\tetengo.cli.terminal_string_width.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
