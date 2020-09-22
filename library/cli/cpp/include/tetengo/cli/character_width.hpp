@@ -33,17 +33,18 @@ namespace tetengo::cli
         /*!
             \brief Returns the width.
 
-            \param code_point A code point.
+            \param previous_code_point A previous code point. Or 0 for no previous character.
+            \param code_point          A code point.
 
             \return The width of the code point.
         */
-        [[nodiscard]] std::size_t width_of(char32_t code_point) const;
+        [[nodiscard]] std::size_t width_of(char32_t previous_code_point, char32_t code_point) const;
 
 
     private:
         // virtual functions
 
-        virtual std::size_t width_of_impl(char32_t code_point) const = 0;
+        virtual std::size_t width_of_impl(char32_t previous_code_point, char32_t code_point) const = 0;
     };
 
 

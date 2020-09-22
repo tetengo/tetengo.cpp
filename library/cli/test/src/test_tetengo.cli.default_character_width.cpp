@@ -28,8 +28,8 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     const auto& character_width = tetengo::cli::default_character_width::instance();
 
-    BOOST_TEST(character_width.width_of(U'\u0042') == 1U);
-    BOOST_TEST(character_width.width_of(U'\u2424') == 1U);
+    BOOST_TEST(character_width.width_of(0, U'\u0042') == 1U);
+    BOOST_TEST(character_width.width_of(U'\u0042', U'\u2424') == 1U);
 }
 
 

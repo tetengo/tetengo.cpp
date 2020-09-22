@@ -57,7 +57,7 @@ namespace tetengo::cli
 
         // virtual functions
 
-        virtual std::size_t width_of_impl(char32_t code_point) const;
+        virtual std::size_t width_of_impl(char32_t previous_code_point, char32_t code_point) const;
     };
 
 

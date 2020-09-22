@@ -28,7 +28,7 @@ namespace tetengo::cli
 
         // functions
 
-        std::size_t width_of_impl(char32_t) const
+        std::size_t width_of_impl(char32_t, char32_t) const
         {
             return 1;
         }
@@ -44,9 +44,10 @@ namespace tetengo::cli
 
     default_character_width::default_character_width() : m_p_impl{ std::make_unique<impl>() } {}
 
-    std::size_t default_character_width::width_of_impl(const char32_t code_point) const
+    std::size_t
+    default_character_width::width_of_impl(const char32_t previous_code_point, const char32_t code_point) const
     {
-        return m_p_impl->width_of_impl(code_point);
+        return m_p_impl->width_of_impl(previous_code_point, code_point);
     }
 
 

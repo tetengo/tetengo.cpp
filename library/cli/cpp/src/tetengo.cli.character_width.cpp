@@ -13,9 +13,9 @@ namespace tetengo::cli
 {
     character_width::~character_width() = default;
 
-    std::size_t character_width::width_of(const char32_t code_point) const
+    std::size_t character_width::width_of(const char32_t previous_code_point, const char32_t code_point) const
     {
-        return width_of_impl(code_point);
+        return width_of_impl(previous_code_point, code_point);
     }
 
 
