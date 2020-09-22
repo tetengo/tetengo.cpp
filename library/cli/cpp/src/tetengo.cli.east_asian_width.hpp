@@ -6,6 +6,9 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#if !defined(TETENGO_CLI_EASTASIANWIDTH_HPP_)
+#define TETENGO_CLI_EASTASIANWIDTH_HPP_
+
 #include <cstddef>
 
 
@@ -24,3 +27,6 @@ namespace tetengo::cli
 
 
 }
+
+
+#endif
