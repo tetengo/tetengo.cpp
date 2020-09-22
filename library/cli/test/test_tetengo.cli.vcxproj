@@ -91,12 +91,24 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\cli\c\include;$(SolutionDir)library\cli\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\cli\c\include;$(SolutionDir)library\cli\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\cli\c\include;$(SolutionDir)library\cli\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\cli\c\include;$(SolutionDir)library\cli\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
@@ -104,10 +116,19 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
+    <ClCompile Include="src\test_tetengo.cli.character_width.cpp" />
     <ClCompile Include="src\test_tetengo.cli.terminal_string_width.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cpp\tetengo.cli.cpp.vcxproj">
+      <Project>{be228a1e-25d5-4825-89b4-c3513f1dc559}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\c\tetengo.cli.vcxproj">
+      <Project>{49971358-a731-4c16-943a-c66735f3b342}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -25,12 +25,18 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\cli\character_width.hpp">
+      <Filter>header\tetengo::cli</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo.cli.terminal_string_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.cli.character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

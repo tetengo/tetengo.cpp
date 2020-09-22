@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    cli/character_width.hpp \
     cli/terminal_string_width.hpp
 
 extra_headers = \
