@@ -1,11 +1,13 @@
 # Automake Settings
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    tetengo.cli.east_asian_width.hpp
 
 sources = \
     tetengo.cli.character_width.cpp \
     tetengo.cli.default_character_width.cpp \
+    tetengo.cli.east_asian_width.cpp \
     tetengo.cli.terminal_string_width.cpp
 
 lib_LIBRARIES = libtetengo.cli.cpp.a
