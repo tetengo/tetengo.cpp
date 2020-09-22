@@ -22,6 +22,9 @@
     <ClCompile Include="src\test_tetengo.cli.default_character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\test_tetengo.cli.east_asian_character_width.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">

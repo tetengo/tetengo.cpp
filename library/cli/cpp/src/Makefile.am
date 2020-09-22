@@ -7,6 +7,7 @@ headers = \
 sources = \
     tetengo.cli.character_width.cpp \
     tetengo.cli.default_character_width.cpp \
+    tetengo.cli.east_asian_character_width.cpp \
     tetengo.cli.east_asian_width.cpp \
     tetengo.cli.terminal_string_width.cpp
 

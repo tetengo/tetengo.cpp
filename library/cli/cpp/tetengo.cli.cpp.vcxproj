@@ -101,6 +101,7 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\cli\character_width.hpp" />
     <ClInclude Include="include\tetengo\cli\default_character_width.hpp" />
+    <ClInclude Include="include\tetengo\cli\east_asian_character_width.hpp" />
     <ClInclude Include="include\tetengo\cli\terminal_string_width.hpp" />
     <ClInclude Include="src\tetengo.cli.east_asian_width.hpp" />
   </ItemGroup>
@@ -111,6 +112,7 @@
     </ClCompile>
     <ClCompile Include="src\tetengo.cli.character_width.cpp" />
     <ClCompile Include="src\tetengo.cli.default_character_width.cpp" />
+    <ClCompile Include="src\tetengo.cli.east_asian_character_width.cpp" />
     <ClCompile Include="src\tetengo.cli.east_asian_width.cpp" />
     <ClCompile Include="src\tetengo.cli.terminal_string_width.cpp" />
   </ItemGroup>
