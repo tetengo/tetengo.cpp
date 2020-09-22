@@ -35,14 +35,28 @@ namespace tetengo::cli
 
         std::size_t width_of_impl(const char32_t previous_code_point, const char32_t code_point) const
         {
-            return previous_code_point != 0 && is_combining(code_point) ? 0 : 1;
+            const auto class_ = class_of(code_point);
+            if (previous_code_point != 0 && is_combining(class_))
+            {
+                return 0;
+            }
+            const auto absolute_class = class_ < 0 ? -class_ : class_;
+            switch (absolute_class)
+            {
+            case 1: // A
+            case 2: // F
+            case 6: // W
+                return 2;
+            default:
+                return 1;
+            }
         }
 
 
     private:
         // static functions
 
-        static bool is_combining(const char32_t code_point)
+        static int class_of(const char32_t code_point)
         {
             const auto* p_lower_bound = std::lower_bound(
                 east_asian_width_list,
@@ -53,11 +67,16 @@ namespace tetengo::cli
             if (p_lower_bound != east_asian_width_list + east_asian_width_list_size &&
                 p_lower_bound->code_point == code_point)
             {
-                return p_lower_bound->class_ < 0;
+                return p_lower_bound->class_;
             }
 
             assert(p_lower_bound != east_asian_width_list);
-            return std::prev(p_lower_bound)->class_ < 0;
+            return std::prev(p_lower_bound)->class_;
+        }
+
+        static bool is_combining(const int class_)
+        {
+            return class_ < 0;
         }
     };
 

@@ -28,19 +28,27 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     const auto& character_width = tetengo::cli::east_asian_character_width::instance();
 
-    BOOST_TEST(character_width.width_of(0, U'\u0041') == 1U);
-    BOOST_TEST(character_width.width_of(0, U'\u0042') == 1U);
-    BOOST_TEST(character_width.width_of(0, U'\u0300') == 1U);
-    BOOST_TEST(character_width.width_of(0, U'\u0303') == 1U);
-    BOOST_TEST(character_width.width_of(U'\u0041', U'\u0300') == 0U);
-    BOOST_TEST(character_width.width_of(U'\u0041', U'\u0303') == 0U);
+    BOOST_TEST(character_width.width_of(0, U'\u00A4') == 2U); // A
+    BOOST_TEST(character_width.width_of(0, U'\uFF41') == 2U); // F
+    BOOST_TEST(character_width.width_of(0, U'\uFF42') == 2U);
+    BOOST_TEST(character_width.width_of(0, U'\uFF71') == 1U); // H
+    BOOST_TEST(character_width.width_of(0, U'\uFF72') == 1U);
+    BOOST_TEST(character_width.width_of(0, U'\u00A9') == 1U); // N
+    BOOST_TEST(character_width.width_of(0, U'\u0061') == 1U); // Na
+    BOOST_TEST(character_width.width_of(0, U'\u0062') == 1U);
+    BOOST_TEST(character_width.width_of(0, U'\u3400') == 2U); // W
+    BOOST_TEST(character_width.width_of(0, U'\u3401') == 2U);
 
-    BOOST_TEST(character_width.width_of(0, U'\u309B') == 1U);
-    BOOST_TEST(character_width.width_of(0, U'\u309C') == 1U);
-    BOOST_TEST(character_width.width_of(0, U'\u3099') == 1U);
-    BOOST_TEST(character_width.width_of(0, U'\u309A') == 1U);
-    BOOST_TEST(character_width.width_of(U'\u304B', U'\u3099') == 0U);
-    BOOST_TEST(character_width.width_of(U'\u304B', U'\u309A') == 0U);
+    BOOST_TEST(character_width.width_of(0, U'\u0300') == 2U); // A
+    BOOST_TEST(character_width.width_of(0, U'\u0301') == 2U);
+    BOOST_TEST(character_width.width_of(U'\u00A4', U'\u0300') == 0U);
+    BOOST_TEST(character_width.width_of(U'\u00A4', U'\u0301') == 0U);
+    BOOST_TEST(character_width.width_of(0, U'\u20E1') == 1U); // N
+    BOOST_TEST(character_width.width_of(U'\u00A9', U'\u20E1') == 0U);
+    BOOST_TEST(character_width.width_of(0, U'\u3099') == 2U); // W
+    BOOST_TEST(character_width.width_of(U'\u306F', U'\u3099') == 0U);
+    BOOST_TEST(character_width.width_of(0, U'\u309A') == 2U);
+    BOOST_TEST(character_width.width_of(U'\u306F', U'\u309A') == 0U);
 }
 
 
