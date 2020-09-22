@@ -10,6 +10,13 @@ It provides class-based libraries for C++ and function-based libraries for C.
 Features
 --------
 
+### tetengo::cli
+
+A command line interface library.
+
+The utility for terminal string width calculates string widths displayed in the
+terminal console. Some east Asian characters needs two columns to display.
+
 ### tetengo::json
 
 A JSON parser library.

@@ -2,10 +2,11 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
-    cli \
-    json \
-    lattice \
-    trie
+    src
+
+EXTRA_DIST = \
+    test_tetengo.cli.vcxproj \
+    test_tetengo.cli.vcxproj.filters
 
 
 iwyu:
