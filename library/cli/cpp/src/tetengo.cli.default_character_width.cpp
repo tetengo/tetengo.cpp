@@ -4,17 +4,12 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#include <algorithm>
-#include <cassert>
 #include <cstddef>
-#include <iterator>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/cli/default_character_width.hpp>
-
-#include "tetengo.cli.east_asian_width.hpp"
 
 
 namespace tetengo::cli
@@ -49,33 +44,6 @@ namespace tetengo::cli
             default:
                 return 1;
             }
-        }
-
-
-    private:
-        // static functions
-
-        static int class_of(const char32_t code_point)
-        {
-            const auto* p_lower_bound = std::lower_bound(
-                east_asian_width_list,
-                east_asian_width_list + east_asian_width_list_size,
-                east_asian_width_type{ code_point, 0 },
-                [](const auto& element1, const auto& element2) { return element1.code_point < element2.code_point; });
-
-            if (p_lower_bound != east_asian_width_list + east_asian_width_list_size &&
-                p_lower_bound->code_point == code_point)
-            {
-                return p_lower_bound->class_;
-            }
-
-            assert(p_lower_bound != east_asian_width_list);
-            return std::prev(p_lower_bound)->class_;
-        }
-
-        static bool is_combining(const int class_)
-        {
-            return class_ < 0;
         }
     };
 
