@@ -133,8 +133,7 @@ BOOST_AUTO_TEST_CASE(width_of)
     {
         const tetengo::cli::terminal_string_width tsw{ *o_locale };
 
-        [[maybe_unused]] const auto width = tsw.width_of(string_iruka);
-        // BOOST_TEST(width == 7U);
+        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
     }
 }
 

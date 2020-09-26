@@ -14,6 +14,8 @@
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/cli/character_width.hpp>
+#include <tetengo/cli/default_character_width.hpp>
 #include <tetengo/cli/terminal_string_width.hpp>
 
 
@@ -24,7 +26,7 @@ namespace tetengo::cli
     public:
         // constructors and destructor
 
-        explicit impl(const std::locale& locale_) : m_locale{ locale_ } {}
+        explicit impl(const std::locale& locale_) : m_character_width{ select_character_width(locale_) } {}
 
 
         // functions
@@ -32,12 +34,26 @@ namespace tetengo::cli
         std::size_t width_of(const std::string_view& string_) const
         {
             const auto code_points = to_code_points(string_);
-            return 0;
+
+            auto width = static_cast<std::size_t>(0);
+            auto previous = std::end(code_points);
+            for (auto i = std::begin(code_points); i != std::end(code_points); ++i)
+            {
+                width += m_character_width.width_of(previous == std::end(code_points) ? 0 : *previous, *i);
+                previous = i;
+            }
+
+            return width;
         }
 
 
     private:
         // static functions
+
+        static const character_width& select_character_width(const std::locale& /*locale_*/)
+        {
+            return default_character_width::instance();
+        }
 
         static std::vector<char32_t> to_code_points(const std::string_view& string)
         {
@@ -132,7 +148,7 @@ namespace tetengo::cli
 
         // variables
 
-        const std::locale m_locale;
+        const character_width& m_character_width;
     };
 
 
