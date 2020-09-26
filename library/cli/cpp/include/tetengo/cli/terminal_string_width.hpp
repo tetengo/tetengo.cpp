@@ -7,8 +7,10 @@
 #if !defined(TETENGO_CLI_TERMINALSTRINGWIDTH_HPP)
 #define TETENGO_CLI_TERMINALSTRINGWIDTH_HPP
 
+#include <cstddef>
 #include <locale>
 #include <memory>
+#include <string_view>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -34,6 +36,20 @@ namespace tetengo::cli
             \brief Destroys the terminal string width.
         */
         virtual ~terminal_string_width();
+
+
+        // functions
+
+        /*!
+            \brief Returns the string width in the terminal console.
+
+            \param string_ A string.
+
+            \return The string width.
+
+            \throw std::invalid_argument When string_ is not in valid UTF-8.
+        */
+        [[nodiscard]] std::size_t width_of(const std::string_view& string_) const;
 
 
     private:
