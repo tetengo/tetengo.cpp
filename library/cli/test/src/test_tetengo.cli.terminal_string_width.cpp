@@ -22,7 +22,7 @@ namespace
         try
         {
 #if _WIN32
-            return std::locale{ "zh-CN" };
+            return std::locale{ "Chinese (Simplified)_China" };
 #else
             return std::locale{ "zh_CN" };
 #endif
@@ -39,7 +39,7 @@ namespace
         try
         {
 #if _WIN32
-            return std::locale{ "ja-JP" };
+            return std::locale{ "Japanese_Japan" };
 #else
             return std::locale{ "ja_JP" };
 #endif
@@ -56,7 +56,7 @@ namespace
         try
         {
 #if _WIN32
-            return std::locale{ "ko-KR" };
+            return std::locale{ "Korean_Korea" };
 #else
             return std::locale{ "ko_KR" };
 #endif
@@ -73,7 +73,7 @@ namespace
         try
         {
 #if _WIN32
-            return std::locale{ "en-US" };
+            return std::locale{ "English_United States" };
 #else
             return std::locale{ "en_US" };
 #endif

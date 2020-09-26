@@ -4,11 +4,16 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
+#include <cassert>
+#include <cctype>
+#include <clocale>
 #include <cstddef>
 #include <iterator>
 #include <locale>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -16,6 +21,7 @@
 
 #include <tetengo/cli/character_width.hpp>
 #include <tetengo/cli/default_character_width.hpp>
+#include <tetengo/cli/east_asian_character_width.hpp>
 #include <tetengo/cli/terminal_string_width.hpp>
 
 
@@ -50,9 +56,64 @@ namespace tetengo::cli
     private:
         // static functions
 
-        static const character_width& select_character_width(const std::locale& /*locale_*/)
+        static const character_width& select_character_width(const std::locale& locale_)
         {
-            return default_character_width::instance();
+            if (is_east_asian_locale(locale_))
+            {
+                return east_asian_character_width::instance();
+            }
+            else
+            {
+                return default_character_width::instance();
+            }
+        }
+
+        static bool is_east_asian_locale(const std::locale& locale_)
+        {
+            auto name = locale_name(locale_);
+            std::transform(std::begin(name), std::end(name), std::begin(name), [](const char c) {
+                return static_cast<char>(std::tolower(c));
+            });
+            const std::string_view name_view{ name.c_str() };
+
+#if _WIN32
+            constexpr const char* const separator = "_-";
+#else
+            constexpr const char* const separator = "_";
+#endif
+            const std::string_view language = name_view.substr(0, name.find_first_of(separator, 0));
+
+            if (language == "zh" || language == "ja" || language == "ko")
+            {
+                return true;
+            }
+#if _WIN32
+            else if (
+                language == "chinese" || language == "chinese (simplified)" || language == "chinese (traditional)" ||
+                language == "japanese" || language == "korean")
+            {
+                return true;
+            }
+            else if (language == "chs" || language == "cht" || language == "jpn" || language == "kor")
+            {
+                return true;
+            }
+#endif
+
+            return false;
+        }
+
+        static std::string locale_name(const std::locale& locale_)
+        {
+            auto cpp_name = locale_.name();
+            if (!cpp_name.empty())
+            {
+                return cpp_name;
+            }
+
+            const auto* const c_name = std::setlocale(LC_CTYPE, nullptr);
+            assert(c_name);
+            return c_name;
         }
 
         static std::vector<char32_t> to_code_points(const std::string_view& string)
