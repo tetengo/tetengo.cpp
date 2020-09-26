@@ -7,7 +7,6 @@
 #include <locale>
 #include <optional>
 #include <stdexcept>
-#include <utility>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
@@ -103,19 +102,19 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     if (auto o_locale = make_locale_zh(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ std::move(*o_locale) };
+        const tetengo::cli::terminal_string_width width{ *o_locale };
     }
     if (auto o_locale = make_locale_ja(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ std::move(*o_locale) };
+        const tetengo::cli::terminal_string_width width{ *o_locale };
     }
     if (auto o_locale = make_locale_ko(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ std::move(*o_locale) };
+        const tetengo::cli::terminal_string_width width{ *o_locale };
     }
     if (auto o_locale = make_locale_en(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ std::move(*o_locale) };
+        const tetengo::cli::terminal_string_width width{ *o_locale };
     }
 }
 

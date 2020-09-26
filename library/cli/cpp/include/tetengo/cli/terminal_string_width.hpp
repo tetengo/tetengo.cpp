@@ -28,7 +28,7 @@ namespace tetengo::cli
 
             \param locale_ A locale.
         */
-        explicit terminal_string_width(std::locale locale_ = std::locale{ "" });
+        explicit terminal_string_width(const std::locale& locale_ = std::locale{ "" });
 
         /*!
             \brief Destroys the terminal string width.

@@ -6,7 +6,6 @@
 
 #include <locale>
 #include <memory>
-#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -20,7 +19,7 @@ namespace tetengo::cli
     public:
         // constructors and destructor
 
-        explicit impl(std::locale locale_) : m_locale{ std::move(locale_) } {}
+        explicit impl(const std::locale& locale_) : m_locale{ locale_ } {}
 
 
     private:
@@ -30,8 +29,8 @@ namespace tetengo::cli
     };
 
 
-    terminal_string_width::terminal_string_width(std::locale locale_ /*= std::locale{ "" }*/) :
-    m_p_impl{ std::make_unique<impl>(std::move(locale_)) }
+    terminal_string_width::terminal_string_width(const std::locale& locale_ /*= std::locale{ "" }*/) :
+    m_p_impl{ std::make_unique<impl>(locale_) }
     {}
 
     terminal_string_width::~terminal_string_width() = default;
