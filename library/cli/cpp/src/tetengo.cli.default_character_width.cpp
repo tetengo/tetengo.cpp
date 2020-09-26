@@ -6,9 +6,11 @@
 
 #include <cstddef>
 #include <memory>
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/cli/character_width.hpp>
 #include <tetengo/cli/default_character_width.hpp>
 
 
@@ -30,16 +32,15 @@ namespace tetengo::cli
 
         std::size_t width_of_impl(const char32_t previous_code_point, const char32_t code_point) const
         {
-            const auto class_ = class_of(code_point);
-            if (previous_code_point != 0 && is_combining(class_))
+            const auto class_and_combining = class_of(code_point);
+            if (previous_code_point != 0 && class_and_combining.second)
             {
                 return 0;
             }
-            const auto absolute_class = class_ < 0 ? -class_ : class_;
-            switch (absolute_class)
+            switch (class_and_combining.first)
             {
-            case 2: // F
-            case 6: // W
+            case class_type::fullwidth:
+            case class_type::wide:
                 return 2;
             default:
                 return 1;

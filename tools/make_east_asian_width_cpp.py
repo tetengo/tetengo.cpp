@@ -18,19 +18,18 @@ def main():
 
 def make_element(line):
     combining = is_combining(line);
+    
     line = remove_comment(line);
     if not line:
         return
-    (code_point, class_symbol) = to_code_point_and_class(line)
-    class_number = to_class_number(class_symbol, combining)
     
-    return "        { " + "0x{}, {} /* {} */".format(code_point, class_number, class_symbol) + " },\n"
-
-def is_combining(line):
-    if not "#" in line:
-        return False
-    line = line[line.find("#"):]
-    return "COMBINING" in line
+    (code_point, class_symbol) = to_code_point_and_class(line)
+    class_type = to_class_type(class_symbol)
+    combining_boolean = to_combining_boolean(combining);
+    
+    return "        { " + "0x{}, east_asian_width_class_type::{}, {}".format(
+        code_point, class_type, combining_boolean
+    ) + " },\n"
 
 def remove_comment(line):
     line = line.rstrip("\n")
@@ -44,27 +43,33 @@ def to_code_point_and_class(line):
     matched = re.match("^([0-9A-F]+)(\.\.[0-9A-F]+)?;([A-Za-z]+)", line)
     return (matched.group(1), matched.group(3))
 
-def to_class_number(symbol, combining):
-    number = 0;
+def to_class_type(symbol):
     if   symbol == "A":
-        number = 1
+        return "ambiguous"
     elif symbol == "F":
-        number = 2
+        return "fullwidth"
     elif symbol == "H":
-        number = 3
-    elif symbol == "N":
-        number = 4
+        return "halfwidth"
     elif symbol == "Na":
-        number = 5
+        return "narrow"
     elif symbol == "W":
-        number = 6
+        return "wide"
+    elif symbol == "N":
+        return "neutral"
     else:
         raise RuntimeError("Unknown class: {}".format(symbol))
-    
+
+def is_combining(line):
+    if not "#" in line:
+        return False
+    line = line[line.find("#"):]
+    return "COMBINING" in line
+
+def to_combining_boolean(combining):
     if combining:
-        return -number
+        return "true"
     else:
-        return number
+        return "false"
 
 def make_cpp_source(elements):
     content = '''/*! \\file

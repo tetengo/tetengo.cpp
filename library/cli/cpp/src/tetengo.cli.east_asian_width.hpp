@@ -14,12 +14,26 @@
 
 namespace tetengo::cli
 {
+    enum class east_asian_width_class_type
+    {
+        ambiguous,
+        fullwidth,
+        halfwidth,
+        narrow,
+        wide,
+        neutral,
+    };
+
+
     struct east_asian_width_type
     {
         char32_t code_point;
 
-        int class_;
+        east_asian_width_class_type class_;
+
+        bool combining;
     };
+
 
     extern const std::size_t east_asian_width_list_size;
 

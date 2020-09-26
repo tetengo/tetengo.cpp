@@ -9,6 +9,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -43,26 +44,30 @@ namespace tetengo::cli
 
 
     protected:
+        // types
+
+        //! A class.
+        enum class class_type
+        {
+            ambiguous, //!< Ambiguous.
+            fullwidth, //!< Fullwidth.
+            halfwidth, //!< Halfwidth.
+            narrow, //!< Narrow.
+            wide, //!< Wide.
+            neutral, //!< Neutral.
+        };
+
+
         // static functions
 
         /*!
-            \brief Returns the class.
+            \brief Returns the class and combinability.
 
             \param code_point A code point.
 
-            \return The class.
+            \return A pair of the class and combinability.
         */
-        static int class_of(char32_t code_point);
-
-        /*!
-            \brief Returns true when the class value stands for a combining character.
-
-            \param class_ A class.
-
-            \retval true  When the class value stands for a combining character.
-            \retval false Otherwise.
-        */
-        static bool is_combining(int class_);
+        [[nodiscard]] static std::pair<class_type, bool> class_of(char32_t code_point);
 
 
         // constructors
