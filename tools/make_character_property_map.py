@@ -10,7 +10,7 @@ import sys
 def main():
     if len(sys.argv) <= 3:
         print(
-            "Usage: ./make_character_property_map_cpp.py EastAsianWidth.txt GraphemeBreakProperty.txt character_property_map.txt",
+            "Usage: ./make_character_property_map.py EastAsianWidth.txt GraphemeBreakProperty.txt character_property_map.txt",
             file=sys.stderr
         )
         sys.exit(0)
