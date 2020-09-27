@@ -92,6 +92,7 @@ namespace
 
     std::string string_iruka{ 0x4D_c, 0x79_c, 0x20_c, 0xE6_c, 0xB2_c, 0xB3_c, 0xE8_c, 0xB1_c, 0x9A_c };
 
+
 }
 
 
@@ -130,6 +131,24 @@ BOOST_AUTO_TEST_CASE(width_of)
     BOOST_TEST_PASSPOINT();
 
     if (auto o_locale = make_locale_zh(); o_locale)
+    {
+        const tetengo::cli::terminal_string_width tsw{ *o_locale };
+
+        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
+    }
+    if (auto o_locale = make_locale_ja(); o_locale)
+    {
+        const tetengo::cli::terminal_string_width tsw{ *o_locale };
+
+        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
+    }
+    if (auto o_locale = make_locale_ko(); o_locale)
+    {
+        const tetengo::cli::terminal_string_width tsw{ *o_locale };
+
+        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
+    }
+    if (auto o_locale = make_locale_en(); o_locale)
     {
         const tetengo::cli::terminal_string_width tsw{ *o_locale };
 
