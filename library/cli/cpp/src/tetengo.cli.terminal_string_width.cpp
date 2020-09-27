@@ -12,6 +12,7 @@
 #include <iterator>
 #include <locale>
 #include <memory>
+#include <numeric>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -41,13 +42,15 @@ namespace tetengo::cli
         {
             const auto code_points = to_code_points(string_);
 
-            auto width = static_cast<std::size_t>(0);
-            for (auto i = std::begin(code_points); i != std::end(code_points); ++i)
-            {
-                width += m_character_width.width_of(*i);
-            }
+            std::vector<std::size_t> widths{};
+            widths.reserve(code_points.size());
+            std::transform(
+                std::begin(code_points),
+                std::end(code_points),
+                std::back_inserter(widths),
+                [this](const auto code_point) { return m_character_width.width_of(code_point); });
 
-            return width;
+            return std::accumulate(std::begin(widths), std::end(widths), static_cast<std::size_t>(0));
         }
 
 
