@@ -2,7 +2,7 @@
     \brief A string view.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
- */
+*/
 
 #if !defined(TETENGO_LATTICE_STRINGVIEW_H)
 #define TETENGO_LATTICE_STRINGVIEW_H
