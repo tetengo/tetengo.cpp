@@ -33,3 +33,5 @@ __pycache__/
 *.trs
 *.user
 tools/EastAsianWidth.txt
+tools/GraphemeBreakProperty.txt
+tools/character_property_map.txt
