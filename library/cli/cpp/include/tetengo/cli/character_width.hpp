@@ -35,12 +35,11 @@ namespace tetengo::cli
         /*!
             \brief Returns the width.
 
-            \param previous_code_point A previous code point. Or 0 for no previous character.
-            \param code_point          A code point.
+            \param code_point A code point.
 
             \return The width of the code point.
         */
-        [[nodiscard]] std::size_t width_of(char32_t previous_code_point, char32_t code_point) const;
+        [[nodiscard]] std::size_t width_of(char32_t code_point) const;
 
 
     protected:
@@ -57,17 +56,36 @@ namespace tetengo::cli
             neutral, //!< Neutral.
         };
 
+        //! A grapheme.
+        enum class grapheme_type
+        {
+            cr, //!< CR
+            lf, //!< LF
+            control, //!< Control
+            extend, //!< Extend
+            zwj, //!< ZWJ
+            regional, //!< Regional
+            prepend, //!< Prepend
+            spacing_mark, //!< SpacingMark
+            l, //!< L
+            v, //!< V
+            t, //!< T
+            lv, //!< LV
+            lvt, //!< LVT
+            other, //!< Other
+        };
+
 
         // static functions
 
         /*!
-            \brief Returns the class and combinability.
+            \brief Returns the property.
 
             \param code_point A code point.
 
-            \return A pair of the class and combinability.
+            \return The property.
         */
-        [[nodiscard]] static std::pair<class_type, bool> class_of(char32_t code_point);
+        [[nodiscard]] static std::pair<class_type, grapheme_type> property_of(char32_t code_point);
 
 
         // constructors
@@ -91,7 +109,7 @@ namespace tetengo::cli
 
         // virtual functions
 
-        virtual std::size_t width_of_impl(char32_t previous_code_point, char32_t code_point) const = 0;
+        virtual std::size_t width_of_impl(char32_t code_point) const = 0;
     };
 
 

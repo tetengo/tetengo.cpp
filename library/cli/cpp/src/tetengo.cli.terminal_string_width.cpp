@@ -42,11 +42,9 @@ namespace tetengo::cli
             const auto code_points = to_code_points(string_);
 
             auto width = static_cast<std::size_t>(0);
-            auto previous = std::end(code_points);
             for (auto i = std::begin(code_points); i != std::end(code_points); ++i)
             {
-                width += m_character_width.width_of(previous == std::end(code_points) ? 0 : *previous, *i);
-                previous = i;
+                width += m_character_width.width_of(*i);
             }
 
             return width;

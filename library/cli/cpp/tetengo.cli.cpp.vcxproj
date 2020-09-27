@@ -103,17 +103,17 @@
     <ClInclude Include="include\tetengo\cli\default_character_width.hpp" />
     <ClInclude Include="include\tetengo\cli\east_asian_character_width.hpp" />
     <ClInclude Include="include\tetengo\cli\terminal_string_width.hpp" />
-    <ClInclude Include="src\tetengo.cli.east_asian_width.hpp" />
+    <ClInclude Include="src\tetengo.cli.character_property_map.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.cli.character_property_map.cpp" />
     <ClCompile Include="src\tetengo.cli.character_width.cpp" />
     <ClCompile Include="src\tetengo.cli.default_character_width.cpp" />
     <ClCompile Include="src\tetengo.cli.east_asian_character_width.cpp" />
-    <ClCompile Include="src\tetengo.cli.east_asian_width.cpp" />
     <ClCompile Include="src\tetengo.cli.terminal_string_width.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

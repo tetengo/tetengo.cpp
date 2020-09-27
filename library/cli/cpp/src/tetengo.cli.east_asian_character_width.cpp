@@ -30,14 +30,10 @@ namespace tetengo::cli
 
         // functions
 
-        std::size_t width_of_impl(const char32_t previous_code_point, const char32_t code_point) const
+        std::size_t width_of_impl(const char32_t code_point) const
         {
-            const auto class_and_combining = class_of(code_point);
-            if (previous_code_point != 0 && class_and_combining.second)
-            {
-                return 0;
-            }
-            switch (class_and_combining.first)
+            const auto property = property_of(code_point);
+            switch (property.first)
             {
             case class_type::ambiguous:
             case class_type::fullwidth:
@@ -59,10 +55,9 @@ namespace tetengo::cli
 
     east_asian_character_width::east_asian_character_width() : m_p_impl{ std::make_unique<impl>() } {}
 
-    std::size_t
-    east_asian_character_width::width_of_impl(const char32_t previous_code_point, const char32_t code_point) const
+    std::size_t east_asian_character_width::width_of_impl(const char32_t code_point) const
     {
-        return m_p_impl->width_of_impl(previous_code_point, code_point);
+        return m_p_impl->width_of_impl(code_point);
     }
 
 

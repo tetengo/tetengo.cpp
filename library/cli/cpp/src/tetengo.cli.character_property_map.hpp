@@ -24,20 +24,38 @@ namespace tetengo::cli
         neutral,
     };
 
+    enum class grapheme_break_property
+    {
+        cr,
+        lf,
+        control,
+        extend,
+        zwj,
+        regional,
+        prepend,
+        spacing_mark,
+        l,
+        v,
+        t,
+        lv,
+        lvt,
+        other,
+    };
 
-    struct east_asian_width_type
+
+    struct character_property_map_element_type
     {
         char32_t code_point;
 
         east_asian_width_class_type class_;
 
-        bool combining;
+        grapheme_break_property grapheme;
     };
 
 
-    extern const std::size_t east_asian_width_list_size;
+    extern const std::size_t character_property_map_size;
 
-    extern const east_asian_width_type east_asian_width_list[];
+    extern const character_property_map_element_type character_property_map[];
 
 
 }

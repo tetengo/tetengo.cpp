@@ -25,9 +25,9 @@ namespace
     private:
         // virtual functions
 
-        virtual std::size_t width_of_impl(const char32_t previous_code_point, const char32_t code_point) const override
+        virtual std::size_t width_of_impl(const char32_t code_point) const override
         {
-            return (static_cast<std::size_t>(previous_code_point) + static_cast<std::size_t>(code_point)) % 2 + 1;
+            return static_cast<std::size_t>(code_point) % 2 + 1;
         }
     };
 
@@ -53,8 +53,8 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     const concrete_character_width char_width{};
 
-    BOOST_TEST(char_width.width_of(0, U'\u1234') == 1);
-    BOOST_TEST(char_width.width_of(U'\u1234', U'\u4321') == 2);
+    BOOST_TEST(char_width.width_of(U'\u1234') == 1);
+    BOOST_TEST(char_width.width_of(U'\u4321') == 2);
 }
 
 

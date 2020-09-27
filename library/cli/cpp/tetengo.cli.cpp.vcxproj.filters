@@ -31,11 +31,11 @@
     <ClInclude Include="include\tetengo\cli\default_character_width.hpp">
       <Filter>header\tetengo::cli</Filter>
     </ClInclude>
-    <ClInclude Include="src\tetengo.cli.east_asian_width.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="include\tetengo\cli\east_asian_character_width.hpp">
       <Filter>header\tetengo::cli</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tetengo.cli.character_property_map.hpp">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,10 +51,10 @@
     <ClCompile Include="src\tetengo.cli.default_character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.cli.east_asian_width.cpp">
+    <ClCompile Include="src\tetengo.cli.east_asian_character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.cli.east_asian_character_width.cpp">
+    <ClCompile Include="src\tetengo.cli.character_property_map.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

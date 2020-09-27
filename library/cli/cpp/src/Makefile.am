@@ -2,13 +2,13 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
-    tetengo.cli.east_asian_width.hpp
+    tetengo.cli.character_property_map.hpp
 
 sources = \
+    tetengo.cli.character_property_map.cpp \
     tetengo.cli.character_width.cpp \
     tetengo.cli.default_character_width.cpp \
     tetengo.cli.east_asian_character_width.cpp \
-    tetengo.cli.east_asian_width.cpp \
     tetengo.cli.terminal_string_width.cpp
 
 lib_LIBRARIES = libtetengo.cli.cpp.a
