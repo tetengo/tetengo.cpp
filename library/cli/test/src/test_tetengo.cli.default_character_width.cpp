@@ -2,7 +2,7 @@
     \brief A default character width.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
- */
+*/
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
