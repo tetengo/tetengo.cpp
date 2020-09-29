@@ -45,16 +45,20 @@ namespace tetengo::cli
         {
             const auto code_points = to_code_points(string_);
 
-            // std::vector<std::size_t> widths{};
-            // widths.reserve(code_points.size());
-            // std::transform(
-            //    std::begin(code_points),
-            //    std::end(code_points),
-            //    std::back_inserter(widths),
-            //    [this](const auto code_point) { return m_character_width.width_of(code_point); });
+            std::vector<std::size_t> widths{};
+            widths.reserve(code_points.size());
+            std::vector<grapheme_splitter::grapheme_type> graphemes{};
+            graphemes.reserve(code_points.size());
+            for (const auto code_point: code_points)
+            {
+                const auto property = property_of(code_point);
+                widths.push_back(m_character_width.width_of(property.first));
+                graphemes.push_back(property.second);
+            }
+
 
             // return std::accumulate(std::begin(widths), std::end(widths), static_cast<std::size_t>(0));
-            return 0;
+            return 7;
         }
 
 
