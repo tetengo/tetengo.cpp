@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -28,12 +29,85 @@ BOOST_AUTO_TEST_CASE(split)
 {
     BOOST_TEST_PASSPOINT();
 
+    using g = tetengo::cli::grapheme_splitter::grapheme_type;
+
     const auto& splitter = tetengo::cli::grapheme_splitter::instance();
 
     {
-        static const std::vector<char32_t> code_points{};
-        const auto                         offsets = splitter.split(code_points);
+        const auto offsets = splitter.split({});
         BOOST_TEST(offsets.empty());
+    }
+    {
+        const auto offsets = splitter.split({ g::cr });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::cr, g::cr });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::cr, g::lf });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::cr, g::control });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::cr, g::other });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::lf });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::lf, g::cr });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::lf, g::other });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::control });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::control, g::cr });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::control, g::other });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::extend });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::extend, g::extend });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::extend, g::zwj });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::extend, g::regional });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::extend, g::spacing_mark });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::extend, g::l });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
+    }
+    {
+        const auto offsets = splitter.split({ g::extend, g::other });
+        BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1, 2 }));
     }
 }
 

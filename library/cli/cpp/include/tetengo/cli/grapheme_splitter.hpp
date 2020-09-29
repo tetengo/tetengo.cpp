@@ -91,11 +91,11 @@ namespace tetengo::cli
             -----------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
             </pre>
 
-            \param code_points Code points.
+            \param graphemes Graphemes.
 
             \return Grapheme offsets.
         */
-        std::vector<std::size_t> split(const std::vector<char32_t>& code_points) const;
+        std::vector<std::size_t> split(const std::vector<grapheme_type>& graphemes) const;
 
 
     private:
