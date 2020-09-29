@@ -8,7 +8,6 @@
 #define TETENGO_CLI_CHARACTERWIDTH_HPP
 
 #include <cstddef>
-#include <memory>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -55,26 +54,7 @@ namespace tetengo::cli
         [[nodiscard]] std::size_t width_of(class_type class_) const;
 
 
-    protected:
-        // constructors
-
-        /*!
-            \brief Creates a character width.
-        */
-        character_width();
-
-
     private:
-        // types
-
-        class impl;
-
-
-        // variables
-
-        const std::unique_ptr<impl> m_p_impl;
-
-
         // virtual functions
 
         virtual std::size_t width_of_impl(class_type class_) const = 0;
