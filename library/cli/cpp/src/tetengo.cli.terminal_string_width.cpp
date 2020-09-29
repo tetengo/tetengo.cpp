@@ -12,10 +12,10 @@
 #include <iterator>
 #include <locale>
 #include <memory>
-#include <numeric>
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -23,7 +23,10 @@
 #include <tetengo/cli/character_width.hpp>
 #include <tetengo/cli/default_character_width.hpp>
 #include <tetengo/cli/east_asian_character_width.hpp>
+#include <tetengo/cli/grapheme_splitter.hpp>
 #include <tetengo/cli/terminal_string_width.hpp>
+
+#include "tetengo.cli.character_property_map.hpp"
 
 
 namespace tetengo::cli
@@ -42,15 +45,16 @@ namespace tetengo::cli
         {
             const auto code_points = to_code_points(string_);
 
-            std::vector<std::size_t> widths{};
-            widths.reserve(code_points.size());
-            std::transform(
-                std::begin(code_points),
-                std::end(code_points),
-                std::back_inserter(widths),
-                [this](const auto code_point) { return m_character_width.width_of(code_point); });
+            // std::vector<std::size_t> widths{};
+            // widths.reserve(code_points.size());
+            // std::transform(
+            //    std::begin(code_points),
+            //    std::end(code_points),
+            //    std::back_inserter(widths),
+            //    [this](const auto code_point) { return m_character_width.width_of(code_point); });
 
-            return std::accumulate(std::begin(widths), std::end(widths), static_cast<std::size_t>(0));
+            // return std::accumulate(std::begin(widths), std::end(widths), static_cast<std::size_t>(0));
+            return 0;
         }
 
 
@@ -205,6 +209,83 @@ namespace tetengo::cli
             }
 
             return following & 0x3F;
+        }
+
+        static std::pair<character_width::class_type, grapheme_splitter::grapheme_type>
+        property_of(const char32_t code_point)
+        {
+            const auto* p_lower_bound = std::lower_bound(
+                character_property_map,
+                character_property_map + character_property_map_size,
+                character_property_map_element_type{
+                    code_point, east_asian_width_class_type::ambiguous, grapheme_break_property::other },
+                [](const auto& element1, const auto& element2) { return element1.code_point < element2.code_point; });
+
+            if (p_lower_bound != character_property_map + character_property_map_size &&
+                p_lower_bound->code_point == code_point)
+            {
+                return std::make_pair(to_class_type(p_lower_bound->class_), to_grapheme(p_lower_bound->grapheme));
+            }
+
+            assert(p_lower_bound != character_property_map);
+            const auto* const p_previous = std::prev(p_lower_bound);
+            return std::make_pair(to_class_type(p_previous->class_), to_grapheme(p_previous->grapheme));
+        }
+
+        static character_width::class_type to_class_type(const east_asian_width_class_type class_type)
+        {
+            switch (class_type)
+            {
+            case east_asian_width_class_type::ambiguous:
+                return character_width::class_type::ambiguous;
+            case east_asian_width_class_type::fullwidth:
+                return character_width::class_type::fullwidth;
+            case east_asian_width_class_type::halfwidth:
+                return character_width::class_type::halfwidth;
+            case east_asian_width_class_type::narrow:
+                return character_width::class_type::narrow;
+            case east_asian_width_class_type::wide:
+                return character_width::class_type::wide;
+            default:
+                assert(class_type == east_asian_width_class_type::neutral);
+                return character_width::class_type::neutral;
+            }
+        }
+
+        static grapheme_splitter::grapheme_type to_grapheme(const grapheme_break_property grapheme)
+        {
+            switch (grapheme)
+            {
+            case grapheme_break_property::cr:
+                return grapheme_splitter::grapheme_type::cr;
+            case grapheme_break_property::lf:
+                return grapheme_splitter::grapheme_type::lf;
+            case grapheme_break_property::control:
+                return grapheme_splitter::grapheme_type::control;
+            case grapheme_break_property::extend:
+                return grapheme_splitter::grapheme_type::extend;
+            case grapheme_break_property::zwj:
+                return grapheme_splitter::grapheme_type::zwj;
+            case grapheme_break_property::regional:
+                return grapheme_splitter::grapheme_type::regional;
+            case grapheme_break_property::prepend:
+                return grapheme_splitter::grapheme_type::prepend;
+            case grapheme_break_property::spacing_mark:
+                return grapheme_splitter::grapheme_type::spacing_mark;
+            case grapheme_break_property::l:
+                return grapheme_splitter::grapheme_type::l;
+            case grapheme_break_property::v:
+                return grapheme_splitter::grapheme_type::v;
+            case grapheme_break_property::t:
+                return grapheme_splitter::grapheme_type::t;
+            case grapheme_break_property::lv:
+                return grapheme_splitter::grapheme_type::lv;
+            case grapheme_break_property::lvt:
+                return grapheme_splitter::grapheme_type::lvt;
+            default:
+                assert(grapheme == grapheme_break_property::other);
+                return grapheme_splitter::grapheme_type::other;
+            }
         }
 
 

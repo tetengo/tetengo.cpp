@@ -6,7 +6,6 @@
 
 #include <cstddef>
 #include <memory>
-#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -30,10 +29,9 @@ namespace tetengo::cli
 
         // functions
 
-        std::size_t width_of_impl(const char32_t code_point) const
+        std::size_t width_of_impl(const class_type class_) const
         {
-            const auto property = property_of(code_point);
-            switch (property.first)
+            switch (class_)
             {
             case class_type::fullwidth:
             case class_type::wide:
@@ -54,9 +52,9 @@ namespace tetengo::cli
 
     default_character_width::default_character_width() : m_p_impl{ std::make_unique<impl>() } {}
 
-    std::size_t default_character_width::width_of_impl(const char32_t code_point) const
+    std::size_t default_character_width::width_of_impl(const class_type class_) const
     {
-        return m_p_impl->width_of_impl(code_point);
+        return m_p_impl->width_of_impl(class_);
     }
 
 

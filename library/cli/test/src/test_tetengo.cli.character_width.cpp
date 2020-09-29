@@ -25,9 +25,9 @@ namespace
     private:
         // virtual functions
 
-        virtual std::size_t width_of_impl(const char32_t code_point) const override
+        virtual std::size_t width_of_impl(const class_type class_) const override
         {
-            return static_cast<std::size_t>(code_point) % 2 + 1;
+            return class_ == class_type::fullwidth ? 2 : 1;
         }
     };
 
@@ -53,8 +53,8 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     const concrete_character_width char_width{};
 
-    BOOST_TEST(char_width.width_of(U'\u1234') == 1);
-    BOOST_TEST(char_width.width_of(U'\u4321') == 2);
+    BOOST_TEST(char_width.width_of(tetengo::cli::character_width::class_type::halfwidth) == 1U);
+    BOOST_TEST(char_width.width_of(tetengo::cli::character_width::class_type::fullwidth) == 2U);
 }
 
 

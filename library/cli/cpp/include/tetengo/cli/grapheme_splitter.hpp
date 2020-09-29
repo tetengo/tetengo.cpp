@@ -22,6 +22,28 @@ namespace tetengo::cli
     class grapheme_splitter : private boost::noncopyable
     {
     public:
+        // types
+
+        //! A grapheme.
+        enum class grapheme_type
+        {
+            cr, //!< CR
+            lf, //!< LF
+            control, //!< Control
+            extend, //!< Extend
+            zwj, //!< ZWJ
+            regional, //!< Regional
+            prepend, //!< Prepend
+            spacing_mark, //!< SpacingMark
+            l, //!< L
+            v, //!< V
+            t, //!< T
+            lv, //!< LV
+            lvt, //!< LVT
+            other, //!< Other
+        };
+
+
         // static functions
 
         /*!

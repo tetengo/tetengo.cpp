@@ -9,7 +9,6 @@
 
 #include <cstddef>
 #include <memory>
-#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -22,27 +21,6 @@ namespace tetengo::cli
     class character_width : private boost::noncopyable
     {
     public:
-        // constructors and destructor
-
-        /*!
-            \brief Destroys the character width.
-        */
-        virtual ~character_width();
-
-
-        // functions
-
-        /*!
-            \brief Returns the width.
-
-            \param code_point A code point.
-
-            \return The width of the code point.
-        */
-        [[nodiscard]] std::size_t width_of(char32_t code_point) const;
-
-
-    protected:
         // types
 
         //! A class.
@@ -56,38 +34,28 @@ namespace tetengo::cli
             neutral, //!< Neutral.
         };
 
-        //! A grapheme.
-        enum class grapheme_type
-        {
-            cr, //!< CR
-            lf, //!< LF
-            control, //!< Control
-            extend, //!< Extend
-            zwj, //!< ZWJ
-            regional, //!< Regional
-            prepend, //!< Prepend
-            spacing_mark, //!< SpacingMark
-            l, //!< L
-            v, //!< V
-            t, //!< T
-            lv, //!< LV
-            lvt, //!< LVT
-            other, //!< Other
-        };
 
-
-        // static functions
+        // constructors and destructor
 
         /*!
-            \brief Returns the property.
-
-            \param code_point A code point.
-
-            \return The property.
+            \brief Destroys the character width.
         */
-        [[nodiscard]] static std::pair<class_type, grapheme_type> property_of(char32_t code_point);
+        virtual ~character_width();
 
 
+        // functions
+
+        /*!
+            \brief Returns the width.
+
+            \param class_ A class.
+
+            \return The width of the code point.
+        */
+        [[nodiscard]] std::size_t width_of(class_type class_) const;
+
+
+    protected:
         // constructors
 
         /*!
@@ -109,7 +77,7 @@ namespace tetengo::cli
 
         // virtual functions
 
-        virtual std::size_t width_of_impl(char32_t code_point) const = 0;
+        virtual std::size_t width_of_impl(class_type class_) const = 0;
     };
 
 
