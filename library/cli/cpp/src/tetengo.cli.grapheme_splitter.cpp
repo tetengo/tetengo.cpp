@@ -41,14 +41,25 @@ namespace tetengo::cli
             }
 
             std::vector<std::size_t> offsets{ 0 };
+            auto                     continuous_regional_count = static_cast<std::size_t>(0);
             for (std::size_t i = 1; i < graphemes.size(); ++i)
             {
                 if (connecting_pair_set().find(std::make_pair(graphemes[i - 1], graphemes[i])) !=
-                    std::end(connecting_pair_set()))
+                        std::end(connecting_pair_set()) &&
+                    (graphemes[i] != grapheme_type::regional || continuous_regional_count % 2 == 0))
                 {
+                    if (graphemes[i - 1] == grapheme_type::regional)
+                    {
+                        ++continuous_regional_count;
+                    }
+                    else
+                    {
+                        continuous_regional_count = 0;
+                    }
                     continue;
                 }
 
+                continuous_regional_count = 0;
                 offsets.push_back(i);
             }
             offsets.push_back(graphemes.size());
