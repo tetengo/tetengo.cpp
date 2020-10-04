@@ -5,7 +5,7 @@ pkg_headers = \
     cli/character_width.hpp \
     cli/default_character_width.hpp \
     cli/east_asian_character_width.hpp \
-    cli/grapheme_splitter.hpp \
+    cli/grapheme_segment.hpp \
     cli/terminal_string_width.hpp
 
 extra_headers = \

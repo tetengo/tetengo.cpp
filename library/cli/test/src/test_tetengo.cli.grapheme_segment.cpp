@@ -1,5 +1,5 @@
 /*! \file
-    \brief A grapheme splitter.
+    \brief A grapheme segment.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
@@ -13,12 +13,12 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/cli/grapheme_splitter.hpp>
+#include <tetengo/cli/grapheme_segment.hpp>
 
 
 namespace
 {
-    using g_type = tetengo::cli::grapheme_splitter::grapheme_type;
+    using g_type = tetengo::cli::grapheme_segment::grapheme_type;
 
     constexpr g_type graphemes[] = { g_type::cr,  g_type::lf,       g_type::control, g_type::extend,
                                      g_type::zwj, g_type::regional, g_type::prepend, g_type::spacing_mark,
@@ -37,24 +37,24 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(cli)
-BOOST_AUTO_TEST_SUITE(grapheme_splitter)
+BOOST_AUTO_TEST_SUITE(grapheme_segment)
 
 
 BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
-    [[maybe_unused]] const auto& splitter = tetengo::cli::grapheme_splitter::instance();
+    [[maybe_unused]] const auto& segment_maker = tetengo::cli::grapheme_segment::instance();
 }
 
 BOOST_AUTO_TEST_CASE(split)
 {
     BOOST_TEST_PASSPOINT();
 
-    const auto& splitter = tetengo::cli::grapheme_splitter::instance();
+    const auto& segment_maker = tetengo::cli::grapheme_segment::instance();
 
     {
-        const auto offsets = splitter.split({});
+        const auto offsets = segment_maker.split({});
         BOOST_TEST(offsets.empty());
     }
     {
@@ -62,13 +62,13 @@ BOOST_AUTO_TEST_CASE(split)
         for (auto i = std::begin(graphemes); i != std::end(graphemes); ++i)
         {
             {
-                const auto offsets = splitter.split({ *i });
+                const auto offsets = segment_maker.split({ *i });
                 BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1 }));
             }
 
             for (auto j = std::begin(graphemes); j != std::end(graphemes); ++j)
             {
-                const auto offsets = splitter.split({ *i, *j });
+                const auto offsets = segment_maker.split({ *i, *j });
 
                 BOOST_CHECK(offsets.size() == 2U || offsets.size() == 3U);
                 if (offsets.size() == 2)
@@ -139,38 +139,39 @@ BOOST_AUTO_TEST_CASE(split)
         BOOST_TEST(contains(connectings, g_type::other, g_type::spacing_mark));
     }
     {
-        const auto offsets = splitter.split({ g_type::regional });
+        const auto offsets = segment_maker.split({ g_type::regional });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 1 }));
     }
     {
-        const auto offsets = splitter.split({ g_type::regional, g_type::regional });
+        const auto offsets = segment_maker.split({ g_type::regional, g_type::regional });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2 }));
     }
     {
-        const auto offsets = splitter.split({ g_type::regional, g_type::regional, g_type::regional });
+        const auto offsets = segment_maker.split({ g_type::regional, g_type::regional, g_type::regional });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2, 3 }));
     }
     {
-        const auto offsets = splitter.split({ g_type::regional, g_type::regional, g_type::regional, g_type::regional });
+        const auto offsets =
+            segment_maker.split({ g_type::regional, g_type::regional, g_type::regional, g_type::regional });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2, 4 }));
     }
     {
-        const auto offsets = splitter.split(
+        const auto offsets = segment_maker.split(
             { g_type::regional, g_type::regional, g_type::regional, g_type::regional, g_type::regional });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2, 4, 5 }));
     }
     {
-        const auto offsets =
-            splitter.split({ g_type::regional, g_type::regional, g_type::extend, g_type::regional, g_type::regional });
+        const auto offsets = segment_maker.split(
+            { g_type::regional, g_type::regional, g_type::extend, g_type::regional, g_type::regional });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 3, 5 }));
     }
     {
-        const auto offsets =
-            splitter.split({ g_type::regional, g_type::regional, g_type::prepend, g_type::regional, g_type::regional });
+        const auto offsets = segment_maker.split(
+            { g_type::regional, g_type::regional, g_type::prepend, g_type::regional, g_type::regional });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2, 5 }));
     }
     {
-        const auto offsets = splitter.split({
+        const auto offsets = segment_maker.split({
             g_type::other, // U+1F469
             g_type::zwj, // U+200D
             g_type::other, //  U+2764

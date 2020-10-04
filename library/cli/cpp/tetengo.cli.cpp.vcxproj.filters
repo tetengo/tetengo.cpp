@@ -37,7 +37,7 @@
     <ClInclude Include="src\tetengo.cli.character_property_map.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\cli\grapheme_splitter.hpp">
+    <ClInclude Include="include\tetengo\cli\grapheme_segment.hpp">
       <Filter>header\tetengo::cli</Filter>
     </ClInclude>
   </ItemGroup>
@@ -60,7 +60,7 @@
     <ClCompile Include="src\tetengo.cli.character_property_map.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.cli.grapheme_splitter.cpp">
+    <ClCompile Include="src\tetengo.cli.grapheme_segment.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

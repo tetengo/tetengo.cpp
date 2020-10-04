@@ -23,7 +23,7 @@
 #include <tetengo/cli/character_width.hpp>
 #include <tetengo/cli/default_character_width.hpp>
 #include <tetengo/cli/east_asian_character_width.hpp>
-#include <tetengo/cli/grapheme_splitter.hpp>
+#include <tetengo/cli/grapheme_segment.hpp>
 #include <tetengo/cli/terminal_string_width.hpp>
 
 #include "tetengo.cli.character_property_map.hpp"
@@ -47,7 +47,7 @@ namespace tetengo::cli
 
             std::vector<std::size_t> widths{};
             widths.reserve(code_points.size());
-            std::vector<grapheme_splitter::grapheme_type> graphemes{};
+            std::vector<grapheme_segment::grapheme_type> graphemes{};
             graphemes.reserve(code_points.size());
             for (const auto code_point: code_points)
             {
@@ -215,7 +215,7 @@ namespace tetengo::cli
             return following & 0x3F;
         }
 
-        static std::pair<character_width::class_type, grapheme_splitter::grapheme_type>
+        static std::pair<character_width::class_type, grapheme_segment::grapheme_type>
         property_of(const char32_t code_point)
         {
             const auto* p_lower_bound = std::lower_bound(
@@ -256,39 +256,39 @@ namespace tetengo::cli
             }
         }
 
-        static grapheme_splitter::grapheme_type to_grapheme(const grapheme_break_property_type grapheme)
+        static grapheme_segment::grapheme_type to_grapheme(const grapheme_break_property_type grapheme)
         {
             switch (grapheme)
             {
             case grapheme_break_property_type::cr:
-                return grapheme_splitter::grapheme_type::cr;
+                return grapheme_segment::grapheme_type::cr;
             case grapheme_break_property_type::lf:
-                return grapheme_splitter::grapheme_type::lf;
+                return grapheme_segment::grapheme_type::lf;
             case grapheme_break_property_type::control:
-                return grapheme_splitter::grapheme_type::control;
+                return grapheme_segment::grapheme_type::control;
             case grapheme_break_property_type::extend:
-                return grapheme_splitter::grapheme_type::extend;
+                return grapheme_segment::grapheme_type::extend;
             case grapheme_break_property_type::zwj:
-                return grapheme_splitter::grapheme_type::zwj;
+                return grapheme_segment::grapheme_type::zwj;
             case grapheme_break_property_type::regional:
-                return grapheme_splitter::grapheme_type::regional;
+                return grapheme_segment::grapheme_type::regional;
             case grapheme_break_property_type::prepend:
-                return grapheme_splitter::grapheme_type::prepend;
+                return grapheme_segment::grapheme_type::prepend;
             case grapheme_break_property_type::spacing_mark:
-                return grapheme_splitter::grapheme_type::spacing_mark;
+                return grapheme_segment::grapheme_type::spacing_mark;
             case grapheme_break_property_type::l:
-                return grapheme_splitter::grapheme_type::l;
+                return grapheme_segment::grapheme_type::l;
             case grapheme_break_property_type::v:
-                return grapheme_splitter::grapheme_type::v;
+                return grapheme_segment::grapheme_type::v;
             case grapheme_break_property_type::t:
-                return grapheme_splitter::grapheme_type::t;
+                return grapheme_segment::grapheme_type::t;
             case grapheme_break_property_type::lv:
-                return grapheme_splitter::grapheme_type::lv;
+                return grapheme_segment::grapheme_type::lv;
             case grapheme_break_property_type::lvt:
-                return grapheme_splitter::grapheme_type::lvt;
+                return grapheme_segment::grapheme_type::lvt;
             default:
                 assert(grapheme == grapheme_break_property_type::other);
-                return grapheme_splitter::grapheme_type::other;
+                return grapheme_segment::grapheme_type::other;
             }
         }
 

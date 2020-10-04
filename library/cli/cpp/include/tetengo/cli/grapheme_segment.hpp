@@ -1,5 +1,5 @@
 /*! \file
-    \brief A grapheme splitter.
+    \brief A grapheme segment.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
@@ -17,9 +17,9 @@
 namespace tetengo::cli
 {
     /*!
-        \brief A grapheme splitter.
+        \brief A grapheme segment.
     */
-    class grapheme_splitter : private boost::noncopyable
+    class grapheme_segment : private boost::noncopyable
     {
     public:
         // types
@@ -51,15 +51,15 @@ namespace tetengo::cli
 
             \return The instance.
         */
-        static const grapheme_splitter& instance();
+        static const grapheme_segment& instance();
 
 
         // constructors and destructor
 
         /*!
-            \brief Destroys the grapheme splitter.
+            \brief Destroys the grapheme segment.
         */
-        ~grapheme_splitter();
+        ~grapheme_segment();
 
 
         // functions
@@ -111,7 +111,7 @@ namespace tetengo::cli
 
         // constructors
 
-        grapheme_splitter();
+        grapheme_segment();
     };
 
 

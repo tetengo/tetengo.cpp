@@ -25,7 +25,7 @@
     <ClCompile Include="src\test_tetengo.cli.east_asian_character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.cli.grapheme_splitter.cpp">
+    <ClCompile Include="src\test_tetengo.cli.grapheme_segment.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

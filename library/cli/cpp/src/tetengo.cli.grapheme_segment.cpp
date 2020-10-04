@@ -1,5 +1,5 @@
 /*! \file
-    \brief A grapheme splitter.
+    \brief A grapheme segment.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
@@ -14,19 +14,19 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/cli/grapheme_splitter.hpp>
+#include <tetengo/cli/grapheme_segment.hpp>
 
 
 namespace tetengo::cli
 {
-    class grapheme_splitter::impl : private boost::noncopyable
+    class grapheme_segment::impl : private boost::noncopyable
     {
     public:
         // static functions
 
-        static const grapheme_splitter& instance()
+        static const grapheme_segment& instance()
         {
-            static const grapheme_splitter singleton{};
+            static const grapheme_segment singleton{};
             return singleton;
         }
 
@@ -155,19 +155,19 @@ namespace tetengo::cli
     };
 
 
-    const grapheme_splitter& grapheme_splitter::instance()
+    const grapheme_segment& grapheme_segment::instance()
     {
         return impl::instance();
     }
 
-    grapheme_splitter::~grapheme_splitter() = default;
+    grapheme_segment::~grapheme_segment() = default;
 
-    std::vector<std::size_t> grapheme_splitter::split(const std::vector<grapheme_type>& graphemes) const
+    std::vector<std::size_t> grapheme_segment::split(const std::vector<grapheme_type>& graphemes) const
     {
         return m_p_impl->split(graphemes);
     }
 
-    grapheme_splitter::grapheme_splitter() : m_p_impl{ std::make_unique<impl>() } {}
+    grapheme_segment::grapheme_segment() : m_p_impl{ std::make_unique<impl>() } {}
 
 
 }
