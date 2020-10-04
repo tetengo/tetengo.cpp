@@ -169,14 +169,14 @@ BOOST_AUTO_TEST_CASE(segment_offsets)
     }
     {
         const auto offsets = segment_maker.segment_offsets({
-            bp::other, // U+1F469
-            bp::zwj, // U+200D
+            bp::other, //  U+1F469
+            bp::zwj, //    U+200D
             bp::other, //  U+2764
             bp::extend, // U+FE0F
-            bp::zwj, // U+200D
-            bp::other, // U+1F48B
-            bp::zwj, // U+200D
-            bp::other // U+1F468
+            bp::zwj, //    U+200D
+            bp::other, //  U+1F48B
+            bp::zwj, //    U+200D
+            bp::other //   U+1F468
         });
         BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 8 }));
     }

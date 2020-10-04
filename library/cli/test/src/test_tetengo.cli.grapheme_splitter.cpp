@@ -92,7 +92,30 @@ namespace
         return static_cast<char>(uc);
     }
 
-    const std::string string_iruka{ 0x4D_c, 0x79_c, 0x20_c, 0xE6_c, 0xB2_c, 0xB3_c, 0xE8_c, 0xB1_c, 0x9A_c };
+    // clang-format off
+    const std::string string_iruka{
+        0x4D_c,                 // U+004D
+        0x79_c,                 // U+0079
+        0x20_c,                 // U+0020
+        0xE6_c, 0xB2_c, 0xB3_c, // U+6CB3
+        0xE8_c, 0xB1_c, 0x9A_c, // U+8C5A
+    };
+    // clang-format on
+
+    // clang-format off
+    const std::string string_emoji_cyrillic_greek{
+        0xF0_c, 0x9F_c, 0x91_c, 0xA9_c, // U+1F469
+        0xE2_c, 0x80_c, 0x8D_c,         // U+200D
+        0xE2_c, 0x9D_c, 0xA4_c,         // U+2764
+        0xEF_c, 0xB8_c, 0x8F_c,         // U+FE0F
+        0xE2_c, 0x80_c, 0x8D_c,         // U+200D
+        0xF0_c, 0x9F_c, 0x92_c, 0x8B_c, // U+1F48B
+        0xE2_c, 0x80_c, 0x8D_c,         // U+200D
+        0xF0_c, 0x9F_c, 0x91_c, 0xA8_c, // U+1F468
+        0xD0_c, 0x94_c,                 // U+0414
+        0xCE_c, 0xB2_c,                 // U+03B2
+    };
+    // clang-format on
 
 
 }
@@ -190,6 +213,13 @@ BOOST_AUTO_TEST_CASE(width_of)
             BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
             BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
         }
+        {
+            const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
+            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 2 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 2 }));
+        }
     }
     if (auto o_locale = make_locale_ja(); o_locale)
     {
@@ -202,6 +232,13 @@ BOOST_AUTO_TEST_CASE(width_of)
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
             BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
             BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
+        }
+        {
+            const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
+            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 2 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 2 }));
         }
     }
     if (auto o_locale = make_locale_ko(); o_locale)
@@ -216,6 +253,13 @@ BOOST_AUTO_TEST_CASE(width_of)
             BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
             BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
         }
+        {
+            const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
+            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 2 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 2 }));
+        }
     }
     if (auto o_locale = make_locale_en(); o_locale)
     {
@@ -228,6 +272,13 @@ BOOST_AUTO_TEST_CASE(width_of)
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
             BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
             BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
+        }
+        {
+            const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
+            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 1 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 1 }));
         }
     }
 }
