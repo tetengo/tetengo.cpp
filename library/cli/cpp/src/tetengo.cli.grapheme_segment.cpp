@@ -33,22 +33,22 @@ namespace tetengo::cli
 
         // functions
 
-        std::vector<std::size_t> split(const std::vector<grapheme_type>& graphemes) const
+        std::vector<std::size_t> segment_offsets(const std::vector<break_property_type>& break_properties) const
         {
-            if (graphemes.empty())
+            if (break_properties.empty())
             {
                 return std::vector<std::size_t>{};
             }
 
             std::vector<std::size_t> offsets{ 0 };
             auto                     continuous_regional_count = static_cast<std::size_t>(0);
-            for (std::size_t i = 1; i < graphemes.size(); ++i)
+            for (std::size_t i = 1; i < break_properties.size(); ++i)
             {
-                if (connecting_pair_set().find(std::make_pair(graphemes[i - 1], graphemes[i])) !=
+                if (connecting_pair_set().find(std::make_pair(break_properties[i - 1], break_properties[i])) !=
                         std::end(connecting_pair_set()) &&
-                    (graphemes[i] != grapheme_type::regional || continuous_regional_count % 2 == 0))
+                    (break_properties[i] != break_property_type::regional || continuous_regional_count % 2 == 0))
                 {
-                    if (graphemes[i - 1] == grapheme_type::regional)
+                    if (break_properties[i - 1] == break_property_type::regional)
                     {
                         ++continuous_regional_count;
                     }
@@ -62,7 +62,7 @@ namespace tetengo::cli
                 continuous_regional_count = 0;
                 offsets.push_back(i);
             }
-            offsets.push_back(graphemes.size());
+            offsets.push_back(break_properties.size());
 
             return offsets;
         }
@@ -73,15 +73,15 @@ namespace tetengo::cli
 
         struct grapheme_pair_hash_type
         {
-            std::size_t operator()(const std::pair<grapheme_type, grapheme_type>& pair) const
+            std::size_t operator()(const std::pair<break_property_type, break_property_type>& pair) const
             {
-                static const std::hash<grapheme_type> hash{};
+                static const std::hash<break_property_type> hash{};
                 return hash(pair.first) + hash(pair.second);
             }
         };
 
         using connecting_pair_set_type =
-            std::unordered_set<std::pair<grapheme_type, grapheme_type>, grapheme_pair_hash_type>;
+            std::unordered_set<std::pair<break_property_type, break_property_type>, grapheme_pair_hash_type>;
 
 
         // static functions
@@ -94,62 +94,62 @@ namespace tetengo::cli
 
         static connecting_pair_set_type make_connecting_pair_set()
         {
-            using g = grapheme_type;
+            using bp = break_property_type;
             return connecting_pair_set_type{
-                { g::cr, g::lf },
-                { g::extend, g::extend },
-                { g::extend, g::zwj },
-                { g::extend, g::spacing_mark },
-                { g::zwj, g::extend },
-                { g::zwj, g::zwj },
-                { g::zwj, g::spacing_mark },
-                { g::zwj, g::other },
-                { g::regional, g::extend },
-                { g::regional, g::zwj },
-                { g::regional, g::regional },
-                { g::regional, g::spacing_mark },
-                { g::prepend, g::extend },
-                { g::prepend, g::zwj },
-                { g::prepend, g::regional },
-                { g::prepend, g::prepend },
-                { g::prepend, g::spacing_mark },
-                { g::prepend, g::l },
-                { g::prepend, g::v },
-                { g::prepend, g::t },
-                { g::prepend, g::lv },
-                { g::prepend, g::lvt },
-                { g::prepend, g::other },
-                { g::spacing_mark, g::extend },
-                { g::spacing_mark, g::zwj },
-                { g::spacing_mark, g::spacing_mark },
-                { g::l, g::extend },
-                { g::l, g::zwj },
-                { g::l, g::spacing_mark },
-                { g::l, g::l },
-                { g::l, g::v },
-                { g::l, g::lv },
-                { g::l, g::lvt },
-                { g::v, g::extend },
-                { g::v, g::zwj },
-                { g::v, g::spacing_mark },
-                { g::v, g::v },
-                { g::v, g::t },
-                { g::t, g::extend },
-                { g::t, g::zwj },
-                { g::t, g::spacing_mark },
-                { g::t, g::t },
-                { g::lv, g::extend },
-                { g::lv, g::zwj },
-                { g::lv, g::spacing_mark },
-                { g::lv, g::v },
-                { g::lv, g::t },
-                { g::lvt, g::extend },
-                { g::lvt, g::zwj },
-                { g::lvt, g::spacing_mark },
-                { g::lvt, g::t },
-                { g::other, g::extend },
-                { g::other, g::zwj },
-                { g::other, g::spacing_mark },
+                { bp::cr, bp::lf },
+                { bp::extend, bp::extend },
+                { bp::extend, bp::zwj },
+                { bp::extend, bp::spacing_mark },
+                { bp::zwj, bp::extend },
+                { bp::zwj, bp::zwj },
+                { bp::zwj, bp::spacing_mark },
+                { bp::zwj, bp::other },
+                { bp::regional, bp::extend },
+                { bp::regional, bp::zwj },
+                { bp::regional, bp::regional },
+                { bp::regional, bp::spacing_mark },
+                { bp::prepend, bp::extend },
+                { bp::prepend, bp::zwj },
+                { bp::prepend, bp::regional },
+                { bp::prepend, bp::prepend },
+                { bp::prepend, bp::spacing_mark },
+                { bp::prepend, bp::l },
+                { bp::prepend, bp::v },
+                { bp::prepend, bp::t },
+                { bp::prepend, bp::lv },
+                { bp::prepend, bp::lvt },
+                { bp::prepend, bp::other },
+                { bp::spacing_mark, bp::extend },
+                { bp::spacing_mark, bp::zwj },
+                { bp::spacing_mark, bp::spacing_mark },
+                { bp::l, bp::extend },
+                { bp::l, bp::zwj },
+                { bp::l, bp::spacing_mark },
+                { bp::l, bp::l },
+                { bp::l, bp::v },
+                { bp::l, bp::lv },
+                { bp::l, bp::lvt },
+                { bp::v, bp::extend },
+                { bp::v, bp::zwj },
+                { bp::v, bp::spacing_mark },
+                { bp::v, bp::v },
+                { bp::v, bp::t },
+                { bp::t, bp::extend },
+                { bp::t, bp::zwj },
+                { bp::t, bp::spacing_mark },
+                { bp::t, bp::t },
+                { bp::lv, bp::extend },
+                { bp::lv, bp::zwj },
+                { bp::lv, bp::spacing_mark },
+                { bp::lv, bp::v },
+                { bp::lv, bp::t },
+                { bp::lvt, bp::extend },
+                { bp::lvt, bp::zwj },
+                { bp::lvt, bp::spacing_mark },
+                { bp::lvt, bp::t },
+                { bp::other, bp::extend },
+                { bp::other, bp::zwj },
+                { bp::other, bp::spacing_mark },
             };
         }
     };
@@ -162,9 +162,10 @@ namespace tetengo::cli
 
     grapheme_segment::~grapheme_segment() = default;
 
-    std::vector<std::size_t> grapheme_segment::split(const std::vector<grapheme_type>& graphemes) const
+    std::vector<std::size_t>
+    grapheme_segment::segment_offsets(const std::vector<break_property_type>& break_properties) const
     {
-        return m_p_impl->split(graphemes);
+        return m_p_impl->segment_offsets(break_properties);
     }
 
     grapheme_segment::grapheme_segment() : m_p_impl{ std::make_unique<impl>() } {}

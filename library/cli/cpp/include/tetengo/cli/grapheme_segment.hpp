@@ -24,8 +24,8 @@ namespace tetengo::cli
     public:
         // types
 
-        //! A grapheme.
-        enum class grapheme_type
+        //! A break peoperty type.
+        enum class break_property_type
         {
             cr, //!< CR
             lf, //!< LF
@@ -65,7 +65,7 @@ namespace tetengo::cli
         // functions
 
         /*!
-            \brief Splits code points to graphemes.
+            \brief Returns the grapheme offsets.
 
             The graphemes are split between the followings.
             (/: split, X:connect, X?: connect if the number of precedings is odd)
@@ -91,11 +91,11 @@ namespace tetengo::cli
             -----------+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
             </pre>
 
-            \param graphemes Graphemes.
+            \param break_properties Break properties.
 
             \return Grapheme offsets.
         */
-        std::vector<std::size_t> split(const std::vector<grapheme_type>& graphemes) const;
+        std::vector<std::size_t> segment_offsets(const std::vector<break_property_type>& break_properties) const;
 
 
     private:
