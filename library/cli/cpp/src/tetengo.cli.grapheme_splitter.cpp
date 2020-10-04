@@ -43,20 +43,32 @@ namespace tetengo::cli
 
         std::vector<grapheme> split(const std::string_view& string_) const
         {
-            const auto code_points = to_code_points(string_);
+            const auto code_points_and_offsets = to_code_points(string_);
 
             std::vector<std::size_t> widths{};
-            widths.reserve(code_points.size());
+            widths.reserve(code_points_and_offsets.size());
             std::vector<grapheme_segment::break_property_type> break_properties{};
-            break_properties.reserve(code_points.size());
-            for (const auto code_point: code_points)
+            break_properties.reserve(code_points_and_offsets.size());
+            for (const auto code_point_and_offset: code_points_and_offsets)
             {
-                const auto property = property_of(code_point);
+                const auto property = property_of(code_point_and_offset.first);
                 widths.push_back(m_character_width.width_of(property.first));
                 break_properties.push_back(property.second);
             }
+            const auto grapheme_offsets = grapheme_segment::instance().segment_offsets(break_properties);
 
-            return std::vector<grapheme>{};
+            std::vector<grapheme> graphemes{};
+            graphemes.reserve(grapheme_offsets.size());
+            for (auto i = static_cast<std::size_t>(0); i + 1 < grapheme_offsets.size(); ++i)
+            {
+                graphemes.emplace_back(
+                    code_points_and_offsets[grapheme_offsets[i]].second,
+                    *std::max_element(
+                        std::next(std::begin(widths), grapheme_offsets[i]),
+                        std::next(std::begin(widths), grapheme_offsets[i + 1])));
+            }
+
+            return graphemes;
         }
 
 
@@ -123,15 +135,16 @@ namespace tetengo::cli
             return c_name;
         }
 
-        static std::vector<char32_t> to_code_points(const std::string_view& string)
+        static std::vector<std::pair<char32_t, std::size_t>> to_code_points(const std::string_view& string)
         {
-            std::vector<char32_t> code_points{};
+            std::vector<std::pair<char32_t, std::size_t>> code_points_and_offsets{};
 
             auto       current = std::begin(string);
             const auto last = std::end(string);
             while (current != last)
             {
-                char32_t code_point = 0;
+                auto       code_point = static_cast<char32_t>(0);
+                const auto offset = static_cast<std::size_t>(std::distance(std::begin(string), current));
                 if (const auto leading = static_cast<unsigned char>(*current); leading <= 0x7F)
                 {
                     ++current;
@@ -139,7 +152,7 @@ namespace tetengo::cli
                 }
                 else if (0xC0 <= leading && leading <= 0xDF)
                 {
-                    char32_t value = (leading & 0x1F) << 6;
+                    auto value = static_cast<char32_t>((leading & 0x1F) << 6);
                     ++current;
                     value |= following_value(current, last, 1);
                     if (value <= 0x0000007F)
@@ -150,7 +163,7 @@ namespace tetengo::cli
                 }
                 else if (0xE0 <= leading && leading <= 0xEF)
                 {
-                    char32_t value = (leading & 0x0F) << 12;
+                    auto value = static_cast<char32_t>((leading & 0x0F) << 12);
                     ++current;
                     value |= following_value(current, last, 2);
                     if (value <= 0x000007FF)
@@ -161,7 +174,7 @@ namespace tetengo::cli
                 }
                 else if (0xF0 <= leading && leading <= 0xF7)
                 {
-                    char32_t value = (leading & 0x07) << 18;
+                    auto value = static_cast<char32_t>((leading & 0x07) << 18);
                     ++current;
                     value |= following_value(current, last, 3);
                     if (value <= 0x0000FFFF)
@@ -175,10 +188,10 @@ namespace tetengo::cli
                     throw std::invalid_argument{ "The string is not in valid UTF-8." };
                 }
 
-                code_points.push_back(code_point);
+                code_points_and_offsets.push_back(std::make_pair(code_point, offset));
             }
 
-            return code_points;
+            return code_points_and_offsets;
         }
 
         static char32_t following_value(

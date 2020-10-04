@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
+#include <boost/operators.hpp>
 
 
 namespace tetengo::cli
@@ -21,7 +22,7 @@ namespace tetengo::cli
     /*!
         \brief A grapheme.
     */
-    class grapheme
+    class grapheme : public boost::equality_comparable<grapheme>
     {
     public:
         // constructors and destructor
@@ -36,6 +37,20 @@ namespace tetengo::cli
 
 
         // functions
+
+        /*!
+            \brief Returns true when one location is equal to another.
+
+            \param one   One location.
+            \param another Another location.
+
+            \retval true  When one is equal to another.
+            \retval false Otherwise.
+        */
+        [[nodiscard]] friend constexpr bool operator==(const grapheme& one, const grapheme& another)
+        {
+            return one.m_offset == another.m_offset && one.m_width == another.m_width;
+        }
 
         /*!
             \brief Returns the offset in the UTF-8 string.

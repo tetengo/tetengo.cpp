@@ -8,7 +8,9 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -90,7 +92,7 @@ namespace
         return static_cast<char>(uc);
     }
 
-    std::string string_iruka{ 0x4D_c, 0x79_c, 0x20_c, 0xE6_c, 0xB2_c, 0xB3_c, 0xE8_c, 0xB1_c, 0x9A_c };
+    const std::string string_iruka{ 0x4D_c, 0x79_c, 0x20_c, 0xE6_c, 0xB2_c, 0xB3_c, 0xE8_c, 0xB1_c, 0x9A_c };
 
 
 }
@@ -98,9 +100,55 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(cli)
+BOOST_AUTO_TEST_SUITE(grapheme)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    [[maybe_unused]] const tetengo::cli::grapheme grapheme_{ 4, 2 };
+}
+
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::cli::grapheme grapheme1{ 4, 2 };
+        const tetengo::cli::grapheme grapheme2{ 4, 2 };
+
+        BOOST_CHECK(grapheme1 == grapheme2);
+    }
+    {
+        const tetengo::cli::grapheme grapheme1{ 4, 2 };
+        const tetengo::cli::grapheme grapheme2{ 5, 3 };
+
+        BOOST_CHECK(grapheme1 != grapheme2);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(offset)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::cli::grapheme grapheme_{ 4, 2 };
+
+    BOOST_TEST(grapheme_.offset() == 4U);
+}
+
+BOOST_AUTO_TEST_CASE(width)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::cli::grapheme grapheme_{ 4, 2 };
+
+    BOOST_TEST(grapheme_.width() == 2U);
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(grapheme_splitter)
-
-
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
@@ -130,7 +178,58 @@ BOOST_AUTO_TEST_CASE(width_of)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    if (auto o_locale = make_locale_zh(); o_locale)
+    {
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
+        {
+            const auto graphemes = splitter.split(string_iruka);
+            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
+            BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
+        }
+    }
+    if (auto o_locale = make_locale_ja(); o_locale)
+    {
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
+        {
+            const auto graphemes = splitter.split(string_iruka);
+            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
+            BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
+        }
+    }
+    if (auto o_locale = make_locale_ko(); o_locale)
+    {
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
+        {
+            const auto graphemes = splitter.split(string_iruka);
+            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
+            BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
+        }
+    }
+    if (auto o_locale = make_locale_en(); o_locale)
+    {
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
+        {
+            const auto graphemes = splitter.split(string_iruka);
+            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
+            BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
+            BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
+            BOOST_TEST((graphemes[3] == tetengo::cli::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[4] == tetengo::cli::grapheme{ 6, 2 }));
+        }
+    }
 }
 
 
