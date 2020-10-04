@@ -27,7 +27,7 @@ def load_file(path):
     return elements
 
 def make_element(code, east_asian_width, grapheme):
-    return "        { " + "0x{}, east_asian_width_class_type::{}, grapheme_break_property::{}".format(
+    return "        { " + "0x{}, east_asian_width_class_type::{}, grapheme_break_property_type::{}".format(
         code, to_east_asian_width_class_type(east_asian_width), to_grapheme_break_property(grapheme)
     ) + " },\n"
 

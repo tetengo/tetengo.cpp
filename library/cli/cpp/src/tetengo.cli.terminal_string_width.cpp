@@ -222,7 +222,7 @@ namespace tetengo::cli
                 character_property_map,
                 character_property_map + character_property_map_size,
                 character_property_map_element_type{
-                    code_point, east_asian_width_class_type::ambiguous, grapheme_break_property::other },
+                    code_point, east_asian_width_class_type::ambiguous, grapheme_break_property_type::other },
                 [](const auto& element1, const auto& element2) { return element1.code_point < element2.code_point; });
 
             if (p_lower_bound != character_property_map + character_property_map_size &&
@@ -256,38 +256,38 @@ namespace tetengo::cli
             }
         }
 
-        static grapheme_splitter::grapheme_type to_grapheme(const grapheme_break_property grapheme)
+        static grapheme_splitter::grapheme_type to_grapheme(const grapheme_break_property_type grapheme)
         {
             switch (grapheme)
             {
-            case grapheme_break_property::cr:
+            case grapheme_break_property_type::cr:
                 return grapheme_splitter::grapheme_type::cr;
-            case grapheme_break_property::lf:
+            case grapheme_break_property_type::lf:
                 return grapheme_splitter::grapheme_type::lf;
-            case grapheme_break_property::control:
+            case grapheme_break_property_type::control:
                 return grapheme_splitter::grapheme_type::control;
-            case grapheme_break_property::extend:
+            case grapheme_break_property_type::extend:
                 return grapheme_splitter::grapheme_type::extend;
-            case grapheme_break_property::zwj:
+            case grapheme_break_property_type::zwj:
                 return grapheme_splitter::grapheme_type::zwj;
-            case grapheme_break_property::regional:
+            case grapheme_break_property_type::regional:
                 return grapheme_splitter::grapheme_type::regional;
-            case grapheme_break_property::prepend:
+            case grapheme_break_property_type::prepend:
                 return grapheme_splitter::grapheme_type::prepend;
-            case grapheme_break_property::spacing_mark:
+            case grapheme_break_property_type::spacing_mark:
                 return grapheme_splitter::grapheme_type::spacing_mark;
-            case grapheme_break_property::l:
+            case grapheme_break_property_type::l:
                 return grapheme_splitter::grapheme_type::l;
-            case grapheme_break_property::v:
+            case grapheme_break_property_type::v:
                 return grapheme_splitter::grapheme_type::v;
-            case grapheme_break_property::t:
+            case grapheme_break_property_type::t:
                 return grapheme_splitter::grapheme_type::t;
-            case grapheme_break_property::lv:
+            case grapheme_break_property_type::lv:
                 return grapheme_splitter::grapheme_type::lv;
-            case grapheme_break_property::lvt:
+            case grapheme_break_property_type::lvt:
                 return grapheme_splitter::grapheme_type::lvt;
             default:
-                assert(grapheme == grapheme_break_property::other);
+                assert(grapheme == grapheme_break_property_type::other);
                 return grapheme_splitter::grapheme_type::other;
             }
         }

@@ -24,7 +24,7 @@ namespace tetengo::cli
         neutral,
     };
 
-    enum class grapheme_break_property
+    enum class grapheme_break_property_type
     {
         cr,
         lf,
@@ -49,7 +49,7 @@ namespace tetengo::cli
 
         east_asian_width_class_type class_;
 
-        grapheme_break_property grapheme;
+        grapheme_break_property_type grapheme;
     };
 
 
