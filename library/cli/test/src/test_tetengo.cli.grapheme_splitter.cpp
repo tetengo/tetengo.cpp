@@ -130,30 +130,7 @@ BOOST_AUTO_TEST_CASE(width_of)
 {
     BOOST_TEST_PASSPOINT();
 
-    if (auto o_locale = make_locale_zh(); o_locale)
-    {
-        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
-
-        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
-    }
-    if (auto o_locale = make_locale_ja(); o_locale)
-    {
-        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
-
-        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
-    }
-    if (auto o_locale = make_locale_ko(); o_locale)
-    {
-        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
-
-        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
-    }
-    if (auto o_locale = make_locale_en(); o_locale)
-    {
-        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
-
-        BOOST_TEST(tsw.width_of(string_iruka) == 7U);
-    }
+    BOOST_WARN_MESSAGE(false, "Implement it.");
 }
 
 

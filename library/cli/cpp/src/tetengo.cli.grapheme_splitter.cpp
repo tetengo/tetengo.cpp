@@ -41,7 +41,7 @@ namespace tetengo::cli
 
         // functions
 
-        std::size_t width_of(const std::string_view& string_) const
+        std::vector<grapheme> split(const std::string_view& string_) const
         {
             const auto code_points = to_code_points(string_);
 
@@ -56,9 +56,7 @@ namespace tetengo::cli
                 break_properties.push_back(property.second);
             }
 
-
-            // return std::accumulate(std::begin(widths), std::end(widths), static_cast<std::size_t>(0));
-            return 7;
+            return std::vector<grapheme>{};
         }
 
 
@@ -305,9 +303,9 @@ namespace tetengo::cli
 
     grapheme_splitter::~grapheme_splitter() = default;
 
-    std::size_t grapheme_splitter::width_of(const std::string_view& string_) const
+    std::vector<grapheme> grapheme_splitter::split(const std::string_view& string_) const
     {
-        return m_p_impl->width_of(string_);
+        return m_p_impl->split(string_);
     }
 
 

@@ -11,12 +11,62 @@
 #include <locale>
 #include <memory>
 #include <string_view>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
 
 namespace tetengo::cli
 {
+    /*!
+        \brief A grapheme.
+    */
+    class grapheme
+    {
+    public:
+        // constructors and destructor
+
+        /*!
+            \brief Creates a grapheme.
+
+            \param offset An offset in the UTF-8 string.
+            \param width  A width when using a monospace font.
+        */
+        constexpr grapheme(std::size_t offset, std::size_t width) : m_offset{ offset }, m_width{ width } {}
+
+
+        // functions
+
+        /*!
+            \brief Returns the offset in the UTF-8 string.
+
+            \return The offset.
+        */
+        [[nodiscard]] constexpr std::size_t offset() const
+        {
+            return m_offset;
+        }
+
+        /*!
+            \brief Returns the width when using a monospace font.
+
+            \return The width.
+        */
+        [[nodiscard]] constexpr std::size_t width() const
+        {
+            return m_width;
+        }
+
+
+    private:
+        // variables
+
+        std::size_t m_offset;
+
+        std::size_t m_width;
+    };
+
+
     /*!
         \brief A grapheme splitter.
     */
@@ -41,15 +91,15 @@ namespace tetengo::cli
         // functions
 
         /*!
-            \brief Returns the string width in the terminal console.
+            \brief Split a string to graphemes.
 
             \param string_ A string.
 
-            \return The string width.
+            \return Graphemes.
 
             \throw std::invalid_argument When string_ is not in valid UTF-8.
         */
-        [[nodiscard]] std::size_t width_of(const std::string_view& string_) const;
+        [[nodiscard]] std::vector<grapheme> split(const std::string_view& string_) const;
 
 
     private:
