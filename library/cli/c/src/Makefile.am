@@ -4,7 +4,7 @@
 headers =
 
 sources = \
-    tetengo_cli_terminalStringWidth.cpp
+    tetengo_cli_graphemeSplitter.cpp
 
 lib_LTLIBRARIES = libtetengo.cli.la
 

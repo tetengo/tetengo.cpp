@@ -1,5 +1,5 @@
 /*! \file
-    \brief A terminal string width.
+    \brief A grapheme splitter.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */

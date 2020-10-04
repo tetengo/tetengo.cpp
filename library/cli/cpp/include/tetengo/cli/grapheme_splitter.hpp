@@ -1,11 +1,11 @@
 /*! \file
-    \brief A terminal string width.
+    \brief A grapheme splitter.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_CLI_TERMINALSTRINGWIDTH_HPP)
-#define TETENGO_CLI_TERMINALSTRINGWIDTH_HPP
+#if !defined(TETENGO_CLI_GRAPHEMESPLITTER_HPP)
+#define TETENGO_CLI_GRAPHEMESPLITTER_HPP
 
 #include <cstddef>
 #include <locale>
@@ -18,24 +18,24 @@
 namespace tetengo::cli
 {
     /*!
-        \brief A terminal string width.
+        \brief A grapheme splitter.
     */
-    class terminal_string_width : private boost::noncopyable
+    class grapheme_splitter : private boost::noncopyable
     {
     public:
         // constructors and destructor
 
         /*!
-            \brief Creates a terminal string width.
+            \brief Creates a grapheme splitter.
 
             \param locale_ A locale.
         */
-        explicit terminal_string_width(const std::locale& locale_ = std::locale{ "" });
+        explicit grapheme_splitter(const std::locale& locale_ = std::locale{ "" });
 
         /*!
-            \brief Destroys the terminal string width.
+            \brief Destroys the grapheme splitter.
         */
-        virtual ~terminal_string_width();
+        virtual ~grapheme_splitter();
 
 
         // functions

@@ -6,7 +6,7 @@ pkg_headers = \
     cli/default_character_width.hpp \
     cli/east_asian_character_width.hpp \
     cli/grapheme_segment.hpp \
-    cli/terminal_string_width.hpp
+    cli/grapheme_splitter.hpp
 
 extra_headers = \
     cli/0namespace.dox

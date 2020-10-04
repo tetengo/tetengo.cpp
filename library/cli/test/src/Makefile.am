@@ -9,7 +9,7 @@ sources = \
     test_tetengo.cli.default_character_width.cpp \
     test_tetengo.cli.east_asian_character_width.cpp \
     test_tetengo.cli.grapheme_segment.cpp \
-    test_tetengo.cli.terminal_string_width.cpp
+    test_tetengo.cli.grapheme_splitter.cpp
 
 check_PROGRAMS = test_tetengo.cli
 

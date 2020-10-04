@@ -2,7 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    cli/terminalStringWidth.h
+    cli/graphemeSplitter.h
 
 extra_headers =
 

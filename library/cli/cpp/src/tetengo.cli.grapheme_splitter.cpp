@@ -1,5 +1,5 @@
 /*! \file
-    \brief A terminal string width.
+    \brief A grapheme splitter.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
@@ -24,14 +24,14 @@
 #include <tetengo/cli/default_character_width.hpp>
 #include <tetengo/cli/east_asian_character_width.hpp>
 #include <tetengo/cli/grapheme_segment.hpp>
-#include <tetengo/cli/terminal_string_width.hpp>
+#include <tetengo/cli/grapheme_splitter.hpp>
 
 #include "tetengo.cli.character_property_map.hpp"
 
 
 namespace tetengo::cli
 {
-    class terminal_string_width::impl : private boost::noncopyable
+    class grapheme_splitter::impl : private boost::noncopyable
     {
     public:
         // constructors and destructor
@@ -47,13 +47,13 @@ namespace tetengo::cli
 
             std::vector<std::size_t> widths{};
             widths.reserve(code_points.size());
-            std::vector<grapheme_segment::break_property_type> graphemes{};
-            graphemes.reserve(code_points.size());
+            std::vector<grapheme_segment::break_property_type> break_properties{};
+            break_properties.reserve(code_points.size());
             for (const auto code_point: code_points)
             {
                 const auto property = property_of(code_point);
                 widths.push_back(m_character_width.width_of(property.first));
-                graphemes.push_back(property.second);
+                break_properties.push_back(property.second);
             }
 
 
@@ -299,13 +299,13 @@ namespace tetengo::cli
     };
 
 
-    terminal_string_width::terminal_string_width(const std::locale& locale_ /*= std::locale{ "" }*/) :
+    grapheme_splitter::grapheme_splitter(const std::locale& locale_ /*= std::locale{ "" }*/) :
     m_p_impl{ std::make_unique<impl>(locale_) }
     {}
 
-    terminal_string_width::~terminal_string_width() = default;
+    grapheme_splitter::~grapheme_splitter() = default;
 
-    std::size_t terminal_string_width::width_of(const std::string_view& string_) const
+    std::size_t grapheme_splitter::width_of(const std::string_view& string_) const
     {
         return m_p_impl->width_of(string_);
     }

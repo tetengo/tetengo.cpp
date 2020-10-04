@@ -103,7 +103,7 @@
     <ClInclude Include="include\tetengo\cli\default_character_width.hpp" />
     <ClInclude Include="include\tetengo\cli\east_asian_character_width.hpp" />
     <ClInclude Include="include\tetengo\cli\grapheme_segment.hpp" />
-    <ClInclude Include="include\tetengo\cli\terminal_string_width.hpp" />
+    <ClInclude Include="include\tetengo\cli\grapheme_splitter.hpp" />
     <ClInclude Include="src\tetengo.cli.character_property_map.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -116,7 +116,7 @@
     <ClCompile Include="src\tetengo.cli.default_character_width.cpp" />
     <ClCompile Include="src\tetengo.cli.east_asian_character_width.cpp" />
     <ClCompile Include="src\tetengo.cli.grapheme_segment.cpp" />
-    <ClCompile Include="src\tetengo.cli.terminal_string_width.cpp" />
+    <ClCompile Include="src\tetengo.cli.grapheme_splitter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

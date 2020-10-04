@@ -14,11 +14,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tetengo\cli\terminalStringWidth.h">
-      <Filter>header\tetengo::cli</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\cli\graphemeSplitter.h">
+      <Filter>header\tetengo::cli</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -27,10 +27,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tetengo_cli_terminalStringWidth.cpp">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+    <ClCompile Include="src\tetengo_cli_graphemeSplitter.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

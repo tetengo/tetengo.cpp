@@ -1,5 +1,5 @@
 /*! \file
-    \brief A terminal string width.
+    \brief A grapheme splitter.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
@@ -12,7 +12,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/cli/terminal_string_width.hpp>
+#include <tetengo/cli/grapheme_splitter.hpp>
 
 
 namespace
@@ -98,7 +98,7 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(cli)
-BOOST_AUTO_TEST_SUITE(terminal_string_width)
+BOOST_AUTO_TEST_SUITE(grapheme_splitter)
 
 
 BOOST_AUTO_TEST_CASE(construction)
@@ -106,23 +106,23 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::cli::terminal_string_width width{};
+        const tetengo::cli::grapheme_splitter splitter{};
     }
     if (auto o_locale = make_locale_zh(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ *o_locale };
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
     }
     if (auto o_locale = make_locale_ja(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ *o_locale };
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
     }
     if (auto o_locale = make_locale_ko(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ *o_locale };
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
     }
     if (auto o_locale = make_locale_en(); o_locale)
     {
-        const tetengo::cli::terminal_string_width width{ *o_locale };
+        const tetengo::cli::grapheme_splitter splitter{ *o_locale };
     }
 }
 
@@ -132,25 +132,25 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     if (auto o_locale = make_locale_zh(); o_locale)
     {
-        const tetengo::cli::terminal_string_width tsw{ *o_locale };
+        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
 
         BOOST_TEST(tsw.width_of(string_iruka) == 7U);
     }
     if (auto o_locale = make_locale_ja(); o_locale)
     {
-        const tetengo::cli::terminal_string_width tsw{ *o_locale };
+        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
 
         BOOST_TEST(tsw.width_of(string_iruka) == 7U);
     }
     if (auto o_locale = make_locale_ko(); o_locale)
     {
-        const tetengo::cli::terminal_string_width tsw{ *o_locale };
+        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
 
         BOOST_TEST(tsw.width_of(string_iruka) == 7U);
     }
     if (auto o_locale = make_locale_en(); o_locale)
     {
-        const tetengo::cli::terminal_string_width tsw{ *o_locale };
+        const tetengo::cli::grapheme_splitter tsw{ *o_locale };
 
         BOOST_TEST(tsw.width_of(string_iruka) == 7U);
     }

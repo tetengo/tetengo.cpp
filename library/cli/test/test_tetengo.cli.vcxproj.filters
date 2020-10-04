@@ -10,9 +10,6 @@
     <ClCompile Include="src\master.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.cli.terminal_string_width.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -26,6 +23,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\test_tetengo.cli.grapheme_segment.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.cli.grapheme_splitter.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

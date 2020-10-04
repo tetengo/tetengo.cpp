@@ -19,9 +19,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tetengo\cli\terminal_string_width.hpp">
-      <Filter>header\tetengo::cli</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -40,11 +37,11 @@
     <ClInclude Include="include\tetengo\cli\grapheme_segment.hpp">
       <Filter>header\tetengo::cli</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\cli\grapheme_splitter.hpp">
+      <Filter>header\tetengo::cli</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tetengo.cli.terminal_string_width.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -61,6 +58,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo.cli.grapheme_segment.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.cli.grapheme_splitter.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
