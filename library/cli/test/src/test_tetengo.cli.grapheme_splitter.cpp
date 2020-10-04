@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <clocale>
 #include <locale>
 #include <optional>
 #include <stdexcept>
@@ -12,8 +13,10 @@
 
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/cli/graphemeSplitter.h>
 #include <tetengo/cli/grapheme_splitter.hpp>
 
 
@@ -194,6 +197,55 @@ BOOST_AUTO_TEST_CASE(construction)
     if (auto o_locale = make_locale_en(); o_locale)
     {
         const tetengo::cli::grapheme_splitter splitter{ *o_locale };
+    }
+
+    if (auto o_locale = make_locale_zh(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
+    }
+    if (auto o_locale = make_locale_ja(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
+    }
+    if (auto o_locale = make_locale_ko(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
+    }
+    if (auto o_locale = make_locale_en(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
     }
 }
 
