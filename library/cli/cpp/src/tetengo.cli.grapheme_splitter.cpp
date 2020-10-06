@@ -46,9 +46,9 @@ namespace tetengo::cli
             const auto code_points_and_offsets = to_code_points(string_);
 
             std::vector<std::size_t> widths{};
-            widths.reserve(code_points_and_offsets.size());
+            widths.reserve(std::size(code_points_and_offsets));
             std::vector<grapheme_segment::break_property_type> break_properties{};
-            break_properties.reserve(code_points_and_offsets.size());
+            break_properties.reserve(std::size(code_points_and_offsets));
             for (const auto code_point_and_offset: code_points_and_offsets)
             {
                 const auto property = property_of(code_point_and_offset.first);
@@ -58,8 +58,8 @@ namespace tetengo::cli
             const auto grapheme_offsets = grapheme_segment::instance().segment_offsets(break_properties);
 
             std::vector<grapheme> graphemes{};
-            graphemes.reserve(grapheme_offsets.size());
-            for (auto i = static_cast<std::size_t>(0); i + 1 < grapheme_offsets.size(); ++i)
+            graphemes.reserve(std::size(grapheme_offsets));
+            for (auto i = static_cast<std::size_t>(0); i + 1 < std::size(grapheme_offsets); ++i)
             {
                 graphemes.emplace_back(
                     code_points_and_offsets[grapheme_offsets[i]].second,

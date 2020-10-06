@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(split)
         const tetengo::cli::grapheme_splitter splitter{ *o_locale };
         {
             const auto graphemes = splitter.split(string_iruka);
-            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 5U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
@@ -273,7 +273,7 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 2 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 2 }));
@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE(split)
         const tetengo::cli::grapheme_splitter splitter{ *o_locale };
         {
             const auto graphemes = splitter.split(string_iruka);
-            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 5U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 2 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 2 }));
@@ -304,7 +304,7 @@ BOOST_AUTO_TEST_CASE(split)
         const tetengo::cli::grapheme_splitter splitter{ *o_locale };
         {
             const auto graphemes = splitter.split(string_iruka);
-            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 5U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 2 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 2 }));
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE(split)
         const tetengo::cli::grapheme_splitter splitter{ *o_locale };
         {
             const auto graphemes = splitter.split(string_iruka);
-            BOOST_TEST_REQUIRE(graphemes.size() == 5U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 5U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 1 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 1, 1 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 2, 1 }));
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(graphemes.size() == 3U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
             BOOST_TEST((graphemes[0] == tetengo::cli::grapheme{ 0, 2 }));
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 1 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 1 }));

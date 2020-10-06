@@ -75,7 +75,7 @@ namespace tetengo::json
             {
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
-            return location{ std::string_view{ std::data(m_line), m_line.size() },
+            return location{ std::string_view{ std::data(m_line), std::size(m_line) },
                              m_line_count,
                              static_cast<std::size_t>(std::distance(std::cbegin(m_line), m_current_position)) + 1 };
         }

@@ -42,7 +42,7 @@ namespace tetengo::cli
 
             std::vector<std::size_t> offsets{ 0 };
             auto                     continuous_regional_count = static_cast<std::size_t>(0);
-            for (std::size_t i = 1; i < break_properties.size(); ++i)
+            for (std::size_t i = 1; i < std::size(break_properties); ++i)
             {
                 if (connecting_pair_set().find(std::make_pair(break_properties[i - 1], break_properties[i])) !=
                         std::end(connecting_pair_set()) &&
@@ -62,7 +62,7 @@ namespace tetengo::cli
                 continuous_regional_count = 0;
                 offsets.push_back(i);
             }
-            offsets.push_back(break_properties.size());
+            offsets.push_back(std::size(break_properties));
 
             return offsets;
         }

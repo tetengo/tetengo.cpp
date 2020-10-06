@@ -68,8 +68,8 @@ BOOST_AUTO_TEST_CASE(segment_offsets)
             {
                 const auto offsets = segment_maker.segment_offsets({ *i, *j });
 
-                BOOST_CHECK(offsets.size() == 2U || offsets.size() == 3U);
-                if (offsets.size() == 2)
+                BOOST_CHECK(std::size(offsets) == 2U || std::size(offsets) == 3U);
+                if (std::size(offsets) == 2)
                 {
                     BOOST_TEST((offsets == std::vector<std::size_t>{ 0, 2 }));
                     connectings.emplace_back(*i, *j);
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(segment_offsets)
                 }
             }
         }
-        BOOST_TEST(connectings.size() == 54U);
+        BOOST_TEST(std::size(connectings) == 54U);
         BOOST_TEST(contains(connectings, bp::cr, bp::lf));
         BOOST_TEST(contains(connectings, bp::extend, bp::extend));
         BOOST_TEST(contains(connectings, bp::extend, bp::zwj));
