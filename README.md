@@ -14,8 +14,8 @@ Features
 
 A command line interface library.
 
-The utility for terminal string width calculates string widths displayed in the
-terminal console. Some east Asian characters needs two columns to display.
+The utility for splitting a string into graphemes.
+The graphemes return the character widths in the terminal console.
 
 ### tetengo::json
 
