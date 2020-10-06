@@ -10,11 +10,11 @@ EXTRA_DIST = \
 
 
 iwyu:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
+	for d in ${SUBDIRS}; do ${MAKE} -C $$d iwyu; done
 
 clean-iwyu:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} clean-iwyu; cd ..; done
+	for d in ${SUBDIRS}; do ${MAKE} -C $$d clean-iwyu; done
 
 
 format:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done
+	for d in ${SUBDIRS}; do ${MAKE} -C $$d format; done
