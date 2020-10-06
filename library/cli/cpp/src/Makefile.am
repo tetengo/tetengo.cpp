@@ -16,7 +16,7 @@ lib_LIBRARIES = libtetengo.cli.cpp.a
 
 libtetengo_cli_cpp_a_CPPFLAGS = \
     -I${top_srcdir}/library/cli/cpp/include
-libtetengo_cli_cpp_a_SOURCES = ${sources}
+libtetengo_cli_cpp_a_SOURCES = ${headers} ${sources}
 
 noinst_LTLIBRARIES = libtetengo.cli.noinst.la
 

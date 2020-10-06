@@ -18,7 +18,7 @@ lib_LIBRARIES = libtetengo.json.cpp.a
 
 libtetengo_json_cpp_a_CPPFLAGS = \
     -I${top_srcdir}/library/json/cpp/include
-libtetengo_json_cpp_a_SOURCES = ${sources}
+libtetengo_json_cpp_a_SOURCES = ${headers} ${sources}
 
 noinst_LTLIBRARIES = libtetengo.json.noinst.la
 

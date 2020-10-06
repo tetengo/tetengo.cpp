@@ -21,7 +21,7 @@ lib_LIBRARIES = libtetengo.lattice.cpp.a
 
 libtetengo_lattice_cpp_a_CPPFLAGS = \
     -I${top_srcdir}/library/lattice/cpp/include
-libtetengo_lattice_cpp_a_SOURCES = ${sources}
+libtetengo_lattice_cpp_a_SOURCES = ${headers} ${sources}
 
 noinst_LTLIBRARIES = libtetengo.lattice.noinst.la
 
