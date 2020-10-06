@@ -2,7 +2,7 @@
     \brief A node.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
- */
+*/
 
 #if !defined(TETENGO_LATTICE_NODE_H)
 #define TETENGO_LATTICE_NODE_H

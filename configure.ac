@@ -22,6 +22,17 @@ AC_CONFIG_FILES([
     executable/transfer_trains/data/Makefile
     executable/transfer_trains/src/Makefile
     library/Makefile
+    library/cli/Makefile
+    library/cli/c/Makefile
+    library/cli/c/include/Makefile
+    library/cli/c/include/tetengo/Makefile
+    library/cli/c/src/Makefile
+    library/cli/cpp/Makefile
+    library/cli/cpp/include/Makefile
+    library/cli/cpp/include/tetengo/Makefile
+    library/cli/cpp/src/Makefile
+    library/cli/test/Makefile
+    library/cli/test/src/Makefile
     library/json/Makefile
     library/json/c/Makefile
     library/json/c/include/Makefile

@@ -32,7 +32,6 @@ __pycache__/
 *.o
 *.trs
 *.user
-executable/make_dict/src/make_dict
-executable/search_dict/src/search_dict
-executable/search_dict_c/src/search_dict_c
-library/trie/test/src/test_tetengo.trie
+tools/EastAsianWidth.txt
+tools/GraphemeBreakProperty.txt
+tools/character_property_map.txt

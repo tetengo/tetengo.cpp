@@ -20,6 +20,9 @@ if not ""%INSTALL_PATH%""=="""" (
     
     echo Installing tetengo...
     
+    xcopy /s /i /f /y "%~dp0"..\library\cli\c\include\tetengo\cli   %INSTALL_PATH%\include\tetengo\cli\
+    xcopy /s /i /f /y "%~dp0"..\library\cli\cpp\include\tetengo\cli %INSTALL_PATH%\include.cpp\tetengo\cli\
+    
     xcopy /s /i /f /y "%~dp0"..\library\json\c\include\tetengo\json   %INSTALL_PATH%\include\tetengo\json\
     xcopy /s /i /f /y "%~dp0"..\library\json\cpp\include\tetengo\json %INSTALL_PATH%\include.cpp\tetengo\json\
     

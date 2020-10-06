@@ -1,0 +1,5 @@
+LIBRARY tetengo.cli.dll
+EXPORTS
+	tetengo_cli_graphemeSplitter_create
+	tetengo_cli_graphemeSplitter_destroy
+	tetengo_cli_graphemeSplitter_split
