@@ -5,7 +5,9 @@
 */
 
 #include <clocale>
+#include <iterator>
 #include <locale>
+#include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -210,6 +212,7 @@ BOOST_AUTO_TEST_CASE(construction)
             std::setlocale(LC_CTYPE, previous_locale_name.c_str());
         }
         BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_grapheme_splitter);
     }
     if (auto o_locale = make_locale_ja(); o_locale)
     {
@@ -222,6 +225,7 @@ BOOST_AUTO_TEST_CASE(construction)
             std::setlocale(LC_CTYPE, previous_locale_name.c_str());
         }
         BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_grapheme_splitter);
     }
     if (auto o_locale = make_locale_ko(); o_locale)
     {
@@ -234,6 +238,7 @@ BOOST_AUTO_TEST_CASE(construction)
             std::setlocale(LC_CTYPE, previous_locale_name.c_str());
         }
         BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_grapheme_splitter);
     }
     if (auto o_locale = make_locale_en(); o_locale)
     {
@@ -246,10 +251,11 @@ BOOST_AUTO_TEST_CASE(construction)
             std::setlocale(LC_CTYPE, previous_locale_name.c_str());
         }
         BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_grapheme_splitter);
     }
 }
 
-BOOST_AUTO_TEST_CASE(width_of)
+BOOST_AUTO_TEST_CASE(split)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -332,6 +338,207 @@ BOOST_AUTO_TEST_CASE(width_of)
             BOOST_TEST((graphemes[1] == tetengo::cli::grapheme{ 27, 1 }));
             BOOST_TEST((graphemes[2] == tetengo::cli::grapheme{ 29, 1 }));
         }
+    }
+
+    if (auto o_locale = make_locale_zh(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_grapheme_splitter);
+
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 5U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 1U);
+            BOOST_TEST(graphemes[1].offset == 1U);
+            BOOST_TEST(graphemes[1].width == 1U);
+            BOOST_TEST(graphemes[2].offset == 2U);
+            BOOST_TEST(graphemes[2].width == 1U);
+            BOOST_TEST(graphemes[3].offset == 3U);
+            BOOST_TEST(graphemes[3].width == 2U);
+            BOOST_TEST(graphemes[4].offset == 6U);
+            BOOST_TEST(graphemes[4].width == 2U);
+        }
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again = tetengo_cli_graphemeSplitter_split(
+                p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 2U);
+            BOOST_TEST(graphemes[1].offset == 27U);
+            BOOST_TEST(graphemes[1].width == 2U);
+            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[2].width == 2U);
+        }
+        {
+            const auto grapheme_count = tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, nullptr, nullptr);
+            BOOST_TEST(grapheme_count == 0U);
+        }
+    }
+    if (auto o_locale = make_locale_ja(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_grapheme_splitter);
+
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 5U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 1U);
+            BOOST_TEST(graphemes[1].offset == 1U);
+            BOOST_TEST(graphemes[1].width == 1U);
+            BOOST_TEST(graphemes[2].offset == 2U);
+            BOOST_TEST(graphemes[2].width == 1U);
+            BOOST_TEST(graphemes[3].offset == 3U);
+            BOOST_TEST(graphemes[3].width == 2U);
+            BOOST_TEST(graphemes[4].offset == 6U);
+            BOOST_TEST(graphemes[4].width == 2U);
+        }
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again = tetengo_cli_graphemeSplitter_split(
+                p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 2U);
+            BOOST_TEST(graphemes[1].offset == 27U);
+            BOOST_TEST(graphemes[1].width == 2U);
+            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[2].width == 2U);
+        }
+    }
+    if (auto o_locale = make_locale_ko(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_grapheme_splitter);
+
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 5U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 1U);
+            BOOST_TEST(graphemes[1].offset == 1U);
+            BOOST_TEST(graphemes[1].width == 1U);
+            BOOST_TEST(graphemes[2].offset == 2U);
+            BOOST_TEST(graphemes[2].width == 1U);
+            BOOST_TEST(graphemes[3].offset == 3U);
+            BOOST_TEST(graphemes[3].width == 2U);
+            BOOST_TEST(graphemes[4].offset == 6U);
+            BOOST_TEST(graphemes[4].width == 2U);
+        }
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again = tetengo_cli_graphemeSplitter_split(
+                p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 2U);
+            BOOST_TEST(graphemes[1].offset == 27U);
+            BOOST_TEST(graphemes[1].width == 2U);
+            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[2].width == 2U);
+        }
+    }
+    if (auto o_locale = make_locale_en(); o_locale)
+    {
+        const std::string previous_locale_name{ std::setlocale(LC_CTYPE, nullptr) };
+        std::setlocale(LC_CTYPE, o_locale->name().c_str());
+        const auto* const p_grapheme_splitter = tetengo_cli_graphemeSplitter_create();
+        BOOST_SCOPE_EXIT(&previous_locale_name, p_grapheme_splitter)
+        {
+            tetengo_cli_graphemeSplitter_destroy(p_grapheme_splitter);
+            std::setlocale(LC_CTYPE, previous_locale_name.c_str());
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_grapheme_splitter);
+
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 5U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 1U);
+            BOOST_TEST(graphemes[1].offset == 1U);
+            BOOST_TEST(graphemes[1].width == 1U);
+            BOOST_TEST(graphemes[2].offset == 2U);
+            BOOST_TEST(graphemes[2].width == 1U);
+            BOOST_TEST(graphemes[3].offset == 3U);
+            BOOST_TEST(graphemes[3].width == 2U);
+            BOOST_TEST(graphemes[4].offset == 6U);
+            BOOST_TEST(graphemes[4].width == 2U);
+        }
+        {
+            const auto grapheme_count =
+                tetengo_cli_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
+            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            std::vector<tetengo_cli_grapheme_t> graphemes(grapheme_count);
+            const auto                          grapheme_count_again = tetengo_cli_graphemeSplitter_split(
+                p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
+            BOOST_TEST(grapheme_count_again == grapheme_count);
+            BOOST_TEST(graphemes[0].offset == 0U);
+            BOOST_TEST(graphemes[0].width == 2U);
+            BOOST_TEST(graphemes[1].offset == 27U);
+            BOOST_TEST(graphemes[1].width == 1U);
+            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[2].width == 1U);
+        }
+    }
+    {
+        const auto grapheme_count = tetengo_cli_graphemeSplitter_split(nullptr, string_iruka.c_str(), nullptr);
+        BOOST_TEST(grapheme_count == 0U);
     }
 }
 

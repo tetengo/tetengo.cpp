@@ -125,7 +125,7 @@ namespace tetengo::cli
         static std::string locale_name(const std::locale& locale_)
         {
             auto cpp_name = locale_.name();
-            if (!cpp_name.empty())
+            if (!std::empty(cpp_name))
             {
                 return cpp_name;
             }

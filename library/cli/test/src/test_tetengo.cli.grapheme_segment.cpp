@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(segment_offsets)
 
     {
         const auto offsets = segment_maker.segment_offsets({});
-        BOOST_TEST(offsets.empty());
+        BOOST_TEST(std::empty(offsets));
     }
     {
         std::vector<std::pair<bp, bp>> connectings;

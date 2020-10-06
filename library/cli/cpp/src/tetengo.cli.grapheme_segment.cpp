@@ -35,7 +35,7 @@ namespace tetengo::cli
 
         std::vector<std::size_t> segment_offsets(const std::vector<break_property_type>& break_properties) const
         {
-            if (break_properties.empty())
+            if (std::empty(break_properties))
             {
                 return std::vector<std::size_t>{};
             }

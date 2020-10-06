@@ -6,9 +6,13 @@
 
 #include <cassert>
 #include <clocale>
+#include <cstddef>
+#include <iterator>
 #include <locale>
 #include <memory>
+#include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include <tetengo/cli/graphemeSplitter.h>
 #include <tetengo/cli/grapheme_splitter.hpp>
@@ -50,4 +54,38 @@ void tetengo_cli_graphemeSplitter_destroy(const tetengo_cli_graphemeSplitter_t* 
     }
     catch (...)
     {}
+}
+
+size_t tetengo_cli_graphemeSplitter_split(
+    const tetengo_cli_graphemeSplitter_t* const p_grapheme_splitter,
+    const char* const                           string,
+    tetengo_cli_grapheme_t* const               p_graphemes)
+{
+    try
+    {
+        if (!p_grapheme_splitter)
+        {
+            throw std::invalid_argument{ "p_grapheme_spliter is NULL." };
+        }
+        if (!string)
+        {
+            throw std::invalid_argument{ "string is NULL." };
+        }
+
+        const auto cpp_graphemes = p_grapheme_splitter->p_cpp_grapheme_splitter->split(string);
+        if (p_graphemes)
+        {
+            for (auto i = static_cast<std::size_t>(0); i < std::size(cpp_graphemes); ++i)
+            {
+                p_graphemes[i].offset = cpp_graphemes[i].offset();
+                p_graphemes[i].width = cpp_graphemes[i].width();
+            }
+        }
+
+        return std::size(cpp_graphemes);
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }

@@ -51,6 +51,20 @@ tetengo_cli_graphemeSplitter_t* tetengo_cli_graphemeSplitter_create();
 */
 void tetengo_cli_graphemeSplitter_destroy(const tetengo_cli_graphemeSplitter_t* p_grapheme_splitter);
 
+/*!
+    \brief Split a string to graphemes.
+
+    \param p_grapheme_splitter A pointer to a grapheme splitter.
+    \param string              A string.
+    \param p_graphemes         The storage for graphemes. Can be NULL.
+
+    \return A grapheme count. Or 0 when p_grapheme_splitter is NULL or string is NULL.
+*/
+size_t tetengo_cli_graphemeSplitter_split(
+    const tetengo_cli_graphemeSplitter_t* p_grapheme_splitter,
+    const char*                           string,
+    tetengo_cli_grapheme_t*               p_graphemes);
+
 
 #if defined(__cplusplus)
 }
