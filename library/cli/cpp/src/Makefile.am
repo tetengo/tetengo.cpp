@@ -40,7 +40,6 @@ clean-iwyu:
 
 clean-local: clean-iwyu
 
-
 .PHONY: format
 format:
 	for f in ${headers} ${sources}; do ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; done

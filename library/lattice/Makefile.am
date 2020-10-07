@@ -7,12 +7,12 @@ SUBDIRS = \
     test
 
 
-iwyu:
-	for d in ${SUBDIRS}; do ${MAKE} -C $$d iwyu; done
+iwyu: ${SUBDIRS}
 
-clean-iwyu:
-	for d in ${SUBDIRS}; do ${MAKE} -C $$d clean-iwyu; done
+clean-iwyu: ${SUBDIRS}
 
+format: ${SUBDIRS}
 
-format:
-	for d in ${SUBDIRS}; do ${MAKE} -C $$d format; done
+.PHONY: ${SUBDIRS}
+${SUBDIRS}:
+	${MAKE} -C $@ ${MAKECMDGOALS}
