@@ -11,6 +11,8 @@ clean-iwyu: ${SUBDIRS}
 
 format: ${SUBDIRS}
 
+clean-format: ${SUBDIRS}
+
 .PHONY: ${SUBDIRS}
 ${SUBDIRS}:
 	${MAKE} -C $@ ${MAKECMDGOALS}
