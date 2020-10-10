@@ -52,3 +52,10 @@ clean-format: ${SOURCE_SUBDIRS}
 .PHONY: ${SOURCE_SUBDIRS}
 ${SOURCE_SUBDIRS}:
 	${MAKE} -C $@ ${MAKECMDGOALS}
+
+.PHONY: pushcheck
+pushcheck:
+	${MAKE} -s format
+	${MAKE} check
+	${MAKE} iwyu
+	${MAKE} doc > /dev/null
