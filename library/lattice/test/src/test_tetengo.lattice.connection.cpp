@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::lattice::connection connection_{ 42 };
+        [[maybe_unused]] const tetengo::lattice::connection connection_{ 42 };
     }
 
     {
