@@ -78,9 +78,6 @@
     <ClCompile Include="src\tetengo.lattice.lattice.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.lattice.connection.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\tetengo.lattice.n_best_iterator.cpp">
       <Filter>src</Filter>
     </ClCompile>

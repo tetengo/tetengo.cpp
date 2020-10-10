@@ -114,7 +114,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\tetengo.lattice.connection.cpp" />
     <ClCompile Include="src\tetengo.lattice.constraint.cpp" />
     <ClCompile Include="src\tetengo.lattice.constraint_element.cpp" />
     <ClCompile Include="src\tetengo.lattice.entry.cpp" />

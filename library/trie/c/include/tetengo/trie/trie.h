@@ -24,14 +24,14 @@ typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
 /*!
     \brief An element type.
 */
-typedef struct tetengo_trie_trie_element_tag
+typedef struct tetengo_trie_trieElement_tag
 {
     //! The key.
     const char* key;
 
     //! The pointer to the value.
     const void* p_value;
-} tetengo_trie_trie_element_t;
+} tetengo_trie_trieElement_t;
 
 /*!
     \brief An observer type called when a key is adding.
@@ -80,7 +80,7 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor(void);
     \return A pointer to a trie. Or NULL on error.
 */
 tetengo_trie_trie_t* tetengo_trie_trie_create(
-    const tetengo_trie_trie_element_t* p_elements,
+    const tetengo_trie_trieElement_t*  p_elements,
     size_t                             element_count,
     size_t                             element_value_size,
     tetengo_trie_trie_addingObserver_t adding_observer,

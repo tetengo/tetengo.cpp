@@ -8,72 +8,52 @@
 #include <cassert> // IWYU pragma: keep
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include <tetengo/lattice/entry.hpp>
 
 
 namespace tetengo::lattice
 {
-    template <>
-    const basic_entry<std::string, std::any>& basic_entry<std::string, std::any>::bos_eos()
+    const entry& entry::bos_eos()
     {
-        static const basic_entry singleton{ std::string{}, std::any{}, 0 };
+        static const entry singleton{ std::string{}, std::any{}, 0 };
         return singleton;
     }
 
-    template <>
-    const basic_entry<std::string_view, const std::any*>& basic_entry<std::string_view, const std::any*>::bos_eos()
-    {
-        static const std::any    value_singleton = std::any{};
-        static const basic_entry singleton{ std::string_view{}, &value_singleton, 0 };
-        return singleton;
-    }
-
-    template <typename Key, typename Value>
-    basic_entry<Key, Value>::basic_entry(key_type key, value_type value, const int cost) :
+    entry::entry(std::string key, std::any value, const int cost) :
     m_key{ std::move(key) },
         m_value{ std::move(value) },
         m_cost{ cost }
     {}
 
-    template <>
-    template <>
-    basic_entry<std::string_view, const std::any*>::basic_entry(const basic_entry<std::string, std::any>& another) :
-    m_key{ another.key() },
-        m_value{ &another.value() },
-        m_cost{ another.cost() }
-    {}
+    entry::entry(const entry_view& view) : m_key{ view.key() }, m_value{ *view.value() }, m_cost{ view.cost() } {}
 
-    template <>
-    template <>
-    basic_entry<std::string, std::any>::basic_entry(const basic_entry<std::string_view, const std::any*>& another) :
-    m_key{ another.key() },
-        m_value{ *another.value() },
-        m_cost{ another.cost() }
-    {}
-
-    template <typename Key, typename Value>
-    const typename basic_entry<Key, Value>::key_type& basic_entry<Key, Value>::key() const
+    const std::string& entry::key() const
     {
         return m_key;
     }
 
-    template <typename Key, typename Value>
-    const typename basic_entry<Key, Value>::value_type& basic_entry<Key, Value>::value() const
+    const std::any& entry::value() const
     {
         return m_value;
     }
 
-    template <typename Key, typename Value>
-    int basic_entry<Key, Value>::cost() const
+    int entry::cost() const
     {
         return m_cost;
     }
 
 
-    template class basic_entry<std::string, std::any>;
+    const entry_view& entry_view::bos_eos()
+    {
+        static const std::any   value_singleton = std::any{};
+        static const entry_view singleton{ std::string_view{}, &value_singleton, 0 };
+        return singleton;
+    }
 
-    template class basic_entry<std::string_view, const std::any*>;
+    entry_view::entry_view(const entry& entry) : m_key{ entry.key() }, m_value{ &entry.value() }, m_cost{ entry.cost() }
+    {}
 
 
 }

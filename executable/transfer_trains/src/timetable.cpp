@@ -168,28 +168,6 @@ std::vector<stop>& train::stops()
 }
 
 
-section::section(const train* const p_train, const std::size_t from, const std::size_t to) :
-m_p_train{ p_train },
-    m_from{ from },
-    m_to{ to }
-{}
-
-const train* section::p_train() const
-{
-    return m_p_train;
-}
-
-std::size_t section::from() const
-{
-    return m_from;
-}
-
-std::size_t section::to() const
-{
-    return m_to;
-}
-
-
 class timetable::impl : private boost::noncopyable
 {
 public:
