@@ -11,10 +11,11 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:     0
-  DOXYGEN_VER:   1.8.20
-  BOOST_VER:     1_74_0
-  BOOST_VER_DOT: 1.74.0
+  CACHE_REV:        0
+  CONCURRENT_BUILD: 4
+  DOXYGEN_VER:      1.8.20
+  BOOST_VER:        1_74_0
+  BOOST_VER_DOT:    1.74.0
 
 jobs:
   build:
@@ -51,8 +52,8 @@ jobs:
         mkdir -p doxygen-${DOXYGEN_VER}/build
         cd doxygen-${DOXYGEN_VER}/build
         cmake -G "Unix Makefiles" ..
-        make -j2
-        sudo make -j2 install
+        make -j ${{ env.CONCURRENT_BUILD }}
+        sudo make -j ${{ env.CONCURRENT_BUILD }} install
     
     - name: Cache Boost build
       uses: actions/cache@v1
@@ -70,8 +71,8 @@ jobs:
         tar -xf boost_${BOOST_VER}.tar.bz2
         cd boost_${BOOST_VER}
         ./bootstrap.sh --with-toolset=clang
-        (./b2 -j2 toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j2 toolset=clang variant=release link=static install --prefix=/usr/local || :)
+        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
       uses: actions/checkout@v1
@@ -92,7 +93,7 @@ jobs:
       shell: bash
       run: |
         cd build
-        make -j2 iwyu
+        make -j ${{ env.CONCURRENT_BUILD }} iwyu
     
     - name: Build and make archives
       shell: bash
@@ -103,9 +104,9 @@ jobs:
         "
         export BOOST_TEST_LOG_LEVEL=warning
         cd build
-        make -j2 distcheck
-        make -j2 dist-bzip2
-        make -j2 dist-zip
+        make -j ${{ env.CONCURRENT_BUILD }} distcheck
+        make -j ${{ env.CONCURRENT_BUILD }} dist-bzip2
+        make -j ${{ env.CONCURRENT_BUILD }} dist-zip
     
     - name: Make documents
       shell: bash
