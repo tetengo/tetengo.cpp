@@ -196,7 +196,11 @@ public:
         \param from    A departure station index.
         \param to      An arrival station index.
     */
-    section(const train* p_train, std::size_t from, std::size_t to);
+    constexpr section(const train* p_train, std::size_t from, std::size_t to) :
+    m_p_train{ p_train },
+        m_from{ from },
+        m_to{ to }
+    {}
 
 
     // functions
@@ -206,21 +210,30 @@ public:
 
         \return A pointer to the train.
     */
-    [[nodiscard]] const train* p_train() const;
+    [[nodiscard]] constexpr const train* p_train() const
+    {
+        return m_p_train;
+    }
 
     /*!
         \brief Returns the departure station index.
 
         \return The departure station index.
     */
-    [[nodiscard]] std::size_t from() const;
+    [[nodiscard]] constexpr std::size_t from() const
+    {
+        return m_from;
+    }
 
     /*!
         \brief Returns the arrival station index.
 
         \return The arrival station index.
     */
-    [[nodiscard]] std::size_t to() const;
+    [[nodiscard]] constexpr std::size_t to() const
+    {
+        return m_to;
+    }
 
 
 private:
