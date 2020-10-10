@@ -180,10 +180,10 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        constexpr auto                           kumamoto_value = static_cast<int>(42);
-        constexpr auto                           tamana_value = static_cast<int>(24);
-        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
-                                                           { "Tamana", &tamana_value } };
+        constexpr auto                          kumamoto_value = static_cast<int>(42);
+        constexpr auto                          tamana_value = static_cast<int>(24);
+        std::vector<tetengo_trie_trieElement_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                          { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
             std::data(elements),
@@ -307,10 +307,10 @@ BOOST_AUTO_TEST_CASE(size)
     }
 
     {
-        constexpr auto                           kumamoto_value = static_cast<int>(42);
-        constexpr auto                           tamana_value = static_cast<int>(24);
-        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
-                                                           { "Tamana", &tamana_value } };
+        constexpr auto                          kumamoto_value = static_cast<int>(42);
+        constexpr auto                          tamana_value = static_cast<int>(24);
+        std::vector<tetengo_trie_trieElement_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                          { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
             std::data(elements),
@@ -361,10 +361,10 @@ BOOST_AUTO_TEST_CASE(filling_rate)
     }
 
     {
-        constexpr auto                           kumamoto_value = static_cast<int>(42);
-        constexpr auto                           tamana_value = static_cast<int>(24);
-        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
-                                                           { "Tamana", &tamana_value } };
+        constexpr auto                          kumamoto_value = static_cast<int>(42);
+        constexpr auto                          tamana_value = static_cast<int>(24);
+        std::vector<tetengo_trie_trieElement_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                          { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
             std::data(elements),
@@ -487,10 +487,10 @@ BOOST_AUTO_TEST_CASE(serialize)
     }
 
     {
-        constexpr auto                           kumamoto_value = static_cast<int>(42);
-        constexpr auto                           tamana_value = static_cast<int>(24);
-        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
-                                                           { "Tamana", &tamana_value } };
+        constexpr auto                          kumamoto_value = static_cast<int>(42);
+        constexpr auto                          tamana_value = static_cast<int>(24);
+        std::vector<tetengo_trie_trieElement_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                          { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
             std::data(elements),
@@ -565,10 +565,10 @@ BOOST_AUTO_TEST_CASE(serialize)
         BOOST_TEST(std::empty(serialized));
     }
     {
-        constexpr auto                           kumamoto_value = static_cast<int>(42);
-        constexpr auto                           tamana_value = static_cast<int>(24);
-        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
-                                                           { "Tamana", &tamana_value } };
+        constexpr auto                          kumamoto_value = static_cast<int>(42);
+        constexpr auto                          tamana_value = static_cast<int>(24);
+        std::vector<tetengo_trie_trieElement_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                          { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
             std::data(elements),
@@ -611,10 +611,10 @@ BOOST_AUTO_TEST_CASE(clone)
     }
 
     {
-        constexpr auto                           kumamoto_value = static_cast<int>(42);
-        constexpr auto                           tamana_value = static_cast<int>(24);
-        std::vector<tetengo_trie_trie_element_t> elements{ { "Kumamoto", &kumamoto_value },
-                                                           { "Tamana", &tamana_value } };
+        constexpr auto                          kumamoto_value = static_cast<int>(42);
+        constexpr auto                          tamana_value = static_cast<int>(24);
+        std::vector<tetengo_trie_trieElement_t> elements{ { "Kumamoto", &kumamoto_value },
+                                                          { "Tamana", &tamana_value } };
 
         const auto* const p_trie = tetengo_trie_trie_create(
             std::data(elements),

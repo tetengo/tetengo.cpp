@@ -44,7 +44,7 @@ size_t tetengo_trie_trie_defaultDoubleArrayDensityFactor(void)
 }
 
 tetengo_trie_trie_t* tetengo_trie_trie_create(
-    const tetengo_trie_trie_element_t* const p_elements,
+    const tetengo_trie_trieElement_t* const  p_elements,
     const size_t                             element_count,
     const size_t                             element_value_size,
     const tetengo_trie_trie_addingObserver_t adding_observer,
