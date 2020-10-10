@@ -10,12 +10,14 @@ EXTRA_DIST = \
     tetengo.cli.vcxproj.filters
 
 
-iwyu:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
+iwyu: ${SUBDIRS}
 
-clean-iwyu:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} clean-iwyu; cd ..; done
+clean-iwyu: ${SUBDIRS}
 
+format: ${SUBDIRS}
 
-format:
-	for d in ${SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done
+clean-format: ${SUBDIRS}
+
+.PHONY: ${SUBDIRS}
+${SUBDIRS}:
+	${MAKE} -C $@ ${MAKECMDGOALS}

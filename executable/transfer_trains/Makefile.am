@@ -14,12 +14,14 @@ EXTRA_DIST = \
     transfer_trains.vcxproj.filters
 
 
-iwyu:
-	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
+iwyu: ${SOURCE_SUBDIRS}
 
-clean-iwyu:
-	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} clean-iwyu; cd ..; done
+clean-iwyu: ${SOURCE_SUBDIRS}
 
+format: ${SOURCE_SUBDIRS}
 
-format:
-	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done
+clean-format: ${SUBDIRS}
+
+.PHONY: ${SOURCE_SUBDIRS}
+${SOURCE_SUBDIRS}:
+	${MAKE} -C $@ ${MAKECMDGOALS}

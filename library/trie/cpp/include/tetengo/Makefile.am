@@ -37,6 +37,14 @@ clean-iwyu:
 clean-local: clean-iwyu
 
 
-.PHONY: format
-format:
-	for f in ${pkg_headers} ${extra_headers}; do ${top_srcdir}/tools/call_clang-format.sh ${srcdir}/$$f; done
+format: ${addsuffix .formatout, ${pkg_headers} ${extra_headers}}
+
+%.formatout: %
+	${top_srcdir}/tools/call_clang-format.sh $< || true
+	touch $@
+
+.PHONY: clean-format
+clean-format:
+	-find -name "*.formatout" | xargs rm -f
+
+clean-local: clean-format

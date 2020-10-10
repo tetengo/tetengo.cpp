@@ -11,10 +11,11 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:     0
-  TETENGO_VER:   1.2.0
-  BOOST_VER:     1_74_0
-  BOOST_VER_DOT: 1.74.0
+  CACHE_REV:        0
+  TETENGO_VER:      1.2.0
+  CONCURRENT_BUILD: 4
+  BOOST_VER:        1_74_0
+  BOOST_VER_DOT:    1.74.0
 
 jobs:
   build:
@@ -40,8 +41,8 @@ jobs:
         tar -xf boost_%BOOST_VER%.tar.gz
         cd boost_%BOOST_VER%
         call bootstrap.bat
-        b2.exe -j2 toolset=msvc-14.2 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
-        b2.exe -j2 toolset=msvc-14.2 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
     
     - name: Checkout
       uses: actions/checkout@v1

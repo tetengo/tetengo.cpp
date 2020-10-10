@@ -11,9 +11,10 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:     0
-  BOOST_VER:     1_74_0
-  BOOST_VER_DOT: 1.74.0
+  CACHE_REV:        0
+  CONCURRENT_BUILD: 4
+  BOOST_VER:        1_74_0
+  BOOST_VER_DOT:    1.74.0
 
 jobs:
   build:
@@ -43,8 +44,8 @@ jobs:
         tar xvf boost_${BOOST_VER}.tar.bz2
         cd boost_${BOOST_VER}
         ./bootstrap.sh --with-toolset=gcc
-        (./b2 -j2 toolset=gcc variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j2 toolset=gcc variant=release link=static install --prefix=/usr/local || :)
+        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc variant=release link=static cxxflags="-std=gnu++11" || :)
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
       uses: actions/checkout@v1
@@ -70,4 +71,4 @@ jobs:
         "
         export BOOST_TEST_LOG_LEVEL=warning
         cd build
-        make -j2 check
+        make -j ${{ env.CONCURRENT_BUILD }} check

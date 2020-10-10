@@ -40,14 +40,22 @@ clean-doc:
 
 distclean-local: clean-doc
 
-
-iwyu:
-	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} iwyu; cd ..; done
+iwyu: ${SOURCE_SUBDIRS}
 	for f in $$(find -name "*.iwyuout"); do ${top_srcdir}/tools/filter_iwyuout.py < $$f; done
 
-clean-iwyu:
-	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} clean-iwyu; cd ..; done
+clean-iwyu: ${SOURCE_SUBDIRS}
 
+format: ${SOURCE_SUBDIRS}
 
-format:
-	for d in ${SOURCE_SUBDIRS}; do cd $$d; ${MAKE} format; cd ..; done
+clean-format: ${SOURCE_SUBDIRS}
+
+.PHONY: ${SOURCE_SUBDIRS}
+${SOURCE_SUBDIRS}:
+	${MAKE} -C $@ ${MAKECMDGOALS}
+
+.PHONY: pushcheck
+pushcheck:
+	${MAKE} -s format
+	${MAKE} check
+	${MAKE} iwyu
+	${MAKE} doc > /dev/null
