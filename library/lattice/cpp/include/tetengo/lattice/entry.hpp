@@ -10,41 +10,20 @@
 #include <any>
 #include <string>
 #include <string_view>
+#include <utility>
 
 
 namespace tetengo::lattice
 {
-#if !defined(DOCUMENTATION)
-    namespace temp
-    {
-        std::any empty_std_any();
-
-        bool std_any_has_value(const std::any& any_);
-
-
-    }
-#endif
+    class entry_view;
 
 
     /*!
-        \brief A template of an entry.
-
-        \tparam Key   A key type.
-        \tparam Value A value type.
+        \brief An entry.
     */
-    template <typename Key, typename Value>
-    class basic_entry
+    class entry
     {
     public:
-        // types
-
-        //! The key type.
-        using key_type = Key;
-
-        //! The value type.
-        using value_type = Value;
-
-
         // static functions
 
         /*!
@@ -52,7 +31,7 @@ namespace tetengo::lattice
 
             \return The BOS/EOS entry.
         */
-        [[nodiscard]] static const basic_entry& bos_eos();
+        [[nodiscard]] static const entry& bos_eos();
 
 
         // constructors
@@ -64,18 +43,14 @@ namespace tetengo::lattice
             \param value A value.
             \param cost  A cost.
         */
-        basic_entry(key_type key, value_type value, int cost);
+        entry(std::string key, std::any value, int cost);
 
         /*!
-            \brief Copies an entry.
+            \brief Creates an entry.
 
-            \tparam K A key type.
-            \tparam V A value type.
-
-            \param another Another entry.
+            \param view An entry view.
         */
-        template <typename K, typename V>
-        basic_entry(const basic_entry<K, V>& another);
+        entry(const entry_view& view);
 
 
         // functions
@@ -85,14 +60,14 @@ namespace tetengo::lattice
 
             \return The key.
         */
-        [[nodiscard]] const key_type& key() const;
+        [[nodiscard]] const std::string& key() const;
 
         /*!
             \brief Returns the value.
 
             \return The value.
         */
-        [[nodiscard]] const value_type& value() const;
+        [[nodiscard]] const std::any& value() const;
 
         /*!
             \brief Returns the cost.
@@ -105,23 +80,95 @@ namespace tetengo::lattice
     private:
         // variables
 
-        key_type m_key;
+        std::string m_key;
 
-        value_type m_value;
+        std::any m_value;
 
         int m_cost;
     };
 
 
     /*!
-        \brief An entry.
-    */
-    using entry = basic_entry<std::string, std::any>;
-
-    /*!
         \brief An entry view.
     */
-    using entry_view = basic_entry<std::string_view, const std::any*>;
+    class entry_view
+    {
+    public:
+        // static functions
+
+        /*!
+            \brief Returns the BOS/EOS (Beginning/End of Sequence) entry.
+
+            \return The BOS/EOS entry.
+        */
+        [[nodiscard]] static const entry_view& bos_eos();
+
+
+        // constructors
+
+        /*!
+            \brief Creates an entry view.
+
+            \param key   A key.
+            \param value A value.
+            \param cost  A cost.
+        */
+        constexpr entry_view(std::string_view key, const std::any* value, int cost) :
+        m_key{ std::move(key) },
+            m_value{ std::move(value) },
+            m_cost{ cost }
+        {}
+
+        /*!
+            \brief Creates an entry view.
+
+            \param entry An entry.
+        */
+        entry_view(const entry& entry);
+
+
+        // functions
+
+        /*!
+            \brief Returns the key.
+
+            \return The key.
+        */
+        [[nodiscard]] constexpr const std::string_view& key() const
+        {
+            return m_key;
+        }
+
+        /*!
+            \brief Returns the value.
+
+            \return The value.
+        */
+        [[nodiscard]] constexpr const std::any* value() const
+        {
+            return m_value;
+        }
+
+        /*!
+            \brief Returns the cost.
+
+            \return The cost.
+        */
+        [[nodiscard]] constexpr int cost() const
+        {
+            return m_cost;
+        }
+
+
+    private:
+        // variables
+
+        std::string_view m_key;
+
+        const std::any* m_value;
+
+        int m_cost;
+    };
 
 
 }
