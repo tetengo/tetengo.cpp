@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::json::location location_{ "hoge", 42, 2 };
+    [[maybe_unused]] const tetengo::json::location location_{ "hoge", 42, 2 };
 }
 
 BOOST_AUTO_TEST_CASE(operator_equal)
