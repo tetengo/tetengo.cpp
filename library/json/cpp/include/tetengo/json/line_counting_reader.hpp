@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <memory>
 #include <string_view>
+#include <utility>
 
 #include <boost/operators.hpp>
 
@@ -33,7 +34,9 @@ namespace tetengo::json
             \param line_index   A line index. 1-origin.
             \param column_index A column index. 1-origin.
         */
-        location(std::string_view line, std::size_t line_index, std::size_t column_index);
+        constexpr location(std::string_view line, std::size_t line_index, std::size_t column_index) :
+        m_line{ std::move(line) }, m_line_index{ line_index }, m_column_index{ column_index }
+        {}
 
 
         // functions
@@ -47,28 +50,41 @@ namespace tetengo::json
             \retval true  When one is equal to another.
             \retval false Otherwise.
         */
-        friend bool operator==(const location& one, const location& another);
+        friend constexpr bool operator==(const location& one, const location& another)
+        {
+            return one.m_line == another.m_line && one.m_line_index == another.m_line_index &&
+                   one.m_column_index == another.m_column_index;
+        }
 
         /*!
             \brief Returns the line.
 
             \return The line.
         */
-        [[nodiscard]] const std::string_view& line() const;
+        [[nodiscard]] constexpr const std::string_view& line() const
+        {
+            return m_line;
+        }
 
         /*!
             \brief Returns the line index.
 
             \return The line index.
         */
-        [[nodiscard]] std::size_t line_index() const;
+        [[nodiscard]] constexpr std::size_t line_index() const
+        {
+            return m_line_index;
+        }
 
         /*!
             \brief Returns the column index.
 
             \return The column index.
         */
-        [[nodiscard]] std::size_t column_index() const;
+        [[nodiscard]] constexpr std::size_t column_index() const
+        {
+            return m_column_index;
+        }
 
 
     private:

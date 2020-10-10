@@ -20,34 +20,6 @@
 
 namespace tetengo::json
 {
-    location::location(std::string_view line, const std::size_t line_index, const std::size_t column_index) :
-    m_line{ std::move(line) },
-        m_line_index{ line_index },
-        m_column_index{ column_index }
-    {}
-
-    bool operator==(const location& one, const location& another)
-    {
-        return one.m_line == another.m_line && one.m_line_index == another.m_line_index &&
-               one.m_column_index == another.m_column_index;
-    }
-
-    const std::string_view& location::line() const
-    {
-        return m_line;
-    }
-
-    std::size_t location::line_index() const
-    {
-        return m_line_index;
-    }
-
-    std::size_t location::column_index() const
-    {
-        return m_column_index;
-    }
-
-
     class line_counting_reader::impl : private boost::noncopyable
     {
     public:
