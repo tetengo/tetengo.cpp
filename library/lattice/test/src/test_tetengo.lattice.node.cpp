@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <iterator>
 #include <limits>
-#include <stdexcept>
 #include <string_view>
 #include <vector>
 
@@ -43,10 +42,6 @@ BOOST_AUTO_TEST_CASE(bos)
         BOOST_TEST(bos.best_preceding_node() == std::numeric_limits<std::size_t>::max());
         BOOST_TEST(bos.node_cost() == tetengo::lattice::entry_view::bos_eos().cost());
         BOOST_TEST(bos.path_cost() == 0);
-    }
-    {
-        BOOST_CHECK_THROW(
-            [[maybe_unused]] const auto bos_ = tetengo::lattice::node::bos(nullptr), std::invalid_argument);
     }
 
     {
@@ -108,10 +103,6 @@ BOOST_AUTO_TEST_CASE(eos)
         BOOST_TEST(eos.best_preceding_node() == 5U);
         BOOST_TEST(eos.node_cost() == tetengo::lattice::entry_view::bos_eos().cost());
         BOOST_TEST(eos.path_cost() == 42);
-    }
-    {
-        BOOST_CHECK_THROW(
-            [[maybe_unused]] const auto eos_ = tetengo::lattice::node::eos(1, nullptr, 5, 42), std::invalid_argument);
     }
 
 
@@ -181,22 +172,6 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(node_.best_preceding_node() == 5U);
         BOOST_TEST(node_.node_cost() == 24);
         BOOST_TEST(node_.path_cost() == 2424);
-    }
-    {
-        const std::vector<int> preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        BOOST_CHECK_THROW(
-            const tetengo::lattice::node node_("mizuho", nullptr, 1, &preceding_edge_costs, 5, 24, 2424),
-            std::invalid_argument);
-    }
-    {
-        const std::any value{ 42 };
-        BOOST_CHECK_THROW(
-            const tetengo::lattice::node node_("mizuho", &value, 1, nullptr, 5, 24, 2424), std::invalid_argument);
-    }
-    {
-        const std::any                     entry_value{ 42 };
-        const tetengo::lattice::entry_view entry{ "mizuho", &entry_value, 24 };
-        BOOST_CHECK_THROW(const tetengo::lattice::node node_(entry, 1, nullptr, 5, 2424), std::invalid_argument);
     }
 
     {

@@ -8,8 +8,10 @@
 #define TETENGO_LATTICE_NODE_HPP
 
 #include <any>
+#include <cassert>
 #include <cstddef>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include <boost/operators.hpp>
@@ -69,17 +71,23 @@ namespace tetengo::lattice
             \param best_preceding_node    An index of a best preceding node.
             \param node_cost              A node cost.
             \param path_cost              A path cost.
-
-            \throw std::invalid_argument When p_value and/or p_preceding_edge_costs are nullptr.
         */
-        node(
+        constexpr node(
             std::string_view        key,
             const std::any*         p_value,
             std::size_t             preceding_step,
             const std::vector<int>* p_preceding_edge_costs,
             std::size_t             best_preceding_node,
             int                     node_cost,
-            int                     path_cost);
+            int                     path_cost) :
+        m_key{ std::move(key) },
+            m_p_value{ p_value },
+            m_preceding_step{ preceding_step },
+            m_p_preceding_edge_costs{ p_preceding_edge_costs },
+            m_best_preceding_node{ best_preceding_node },
+            m_node_cost{ node_cost },
+            m_path_cost{ path_cost }
+        {}
 
         /*!
             \brief Creates a node from a vocabulary entry.
@@ -92,12 +100,15 @@ namespace tetengo::lattice
 
             \throw std::invalid_argument When p_preceding_edge_costs is nullptr.
         */
-        node(
+        constexpr node(
             const entry_view&       entry,
             std::size_t             preceding_step,
             const std::vector<int>* p_preceding_edge_costs,
             std::size_t             best_preceding_node,
-            int                     path_cost);
+            int                     path_cost) :
+        node{ entry.key(),         entry.value(), preceding_step, p_preceding_edge_costs,
+              best_preceding_node, entry.cost(),  path_cost }
+        {}
 
 
         // functions
@@ -111,56 +122,84 @@ namespace tetengo::lattice
             \retval true  When one node is equal to another.
             \retval valse Otherwise.
         */
-        friend bool operator==(const node& one, const node& another);
+        friend constexpr bool operator==(const node& one, const node& another)
+        {
+            return one.key() == another.key() && one.preceding_step() == another.preceding_step() &&
+                   one.best_preceding_node() == another.best_preceding_node() &&
+                   one.node_cost() == another.node_cost() && one.path_cost() == another.path_cost();
+        }
 
         /*!
             \brief Returns the key.
 
             \return The key.
         */
-        [[nodiscard]] const std::string_view& key() const;
+        [[nodiscard]] constexpr const std::string_view& key() const
+        {
+            return m_key;
+        }
 
         /*!
             \brief Returns the value.
 
             \return The value.
         */
-        [[nodiscard]] const std::any& value() const;
+        [[nodiscard]] constexpr const std::any& value() const
+        {
+            assert(m_p_value);
+            return *m_p_value;
+        }
 
         /*!
             \brief Returns the index of the preceding step.
 
             \return The index of the preceding step.
         */
-        [[nodiscard]] std::size_t preceding_step() const;
+        [[nodiscard]] constexpr std::size_t preceding_step() const
+        {
+            return m_preceding_step;
+        }
 
         /*!
             \brief Returns the preceding edge costs.
 
             \return The preceding edge costs.
         */
-        [[nodiscard]] const std::vector<int>& preceding_edge_costs() const;
+        [[nodiscard]] constexpr const std::vector<int>& preceding_edge_costs() const
+        {
+            assert(m_p_preceding_edge_costs);
+            return *m_p_preceding_edge_costs;
+        }
 
         /*!
             \brief Returns the index of the best preceding node.
 
             \return The index of the best preceding node.
         */
-        [[nodiscard]] std::size_t best_preceding_node() const;
+        [[nodiscard]] constexpr std::size_t best_preceding_node() const
+        {
+            return m_best_preceding_node;
+        }
 
         /*!
             \brief Returns the node cost.
 
             \return The node cost.
         */
-        [[nodiscard]] int node_cost() const;
+        [[nodiscard]] constexpr int node_cost() const
+        {
+            return m_node_cost;
+        }
 
         /*!
             \brief Returns the path cost.
 
             \return The path cost.
         */
-        [[nodiscard]] int path_cost() const;
+        [[nodiscard]] constexpr int path_cost() const
+        {
+            return m_path_cost;
+        }
 
         /*!
             \brief Returns true is this node is the BOS.
