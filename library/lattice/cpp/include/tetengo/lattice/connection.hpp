@@ -23,7 +23,7 @@ namespace tetengo::lattice
 
             \param cost A cost.
         */
-        explicit connection(int cost);
+        explicit constexpr connection(int cost) : m_cost{ cost } {}
 
 
         // functions
@@ -33,7 +33,10 @@ namespace tetengo::lattice
 
             \return The cost.
         */
-        [[nodiscard]] int cost() const;
+        [[nodiscard]] constexpr int cost() const
+        {
+            return m_cost;
+        }
 
 
     private:

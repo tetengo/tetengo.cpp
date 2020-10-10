@@ -4,7 +4,6 @@
 headers =
 
 sources = \
-    tetengo.lattice.connection.cpp \
     tetengo.lattice.constraint.cpp \
     tetengo.lattice.constraint_element.cpp \
     tetengo.lattice.entry.cpp \
