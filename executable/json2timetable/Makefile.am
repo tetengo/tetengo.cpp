@@ -1,0 +1,26 @@
+# Automake Settings
+# Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+
+SOURCE_SUBDIRS = \
+    src
+
+SUBDIRS = \
+    ${SOURCE_SUBDIRS}
+
+EXTRA_DIST = \
+    README.md \
+    json2timetable.vcxproj \
+    json2timetable.vcxproj.filters
+
+
+iwyu: ${SOURCE_SUBDIRS}
+
+clean-iwyu: ${SOURCE_SUBDIRS}
+
+format: ${SOURCE_SUBDIRS}
+
+clean-format: ${SUBDIRS}
+
+.PHONY: ${SOURCE_SUBDIRS}
+${SOURCE_SUBDIRS}:
+	${MAKE} -C $@ ${MAKECMDGOALS}

@@ -12,6 +12,8 @@ AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
     executable/Makefile
+    executable/json2timetable/Makefile
+    executable/json2timetable/src/Makefile
     executable/make_dict/Makefile
     executable/make_dict/src/Makefile
     executable/search_dict/Makefile
@@ -138,6 +140,7 @@ AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS], "${CXXFLAGS} -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CFLAGS], "${CFLAGS} -Werror -Wall -Wextra -pedantic-errors")
 
 #### Output ####
 AC_OUTPUT
