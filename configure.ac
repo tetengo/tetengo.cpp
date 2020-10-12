@@ -22,17 +22,6 @@ AC_CONFIG_FILES([
     executable/transfer_trains/data/Makefile
     executable/transfer_trains/src/Makefile
     library/Makefile
-    library/cli/Makefile
-    library/cli/c/Makefile
-    library/cli/c/include/Makefile
-    library/cli/c/include/tetengo/Makefile
-    library/cli/c/src/Makefile
-    library/cli/cpp/Makefile
-    library/cli/cpp/include/Makefile
-    library/cli/cpp/include/tetengo/Makefile
-    library/cli/cpp/src/Makefile
-    library/cli/test/Makefile
-    library/cli/test/src/Makefile
     library/json/Makefile
     library/json/c/Makefile
     library/json/c/include/Makefile
@@ -55,6 +44,17 @@ AC_CONFIG_FILES([
     library/lattice/cpp/src/Makefile
     library/lattice/test/Makefile
     library/lattice/test/src/Makefile
+    library/text/Makefile
+    library/text/c/Makefile
+    library/text/c/include/Makefile
+    library/text/c/include/tetengo/Makefile
+    library/text/c/src/Makefile
+    library/text/cpp/Makefile
+    library/text/cpp/include/Makefile
+    library/text/cpp/include/tetengo/Makefile
+    library/text/cpp/src/Makefile
+    library/text/test/Makefile
+    library/text/test/src/Makefile
     library/trie/Makefile
     library/trie/c/Makefile
     library/trie/c/include/Makefile

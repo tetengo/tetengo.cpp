@@ -10,13 +10,6 @@ It provides class-based libraries for C++ and function-based libraries for C.
 Features
 --------
 
-### tetengo::cli
-
-A command line interface library.
-
-The utility for splitting a string into graphemes.
-The graphemes return the character widths in the terminal console.
-
 ### tetengo::json
 
 A JSON parser library.
@@ -34,6 +27,14 @@ path in the lattice consisted of the observed event nodes.
 
 This library also provides the A* search algorithm for the lattice created by
 the Viterbi search.
+
+### tetengo::text
+
+A text library.
+
+The utility for text processings.
+
+This library provides a grapheme splitter based on Unicode.
 
 ### tetengo::trie
 
