@@ -42,6 +42,7 @@ format: ${addsuffix .formatout, ${headers} ${sources}}
 
 %.formatout: %
 	${top_srcdir}/tools/call_clang-format.sh $< || true
+	${MKDIR_P} ${dir $@}
 	touch $@
 
 .PHONY: clean-format
