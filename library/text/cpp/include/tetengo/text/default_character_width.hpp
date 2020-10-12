@@ -4,8 +4,8 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_CLI_DEFAULTCHARACTERWIDTH_HPP)
-#define TETENGO_CLI_DEFAULTCHARACTERWIDTH_HPP
+#if !defined(TETENGO_TEXT_DEFAULTCHARACTERWIDTH_HPP)
+#define TETENGO_TEXT_DEFAULTCHARACTERWIDTH_HPP
 
 #include <cstddef>
 #include <memory>
