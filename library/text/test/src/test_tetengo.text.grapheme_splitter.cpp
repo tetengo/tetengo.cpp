@@ -358,7 +358,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 5U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again =
+            const auto                           grapheme_count_again =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
@@ -377,7 +377,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 3U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again = tetengo_text_graphemeSplitter_split(
+            const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
@@ -410,7 +410,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 5U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again =
+            const auto                           grapheme_count_again =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
@@ -429,7 +429,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 3U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again = tetengo_text_graphemeSplitter_split(
+            const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
@@ -458,7 +458,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 5U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again =
+            const auto                           grapheme_count_again =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
@@ -477,7 +477,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 3U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again = tetengo_text_graphemeSplitter_split(
+            const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
@@ -506,7 +506,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 5U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again =
+            const auto                           grapheme_count_again =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_iruka.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
@@ -525,7 +525,7 @@ BOOST_AUTO_TEST_CASE(split)
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
             BOOST_TEST_REQUIRE(grapheme_count == 3U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
-            const auto                          grapheme_count_again = tetengo_text_graphemeSplitter_split(
+            const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
