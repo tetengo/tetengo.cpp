@@ -835,12 +835,12 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = docsrc \
-                         library/cli/c/include \
-                         library/cli/cpp/include \
                          library/json/c/include \
                          library/json/cpp/include \
                          library/lattice/c/include \
                          library/lattice/cpp/include \
+                         library/text/c/include \
+                         library/text/cpp/include \
                          library/trie/c/include \
                          library/trie/cpp/include \
                          README.md

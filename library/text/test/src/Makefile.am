@@ -1,0 +1,55 @@
+# Automake Settings
+# Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+
+headers =
+
+sources = \
+    master.cpp \
+    test_tetengo.text.character_width.cpp \
+    test_tetengo.text.default_character_width.cpp \
+    test_tetengo.text.east_asian_character_width.cpp \
+    test_tetengo.text.grapheme_segment.cpp \
+    test_tetengo.text.grapheme_splitter.cpp
+
+check_PROGRAMS = test_tetengo.text
+
+test_tetengo_text_CPPFLAGS = \
+    -I${top_srcdir}/library/text/c/include \
+    -I${top_srcdir}/library/text/cpp/include
+test_tetengo_text_LDFLAGS = \
+    -L${top_builddir}/library/text/c/src
+test_tetengo_text_LDADD = \
+    -ltetengo.text \
+    ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
+test_tetengo_text_SOURCES = ${sources}
+
+TESTS = ${check_PROGRAMS}
+
+
+IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
+
+iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
+
+%.iwyuout: %
+	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${test_tetengo_text_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	mv -f ${addsuffix .tmp, $@} $@
+
+.PHONY: clean-iwyu
+clean-iwyu:
+	-find -name "*.iwyuout" | xargs rm -f
+
+clean-local: clean-iwyu
+
+
+format: ${addsuffix .formatout, ${headers} ${sources}}
+
+%.formatout: %
+	${top_srcdir}/tools/call_clang-format.sh $< || true
+	${MKDIR_P} ${dir $@}
+	touch $@
+
+.PHONY: clean-format
+clean-format:
+	-find -name "*.formatout" | xargs rm -f
+
+clean-local: clean-format

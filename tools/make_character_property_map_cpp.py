@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# Makes character_property_map.txt for tetengo::cli
+# Makes character_property_map.txt for tetengo::text
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 from pathlib import Path
@@ -9,7 +9,7 @@ import sys
 def main():
     if len(sys.argv) <= 2:
         print(
-            "Usage: ./make_character_property_map_cpp.py character_property_map.txt ../library/cli/cpp/src/character_property_map.cpp",
+            "Usage: ./make_character_property_map_cpp.py character_property_map.txt ../library/text/cpp/src/character_property_map.cpp",
             file=sys.stderr
         )
         sys.exit(0)
@@ -90,10 +90,10 @@ def make_cpp_source(elements):
 
 #include <cstddef>
 
-#include "tetengo.cli.character_property_map.hpp"
+#include "tetengo.text.character_property_map.hpp"
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
 '''
     content += "    const std::size_t character_property_map_size = {};\n\n".format(len(elements))

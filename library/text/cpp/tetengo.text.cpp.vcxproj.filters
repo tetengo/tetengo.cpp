@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="header\tetengo::text">
+      <UniqueIdentifier>{8b3558ca-13f6-4dea-9a7e-8b43fe9634e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\tetengo\text\0namespace.dox">
+      <Filter>header\tetengo::text</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\precompiled\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\character_width.hpp">
+      <Filter>header\tetengo::text</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\default_character_width.hpp">
+      <Filter>header\tetengo::text</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\east_asian_character_width.hpp">
+      <Filter>header\tetengo::text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tetengo.text.character_property_map.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\grapheme_segment.hpp">
+      <Filter>header\tetengo::text</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\grapheme_splitter.hpp">
+      <Filter>header\tetengo::text</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.character_width.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.default_character_width.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.east_asian_character_width.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.character_property_map.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.grapheme_segment.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.grapheme_splitter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

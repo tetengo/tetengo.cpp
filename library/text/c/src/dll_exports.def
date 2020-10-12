@@ -1,0 +1,5 @@
+LIBRARY tetengo.text.dll
+EXPORTS
+	tetengo_text_graphemeSplitter_create
+	tetengo_text_graphemeSplitter_destroy
+	tetengo_text_graphemeSplitter_split

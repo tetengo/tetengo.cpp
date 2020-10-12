@@ -39,13 +39,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.json.cpp", "library
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tetengo.json", "library\json\test\test_tetengo.json.vcxproj", "{0AAF49D5-D4FE-4CDA-BBC3-A1CDC25F8816}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cli", "cli", "{8025EE35-4F98-4CBA-8D82-E8D21E6BCB0F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "text", "text", "{8025EE35-4F98-4CBA-8D82-E8D21E6BCB0F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tetengo.cli", "library\cli\test\test_tetengo.cli.vcxproj", "{52ACD25C-C27C-475C-9E47-46A24719B163}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tetengo.text", "library\text\test\test_tetengo.text.vcxproj", "{52ACD25C-C27C-475C-9E47-46A24719B163}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.cli", "library\cli\c\tetengo.cli.vcxproj", "{49971358-A731-4C16-943A-C66735F3B342}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.text", "library\text\c\tetengo.text.vcxproj", "{49971358-A731-4C16-943A-C66735F3B342}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.cli.cpp", "library\cli\cpp\tetengo.cli.cpp.vcxproj", "{BE228A1E-25D5-4825-89B4-C3513F1DC559}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.text.cpp", "library\text\cpp\tetengo.text.cpp.vcxproj", "{BE228A1E-25D5-4825-89B4-C3513F1DC559}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
