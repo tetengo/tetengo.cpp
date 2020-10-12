@@ -138,6 +138,7 @@ AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS], "${CXXFLAGS} -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CFLAGS], "${CFLAGS} -std=c89 -Werror -Wall -Wextra -pedantic-errors")
 
 #### Output ####
 AC_OUTPUT
