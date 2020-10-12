@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-# Makes character_property_map.txt for tetengo::cli
+# Makes character_property_map.txt for tetengo::text
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 from pathlib import Path
