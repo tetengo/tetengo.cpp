@@ -10,10 +10,10 @@
 #include <cstddef>
 #include <memory>
 
-#include <tetengo/cli/character_width.hpp>
+#include <tetengo/text/character_width.hpp>
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
     /*!
         \brief An east Asian character width.

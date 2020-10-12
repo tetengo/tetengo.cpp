@@ -5,23 +5,23 @@ headers =
 
 sources = \
     master.cpp \
-    test_tetengo.cli.character_width.cpp \
-    test_tetengo.cli.default_character_width.cpp \
-    test_tetengo.cli.east_asian_character_width.cpp \
-    test_tetengo.cli.grapheme_segment.cpp \
-    test_tetengo.cli.grapheme_splitter.cpp
+    test_tetengo.text.character_width.cpp \
+    test_tetengo.text.default_character_width.cpp \
+    test_tetengo.text.east_asian_character_width.cpp \
+    test_tetengo.text.grapheme_segment.cpp \
+    test_tetengo.text.grapheme_splitter.cpp
 
-check_PROGRAMS = test_tetengo.cli
+check_PROGRAMS = test_tetengo.text
 
-test_tetengo_cli_CPPFLAGS = \
-    -I${top_srcdir}/library/cli/c/include \
-    -I${top_srcdir}/library/cli/cpp/include
-test_tetengo_cli_LDFLAGS = \
-    -L${top_builddir}/library/cli/c/src
-test_tetengo_cli_LDADD = \
-    -ltetengo.cli \
+test_tetengo_text_CPPFLAGS = \
+    -I${top_srcdir}/library/text/c/include \
+    -I${top_srcdir}/library/text/cpp/include
+test_tetengo_text_LDFLAGS = \
+    -L${top_builddir}/library/text/c/src
+test_tetengo_text_LDADD = \
+    -ltetengo.text \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
-test_tetengo_cli_SOURCES = ${sources}
+test_tetengo_text_SOURCES = ${sources}
 
 TESTS = ${check_PROGRAMS}
 
@@ -31,7 +31,7 @@ IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${test_tetengo_cli_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${test_tetengo_text_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 .PHONY: clean-iwyu

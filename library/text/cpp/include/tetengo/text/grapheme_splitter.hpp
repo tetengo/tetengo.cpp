@@ -17,7 +17,7 @@
 #include <boost/operators.hpp>
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
     /*!
         \brief A grapheme.

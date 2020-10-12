@@ -6,10 +6,10 @@
 
 #include <cstddef>
 
-#include <tetengo/cli/character_width.hpp>
+#include <tetengo/text/character_width.hpp>
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
     character_width::~character_width() = default;
 

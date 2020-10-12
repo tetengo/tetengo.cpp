@@ -14,30 +14,30 @@
 #include <utility>
 #include <vector>
 
-#include <tetengo/cli/graphemeSplitter.h>
-#include <tetengo/cli/grapheme_splitter.hpp>
+#include <tetengo/text/graphemeSplitter.h>
+#include <tetengo/text/grapheme_splitter.hpp>
 
 
-struct tetengo_cli_graphemeSplitter_tag
+struct tetengo_text_graphemeSplitter_tag
 {
-    std::unique_ptr<tetengo::cli::grapheme_splitter> p_cpp_grapheme_splitter;
+    std::unique_ptr<tetengo::text::grapheme_splitter> p_cpp_grapheme_splitter;
 
-    tetengo_cli_graphemeSplitter_tag(std::unique_ptr<tetengo::cli::grapheme_splitter>&& p_cpp_grapheme_splitter) :
+    tetengo_text_graphemeSplitter_tag(std::unique_ptr<tetengo::text::grapheme_splitter>&& p_cpp_grapheme_splitter) :
     p_cpp_grapheme_splitter{ std::move(p_cpp_grapheme_splitter) }
     {}
 };
 
 
-tetengo_cli_graphemeSplitter_t* tetengo_cli_graphemeSplitter_create()
+tetengo_text_graphemeSplitter_t* tetengo_text_graphemeSplitter_create()
 {
     try
     {
         const auto* const c_locale_name = std::setlocale(LC_CTYPE, nullptr);
         assert(c_locale_name);
 
-        auto p_cpp_graph_splitter = std::make_unique<tetengo::cli::grapheme_splitter>(std::locale{ c_locale_name });
+        auto p_cpp_graph_splitter = std::make_unique<tetengo::text::grapheme_splitter>(std::locale{ c_locale_name });
 
-        auto p_instance = std::make_unique<tetengo_cli_graphemeSplitter_t>(std::move(p_cpp_graph_splitter));
+        auto p_instance = std::make_unique<tetengo_text_graphemeSplitter_t>(std::move(p_cpp_graph_splitter));
         return p_instance.release();
     }
     catch (...)
@@ -46,20 +46,20 @@ tetengo_cli_graphemeSplitter_t* tetengo_cli_graphemeSplitter_create()
     }
 }
 
-void tetengo_cli_graphemeSplitter_destroy(const tetengo_cli_graphemeSplitter_t* const p_grapheme_splitter)
+void tetengo_text_graphemeSplitter_destroy(const tetengo_text_graphemeSplitter_t* const p_grapheme_splitter)
 {
     try
     {
-        const std::unique_ptr<const tetengo_cli_graphemeSplitter_t> p_instance{ p_grapheme_splitter };
+        const std::unique_ptr<const tetengo_text_graphemeSplitter_t> p_instance{ p_grapheme_splitter };
     }
     catch (...)
     {}
 }
 
-size_t tetengo_cli_graphemeSplitter_split(
-    const tetengo_cli_graphemeSplitter_t* const p_grapheme_splitter,
-    const char* const                           string,
-    tetengo_cli_grapheme_t* const               p_graphemes)
+size_t tetengo_text_graphemeSplitter_split(
+    const tetengo_text_graphemeSplitter_t* const p_grapheme_splitter,
+    const char* const                            string,
+    tetengo_text_grapheme_t* const               p_graphemes)
 {
     try
     {

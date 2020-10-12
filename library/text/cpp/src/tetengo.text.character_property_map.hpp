@@ -12,7 +12,7 @@
 #include <cstddef>
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
     enum class east_asian_width_class_type
     {

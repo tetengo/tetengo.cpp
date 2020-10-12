@@ -16,14 +16,14 @@ extern "C" {
 
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_cli_graphemeSplitter_tag tetengo_cli_graphemeSplitter_t;
+typedef struct tetengo_text_graphemeSplitter_tag tetengo_text_graphemeSplitter_t;
 #endif
 
 
 /*!
     \brief A grapheme.
 */
-typedef struct tetengo_cli_grapheme_tag
+typedef struct tetengo_text_grapheme_tag
 {
     //! A offset in the UTF-8 string.
     size_t offset;
@@ -32,7 +32,7 @@ typedef struct tetengo_cli_grapheme_tag
     size_t width;
 
 
-} tetengo_cli_grapheme_t;
+} tetengo_text_grapheme_t;
 
 /*!
     \brief Creates a grapheme splitter.
@@ -42,14 +42,14 @@ typedef struct tetengo_cli_grapheme_tag
 
     \return A pointer to a grapheme splitter.
 */
-tetengo_cli_graphemeSplitter_t* tetengo_cli_graphemeSplitter_create();
+tetengo_text_graphemeSplitter_t* tetengo_text_graphemeSplitter_create();
 
 /*!
     \brief Destroys a grapheme splitter.
 
     \param p_grapheme_splitter A pointer to a grapheme splitter.
 */
-void tetengo_cli_graphemeSplitter_destroy(const tetengo_cli_graphemeSplitter_t* p_grapheme_splitter);
+void tetengo_text_graphemeSplitter_destroy(const tetengo_text_graphemeSplitter_t* p_grapheme_splitter);
 
 /*!
     \brief Split a string to graphemes.
@@ -60,10 +60,10 @@ void tetengo_cli_graphemeSplitter_destroy(const tetengo_cli_graphemeSplitter_t* 
 
     \return A grapheme count. Or 0 when p_grapheme_splitter is NULL or string is NULL.
 */
-size_t tetengo_cli_graphemeSplitter_split(
-    const tetengo_cli_graphemeSplitter_t* p_grapheme_splitter,
-    const char*                           string,
-    tetengo_cli_grapheme_t*               p_graphemes);
+size_t tetengo_text_graphemeSplitter_split(
+    const tetengo_text_graphemeSplitter_t* p_grapheme_splitter,
+    const char*                            string,
+    tetengo_text_grapheme_t*               p_graphemes);
 
 
 #if defined(__cplusplus)

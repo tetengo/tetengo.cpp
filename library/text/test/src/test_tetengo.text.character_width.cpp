@@ -9,12 +9,12 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/cli/character_width.hpp>
+#include <tetengo/text/character_width.hpp>
 
 
 namespace
 {
-    class concrete_character_width : public tetengo::cli::character_width
+    class concrete_character_width : public tetengo::text::character_width
     {
     public:
         // constructors and destructor
@@ -36,7 +36,7 @@ namespace
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
-BOOST_AUTO_TEST_SUITE(cli)
+BOOST_AUTO_TEST_SUITE(text)
 BOOST_AUTO_TEST_SUITE(character_width)
 
 
@@ -53,8 +53,8 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     const concrete_character_width char_width{};
 
-    BOOST_TEST(char_width.width_of(tetengo::cli::character_width::class_type::halfwidth) == 1U);
-    BOOST_TEST(char_width.width_of(tetengo::cli::character_width::class_type::fullwidth) == 2U);
+    BOOST_TEST(char_width.width_of(tetengo::text::character_width::class_type::halfwidth) == 1U);
+    BOOST_TEST(char_width.width_of(tetengo::text::character_width::class_type::fullwidth) == 2U);
 }
 
 

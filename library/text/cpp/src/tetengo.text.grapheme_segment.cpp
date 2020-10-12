@@ -14,10 +14,10 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/cli/grapheme_segment.hpp>
+#include <tetengo/text/grapheme_segment.hpp>
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
     class grapheme_segment::impl : private boost::noncopyable
     {

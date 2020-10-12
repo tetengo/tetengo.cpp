@@ -20,16 +20,16 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/cli/character_width.hpp>
-#include <tetengo/cli/default_character_width.hpp>
-#include <tetengo/cli/east_asian_character_width.hpp>
-#include <tetengo/cli/grapheme_segment.hpp>
-#include <tetengo/cli/grapheme_splitter.hpp>
+#include <tetengo/text/character_width.hpp>
+#include <tetengo/text/default_character_width.hpp>
+#include <tetengo/text/east_asian_character_width.hpp>
+#include <tetengo/text/grapheme_segment.hpp>
+#include <tetengo/text/grapheme_splitter.hpp>
 
-#include "tetengo.cli.character_property_map.hpp"
+#include "tetengo.text.character_property_map.hpp"
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
     class grapheme_splitter::impl : private boost::noncopyable
     {

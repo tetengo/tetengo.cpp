@@ -4,16 +4,16 @@
 headers =
 
 sources = \
-    tetengo_cli_graphemeSplitter.cpp
+    tetengo_text_graphemeSplitter.cpp
 
-lib_LTLIBRARIES = libtetengo.cli.la
+lib_LTLIBRARIES = libtetengo.text.la
 
-libtetengo_cli_la_CPPFLAGS = \
-    -I${top_srcdir}/library/cli/c/include \
-    -I${top_srcdir}/library/cli/cpp/include
-libtetengo_cli_la_LIBADD = \
-    ${top_builddir}/library/cli/cpp/src/libtetengo.cli.noinst.la
-libtetengo_cli_la_SOURCES = ${headers} ${sources}
+libtetengo_text_la_CPPFLAGS = \
+    -I${top_srcdir}/library/text/c/include \
+    -I${top_srcdir}/library/text/cpp/include
+libtetengo_text_la_LIBADD = \
+    ${top_builddir}/library/text/cpp/src/libtetengo.text.noinst.la
+libtetengo_text_la_SOURCES = ${headers} ${sources}
 
 EXTRA_DIST = \
     dll_exports.def
@@ -24,7 +24,7 @@ IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${libtetengo_cli_la_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${libtetengo_text_la_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 .PHONY: clean-iwyu

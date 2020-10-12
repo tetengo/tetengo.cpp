@@ -13,19 +13,19 @@
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.cli.character_width.cpp">
+    <ClCompile Include="src\test_tetengo.text.character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.cli.default_character_width.cpp">
+    <ClCompile Include="src\test_tetengo.text.default_character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.cli.east_asian_character_width.cpp">
+    <ClCompile Include="src\test_tetengo.text.east_asian_character_width.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.cli.grapheme_segment.cpp">
+    <ClCompile Include="src\test_tetengo.text.grapheme_segment.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.cli.grapheme_splitter.cpp">
+    <ClCompile Include="src\test_tetengo.text.grapheme_splitter.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

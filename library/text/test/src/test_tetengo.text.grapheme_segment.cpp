@@ -13,12 +13,12 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/cli/grapheme_segment.hpp>
+#include <tetengo/text/grapheme_segment.hpp>
 
 
 namespace
 {
-    using bp = tetengo::cli::grapheme_segment::break_property_type;
+    using bp = tetengo::text::grapheme_segment::break_property_type;
 
     constexpr bp graphemes[] = { bp::cr,           bp::lf, bp::control, bp::extend, bp::zwj, bp::regional, bp::prepend,
                                  bp::spacing_mark, bp::l,  bp::v,       bp::t,      bp::lv,  bp::lvt,      bp::other };
@@ -34,7 +34,7 @@ namespace
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
-BOOST_AUTO_TEST_SUITE(cli)
+BOOST_AUTO_TEST_SUITE(text)
 BOOST_AUTO_TEST_SUITE(grapheme_segment)
 
 
@@ -42,14 +42,14 @@ BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
-    [[maybe_unused]] const auto& segment_maker = tetengo::cli::grapheme_segment::instance();
+    [[maybe_unused]] const auto& segment_maker = tetengo::text::grapheme_segment::instance();
 }
 
 BOOST_AUTO_TEST_CASE(segment_offsets)
 {
     BOOST_TEST_PASSPOINT();
 
-    const auto& segment_maker = tetengo::cli::grapheme_segment::instance();
+    const auto& segment_maker = tetengo::text::grapheme_segment::instance();
 
     {
         const auto offsets = segment_maker.segment_offsets({});

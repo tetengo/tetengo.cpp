@@ -12,7 +12,7 @@
 #include <boost/core/noncopyable.hpp>
 
 
-namespace tetengo::cli
+namespace tetengo::text
 {
     /*!
         \brief A character width.

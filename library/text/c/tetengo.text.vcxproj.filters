@@ -9,7 +9,7 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="header\tetengo::cli">
+    <Filter Include="header\tetengo::text">
       <UniqueIdentifier>{8577f000-7ddb-4731-a940-9994560c6875}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -17,8 +17,8 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\cli\graphemeSplitter.h">
-      <Filter>header\tetengo::cli</Filter>
+    <ClInclude Include="include\tetengo\text\graphemeSplitter.h">
+      <Filter>header\tetengo::text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +30,7 @@
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo_cli_graphemeSplitter.cpp">
+    <ClCompile Include="src\tetengo_text_graphemeSplitter.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

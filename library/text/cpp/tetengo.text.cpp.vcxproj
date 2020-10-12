@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{be228a1e-25d5-4825-89b4-c3513f1dc559}</ProjectGuid>
-    <RootNamespace>tetengoclicpp</RootNamespace>
+    <RootNamespace>tetengotextcpp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -95,28 +95,28 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   <ItemGroup>
-    <None Include="include\tetengo\cli\0namespace.dox" />
+    <None Include="include\tetengo\text\0namespace.dox" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
-    <ClInclude Include="include\tetengo\cli\character_width.hpp" />
-    <ClInclude Include="include\tetengo\cli\default_character_width.hpp" />
-    <ClInclude Include="include\tetengo\cli\east_asian_character_width.hpp" />
-    <ClInclude Include="include\tetengo\cli\grapheme_segment.hpp" />
-    <ClInclude Include="include\tetengo\cli\grapheme_splitter.hpp" />
-    <ClInclude Include="src\tetengo.cli.character_property_map.hpp" />
+    <ClInclude Include="include\tetengo\text\character_width.hpp" />
+    <ClInclude Include="include\tetengo\text\default_character_width.hpp" />
+    <ClInclude Include="include\tetengo\text\east_asian_character_width.hpp" />
+    <ClInclude Include="include\tetengo\text\grapheme_segment.hpp" />
+    <ClInclude Include="include\tetengo\text\grapheme_splitter.hpp" />
+    <ClInclude Include="src\tetengo.text.character_property_map.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\tetengo.cli.character_property_map.cpp" />
-    <ClCompile Include="src\tetengo.cli.character_width.cpp" />
-    <ClCompile Include="src\tetengo.cli.default_character_width.cpp" />
-    <ClCompile Include="src\tetengo.cli.east_asian_character_width.cpp" />
-    <ClCompile Include="src\tetengo.cli.grapheme_segment.cpp" />
-    <ClCompile Include="src\tetengo.cli.grapheme_splitter.cpp" />
+    <ClCompile Include="src\tetengo.text.character_property_map.cpp" />
+    <ClCompile Include="src\tetengo.text.character_width.cpp" />
+    <ClCompile Include="src\tetengo.text.default_character_width.cpp" />
+    <ClCompile Include="src\tetengo.text.east_asian_character_width.cpp" />
+    <ClCompile Include="src\tetengo.text.grapheme_segment.cpp" />
+    <ClCompile Include="src\tetengo.text.grapheme_splitter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

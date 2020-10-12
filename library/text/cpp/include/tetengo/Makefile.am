@@ -2,14 +2,14 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    cli/character_width.hpp \
-    cli/default_character_width.hpp \
-    cli/east_asian_character_width.hpp \
-    cli/grapheme_segment.hpp \
-    cli/grapheme_splitter.hpp
+    text/character_width.hpp \
+    text/default_character_width.hpp \
+    text/east_asian_character_width.hpp \
+    text/grapheme_segment.hpp \
+    text/grapheme_splitter.hpp
 
 extra_headers = \
-    cli/0namespace.dox
+    text/0namespace.dox
 
 nobase_pkginclude_HEADERS = ${pkg_headers}
 
@@ -18,7 +18,7 @@ EXTRA_DIST = ${extra_headers}
 
 IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu_CPPFLAGS = \
-    -I${top_srcdir}/library/cli/cpp/include
+    -I${top_srcdir}/library/text/cpp/include
 
 iwyu: ${addsuffix .iwyuout, ${pkg_headers} ${extra_headers}}
 

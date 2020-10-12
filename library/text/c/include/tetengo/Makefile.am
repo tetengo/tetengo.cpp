@@ -2,7 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    cli/graphemeSplitter.h
+    text/graphemeSplitter.h
 
 extra_headers =
 
@@ -13,8 +13,8 @@ EXTRA_DIST = ${extra_headers}
 
 IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu_CPPFLAGS = \
-    -I${top_srcdir}/library/cli/c/include \
-    -I${top_srcdir}/library/cli/cpp/include
+    -I${top_srcdir}/library/text/c/include \
+    -I${top_srcdir}/library/text/cpp/include
 
 iwyu: ${addsuffix .iwyuout, ${pkg_headers} ${extra_headers}}
 
