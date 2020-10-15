@@ -18,13 +18,13 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_TRIE_TRIE_T)
-#define TYPEDEF_TETENGO_TRIE_TRIE_T
-typedef struct tetengo_trie_trie_tag tetengo_trie_trie_t;
-#endif
 #if !defined(TYPEDEF_TETENGO_TRIE_STORAGE_T)
 #define TYPEDEF_TETENGO_TRIE_STORAGE_T
 typedef struct tetengo_trie_storage_tag tetengo_trie_storage_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_TRIE_TRIE_T)
+#define TYPEDEF_TETENGO_TRIE_TRIE_T
+typedef struct tetengo_trie_trie_tag tetengo_trie_trie_t;
 #endif
 #endif
 
