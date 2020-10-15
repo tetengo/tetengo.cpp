@@ -15,12 +15,30 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_vocabulary_tag                tetengo_lattice_vocabulary_t;
-typedef struct tetengo_lattice_entryView_tag                 tetengo_lattice_entryView_t;
-typedef struct tetengo_lattice_node_tag                      tetengo_lattice_node_t;
-typedef struct tetengo_lattice_keyEntriesPair_tag            tetengo_lattice_keyEntriesPair_t;
-typedef struct tetengo_lattice_connection_tag                tetengo_lattice_connection_t;
+#if !defined(TYPEDEF_TETENGO_LATTICE_CONNECTION_T)
+#define TYPEDEF_TETENGO_LATTICE_CONNECTION_T
+typedef struct tetengo_lattice_connection_tag tetengo_lattice_connection_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRIESCONNECTIONCOSTPAIR_T)
+#define TYPEDEF_TETENGO_LATTICE_ENTRIESCONNECTIONCOSTPAIR_T
 typedef struct tetengo_lattice_entriesConnectionCostPair_tag tetengo_lattice_entriesConnectionCostPair_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRYVIEW_T)
+#define TYPEDEF_TETENGO_LATTICE_ENTRYVIEW_T
+typedef struct tetengo_lattice_entryView_tag tetengo_lattice_entryView_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_KEYENTRIESPAIR_T)
+#define TYPEDEF_TETENGO_LATTICE_KEYENTRIESPAIR_T
+typedef struct tetengo_lattice_keyEntriesPair_tag tetengo_lattice_keyEntriesPair_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_NODE_T)
+#define TYPEDEF_TETENGO_LATTICE_NODE_T
+typedef struct tetengo_lattice_node_tag tetengo_lattice_node_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_VOCABULARY_T)
+#define TYPEDEF_TETENGO_LATTICE_VOCABULARY_T
+typedef struct tetengo_lattice_vocabulary_tag tetengo_lattice_vocabulary_t;
+#endif
 #endif
 
 

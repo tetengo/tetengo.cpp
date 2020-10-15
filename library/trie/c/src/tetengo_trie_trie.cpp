@@ -18,13 +18,16 @@
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.h>
-#include <tetengo/trie/trie.h>
+#include <tetengo/trie/trie.h> // IWYU pragma: keep
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trieIterator.h>
 
 #include "tetengo_trie_trie.hpp"
 
+#if !defined(TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T)
+#define TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T
 typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
+#endif
 
 
 void tetengo_trie_trie_nullAddingObserver(const char*, void*) {}

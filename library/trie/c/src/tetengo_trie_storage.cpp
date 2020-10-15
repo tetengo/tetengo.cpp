@@ -17,7 +17,6 @@
 #include <tetengo/trie/shared_storage.hpp>
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
-#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
 
 #include "tetengo_trie_storage.hpp"

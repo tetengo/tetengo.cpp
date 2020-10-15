@@ -29,12 +29,12 @@ test_tetengo_trie_SOURCES = ${sources}
 TESTS = ${check_PROGRAMS}
 
 
-IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
+IWYU_OPTS_CXX += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${test_tetengo_trie_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${test_tetengo_trie_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 .PHONY: clean-iwyu

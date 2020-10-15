@@ -16,10 +16,13 @@
 extern "C" {
 #endif
 
+#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRY_VALUEHANDLE_T)
+#define TYPEDEF_TETENGO_LATTICE_ENTRY_VALUEHANDLE_T
 /*!
     \brief An entry value handle.
 */
 typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entry_valueHandle_t;
+#endif
 
 
 /*!

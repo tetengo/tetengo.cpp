@@ -15,9 +15,18 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_trie_trie_tag         tetengo_trie_trie_t;
-typedef struct tetengo_trie_storage_tag      tetengo_trie_storage_t;
+#if !defined(TYPEDEF_TETENGO_TRIE_STORAGE_T)
+#define TYPEDEF_TETENGO_TRIE_STORAGE_T
+typedef struct tetengo_trie_storage_tag tetengo_trie_storage_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_TRIE_TRIE_T)
+#define TYPEDEF_TETENGO_TRIE_TRIE_T
+typedef struct tetengo_trie_trie_tag tetengo_trie_trie_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T)
+#define TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T
 typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
+#endif
 #endif
 
 
@@ -26,10 +35,10 @@ typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
 */
 typedef struct tetengo_trie_trie_element_tag
 {
-    //! The key.
+    /*! The key. */
     const char* key;
 
-    //! The pointer to the value.
+    /*! The pointer to the value. */
     const void* p_value;
 } tetengo_trie_trie_element_t;
 
