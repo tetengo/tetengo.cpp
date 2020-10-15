@@ -17,8 +17,14 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_entryView_tag                tetengo_lattice_entryView_t;
+#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRYVIEW_T)
+#define TYPEDEF_TETENGO_LATTICE_ENTRYVIEW_T
+typedef struct tetengo_lattice_entryView_tag tetengo_lattice_entryView_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRY_VALUEHANDLE_T)
+#define TYPEDEF_TETENGO_LATTICE_ENTRY_VALUEHANDLE_T
 typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entry_valueHandle_t;
+#endif
 #endif
 
 

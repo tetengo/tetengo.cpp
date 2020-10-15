@@ -91,7 +91,8 @@ AC_ARG_WITH(
 AC_CHECK_PROG(IWYU, include-what-you-use, include-what-you-use)
 test -z $IWYU && \
     AC_MSG_WARN([You cannot check the includes for lack of include-what-you-use.])
-AC_SUBST([IWYU_OPTS], "-Xiwyu --max_line_length=200 -x c++ -std=c++17 -DIWYU")
+AC_SUBST([IWYU_OPTS_CXX], "-Xiwyu --max_line_length=200 -x c++ -std=c++17 -DIWYU")
+AC_SUBST([IWYU_OPTS_C],   "-Xiwyu --max_line_length=200 -x c -std=c89 -DIWYU")
 AC_SUBST([IWYU_IMP_PATH], "tools/iwyu_mappings.imp")
 
 AC_ARG_WITH(
@@ -138,6 +139,7 @@ AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS], "${CXXFLAGS} -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CFLAGS], "${CFLAGS} -std=c89 -Werror -Wall -Wextra -pedantic-errors")
 
 #### Output ####
 AC_OUTPUT
