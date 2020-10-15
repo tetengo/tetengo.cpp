@@ -23,7 +23,10 @@ typedef struct tetengo_trie_trie_tag tetengo_trie_trie_t;
 #define TYPEDEF_TETENGO_TRIE_STORAGE_T
 typedef struct tetengo_trie_storage_tag tetengo_trie_storage_t;
 #endif
+#if !defined(TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T)
+#define TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T
 typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
+#endif
 #endif
 
 
