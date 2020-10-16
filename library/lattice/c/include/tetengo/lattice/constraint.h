@@ -15,9 +15,18 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-typedef struct tetengo_lattice_constraint_tag        tetengo_lattice_constraint_t;
+#if !defined(TYPEDEF_TETENGO_LATTICE_CONSTRAINT_T)
+#define TYPEDEF_TETENGO_LATTICE_CONSTRAINT_T
+typedef struct tetengo_lattice_constraint_tag tetengo_lattice_constraint_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_CONSTRAINTELEMENT_T)
+#define TYPEDEF_TETENGO_LATTICE_CONSTRAINTELEMENT_T
 typedef struct tetengo_lattice_constraintElement_tag tetengo_lattice_constraintElement_t;
-typedef struct tetengo_lattice_node_tag              tetengo_lattice_node_t;
+#endif
+#if !defined(TYPEDEF_TETENGO_LATTICE_NODE_T)
+#define TYPEDEF_TETENGO_LATTICE_NODE_T
+typedef struct tetengo_lattice_node_tag tetengo_lattice_node_t;
+#endif
 #endif
 
 

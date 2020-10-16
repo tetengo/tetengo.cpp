@@ -13,7 +13,10 @@ extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
+#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRY_T)
+#define TYPEDEF_TETENGO_LATTICE_ENTRY_T
 typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry_t;
+#endif
 #endif
 
 

@@ -11,7 +11,7 @@ nobase_pkginclude_HEADERS = ${pkg_headers}
 EXTRA_DIST = ${extra_headers}
 
 
-IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
+IWYU_OPTS_CXX += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu_CPPFLAGS = \
     -I${top_srcdir}/library/text/c/include \
     -I${top_srcdir}/library/text/cpp/include
@@ -20,7 +20,7 @@ iwyu: ${addsuffix .iwyuout, ${pkg_headers} ${extra_headers}}
 
 %.iwyuout: %
 	mkdir -p ${dir $@}
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${iwyu_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${iwyu_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 .PHONY: clean-iwyu

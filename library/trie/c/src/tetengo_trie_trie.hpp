@@ -15,7 +15,6 @@
 #include <stddef.h>
 
 #include <tetengo/trie/storage.h>
-#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
 
 #include "tetengo_trie_storage.hpp" // IWYU pragma: keep

@@ -28,12 +28,12 @@ libtetengo_json_noinst_la_LDFLAGS = -static
 libtetengo_json_noinst_la_SOURCES = ${libtetengo_json_cpp_a_SOURCES}
 
 
-IWYU_OPTS += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
+IWYU_OPTS_CXX += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS} ${CPPFLAGS} ${libtetengo_json_cpp_a_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${libtetengo_json_cpp_a_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 .PHONY: clean-iwyu
