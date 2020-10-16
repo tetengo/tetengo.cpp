@@ -1,9 +1,11 @@
 # Automake Settings
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    arrayList.h
 
 sources = \
+    arrayList.c \
     main.c
 
 bin_PROGRAMS = json2timetable

@@ -103,10 +103,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\arrayList.c" />
     <ClCompile Include="src\main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h" />
+    <ClInclude Include="src\arrayList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
