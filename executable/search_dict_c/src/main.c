@@ -204,7 +204,10 @@ int main(const int argc, char** const argv)
             {
                 char key[1024] = { 0 };
                 printf(">> ");
-                fgets(key, 1024, stdin);
+                if (!fgets(key, 1024, stdin))
+                {
+                    continue;
+                }
                 chop_line_feed(key);
                 if (strlen(key) == 0)
                 {
