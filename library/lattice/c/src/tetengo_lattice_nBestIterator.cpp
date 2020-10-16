@@ -24,7 +24,6 @@
 #include <tetengo/lattice/path.h>
 #include <tetengo/lattice/path.hpp>
 #include <tetengo/lattice/stringView.h>
-#include <tetengo/lattice/vocabulary.h>
 
 #include "tetengo_lattice_constraint.hpp" // IWYU pragma: keep
 #include "tetengo_lattice_lattice.hpp"
