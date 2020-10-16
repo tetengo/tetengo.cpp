@@ -14,7 +14,7 @@ typedef struct arrayList_tag arrayList_t;
 /*!
     \brief Creates an array list.
 
-    \return A pointer to an array list.
+    \return A pointer to an array list. Or NULL on error.
 */
 arrayList_t* arrayList_create();
 
