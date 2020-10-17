@@ -7,6 +7,7 @@
 #if !defined(TIMETABLE_H)
 #define TIMETABLE_H
 
+#include <stdlib.h>
 
 /*! The timetable type. */
 typedef struct timetable_tag timetable_t;
@@ -14,9 +15,12 @@ typedef struct timetable_tag timetable_t;
 /*!
     \brief Creates a timetable.
 
-    \return A pointer to a timetable. Or NULL on error.
+    \param p_stations    A pointer to stations.
+    \param station_count A station count.
+
+    \return A pointer to a timetable. Or NULL when p_stations is NULL, station_count is 0 or on some other error.
 */
-timetable_t* timetable_create();
+timetable_t* timetable_create(const char* const* p_stations, size_t station_count);
 
 /*!
     \brief Destroys a timetable.

@@ -9,8 +9,10 @@
 #include <stdlib.h>
 
 
-timetable_t* timetable_create()
+timetable_t* timetable_create(const char* const* const p_stations, const size_t station_count)
 {
+    (void)p_stations;
+    (void)station_count;
     return NULL;
 }
 
