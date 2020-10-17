@@ -61,11 +61,57 @@ arrayList_t* arrayList_create(const destroy_element_t p_destroy_element)
 
 void arrayList_destroy(const arrayList_t* const p_array_list)
 {
-    size_t i = 0;
-    for (i = 0; i < p_array_list->size; ++i)
+    if (!p_array_list)
     {
-        p_array_list->p_destroy_element(p_array_list->pp_elements[i]);
+        return;
     }
-    free(p_array_list->pp_elements);
-    free((void*)p_array_list);
+
+    {
+        size_t i = 0;
+        for (i = 0; i < p_array_list->size; ++i)
+        {
+            p_array_list->p_destroy_element(p_array_list->pp_elements[i]);
+        }
+        free(p_array_list->pp_elements);
+        free((void*)p_array_list);
+    }
+}
+
+void arrayList_add(arrayList_t* const p_array_list, void* const p_element)
+{
+    if (!p_array_list)
+    {
+        return;
+    }
+
+    while (p_array_list->capacity < p_array_list->size + 1)
+    {
+        reserve(p_array_list, p_array_list->capacity * 2);
+    }
+    p_array_list->pp_elements[p_array_list->size] = p_element;
+    ++p_array_list->size;
+}
+
+size_t arrayList_size(const arrayList_t* const p_array_list)
+{
+    if (!p_array_list)
+    {
+        return 0;
+    }
+
+    return p_array_list->size;
+}
+
+const void* arrayList_at(const arrayList_t* const p_array_list, const size_t index)
+{
+    if (!p_array_list)
+    {
+        return NULL;
+    }
+    if (index >= p_array_list->size)
+    {
+        return NULL;
+    }
+
+    return p_array_list->pp_elements[index];
 }
