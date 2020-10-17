@@ -109,10 +109,12 @@
     </ClCompile>
     <ClCompile Include="src\arrayList.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\timetable.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h" />
     <ClInclude Include="src\arrayList.h" />
+    <ClInclude Include="src\timetable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

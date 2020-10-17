@@ -16,12 +16,18 @@
     <ClCompile Include="src\arrayList.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\timetable.c">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\arrayList.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timetable.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

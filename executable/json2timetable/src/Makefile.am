@@ -2,11 +2,13 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
-    arrayList.h
+    arrayList.h \
+    timetable.h
 
 sources = \
     arrayList.c \
-    main.c
+    main.c \
+    timetable.c
 
 bin_PROGRAMS = json2timetable
 
