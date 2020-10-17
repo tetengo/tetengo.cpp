@@ -60,6 +60,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\vsprops\common.props" />
     <Import Project="..\..\vsprops\compilation.props" />
+    <Import Project="..\..\vsprops\compilation_c.props" />
     <Import Project="..\..\vsprops\compilation_Win32.props" />
     <Import Project="..\..\vsprops\compilation_debug.props" />
     <Import Project="..\..\vsprops\application.props" />
@@ -68,6 +69,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\vsprops\common.props" />
     <Import Project="..\..\vsprops\compilation.props" />
+    <Import Project="..\..\vsprops\compilation_c.props" />
     <Import Project="..\..\vsprops\compilation_x64.props" />
     <Import Project="..\..\vsprops\compilation_debug.props" />
     <Import Project="..\..\vsprops\application.props" />
@@ -76,6 +78,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\vsprops\common.props" />
     <Import Project="..\..\vsprops\compilation.props" />
+    <Import Project="..\..\vsprops\compilation_c.props" />
     <Import Project="..\..\vsprops\compilation_Win32.props" />
     <Import Project="..\..\vsprops\compilation_release.props" />
     <Import Project="..\..\vsprops\application.props" />
@@ -84,6 +87,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\vsprops\common.props" />
     <Import Project="..\..\vsprops\compilation.props" />
+    <Import Project="..\..\vsprops\compilation_c.props" />
     <Import Project="..\..\vsprops\compilation_x64.props" />
     <Import Project="..\..\vsprops\compilation_release.props" />
     <Import Project="..\..\vsprops\application.props" />
