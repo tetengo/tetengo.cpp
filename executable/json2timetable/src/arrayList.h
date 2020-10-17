@@ -12,11 +12,20 @@
 typedef struct arrayList_tag arrayList_t;
 
 /*!
+    \brief Destroys an element.
+
+    \param p_element A pointer to an element.
+*/
+typedef void (*destroy_element_t)(const void* p_element);
+
+/*!
     \brief Creates an array list.
+
+    \param p_destroy_element A pointer to a function to destroy an element.
 
     \return A pointer to an array list. Or NULL on error.
 */
-arrayList_t* arrayList_create();
+arrayList_t* arrayList_create(destroy_element_t p_destroy_element);
 
 /*!
     \brief Destroys an array list.
