@@ -3,11 +3,13 @@
 
 headers = \
     arrayList.h \
+    printTimetable.h \
     timetable.h
 
 sources = \
     arrayList.c \
     main.c \
+    printTimetable.c \
     timetable.c
 
 bin_PROGRAMS = json2timetable
