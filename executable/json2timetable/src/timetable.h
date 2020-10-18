@@ -23,6 +23,17 @@ typedef struct timetable_tag timetable_t;
 timetable_t* timetable_create(const char* const* p_stations, size_t station_count);
 
 /*!
+    \brief Adds a train.
+
+    For the station the train does not stop, set its time to a negative value.
+
+    \param p_timetable A pointer to a timetable.
+    \param name        A name.
+    \param p_times     A pointer to times. The time count must be same as the station count.
+*/
+void timetable_addTrain(timetable_t* p_timetable, const char* name, const int* p_times);
+
+/*!
     \brief Destroys a timetable.
 
     \param p_timetable A pointer to a timetable.
