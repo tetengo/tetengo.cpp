@@ -23,11 +23,11 @@ static timetable_t* load_timetable()
     }
     {
         static const int times[] = { 1600, -1, 1900 };
-        timetable_addTrain(p_timetable, "205M", times);
+        timetable_addTrain(p_timetable, "5M", times);
     }
     {
         static const int times[] = { 2200, 0, -1 };
-        timetable_addTrain(p_timetable, "107M", times);
+        timetable_addTrain(p_timetable, "3107M", times);
     }
 
     return p_timetable;

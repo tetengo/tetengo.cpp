@@ -209,6 +209,52 @@ static void print_horizontal_line(const timetable_t* const p_timetable, const si
     printf("\n");
 }
 
+static const char* create_train_display_name(const char* const name)
+{
+    const tetengo_text_graphemeSplitter_t* const p_grapheme_splitter = tetengo_text_graphemeSplitter_create();
+    const size_t grapheme_count = tetengo_text_graphemeSplitter_split(p_grapheme_splitter, name, NULL);
+    tetengo_text_grapheme_t* const p_graphemes = malloc(sizeof(tetengo_text_grapheme_t) * grapheme_count);
+    if (!p_graphemes)
+    {
+        tetengo_text_graphemeSplitter_destroy(p_grapheme_splitter);
+        return NULL;
+    }
+    tetengo_text_graphemeSplitter_split(p_grapheme_splitter, name, p_graphemes);
+
+    {
+        size_t width = 0;
+        size_t display_name_length = strlen(name);
+        size_t i = 0;
+        for (i = 0; i < grapheme_count; ++i)
+        {
+            if (width + p_graphemes[i].width > 4)
+            {
+                display_name_length = p_graphemes[i].offset;
+                break;
+            }
+            width += p_graphemes[i].width;
+        }
+
+        free(p_graphemes);
+        tetengo_text_graphemeSplitter_destroy(p_grapheme_splitter);
+
+        {
+            char* const display_name = malloc((display_name_length + 4 - width + 1) * sizeof(char));
+            {
+                size_t j = 0;
+                for (j = 0; j < 4 - width; ++j)
+                {
+                    display_name[j] = ' ';
+                }
+            }
+            strncpy(display_name + (4 - width) * sizeof(char), name, display_name_length);
+            display_name[display_name_length + 4 - width] = '\0';
+
+            return display_name;
+        }
+    }
+}
+
 static void print_train_names(const timetable_t* const p_timetable, const size_t max_station_name_width)
 {
     printf("|");
@@ -224,7 +270,9 @@ static void print_train_names(const timetable_t* const p_timetable, const size_t
         size_t i = 0;
         for (i = 0; i < timetable_trainCount(p_timetable); ++i)
         {
-            printf("%4s|", timetable_trainNameAt(p_timetable, i));
+            const char* const display_name = create_train_display_name(timetable_trainNameAt(p_timetable, i));
+            printf("%4s|", display_name);
+            free((void*)display_name);
         }
     }
     printf("\n");
@@ -237,7 +285,9 @@ static void print_station_name_and_train_times(
     size_t i = 0;
     for (i = 0; i < timetable_stationCount(p_timetable); ++i)
     {
-        printf("|%s|", p_station_display_names[i]);
+        {
+            printf("|%s|", p_station_display_names[i]);
+        }
         {
             size_t j = 0;
             for (j = 0; j < timetable_trainCount(p_timetable); ++j)
