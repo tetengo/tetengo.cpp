@@ -196,6 +196,23 @@ int timetable_trainTimeAt(const timetable_t* const p_timetable, const size_t tra
 
     {
         const train_t* const p_train = arrayList_at(p_timetable->p_trains, train_index);
-        return *(const int*)arrayList_at(p_train->p_times, station_index);
+        const int raw_time = *(const int*)arrayList_at(p_train->p_times, station_index);
+
+        if (raw_time == 0)
+        {
+            if (station_index == arrayList_size(p_timetable->p_stations) - 1)
+            {
+                return 2400;
+            }
+            else
+            {
+                const int next_station_raw_time = *(const int*)arrayList_at(p_train->p_times, station_index + 1);
+                if (next_station_raw_time < 0)
+                {
+                    return 2400;
+                }
+            }
+        }
+        return raw_time;
     }
 }
