@@ -17,6 +17,18 @@ static timetable_t* load_timetable()
         static const int times[] = { -1, 600, 730 };
         timetable_addTrain(p_timetable, "101M", times);
     }
+    {
+        static const int times[] = { 1000, 1200, 1330 };
+        timetable_addTrain(p_timetable, "103M", times);
+    }
+    {
+        static const int times[] = { 1600, -1, 1900 };
+        timetable_addTrain(p_timetable, "205M", times);
+    }
+    {
+        static const int times[] = { 2200, 0, -1 };
+        timetable_addTrain(p_timetable, "107M", times);
+    }
 
     return p_timetable;
 }

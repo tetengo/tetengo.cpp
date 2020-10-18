@@ -190,7 +190,6 @@ static const char* const* create_station_display_names(const timetable_t* const 
 
 static void print_horizontal_line(const timetable_t* const p_timetable, const size_t max_station_name_width)
 {
-    (void)max_station_name_width;
     printf("+");
     {
         size_t i = 0;
@@ -210,6 +209,54 @@ static void print_horizontal_line(const timetable_t* const p_timetable, const si
     printf("\n");
 }
 
+static void print_train_names(const timetable_t* const p_timetable, const size_t max_station_name_width)
+{
+    printf("|");
+    {
+        size_t i = 0;
+        for (i = 0; i < max_station_name_width; ++i)
+        {
+            printf(" ");
+        }
+    }
+    printf("|");
+    {
+        size_t i = 0;
+        for (i = 0; i < timetable_trainCount(p_timetable); ++i)
+        {
+            printf("%4s|", timetable_trainNameAt(p_timetable, i));
+        }
+    }
+    printf("\n");
+}
+
+static void print_station_name_and_train_times(
+    const timetable_t* const p_timetable,
+    const char* const* const p_station_display_names)
+{
+    size_t i = 0;
+    for (i = 0; i < timetable_stationCount(p_timetable); ++i)
+    {
+        printf("|%s|", p_station_display_names[i]);
+        {
+            size_t j = 0;
+            for (j = 0; j < timetable_trainCount(p_timetable); ++j)
+            {
+                const int time = timetable_trainTimeAt(p_timetable, j, i);
+                if (time >= 0)
+                {
+                    printf("%4.3d|", time);
+                }
+                else
+                {
+                    printf("    |");
+                }
+            }
+        }
+        printf("\n");
+    }
+}
+
 void print_line_timetable(const timetable_t* const p_timetable)
 {
     if (!p_timetable)
@@ -222,25 +269,9 @@ void print_line_timetable(const timetable_t* const p_timetable)
         const char* const* const p_station_display_names = create_station_display_names(p_timetable, &max_width);
 
         print_horizontal_line(p_timetable, max_width);
-        {
-            printf("|");
-            {
-                size_t i = 0;
-                for (i = 0; i < max_width; ++i)
-                {
-                    printf(" ");
-                }
-            }
-            printf("|\n");
-        }
+        print_train_names(p_timetable, max_width);
         print_horizontal_line(p_timetable, max_width);
-        {
-            size_t i = 0;
-            for (i = 0; i < timetable_stationCount(p_timetable); ++i)
-            {
-                printf("|%s|\n", p_station_display_names[i]);
-            }
-        }
+        print_station_name_and_train_times(p_timetable, p_station_display_names);
         print_horizontal_line(p_timetable, max_width);
 
         {
