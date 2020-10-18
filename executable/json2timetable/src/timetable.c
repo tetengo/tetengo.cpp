@@ -87,6 +87,13 @@ timetable_t* timetable_create(const char* const* const p_stations, const size_t 
     }
 }
 
+void timetable_destroy(const timetable_t* const p_timetable)
+{
+    arrayList_destroy(p_timetable->p_trains);
+    arrayList_destroy(p_timetable->p_stations);
+    free((void*)p_timetable);
+}
+
 void timetable_addTrain(timetable_t* const p_timetable, const char* const name, const int* const p_times)
 {
     train_t* const p_train = malloc(sizeof(train_t));
@@ -112,11 +119,4 @@ void timetable_addTrain(timetable_t* const p_timetable, const char* const name, 
     }
 
     arrayList_add(p_timetable->p_trains, p_train);
-}
-
-void timetable_destroy(const timetable_t* const p_timetable)
-{
-    arrayList_destroy(p_timetable->p_trains);
-    arrayList_destroy(p_timetable->p_stations);
-    free((void*)p_timetable);
 }
