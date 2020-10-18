@@ -196,7 +196,7 @@ int timetable_trainTimeAt(const timetable_t* const p_timetable, const size_t tra
 
     {
         const train_t* const p_train = arrayList_at(p_timetable->p_trains, train_index);
-        const int raw_time = *(const int*)arrayList_at(p_train->p_times, station_index);
+        const int            raw_time = *(const int*)arrayList_at(p_train->p_times, station_index);
 
         if (raw_time == 0)
         {

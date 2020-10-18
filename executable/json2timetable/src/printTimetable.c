@@ -282,29 +282,78 @@ static void print_station_name_and_train_times(
     const timetable_t* const p_timetable,
     const char* const* const p_station_display_names)
 {
-    size_t i = 0;
-    for (i = 0; i < timetable_stationCount(p_timetable); ++i)
+    const size_t train_count = timetable_trainCount(p_timetable);
+    int* const   p_passings = malloc(sizeof(int) * train_count);
+    if (!p_passings)
     {
+        return;
+    }
+    {
+        size_t i = 0;
+        for (i = 0; i < train_count; ++i)
         {
-            printf("|%s|", p_station_display_names[i]);
+            p_passings[i] = 0;
         }
+    }
+    {
+        const size_t station_count = timetable_stationCount(p_timetable);
+        size_t       i = 0;
+        for (i = 0; i < station_count; ++i)
         {
-            size_t j = 0;
-            for (j = 0; j < timetable_trainCount(p_timetable); ++j)
             {
-                const int time = timetable_trainTimeAt(p_timetable, j, i);
-                if (time >= 0)
+                printf("|%s|", p_station_display_names[i]);
+            }
+            {
+                size_t j = 0;
+                for (j = 0; j < train_count; ++j)
                 {
-                    printf("%4.3d|", time);
-                }
-                else
-                {
-                    printf("    |");
+                    const int time = timetable_trainTimeAt(p_timetable, j, i);
+                    if (time >= 0)
+                    {
+                        printf("%4.3d|", time);
+                        p_passings[j] = 1;
+                        continue;
+                    }
+
+                    if (p_passings[i])
+                    {
+                        int    after_destination = 1;
+                        size_t k = 0;
+                        for (k = i + 1; k < station_count; ++k)
+                        {
+                            if (timetable_trainTimeAt(p_timetable, j, k) >= 0)
+                            {
+                                after_destination = 0;
+                                break;
+                            }
+                        }
+                        if (after_destination)
+                        {
+                            if (i > 0 && timetable_trainTimeAt(p_timetable, j, i - 1) >= 0)
+                            {
+                                printf("====|");
+                            }
+                            else
+                            {
+                                printf("    |");
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            printf("  | |");
+                        }
+                    }
+                    else
+                    {
+                        printf("    |");
+                    }
                 }
             }
+            printf("\n");
         }
-        printf("\n");
     }
+    free(p_passings);
 }
 
 void print_line_timetable(const timetable_t* const p_timetable)
