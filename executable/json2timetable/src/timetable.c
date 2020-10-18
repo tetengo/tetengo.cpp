@@ -113,8 +113,15 @@ void timetable_addTrain(timetable_t* const p_timetable, const char* const name, 
             {
                 continue;
             }
-            *p_time = p_times[i];
-            arrayList_add(p_train->p_times, p_time);
+            {
+                int time = p_times[i];
+                if (time >= 0 && !(0 <= time / 100 && time / 100 < 24 && 0 <= time % 100 && time % 100 < 60))
+                {
+                    time = -1;
+                }
+                *p_time = time;
+                arrayList_add(p_train->p_times, p_time);
+            }
         }
     }
 
