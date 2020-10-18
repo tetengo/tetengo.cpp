@@ -40,5 +40,54 @@ void timetable_destroy(const timetable_t* p_timetable);
 */
 void timetable_addTrain(timetable_t* p_timetable, const char* name, const int* p_times);
 
+/*!
+    \brief Returns the station count.
+
+    \param p_timetable A pointer to a timetable.
+
+    \return The station count. Or 0 when p_timetable is NULL.
+*/
+size_t timetable_stationCount(const timetable_t* p_timetable);
+
+/*!
+    \brief Returns the station.
+
+    \param p_timetable A pointer to a timetable.
+    \param index       An index.
+
+    \return The station. Or NULL when p_timetable is NULL or index is greater than the station count.
+*/
+const char* timetable_stationAt(const timetable_t* p_timetable, size_t index);
+
+/*!
+    \brief Returns the train count.
+
+    \param p_timetable A pointer to a timetable.
+
+    \return The train count. Or 0 when p_timetable is NULL.
+*/
+size_t timetable_trainCount(const timetable_t* p_timetable);
+
+/*!
+    \brief Returns the train name.
+
+    \param p_timetable A pointer to a timetable.
+    \param index       An index.
+
+    \return The train name. Or NULL when p_timetable is NULL or index is greater than the train count.
+*/
+const char* timetable_trainNameAt(const timetable_t* p_timetable, size_t index);
+
+/*!
+    \brief Returns the train time.
+
+    \param p_timetable A pointer to a timetable.
+    \param index       An index.
+
+    \return The train time. Or a negative value when p_timetable is NULL, train_index is greater than the train count or
+            station_index is greater than the station count.
+*/
+int timetable_trainTimeAt(const timetable_t* p_timetable, size_t train_index, size_t station_index);
+
 
 #endif

@@ -10,7 +10,7 @@
 
 static timetable_t* load_timetable()
 {
-    static const char* p_stations[] = { "Hoge", "Fuga", "Piyo" };
+    static const char* p_stations[] = { "HogeHoge", "Fg", "Piyo" };
     timetable_t*       p_timetable = timetable_create(p_stations, sizeof(p_stations) / sizeof(const char*));
 
     {

@@ -127,3 +127,75 @@ void timetable_addTrain(timetable_t* const p_timetable, const char* const name, 
 
     arrayList_add(p_timetable->p_trains, p_train);
 }
+
+size_t timetable_stationCount(const timetable_t* const p_timetable)
+{
+    if (!p_timetable)
+    {
+        return 0;
+    }
+
+    return arrayList_size(p_timetable->p_stations);
+}
+
+const char* timetable_stationAt(const timetable_t* const p_timetable, const size_t index)
+{
+    if (!p_timetable)
+    {
+        return 0;
+    }
+    if (index >= arrayList_size(p_timetable->p_stations))
+    {
+        return 0;
+    }
+
+    return arrayList_at(p_timetable->p_stations, index);
+}
+
+size_t timetable_trainCount(const timetable_t* const p_timetable)
+{
+    if (!p_timetable)
+    {
+        return 0;
+    }
+
+    return arrayList_size(p_timetable->p_trains);
+}
+
+const char* timetable_trainNameAt(const timetable_t* const p_timetable, const size_t index)
+{
+    if (!p_timetable)
+    {
+        return 0;
+    }
+    if (index >= arrayList_size(p_timetable->p_trains))
+    {
+        return 0;
+    }
+
+    {
+        const train_t* const p_train = arrayList_at(p_timetable->p_trains, index);
+        return p_train->name;
+    }
+}
+
+int timetable_trainTimeAt(const timetable_t* const p_timetable, const size_t train_index, const size_t station_index)
+{
+    if (!p_timetable)
+    {
+        return 0;
+    }
+    if (train_index >= arrayList_size(p_timetable->p_trains))
+    {
+        return 0;
+    }
+    if (station_index >= arrayList_size(p_timetable->p_stations))
+    {
+        return 0;
+    }
+
+    {
+        const train_t* const p_train = arrayList_at(p_timetable->p_trains, train_index);
+        return *(const int*)arrayList_at(p_train->p_times, station_index);
+    }
+}
