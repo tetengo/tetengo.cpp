@@ -33,28 +33,28 @@ typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entr
 */
 typedef struct tetengo_lattice_node_tag
 {
-    //! A key.
+    /*! A key. */
     tetengo_lattice_stringView_t key;
 
-    //! A value handle.
+    /*! A value handle. */
     tetengo_lattice_entry_valueHandle_t value_handle;
 
-    //! An index of a preceding step.
+    /*! An index of a preceding step. */
     size_t preceding_step;
 
-    //! A pointer to preceding edge costs.
+    /*! A pointer to preceding edge costs. */
     const int* p_preceding_edge_costs;
 
-    //! A preceding edge cost count.
+    /*! A preceding edge cost count. */
     size_t preceding_edge_cost_count;
 
-    //! An index of a best preceding node.
+    /*! An index of a best preceding node. */
     size_t best_preceding_node;
 
-    //! A node cost.
+    /*! A node cost. */
     int node_cost;
 
-    //! A path cost.
+    /*! A path cost. */
     int path_cost;
 
 

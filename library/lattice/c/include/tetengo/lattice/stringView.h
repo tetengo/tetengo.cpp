@@ -19,10 +19,10 @@ extern "C" {
 */
 typedef struct tetengo_lattice_stringView_tag
 {
-    //! A pointer to the head.
+    /*! A pointer to the head. */
     const char* p_head;
 
-    //! The length.
+    /*! The length. */
     size_t length;
 
 

@@ -10,7 +10,7 @@
 #define PRECOMPILED_H
 
 
-// C Standard Library
+/* C Standard Library */
 #include <assert.h>
 #include <stddef.h>
 #include <stdio.h>
