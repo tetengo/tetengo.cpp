@@ -74,7 +74,7 @@ create_equal_spaced(const char* const string, const grapheme_t* const p_grapheme
                 equal_spaced_offset += character_length;
             }
             {
-                const size_t space_count = max_width - (max_width - width) / 2;
+                const size_t space_count = max_width - width - (max_width - width) / 2;
                 size_t       i = 0;
                 for (i = 0; i < space_count; ++i)
                 {
@@ -109,7 +109,7 @@ create_equal_spaced(const char* const string, const grapheme_t* const p_grapheme
                     }
                     equal_spaced_offset += min_space_count;
                 }
-                if (i < space_remainder)
+                if (p_graphemes->count - 1 - i <= space_remainder)
                 {
                     p_equal_escaped[equal_spaced_offset] = ' ';
                     ++equal_spaced_offset;
