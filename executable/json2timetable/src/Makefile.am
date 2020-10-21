@@ -3,11 +3,13 @@
 
 headers = \
     arrayList.h \
+    loadTimetable.h \
     printTimetable.h \
     timetable.h
 
 sources = \
     arrayList.c \
+    loadTimetable.c \
     main.c \
     printTimetable.c \
     timetable.c
