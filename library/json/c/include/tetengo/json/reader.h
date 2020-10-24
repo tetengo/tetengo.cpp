@@ -110,8 +110,8 @@ int tetengo_json_reader_getLocation(
 
     \param p_reader A pointer to a reader.
 
-    \return non-zero When the next character exists.
-    \return 0        Otherwise.
+    \retval non-zero When the next character exists.
+    \retval 0        Otherwise.
 */
 int tetengo_json_reader_hasNext(const tetengo_json_reader_t* p_reader);
 

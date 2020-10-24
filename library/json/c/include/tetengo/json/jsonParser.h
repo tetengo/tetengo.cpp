@@ -61,8 +61,8 @@ void tetengo_json_jsonParser_destroy(const tetengo_json_jsonParser_t* p_parser);
 
     \param p_parser A pointer to a perser.
 
-    \return non-zero When the next element exists.
-    \return 0        Otherwise.
+    \retval non-zero When the next element exists.
+    \retval 0        Otherwise.
 */
 int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* p_parser);
 
