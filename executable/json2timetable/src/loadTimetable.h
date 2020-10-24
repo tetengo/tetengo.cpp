@@ -13,9 +13,11 @@
 /*!
     \brief Loads a timetable.
 
+    \param timetable_file_path A timetable file path.
+
     \return A pointer to a timetable. Or NULL on error.
 */
-timetable_t* load_timetable();
+timetable_t* load_timetable(const char* timetable_file_path);
 
 
 #endif

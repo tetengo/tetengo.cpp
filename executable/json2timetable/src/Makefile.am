@@ -17,10 +17,13 @@ sources = \
 bin_PROGRAMS = json2timetable
 
 json2timetable_CPPFLAGS = \
+    -I${top_srcdir}/library/json/c/include \
     -I${top_srcdir}/library/text/c/include
 json2timetable_LDFLAGS = \
+    -L${top_builddir}/library/json/c/src \
     -L${top_builddir}/library/text/c/src
 json2timetable_LDADD = \
+    -ltetengo.json \
     -ltetengo.text
 json2timetable_SOURCES = ${headers} ${sources}
 
