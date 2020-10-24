@@ -873,7 +873,6 @@ BOOST_AUTO_TEST_CASE(get_reader)
         BOOST_TEST(parser.get_reader().has_next());
     }
 
-#if 0
     {
         const temporary_file file{ json0 };
         auto* const          p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
@@ -886,7 +885,9 @@ BOOST_AUTO_TEST_CASE(get_reader)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_parser);
 
-        BOOST_TEST(!tetengo_json_jsonParser_hasNext(p_parser));
+        const auto* const p_reader_in_parser = tetengo_json_jsonParser_getReader(p_parser);
+        BOOST_TEST_REQUIRE(p_reader_in_parser);
+        BOOST_TEST(!tetengo_json_reader_hasNext(p_reader_in_parser));
     }
     {
         const temporary_file file{ json1 };
@@ -900,12 +901,13 @@ BOOST_AUTO_TEST_CASE(get_reader)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_parser);
 
-        BOOST_TEST(tetengo_json_jsonParser_hasNext(p_parser));
+        const auto* const p_reader_in_parser = tetengo_json_jsonParser_getReader(p_parser);
+        BOOST_TEST_REQUIRE(p_reader_in_parser);
+        BOOST_TEST(tetengo_json_reader_hasNext(p_reader_in_parser));
     }
     {
-        BOOST_TEST(!tetengo_json_jsonParser_hasNext(nullptr));
+        BOOST_TEST(!tetengo_json_jsonParser_getReader(nullptr));
     }
-#endif
 }
 
 

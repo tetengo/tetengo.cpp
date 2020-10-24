@@ -7,7 +7,9 @@
 #if !defined(TETENGO_JSON_READER_HPP_)
 #define TETENGO_JSON_READER_HPP_
 
+#include <cassert>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include <tetengo/json/reader.hpp>
@@ -15,11 +17,56 @@
 
 struct tetengo_json_reader_tag
 {
+private:
     std::unique_ptr<tetengo::json::reader> p_cpp_reader;
 
-    tetengo_json_reader_tag(std::unique_ptr<tetengo::json::reader>&& p_cpp_reader) :
-    p_cpp_reader{ std::move(p_cpp_reader) }
+    const tetengo::json::reader* p_cpp_reader_ref;
+
+public:
+    explicit tetengo_json_reader_tag(std::unique_ptr<tetengo::json::reader>&& p_cpp_reader) :
+    p_cpp_reader{ std::move(p_cpp_reader) },
+        p_cpp_reader_ref{}
     {}
+
+    explicit tetengo_json_reader_tag(const tetengo::json::reader& cpp_reader) :
+    p_cpp_reader{},
+        p_cpp_reader_ref{ &cpp_reader }
+    {}
+
+    const tetengo::json::reader& cpp_reader() const
+    {
+        if (!p_cpp_reader && !p_cpp_reader_ref)
+        {
+            assert(false);
+            throw std::logic_error{ "cpp_reader is NULL." };
+        }
+        return p_cpp_reader ? *p_cpp_reader : *p_cpp_reader_ref;
+    }
+
+    tetengo::json::reader& cpp_reader()
+    {
+        if (!p_cpp_reader)
+        {
+            assert(false);
+            throw std::logic_error{ "cpp_reader is NULL." };
+        }
+        return *p_cpp_reader;
+    }
+
+    std::unique_ptr<tetengo::json::reader>&& move_cpp_reader()
+    {
+        if (!p_cpp_reader)
+        {
+            assert(false);
+            throw std::logic_error{ "cpp_reader is NULL." };
+        }
+        return std::move(p_cpp_reader);
+    }
+
+    void set_cpp_reader_ref(const tetengo::json::reader& reader)
+    {
+        p_cpp_reader_ref = &reader;
+    }
 };
 
 
