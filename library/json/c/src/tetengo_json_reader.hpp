@@ -28,11 +28,6 @@ public:
         p_cpp_reader_ref{}
     {}
 
-    explicit tetengo_json_reader_tag(const tetengo::json::reader& cpp_reader) :
-    p_cpp_reader{},
-        p_cpp_reader_ref{ &cpp_reader }
-    {}
-
     const tetengo::json::reader& cpp_reader() const
     {
         if (!p_cpp_reader && !p_cpp_reader_ref)
