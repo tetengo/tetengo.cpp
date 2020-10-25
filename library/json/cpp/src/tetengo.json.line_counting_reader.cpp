@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <cassert>
 #include <cstddef>
 #include <iterator>
 #include <memory>
@@ -78,6 +79,12 @@ namespace tetengo::json
             ++m_current_position;
         }
 
+        const reader& base_reader_impl() const
+        {
+            assert(m_p_base_reader);
+            return *m_p_base_reader;
+        }
+
 
     private:
         // variables
@@ -138,4 +145,11 @@ namespace tetengo::json
     {
         m_p_impl->next_impl();
     }
+
+    const reader& line_counting_reader::base_reader_impl() const
+    {
+        return m_p_impl->base_reader_impl();
+    }
+
+
 }

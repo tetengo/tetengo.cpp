@@ -350,6 +350,19 @@ BOOST_AUTO_TEST_CASE(next)
 }
 
 
+BOOST_AUTO_TEST_CASE(base_reader)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        auto                               p_stream = std::make_unique<std::istringstream>(stream_value);
+        const tetengo::json::stream_reader reader{ std::move(p_stream), 10 };
+
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& base_reader = reader.base_reader(), std::logic_error);
+    }
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

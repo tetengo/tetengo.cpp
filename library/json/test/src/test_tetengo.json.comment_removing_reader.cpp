@@ -492,6 +492,19 @@ BOOST_AUTO_TEST_CASE(next)
 }
 
 
+BOOST_AUTO_TEST_CASE(base_reader)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        auto                                         p_base_reader = create_cpp_base_reader(stream_value0);
+        const tetengo::json::comment_removing_reader reader{ std::move(p_base_reader), "REM" };
+
+        [[maybe_unused]] const auto& base_reader = reader.base_reader();
+    }
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
