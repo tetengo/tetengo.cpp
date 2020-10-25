@@ -100,11 +100,6 @@ namespace tetengo::json
             m_channel.take();
         }
 
-        const reader& get_reader() const
-        {
-            return *m_p_reader;
-        }
-
 
     private:
         // static functions
@@ -262,11 +257,6 @@ namespace tetengo::json
     void json_parser::next()
     {
         m_p_impl->next();
-    }
-
-    const reader& json_parser::get_reader() const
-    {
-        return m_p_impl->get_reader();
     }
 
 
