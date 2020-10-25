@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(has_next)
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json0), 10);
         const tetengo::json::json_parser parser{ std::move(p_reader) };
 
-        BOOST_TEST(!parser.has_next());
+        BOOST_TEST(parser.has_next());
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json1), 10);
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(has_next)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_parser);
 
-        BOOST_TEST(!tetengo_json_jsonParser_hasNext(p_parser));
+        BOOST_TEST(tetengo_json_jsonParser_hasNext(p_parser));
     }
     {
         const temporary_file file{ json1 };
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(peek)
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json0), 10);
         const tetengo::json::json_parser parser{ std::move(p_reader) };
 
-        BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = parser.peek(), std::logic_error);
+        BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = parser.peek(), std::runtime_error);
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json1), 10);
@@ -412,6 +412,7 @@ BOOST_AUTO_TEST_CASE(next)
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json0), 10);
         tetengo::json::json_parser parser{ std::move(p_reader) };
 
+        parser.next();
         BOOST_CHECK_THROW(parser.next(), std::logic_error);
     }
     {
@@ -425,7 +426,19 @@ BOOST_AUTO_TEST_CASE(next)
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json2), 10);
         tetengo::json::json_parser parser{ std::move(p_reader) };
 
-        parser.next();
+        {
+            BOOST_TEST_REQUIRE(parser.has_next());
+            const auto& parsed = parser.peek();
+            BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::boolean);
+            BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
+            BOOST_TEST(parsed.value() == "false");
+            parser.next();
+        }
+        {
+            BOOST_TEST_REQUIRE(parser.has_next());
+            BOOST_CHECK_THROW([[maybe_unused]] const auto& parsed = parser.peek(), std::runtime_error);
+            parser.next();
+        }
         BOOST_CHECK_THROW(parser.next(), std::logic_error);
     }
     {
@@ -589,6 +602,7 @@ BOOST_AUTO_TEST_CASE(next)
         BOOST_TEST_REQUIRE(p_parser);
 
         tetengo_json_jsonParser_next(p_parser);
+        tetengo_json_jsonParser_next(p_parser);
     }
     {
         const temporary_file file{ json1 };
@@ -617,7 +631,25 @@ BOOST_AUTO_TEST_CASE(next)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_parser);
 
-        tetengo_json_jsonParser_next(p_parser);
+        {
+            BOOST_TEST_REQUIRE(tetengo_json_jsonParser_hasNext(p_parser));
+            const auto* p_parsed = tetengo_json_jsonParser_peek(p_parser);
+            BOOST_TEST_REQUIRE(p_parsed);
+            const auto* const p_parsed_type = tetengo_json_element_type(p_parsed);
+            BOOST_TEST_REQUIRE(p_parsed_type);
+            BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_boolean());
+            BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_primitive());
+            const auto* const value = tetengo_json_element_value(p_parsed);
+            BOOST_TEST_REQUIRE(value);
+            BOOST_TEST(std::string_view{ value } == "false");
+            tetengo_json_jsonParser_next(p_parser);
+        }
+        {
+            BOOST_TEST_REQUIRE(tetengo_json_jsonParser_hasNext(p_parser));
+            const auto* p_parsed = tetengo_json_jsonParser_peek(p_parser);
+            BOOST_TEST(!p_parsed);
+            tetengo_json_jsonParser_next(p_parser);
+        }
         tetengo_json_jsonParser_next(p_parser);
     }
     {
