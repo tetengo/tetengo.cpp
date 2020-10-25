@@ -26,5 +26,10 @@ namespace tetengo::json
         next_impl();
     }
 
+    const reader& reader::base_reader() const
+    {
+        return base_reader_impl();
+    }
+
 
 }

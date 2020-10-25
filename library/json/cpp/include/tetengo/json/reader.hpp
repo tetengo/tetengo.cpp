@@ -52,6 +52,15 @@ namespace tetengo::json
         */
         void next();
 
+        /*!
+            \brief Returns the base reader.
+
+            \return The base reader.
+
+            \throw std::logic_error When this reader does not have a base reader.
+        */
+        const reader& base_reader() const;
+
 
     private:
         // virtual functions
@@ -61,6 +70,8 @@ namespace tetengo::json
         virtual char peek_impl() const = 0;
 
         virtual void next_impl() = 0;
+
+        virtual const reader& base_reader_impl() const = 0;
     };
 
 

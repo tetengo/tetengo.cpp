@@ -81,7 +81,7 @@ tetengo_json_reader_t* tetengo_json_reader_createCommentRemovingReader(
         }
 
         auto p_cpp_reader = std::make_unique<tetengo::json::comment_removing_reader>(
-            std::move(p_base_reader->p_cpp_reader), single_line_begin);
+            std::move(p_base_reader->move_cpp_reader()), single_line_begin);
 
         auto p_instance = std::make_unique<tetengo_json_reader_t>(std::move(p_cpp_reader));
         return p_instance.release();
@@ -108,7 +108,7 @@ tetengo_json_reader_t* tetengo_json_reader_createLineCountingReader(tetengo_json
         }
 
         auto p_cpp_reader =
-            std::make_unique<tetengo::json::line_counting_reader>(std::move(p_base_reader->p_cpp_reader));
+            std::make_unique<tetengo::json::line_counting_reader>(std::move(p_base_reader->move_cpp_reader()));
 
         auto p_instance = std::make_unique<tetengo_json_reader_t>(std::move(p_cpp_reader));
         return p_instance.release();
@@ -145,7 +145,7 @@ int tetengo_json_reader_getLocation(
         }
 
         const auto* const p_cpp_line_counting_reader =
-            dynamic_cast<const tetengo::json::line_counting_reader*>(p_line_counting_reader->p_cpp_reader.get());
+            dynamic_cast<const tetengo::json::line_counting_reader*>(&p_line_counting_reader->cpp_reader());
         if (!p_cpp_line_counting_reader)
         {
             throw std::invalid_argument{ "p_line_counting_reader is not a line counting reader." };
@@ -174,7 +174,7 @@ int tetengo_json_reader_hasNext(const tetengo_json_reader_t* const p_reader)
             throw std::invalid_argument{ "p_reader is NULL." };
         }
 
-        return p_reader->p_cpp_reader->has_next() ? 1 : 0;
+        return p_reader->cpp_reader().has_next() ? 1 : 0;
     }
     catch (...)
     {
@@ -191,7 +191,7 @@ char tetengo_json_reader_peek(const tetengo_json_reader_t* const p_reader)
             throw std::invalid_argument{ "p_reader is NULL." };
         }
 
-        return p_reader->p_cpp_reader->peek();
+        return p_reader->cpp_reader().peek();
     }
     catch (...)
     {
@@ -208,8 +208,27 @@ void tetengo_json_reader_next(tetengo_json_reader_t* const p_reader)
             throw std::invalid_argument{ "p_reader is NULL." };
         }
 
-        p_reader->p_cpp_reader->next();
+        p_reader->cpp_reader().next();
     }
     catch (...)
     {}
+}
+
+const tetengo_json_reader_t* tetengo_json_reader_baseReader(const tetengo_json_reader_t* const p_reader)
+{
+    try
+    {
+        if (!p_reader)
+        {
+            throw std::invalid_argument{ "p_reader is NULL." };
+        }
+
+        p_reader->p_base_reader_placeholder =
+            std::make_unique<tetengo_json_reader_t>(&p_reader->cpp_reader().base_reader());
+        return p_reader->p_base_reader_placeholder.get();
+    }
+    catch (...)
+    {
+        return NULL;
+    }
 }

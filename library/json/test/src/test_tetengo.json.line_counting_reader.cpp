@@ -785,6 +785,33 @@ BOOST_AUTO_TEST_CASE(next)
 }
 
 
+BOOST_AUTO_TEST_CASE(base_reader)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        auto                                      p_base_reader = create_cpp_base_reader(stream_value0);
+        const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
+
+        [[maybe_unused]] const auto& base_reader = reader.base_reader();
+    }
+
+    {
+        const temporary_file file{ stream_value0 };
+        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const    p_reader = tetengo_json_reader_createLineCountingReader(p_base_reader);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(tetengo_json_reader_baseReader(p_reader));
+    }
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
