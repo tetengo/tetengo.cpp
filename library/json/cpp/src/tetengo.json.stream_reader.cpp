@@ -20,6 +20,9 @@
 
 namespace tetengo::json
 {
+    class reader;
+
+
     class stream_reader::impl : private boost::noncopyable
     {
     public:
@@ -74,6 +77,11 @@ namespace tetengo::json
                 throw std::logic_error{ "No more element." };
             }
             m_buffer.pop_front();
+        }
+
+        const reader& base_reader_impl() const
+        {
+            throw std::logic_error{ "No base reader." };
         }
 
 
@@ -132,6 +140,11 @@ namespace tetengo::json
     void stream_reader::next_impl()
     {
         m_p_impl->next_impl();
+    }
+
+    const reader& stream_reader::base_reader_impl() const
+    {
+        return m_p_impl->base_reader_impl();
     }
 
 

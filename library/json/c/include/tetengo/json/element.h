@@ -93,24 +93,24 @@ int tetengo_json_element_typeCategory_structureOpen();
 int tetengo_json_element_typeCategory_structureClose();
 
 /*! The type type. */
-struct tetengo_json_element_type_t
+typedef struct tetengo_json_element_type_tag
 {
     /*! A name. */
     int name;
 
     /*! A category. */
     int category;
-};
+} tetengo_json_element_type_t;
 
 /*! The attribute key-value type. */
-struct tetengo_json_element_attributeKeyValue_t
+typedef struct tetengo_json_element_attributeKeyValue_tag
 {
     /*! A key. */
     const char* key;
 
     /*! A value. */
     const char* value;
-};
+} tetengo_json_element_attributeKeyValue_t;
 
 /*!
     \brief Creates an element.

@@ -70,6 +70,8 @@ namespace tetengo::json
         virtual char peek_impl() const override;
 
         virtual void next_impl() override;
+
+        virtual const reader& base_reader_impl() const override;
     };
 
 

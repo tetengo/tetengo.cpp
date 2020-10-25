@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <iterator>
 #include <memory>
@@ -69,6 +70,12 @@ namespace tetengo::json
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
             m_queue.pop();
+        }
+
+        const reader& base_reader_impl() const
+        {
+            assert(m_p_base_reader);
+            return *m_p_base_reader;
         }
 
 
@@ -198,6 +205,11 @@ namespace tetengo::json
     void comment_removing_reader::next_impl()
     {
         m_p_impl->next_impl();
+    }
+
+    const reader& comment_removing_reader::base_reader_impl() const
+    {
+        return m_p_impl->base_reader_impl();
     }
 
 

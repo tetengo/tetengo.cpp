@@ -58,6 +58,11 @@ namespace
             }
             ++m_index;
         }
+
+        virtual const reader& base_reader_impl() const override
+        {
+            throw std::logic_error{ "No base reader." };
+        }
     };
 
 
@@ -115,6 +120,15 @@ BOOST_AUTO_TEST_CASE(next)
     BOOST_TEST(!reader.has_next());
     BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = reader.peek(), std::logic_error);
     BOOST_CHECK_THROW(reader.next(), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(base_reader)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_reader reader{};
+
+    BOOST_CHECK_THROW([[maybe_unused]] const auto& base_reader = reader.base_reader(), std::logic_error);
 }
 
 

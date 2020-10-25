@@ -22,7 +22,8 @@ struct tetengo_text_graphemeSplitter_tag
 {
     std::unique_ptr<tetengo::text::grapheme_splitter> p_cpp_grapheme_splitter;
 
-    tetengo_text_graphemeSplitter_tag(std::unique_ptr<tetengo::text::grapheme_splitter>&& p_cpp_grapheme_splitter) :
+    explicit tetengo_text_graphemeSplitter_tag(
+        std::unique_ptr<tetengo::text::grapheme_splitter>&& p_cpp_grapheme_splitter) :
     p_cpp_grapheme_splitter{ std::move(p_cpp_grapheme_splitter) }
     {}
 };

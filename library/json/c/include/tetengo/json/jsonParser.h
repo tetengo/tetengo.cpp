@@ -61,8 +61,8 @@ void tetengo_json_jsonParser_destroy(const tetengo_json_jsonParser_t* p_parser);
 
     \param p_parser A pointer to a perser.
 
-    \return non-zero When the next element exists.
-    \return 0        Otherwise.
+    \retval non-zero When the next element exists.
+    \retval 0        Otherwise.
 */
 int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* p_parser);
 
@@ -82,6 +82,15 @@ const tetengo_json_element_t* tetengo_json_jsonParser_peek(const tetengo_json_js
     \param p_parser A pointer to a perser.
 */
 void tetengo_json_jsonParser_next(tetengo_json_jsonParser_t* p_parser);
+
+/*!
+    \brief Returns the reader.
+
+    \param p_parser A pointer to a perser.
+
+    \return A pointer the reader. Or NULL when p_parser is NULL.
+*/
+const tetengo_json_reader_t* tetengo_json_jsonParser_getReader(const tetengo_json_jsonParser_t* p_parser);
 
 
 #if defined(__cplusplus)
