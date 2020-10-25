@@ -21,9 +21,11 @@
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/json/channel.hpp>
+#include <tetengo/json/comment_removing_reader.hpp>
 #include <tetengo/json/element.hpp>
 #include <tetengo/json/json_grammar.hpp>
 #include <tetengo/json/json_parser.hpp>
+#include <tetengo/json/line_counting_reader.hpp>
 #include <tetengo/json/reader.hpp>
 
 
@@ -43,7 +45,7 @@ namespace tetengo::json
         // constructors and destructor
 
         impl(std::unique_ptr<reader>&& p_reader, const std::size_t buffer_capacity) :
-        m_p_reader{ std::move(p_reader) },
+        m_p_reader{ build_decorated_reader(std::move(p_reader)) },
             m_p_worker{},
             m_channel{ buffer_capacity },
             m_parsing_abortion_requested{ false },
@@ -103,6 +105,13 @@ namespace tetengo::json
 
     private:
         // static functions
+
+        static std::unique_ptr<reader> build_decorated_reader(std::unique_ptr<reader>&& p_base_reader)
+        {
+            auto p_line_counting = std::make_unique<line_counting_reader>(std::move(p_base_reader));
+            auto p_comment_removing = std::make_unique<comment_removing_reader>(std::move(p_line_counting), "#");
+            return std::move(p_comment_removing);
+        }
 
         static element::type_type to_element_type(const json_grammar::primitive_type_type primitive_type)
         {
