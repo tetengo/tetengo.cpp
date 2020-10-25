@@ -132,6 +132,15 @@ char tetengo_json_reader_peek(const tetengo_json_reader_t* p_reader);
 */
 void tetengo_json_reader_next(tetengo_json_reader_t* p_reader);
 
+/*!
+    \brief Returns the base reader.
+
+    \param p_reader A pointer to a reader.
+
+    \return A pointer to the base reader. Or NULL when p_reader is NULL or the reader does not have a base reader.
+*/
+const tetengo_json_reader_t* tetengo_json_reader_baseReader(const tetengo_json_reader_t* p_reader);
+
 
 #if defined(__cplusplus)
 }

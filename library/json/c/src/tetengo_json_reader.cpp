@@ -213,3 +213,22 @@ void tetengo_json_reader_next(tetengo_json_reader_t* const p_reader)
     catch (...)
     {}
 }
+
+const tetengo_json_reader_t* tetengo_json_reader_baseReader(const tetengo_json_reader_t* const p_reader)
+{
+    try
+    {
+        if (!p_reader)
+        {
+            throw std::invalid_argument{ "p_reader is NULL." };
+        }
+
+        p_reader->p_base_reader_placeholder =
+            std::make_unique<tetengo_json_reader_t>(&p_reader->cpp_reader().base_reader());
+        return p_reader->p_base_reader_placeholder.get();
+    }
+    catch (...)
+    {
+        return NULL;
+    }
+}

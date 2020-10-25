@@ -360,6 +360,23 @@ BOOST_AUTO_TEST_CASE(base_reader)
 
         BOOST_CHECK_THROW([[maybe_unused]] const auto& base_reader = reader.base_reader(), std::logic_error);
     }
+
+    {
+        const temporary_file file{ stream_value };
+
+        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        BOOST_SCOPE_EXIT(p_reader)
+        {
+            tetengo_json_reader_destroy(p_reader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_reader);
+
+        BOOST_TEST(!tetengo_json_reader_baseReader(p_reader));
+    }
+    {
+        BOOST_TEST(!tetengo_json_reader_baseReader(nullptr));
+    }
 }
 
 

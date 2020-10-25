@@ -23,9 +23,18 @@ private:
     const tetengo::json::reader* p_cpp_reader_ref;
 
 public:
+    mutable std::unique_ptr<tetengo_json_reader_tag> p_base_reader_placeholder;
+
     explicit tetengo_json_reader_tag(std::unique_ptr<tetengo::json::reader>&& p_cpp_reader) :
     p_cpp_reader{ std::move(p_cpp_reader) },
-        p_cpp_reader_ref{}
+        p_cpp_reader_ref{},
+        p_base_reader_placeholder{}
+    {}
+
+    explicit tetengo_json_reader_tag(const tetengo::json::reader* const p_cpp_reader_ref) :
+    p_cpp_reader{},
+        p_cpp_reader_ref{ p_cpp_reader_ref },
+        p_base_reader_placeholder{}
     {}
 
     const tetengo::json::reader& cpp_reader() const
@@ -60,6 +69,7 @@ public:
 
     void set_cpp_reader_ref(const tetengo::json::reader& reader)
     {
+        assert(!p_cpp_reader);
         p_cpp_reader_ref = &reader;
     }
 };
