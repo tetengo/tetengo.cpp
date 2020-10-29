@@ -1,0 +1,101 @@
+/*! \file
+    \brief A file location.
+
+    Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+*/
+
+#include <stdexcept>
+#include <string>
+
+#include <boost/operators.hpp>
+#include <boost/preprocessor.hpp>
+#include <boost/test/unit_test.hpp>
+
+#include <tetengo/json/file_location.hpp>
+
+
+BOOST_AUTO_TEST_SUITE(test_tetengo)
+BOOST_AUTO_TEST_SUITE(json)
+BOOST_AUTO_TEST_SUITE(file_location)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        [[maybe_unused]] const tetengo::json::file_location location_{ "hoge", 42, 5 };
+    }
+    {
+        BOOST_CHECK_THROW(
+            [[maybe_unused]] const tetengo::json::file_location location_("hoge", 42, 6), std::out_of_range);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::json::file_location location1{ "hoge", 42, 5 };
+        const tetengo::json::file_location location2{ "hoge", 42, 5 };
+
+        BOOST_CHECK(location1 == location2);
+    }
+    {
+        const tetengo::json::file_location location1{ "hoge", 42, 5 };
+        const tetengo::json::file_location location2{ "fuga", 24, 4 };
+
+        BOOST_CHECK(location1 != location2);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(line)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::file_location location_{ "hoge", 42, 5 };
+
+    BOOST_TEST(location_.line() == "hoge");
+}
+
+BOOST_AUTO_TEST_CASE(line_index)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::file_location location_{ "hoge", 42, 5 };
+
+    BOOST_TEST(location_.line_index() == 42U);
+}
+
+BOOST_AUTO_TEST_CASE(column_index)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::json::file_location location_{ "hoge", 42, 5 };
+
+    BOOST_TEST(location_.column_index() == 5U);
+}
+
+BOOST_AUTO_TEST_CASE(set_column_index)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        tetengo::json::file_location location_{ "hoge", 42, 5 };
+
+        location_.set_column_index(2);
+
+        BOOST_TEST(location_.column_index() == 2U);
+    }
+    {
+        tetengo::json::file_location location_{ "hoge", 42, 5 };
+
+        BOOST_CHECK_THROW(location_.set_column_index(6), std::out_of_range);
+    }
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()

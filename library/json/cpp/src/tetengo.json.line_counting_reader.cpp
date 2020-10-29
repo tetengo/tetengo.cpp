@@ -5,16 +5,16 @@
 */
 
 #include <cassert>
-#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string_view>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/json/file_location.hpp>
 #include <tetengo/json/line_counting_reader.hpp>
 #include <tetengo/json/reader.hpp>
 
@@ -29,8 +29,8 @@ namespace tetengo::json
         explicit impl(std::unique_ptr<reader>&& p_base_reader) :
         m_p_base_reader{ std::move(p_base_reader) },
             m_line{},
-            m_line_count{ 0 },
-            m_current_position{ std::end(m_line) }
+            m_current_position{ std::end(m_line) },
+            m_file_location{ "", 0, 0 }
         {
             if (!m_p_base_reader)
             {
@@ -41,16 +41,14 @@ namespace tetengo::json
 
         // functions
 
-        location get_location() const
+        const file_location& get_location() const
         {
             ensure_line_loaded();
             if (m_current_position == std::end(m_line))
             {
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
-            return location{ std::string_view{ std::data(m_line), std::size(m_line) },
-                             m_line_count,
-                             static_cast<std::size_t>(std::distance(std::cbegin(m_line), m_current_position)) + 1 };
+            return m_file_location;
         }
 
         bool has_next_impl() const
@@ -77,6 +75,7 @@ namespace tetengo::json
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
             ++m_current_position;
+            m_file_location.set_column_index(std::distance(std::cbegin(m_line), m_current_position) + 1);
         }
 
         const reader& base_reader_impl() const
@@ -93,9 +92,9 @@ namespace tetengo::json
 
         mutable std::vector<char> m_line;
 
-        mutable std::size_t m_line_count;
-
         mutable std::vector<char>::const_iterator m_current_position;
+
+        mutable file_location m_file_location;
 
 
         // functions
@@ -114,8 +113,9 @@ namespace tetengo::json
                 m_p_base_reader->next();
             }
 
-            ++m_line_count;
             m_current_position = std::begin(m_line);
+            m_file_location =
+                file_location{ std::string{ std::data(m_line), m_line.size() }, m_file_location.line_index() + 1, 1 };
         }
     };
 
@@ -126,7 +126,7 @@ namespace tetengo::json
 
     line_counting_reader::~line_counting_reader() = default;
 
-    location line_counting_reader::get_location() const
+    const file_location& line_counting_reader::get_location() const
     {
         return m_p_impl->get_location();
     }
