@@ -19,7 +19,7 @@ namespace tetengo::json
         m_line_index{ line_index },
         m_column_index{ column_index }
     {
-        if (m_column_index > m_line.length() + 1)
+        if (m_column_index > m_line.length())
         {
             throw std::out_of_range{ "column_index is larger than the line length." };
         }
@@ -48,7 +48,7 @@ namespace tetengo::json
 
     void file_location::set_column_index(const std::size_t index)
     {
-        if (index > m_line.length() + 1)
+        if (index > m_line.length())
         {
             throw std::out_of_range{ "index is larger than the line length." };
         }

@@ -5,6 +5,7 @@
 */
 
 #include <cassert>
+#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
@@ -29,6 +30,7 @@ namespace tetengo::json
         explicit impl(std::unique_ptr<reader>&& p_base_reader) :
         m_p_base_reader{ std::move(p_base_reader) },
             m_line{},
+            m_line_index{ 0 },
             m_current_position{ std::end(m_line) },
             m_file_location{ "", 0, 0 }
         {
@@ -75,7 +77,7 @@ namespace tetengo::json
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
             ++m_current_position;
-            m_file_location.set_column_index(std::distance(std::cbegin(m_line), m_current_position) + 1);
+            m_file_location.set_column_index(std::distance(std::cbegin(m_line), m_current_position));
         }
 
         const reader& base_reader_impl() const
@@ -91,6 +93,8 @@ namespace tetengo::json
         const std::unique_ptr<reader> m_p_base_reader;
 
         mutable std::vector<char> m_line;
+
+        mutable std::size_t m_line_index;
 
         mutable std::vector<char>::const_iterator m_current_position;
 
@@ -114,8 +118,9 @@ namespace tetengo::json
             }
 
             m_current_position = std::begin(m_line);
-            m_file_location =
-                file_location{ std::string{ std::data(m_line), m_line.size() }, m_file_location.line_index() + 1, 1 };
+            ++m_line_index;
+
+            m_file_location = file_location{ std::string{ std::data(m_line), m_line.size() }, m_line_index - 1, 0 };
         }
     };
 

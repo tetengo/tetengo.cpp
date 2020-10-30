@@ -27,8 +27,8 @@ namespace tetengo::json
             \brief Creates a file location.
 
             \param line         A line.
-            \param line_index   A line index. 1-origin.
-            \param column_index A column index. 1-origin.
+            \param line_index   A line index.
+            \param column_index A column index.
 
             \throw std::out_of_range When column_index is larger than the line length.
         */
