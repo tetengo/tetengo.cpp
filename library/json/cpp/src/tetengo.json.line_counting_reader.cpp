@@ -46,7 +46,7 @@ namespace tetengo::json
         const file_location& get_location() const
         {
             ensure_line_loaded();
-            if (m_column_index == std::size(m_line))
+            if (m_column_index == std::size(m_line) + 1)
             {
                 throw std::logic_error{ "The current position is beyond the termination point." };
             }
@@ -106,6 +106,10 @@ namespace tetengo::json
         void ensure_line_loaded() const
         {
             if (m_column_index < std::size(m_line))
+            {
+                return;
+            }
+            if (!m_p_base_reader->has_next())
             {
                 return;
             }

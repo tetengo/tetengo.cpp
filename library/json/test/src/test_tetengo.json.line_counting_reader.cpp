@@ -132,7 +132,10 @@ BOOST_AUTO_TEST_CASE(get_location)
         auto                                      p_base_reader = create_cpp_base_reader(stream_value0);
         const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
 
-        BOOST_CHECK_THROW([[maybe_unused]] const auto& location = reader.get_location(), std::logic_error);
+        const auto& location = reader.get_location();
+        BOOST_TEST(location.line().empty());
+        BOOST_TEST(location.line_index() == 0U);
+        BOOST_TEST(location.column_index() == 0U);
     }
     {
         auto                                      p_base_reader = create_cpp_base_reader(stream_value1);
@@ -166,7 +169,11 @@ BOOST_AUTO_TEST_CASE(get_location)
 
         tetengo_json_location_t location{};
         const auto              result = tetengo_json_reader_getLocation(p_reader, &location);
-        BOOST_TEST(!result);
+        BOOST_TEST_REQUIRE(result);
+
+        BOOST_TEST((std::string_view{ location.line, location.line_length } == ""));
+        BOOST_TEST(location.line_index == 0U);
+        BOOST_TEST(location.column_index == 0U);
     }
     {
         const temporary_file file{ stream_value1 };
@@ -410,7 +417,7 @@ BOOST_AUTO_TEST_CASE(next)
         {
             BOOST_TEST(!reader.has_next());
             BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = reader.peek(), std::logic_error);
-            BOOST_CHECK_THROW([[maybe_unused]] const auto& location = reader.get_location(), std::logic_error);
+            BOOST_CHECK((reader.get_location() == tetengo::json::file_location{ "hoge", 0, 4 }));
             BOOST_CHECK_THROW(reader.next(), std::logic_error);
         }
     }
@@ -493,7 +500,7 @@ BOOST_AUTO_TEST_CASE(next)
         {
             BOOST_TEST(!reader.has_next());
             BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = reader.peek(), std::logic_error);
-            BOOST_CHECK_THROW([[maybe_unused]] const auto& location = reader.get_location(), std::logic_error);
+            BOOST_CHECK((reader.get_location() == tetengo::json::file_location{ "yo\n", 3, 3 }));
             BOOST_CHECK_THROW(reader.next(), std::logic_error);
         }
     }
@@ -570,7 +577,11 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST(!tetengo_json_reader_hasNext(p_reader));
             BOOST_TEST(tetengo_json_reader_peek(p_reader) == 0);
             tetengo_json_location_t location{};
-            BOOST_TEST(!tetengo_json_reader_getLocation(p_reader, &location));
+            const auto              result = tetengo_json_reader_getLocation(p_reader, &location);
+            BOOST_TEST_REQUIRE(result);
+            BOOST_TEST((std::string_view{ location.line, location.line_length } == "hoge"));
+            BOOST_TEST(location.line_index == 0U);
+            BOOST_TEST(location.column_index == 4U);
             tetengo_json_reader_next(p_reader);
         }
     }
@@ -721,7 +732,11 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST(!tetengo_json_reader_hasNext(p_reader));
             BOOST_TEST(tetengo_json_reader_peek(p_reader) == 0);
             tetengo_json_location_t location{};
-            BOOST_TEST(!tetengo_json_reader_getLocation(p_reader, &location));
+            const auto              result = tetengo_json_reader_getLocation(p_reader, &location);
+            BOOST_TEST_REQUIRE(result);
+            BOOST_TEST((std::string_view{ location.line, location.line_length } == "yo\n"));
+            BOOST_TEST(location.line_index == 3U);
+            BOOST_TEST(location.column_index == 3U);
             tetengo_json_reader_next(p_reader);
         }
     }
