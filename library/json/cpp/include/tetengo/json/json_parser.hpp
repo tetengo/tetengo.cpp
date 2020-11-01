@@ -81,13 +81,6 @@ namespace tetengo::json
         */
         void next();
 
-        /*!
-            \brief Returns the reader.
-
-            \return The reader.
-        */
-        [[nodiscard]] const reader& get_reader() const;
-
 
     private:
         // types

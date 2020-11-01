@@ -6,7 +6,6 @@ EXPORTS
 	tetengo_json_jsonParser_hasNext
 	tetengo_json_jsonParser_peek
 	tetengo_json_jsonParser_next
-	tetengo_json_jsonParser_getReader
 	tetengo_json_reader_streamReaderDefaultBufferCapacity
 	tetengo_json_reader_createStreamReader
 	tetengo_json_reader_createCommentRemovingReader
@@ -34,3 +33,4 @@ EXPORTS
 	tetengo_json_element_value
 	tetengo_json_element_attributeKeys
 	tetengo_json_element_attributeValueOf
+	tetengo_json_element_getFileLocation

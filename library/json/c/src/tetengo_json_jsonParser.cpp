@@ -28,12 +28,9 @@ struct tetengo_json_jsonParser_tag
 
     mutable std::unique_ptr<const tetengo_json_element_t> p_current_element;
 
-    mutable tetengo_json_reader_t reader_placeholder;
-
     explicit tetengo_json_jsonParser_tag(std::unique_ptr<tetengo::json::json_parser>&& p_cpp_parser) :
     p_cpp_parser{ std::move(p_cpp_parser) },
-        p_current_element{},
-        reader_placeholder{ NULL }
+        p_current_element{}
     {}
 };
 
@@ -136,22 +133,4 @@ void tetengo_json_jsonParser_next(tetengo_json_jsonParser_t* const p_parser)
     }
     catch (...)
     {}
-}
-
-const tetengo_json_reader_t* tetengo_json_jsonParser_getReader(const tetengo_json_jsonParser_t* const p_parser)
-{
-    try
-    {
-        if (!p_parser)
-        {
-            throw std::invalid_argument{ "p_parser is NULL." };
-        }
-
-        p_parser->reader_placeholder.set_cpp_reader_ref(p_parser->p_cpp_parser->get_reader());
-        return &p_parser->reader_placeholder;
-    }
-    catch (...)
-    {
-        return NULL;
-    }
 }

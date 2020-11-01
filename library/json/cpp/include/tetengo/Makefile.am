@@ -5,6 +5,7 @@ pkg_headers = \
     json/channel.hpp \
     json/comment_removing_reader.hpp \
     json/element.hpp \
+    json/file_location.hpp \
     json/json_grammar.hpp \
     json/json_parser.hpp \
     json/line_counting_reader.hpp \

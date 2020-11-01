@@ -44,6 +44,9 @@
     <ClCompile Include="src\tetengo.json.line_counting_reader.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.json.file_location.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
@@ -74,6 +77,9 @@
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\json\line_counting_reader.hpp">
+      <Filter>header\tetengo::json</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\json\file_location.hpp">
       <Filter>header\tetengo::json</Filter>
     </ClInclude>
   </ItemGroup>

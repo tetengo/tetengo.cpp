@@ -10,6 +10,8 @@
 #include <string>
 #include <unordered_map>
 
+#include <tetengo/json/file_location.hpp>
+
 
 namespace tetengo::json
 {
@@ -57,13 +59,18 @@ namespace tetengo::json
         /*!
             \brief Creates an element.
 
-            \param type       A type.
-            \param value      A value.
-            \param attributes Attributes.
+            \param type           A type.
+            \param value          A value.
+            \param attributes     Attributes.
+            \param file_location_ A file location.
 
             \throw std::invalid_argument When the arguments are mismatched.
         */
-        element(type_type type, std::string value, std::unordered_map<std::string, std::string> attributes);
+        element(
+            type_type                                    type,
+            std::string                                  value,
+            std::unordered_map<std::string, std::string> attributes,
+            file_location                                file_location_);
 
 
         // functions
@@ -89,6 +96,13 @@ namespace tetengo::json
         */
         [[nodiscard]] const std::unordered_map<std::string, std::string>& attributes() const;
 
+        /*!
+            \brief Returns the file location.
+
+            \return The file location.
+        */
+        [[nodiscard]] const file_location& get_file_location() const;
+
 
     private:
         // variables
@@ -98,6 +112,8 @@ namespace tetengo::json
         std::string m_value;
 
         std::unordered_map<std::string, std::string> m_attributes;
+
+        file_location m_file_location;
     };
 
 
