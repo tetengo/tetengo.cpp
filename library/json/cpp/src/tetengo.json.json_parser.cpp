@@ -23,6 +23,7 @@
 #include <tetengo/json/channel.hpp>
 #include <tetengo/json/comment_removing_reader.hpp>
 #include <tetengo/json/element.hpp>
+#include <tetengo/json/file_location.hpp>
 #include <tetengo/json/json_grammar.hpp>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/json/line_counting_reader.hpp>
@@ -210,7 +211,8 @@ namespace tetengo::json
 
             element element_{ to_element_type(type),
                               std::string{ value },
-                              std::unordered_map<std::string, std::string>{} };
+                              std::unordered_map<std::string, std::string>{},
+                              file_location{ "", 0, 0 } };
             m_channel.insert(std::move(element_));
             return true;
         }
@@ -225,7 +227,10 @@ namespace tetengo::json
                 return false;
             }
 
-            element element_{ to_element_type(type, open_close), std::string{}, to_element_attributes(attributes) };
+            element element_{ to_element_type(type, open_close),
+                              std::string{},
+                              to_element_attributes(attributes),
+                              file_location{ "", 0, 0 } };
             m_channel.insert(std::move(element_));
             return true;
         }

@@ -17,6 +17,7 @@
 
 #include <tetengo/json/element.h>
 #include <tetengo/json/element.hpp>
+#include <tetengo/json/file_location.hpp>
 
 #include "tetengo_json_element.hpp"
 
@@ -75,7 +76,8 @@ tetengo_json_element_t* tetengo_json_element_create(
     const tetengo_json_element_type_t* const              p_type,
     const char* const                                     value,
     const tetengo_json_element_attributeKeyValue_t* const p_attributes,
-    const size_t                                          attribute_count)
+    const size_t                                          attribute_count,
+    const tetengo_json_fileLocation_t* const              p_file_location)
 {
     try
     {
@@ -91,8 +93,12 @@ tetengo_json_element_t* tetengo_json_element_create(
         {
             throw std::invalid_argument{ "p_attributes is NULL." };
         }
+        if (!p_file_location)
+        {
+            throw std::invalid_argument{ "p_file_location is NULL." };
+        }
 
-        const tetengo::json::element::type_type cpp_type_type{
+        tetengo::json::element::type_type cpp_type_type{
             static_cast<tetengo::json::element::type_name_type>(p_type->name),
             static_cast<tetengo::json::element::type_category_type>(p_type->category)
         };
@@ -103,7 +109,12 @@ tetengo_json_element_t* tetengo_json_element_create(
             cpp_attributes.emplace(key_value.key, key_value.value);
         });
 
-        auto p_cpp_element = std::make_unique<tetengo::json::element>(cpp_type_type, value, cpp_attributes);
+        tetengo::json::file_location cpp_file_location{ p_file_location->line,
+                                                        p_file_location->line_index,
+                                                        p_file_location->column_index };
+
+        auto p_cpp_element = std::make_unique<tetengo::json::element>(
+            std::move(cpp_type_type), value, std::move(cpp_attributes), std::move(cpp_file_location));
 
         auto p_instance = std::make_unique<tetengo_json_element_t>(std::move(p_cpp_element));
         return p_instance.release();
@@ -227,6 +238,27 @@ const char* tetengo_json_element_attributeValueOf(const tetengo_json_element_t* 
         }
 
         return found->second.c_str();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+const tetengo_json_fileLocation_t* tetengo_json_element_getFileLocation(const tetengo_json_element_t* const p_element)
+{
+    try
+    {
+        if (!p_element)
+        {
+            throw std::invalid_argument{ "p_element is NULL." };
+        }
+
+        const auto& cpp_file_location = p_element->p_cpp_element->get_file_location();
+        p_element->file_location.line = cpp_file_location.line().c_str();
+        p_element->file_location.line_index = cpp_file_location.line_index();
+        p_element->file_location.column_index = cpp_file_location.column_index();
+        return &p_element->file_location;
     }
     catch (...)
     {

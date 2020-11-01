@@ -112,6 +112,19 @@ typedef struct tetengo_json_element_attributeKeyValue_tag
     const char* value;
 } tetengo_json_element_attributeKeyValue_t;
 
+/*! The file location type. */
+typedef struct tetengo_json_fileLocation_tag
+{
+    /*! A line. */
+    const char* line;
+
+    /*! A line index. */
+    size_t line_index;
+
+    /*! A column index. */
+    size_t column_index;
+} tetengo_json_fileLocation_t;
+
 /*!
     \brief Creates an element.
 
@@ -119,6 +132,7 @@ typedef struct tetengo_json_element_attributeKeyValue_tag
     \param value           A value.
     \param p_attributes    A pointer to the head of attributes.
     \param attribute_count An attribute count.
+    \param p_file_location A pointer to a file location.
 
     \return A pointer to an element. Or NULL on error.
 */
@@ -126,7 +140,8 @@ tetengo_json_element_t* tetengo_json_element_create(
     const tetengo_json_element_type_t*              p_type,
     const char*                                     value,
     const tetengo_json_element_attributeKeyValue_t* p_attributes,
-    size_t                                          attribute_count);
+    size_t                                          attribute_count,
+    const tetengo_json_fileLocation_t*              p_file_location);
 
 /*!
     \brief Copies an element.
@@ -178,9 +193,18 @@ size_t tetengo_json_element_attributeKeys(const tetengo_json_element_t* p_elemen
     \param p_element A pointer to an element.
     \param key       A key.
 
-    \return The value. Or nullptr when p_element is NULL or key is NULL or key is not found.
+    \return The value. Or NULL when p_element is NULL or key is NULL or key is not found.
 */
 const char* tetengo_json_element_attributeValueOf(const tetengo_json_element_t* p_element, const char* key);
+
+/*!
+    \brief Returns the file location.
+
+    \param p_element A pointer to an element.
+
+    \return A pointer to the file location. Or NULL when p_element is NULL.
+*/
+const tetengo_json_fileLocation_t* tetengo_json_element_getFileLocation(const tetengo_json_element_t* p_element);
 
 
 #if defined(__cplusplus)

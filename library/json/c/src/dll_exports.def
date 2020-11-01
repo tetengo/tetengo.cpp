@@ -33,3 +33,4 @@ EXPORTS
 	tetengo_json_element_value
 	tetengo_json_element_attributeKeys
 	tetengo_json_element_attributeValueOf
+	tetengo_json_element_getFileLocation
