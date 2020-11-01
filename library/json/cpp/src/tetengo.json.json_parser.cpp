@@ -110,7 +110,7 @@ namespace tetengo::json
         {
             auto p_line_counting = std::make_unique<line_counting_reader>(std::move(p_base_reader));
             auto p_comment_removing = std::make_unique<comment_removing_reader>(std::move(p_line_counting), "#");
-            return std::move(p_comment_removing);
+            return p_comment_removing;
         }
 
         static const line_counting_reader& as_line_counting(const reader& reader_)
