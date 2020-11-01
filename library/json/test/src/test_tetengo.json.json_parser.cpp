@@ -21,6 +21,7 @@
 
 #include <tetengo/json/element.h>
 #include <tetengo/json/element.hpp>
+#include <tetengo/json/file_location.hpp>
 #include <tetengo/json/jsonParser.h>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/json/reader.h>
@@ -36,9 +37,24 @@ namespace
 
     const std::string json2{ "false true" };
 
+    // clang-format off
     const std::string json3{
-        "[ 42, true, 3.1415926, \"hoge\", { \"Aso\": 1592, \"Tsurugi\": 1955 }, [ null, 3.0e+5 ] ]"
+        "[\n"
+        "  42,\n"
+        "  true,\n"
+        "  3.1415926,\n"
+        "  \"hoge\",\n"
+        "  {\n"
+        "    \"Aso\": 1592,\n"
+        "    \"Tsurugi\": 1955\n"
+        "  },\n"
+        "  [\n"
+        "    null,\n"
+        "    3.0e+5\n"
+        "  ]\n"
+        "]\n"
     };
+    // clang-format on
 
     class temporary_file : private boost::noncopyable
     {
@@ -294,6 +310,8 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
         BOOST_TEST(parsed.value() == "false");
         BOOST_TEST(std::empty(parsed.attributes()));
+        const auto& file_location = parsed.get_file_location();
+        BOOST_TEST((file_location == tetengo::json::file_location{ json1, 0, json1.length() }));
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json2), 10);
@@ -304,6 +322,8 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
         BOOST_TEST(parsed.value() == "false");
         BOOST_TEST(std::empty(parsed.attributes()));
+        const auto& file_location = parsed.get_file_location();
+        BOOST_TEST((file_location == tetengo::json::file_location{ json2, 0, json2.length() }));
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json3), 10);
@@ -314,6 +334,8 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_open);
         BOOST_TEST(std::empty(parsed.value()));
         BOOST_TEST(std::empty(parsed.attributes()));
+        const auto& file_location = parsed.get_file_location();
+        BOOST_TEST((file_location == tetengo::json::file_location{ "  true,\n", 2, 0 }));
     }
 
     {

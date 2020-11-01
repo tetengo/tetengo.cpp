@@ -23,7 +23,6 @@
 #include <tetengo/json/channel.hpp>
 #include <tetengo/json/comment_removing_reader.hpp>
 #include <tetengo/json/element.hpp>
-#include <tetengo/json/file_location.hpp>
 #include <tetengo/json/json_grammar.hpp>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/json/line_counting_reader.hpp>
@@ -112,6 +111,12 @@ namespace tetengo::json
             auto p_line_counting = std::make_unique<line_counting_reader>(std::move(p_base_reader));
             auto p_comment_removing = std::make_unique<comment_removing_reader>(std::move(p_line_counting), "#");
             return std::move(p_comment_removing);
+        }
+
+        static const line_counting_reader& as_line_counting(const reader& reader_)
+        {
+            assert(dynamic_cast<const line_counting_reader*>(&reader_.base_reader()));
+            return dynamic_cast<const line_counting_reader&>(reader_.base_reader());
         }
 
         static element::type_type to_element_type(const json_grammar::primitive_type_type primitive_type)
@@ -212,7 +217,7 @@ namespace tetengo::json
             element element_{ to_element_type(type),
                               std::string{ value },
                               std::unordered_map<std::string, std::string>{},
-                              file_location{ "", 0, 0 } };
+                              as_line_counting(*m_p_reader).get_location() };
             m_channel.insert(std::move(element_));
             return true;
         }
@@ -230,7 +235,7 @@ namespace tetengo::json
             element element_{ to_element_type(type, open_close),
                               std::string{},
                               to_element_attributes(attributes),
-                              file_location{ "", 0, 0 } };
+                              as_line_counting(*m_p_reader).get_location() };
             m_channel.insert(std::move(element_));
             return true;
         }
