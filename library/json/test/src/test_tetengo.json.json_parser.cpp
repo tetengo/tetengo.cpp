@@ -311,7 +311,7 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_TEST(parsed.value() == "false");
         BOOST_TEST(std::empty(parsed.attributes()));
         const auto& file_location = parsed.get_file_location();
-        BOOST_TEST((file_location == tetengo::json::file_location{ json1, 0, json1.length() }));
+        BOOST_TEST((file_location == tetengo::json::file_location{ "false", 0, 5 }));
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json2), 10);
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_TEST(parsed.value() == "false");
         BOOST_TEST(std::empty(parsed.attributes()));
         const auto& file_location = parsed.get_file_location();
-        BOOST_TEST((file_location == tetengo::json::file_location{ json2, 0, json2.length() }));
+        BOOST_TEST((file_location == tetengo::json::file_location{ "false true", 0, 10 }));
     }
     {
         auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::make_unique<std::istringstream>(json3), 10);
@@ -374,6 +374,10 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_TEST_REQUIRE(value);
         BOOST_TEST(std::string_view{ value } == "false");
         BOOST_TEST(tetengo_json_element_attributeKeys(p_parsed, nullptr) == 0U);
+        const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+        BOOST_TEST(std::string_view{ p_file_location->line } == "false");
+        BOOST_TEST(p_file_location->line_index == 0U);
+        BOOST_TEST(p_file_location->column_index == 5U);
     }
     {
         const temporary_file file{ json2 };
@@ -397,6 +401,10 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_TEST_REQUIRE(value);
         BOOST_TEST(std::string_view{ value } == "false");
         BOOST_TEST(tetengo_json_element_attributeKeys(p_parsed, nullptr) == 0U);
+        const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+        BOOST_TEST(std::string_view{ p_file_location->line } == "false true");
+        BOOST_TEST(p_file_location->line_index == 0U);
+        BOOST_TEST(p_file_location->column_index == 10U);
     }
     {
         const temporary_file file{ json3 };
@@ -420,6 +428,10 @@ BOOST_AUTO_TEST_CASE(peek)
         BOOST_TEST_REQUIRE(value);
         BOOST_TEST(std::empty(std::string_view{ value }));
         BOOST_TEST(tetengo_json_element_attributeKeys(p_parsed, nullptr) == 0U);
+        const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+        BOOST_TEST(std::string_view{ p_file_location->line } == "  true,\n");
+        BOOST_TEST(p_file_location->line_index == 2U);
+        BOOST_TEST(p_file_location->column_index == 0U);
     }
     {
         BOOST_TEST(!tetengo_json_jsonParser_peek(nullptr));
@@ -472,6 +484,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::array);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_open);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  true,\n", 2, 0 }));
             parser.next();
         }
         {
@@ -480,6 +494,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::number);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
             BOOST_TEST(parsed.value() == "42");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  true,\n", 2, 0 }));
             parser.next();
         }
         {
@@ -488,6 +504,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::boolean);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
             BOOST_TEST(parsed.value() == "true");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  3.1415926,\n", 3, 0 }));
             parser.next();
         }
         {
@@ -496,6 +514,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::number);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
             BOOST_TEST(parsed.value() == "3.1415926");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  \"hoge\",\n", 4, 0 }));
             parser.next();
         }
         {
@@ -504,6 +524,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::string);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
             BOOST_TEST(parsed.value() == "hoge");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  {\n", 5, 0 }));
             parser.next();
         }
         {
@@ -511,6 +533,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::object);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_open);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "    \"Tsurugi\": 1955\n", 7, 0 }));
             parser.next();
         }
         {
@@ -521,6 +545,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST(std::size(parsed.attributes()) == 1U);
             BOOST_TEST(std::begin(parsed.attributes())->first == "name");
             BOOST_TEST(std::begin(parsed.attributes())->second == "Aso");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "    \"Tsurugi\": 1955\n", 7, 0 }));
             parser.next();
         }
         {
@@ -529,6 +555,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::number);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
             BOOST_TEST(parsed.value() == "1592");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "    \"Tsurugi\": 1955\n", 7, 0 }));
             parser.next();
         }
         {
@@ -536,6 +564,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::member);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_close);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "    \"Tsurugi\": 1955\n", 7, 0 }));
             parser.next();
         }
         {
@@ -546,6 +576,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST(std::size(parsed.attributes()) == 1U);
             BOOST_TEST(std::begin(parsed.attributes())->first == "name");
             BOOST_TEST(std::begin(parsed.attributes())->second == "Tsurugi");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  },\n", 8, 0 }));
             parser.next();
         }
         {
@@ -554,6 +586,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::number);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
             BOOST_TEST(parsed.value() == "1955");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  },\n", 8, 0 }));
             parser.next();
         }
         {
@@ -561,6 +595,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::member);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_close);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  },\n", 8, 0 }));
             parser.next();
         }
         {
@@ -568,6 +604,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::object);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_close);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  [\n", 9, 0 }));
             parser.next();
         }
         {
@@ -575,6 +613,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::array);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_open);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "    3.0e+5\n", 11, 0 }));
             parser.next();
         }
         {
@@ -582,6 +622,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::null);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "    3.0e+5\n", 11, 0 }));
             parser.next();
         }
         {
@@ -590,6 +632,8 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::number);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::primitive);
             BOOST_TEST(parsed.value() == "3.0e+5");
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "  ]\n", 12, 0 }));
             parser.next();
         }
         {
@@ -597,6 +641,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::array);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_close);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "]\n", 13, 2 }));
             parser.next();
         }
         {
@@ -604,6 +650,8 @@ BOOST_AUTO_TEST_CASE(next)
             const auto& parsed = parser.peek();
             BOOST_CHECK(parsed.type().name == tetengo::json::element::type_name_type::array);
             BOOST_CHECK(parsed.type().category == tetengo::json::element::type_category_type::structure_close);
+            const auto& file_location = parsed.get_file_location();
+            BOOST_TEST((file_location == tetengo::json::file_location{ "]\n", 13, 2 }));
             parser.next();
         }
 
@@ -694,6 +742,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_array());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureOpen());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  true,\n");
+            BOOST_TEST(p_file_location->line_index == 2U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -707,6 +759,10 @@ BOOST_AUTO_TEST_CASE(next)
             const auto* const value = tetengo_json_element_value(p_parsed);
             BOOST_TEST_REQUIRE(value);
             BOOST_TEST(std::string_view{ value } == "42");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  true,\n");
+            BOOST_TEST(p_file_location->line_index == 2U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -720,6 +776,10 @@ BOOST_AUTO_TEST_CASE(next)
             const auto* const value = tetengo_json_element_value(p_parsed);
             BOOST_TEST_REQUIRE(value);
             BOOST_TEST(std::string_view{ value } == "true");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  3.1415926,\n");
+            BOOST_TEST(p_file_location->line_index == 3U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -733,6 +793,10 @@ BOOST_AUTO_TEST_CASE(next)
             const auto* const value = tetengo_json_element_value(p_parsed);
             BOOST_TEST_REQUIRE(value);
             BOOST_TEST(std::string_view{ value } == "3.1415926");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  \"hoge\",\n");
+            BOOST_TEST(p_file_location->line_index == 4U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -746,6 +810,10 @@ BOOST_AUTO_TEST_CASE(next)
             const auto* const value = tetengo_json_element_value(p_parsed);
             BOOST_TEST_REQUIRE(value);
             BOOST_TEST(std::string_view{ value } == "hoge");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  {\n");
+            BOOST_TEST(p_file_location->line_index == 5U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -756,6 +824,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_object());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureOpen());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "    \"Tsurugi\": 1955\n");
+            BOOST_TEST(p_file_location->line_index == 7U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -773,6 +845,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST(parsed_attribute_count_again == parsed_attribute_count);
             BOOST_TEST(std::string_view{ attribute_key } == "name");
             BOOST_TEST(std::string_view{ tetengo_json_element_attributeValueOf(p_parsed, attribute_key) } == "Aso");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "    \"Tsurugi\": 1955\n");
+            BOOST_TEST(p_file_location->line_index == 7U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -786,6 +862,10 @@ BOOST_AUTO_TEST_CASE(next)
             const auto* const value = tetengo_json_element_value(p_parsed);
             BOOST_TEST_REQUIRE(value);
             BOOST_TEST(std::string_view{ value } == "1592");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "    \"Tsurugi\": 1955\n");
+            BOOST_TEST(p_file_location->line_index == 7U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -796,6 +876,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_member());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureClose());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "    \"Tsurugi\": 1955\n");
+            BOOST_TEST(p_file_location->line_index == 7U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -813,6 +897,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST(parsed_attribute_count_again == parsed_attribute_count);
             BOOST_TEST(std::string_view{ attribute_key } == "name");
             BOOST_TEST(std::string_view{ tetengo_json_element_attributeValueOf(p_parsed, attribute_key) } == "Tsurugi");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  },\n");
+            BOOST_TEST(p_file_location->line_index == 8U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -826,6 +914,10 @@ BOOST_AUTO_TEST_CASE(next)
             const auto* const value = tetengo_json_element_value(p_parsed);
             BOOST_TEST_REQUIRE(value);
             BOOST_TEST(std::string_view{ value } == "1955");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  },\n");
+            BOOST_TEST(p_file_location->line_index == 8U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -836,6 +928,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_member());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureClose());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  },\n");
+            BOOST_TEST(p_file_location->line_index == 8U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -846,6 +942,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_object());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureClose());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  [\n");
+            BOOST_TEST(p_file_location->line_index == 9U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -856,6 +956,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_array());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureOpen());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "    3.0e+5\n");
+            BOOST_TEST(p_file_location->line_index == 11U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -866,6 +970,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_null());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_primitive());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "    3.0e+5\n");
+            BOOST_TEST(p_file_location->line_index == 11U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -879,6 +987,10 @@ BOOST_AUTO_TEST_CASE(next)
             const auto* const value = tetengo_json_element_value(p_parsed);
             BOOST_TEST_REQUIRE(value);
             BOOST_TEST(std::string_view{ value } == "3.0e+5");
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "  ]\n");
+            BOOST_TEST(p_file_location->line_index == 12U);
+            BOOST_TEST(p_file_location->column_index == 0U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -889,6 +1001,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_array());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureClose());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "]\n");
+            BOOST_TEST(p_file_location->line_index == 13U);
+            BOOST_TEST(p_file_location->column_index == 2U);
             tetengo_json_jsonParser_next(p_parser);
         }
         {
@@ -899,6 +1015,10 @@ BOOST_AUTO_TEST_CASE(next)
             BOOST_TEST_REQUIRE(p_parsed_type);
             BOOST_TEST(p_parsed_type->name == tetengo_json_element_typeName_array());
             BOOST_TEST(p_parsed_type->category == tetengo_json_element_typeCategory_structureClose());
+            const auto* const p_file_location = tetengo_json_element_getFileLocation(p_parsed);
+            BOOST_TEST(std::string_view{ p_file_location->line } == "]\n");
+            BOOST_TEST(p_file_location->line_index == 13U);
+            BOOST_TEST(p_file_location->column_index == 2U);
             tetengo_json_jsonParser_next(p_parser);
         }
 
