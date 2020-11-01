@@ -16,6 +16,7 @@
 
 #include <tetengo/json/channel.hpp>
 #include <tetengo/json/element.hpp>
+#include <tetengo/json/file_location.hpp>
 
 
 namespace
@@ -53,7 +54,8 @@ BOOST_AUTO_TEST_CASE(insert)
         element_type element{ element_type::type_type{ element_type::type_name_type::string,
                                                        element_type::type_category_type::primitive },
                               "tateno",
-                              std::unordered_map<std::string, std::string>{} };
+                              std::unordered_map<std::string, std::string>{},
+                              tetengo::json::file_location{ "hoge", 2, 3 } };
         channel_.insert(std::move(element));
     }
     {
@@ -73,7 +75,8 @@ BOOST_AUTO_TEST_CASE(peek)
         element_type element{ element_type::type_type{ element_type::type_name_type::string,
                                                        element_type::type_category_type::primitive },
                               "tateno",
-                              std::unordered_map<std::string, std::string>{} };
+                              std::unordered_map<std::string, std::string>{},
+                              tetengo::json::file_location{ "hoge", 2, 3 } };
         channel_.insert(std::move(element));
 
         const auto& peeked = channel_.peek();
@@ -99,23 +102,28 @@ BOOST_AUTO_TEST_CASE(take)
         channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
                                                                element_type::type_category_type::primitive },
                                       "tateno",
-                                      std::unordered_map<std::string, std::string>{} });
+                                      std::unordered_map<std::string, std::string>{},
+                                      tetengo::json::file_location{ "hoge", 2, 3 } });
         channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
                                                                element_type::type_category_type::primitive },
                                       "akamizu",
-                                      std::unordered_map<std::string, std::string>{} });
+                                      std::unordered_map<std::string, std::string>{},
+                                      tetengo::json::file_location{ "hoge", 2, 3 } });
         channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
                                                                element_type::type_category_type::primitive },
                                       "ichinokawa",
-                                      std::unordered_map<std::string, std::string>{} });
+                                      std::unordered_map<std::string, std::string>{},
+                                      tetengo::json::file_location{ "hoge", 2, 3 } });
         channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
                                                                element_type::type_category_type::primitive },
                                       "uchinomaki",
-                                      std::unordered_map<std::string, std::string>{} });
+                                      std::unordered_map<std::string, std::string>{},
+                                      tetengo::json::file_location{ "hoge", 2, 3 } });
         channel_.insert(element_type{ element_type::type_type{ element_type::type_name_type::string,
                                                                element_type::type_category_type::primitive },
                                       "aso",
-                                      std::unordered_map<std::string, std::string>{} });
+                                      std::unordered_map<std::string, std::string>{},
+                                      tetengo::json::file_location{ "hoge", 2, 3 } });
     } };
 
     BOOST_TEST(channel_.peek().value() == "tateno");
@@ -141,7 +149,8 @@ BOOST_AUTO_TEST_CASE(closed)
     channel_.insert(element_type{
         element_type::type_type{ element_type::type_name_type::string, element_type::type_category_type::primitive },
         "tateno",
-        std::unordered_map<std::string, std::string>{} });
+        std::unordered_map<std::string, std::string>{},
+        tetengo::json::file_location{ "hoge", 2, 3 } });
 
     BOOST_TEST(!channel_.closed());
 }
@@ -159,7 +168,8 @@ BOOST_AUTO_TEST_CASE(close)
     channel_.insert(element_type{
         element_type::type_type{ element_type::type_name_type::string, element_type::type_category_type::primitive },
         "tateno",
-        std::unordered_map<std::string, std::string>{} });
+        std::unordered_map<std::string, std::string>{},
+        tetengo::json::file_location{ "hoge", 2, 3 } });
 
     BOOST_CHECK_THROW([[maybe_unused]] const auto& peeked = channel_.peek(), std::logic_error);
 }

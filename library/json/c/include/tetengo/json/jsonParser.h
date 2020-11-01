@@ -83,15 +83,6 @@ const tetengo_json_element_t* tetengo_json_jsonParser_peek(const tetengo_json_js
 */
 void tetengo_json_jsonParser_next(tetengo_json_jsonParser_t* p_parser);
 
-/*!
-    \brief Returns the reader.
-
-    \param p_parser A pointer to a perser.
-
-    \return A pointer the reader. Or NULL when p_parser is NULL.
-*/
-const tetengo_json_reader_t* tetengo_json_jsonParser_getReader(const tetengo_json_jsonParser_t* p_parser);
-
 
 #if defined(__cplusplus)
 }

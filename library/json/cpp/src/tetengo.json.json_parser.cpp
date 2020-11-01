@@ -21,9 +21,11 @@
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/json/channel.hpp>
+#include <tetengo/json/comment_removing_reader.hpp>
 #include <tetengo/json/element.hpp>
 #include <tetengo/json/json_grammar.hpp>
 #include <tetengo/json/json_parser.hpp>
+#include <tetengo/json/line_counting_reader.hpp>
 #include <tetengo/json/reader.hpp>
 
 
@@ -43,7 +45,7 @@ namespace tetengo::json
         // constructors and destructor
 
         impl(std::unique_ptr<reader>&& p_reader, const std::size_t buffer_capacity) :
-        m_p_reader{ std::move(p_reader) },
+        m_p_reader{ build_decorated_reader(std::move(p_reader)) },
             m_p_worker{},
             m_channel{ buffer_capacity },
             m_parsing_abortion_requested{ false },
@@ -100,14 +102,22 @@ namespace tetengo::json
             m_channel.take();
         }
 
-        const reader& get_reader() const
-        {
-            return *m_p_reader;
-        }
-
 
     private:
         // static functions
+
+        static std::unique_ptr<reader> build_decorated_reader(std::unique_ptr<reader>&& p_base_reader)
+        {
+            auto p_line_counting = std::make_unique<line_counting_reader>(std::move(p_base_reader));
+            auto p_comment_removing = std::make_unique<comment_removing_reader>(std::move(p_line_counting), "#");
+            return p_comment_removing;
+        }
+
+        static const line_counting_reader& as_line_counting(const reader& reader_)
+        {
+            assert(dynamic_cast<const line_counting_reader*>(&reader_.base_reader()));
+            return dynamic_cast<const line_counting_reader&>(reader_.base_reader());
+        }
 
         static element::type_type to_element_type(const json_grammar::primitive_type_type primitive_type)
         {
@@ -183,7 +193,11 @@ namespace tetengo::json
                         &impl::on_structure, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
                 };
 
-                [[maybe_unused]] const auto successful = grammar_.parse(*m_p_reader);
+                const auto successful = grammar_.parse(*m_p_reader);
+                if (!successful)
+                {
+                    m_channel.insert(std::make_exception_ptr(std::runtime_error{ "JSON syntax error." }));
+                }
                 m_channel.close();
             }
             catch (...)
@@ -202,7 +216,8 @@ namespace tetengo::json
 
             element element_{ to_element_type(type),
                               std::string{ value },
-                              std::unordered_map<std::string, std::string>{} };
+                              std::unordered_map<std::string, std::string>{},
+                              as_line_counting(*m_p_reader).get_location() };
             m_channel.insert(std::move(element_));
             return true;
         }
@@ -217,7 +232,10 @@ namespace tetengo::json
                 return false;
             }
 
-            element element_{ to_element_type(type, open_close), std::string{}, to_element_attributes(attributes) };
+            element element_{ to_element_type(type, open_close),
+                              std::string{},
+                              to_element_attributes(attributes),
+                              as_line_counting(*m_p_reader).get_location() };
             m_channel.insert(std::move(element_));
             return true;
         }
@@ -262,11 +280,6 @@ namespace tetengo::json
     void json_parser::next()
     {
         m_p_impl->next();
-    }
-
-    const reader& json_parser::get_reader() const
-    {
-        return m_p_impl->get_reader();
     }
 
 

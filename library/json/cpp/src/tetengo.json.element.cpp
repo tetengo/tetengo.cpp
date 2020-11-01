@@ -11,14 +11,20 @@
 #include <utility>
 
 #include <tetengo/json/element.hpp>
+#include <tetengo/json/file_location.hpp>
 
 
 namespace tetengo::json
 {
-    element::element(type_type type, std::string value, std::unordered_map<std::string, std::string> attributes) :
+    element::element(
+        type_type                                    type,
+        std::string                                  value,
+        std::unordered_map<std::string, std::string> attributes,
+        file_location                                file_location_) :
     m_type{ std::move(type) },
         m_value{ std::move(value) },
-        m_attributes{ std::move(attributes) }
+        m_attributes{ std::move(attributes) },
+        m_file_location{ std::move(file_location_) }
     {
         if (m_type.name == type_name_type::string || m_type.name == type_name_type::number ||
             m_type.name == type_name_type::boolean || m_type.name == type_name_type::null)
@@ -72,6 +78,11 @@ namespace tetengo::json
     const std::unordered_map<std::string, std::string>& element::attributes() const
     {
         return m_attributes;
+    }
+
+    const file_location& element::get_file_location() const
+    {
+        return m_file_location;
     }
 
 

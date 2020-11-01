@@ -8,6 +8,7 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <string_view>
 #include <utility>
 
@@ -17,6 +18,7 @@
 #include <boost/scope_exit.hpp>
 
 #include <tetengo/json/comment_removing_reader.hpp>
+#include <tetengo/json/file_location.hpp>
 #include <tetengo/json/line_counting_reader.hpp>
 #include <tetengo/json/reader.h>
 #include <tetengo/json/reader.hpp>
@@ -151,8 +153,8 @@ int tetengo_json_reader_getLocation(
             throw std::invalid_argument{ "p_line_counting_reader is not a line counting reader." };
         }
 
-        const auto cpp_location = p_cpp_line_counting_reader->get_location();
-        p_location->line = std::data(cpp_location.line());
+        const auto& cpp_location = p_cpp_line_counting_reader->get_location();
+        p_location->line = cpp_location.line().c_str();
         p_location->line_length = cpp_location.line().length();
         p_location->line_index = cpp_location.line_index();
         p_location->column_index = cpp_location.column_index();
