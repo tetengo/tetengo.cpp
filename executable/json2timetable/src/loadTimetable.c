@@ -19,7 +19,7 @@
 #include "timetable.h"
 
 
-const tetengo_json_element_t* get_element(tetengo_json_jsonParser_t* const p_parser)
+static const tetengo_json_element_t* get_element(tetengo_json_jsonParser_t* const p_parser)
 {
     if (!tetengo_json_jsonParser_hasNext(p_parser))
     {
@@ -29,19 +29,19 @@ const tetengo_json_element_t* get_element(tetengo_json_jsonParser_t* const p_par
     return tetengo_json_jsonParser_peek(p_parser);
 }
 
-size_t min_size(const size_t one, const size_t another)
+static size_t min_size(const size_t one, const size_t another)
 {
     return one < another ? one : another;
 }
 
-void copy_string(const char* const from, char* const to, size_t to_capacity)
+static void copy_string(const char* const from, char* const to, size_t to_capacity)
 {
     const size_t length = min_size(strlen(from), to_capacity - 1);
     memcpy(to, from, length);
     to[length] = '\0';
 }
 
-char* duplicate_string(const char* const from)
+static char* duplicate_string(const char* const from)
 {
     const size_t length = strlen(from);
     char* const  p_duplication = malloc((length + 1) * sizeof(char));
@@ -49,12 +49,12 @@ char* duplicate_string(const char* const from)
     return p_duplication;
 }
 
-void destroy_string(const void* string)
+static void destroy_string(const void* string)
 {
     free((void*)string);
 }
 
-int element_is(
+static int element_is(
     tetengo_json_jsonParser_t* const   p_parser,
     const int                          type_name,
     const int                          type_category,
@@ -81,7 +81,7 @@ int element_is(
     return 1;
 }
 
-int element_is_member_begin(
+static int element_is_member_begin(
     tetengo_json_jsonParser_t* const   p_parser,
     char* const                        key,
     const size_t                       key_capacity,
@@ -124,7 +124,7 @@ int element_is_member_begin(
     return 1;
 }
 
-const char* element_is_primitive(
+static const char* element_is_primitive(
     tetengo_json_jsonParser_t* const   p_parser,
     const int                          type_name,
     tetengo_json_fileLocation_t* const p_last_file_location)
@@ -150,7 +150,8 @@ const char* element_is_primitive(
     return tetengo_json_element_value(p_element);
 }
 
-int load_preamble(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocation_t* const p_last_file_location)
+static int
+load_preamble(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocation_t* const p_last_file_location)
 {
     if (!element_is(
             p_parser,
@@ -164,7 +165,7 @@ int load_preamble(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLo
     return 1;
 }
 
-int load_header(
+static int load_header(
     tetengo_json_jsonParser_t* const   p_parser,
     char* const                        title,
     const size_t                       title_capacity,
@@ -248,7 +249,7 @@ int load_header(
     return 1;
 }
 
-const arrayList_t*
+static const arrayList_t*
 load_stations(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocation_t* const p_last_file_location)
 {
     {
@@ -315,7 +316,6 @@ load_stations(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocati
     }
 }
 
-
 timetable_t* load_timetable(const char* const timetable_file_path)
 {
     {
@@ -348,8 +348,8 @@ timetable_t* load_timetable(const char* const timetable_file_path)
                     return NULL;
                 }
                 {
-                    timetable_t* p_timetable =
-                        timetable_create((const char* const*)arrayList_data(p_stations), arrayList_size(p_stations));
+                    timetable_t* p_timetable = timetable_create(
+                        title, (const char* const*)arrayList_data(p_stations), arrayList_size(p_stations));
 
                     arrayList_destroy(p_stations);
                     tetengo_json_jsonParser_destroy(p_parser);

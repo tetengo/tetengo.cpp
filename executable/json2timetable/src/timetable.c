@@ -20,6 +20,7 @@ typedef struct train_tag
 
 struct timetable_tag
 {
+    const char*  title;
     arrayList_t* p_stations;
     arrayList_t* p_trains;
 };
@@ -56,8 +57,12 @@ static void destroy_train(const void* const p_train_as_void)
     }
 }
 
-timetable_t* timetable_create(const char* const* const p_stations, const size_t station_count)
+timetable_t* timetable_create(const char* const title, const char* const* const p_stations, const size_t station_count)
 {
+    if (!title)
+    {
+        return NULL;
+    }
     if (!p_stations)
     {
         return NULL;
@@ -73,6 +78,7 @@ timetable_t* timetable_create(const char* const* const p_stations, const size_t 
         {
             return NULL;
         }
+        p_timetable->title = duplicate_string(title);
         p_timetable->p_stations = arrayList_create(destroy_element);
         p_timetable->p_trains = arrayList_create(destroy_train);
         {
@@ -91,41 +97,18 @@ void timetable_destroy(const timetable_t* const p_timetable)
 {
     arrayList_destroy(p_timetable->p_trains);
     arrayList_destroy(p_timetable->p_stations);
+    free((void*)p_timetable->title);
     free((void*)p_timetable);
 }
 
-void timetable_addTrain(timetable_t* const p_timetable, const char* const name, const int* const p_times)
+const char* timetable_title(const timetable_t* const p_timetable)
 {
-    train_t* const p_train = malloc(sizeof(train_t));
-    if (!p_train)
+    if (!p_timetable)
     {
-        return;
+        return 0;
     }
 
-    p_train->name = duplicate_string(name);
-    p_train->p_times = arrayList_create(destroy_element);
-    {
-        size_t i = 0;
-        for (i = 0; i < arrayList_size(p_timetable->p_stations); ++i)
-        {
-            int* const p_time = malloc(sizeof(int));
-            if (!p_time)
-            {
-                continue;
-            }
-            {
-                int time = p_times[i];
-                if (time >= 0 && !(0 <= time / 100 && time / 100 < 24 && 0 <= time % 100 && time % 100 < 60))
-                {
-                    time = -1;
-                }
-                *p_time = time;
-                arrayList_add(p_train->p_times, p_time);
-            }
-        }
-    }
-
-    arrayList_add(p_timetable->p_trains, p_train);
+    return p_timetable->title;
 }
 
 size_t timetable_stationCount(const timetable_t* const p_timetable)
@@ -215,4 +198,38 @@ int timetable_trainTimeAt(const timetable_t* const p_timetable, const size_t tra
         }
         return raw_time;
     }
+}
+
+void timetable_addTrain(timetable_t* const p_timetable, const char* const name, const int* const p_times)
+{
+    train_t* const p_train = malloc(sizeof(train_t));
+    if (!p_train)
+    {
+        return;
+    }
+
+    p_train->name = duplicate_string(name);
+    p_train->p_times = arrayList_create(destroy_element);
+    {
+        size_t i = 0;
+        for (i = 0; i < arrayList_size(p_timetable->p_stations); ++i)
+        {
+            int* const p_time = malloc(sizeof(int));
+            if (!p_time)
+            {
+                continue;
+            }
+            {
+                int time = p_times[i];
+                if (time >= 0 && !(0 <= time / 100 && time / 100 < 24 && 0 <= time % 100 && time % 100 < 60))
+                {
+                    time = -1;
+                }
+                *p_time = time;
+                arrayList_add(p_train->p_times, p_time);
+            }
+        }
+    }
+
+    arrayList_add(p_timetable->p_trains, p_train);
 }

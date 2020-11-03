@@ -19,6 +19,11 @@ typedef struct grapheme_tag
     const tetengo_text_grapheme_t* p_graphemes;
 } grapheme_t;
 
+static void print_title(const timetable_t* const p_timetable)
+{
+    printf("%s\n", timetable_title(p_timetable));
+}
+
 static size_t max_station_name_width(const grapheme_t* const p_station_name_graphemes, const size_t station_count)
 {
     size_t max_width = 0;
@@ -367,6 +372,7 @@ void print_line_timetable(const timetable_t* const p_timetable)
         size_t                   max_width = 0;
         const char* const* const p_station_display_names = create_station_display_names(p_timetable, &max_width);
 
+        print_title(p_timetable);
         print_horizontal_line(p_timetable, max_width);
         print_train_names(p_timetable, max_width);
         print_horizontal_line(p_timetable, max_width);

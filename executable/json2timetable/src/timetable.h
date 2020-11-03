@@ -15,12 +15,14 @@ typedef struct timetable_tag timetable_t;
 /*!
     \brief Creates a timetable.
 
+    \param title         A title.
     \param p_stations    A pointer to stations.
     \param station_count A station count.
 
-    \return A pointer to a timetable. Or NULL when p_stations is NULL, station_count is 0 or on some other error.
+    \return A pointer to a timetable.
+            Or NULL when title is NULL, p_stations is NULL, station_count is 0 or on some other error.
 */
-timetable_t* timetable_create(const char* const* p_stations, size_t station_count);
+timetable_t* timetable_create(const char* title, const char* const* p_stations, size_t station_count);
 
 /*!
     \brief Destroys a timetable.
@@ -30,15 +32,13 @@ timetable_t* timetable_create(const char* const* p_stations, size_t station_coun
 void timetable_destroy(const timetable_t* p_timetable);
 
 /*!
-    \brief Adds a train.
-
-    For the station the train does not stop, set its time to a negative value.
+    \brief Returns the title.
 
     \param p_timetable A pointer to a timetable.
-    \param name        A name.
-    \param p_times     A pointer to times. The time count must be same as the station count.
+
+    \return The title. Or NULL when p_timetable is NULL.
 */
-void timetable_addTrain(timetable_t* p_timetable, const char* name, const int* p_times);
+const char* timetable_title(const timetable_t* p_timetable);
 
 /*!
     \brief Returns the station count.
@@ -88,6 +88,17 @@ const char* timetable_trainNameAt(const timetable_t* p_timetable, size_t index);
             station_index is greater than the station count.
 */
 int timetable_trainTimeAt(const timetable_t* p_timetable, size_t train_index, size_t station_index);
+
+/*!
+    \brief Adds a train.
+
+    For the station the train does not stop, set its time to a negative value.
+
+    \param p_timetable A pointer to a timetable.
+    \param name        A name.
+    \param p_times     A pointer to times. The time count must be same as the station count.
+*/
+void timetable_addTrain(timetable_t* p_timetable, const char* name, const int* p_times);
 
 
 #endif
