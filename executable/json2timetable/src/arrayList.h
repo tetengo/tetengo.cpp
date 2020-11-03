@@ -63,5 +63,14 @@ size_t arrayList_size(const arrayList_t* p_array_list);
 */
 const void* arrayList_at(const arrayList_t* p_array_list, size_t index);
 
+/*!
+    \brief Returns a pointer to the elements.
+
+    \param p_array_list A pointer to an array list.
+
+    \return A pointer to the elements.
+*/
+const void* const* arrayList_data(const arrayList_t* p_array_list);
+
 
 #endif

@@ -115,3 +115,13 @@ const void* arrayList_at(const arrayList_t* const p_array_list, const size_t ind
 
     return p_array_list->pp_elements[index];
 }
+
+const void* const* arrayList_data(const arrayList_t* const p_array_list)
+{
+    if (!p_array_list)
+    {
+        return NULL;
+    }
+
+    return (const void* const*)p_array_list->pp_elements;
+}
