@@ -21,8 +21,11 @@ int main(const int argc, char** const argv)
 
     {
         timetable_t* const p_timetable = load_timetable(argv[1]);
-        print_line_timetable(p_timetable);
-        timetable_destroy(p_timetable);
+        if (p_timetable)
+        {
+            print_line_timetable(p_timetable);
+            timetable_destroy(p_timetable);
+        }
     }
 
     return 0;
