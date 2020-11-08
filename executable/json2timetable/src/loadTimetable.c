@@ -244,6 +244,7 @@ static int load_header(
                 return 0;
             }
             tetengo_json_jsonParser_next(p_parser);
+            if (strcmp(key, "title") == 0)
             {
                 const char* const value =
                     element_is_primitive(p_parser, tetengo_json_element_typeName_string(), p_last_file_location);
@@ -251,10 +252,7 @@ static int load_header(
                 {
                     return 0;
                 }
-                if (strcmp(key, "title") == 0)
-                {
-                    copy_string(value, title, title_capacity);
-                }
+                copy_string(value, title, title_capacity);
                 tetengo_json_jsonParser_next(p_parser);
             }
             if (!element_is(
@@ -387,113 +385,87 @@ static train_t* load_train(
         p_train->number = NULL;
         p_train->p_stops = arrayList_create(destroy_int);
 
+        for (;;)
         {
-            char key[256] = { 0 };
-            if (!element_is_member_begin(p_parser, key, sizeof(key) / sizeof(char), p_last_file_location))
+            if (element_is(
+                    p_parser,
+                    tetengo_json_element_typeName_object(),
+                    tetengo_json_element_typeCategory_structureClose(),
+                    p_last_file_location))
             {
-                destroy_train(p_train);
-                return NULL;
+                tetengo_json_jsonParser_next(p_parser);
+                break;
             }
-            if (strcmp(key, "number") != 0)
             {
-                destroy_train(p_train);
-                return NULL;
-            }
-            tetengo_json_jsonParser_next(p_parser);
-        }
-        {
-            const char* const value =
-                element_is_primitive(p_parser, tetengo_json_element_typeName_string(), p_last_file_location);
-            if (!value)
-            {
-                destroy_train(p_train);
-                return NULL;
-            }
-            p_train->number = duplicate_string(value);
-            tetengo_json_jsonParser_next(p_parser);
-        }
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_member(),
-                tetengo_json_element_typeCategory_structureClose(),
-                p_last_file_location))
-        {
-            destroy_train(p_train);
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-
-        {
-            char key[256] = { 0 };
-            if (!element_is_member_begin(p_parser, key, sizeof(key) / sizeof(char), p_last_file_location))
-            {
-                destroy_train(p_train);
-                return NULL;
-            }
-            if (strcmp(key, "stops") != 0)
-            {
-                destroy_train(p_train);
-                return NULL;
-            }
-            tetengo_json_jsonParser_next(p_parser);
-        }
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_array(),
-                tetengo_json_element_typeCategory_structureOpen(),
-                p_last_file_location))
-        {
-            destroy_train(p_train);
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-        {
-            size_t i = 0;
-            for (i = 0; i < station_count; ++i)
-            {
-                const char* const value =
-                    element_is_primitive(p_parser, tetengo_json_element_typeName_number(), p_last_file_location);
-                if (!value)
+                char key[256] = { 0 };
+                if (!element_is_member_begin(p_parser, key, sizeof(key) / sizeof(char), p_last_file_location))
                 {
                     destroy_train(p_train);
                     return NULL;
                 }
-                arrayList_add(p_train->p_stops, duplicate_int(value));
+                tetengo_json_jsonParser_next(p_parser);
+                if (strcmp(key, "number") == 0)
+                {
+                    const char* const value =
+                        element_is_primitive(p_parser, tetengo_json_element_typeName_string(), p_last_file_location);
+                    if (!value)
+                    {
+                        destroy_train(p_train);
+                        return NULL;
+                    }
+                    p_train->number = duplicate_string(value);
+                    tetengo_json_jsonParser_next(p_parser);
+                }
+                else if (strcmp(key, "stops") == 0)
+                {
+                    if (!element_is(
+                            p_parser,
+                            tetengo_json_element_typeName_array(),
+                            tetengo_json_element_typeCategory_structureOpen(),
+                            p_last_file_location))
+                    {
+                        destroy_train(p_train);
+                        return NULL;
+                    }
+                    tetengo_json_jsonParser_next(p_parser);
+                    {
+                        size_t i = 0;
+                        for (i = 0; i < station_count; ++i)
+                        {
+                            const char* const value = element_is_primitive(
+                                p_parser, tetengo_json_element_typeName_number(), p_last_file_location);
+                            if (!value)
+                            {
+                                destroy_train(p_train);
+                                return NULL;
+                            }
+                            arrayList_add(p_train->p_stops, duplicate_int(value));
+                            tetengo_json_jsonParser_next(p_parser);
+                        }
+                    }
+                    if (!element_is(
+                            p_parser,
+                            tetengo_json_element_typeName_array(),
+                            tetengo_json_element_typeCategory_structureClose(),
+                            p_last_file_location))
+                    {
+                        destroy_train(p_train);
+                        return NULL;
+                    }
+                    tetengo_json_jsonParser_next(p_parser);
+                }
+                if (!element_is(
+                        p_parser,
+                        tetengo_json_element_typeName_member(),
+                        tetengo_json_element_typeCategory_structureClose(),
+                        p_last_file_location))
+                {
+                    destroy_train(p_train);
+                    return NULL;
+                }
                 tetengo_json_jsonParser_next(p_parser);
             }
         }
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_array(),
-                tetengo_json_element_typeCategory_structureClose(),
-                p_last_file_location))
-        {
-            destroy_train(p_train);
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_member(),
-                tetengo_json_element_typeCategory_structureClose(),
-                p_last_file_location))
-        {
-            destroy_train(p_train);
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_object(),
-                tetengo_json_element_typeCategory_structureClose(),
-                p_last_file_location))
-        {
-            destroy_train(p_train);
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-
         return p_train;
     }
 }
@@ -576,7 +548,7 @@ timetable_t* load_timetable(const char* const timetable_file_path)
 
         if (!load_preamble(p_parser, &last_file_location))
         {
-            fprintf(stderr, "JSON syntax error around line %u.", (int)last_file_location.line_index + 1);
+            fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
             tetengo_json_jsonParser_destroy(p_parser);
             return NULL;
         }
@@ -584,7 +556,7 @@ timetable_t* load_timetable(const char* const timetable_file_path)
             char title[256] = { 0 };
             if (!load_header(p_parser, title, sizeof(title) / sizeof(char), &last_file_location))
             {
-                fprintf(stderr, "JSON syntax error around line %u.", (int)last_file_location.line_index + 1);
+                fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
                 tetengo_json_jsonParser_destroy(p_parser);
                 return NULL;
             }
@@ -592,7 +564,7 @@ timetable_t* load_timetable(const char* const timetable_file_path)
                 const arrayList_t* const p_stations = load_stations(p_parser, &last_file_location);
                 if (!p_stations)
                 {
-                    fprintf(stderr, "JSON syntax error around line %u.", (int)last_file_location.line_index + 1);
+                    fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
                     tetengo_json_jsonParser_destroy(p_parser);
                     return NULL;
                 }
@@ -601,7 +573,7 @@ timetable_t* load_timetable(const char* const timetable_file_path)
                         load_trains(p_parser, arrayList_size(p_stations), &last_file_location);
                     if (!p_trains)
                     {
-                        fprintf(stderr, "JSON syntax error around line %u.", (int)last_file_location.line_index + 1);
+                        fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
                         arrayList_destroy(p_stations);
                         tetengo_json_jsonParser_destroy(p_parser);
                         return NULL;
@@ -628,29 +600,4 @@ timetable_t* load_timetable(const char* const timetable_file_path)
             }
         }
     }
-#if 0
-    {
-        static const char* p_stations[] = { "HogeHoge", "F", "Piyo" };
-        timetable_t*       p_timetable = timetable_create(p_stations, sizeof(p_stations) / sizeof(const char*));
-
-        {
-            static const int times[] = { -1, 600, 730 };
-            timetable_addTrain(p_timetable, "101M", times);
-        }
-        {
-            static const int times[] = { 1000, 1200, 1330 };
-            timetable_addTrain(p_timetable, "103M", times);
-        }
-        {
-            static const int times[] = { 1600, -1, 1900 };
-            timetable_addTrain(p_timetable, "5M", times);
-        }
-        {
-            static const int times[] = { 2200, 0, -1 };
-            timetable_addTrain(p_timetable, "3107M", times);
-        }
-
-        return p_timetable;
-    }
-#endif
 }
