@@ -183,39 +183,12 @@ static const char* element_is_primitive(
     return tetengo_json_element_value(p_element);
 }
 
-static int
-load_preamble(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocation_t* const p_last_file_location)
-{
-    if (!element_is(
-            p_parser,
-            tetengo_json_element_typeName_object(),
-            tetengo_json_element_typeCategory_structureOpen(),
-            p_last_file_location))
-    {
-        return 0;
-    }
-    tetengo_json_jsonParser_next(p_parser);
-    return 1;
-}
-
 static int load_header(
     tetengo_json_jsonParser_t* const   p_parser,
     char* const                        title,
     const size_t                       title_capacity,
     tetengo_json_fileLocation_t* const p_last_file_location)
 {
-    {
-        char key[256] = { 0 };
-        if (!element_is_member_begin(p_parser, key, sizeof(key) / sizeof(char), p_last_file_location))
-        {
-            return 0;
-        }
-        if (strcmp(key, "header") != 0)
-        {
-            return 0;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-    }
     if (!element_is(
             p_parser,
             tetengo_json_element_typeName_object(),
@@ -225,7 +198,6 @@ static int load_header(
         return 0;
     }
     tetengo_json_jsonParser_next(p_parser);
-
     for (;;)
     {
         if (element_is(
@@ -266,35 +238,12 @@ static int load_header(
             tetengo_json_jsonParser_next(p_parser);
         }
     }
-
-    if (!element_is(
-            p_parser,
-            tetengo_json_element_typeName_member(),
-            tetengo_json_element_typeCategory_structureClose(),
-            p_last_file_location))
-    {
-        return 0;
-    }
-    tetengo_json_jsonParser_next(p_parser);
-
     return 1;
 }
 
 static const arrayList_t*
 load_stations(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocation_t* const p_last_file_location)
 {
-    {
-        char key[256] = { 0 };
-        if (!element_is_member_begin(p_parser, key, sizeof(key) / sizeof(char), p_last_file_location))
-        {
-            return NULL;
-        }
-        if (strcmp(key, "stations") != 0)
-        {
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-    }
     if (!element_is(
             p_parser,
             tetengo_json_element_typeName_array(),
@@ -304,10 +253,8 @@ load_stations(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocati
         return NULL;
     }
     tetengo_json_jsonParser_next(p_parser);
-
     {
         arrayList_t* const p_stations = arrayList_create(destroy_string);
-
         for (;;)
         {
             if (element_is(
@@ -331,18 +278,6 @@ load_stations(tetengo_json_jsonParser_t* const p_parser, tetengo_json_fileLocati
                 tetengo_json_jsonParser_next(p_parser);
             }
         }
-
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_member(),
-                tetengo_json_element_typeCategory_structureClose(),
-                p_last_file_location))
-        {
-            arrayList_destroy(p_stations);
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-
         return p_stations;
     }
 }
@@ -375,7 +310,6 @@ static train_t* load_train(
         return NULL;
     }
     tetengo_json_jsonParser_next(p_parser);
-
     {
         train_t* const p_train = malloc(sizeof(train_t));
         if (!p_train)
@@ -384,7 +318,6 @@ static train_t* load_train(
         }
         p_train->number = NULL;
         p_train->p_stops = arrayList_create(destroy_int);
-
         for (;;)
         {
             if (element_is(
@@ -475,18 +408,6 @@ static const arrayList_t* load_trains(
     const size_t                       station_count,
     tetengo_json_fileLocation_t* const p_last_file_location)
 {
-    {
-        char key[256] = { 0 };
-        if (!element_is_member_begin(p_parser, key, sizeof(key) / sizeof(char), p_last_file_location))
-        {
-            return NULL;
-        }
-        if (strcmp(key, "trains") != 0)
-        {
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-    }
     if (!element_is(
             p_parser,
             tetengo_json_element_typeName_array(),
@@ -496,10 +417,8 @@ static const arrayList_t* load_trains(
         return NULL;
     }
     tetengo_json_jsonParser_next(p_parser);
-
     {
         arrayList_t* const p_trains = arrayList_create(destroy_train);
-
         for (;;)
         {
             if (element_is(
@@ -521,18 +440,6 @@ static const arrayList_t* load_trains(
                 arrayList_add(p_trains, p_train);
             }
         }
-
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_member(),
-                tetengo_json_element_typeCategory_structureClose(),
-                p_last_file_location))
-        {
-            arrayList_destroy(p_trains);
-            return NULL;
-        }
-        tetengo_json_jsonParser_next(p_parser);
-
         return p_trains;
     }
 }
@@ -546,12 +453,17 @@ timetable_t* load_timetable(const char* const timetable_file_path)
             tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
         tetengo_json_fileLocation_t last_file_location = { "", 0, 0 };
 
-        if (!load_preamble(p_parser, &last_file_location))
+        if (!element_is(
+                p_parser,
+                tetengo_json_element_typeName_array(),
+                tetengo_json_element_typeCategory_structureOpen(),
+                &last_file_location))
         {
             fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
             tetengo_json_jsonParser_destroy(p_parser);
             return NULL;
         }
+        tetengo_json_jsonParser_next(p_parser);
         {
             char title[256] = { 0 };
             if (!load_header(p_parser, title, sizeof(title) / sizeof(char), &last_file_location))
@@ -593,6 +505,19 @@ timetable_t* load_timetable(const char* const timetable_file_path)
                         }
                         arrayList_destroy(p_trains);
                         arrayList_destroy(p_stations);
+
+                        if (!element_is(
+                                p_parser,
+                                tetengo_json_element_typeName_array(),
+                                tetengo_json_element_typeCategory_structureClose(),
+                                &last_file_location))
+                        {
+                            fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
+                            tetengo_json_jsonParser_destroy(p_parser);
+                            return NULL;
+                        }
+                        tetengo_json_jsonParser_next(p_parser);
+
                         tetengo_json_jsonParser_destroy(p_parser);
                         return p_timetable;
                     }
