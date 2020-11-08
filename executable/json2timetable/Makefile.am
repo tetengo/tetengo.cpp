@@ -5,7 +5,8 @@ SOURCE_SUBDIRS = \
     src
 
 SUBDIRS = \
-    ${SOURCE_SUBDIRS}
+    ${SOURCE_SUBDIRS} \
+    data
 
 EXTRA_DIST = \
     README.md \
