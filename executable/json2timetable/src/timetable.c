@@ -135,6 +135,20 @@ const char* timetable_stationAt(const timetable_t* const p_timetable, const size
     return arrayList_at(p_timetable->p_stations, index);
 }
 
+size_t timetable_findStation(const timetable_t* const p_timetable, const char* const station_name)
+{
+    size_t i = 0;
+    for (i = 0; i < arrayList_size(p_timetable->p_stations); ++i)
+    {
+        const char* const name = arrayList_at(p_timetable->p_stations, i);
+        if (strcmp(station_name, name) == 0)
+        {
+            return i;
+        }
+    }
+    return (size_t)-1;
+}
+
 size_t timetable_trainCount(const timetable_t* const p_timetable)
 {
     if (!p_timetable)

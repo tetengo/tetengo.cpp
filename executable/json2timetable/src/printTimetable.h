@@ -7,6 +7,8 @@
 #if !defined(PRINTTIMETABLE_H)
 #define PRINTTIMETABLE_H
 
+#include <stddef.h>
+
 #include "timetable.h"
 
 
@@ -16,6 +18,14 @@
     \param p_timetable A pointer to a timetable.
 */
 void print_line_timetable(const timetable_t* p_timetable);
+
+/*!
+    \brief Prints a station timetable.
+
+    \param p_timetable   A pointer to a timetable.
+    \param station_index A station index.
+*/
+void print_station_timetable(const timetable_t* p_timetable, size_t station_index);
 
 
 #endif

@@ -15,7 +15,7 @@ int main(const int argc, char** const argv)
 {
     if (argc <= 1)
     {
-        fprintf(stderr, "Usage: ../json2timetable timetable.json\n");
+        fprintf(stderr, "Usage: ../json2timetable timetable.json [station_name]\n");
         return 0;
     }
 
@@ -23,7 +23,19 @@ int main(const int argc, char** const argv)
         timetable_t* const p_timetable = load_timetable(argv[1]);
         if (p_timetable)
         {
-            print_line_timetable(p_timetable);
+            size_t station_index = (size_t)-1;
+            if (argc > 2)
+            {
+                station_index = timetable_findStation(p_timetable, argv[2]);
+            }
+            if (station_index != (size_t)-1)
+            {
+                print_station_timetable(p_timetable, station_index);
+            }
+            else
+            {
+                print_line_timetable(p_timetable);
+            }
             timetable_destroy(p_timetable);
         }
     }

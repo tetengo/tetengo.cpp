@@ -60,6 +60,16 @@ size_t timetable_stationCount(const timetable_t* p_timetable);
 const char* timetable_stationAt(const timetable_t* p_timetable, size_t index);
 
 /*!
+    \brief Finds the station with station_name.
+
+    \param p_timetable  A pointer to a timetable.
+    \param station_name A station name.
+
+    \return The station index. Or (size_t)-1 when station_name is not found.
+*/
+size_t timetable_findStation(const timetable_t* p_timetable, const char* station_name);
+
+/*!
     \brief Returns the train count.
 
     \param p_timetable A pointer to a timetable.

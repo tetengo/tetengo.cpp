@@ -400,3 +400,9 @@ void print_line_timetable(const timetable_t* const p_timetable)
         free((void*)p_station_display_names);
     }
 }
+
+void print_station_timetable(const timetable_t* const p_timetable, const size_t station_index)
+{
+    (void)p_timetable;
+    (void)station_index;
+}
