@@ -449,77 +449,86 @@ timetable_t* load_timetable(const char* const timetable_file_path)
     {
         tetengo_json_reader_t* const p_reader = tetengo_json_reader_createStreamReader(
             timetable_file_path, tetengo_json_reader_streamReaderDefaultBufferCapacity());
-        tetengo_json_jsonParser_t* const p_parser =
-            tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
-        tetengo_json_fileLocation_t last_file_location = { "", 0, 0 };
-
-        if (!element_is(
-                p_parser,
-                tetengo_json_element_typeName_array(),
-                tetengo_json_element_typeCategory_structureOpen(),
-                &last_file_location))
+        if (!p_reader)
         {
-            fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
-            tetengo_json_jsonParser_destroy(p_parser);
+            fprintf(stderr, "Can't open: %s\n", timetable_file_path);
             return NULL;
         }
-        tetengo_json_jsonParser_next(p_parser);
+
         {
-            char title[256] = { 0 };
-            if (!load_header(p_parser, title, sizeof(title) / sizeof(char), &last_file_location))
+            tetengo_json_jsonParser_t* const p_parser =
+                tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
+            tetengo_json_fileLocation_t last_file_location = { "", 0, 0 };
+
+            if (!element_is(
+                    p_parser,
+                    tetengo_json_element_typeName_array(),
+                    tetengo_json_element_typeCategory_structureOpen(),
+                    &last_file_location))
             {
                 fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
                 tetengo_json_jsonParser_destroy(p_parser);
                 return NULL;
             }
+            tetengo_json_jsonParser_next(p_parser);
             {
-                const arrayList_t* const p_stations = load_stations(p_parser, &last_file_location);
-                if (!p_stations)
+                char title[256] = { 0 };
+                if (!load_header(p_parser, title, sizeof(title) / sizeof(char), &last_file_location))
                 {
                     fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
                     tetengo_json_jsonParser_destroy(p_parser);
                     return NULL;
                 }
                 {
-                    const arrayList_t* const p_trains =
-                        load_trains(p_parser, arrayList_size(p_stations), &last_file_location);
-                    if (!p_trains)
+                    const arrayList_t* const p_stations = load_stations(p_parser, &last_file_location);
+                    if (!p_stations)
                     {
                         fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
-                        arrayList_destroy(p_stations);
                         tetengo_json_jsonParser_destroy(p_parser);
                         return NULL;
                     }
                     {
-                        timetable_t* p_timetable = timetable_create(
-                            title, (const char* const*)arrayList_data(p_stations), arrayList_size(p_stations));
-                        {
-                            size_t i = 0;
-                            for (i = 0; i < arrayList_size(p_trains); ++i)
-                            {
-                                const train_t* const p_train = arrayList_at(p_trains, i);
-                                const int* const     p_stops = create_int_array(p_train->p_stops);
-                                timetable_addTrain(p_timetable, p_train->number, p_stops);
-                                free((void*)p_stops);
-                            }
-                        }
-                        arrayList_destroy(p_trains);
-                        arrayList_destroy(p_stations);
-
-                        if (!element_is(
-                                p_parser,
-                                tetengo_json_element_typeName_array(),
-                                tetengo_json_element_typeCategory_structureClose(),
-                                &last_file_location))
+                        const arrayList_t* const p_trains =
+                            load_trains(p_parser, arrayList_size(p_stations), &last_file_location);
+                        if (!p_trains)
                         {
                             fprintf(stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
+                            arrayList_destroy(p_stations);
                             tetengo_json_jsonParser_destroy(p_parser);
                             return NULL;
                         }
-                        tetengo_json_jsonParser_next(p_parser);
+                        {
+                            timetable_t* p_timetable = timetable_create(
+                                title, (const char* const*)arrayList_data(p_stations), arrayList_size(p_stations));
+                            {
+                                size_t i = 0;
+                                for (i = 0; i < arrayList_size(p_trains); ++i)
+                                {
+                                    const train_t* const p_train = arrayList_at(p_trains, i);
+                                    const int* const     p_stops = create_int_array(p_train->p_stops);
+                                    timetable_addTrain(p_timetable, p_train->number, p_stops);
+                                    free((void*)p_stops);
+                                }
+                            }
+                            arrayList_destroy(p_trains);
+                            arrayList_destroy(p_stations);
 
-                        tetengo_json_jsonParser_destroy(p_parser);
-                        return p_timetable;
+                            if (!element_is(
+                                    p_parser,
+                                    tetengo_json_element_typeName_array(),
+                                    tetengo_json_element_typeCategory_structureClose(),
+                                    &last_file_location))
+                            {
+                                fprintf(
+                                    stderr, "JSON syntax error around line %u.\n", (int)last_file_location.line_index);
+                                tetengo_json_jsonParser_destroy(p_parser);
+                                return NULL;
+                            }
+                            tetengo_json_jsonParser_next(p_parser);
+
+                            tetengo_json_jsonParser_destroy(p_parser);
+                            return p_timetable;
+                        }
                     }
                 }
             }
