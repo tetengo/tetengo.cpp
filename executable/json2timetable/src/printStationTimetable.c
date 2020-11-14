@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <tetengo/text/graphemeSplitter.h>
 
@@ -16,25 +17,37 @@
 #include "timetable.h"
 
 
-static const char* create_departure(const size_t minute)
+static const char* create_departure(const size_t minute, const char* const destination_initial)
 {
-    char* const p_departure = malloc(3 * sizeof(char));
+    char* const p_departure = malloc((2 + strlen(destination_initial) + 1) * sizeof(char));
     if (!p_departure)
     {
         return NULL;
     }
-    sprintf(p_departure, "%02u", (unsigned int)minute);
+    sprintf(p_departure, "%02u%s", (unsigned int)minute, destination_initial);
     return p_departure;
 }
 
-static void destroy_departure(const void* const p_departure)
+static const char* duplicate_string(const char* const string, const size_t length)
+{
+    char* const p_duplication = malloc((length + 1) * sizeof(char));
+    if (!p_duplication)
+    {
+        return NULL;
+    }
+    memcpy(p_duplication, string, length);
+    p_duplication[length] = '\0';
+    return p_duplication;
+}
+
+static void destroy_string(const void* const p_departure)
 {
     free((void*)p_departure);
 }
 
 static const arrayList_t* create_departure_list()
 {
-    arrayList_t* const p_departure_list = arrayList_create(destroy_departure);
+    arrayList_t* const p_departure_list = arrayList_create(destroy_string);
     return p_departure_list;
 }
 
@@ -43,21 +56,34 @@ static void destroy_departure_list(const void* const p_departure_list)
     arrayList_destroy(p_departure_list);
 }
 
-static int is_destination(const timetable_t* const p_timetable, const size_t train_index, const size_t station_index)
+static const arrayList_t* create_station_initials(const timetable_t* const p_timetable)
 {
-    int destination = 1;
+    arrayList_t* const                           p_initials = arrayList_create(destroy_string);
+    const tetengo_text_graphemeSplitter_t* const p_grapheme_splitter = tetengo_text_graphemeSplitter_create();
     {
         size_t i = 0;
-        for (i = station_index + 1; i < timetable_stationCount(p_timetable); ++i)
+        for (i = 0; i < timetable_stationCount(p_timetable); ++i)
         {
-            if (timetable_trainTimeAt(p_timetable, train_index, i) >= 0)
-            {
-                destination = 0;
-                break;
-            }
+            const char* const whole = timetable_stationAt(p_timetable, i);
+            arrayList_add(p_initials, (void*)duplicate_string(whole, strlen(whole)));
         }
     }
-    return destination;
+    tetengo_text_graphemeSplitter_destroy(p_grapheme_splitter);
+    return p_initials;
+}
+
+static size_t destination_index(const timetable_t* const p_timetable, const size_t train_index)
+{
+    const size_t station_count = timetable_stationCount(p_timetable);
+    size_t       i = 0;
+    for (i = 0; i < station_count; ++i)
+    {
+        if (timetable_trainTimeAt(p_timetable, train_index, station_count - i - 1) >= 0)
+        {
+            return station_count - i - 1;
+        }
+    }
+    return 0;
 }
 
 static const arrayList_t* create_departure_lists(const timetable_t* const p_timetable, const size_t station_index)
@@ -71,19 +97,26 @@ static const arrayList_t* create_departure_lists(const timetable_t* const p_time
         }
     }
     {
-        size_t i = 0;
-        for (i = 0; i < timetable_trainCount(p_timetable); ++i)
+        const arrayList_t* const p_station_initials = create_station_initials(p_timetable);
         {
-            const int departure = timetable_trainTimeAt(p_timetable, i, station_index);
-            if (departure >= 0 && !is_destination(p_timetable, i, station_index))
+            size_t i = 0;
+            for (i = 0; i < timetable_trainCount(p_timetable); ++i)
             {
-                const size_t hour = departure / 100;
-                const size_t minute = departure % 100;
-                assert(hour < 24);
-                assert(minute < 60);
-                arrayList_add(arrayList_mutableAt(p_departure_lists, hour), (void*)create_departure(minute));
+                const int    departure = timetable_trainTimeAt(p_timetable, i, station_index);
+                const size_t destination_index_ = destination_index(p_timetable, i);
+                if (departure >= 0 && station_index != destination_index_)
+                {
+                    const size_t hour = departure / 100;
+                    const size_t minute = departure % 100;
+                    assert(hour < 24);
+                    assert(minute < 60);
+                    arrayList_add(
+                        arrayList_mutableAt(p_departure_lists, hour),
+                        (void*)create_departure(minute, arrayList_at(p_station_initials, destination_index_)));
+                }
             }
         }
+        arrayList_destroy(p_station_initials);
     }
     return p_departure_lists;
 }
