@@ -1,10 +1,10 @@
 /*! \file
-    \brief A timetable printing.
+    \brief A line timetable printing.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#include "printTimetable.h"
+#include "printLineTimetable.h"
 
 #include <stdio.h>
 #include <stdlib.h>

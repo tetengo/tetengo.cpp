@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 #include "loadTimetable.h"
-#include "printTimetable.h"
+#include "printLineTimetable.h"
 #include "timetable.h"
 
 

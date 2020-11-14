@@ -19,10 +19,10 @@
     <ClCompile Include="src\timetable.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\printTimetable.c">
+    <ClCompile Include="src\loadTimetable.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\loadTimetable.c">
+    <ClCompile Include="src\printLineTimetable.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,10 +36,10 @@
     <ClInclude Include="src\timetable.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\printTimetable.h">
+    <ClInclude Include="src\loadTimetable.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\loadTimetable.h">
+    <ClInclude Include="src\printLineTimetable.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

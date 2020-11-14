@@ -4,14 +4,14 @@
 headers = \
     arrayList.h \
     loadTimetable.h \
-    printTimetable.h \
+    printLineTimetable.h \
     timetable.h
 
 sources = \
     arrayList.c \
     loadTimetable.c \
     main.c \
-    printTimetable.c \
+    printLineTimetable.c \
     timetable.c
 
 bin_PROGRAMS = json2timetable
