@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <locale.h>
 #include <stdio.h>
 
 #include "loadTimetable.h"
@@ -14,6 +15,8 @@
 
 int main(const int argc, char** const argv)
 {
+    setlocale(LC_CTYPE, "");
+
     if (argc <= 1)
     {
         fprintf(stderr, "Usage: ../json2timetable timetable.json [station_name]\n");
