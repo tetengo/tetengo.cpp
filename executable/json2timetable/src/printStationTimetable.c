@@ -9,7 +9,6 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "arrayList.h"
 #include "timetable.h"
@@ -56,12 +55,18 @@ static const arrayList_t* create_departure_lists(const timetable_t* const p_time
         size_t i = 0;
         for (i = 0; i < timetable_trainCount(p_timetable); ++i)
         {
-            const int    departure = timetable_trainTimeAt(p_timetable, i, station_index);
-            const size_t hour = departure / 100;
-            const size_t minute = departure % 100;
-            assert(hour < 24);
-            assert(minute < 60);
-            arrayList_add(arrayList_mutableAt(p_departure_lists, hour), (void*)create_departure(minute));
+            const int departure = timetable_trainTimeAt(p_timetable, i, station_index);
+            if (departure < 0)
+            {
+                continue;
+            }
+            {
+                const size_t hour = departure / 100;
+                const size_t minute = departure % 100;
+                assert(hour < 24);
+                assert(minute < 60);
+                arrayList_add(arrayList_mutableAt(p_departure_lists, hour), (void*)create_departure(minute));
+            }
         }
     }
     return p_departure_lists;
@@ -72,7 +77,26 @@ void print_station_timetable(const timetable_t* const p_timetable, const size_t 
     printf("%s\n", timetable_stationAt(p_timetable, station_index));
     {
         const arrayList_t* const p_departure_lists = create_departure_lists(p_timetable, station_index);
-
+        {
+            size_t i = 0;
+            assert(arrayList_size(p_departure_lists) == 24);
+            for (i = 0; i < 24; ++i)
+            {
+                const size_t hour = (i + 4) % 24;
+                printf("%2u|", (unsigned int)hour);
+                {
+                    const arrayList_t* const p_departure_list = arrayList_at(p_departure_lists, hour);
+                    {
+                        size_t j = 0;
+                        for (j = 0; j < arrayList_size(p_departure_list); ++j)
+                        {
+                            printf(" %s", (const char*)arrayList_at(p_departure_list, j));
+                        }
+                    }
+                }
+                printf("\n");
+            }
+        }
         arrayList_destroy(p_departure_lists);
     }
 }
