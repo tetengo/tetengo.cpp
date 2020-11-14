@@ -332,7 +332,7 @@ static void print_station_name_and_train_times(
                         continue;
                     }
 
-                    if (p_passings[i])
+                    if (p_passings[j])
                     {
                         int    after_destination = 1;
                         size_t k = 0;
