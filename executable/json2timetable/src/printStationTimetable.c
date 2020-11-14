@@ -43,6 +43,23 @@ static void destroy_departure_list(const void* const p_departure_list)
     arrayList_destroy(p_departure_list);
 }
 
+static int is_destination(const timetable_t* const p_timetable, const size_t train_index, const size_t station_index)
+{
+    int destination = 1;
+    {
+        size_t i = 0;
+        for (i = station_index + 1; i < timetable_stationCount(p_timetable); ++i)
+        {
+            if (timetable_trainTimeAt(p_timetable, train_index, i) >= 0)
+            {
+                destination = 0;
+                break;
+            }
+        }
+    }
+    return destination;
+}
+
 static const arrayList_t* create_departure_lists(const timetable_t* const p_timetable, const size_t station_index)
 {
     arrayList_t* const p_departure_lists = arrayList_create(destroy_departure_list);
@@ -58,10 +75,7 @@ static const arrayList_t* create_departure_lists(const timetable_t* const p_time
         for (i = 0; i < timetable_trainCount(p_timetable); ++i)
         {
             const int departure = timetable_trainTimeAt(p_timetable, i, station_index);
-            if (departure < 0)
-            {
-                continue;
-            }
+            if (departure >= 0 && !is_destination(p_timetable, i, station_index))
             {
                 const size_t hour = departure / 100;
                 const size_t minute = departure % 100;
