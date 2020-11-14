@@ -64,6 +64,16 @@ size_t arrayList_size(const arrayList_t* p_array_list);
 const void* arrayList_at(const arrayList_t* p_array_list, size_t index);
 
 /*!
+    \brief Returns the mutable element.
+
+    \param p_array_list A pointer to an array list.
+    \param index        A index.
+
+    \return A pointer to the mutable element. Or NULL when p_array_list is NULL or index is greater than the size.
+*/
+void* arrayList_mutableAt(arrayList_t* p_array_list, size_t index);
+
+/*!
     \brief Returns a pointer to the elements.
 
     \param p_array_list A pointer to an array list.
