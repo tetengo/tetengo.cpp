@@ -8,6 +8,7 @@
 
 #include "loadTimetable.h"
 #include "printLineTimetable.h"
+#include "printStationTimetable.h"
 #include "timetable.h"
 
 

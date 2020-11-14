@@ -123,6 +123,7 @@
     <ClCompile Include="src\loadTimetable.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\printLineTimetable.c" />
+    <ClCompile Include="src\printStationTimetable.c" />
     <ClCompile Include="src\timetable.c" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +131,7 @@
     <ClInclude Include="src\arrayList.h" />
     <ClInclude Include="src\loadTimetable.h" />
     <ClInclude Include="src\printLineTimetable.h" />
+    <ClInclude Include="src\printStationTimetable.h" />
     <ClInclude Include="src\timetable.h" />
   </ItemGroup>
   <ItemGroup>
