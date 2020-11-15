@@ -56,19 +56,80 @@ static void destroy_departure_list(const void* const p_departure_list)
     arrayList_destroy(p_departure_list);
 }
 
+static int starts_with(const char* const string, const char* const prefix, const size_t prefix_length)
+{
+    if (strlen(string) < prefix_length)
+    {
+        return 0;
+    }
+    {
+        size_t i = 0;
+        for (i = 0; i < prefix_length; ++i)
+        {
+            if (string[i] != prefix[i])
+            {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+static size_t find_initial_length(const timetable_t* const p_timetable, const size_t station_index)
+{
+    const char* const                            whole = timetable_stationAt(p_timetable, station_index);
+    const tetengo_text_graphemeSplitter_t* const p_grapheme_splitter = tetengo_text_graphemeSplitter_create();
+    const size_t grapheme_count = tetengo_text_graphemeSplitter_split(p_grapheme_splitter, whole, NULL);
+    tetengo_text_grapheme_t* const p_graphemes = malloc(sizeof(tetengo_text_grapheme_t) * grapheme_count);
+    if (!p_graphemes)
+    {
+        tetengo_text_graphemeSplitter_destroy(p_grapheme_splitter);
+        return strlen(whole);
+    }
+    tetengo_text_graphemeSplitter_split(p_grapheme_splitter, whole, p_graphemes);
+    {
+        size_t i = 0;
+        for (i = 1; i < grapheme_count; ++i)
+        {
+            int    found = 0;
+            size_t j = 0;
+            for (j = 0; j < timetable_stationCount(p_timetable); ++j)
+            {
+                if (j == station_index)
+                {
+                    continue;
+                }
+                if (starts_with(timetable_stationAt(p_timetable, j), whole, p_graphemes[i].offset))
+                {
+                    found = 1;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                const size_t initial_length = p_graphemes[i].offset;
+                free(p_graphemes);
+                tetengo_text_graphemeSplitter_destroy(p_grapheme_splitter);
+                return initial_length;
+            }
+        }
+    }
+    free(p_graphemes);
+    tetengo_text_graphemeSplitter_destroy(p_grapheme_splitter);
+    return strlen(whole);
+}
+
 static const arrayList_t* create_station_initials(const timetable_t* const p_timetable)
 {
-    arrayList_t* const                           p_initials = arrayList_create(destroy_string);
-    const tetengo_text_graphemeSplitter_t* const p_grapheme_splitter = tetengo_text_graphemeSplitter_create();
+    arrayList_t* const p_initials = arrayList_create(destroy_string);
     {
         size_t i = 0;
         for (i = 0; i < timetable_stationCount(p_timetable); ++i)
         {
-            const char* const whole = timetable_stationAt(p_timetable, i);
-            arrayList_add(p_initials, (void*)duplicate_string(whole, strlen(whole)));
+            const size_t initial_length = find_initial_length(p_timetable, i);
+            arrayList_add(p_initials, (void*)duplicate_string(timetable_stationAt(p_timetable, i), initial_length));
         }
     }
-    tetengo_text_graphemeSplitter_destroy(p_grapheme_splitter);
     return p_initials;
 }
 
