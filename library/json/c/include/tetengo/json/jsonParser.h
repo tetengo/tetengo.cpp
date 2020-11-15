@@ -42,6 +42,8 @@ size_t tetengo_json_jsonParser_defaultBufferCapacity(void);
 
     There is no need to destroy the reader after calling this function.
 
+    Based on <a href="https://tools.ietf.org/html/rfc8259">RFC 8259</a>.
+
     \param p_reader        A pointer to a reader.
     \param buffer_capacity A buffer capacity.
 

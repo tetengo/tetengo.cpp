@@ -21,6 +21,8 @@ namespace tetengo::json
 
     /*!
         \brief A JSON parser.
+
+        Based on <a href="https://tools.ietf.org/html/rfc8259">RFC 8259</a>.
     */
     class json_parser : private boost::noncopyable
     {
