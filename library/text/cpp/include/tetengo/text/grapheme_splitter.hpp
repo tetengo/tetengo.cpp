@@ -108,6 +108,10 @@ namespace tetengo::text
         /*!
             \brief Split a string to graphemes.
 
+            For emoji defined as <a href="http://www.unicode.org/reports/tr11/">"neutral" width</a>
+            in the Unicode standard, this function returns a character width of 2 in the East Asian
+            (Chinese, Japanese or Korean) locale, or 1 in the other locale.
+
             \param string_ A string.
 
             \return Graphemes.

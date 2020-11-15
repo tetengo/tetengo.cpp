@@ -34,7 +34,8 @@ A text library.
 
 The utility for text processings.
 
-This library provides a grapheme splitter based on Unicode.
+This library provides a grapheme splitter conforming to
+[Unicode 13.0.0](https://unicode.org/versions/Unicode13.0.0/).
 
 ### tetengo::trie
 

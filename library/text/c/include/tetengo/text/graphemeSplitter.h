@@ -57,6 +57,10 @@ void tetengo_text_graphemeSplitter_destroy(const tetengo_text_graphemeSplitter_t
 /*!
     \brief Split a string to graphemes.
 
+    For emoji defined as <a href="http://www.unicode.org/reports/tr11/">"neutral" width</a>
+    in the Unicode standard, this function returns a character width of 2 in the East Asian
+    (Chinese, Japanese or Korean) locale, or 1 in the other locale.
+
     \param p_grapheme_splitter A pointer to a grapheme splitter.
     \param string              A string.
     \param p_graphemes         The storage for graphemes. Can be NULL.
