@@ -10,7 +10,7 @@
 #define PRECOMPILED_H
 
 
-// C Standard Library
+/* C Standard Library */
 #include <assert.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -24,6 +24,8 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
+#include <cctype>
+#include <clocale>
 #include <cmath>
 #include <condition_variable>
 #include <cstddef>
@@ -38,6 +40,7 @@
 #include <iterator>
 #include <limits>
 #include <list>
+#include <locale>
 #include <memory>
 #include <mutex>
 #include <optional>

@@ -47,6 +47,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.text", "library\tex
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.text.cpp", "library\text\cpp\tetengo.text.cpp.vcxproj", "{BE228A1E-25D5-4825-89B4-C3513F1DC559}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "json2timetable", "executable\json2timetable\json2timetable.vcxproj", "{EB5E3C27-4233-4BB2-A64A-66962EB663AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -183,6 +185,14 @@ Global
 		{BE228A1E-25D5-4825-89B4-C3513F1DC559}.Release|x64.Build.0 = Release|x64
 		{BE228A1E-25D5-4825-89B4-C3513F1DC559}.Release|x86.ActiveCfg = Release|Win32
 		{BE228A1E-25D5-4825-89B4-C3513F1DC559}.Release|x86.Build.0 = Release|Win32
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Debug|x64.ActiveCfg = Debug|x64
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Debug|x64.Build.0 = Debug|x64
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Debug|x86.ActiveCfg = Debug|Win32
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Debug|x86.Build.0 = Debug|Win32
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Release|x64.ActiveCfg = Release|x64
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Release|x64.Build.0 = Release|x64
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Release|x86.ActiveCfg = Release|Win32
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,6 +218,7 @@ Global
 		{52ACD25C-C27C-475C-9E47-46A24719B163} = {8025EE35-4F98-4CBA-8D82-E8D21E6BCB0F}
 		{49971358-A731-4C16-943A-C66735F3B342} = {8025EE35-4F98-4CBA-8D82-E8D21E6BCB0F}
 		{BE228A1E-25D5-4825-89B4-C3513F1DC559} = {8025EE35-4F98-4CBA-8D82-E8D21E6BCB0F}
+		{EB5E3C27-4233-4BB2-A64A-66962EB663AD} = {721A442D-34D8-457A-8D07-D21EB2C6A04C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1FDB91A-BB78-49E0-8D13-17726804EA86}

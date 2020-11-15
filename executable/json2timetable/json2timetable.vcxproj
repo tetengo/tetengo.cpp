@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{6287FA8D-837B-4ADC-9DBB-5A7CF18F9546}</ProjectGuid>
-    <RootNamespace>searchdictc</RootNamespace>
+    <ProjectGuid>{eb5e3c27-4233-4bb2-a64a-66962eb663ad}</ProjectGuid>
+    <RootNamespace>json2timetable</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -96,22 +96,22 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\trie\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\json\c\include;$(SolutionDir)library\text\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\trie\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\json\c\include;$(SolutionDir)library\text\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\trie\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\json\c\include;$(SolutionDir)library\text\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\trie\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\json\c\include;$(SolutionDir)library\text\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -119,14 +119,27 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\arrayList.c" />
+    <ClCompile Include="src\loadTimetable.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\printLineTimetable.c" />
+    <ClCompile Include="src\printStationTimetable.c" />
+    <ClCompile Include="src\timetable.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h" />
+    <ClInclude Include="src\arrayList.h" />
+    <ClInclude Include="src\loadTimetable.h" />
+    <ClInclude Include="src\printLineTimetable.h" />
+    <ClInclude Include="src\printStationTimetable.h" />
+    <ClInclude Include="src\timetable.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\library\trie\c\tetengo.trie.vcxproj">
-      <Project>{e14d072f-631b-4e87-bc03-57437306cd34}</Project>
+    <ProjectReference Include="..\..\library\json\c\tetengo.json.vcxproj">
+      <Project>{6a37648e-2203-4052-91df-b8f2b2c26a04}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\library\text\c\tetengo.text.vcxproj">
+      <Project>{49971358-a731-4c16-943a-c66735f3b342}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

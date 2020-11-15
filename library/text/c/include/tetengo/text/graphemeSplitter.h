@@ -28,10 +28,10 @@ typedef struct tetengo_text_graphemeSplitter_tag tetengo_text_graphemeSplitter_t
 */
 typedef struct tetengo_text_grapheme_tag
 {
-    //! A offset in the UTF-8 string.
+    /*! A offset in the UTF-8 string. */
     size_t offset;
 
-    //! A width when using a monospace font.
+    /*! A width when using a monospace font. */
     size_t width;
 
 

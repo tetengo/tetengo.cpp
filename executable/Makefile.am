@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
+    json2timetable \
     make_dict \
     search_dict \
     search_dict_c \

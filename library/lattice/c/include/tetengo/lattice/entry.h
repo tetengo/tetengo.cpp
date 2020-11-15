@@ -30,13 +30,13 @@ typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entr
 */
 typedef struct tetengo_lattice_entry_tag
 {
-    //! A key.
+    /*! A key. */
     tetengo_lattice_stringView_t key;
 
-    //! A pointer to a value.
+    /*! A pointer to a value. */
     const void* p_value;
 
-    //! A cost.
+    /*! A cost. */
     int cost;
 
 
@@ -47,13 +47,13 @@ typedef struct tetengo_lattice_entry_tag
 */
 typedef struct tetengo_lattice_entryView_tag
 {
-    //! A key.
+    /*! A key. */
     tetengo_lattice_stringView_t key;
 
-    //! A value handle.
+    /*! A value handle. */
     tetengo_lattice_entry_valueHandle_t value_handle;
 
-    //! A cost.
+    /*! A cost. */
     int cost;
 
 
@@ -64,13 +64,13 @@ typedef struct tetengo_lattice_entryView_tag
 */
 typedef struct tetengo_lattice_keyEntriesPair_tag
 {
-    //! A key.
+    /*! A key. */
     tetengo_lattice_stringView_t key;
 
-    //! Entries
+    /*! Entries */
     const tetengo_lattice_entry_t* p_entries;
 
-    //! An entry count.
+    /*! An entry count. */
     size_t entry_count;
 
 

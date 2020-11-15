@@ -27,16 +27,16 @@ typedef struct tetengo_json_reader_tag tetengo_json_reader_t;
 */
 typedef struct tetengo_json_location_tag
 {
-    //! A line. Not necessarily NUL-terminated.
+    /*! A line. Not necessarily NUL-terminated. */
     const char* line;
 
-    //! A line length.
+    /*! A line length. */
     size_t line_length;
 
-    //! A line index.
+    /*! A line index. */
     size_t line_index;
 
-    //! A column index.
+    /*! A column index. */
     size_t column_index;
 
 

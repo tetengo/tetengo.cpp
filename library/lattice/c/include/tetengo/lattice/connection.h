@@ -25,7 +25,7 @@ typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry_t;
 */
 typedef struct tetengo_lattice_connection_tag
 {
-    //! A cost.
+    /*! A cost. */
     int cost;
 
 
@@ -36,13 +36,13 @@ typedef struct tetengo_lattice_connection_tag
 */
 typedef struct tetengo_lattice_entriesConnectionCostPair_tag
 {
-    //! A pointer to an origin entry.
+    /*! A pointer to an origin entry. */
     const tetengo_lattice_entry_t* p_from;
 
-    //! A pointer to a destination entry.
+    /*! A pointer to a destination entry. */
     const tetengo_lattice_entry_t* p_to;
 
-    //! A cost.
+    /*! A cost. */
     int cost;
 
 

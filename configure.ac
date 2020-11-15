@@ -12,6 +12,9 @@ AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
     executable/Makefile
+    executable/json2timetable/Makefile
+    executable/json2timetable/data/Makefile
+    executable/json2timetable/src/Makefile
     executable/make_dict/Makefile
     executable/make_dict/src/Makefile
     executable/search_dict/Makefile
