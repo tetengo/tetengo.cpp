@@ -24,6 +24,12 @@ namespace tetengo::text
         neutral,
     };
 
+    enum class emoji_type
+    {
+        emoji,
+        normal,
+    };
+
     enum class grapheme_break_property_type
     {
         cr,
@@ -48,6 +54,8 @@ namespace tetengo::text
         char32_t code_point;
 
         east_asian_width_class_type class_;
+
+        emoji_type emoji;
 
         grapheme_break_property_type grapheme;
     };

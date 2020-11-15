@@ -35,3 +35,4 @@ __pycache__/
 tools/EastAsianWidth.txt
 tools/GraphemeBreakProperty.txt
 tools/character_property_map.txt
+tools/emoji-data.txt

@@ -29,12 +29,53 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     const auto& character_width = tetengo::text::default_character_width::instance();
 
-    BOOST_TEST(character_width.width_of(tetengo::text::character_width::class_type::ambiguous) == 1U);
-    BOOST_TEST(character_width.width_of(tetengo::text::character_width::class_type::fullwidth) == 2U);
-    BOOST_TEST(character_width.width_of(tetengo::text::character_width::class_type::halfwidth) == 1U);
-    BOOST_TEST(character_width.width_of(tetengo::text::character_width::class_type::neutral) == 1U);
-    BOOST_TEST(character_width.width_of(tetengo::text::character_width::class_type::narrow) == 1U);
-    BOOST_TEST(character_width.width_of(tetengo::text::character_width::class_type::wide) == 2U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::ambiguous, tetengo::text::character_width::emoji_type::emoji) ==
+        1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::ambiguous,
+            tetengo::text::character_width::emoji_type::normal) == 1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::fullwidth, tetengo::text::character_width::emoji_type::emoji) ==
+        2U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::fullwidth,
+            tetengo::text::character_width::emoji_type::normal) == 2U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::halfwidth, tetengo::text::character_width::emoji_type::emoji) ==
+        1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::halfwidth,
+            tetengo::text::character_width::emoji_type::normal) == 1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::neutral, tetengo::text::character_width::emoji_type::emoji) ==
+        1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::neutral, tetengo::text::character_width::emoji_type::normal) ==
+        1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::narrow, tetengo::text::character_width::emoji_type::emoji) ==
+        1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::narrow, tetengo::text::character_width::emoji_type::normal) ==
+        1U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::wide, tetengo::text::character_width::emoji_type::emoji) == 2U);
+    BOOST_TEST(
+        character_width.width_of(
+            tetengo::text::character_width::class_type::wide, tetengo::text::character_width::emoji_type::normal) ==
+        2U);
 }
 
 

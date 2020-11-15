@@ -29,7 +29,7 @@ namespace tetengo::text
 
         // functions
 
-        std::size_t width_of_impl(const class_type class_) const
+        std::size_t width_of_impl(const class_type class_, const emoji_type emoji) const
         {
             switch (class_)
             {
@@ -37,6 +37,14 @@ namespace tetengo::text
             case class_type::fullwidth:
             case class_type::wide:
                 return 2;
+            case class_type::neutral:
+                switch (emoji)
+                {
+                case emoji_type::emoji:
+                    return 2;
+                default:
+                    return 1;
+                }
             default:
                 return 1;
             }
@@ -53,9 +61,9 @@ namespace tetengo::text
 
     east_asian_character_width::east_asian_character_width() : m_p_impl{ std::make_unique<impl>() } {}
 
-    std::size_t east_asian_character_width::width_of_impl(const class_type class_) const
+    std::size_t east_asian_character_width::width_of_impl(const class_type class_, const emoji_type emoji) const
     {
-        return m_p_impl->width_of_impl(class_);
+        return m_p_impl->width_of_impl(class_, emoji);
     }
 
 

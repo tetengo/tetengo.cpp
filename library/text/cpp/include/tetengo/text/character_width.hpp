@@ -33,6 +33,13 @@ namespace tetengo::text
             neutral, //!< Neutral.
         };
 
+        //! An emoji.
+        enum class emoji_type
+        {
+            emoji, //!< Emoji character.
+            normal, //!< Normal charactger.
+        };
+
 
         // constructors and destructor
 
@@ -48,16 +55,17 @@ namespace tetengo::text
             \brief Returns the width.
 
             \param class_ A class.
+            \param emoji  An emoji.
 
             \return The width of the code point.
         */
-        [[nodiscard]] std::size_t width_of(class_type class_) const;
+        [[nodiscard]] std::size_t width_of(class_type class_, emoji_type emoji) const;
 
 
     private:
         // virtual functions
 
-        virtual std::size_t width_of_impl(class_type class_) const = 0;
+        virtual std::size_t width_of_impl(class_type class_, emoji_type emoji) const = 0;
     };
 
 

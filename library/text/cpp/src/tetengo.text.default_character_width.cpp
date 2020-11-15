@@ -29,7 +29,7 @@ namespace tetengo::text
 
         // functions
 
-        std::size_t width_of_impl(const class_type class_) const
+        std::size_t width_of_impl(const class_type class_, const emoji_type) const
         {
             switch (class_)
             {
@@ -52,9 +52,9 @@ namespace tetengo::text
 
     default_character_width::default_character_width() : m_p_impl{ std::make_unique<impl>() } {}
 
-    std::size_t default_character_width::width_of_impl(const class_type class_) const
+    std::size_t default_character_width::width_of_impl(const class_type class_, const emoji_type emoji) const
     {
-        return m_p_impl->width_of_impl(class_);
+        return m_p_impl->width_of_impl(class_, emoji);
     }
 
 

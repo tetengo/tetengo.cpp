@@ -109,6 +109,7 @@ namespace
 
     // clang-format off
     const std::string string_emoji_cyrillic_greek{
+        0xE2_c, 0x98_c, 0xBA_c,         // U+263A
         0xF0_c, 0x9F_c, 0x91_c, 0xA9_c, // U+1F469
         0xE2_c, 0x80_c, 0x8D_c,         // U+200D
         0xE2_c, 0x9D_c, 0xA4_c,         // U+2764
@@ -273,10 +274,11 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 4U);
             BOOST_TEST((graphemes[0] == tetengo::text::grapheme{ 0, 2 }));
-            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 27, 2 }));
-            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 29, 2 }));
+            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 30, 2 }));
+            BOOST_TEST((graphemes[3] == tetengo::text::grapheme{ 32, 2 }));
         }
     }
     if (auto o_locale = make_locale_ja(); o_locale)
@@ -293,10 +295,11 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 4U);
             BOOST_TEST((graphemes[0] == tetengo::text::grapheme{ 0, 2 }));
-            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 27, 2 }));
-            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 29, 2 }));
+            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 30, 2 }));
+            BOOST_TEST((graphemes[3] == tetengo::text::grapheme{ 32, 2 }));
         }
     }
     if (auto o_locale = make_locale_ko(); o_locale)
@@ -313,10 +316,11 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 4U);
             BOOST_TEST((graphemes[0] == tetengo::text::grapheme{ 0, 2 }));
-            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 27, 2 }));
-            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 29, 2 }));
+            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 30, 2 }));
+            BOOST_TEST((graphemes[3] == tetengo::text::grapheme{ 32, 2 }));
         }
     }
     if (auto o_locale = make_locale_en(); o_locale)
@@ -333,10 +337,11 @@ BOOST_AUTO_TEST_CASE(split)
         }
         {
             const auto graphemes = splitter.split(string_emoji_cyrillic_greek);
-            BOOST_TEST_REQUIRE(std::size(graphemes) == 3U);
-            BOOST_TEST((graphemes[0] == tetengo::text::grapheme{ 0, 2 }));
-            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 27, 1 }));
-            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 29, 1 }));
+            BOOST_TEST_REQUIRE(std::size(graphemes) == 4U);
+            BOOST_TEST((graphemes[0] == tetengo::text::grapheme{ 0, 1 }));
+            BOOST_TEST((graphemes[1] == tetengo::text::grapheme{ 3, 2 }));
+            BOOST_TEST((graphemes[2] == tetengo::text::grapheme{ 30, 1 }));
+            BOOST_TEST((graphemes[3] == tetengo::text::grapheme{ 32, 1 }));
         }
     }
 
@@ -375,17 +380,19 @@ BOOST_AUTO_TEST_CASE(split)
         {
             const auto grapheme_count =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
-            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            BOOST_TEST_REQUIRE(grapheme_count == 4U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
             const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
             BOOST_TEST(graphemes[0].width == 2U);
-            BOOST_TEST(graphemes[1].offset == 27U);
+            BOOST_TEST(graphemes[1].offset == 3U);
             BOOST_TEST(graphemes[1].width == 2U);
-            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[2].offset == 30U);
             BOOST_TEST(graphemes[2].width == 2U);
+            BOOST_TEST(graphemes[3].offset == 32U);
+            BOOST_TEST(graphemes[3].width == 2U);
         }
         {
             const auto grapheme_count = tetengo_text_graphemeSplitter_split(p_grapheme_splitter, nullptr, nullptr);
@@ -427,17 +434,19 @@ BOOST_AUTO_TEST_CASE(split)
         {
             const auto grapheme_count =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
-            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            BOOST_TEST_REQUIRE(grapheme_count == 4U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
             const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
             BOOST_TEST(graphemes[0].width == 2U);
-            BOOST_TEST(graphemes[1].offset == 27U);
+            BOOST_TEST(graphemes[1].offset == 3U);
             BOOST_TEST(graphemes[1].width == 2U);
-            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[2].offset == 30U);
             BOOST_TEST(graphemes[2].width == 2U);
+            BOOST_TEST(graphemes[3].offset == 32U);
+            BOOST_TEST(graphemes[3].width == 2U);
         }
     }
     if (auto o_locale = make_locale_ko(); o_locale)
@@ -475,17 +484,19 @@ BOOST_AUTO_TEST_CASE(split)
         {
             const auto grapheme_count =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
-            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            BOOST_TEST_REQUIRE(grapheme_count == 4U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
             const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
             BOOST_TEST(graphemes[0].width == 2U);
-            BOOST_TEST(graphemes[1].offset == 27U);
+            BOOST_TEST(graphemes[1].offset == 3U);
             BOOST_TEST(graphemes[1].width == 2U);
-            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[2].offset == 30U);
             BOOST_TEST(graphemes[2].width == 2U);
+            BOOST_TEST(graphemes[3].offset == 32U);
+            BOOST_TEST(graphemes[3].width == 2U);
         }
     }
     if (auto o_locale = make_locale_en(); o_locale)
@@ -523,17 +534,19 @@ BOOST_AUTO_TEST_CASE(split)
         {
             const auto grapheme_count =
                 tetengo_text_graphemeSplitter_split(p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), nullptr);
-            BOOST_TEST_REQUIRE(grapheme_count == 3U);
+            BOOST_TEST_REQUIRE(grapheme_count == 4U);
             std::vector<tetengo_text_grapheme_t> graphemes(grapheme_count);
             const auto                           grapheme_count_again = tetengo_text_graphemeSplitter_split(
                 p_grapheme_splitter, string_emoji_cyrillic_greek.c_str(), std::data(graphemes));
             BOOST_TEST(grapheme_count_again == grapheme_count);
             BOOST_TEST(graphemes[0].offset == 0U);
-            BOOST_TEST(graphemes[0].width == 2U);
-            BOOST_TEST(graphemes[1].offset == 27U);
-            BOOST_TEST(graphemes[1].width == 1U);
-            BOOST_TEST(graphemes[2].offset == 29U);
+            BOOST_TEST(graphemes[0].width == 1U);
+            BOOST_TEST(graphemes[1].offset == 3U);
+            BOOST_TEST(graphemes[1].width == 2U);
+            BOOST_TEST(graphemes[2].offset == 30U);
             BOOST_TEST(graphemes[2].width == 1U);
+            BOOST_TEST(graphemes[3].offset == 32U);
+            BOOST_TEST(graphemes[3].width == 1U);
         }
     }
     {
