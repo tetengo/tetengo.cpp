@@ -232,8 +232,10 @@ namespace tetengo::text
             const auto* p_lower_bound = std::lower_bound(
                 character_property_map,
                 character_property_map + character_property_map_size,
-                character_property_map_element_type{
-                    code_point, east_asian_width_class_type::ambiguous, grapheme_break_property_type::other },
+                character_property_map_element_type{ code_point,
+                                                     east_asian_width_class_type::ambiguous,
+                                                     emoji_type::normal,
+                                                     grapheme_break_property_type::other },
                 [](const auto& element1, const auto& element2) { return element1.code_point < element2.code_point; });
 
             if (p_lower_bound != character_property_map + character_property_map_size &&

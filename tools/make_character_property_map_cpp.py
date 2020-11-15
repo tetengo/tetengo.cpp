@@ -22,13 +22,13 @@ def load_file(path):
     with path.open(mode="r") as stream:
         for line in stream:
             line = line.rstrip("\r\n")
-            [code, east_asian_width, grapheme] = line.split("\t")
-            elements.append(make_element(code, east_asian_width, grapheme))
+            [code, east_asian_width, emoji, grapheme] = line.split("\t")
+            elements.append(make_element(code, east_asian_width, emoji, grapheme))
     return elements
 
-def make_element(code, east_asian_width, grapheme):
-    return "        { " + "0x{}, east_asian_width_class_type::{}, grapheme_break_property_type::{}".format(
-        code, to_east_asian_width_class_type(east_asian_width), to_grapheme_break_property(grapheme)
+def make_element(code, east_asian_width, emoji, grapheme):
+    return "        { " + "0x{}, east_asian_width_class_type::{}, emoji_type::{}, grapheme_break_property_type::{}".format(
+        code, to_east_asian_width_class_type(east_asian_width), to_emoji_type(emoji), to_grapheme_break_property(grapheme)
     ) + " },\n"
 
 def to_east_asian_width_class_type(symbol):
@@ -46,6 +46,12 @@ def to_east_asian_width_class_type(symbol):
         return "neutral"
     else:
         raise RuntimeError("Unknown class: {}".format(symbol))
+
+def to_emoji_type(symbol):
+    if   symbol == "Emoji":
+        return "emoji"
+    else:
+        return "normal"
 
 def to_grapheme_break_property(symbol):
     if   symbol == "CR":
