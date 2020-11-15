@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -52,8 +53,8 @@ namespace tetengo::text
             for (const auto code_point_and_offset: code_points_and_offsets)
             {
                 const auto property = property_of(code_point_and_offset.first);
-                widths.push_back(m_character_width.width_of(property.first));
-                break_properties.push_back(property.second);
+                widths.push_back(m_character_width.width_of(std::get<0>(property), std::get<1>(property)));
+                break_properties.push_back(std::get<2>(property));
             }
             const auto grapheme_offsets = grapheme_segment::instance().segment_offsets(break_properties);
 
@@ -226,8 +227,9 @@ namespace tetengo::text
             return following & 0x3F;
         }
 
-        static std::pair<character_width::class_type, grapheme_segment::break_property_type>
-        property_of(const char32_t code_point)
+        static std::
+            tuple<character_width::class_type, character_width::emoji_type, grapheme_segment::break_property_type>
+            property_of(const char32_t code_point)
         {
             const auto* p_lower_bound = std::lower_bound(
                 character_property_map,
@@ -241,12 +243,18 @@ namespace tetengo::text
             if (p_lower_bound != character_property_map + character_property_map_size &&
                 p_lower_bound->code_point == code_point)
             {
-                return std::make_pair(to_class_type(p_lower_bound->class_), to_break_property(p_lower_bound->grapheme));
+                return std::make_tuple(
+                    to_class_type(p_lower_bound->class_),
+                    to_emoji_type(p_lower_bound->emoji),
+                    to_break_property(p_lower_bound->grapheme));
             }
 
             assert(p_lower_bound != character_property_map);
             const auto* const p_previous = std::prev(p_lower_bound);
-            return std::make_pair(to_class_type(p_previous->class_), to_break_property(p_previous->grapheme));
+            return std::make_tuple(
+                to_class_type(p_previous->class_),
+                to_emoji_type(p_previous->emoji),
+                to_break_property(p_previous->grapheme));
         }
 
         static character_width::class_type to_class_type(const east_asian_width_class_type class_type)
@@ -266,6 +274,18 @@ namespace tetengo::text
             default:
                 assert(class_type == east_asian_width_class_type::neutral);
                 return character_width::class_type::neutral;
+            }
+        }
+
+        static character_width::emoji_type to_emoji_type(const emoji_type emoji)
+        {
+            switch (emoji)
+            {
+            case emoji_type::emoji:
+                return character_width::emoji_type::emoji;
+            default:
+                assert(emoji == emoji_type::normal);
+                return character_width::emoji_type::normal;
             }
         }
 

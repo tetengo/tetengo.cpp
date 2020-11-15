@@ -57,7 +57,7 @@ namespace tetengo::text
 
         // virtual functions
 
-        virtual std::size_t width_of_impl(class_type class_) const;
+        virtual std::size_t width_of_impl(class_type class_, emoji_type emoji) const;
     };
 
 
