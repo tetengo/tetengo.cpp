@@ -124,7 +124,7 @@ namespace tetengo::json
             m_column_index = 0;
             ++m_line_index;
 
-            m_file_location = file_location{ std::string{ std::data(m_line), m_line.size() }, m_line_index - 1, 0 };
+            m_file_location = file_location{ std::string{ std::data(m_line), std::size(m_line) }, m_line_index - 1, 0 };
         }
     };
 
