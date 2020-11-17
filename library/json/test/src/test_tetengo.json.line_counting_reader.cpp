@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(get_location)
         const tetengo::json::line_counting_reader reader{ std::move(p_base_reader) };
 
         const auto& location = reader.get_location();
-        BOOST_TEST(location.line().empty());
+        BOOST_TEST(std::empty(location.line()));
         BOOST_TEST(location.line_index() == 0U);
         BOOST_TEST(location.column_index() == 0U);
     }
