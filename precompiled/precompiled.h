@@ -12,6 +12,7 @@
 
 /* C Standard Library */
 #include <assert.h>
+#include <locale.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,6 +52,7 @@
 #include <string>
 #include <string_view>
 #include <thread>
+#include <tuple>
 #include <type_traits>
 #include <typeinfo>
 #include <unordered_map>

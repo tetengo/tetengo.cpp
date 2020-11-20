@@ -76,7 +76,7 @@ def make_precompiled_h(libc_includes, libcpp_includes, boost_includes):
 #define PRECOMPILED_H
 '''.strip() + '\n\n\n'
     
-    result += '// C Standard Library\n'
+    result += '/* C Standard Library */\n'
     for h in sorted(libc_includes):
         result += '#include <' + h + '>\n'
     result += '\n'
