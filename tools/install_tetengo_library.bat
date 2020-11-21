@@ -38,10 +38,14 @@ if not ""%INSTALL_PATH%""=="""" (
     xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.dll   %INSTALL_PATH%\lib.x64\
     
     xcopy /i /f /y "%~dp0"..\bin\Release.Win32\json2timetable.exe          %INSTALL_PATH%\tool\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.json.dll            %INSTALL_PATH%\tool\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.text.dll            %INSTALL_PATH%\tool\json2timetable.Win32\
     xcopy /i /f /y "%~dp0"..\executable\json2timetable\data\hohi_down.json %INSTALL_PATH%\tool\json2timetable.Win32\
     xcopy /i /f /y "%~dp0"..\executable\json2timetable\data\hohi_up.json   %INSTALL_PATH%\tool\json2timetable.Win32\
     xcopy /i /f /y "%~dp0"..\executable\json2timetable\README.md           %INSTALL_PATH%\tool\json2timetable.Win32\
     xcopy /i /f /y "%~dp0"..\bin\Release.x64\json2timetable.exe            %INSTALL_PATH%\tool\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.json.dll              %INSTALL_PATH%\tool\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.text.dll              %INSTALL_PATH%\tool\json2timetable.x64\
     xcopy /i /f /y "%~dp0"..\executable\json2timetable\data\hohi_down.json %INSTALL_PATH%\tool\json2timetable.x64\
     xcopy /i /f /y "%~dp0"..\executable\json2timetable\data\hohi_up.json   %INSTALL_PATH%\tool\json2timetable.x64\
     xcopy /i /f /y "%~dp0"..\executable\json2timetable\README.md           %INSTALL_PATH%\tool\json2timetable.x64\
