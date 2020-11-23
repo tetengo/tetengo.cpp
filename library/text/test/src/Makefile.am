@@ -7,8 +7,8 @@ sources = \
     master.cpp \
     test_tetengo.text.grapheme_splitter.cpp \
     test_tetengo.text.grapheme_splitting.character_width.cpp \
-    test_tetengo.text.grapheme_splitting.default_character_width.cpp \
-    test_tetengo.text.grapheme_splitting.east_asian_character_width.cpp \
+    test_tetengo.text.grapheme_splitting.default_charactX.cpp \
+    test_tetengo.text.grapheme_splitting.east_asian_charX.cpp \
     test_tetengo.text.grapheme_splitting.grapheme_segment.cpp
 
 check_PROGRAMS = test_tetengo.text

@@ -118,8 +118,8 @@
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitter.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.character_width.cpp" />
-    <ClCompile Include="src\test_tetengo.text.grapheme_splitting.default_character_width.cpp" />
-    <ClCompile Include="src\test_tetengo.text.grapheme_splitting.east_asian_character_width.cpp" />
+    <ClCompile Include="src\test_tetengo.text.grapheme_splitting.default_charactX.cpp" />
+    <ClCompile Include="src\test_tetengo.text.grapheme_splitting.east_asian_charX.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.grapheme_segment.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -8,8 +8,8 @@ sources = \
     tetengo.text.grapheme_splitter.cpp \
     tetengo.text.grapheme_splitting.character_property_map.cpp \
     tetengo.text.grapheme_splitting.character_width.cpp \
-    tetengo.text.grapheme_splitting.default_character_width.cpp \
-    tetengo.text.grapheme_splitting.east_asian_character_width.cpp \
+    tetengo.text.grapheme_splitting.default_character_widX.cpp \
+    tetengo.text.grapheme_splitting.east_asian_character_X.cpp \
     tetengo.text.grapheme_splitting.grapheme_segment.cpp
 
 lib_LIBRARIES = libtetengo.text.cpp.a
