@@ -47,6 +47,15 @@ AC_CONFIG_FILES([
     library/lattice/cpp/src/Makefile
     library/lattice/test/Makefile
     library/lattice/test/src/Makefile
+    library/platform_dependent/Makefile
+    library/platform_dependent/cpp/Makefile
+    library/platform_dependent/cpp/include/Makefile
+    library/platform_dependent/cpp/include/tetengo/Makefile
+    library/platform_dependent/cpp/src/Makefile
+    library/platform_dependent/cpp/src/unixos/Makefile
+    library/platform_dependent/cpp/src/windows/Makefile
+    library/platform_dependent/test/Makefile
+    library/platform_dependent/test/src/Makefile
     library/text/Makefile
     library/text/c/Makefile
     library/text/c/include/Makefile

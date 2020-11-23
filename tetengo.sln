@@ -49,6 +49,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.text.cpp", "library
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "json2timetable", "executable\json2timetable\json2timetable.vcxproj", "{EB5E3C27-4233-4BB2-A64A-66962EB663AD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platform_dependent", "platform_dependent", "{C7B68D75-9EFA-4708-B4DA-A8473357579D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetengo.platform_dependent.cpp", "library\platform_dependent\cpp\tetengo.platform_dependent.cpp.vcxproj", "{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tetengo.platform_dependent", "library\platform_dependent\test\test_tetengo.platform_dependent.vcxproj", "{3C7661CA-2B8C-47A6-A722-FC9DDE182425}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -193,6 +199,22 @@ Global
 		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Release|x64.Build.0 = Release|x64
 		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Release|x86.ActiveCfg = Release|Win32
 		{EB5E3C27-4233-4BB2-A64A-66962EB663AD}.Release|x86.Build.0 = Release|Win32
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Debug|x64.ActiveCfg = Debug|x64
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Debug|x64.Build.0 = Debug|x64
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Debug|x86.ActiveCfg = Debug|Win32
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Debug|x86.Build.0 = Debug|Win32
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Release|x64.ActiveCfg = Release|x64
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Release|x64.Build.0 = Release|x64
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Release|x86.ActiveCfg = Release|Win32
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A}.Release|x86.Build.0 = Release|Win32
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Debug|x64.ActiveCfg = Debug|x64
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Debug|x64.Build.0 = Debug|x64
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Debug|x86.ActiveCfg = Debug|Win32
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Debug|x86.Build.0 = Debug|Win32
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Release|x64.ActiveCfg = Release|x64
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Release|x64.Build.0 = Release|x64
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Release|x86.ActiveCfg = Release|Win32
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -219,6 +241,9 @@ Global
 		{49971358-A731-4C16-943A-C66735F3B342} = {8025EE35-4F98-4CBA-8D82-E8D21E6BCB0F}
 		{BE228A1E-25D5-4825-89B4-C3513F1DC559} = {8025EE35-4F98-4CBA-8D82-E8D21E6BCB0F}
 		{EB5E3C27-4233-4BB2-A64A-66962EB663AD} = {721A442D-34D8-457A-8D07-D21EB2C6A04C}
+		{C7B68D75-9EFA-4708-B4DA-A8473357579D} = {43A6A26D-0B13-4B60-9DBD-6113E56F9E76}
+		{3AAEA971-DC2B-40D6-830C-B0D6A3368A7A} = {C7B68D75-9EFA-4708-B4DA-A8473357579D}
+		{3C7661CA-2B8C-47A6-A722-FC9DDE182425} = {C7B68D75-9EFA-4708-B4DA-A8473357579D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E1FDB91A-BB78-49E0-8D13-17726804EA86}
