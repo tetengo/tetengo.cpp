@@ -4,8 +4,8 @@
 pkg_headers = \
     text/grapheme_splitter.hpp \
     text/grapheme_splitting/character_width.hpp \
-    text/grapheme_splitting/default_character_width.hpp \
-    text/grapheme_splitting/east_asian_character_width.hpp \
+    text/grapheme_splitting/default_characterX.hpp \
+    text/grapheme_splitting/east_asian_characX.hpp \
     text/grapheme_splitting/grapheme_segment.hpp
 
 extra_headers = \

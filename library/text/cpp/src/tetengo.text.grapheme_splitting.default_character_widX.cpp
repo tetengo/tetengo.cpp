@@ -10,7 +10,7 @@
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/text/grapheme_splitting/character_width.hpp>
-#include <tetengo/text/grapheme_splitting/default_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/default_characterX.hpp>
 
 
 namespace tetengo::text::grapheme_splitting

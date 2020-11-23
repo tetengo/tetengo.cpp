@@ -23,8 +23,8 @@
 
 #include <tetengo/text/grapheme_splitter.hpp>
 #include <tetengo/text/grapheme_splitting/character_width.hpp>
-#include <tetengo/text/grapheme_splitting/default_character_width.hpp>
-#include <tetengo/text/grapheme_splitting/east_asian_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/default_characterX.hpp>
+#include <tetengo/text/grapheme_splitting/east_asian_characX.hpp>
 #include <tetengo/text/grapheme_splitting/grapheme_segment.hpp>
 
 #include "tetengo.text.grapheme_splitting.character_property_map.hpp"

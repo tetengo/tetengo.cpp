@@ -102,8 +102,8 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\text\grapheme_splitter.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\character_width.hpp" />
-    <ClInclude Include="include\tetengo\text\grapheme_splitting\default_character_width.hpp" />
-    <ClInclude Include="include\tetengo\text\grapheme_splitting\east_asian_character_width.hpp" />
+    <ClInclude Include="include\tetengo\text\grapheme_splitting\default_characterX.hpp" />
+    <ClInclude Include="include\tetengo\text\grapheme_splitting\east_asian_characX.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\grapheme_segment.hpp" />
     <ClInclude Include="src\tetengo.text.grapheme_splitting.character_property_map.hpp" />
   </ItemGroup>
@@ -115,8 +115,8 @@
     <ClCompile Include="src\tetengo.text.grapheme_splitter.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.character_property_map.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.character_width.cpp" />
-    <ClCompile Include="src\tetengo.text.grapheme_splitting.default_character_width.cpp" />
-    <ClCompile Include="src\tetengo.text.grapheme_splitting.east_asian_character_width.cpp" />
+    <ClCompile Include="src\tetengo.text.grapheme_splitting.default_character_widX.cpp" />
+    <ClCompile Include="src\tetengo.text.grapheme_splitting.east_asian_character_X.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.grapheme_segment.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -12,8 +12,11 @@ def list_iter(root_path, directory, extension):
     path = root_path / directory
     return [p for p in path.glob('**/*.' + extension)]
 
+def root():
+    return Path(__file__).parent.parent
+
 def list():
-    root_path= Path(__file__).parent.parent
+    root_path= root()
     files = []
     for d in directories:
         for e in extensions:
