@@ -21,13 +21,13 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/text/character_width.hpp>
-#include <tetengo/text/default_character_width.hpp>
-#include <tetengo/text/east_asian_character_width.hpp>
-#include <tetengo/text/grapheme_segment.hpp>
 #include <tetengo/text/grapheme_splitter.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/default_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/east_asian_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/grapheme_segment.hpp>
 
-#include "tetengo.text.character_property_map.hpp"
+#include "tetengo.text.grapheme_splitting.character_property_map.hpp"
 
 
 namespace tetengo::text

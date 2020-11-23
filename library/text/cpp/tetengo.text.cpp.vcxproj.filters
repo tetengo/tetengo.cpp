@@ -12,55 +12,61 @@
     <Filter Include="header\tetengo::text">
       <UniqueIdentifier>{8b3558ca-13f6-4dea-9a7e-8b43fe9634e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="header\tetengo::text\grapheme_splitting">
+      <UniqueIdentifier>{92c82414-4361-435d-93f0-4f1df4512bdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\tetengo\text\0namespace.dox">
       <Filter>header\tetengo::text</Filter>
+    </None>
+    <None Include="include\tetengo\text\grapheme_splitting\0namespace.dox">
+      <Filter>header\tetengo::text\grapheme_splitting</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\text\character_width.hpp">
-      <Filter>header\tetengo::text</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tetengo\text\default_character_width.hpp">
-      <Filter>header\tetengo::text</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tetengo\text\east_asian_character_width.hpp">
-      <Filter>header\tetengo::text</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tetengo.text.character_property_map.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tetengo\text\grapheme_segment.hpp">
-      <Filter>header\tetengo::text</Filter>
-    </ClInclude>
     <ClInclude Include="include\tetengo\text\grapheme_splitter.hpp">
       <Filter>header\tetengo::text</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\grapheme_splitting\character_width.hpp">
+      <Filter>header\tetengo::text\grapheme_splitting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\grapheme_splitting\default_character_width.hpp">
+      <Filter>header\tetengo::text\grapheme_splitting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\grapheme_splitting\east_asian_character_width.hpp">
+      <Filter>header\tetengo::text\grapheme_splitting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\text\grapheme_splitting\grapheme_segment.hpp">
+      <Filter>header\tetengo::text\grapheme_splitting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tetengo.text.grapheme_splitting.character_property_map.hpp">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.text.character_width.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tetengo.text.default_character_width.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tetengo.text.east_asian_character_width.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tetengo.text.character_property_map.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tetengo.text.grapheme_segment.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\tetengo.text.grapheme_splitter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.grapheme_splitting.character_property_map.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.grapheme_splitting.character_width.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.grapheme_splitting.default_character_width.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.grapheme_splitting.east_asian_character_width.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.grapheme_splitting.grapheme_segment.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

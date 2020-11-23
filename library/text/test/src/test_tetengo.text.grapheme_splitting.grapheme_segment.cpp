@@ -13,7 +13,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/text/grapheme_segment.hpp>
+#include <tetengo/text/grapheme_splitting/grapheme_segment.hpp>
 
 
 namespace

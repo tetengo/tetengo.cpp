@@ -1,24 +1,24 @@
 /*! \file
-    \brief An east Asian character width.
+    \brief A default character width.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_TEXT_EASTASIANCHARACTERWIDTH_HPP)
-#define TETENGO_TEXT_EASTASIANCHARACTERWIDTH_HPP
+#if !defined(TETENGO_TEXT_DEFAULTCHARACTERWIDTH_HPP)
+#define TETENGO_TEXT_DEFAULTCHARACTERWIDTH_HPP
 
 #include <cstddef>
 #include <memory>
 
-#include <tetengo/text/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
 
 
 namespace tetengo::text
 {
     /*!
-        \brief An east Asian character width.
+        \brief A default character width.
     */
-    class east_asian_character_width : public character_width
+    class default_character_width : public character_width
     {
     public:
         // static functions
@@ -28,7 +28,7 @@ namespace tetengo::text
 
             \return The instance.
         */
-        [[nodiscard]] static const east_asian_character_width& instance();
+        [[nodiscard]] static const default_character_width& instance();
 
 
         // constructors and destructor
@@ -36,7 +36,7 @@ namespace tetengo::text
         /*!
             \brief Destroys the character width.
         */
-        virtual ~east_asian_character_width();
+        virtual ~default_character_width();
 
 
     private:
@@ -52,7 +52,7 @@ namespace tetengo::text
 
         // constructors
 
-        east_asian_character_width();
+        default_character_width();
 
 
         // virtual functions

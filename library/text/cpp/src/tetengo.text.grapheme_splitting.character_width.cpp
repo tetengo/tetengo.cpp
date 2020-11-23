@@ -6,7 +6,7 @@
 
 #include <cstddef>
 
-#include <tetengo/text/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
 
 
 namespace tetengo::text

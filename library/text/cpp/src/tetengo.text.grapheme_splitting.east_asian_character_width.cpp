@@ -9,8 +9,8 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/text/character_width.hpp>
-#include <tetengo/text/east_asian_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/east_asian_character_width.hpp>
 
 
 namespace tetengo::text

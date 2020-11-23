@@ -9,7 +9,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/text/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
 
 
 namespace

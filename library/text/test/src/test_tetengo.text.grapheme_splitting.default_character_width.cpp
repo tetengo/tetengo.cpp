@@ -1,5 +1,5 @@
 /*! \file
-    \brief An east Asian character width.
+    \brief A default character width.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
@@ -7,36 +7,36 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/text/character_width.hpp>
-#include <tetengo/text/east_asian_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/default_character_width.hpp>
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(text)
-BOOST_AUTO_TEST_SUITE(east_asian_character_width)
+BOOST_AUTO_TEST_SUITE(default_character_width)
 
 
 BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
-    [[maybe_unused]] const auto& character_width = tetengo::text::east_asian_character_width::instance();
+    [[maybe_unused]] const auto& character_width = tetengo::text::default_character_width::instance();
 }
 
 BOOST_AUTO_TEST_CASE(width_of)
 {
     BOOST_TEST_PASSPOINT();
 
-    const auto& character_width = tetengo::text::east_asian_character_width::instance();
+    const auto& character_width = tetengo::text::default_character_width::instance();
 
     BOOST_TEST(
         character_width.width_of(
             tetengo::text::character_width::class_type::ambiguous, tetengo::text::character_width::emoji_type::emoji) ==
-        2U);
+        1U);
     BOOST_TEST(
         character_width.width_of(
             tetengo::text::character_width::class_type::ambiguous,
-            tetengo::text::character_width::emoji_type::normal) == 2U);
+            tetengo::text::character_width::emoji_type::normal) == 1U);
     BOOST_TEST(
         character_width.width_of(
             tetengo::text::character_width::class_type::fullwidth, tetengo::text::character_width::emoji_type::emoji) ==
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(width_of)
     BOOST_TEST(
         character_width.width_of(
             tetengo::text::character_width::class_type::neutral, tetengo::text::character_width::emoji_type::emoji) ==
-        2U);
+        1U);
     BOOST_TEST(
         character_width.width_of(
             tetengo::text::character_width::class_type::neutral, tetengo::text::character_width::emoji_type::normal) ==

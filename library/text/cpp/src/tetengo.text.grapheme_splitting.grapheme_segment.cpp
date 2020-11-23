@@ -14,7 +14,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/text/grapheme_segment.hpp>
+#include <tetengo/text/grapheme_splitting/grapheme_segment.hpp>
 
 
 namespace tetengo::text

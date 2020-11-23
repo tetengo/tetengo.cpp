@@ -2,15 +2,15 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
-    tetengo.text.character_property_map.hpp
+    tetengo.text.grapheme_splitting.character_property_map.hpp
 
 sources = \
-    tetengo.text.character_property_map.cpp \
-    tetengo.text.character_width.cpp \
-    tetengo.text.default_character_width.cpp \
-    tetengo.text.east_asian_character_width.cpp \
-    tetengo.text.grapheme_segment.cpp \
-    tetengo.text.grapheme_splitter.cpp
+    tetengo.text.grapheme_splitter.cpp \
+    tetengo.text.grapheme_splitting.character_property_map.cpp \
+    tetengo.text.grapheme_splitting.character_width.cpp \
+    tetengo.text.grapheme_splitting.default_character_width.cpp \
+    tetengo.text.grapheme_splitting.east_asian_character_width.cpp \
+    tetengo.text.grapheme_splitting.grapheme_segment.cpp
 
 lib_LIBRARIES = libtetengo.text.cpp.a
 
