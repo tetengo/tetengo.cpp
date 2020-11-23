@@ -6,13 +6,13 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_TEXT_EASTASIANWIDTH_HPP_)
-#define TETENGO_TEXT_EASTASIANWIDTH_HPP_
+#if !defined(TETENGO_TEXT_GRAPHEMESPLITTING_EASTASIANWIDTH_HPP_)
+#define TETENGO_TEXT_GRAPHEMESPLITTING_EASTASIANWIDTH_HPP_
 
 #include <cstddef>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     enum class east_asian_width_class_type
     {

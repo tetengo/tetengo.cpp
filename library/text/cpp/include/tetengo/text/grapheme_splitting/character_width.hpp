@@ -4,15 +4,15 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_TEXT_CHARACTERWIDTH_HPP)
-#define TETENGO_TEXT_CHARACTERWIDTH_HPP
+#if !defined(TETENGO_TEXT_GRAPHEMESPLITTING_CHARACTERWIDTH_HPP)
+#define TETENGO_TEXT_GRAPHEMESPLITTING_CHARACTERWIDTH_HPP
 
 #include <cstddef>
 
 #include <boost/core/noncopyable.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     /*!
         \brief A character width.

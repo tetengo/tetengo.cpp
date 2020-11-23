@@ -9,11 +9,11 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/text/character_width.hpp>
-#include <tetengo/text/default_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/default_character_width.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     class default_character_width::impl : private boost::noncopyable
     {

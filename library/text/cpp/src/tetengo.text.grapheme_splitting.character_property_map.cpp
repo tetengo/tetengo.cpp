@@ -8,10 +8,10 @@
 
 #include <cstddef>
 
-#include "tetengo.text.character_property_map.hpp"
+#include "tetengo.text.grapheme_splitting.character_property_map.hpp"
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     const std::size_t character_property_map_size = 2422;
 

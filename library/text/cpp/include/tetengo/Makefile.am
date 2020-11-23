@@ -2,14 +2,15 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    text/character_width.hpp \
-    text/default_character_width.hpp \
-    text/east_asian_character_width.hpp \
-    text/grapheme_segment.hpp \
-    text/grapheme_splitter.hpp
+    text/grapheme_splitter.hpp \
+    text/grapheme_splitting/character_width.hpp \
+    text/grapheme_splitting/default_character_width.hpp \
+    text/grapheme_splitting/east_asian_character_width.hpp \
+    text/grapheme_splitting/grapheme_segment.hpp
 
 extra_headers = \
-    text/0namespace.dox
+    text/0namespace.dox \
+    text/grapheme_splitting/0namespace.dox
 
 nobase_pkginclude_HEADERS = ${pkg_headers}
 

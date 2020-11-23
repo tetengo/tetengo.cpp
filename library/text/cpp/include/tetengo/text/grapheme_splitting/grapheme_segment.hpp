@@ -4,8 +4,8 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_TEXT_GRAPHEMESEGMENT_HPP)
-#define TETENGO_TEXT_GRAPHEMESEGMENT_HPP
+#if !defined(TETENGO_TEXT_GRAPHEMESPLITTING_GRAPHEMESEGMENT_HPP)
+#define TETENGO_TEXT_GRAPHEMESPLITTING_GRAPHEMESEGMENT_HPP
 
 #include <cstddef>
 #include <memory>
@@ -14,7 +14,7 @@
 #include <boost/core/noncopyable.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     /*!
         \brief A grapheme segment.

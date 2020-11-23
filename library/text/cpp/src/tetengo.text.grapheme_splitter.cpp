@@ -21,13 +21,13 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/text/character_width.hpp>
-#include <tetengo/text/default_character_width.hpp>
-#include <tetengo/text/east_asian_character_width.hpp>
-#include <tetengo/text/grapheme_segment.hpp>
 #include <tetengo/text/grapheme_splitter.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/default_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/east_asian_character_width.hpp>
+#include <tetengo/text/grapheme_splitting/grapheme_segment.hpp>
 
-#include "tetengo.text.character_property_map.hpp"
+#include "tetengo.text.grapheme_splitting.character_property_map.hpp"
 
 
 namespace tetengo::text
@@ -48,7 +48,7 @@ namespace tetengo::text
 
             std::vector<std::size_t> widths{};
             widths.reserve(std::size(code_points_and_offsets));
-            std::vector<grapheme_segment::break_property_type> break_properties{};
+            std::vector<grapheme_splitting::grapheme_segment::break_property_type> break_properties{};
             break_properties.reserve(std::size(code_points_and_offsets));
             for (const auto code_point_and_offset: code_points_and_offsets)
             {
@@ -56,7 +56,8 @@ namespace tetengo::text
                 widths.push_back(m_character_width.width_of(std::get<0>(property), std::get<1>(property)));
                 break_properties.push_back(std::get<2>(property));
             }
-            const auto grapheme_offsets = grapheme_segment::instance().segment_offsets(break_properties);
+            const auto grapheme_offsets =
+                grapheme_splitting::grapheme_segment::instance().segment_offsets(break_properties);
 
             std::vector<grapheme> graphemes{};
             graphemes.reserve(std::size(grapheme_offsets));
@@ -76,15 +77,15 @@ namespace tetengo::text
     private:
         // static functions
 
-        static const character_width& select_character_width(const std::locale& locale_)
+        static const grapheme_splitting::character_width& select_character_width(const std::locale& locale_)
         {
             if (is_east_asian_locale(locale_))
             {
-                return east_asian_character_width::instance();
+                return grapheme_splitting::east_asian_character_width::instance();
             }
             else
             {
-                return default_character_width::instance();
+                return grapheme_splitting::default_character_width::instance();
             }
         }
 
@@ -227,20 +228,24 @@ namespace tetengo::text
             return following & 0x3F;
         }
 
-        static std::
-            tuple<character_width::class_type, character_width::emoji_type, grapheme_segment::break_property_type>
-            property_of(const char32_t code_point)
+        static std::tuple<
+            grapheme_splitting::character_width::class_type,
+            grapheme_splitting::character_width::emoji_type,
+            grapheme_splitting::grapheme_segment::break_property_type>
+        property_of(const char32_t code_point)
         {
             const auto* p_lower_bound = std::lower_bound(
-                character_property_map,
-                character_property_map + character_property_map_size,
-                character_property_map_element_type{ code_point,
-                                                     east_asian_width_class_type::ambiguous,
-                                                     emoji_type::normal,
-                                                     grapheme_break_property_type::other },
+                grapheme_splitting::character_property_map,
+                grapheme_splitting::character_property_map + grapheme_splitting::character_property_map_size,
+                grapheme_splitting::character_property_map_element_type{
+                    code_point,
+                    grapheme_splitting::east_asian_width_class_type::ambiguous,
+                    grapheme_splitting::emoji_type::normal,
+                    grapheme_splitting::grapheme_break_property_type::other },
                 [](const auto& element1, const auto& element2) { return element1.code_point < element2.code_point; });
 
-            if (p_lower_bound != character_property_map + character_property_map_size &&
+            if (p_lower_bound !=
+                    grapheme_splitting::character_property_map + grapheme_splitting::character_property_map_size &&
                 p_lower_bound->code_point == code_point)
             {
                 return std::make_tuple(
@@ -249,7 +254,7 @@ namespace tetengo::text
                     to_break_property(p_lower_bound->grapheme));
             }
 
-            assert(p_lower_bound != character_property_map);
+            assert(p_lower_bound != grapheme_splitting::character_property_map);
             const auto* const p_previous = std::prev(p_lower_bound);
             return std::make_tuple(
                 to_class_type(p_previous->class_),
@@ -257,78 +262,80 @@ namespace tetengo::text
                 to_break_property(p_previous->grapheme));
         }
 
-        static character_width::class_type to_class_type(const east_asian_width_class_type class_type)
+        static grapheme_splitting::character_width::class_type
+        to_class_type(const grapheme_splitting::east_asian_width_class_type class_type)
         {
             switch (class_type)
             {
-            case east_asian_width_class_type::ambiguous:
-                return character_width::class_type::ambiguous;
-            case east_asian_width_class_type::fullwidth:
-                return character_width::class_type::fullwidth;
-            case east_asian_width_class_type::halfwidth:
-                return character_width::class_type::halfwidth;
-            case east_asian_width_class_type::narrow:
-                return character_width::class_type::narrow;
-            case east_asian_width_class_type::wide:
-                return character_width::class_type::wide;
+            case grapheme_splitting::east_asian_width_class_type::ambiguous:
+                return grapheme_splitting::character_width::class_type::ambiguous;
+            case grapheme_splitting::east_asian_width_class_type::fullwidth:
+                return grapheme_splitting::character_width::class_type::fullwidth;
+            case grapheme_splitting::east_asian_width_class_type::halfwidth:
+                return grapheme_splitting::character_width::class_type::halfwidth;
+            case grapheme_splitting::east_asian_width_class_type::narrow:
+                return grapheme_splitting::character_width::class_type::narrow;
+            case grapheme_splitting::east_asian_width_class_type::wide:
+                return grapheme_splitting::character_width::class_type::wide;
             default:
-                assert(class_type == east_asian_width_class_type::neutral);
-                return character_width::class_type::neutral;
+                assert(class_type == grapheme_splitting::east_asian_width_class_type::neutral);
+                return grapheme_splitting::character_width::class_type::neutral;
             }
         }
 
-        static character_width::emoji_type to_emoji_type(const emoji_type emoji)
+        static grapheme_splitting::character_width::emoji_type to_emoji_type(const grapheme_splitting::emoji_type emoji)
         {
             switch (emoji)
             {
-            case emoji_type::emoji:
-                return character_width::emoji_type::emoji;
+            case grapheme_splitting::emoji_type::emoji:
+                return grapheme_splitting::character_width::emoji_type::emoji;
             default:
-                assert(emoji == emoji_type::normal);
-                return character_width::emoji_type::normal;
+                assert(emoji == grapheme_splitting::emoji_type::normal);
+                return grapheme_splitting::character_width::emoji_type::normal;
             }
         }
 
-        static grapheme_segment::break_property_type to_break_property(const grapheme_break_property_type grapheme)
+        static grapheme_splitting::grapheme_segment::break_property_type
+        to_break_property(const grapheme_splitting::grapheme_break_property_type grapheme)
         {
             switch (grapheme)
             {
-            case grapheme_break_property_type::cr:
-                return grapheme_segment::break_property_type::cr;
-            case grapheme_break_property_type::lf:
-                return grapheme_segment::break_property_type::lf;
-            case grapheme_break_property_type::control:
-                return grapheme_segment::break_property_type::control;
-            case grapheme_break_property_type::extend:
-                return grapheme_segment::break_property_type::extend;
-            case grapheme_break_property_type::zwj:
-                return grapheme_segment::break_property_type::zwj;
-            case grapheme_break_property_type::regional:
-                return grapheme_segment::break_property_type::regional;
-            case grapheme_break_property_type::prepend:
-                return grapheme_segment::break_property_type::prepend;
-            case grapheme_break_property_type::spacing_mark:
-                return grapheme_segment::break_property_type::spacing_mark;
-            case grapheme_break_property_type::l:
-                return grapheme_segment::break_property_type::l;
-            case grapheme_break_property_type::v:
-                return grapheme_segment::break_property_type::v;
-            case grapheme_break_property_type::t:
-                return grapheme_segment::break_property_type::t;
-            case grapheme_break_property_type::lv:
-                return grapheme_segment::break_property_type::lv;
-            case grapheme_break_property_type::lvt:
-                return grapheme_segment::break_property_type::lvt;
+            case grapheme_splitting::grapheme_break_property_type::cr:
+                return grapheme_splitting::grapheme_segment::break_property_type::cr;
+            case grapheme_splitting::grapheme_break_property_type::lf:
+                return grapheme_splitting::grapheme_segment::break_property_type::lf;
+            case grapheme_splitting::grapheme_break_property_type::control:
+                return grapheme_splitting::grapheme_segment::break_property_type::control;
+            case grapheme_splitting::grapheme_break_property_type::extend:
+                return grapheme_splitting::grapheme_segment::break_property_type::extend;
+            case grapheme_splitting::grapheme_break_property_type::zwj:
+                return grapheme_splitting::grapheme_segment::break_property_type::zwj;
+            case grapheme_splitting::grapheme_break_property_type::regional:
+                return grapheme_splitting::grapheme_segment::break_property_type::regional;
+            case grapheme_splitting::grapheme_break_property_type::prepend:
+                return grapheme_splitting::grapheme_segment::break_property_type::prepend;
+            case grapheme_splitting::grapheme_break_property_type::spacing_mark:
+                return grapheme_splitting::grapheme_segment::break_property_type::spacing_mark;
+            case grapheme_splitting::grapheme_break_property_type::l:
+                return grapheme_splitting::grapheme_segment::break_property_type::l;
+            case grapheme_splitting::grapheme_break_property_type::v:
+                return grapheme_splitting::grapheme_segment::break_property_type::v;
+            case grapheme_splitting::grapheme_break_property_type::t:
+                return grapheme_splitting::grapheme_segment::break_property_type::t;
+            case grapheme_splitting::grapheme_break_property_type::lv:
+                return grapheme_splitting::grapheme_segment::break_property_type::lv;
+            case grapheme_splitting::grapheme_break_property_type::lvt:
+                return grapheme_splitting::grapheme_segment::break_property_type::lvt;
             default:
-                assert(grapheme == grapheme_break_property_type::other);
-                return grapheme_segment::break_property_type::other;
+                assert(grapheme == grapheme_splitting::grapheme_break_property_type::other);
+                return grapheme_splitting::grapheme_segment::break_property_type::other;
             }
         }
 
 
         // variables
 
-        const character_width& m_character_width;
+        const grapheme_splitting::character_width& m_character_width;
     };
 
 

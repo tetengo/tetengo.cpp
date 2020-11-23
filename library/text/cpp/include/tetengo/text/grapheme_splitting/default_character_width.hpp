@@ -4,16 +4,16 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_TEXT_DEFAULTCHARACTERWIDTH_HPP)
-#define TETENGO_TEXT_DEFAULTCHARACTERWIDTH_HPP
+#if !defined(TETENGO_TEXT_GRAPHEMESPLITTING_DEFAULTCHARACTERWIDTH_HPP)
+#define TETENGO_TEXT_GRAPHEMESPLITTING_DEFAULTCHARACTERWIDTH_HPP
 
 #include <cstddef>
 #include <memory>
 
-#include <tetengo/text/character_width.hpp>
+#include <tetengo/text/grapheme_splitting/character_width.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     /*!
         \brief A default character width.
