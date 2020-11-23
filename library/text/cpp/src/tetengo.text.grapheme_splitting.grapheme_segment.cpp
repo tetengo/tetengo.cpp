@@ -17,7 +17,7 @@
 #include <tetengo/text/grapheme_splitting/grapheme_segment.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     class grapheme_segment::impl : private boost::noncopyable
     {

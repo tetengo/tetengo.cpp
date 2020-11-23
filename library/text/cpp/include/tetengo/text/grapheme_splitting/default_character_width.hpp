@@ -13,7 +13,7 @@
 #include <tetengo/text/grapheme_splitting/character_width.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     /*!
         \brief A default character width.

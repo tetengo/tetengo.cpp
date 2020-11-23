@@ -12,7 +12,7 @@
 #include <boost/core/noncopyable.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     /*!
         \brief A character width.

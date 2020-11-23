@@ -13,7 +13,7 @@
 #include <tetengo/text/grapheme_splitting/east_asian_character_width.hpp>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     class east_asian_character_width::impl : private boost::noncopyable
     {

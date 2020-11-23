@@ -12,7 +12,7 @@
 #include <cstddef>
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
     enum class east_asian_width_class_type
     {

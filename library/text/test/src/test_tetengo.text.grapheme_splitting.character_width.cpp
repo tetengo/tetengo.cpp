@@ -14,7 +14,7 @@
 
 namespace
 {
-    class concrete_character_width : public tetengo::text::character_width
+    class concrete_character_width : public tetengo::text::grapheme_splitting::character_width
     {
     public:
         // constructors and destructor
@@ -55,20 +55,20 @@ BOOST_AUTO_TEST_CASE(width_of)
 
     BOOST_TEST(
         char_width.width_of(
-            tetengo::text::character_width::class_type::halfwidth, tetengo::text::character_width::emoji_type::emoji) ==
-        1U);
+            tetengo::text::grapheme_splitting::character_width::class_type::halfwidth,
+            tetengo::text::grapheme_splitting::character_width::emoji_type::emoji) == 1U);
     BOOST_TEST(
         char_width.width_of(
-            tetengo::text::character_width::class_type::halfwidth,
-            tetengo::text::character_width::emoji_type::normal) == 1U);
+            tetengo::text::grapheme_splitting::character_width::class_type::halfwidth,
+            tetengo::text::grapheme_splitting::character_width::emoji_type::normal) == 1U);
     BOOST_TEST(
         char_width.width_of(
-            tetengo::text::character_width::class_type::fullwidth, tetengo::text::character_width::emoji_type::emoji) ==
-        2U);
+            tetengo::text::grapheme_splitting::character_width::class_type::fullwidth,
+            tetengo::text::grapheme_splitting::character_width::emoji_type::emoji) == 2U);
     BOOST_TEST(
         char_width.width_of(
-            tetengo::text::character_width::class_type::fullwidth,
-            tetengo::text::character_width::emoji_type::normal) == 2U);
+            tetengo::text::grapheme_splitting::character_width::class_type::fullwidth,
+            tetengo::text::grapheme_splitting::character_width::emoji_type::normal) == 2U);
 }
 
 
