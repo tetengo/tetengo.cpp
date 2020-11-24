@@ -7,17 +7,19 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/platform_dependent/text_encoder.hpp>
+
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(platform_dependent)
 BOOST_AUTO_TEST_SUITE(text_encoder)
 
 
-BOOST_AUTO_TEST_CASE(construction)
+BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    tetengo::platform_dependent::text_encoder::instance();
 }
 
 
