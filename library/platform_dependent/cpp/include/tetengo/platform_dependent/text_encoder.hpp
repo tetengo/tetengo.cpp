@@ -29,7 +29,7 @@ namespace tetengo::platform_dependent
 
             \return The instance.
         */
-        static const text_encoder& instance();
+        [[nodiscard]] static const text_encoder& instance();
 
 
         // constructors and destructor
@@ -49,7 +49,7 @@ namespace tetengo::platform_dependent
 
             \return A string in CP932.
         */
-        std::string encode_to_cp932(const std::string_view& utf8) const;
+        [[nodiscard]] std::string encode_to_cp932(const std::string_view& utf8) const;
 
         /*!
             \brief Decodes a string from CP932.
@@ -58,7 +58,7 @@ namespace tetengo::platform_dependent
 
             \return A string in UTF-8.
         */
-        std::string decode_from_cp932(const std::string_view& cp932) const;
+        [[nodiscard]] std::string decode_from_cp932(const std::string_view& cp932) const;
 
 
     private:

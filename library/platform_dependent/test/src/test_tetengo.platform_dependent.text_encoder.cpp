@@ -96,21 +96,33 @@ BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::platform_dependent::text_encoder::instance();
+    [[maybe_unused]] const auto& encoder = tetengo::platform_dependent::text_encoder::instance();
 }
 
 BOOST_AUTO_TEST_CASE(encode_to_cp932)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::platform_dependent::text_encoder::instance();
+    const auto& encoder = tetengo::platform_dependent::text_encoder::instance();
+    {
+        const auto encoded = encoder.encode_to_cp932(string1_utf8);
+        BOOST_TEST(encoded == string1_cp932);
+    }
+    {
+        const auto encoded = encoder.encode_to_cp932(string2_utf8);
+        BOOST_TEST(encoded == string2_cp932);
+    }
+    {
+        const auto encoded = encoder.encode_to_cp932(string3_utf8);
+        BOOST_TEST(encoded == string3_cp932);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(decode_from_cp932)
 {
     BOOST_TEST_PASSPOINT();
 
-    tetengo::platform_dependent::text_encoder::instance();
+    [[maybe_unused]] const auto& encoder = tetengo::platform_dependent::text_encoder::instance();
 }
 
 
