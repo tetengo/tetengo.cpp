@@ -1,14 +1,17 @@
 # Automake Settings
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
+IWYU_SUBDIRS = \
+    unixos
+
 SUBDIRS = \
-    unixos \
+    ${IWYU_SUBDIRS} \
     windows
 
 
-iwyu: ${SUBDIRS}
+iwyu: ${IWYU_SUBDIRS}
 
-clean-iwyu: ${SUBDIRS}
+clean-iwyu: ${IWYU_SUBDIRS}
 
 format: ${SUBDIRS}
 

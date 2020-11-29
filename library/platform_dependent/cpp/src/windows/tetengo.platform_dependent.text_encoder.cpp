@@ -9,6 +9,7 @@
 #include <cassert>
 #include <iterator>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -53,12 +54,7 @@ namespace tetengo::platform_dependent
         static std::wstring to_wide(const std::string_view& multibyte, const ::UINT code_page)
         {
             const auto wide_length = ::MultiByteToWideChar(
-                code_page,
-                code_page == CP_UTF8 ? MB_ERR_INVALID_CHARS : 0,
-                std::data(multibyte),
-                static_cast<int>(multibyte.length()),
-                nullptr,
-                0);
+                code_page, 0, std::data(multibyte), static_cast<int>(multibyte.length()), nullptr, 0);
             if (wide_length == 0)
             {
                 throw std::invalid_argument{ "Invalid multibyte string." };
@@ -66,12 +62,7 @@ namespace tetengo::platform_dependent
 
             std::vector<wchar_t> wide(wide_length, 0);
             const auto           wide_length_again = ::MultiByteToWideChar(
-                code_page,
-                code_page == CP_UTF8 ? MB_ERR_INVALID_CHARS : 0,
-                std::data(multibyte),
-                static_cast<int>(multibyte.length()),
-                std::data(wide),
-                wide_length);
+                code_page, 0, std::data(multibyte), static_cast<int>(multibyte.length()), std::data(wide), wide_length);
             assert(wide_length_again == wide_length);
 
             return std::wstring{ std::begin(wide), std::end(wide) };
@@ -83,7 +74,7 @@ namespace tetengo::platform_dependent
 
             const auto multibyte_length = ::WideCharToMultiByte(
                 code_page,
-                code_page == CP_UTF8 ? WC_ERR_INVALID_CHARS : WC_NO_BEST_FIT_CHARS,
+                code_page == CP_UTF8 ? 0 : WC_NO_BEST_FIT_CHARS,
                 std::data(wide),
                 static_cast<int>(wide.length()),
                 nullptr,
@@ -98,7 +89,7 @@ namespace tetengo::platform_dependent
             std::vector<char> multibyte(multibyte_length, 0);
             const auto        multibyte_length_again = ::WideCharToMultiByte(
                 code_page,
-                code_page == CP_UTF8 ? WC_ERR_INVALID_CHARS : WC_NO_BEST_FIT_CHARS,
+                code_page == CP_UTF8 ? 0 : WC_NO_BEST_FIT_CHARS,
                 std::data(wide),
                 static_cast<int>(wide.length()),
                 std::data(multibyte),
