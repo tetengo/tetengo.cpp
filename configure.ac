@@ -47,6 +47,15 @@ AC_CONFIG_FILES([
     library/lattice/cpp/src/Makefile
     library/lattice/test/Makefile
     library/lattice/test/src/Makefile
+    library/platform_dependent/Makefile
+    library/platform_dependent/cpp/Makefile
+    library/platform_dependent/cpp/include/Makefile
+    library/platform_dependent/cpp/include/tetengo/Makefile
+    library/platform_dependent/cpp/src/Makefile
+    library/platform_dependent/cpp/src/unixos/Makefile
+    library/platform_dependent/cpp/src/windows/Makefile
+    library/platform_dependent/test/Makefile
+    library/platform_dependent/test/src/Makefile
     library/text/Makefile
     library/text/c/Makefile
     library/text/c/include/Makefile
@@ -127,11 +136,16 @@ test -z $DOXYGEN && \
     AC_MSG_WARN([You cannot generate documents for lack of Doxygen.])
 
 #### Library Checks ####
-AC_CHECK_LIB(pthread, pthread_cancel)
+AX_PTHREAD
+AC_SUBST([LIBS], "${PTHREAD_LIBS} ${LIBS}")
+AC_SUBST([CFLAGS], "${CFLAGS} ${PTHREAD_CFLAGS}")
+AC_SUBST([CXXFLAGS], "${CXXFLAGS} ${PTHREAD_CFLAGS}")
+AC_SUBST([CC], "${PTHREAD_CC}")
+
 AX_BOOST_BASE([1.74.0])
 AX_BOOST_UNIT_TEST_FRAMEWORK
 AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
-AC_SUBST([LIBS], "${LIBS} -lstdc++fs -lstdc++")
+AC_SUBST([LIBS], "-lstdc++fs -lstdc++ ${LIBS}")
 
 #### Header Checks ####
 AC_CXX_HAVE_STD

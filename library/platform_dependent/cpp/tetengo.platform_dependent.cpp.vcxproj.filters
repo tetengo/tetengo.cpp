@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="header\tetengo::platform_dependent">
+      <UniqueIdentifier>{22778438-b58e-4de1-972c-b739040ee35c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\windows">
+      <UniqueIdentifier>{867c0135-8d64-44c9-a164-d1cbffda0eb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\unixos">
+      <UniqueIdentifier>{3878e427-618e-44bd-9670-45147043523c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\tetengo\platform_dependent\0namespace.dox">
+      <Filter>header\tetengo::platform_dependent</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\tetengo\platform_dependent\text_encoder.hpp">
+      <Filter>header\tetengo::platform_dependent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\precompiled\precompiled.h">
+      <Filter>src\windows</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\unixos\tetengo.platform_dependent.text_encoder.cpp">
+      <Filter>src\unixos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\windows\tetengo.platform_dependent.text_encoder.cpp">
+      <Filter>src\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+      <Filter>src\windows</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -2,11 +2,11 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
-    json \
-    lattice \
-    platform_dependent \
-    text \
-    trie
+    src
+
+EXTRA_DIST = \
+    test_tetengo.platform_dependent.vcxproj \
+    test_tetengo.platform_dependent.vcxproj.filters
 
 
 iwyu: ${SUBDIRS}
