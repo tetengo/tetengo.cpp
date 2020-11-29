@@ -24,6 +24,8 @@ test_tetengo_trie_LDFLAGS = \
 test_tetengo_trie_LDADD = \
     -ltetengo.trie \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
+test_tetengo_trie_DEPENDENCIES = \
+    ${top_builddir}/library/trie/c/src/libtetengo.trie.la
 test_tetengo_trie_SOURCES = ${sources}
 
 TESTS = ${check_PROGRAMS}
