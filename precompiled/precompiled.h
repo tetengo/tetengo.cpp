@@ -42,10 +42,12 @@
 #include <limits>
 #include <list>
 #include <locale>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <optional>
 #include <queue>
+#include <regex>
 #include <sstream>
 #include <stack>
 #include <stdexcept>
@@ -76,6 +78,18 @@
 #include <boost/spirit/include/support_multi_pass.hpp>
 #include <boost/stl_interfaces/iterator_interface.hpp>
 
+#endif
+
+
+// Platform Dependent
+#if defined(_MSC_VER)
+#if defined(__cplusplus)
+#define NOMINMAX
+#include <Windows.h>
+#endif
+#else
+#include <errno.h>
+#include <iconv.h>
 #endif
 
 

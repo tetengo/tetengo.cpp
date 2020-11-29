@@ -42,23 +42,32 @@ def list_includes_per_file(path):
             line = line.rstrip('\r\n')
             
             libc_match = re.search('^#\s*include\s+<([46a-z]+\.h)>', line)
-            if libc_match:
+            if libc_match and not is_exception_include(line):
                 libc_includes.add(libc_match.group(1))
                 continue
             
             libcpp_match = re.search('^#\s*include\s+<([a-z_/]+)>', line)
-            if libcpp_match:
+            if libcpp_match and not is_exception_include(line):
                 libcpp_includes.add(libcpp_match.group(1))
                 continue
             
             boost_match = re.search('^#\s*include\s+<(boost\/[^>]+)>', line)
             if \
-                boost_match and \
-                not re.match('^#\s*include\s+<boost\/test\/', line):
+                boost_match and not is_exception_include(line):
                 boost_includes.add(boost_match.group(1))
                 continue
     
     return (libc_includes, libcpp_includes, boost_includes)
+
+def is_exception_include(line):
+    if line == '#include <errno.h>':
+        return True
+    elif line == '#include <iconv.h>':
+        return True
+    elif re.match('^#\s*include\s+<boost\/test\/', line):
+        return True
+    else:
+        return False
 
 def make_precompiled_h(libc_includes, libcpp_includes, boost_includes):
     result = ''
@@ -96,6 +105,18 @@ def make_precompiled_h(libc_includes, libcpp_includes, boost_includes):
     result += '#endif\n'
     
     result += '\n\n' + '''
+// Platform Dependent
+#if defined(_MSC_VER)
+#if defined(__cplusplus)
+#define NOMINMAX
+#include <Windows.h>
+#endif
+#else
+#include <errno.h>
+#include <iconv.h>
+#endif
+
+
 #endif
 '''.strip() + '\n'
 

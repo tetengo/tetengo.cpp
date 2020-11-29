@@ -14,6 +14,7 @@
 #include <string_view>
 #include <vector>
 
+#define NOMINMAX
 #include <Windows.h>
 
 #include <boost/core/noncopyable.hpp>
