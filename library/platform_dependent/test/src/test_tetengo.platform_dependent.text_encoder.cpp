@@ -75,11 +75,18 @@ namespace
     const std::string string3_cp932{
         // clang-format off
         0x90_c, 0x56_c, 0x8A_c, 0xB2_c, 0x90_c, 0xFC_c,
-        0x3F_c,
+        0x3F_c, 0x3F_c,
         0x82_c, 0xA9_c, 0x82_c, 0xE7_c,
         0x98_c, 0x48_c, 0x96_c, 0xCA_c, 0x93_c, 0x64_c, 0x8E_c, 0xD4_c,
-        0x3F_c,
+        0x3F_c, 0x3F_c,
         0x82_c, 0xD6_c,
+        // clang-format on
+    };
+
+    // invalid UTF-8 sequence
+    const std::string string_invalid_utf8{
+        // clang-format off
+        0xC0_c, 0xAF_c,
         // clang-format on
     };
 
@@ -115,6 +122,9 @@ BOOST_AUTO_TEST_CASE(encode_to_cp932)
     {
         const auto encoded = encoder.encode_to_cp932(string3_utf8);
         BOOST_TEST(encoded == string3_cp932);
+    }
+    {
+        BOOST_CHECK_THROW(const auto encoded = encoder.encode_to_cp932(string_invalid_utf8), std::invalid_argument);
     }
 }
 

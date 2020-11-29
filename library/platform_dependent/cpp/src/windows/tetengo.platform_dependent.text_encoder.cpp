@@ -1,12 +1,19 @@
 /*! \file
     \brief A text encoder.
 
+    For Windows.
+
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <cassert>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <string_view>
+#include <vector>
+
+#include <Windows.h>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -31,12 +38,76 @@ namespace tetengo::platform_dependent
 
         std::string encode_to_cp932(const std::string_view& utf8) const
         {
-            return std::string{ utf8 };
+            return to_multibyte(to_wide(utf8, CP_UTF8), 932);
         }
 
         std::string decode_from_cp932(const std::string_view& cp932) const
         {
             return std::string{ cp932 };
+        }
+
+
+    private:
+        // static functions
+
+        static std::wstring to_wide(const std::string_view& multibyte, const ::UINT code_page)
+        {
+            const auto wide_length = ::MultiByteToWideChar(
+                code_page,
+                code_page == CP_UTF8 ? MB_ERR_INVALID_CHARS : 0,
+                std::data(multibyte),
+                static_cast<int>(multibyte.length()),
+                nullptr,
+                0);
+            if (wide_length == 0)
+            {
+                throw std::invalid_argument{ "Invalid multibyte string." };
+            }
+
+            std::vector<wchar_t> wide(wide_length, 0);
+            const auto           wide_length_again = ::MultiByteToWideChar(
+                code_page,
+                code_page == CP_UTF8 ? MB_ERR_INVALID_CHARS : 0,
+                std::data(multibyte),
+                static_cast<int>(multibyte.length()),
+                std::data(wide),
+                wide_length);
+            assert(wide_length_again == wide_length);
+
+            return std::wstring{ std::begin(wide), std::end(wide) };
+        }
+
+        static std::string to_multibyte(const std::wstring_view& wide, const ::UINT code_page)
+        {
+            constexpr const char* replacement_for_inconvertible = "?";
+
+            const auto multibyte_length = ::WideCharToMultiByte(
+                code_page,
+                code_page == CP_UTF8 ? WC_ERR_INVALID_CHARS : WC_NO_BEST_FIT_CHARS,
+                std::data(wide),
+                static_cast<int>(wide.length()),
+                nullptr,
+                0,
+                replacement_for_inconvertible,
+                nullptr);
+            if (multibyte_length == 0)
+            {
+                throw std::invalid_argument{ "Invalid wide string." };
+            }
+
+            std::vector<char> multibyte(multibyte_length, 0);
+            const auto        multibyte_length_again = ::WideCharToMultiByte(
+                code_page,
+                code_page == CP_UTF8 ? WC_ERR_INVALID_CHARS : WC_NO_BEST_FIT_CHARS,
+                std::data(wide),
+                static_cast<int>(wide.length()),
+                std::data(multibyte),
+                multibyte_length,
+                replacement_for_inconvertible,
+                nullptr);
+            assert(multibyte_length_again == multibyte_length);
+
+            return std::string{ std::begin(multibyte), std::end(multibyte) };
         }
     };
 

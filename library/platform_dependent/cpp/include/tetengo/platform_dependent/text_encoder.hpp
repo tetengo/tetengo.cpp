@@ -48,6 +48,8 @@ namespace tetengo::platform_dependent
             \param utf8 A string in UTF-8.
 
             \return A string in CP932.
+
+            \throw std::invalid_argument When utf8 is invalid.
         */
         [[nodiscard]] std::string encode_to_cp932(const std::string_view& utf8) const;
 
@@ -57,6 +59,8 @@ namespace tetengo::platform_dependent
             \param cp932 A string in CP932.
 
             \return A string in UTF-8.
+
+            \throw std::invalid_argument When cp932 is invalid.
         */
         [[nodiscard]] std::string decode_from_cp932(const std::string_view& cp932) const;
 
