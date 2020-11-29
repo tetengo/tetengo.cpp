@@ -146,7 +146,15 @@ BOOST_AUTO_TEST_CASE(decode_from_cp932)
 {
     BOOST_TEST_PASSPOINT();
 
-    [[maybe_unused]] const auto& encoder = tetengo::platform_dependent::text_encoder::instance();
+    const auto& encoder = tetengo::platform_dependent::text_encoder::instance();
+    {
+        const auto decoded = encoder.decode_from_cp932(string1_cp932);
+        BOOST_TEST(decoded == string1_utf8);
+    }
+    {
+        const auto decoded = encoder.decode_from_cp932(string2_cp932);
+        BOOST_TEST(decoded == string2_utf8);
+    }
 }
 
 

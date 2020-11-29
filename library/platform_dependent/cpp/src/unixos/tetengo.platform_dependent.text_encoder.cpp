@@ -42,7 +42,22 @@ namespace tetengo::platform_dependent
 
         std::string encode_to_cp932(const std::string_view& utf8) const
         {
-            const auto descriptor = ::iconv_open("CP932", "UTF-8");
+            return convert(utf8, "UTF-8", "CP932");
+        }
+
+        std::string decode_from_cp932(const std::string_view& cp932) const
+        {
+            return convert(cp932, "CP932", "UTF-8");
+        }
+
+
+    private:
+        // static functions
+
+        static std::string
+        convert(const std::string_view& string_, const char* const encoding_from, const char* const encoding_to)
+        {
+            const auto descriptor = ::iconv_open(encoding_to, encoding_from);
             if (descriptor == reinterpret_cast<::iconv_t>(-1))
             {
                 throw std::invalid_argument{ "Cannot create a text encoder." };
@@ -53,8 +68,8 @@ namespace tetengo::platform_dependent
             }
             BOOST_SCOPE_EXIT_END;
 
-            auto*             p_current_input = const_cast<char*>(std::data(utf8));
-            auto              input_length_left = static_cast<::size_t>(utf8.length());
+            auto*             p_current_input = const_cast<char*>(std::data(string_));
+            auto              input_length_left = static_cast<::size_t>(string_.length());
             std::vector<char> output_buffer(1024, 0);
             std::string       encoded{};
             for (;;)
@@ -77,11 +92,6 @@ namespace tetengo::platform_dependent
             }
 
             return encoded;
-        }
-
-        std::string decode_from_cp932(const std::string_view& cp932) const
-        {
-            return std::string{ cp932 };
         }
     };
 

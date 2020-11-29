@@ -45,7 +45,7 @@ namespace tetengo::platform_dependent
 
         std::string decode_from_cp932(const std::string_view& cp932) const
         {
-            return std::string{ cp932 };
+            return to_multibyte(to_wide(cp932, 932), CP_UTF8);
         }
 
 
