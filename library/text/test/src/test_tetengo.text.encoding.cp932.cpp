@@ -4,7 +4,11 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <map>
+#include <regex>
+#include <sstream>
 #include <string>
+#include <vector>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
@@ -118,40 +122,40 @@ BOOST_AUTO_TEST_CASE(encode)
 {
     BOOST_TEST_PASSPOINT();
 
-    [[maybe_unused]] const auto& encoding = tetengo::text::encoding::cp932::instance();
-    //{
-    //    const auto encoded = encoding.encode(string1_utf8);
-    //    BOOST_TEST(encoded == string1_cp932);
-    //}
-    //{
-    //    const auto encoded = encoding.encode(string2_utf8);
-    //    BOOST_TEST(encoded == string2_cp932);
-    //}
-    //{
-    //    const auto       encoded = encoding.encode(string3_utf8);
-    //    const std::regex regex_{ pattern3_cp932 };
-    //    BOOST_TEST(std::regex_match(std::string{ encoded }, regex_));
-    //}
-    //{
-    //    const auto       encoded = encoding.encode(string4_utf8);
-    //    const std::regex regex_{ pattern3_cp932 };
-    //    BOOST_TEST(std::regex_match(std::string{ encoded }, regex_));
-    //}
+    const auto& encoding = tetengo::text::encoding::cp932::instance();
+    {
+        const auto encoded = encoding.encode(string1_utf8);
+        BOOST_TEST(encoded == string1_cp932);
+    }
+    {
+        const auto encoded = encoding.encode(string2_utf8);
+        BOOST_TEST(encoded == string2_cp932);
+    }
+    {
+        const auto       encoded = encoding.encode(string3_utf8);
+        const std::regex regex_{ pattern3_cp932 };
+        BOOST_TEST(std::regex_match(std::string{ encoded }, regex_));
+    }
+    {
+        const auto       encoded = encoding.encode(string4_utf8);
+        const std::regex regex_{ pattern4_cp932 };
+        BOOST_TEST(std::regex_match(std::string{ encoded }, regex_));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(decode)
 {
     BOOST_TEST_PASSPOINT();
 
-    [[maybe_unused]] const auto& encoding = tetengo::text::encoding::cp932::instance();
-    //{
-    //    const auto encoded = encoding.decode(string1_cp932);
-    //    BOOST_TEST(encoded == string1_utf8);
-    //}
-    //{
-    //    const auto encoded = encoding.decode(string2_cp932);
-    //    BOOST_TEST(encoded == string2_utf8);
-    //}
+    const auto& encoding = tetengo::text::encoding::cp932::instance();
+    {
+        const auto encoded = encoding.decode(string1_cp932);
+        BOOST_TEST(encoded == string1_utf8);
+    }
+    {
+        const auto encoded = encoding.decode(string2_cp932);
+        BOOST_TEST(encoded == string2_utf8);
+    }
 }
 
 

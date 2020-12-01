@@ -17,7 +17,8 @@ sources = \
 lib_LIBRARIES = libtetengo.text.cpp.a
 
 libtetengo_text_cpp_a_CPPFLAGS = \
-    -I${top_srcdir}/library/text/cpp/include
+    -I${top_srcdir}/library/text/cpp/include \
+    -I${top_srcdir}/library/platform_dependent/cpp/include
 libtetengo_text_cpp_a_SOURCES = ${headers} ${sources}
 
 noinst_LTLIBRARIES = libtetengo.text.noinst.la

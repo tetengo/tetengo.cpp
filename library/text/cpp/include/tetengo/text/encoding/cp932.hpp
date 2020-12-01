@@ -8,6 +8,7 @@
 #define TETENGO_TEXT_ENCODING_UTF8_HPP
 
 #include <memory>
+#include <string>
 #include <string_view>
 
 #include <boost/core/noncopyable.hpp>
@@ -24,7 +25,7 @@ namespace tetengo::text::encoding
         // types
 
         //! The encoded string type.
-        using encoded_string_type = std::string_view;
+        using encoded_string_type = std::string;
 
 
         // static functions
@@ -48,22 +49,22 @@ namespace tetengo::text::encoding
         // functions
 
         /*!
-            \brief Encodes a CP932 string to this encoding.
+            \brief Encodes a UTF-8 string to this encoding.
 
-            \param cp932 A CP932 string.
+            \param utf8 A UTF-8 string.
 
             \return An encoded string.
         */
-        [[nodiscard]] encoded_string_type encode(const std::string_view& cp932) const;
+        [[nodiscard]] encoded_string_type encode(const std::string_view& utf8) const;
 
         /*!
-            \brief Decodes a string in this encoding to CP932.
+            \brief Decodes a string in this encoding to UTF-8.
 
             \param string_ A string in this encoding.
 
             \return A decoded string.
         */
-        [[nodiscard]] std::string_view decode(const encoded_string_type& string_) const;
+        [[nodiscard]] std::string decode(const encoded_string_type& string_) const;
 
 
     private:

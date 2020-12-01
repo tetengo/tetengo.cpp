@@ -12,7 +12,8 @@ libtetengo_text_la_CPPFLAGS = \
     -I${top_srcdir}/library/text/c/include \
     -I${top_srcdir}/library/text/cpp/include
 libtetengo_text_la_LIBADD = \
-    ${top_builddir}/library/text/cpp/src/libtetengo.text.noinst.la
+    ${top_builddir}/library/text/cpp/src/libtetengo.text.noinst.la \
+    ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.noinst.la
 libtetengo_text_la_SOURCES = ${headers} ${sources}
 
 EXTRA_DIST = \

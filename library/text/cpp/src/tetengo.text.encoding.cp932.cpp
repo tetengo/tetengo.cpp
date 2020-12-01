@@ -5,10 +5,12 @@
 */
 
 #include <memory>
+#include <string>
 #include <string_view>
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/platform_dependent/text_encoder.hpp>
 #include <tetengo/text/encoding/cp932.hpp>
 
 
@@ -33,14 +35,14 @@ namespace tetengo::text::encoding
 
         // functions
 
-        encoded_string_type encode(const std::string_view& cp932) const
+        encoded_string_type encode(const std::string_view& utf8) const
         {
-            return cp932;
+            return tetengo::platform_dependent::text_encoder::instance().encode_to_cp932(utf8);
         }
 
-        std::string_view decode(const encoded_string_type& string_) const
+        std::string decode(const encoded_string_type& string_) const
         {
-            return string_;
+            return tetengo::platform_dependent::text_encoder::instance().decode_from_cp932(string_);
         }
     };
 
@@ -52,12 +54,12 @@ namespace tetengo::text::encoding
 
     cp932::~cp932() = default;
 
-    cp932::encoded_string_type cp932::encode(const std::string_view& cp932) const
+    cp932::encoded_string_type cp932::encode(const std::string_view& utf8) const
     {
-        return m_p_impl->encode(cp932);
+        return m_p_impl->encode(utf8);
     }
 
-    std::string_view cp932::decode(const encoded_string_type& string_) const
+    std::string cp932::decode(const encoded_string_type& string_) const
     {
         return m_p_impl->decode(string_);
     }
