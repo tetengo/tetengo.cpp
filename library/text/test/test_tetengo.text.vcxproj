@@ -116,6 +116,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
+    <ClCompile Include="src\test_tetengo.text.encoding.utf8.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitter.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.character_width.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.default_charactX.cpp" />

@@ -5,6 +5,7 @@ headers =
 
 sources = \
     master.cpp \
+    test_tetengo.text.encoding.utf8.cpp \
     test_tetengo.text.grapheme_splitter.cpp \
     test_tetengo.text.grapheme_splitting.character_width.cpp \
     test_tetengo.text.grapheme_splitting.default_charactX.cpp \

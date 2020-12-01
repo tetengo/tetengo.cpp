@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\text\encoding\utf8.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitter.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\character_width.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\default_characterX.hpp" />
@@ -112,6 +113,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.text.encoding.utf8.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitter.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.character_property_map.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.character_width.cpp" />
