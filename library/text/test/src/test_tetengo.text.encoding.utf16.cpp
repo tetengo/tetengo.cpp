@@ -34,6 +34,12 @@ namespace
     // tokkyu rapi:t beta 25-go kansai-kuko yuki (rapi:t limited express No. 25 bound for Kansai Airport)
     const std::u16string string1_utf16{
         // clang-format off
+        0x7279, 0x6025,
+        0x30E9, 0x30D4, 0x30FC, 0x30C8,
+        0x03B2,
+        0x0032, 0x0035, 0x53F7,
+        0x95A2, 0x897F, 0x7A7A, 0x6E2F,
+        0x3086, 0x304D,
         // clang-format on
     };
 
@@ -48,6 +54,8 @@ namespace
     // wave-dash and back-slash
     const std::u16string string2_utf16{
         // clang-format off
+        0xFF5E,
+        0x005C,
         // clang-format on
     };
 
@@ -66,6 +74,12 @@ namespace
     // shinkansen (emoji) kara romendensha (emoji) e (From Shinkansen to tram)
     const std::u16string string3_utf16{
         // clang-format off
+        0x65B0, 0x5E79, 0x7DDA,
+        0xD83D, 0xDE85,
+        0x304B, 0x3089,
+        0x8DEF, 0x9762, 0x96FB, 0x8ECA,
+        0xD83D, 0xDE8B,
+        0x3078,
         // clang-format on
     };
 
@@ -79,6 +93,7 @@ namespace
     // invalid UTF-8 sequence
     const std::u16string string4_utf16{
         // clang-format off
+        0x003F, 0x003F,
         // clang-format on
     };
 
