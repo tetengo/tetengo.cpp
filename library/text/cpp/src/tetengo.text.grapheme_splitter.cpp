@@ -47,12 +47,12 @@ namespace tetengo::text
             const auto code_points_and_offsets = encoding::unicode_encoding::instance().utf8_to_codepoints(string_);
 
             std::vector<std::size_t> widths{};
-            widths.reserve(std::size(code_points_and_offsets));
+            widths.reserve(code_points_and_offsets.first.length());
             std::vector<grapheme_splitting::grapheme_segment::break_property_type> break_properties{};
-            break_properties.reserve(std::size(code_points_and_offsets));
-            for (const auto code_point_and_offset: code_points_and_offsets)
+            break_properties.reserve(code_points_and_offsets.first.length());
+            for (const auto code_point: code_points_and_offsets.first)
             {
-                const auto property = property_of(code_point_and_offset.first);
+                const auto property = property_of(code_point);
                 widths.push_back(m_character_width.width_of(std::get<0>(property), std::get<1>(property)));
                 break_properties.push_back(std::get<2>(property));
             }
@@ -64,7 +64,7 @@ namespace tetengo::text
             for (auto i = static_cast<std::size_t>(0); i + 1 < std::size(grapheme_offsets); ++i)
             {
                 graphemes.emplace_back(
-                    code_points_and_offsets[grapheme_offsets[i]].second,
+                    code_points_and_offsets.second[grapheme_offsets[i]],
                     *std::max_element(
                         std::next(std::begin(widths), grapheme_offsets[i]),
                         std::next(std::begin(widths), grapheme_offsets[i + 1])));

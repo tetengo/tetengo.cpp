@@ -29,16 +29,16 @@ namespace tetengo::text::encoding
 
         // functions
 
-        std::vector<std::pair<char32_t, std::size_t>> utf8_to_codepoints(const std::string_view& string) const
+        std::pair<std::u32string, std::vector<std::size_t>> utf8_to_codepoints(const std::string_view& utf8) const
         {
-            std::vector<std::pair<char32_t, std::size_t>> code_points_and_offsets{};
+            std::pair<std::u32string, std::vector<std::size_t>> code_points_and_offsets{};
 
-            auto       current = std::begin(string);
-            const auto last = std::end(string);
+            auto       current = std::begin(utf8);
+            const auto last = std::end(utf8);
             while (current != last)
             {
                 auto       code_point = static_cast<char32_t>(0);
-                const auto offset = static_cast<std::size_t>(std::distance(std::begin(string), current));
+                const auto offset = static_cast<std::size_t>(std::distance(std::begin(utf8), current));
                 if (const auto leading = static_cast<unsigned char>(*current); leading <= 0x7F)
                 {
                     ++current;
@@ -48,7 +48,7 @@ namespace tetengo::text::encoding
                 {
                     auto value = static_cast<char32_t>((leading & 0x1F) << 6);
                     ++current;
-                    value |= following_value(current, last, 1);
+                    value |= utf8_following_value(current, last, 1);
                     if (value <= 0x0000007F)
                     {
                         throw std::invalid_argument{ "The string is not in valid UTF-8." };
@@ -59,7 +59,7 @@ namespace tetengo::text::encoding
                 {
                     auto value = static_cast<char32_t>((leading & 0x0F) << 12);
                     ++current;
-                    value |= following_value(current, last, 2);
+                    value |= utf8_following_value(current, last, 2);
                     if (value <= 0x000007FF)
                     {
                         throw std::invalid_argument{ "The string is not in valid UTF-8." };
@@ -70,7 +70,7 @@ namespace tetengo::text::encoding
                 {
                     auto value = static_cast<char32_t>((leading & 0x07) << 18);
                     ++current;
-                    value |= following_value(current, last, 3);
+                    value |= utf8_following_value(current, last, 3);
                     if (value <= 0x0000FFFF)
                     {
                         throw std::invalid_argument{ "The string is not in valid UTF-8." };
@@ -82,7 +82,8 @@ namespace tetengo::text::encoding
                     throw std::invalid_argument{ "The string is not in valid UTF-8." };
                 }
 
-                code_points_and_offsets.push_back(std::make_pair(code_point, offset));
+                code_points_and_offsets.first.push_back(code_point);
+                code_points_and_offsets.second.push_back(offset);
             }
 
             return code_points_and_offsets;
@@ -92,7 +93,7 @@ namespace tetengo::text::encoding
     private:
         // static functions
 
-        static char32_t following_value(
+        static char32_t utf8_following_value(
             std::string_view::const_iterator&      current,
             const std::string_view::const_iterator last,
             const std::size_t                      following_count)
@@ -100,15 +101,16 @@ namespace tetengo::text::encoding
             char32_t value = 0;
             for (auto i = static_cast<std::size_t>(0); i < following_count; ++i)
             {
-                const auto following = following_byte(current, last);
+                const auto following = utf8_following_byte(current, last);
                 value |= following << (6 * (following_count - i - 1));
                 ++current;
             }
             return value;
         }
 
-        static unsigned char
-        following_byte(const std::string_view::const_iterator position, const std::string_view::const_iterator last)
+        static unsigned char utf8_following_byte(
+            const std::string_view::const_iterator position,
+            const std::string_view::const_iterator last)
         {
             if (position == last)
             {
@@ -133,10 +135,10 @@ namespace tetengo::text::encoding
 
     unicode_encoding::~unicode_encoding() = default;
 
-    std::vector<std::pair<char32_t, std::size_t>>
-    unicode_encoding::utf8_to_codepoints(const std::string_view& string) const
+    std::pair<std::u32string, std::vector<std::size_t>>
+    unicode_encoding::utf8_to_codepoints(const std::string_view& utf8) const
     {
-        return m_p_impl->utf8_to_codepoints(string);
+        return m_p_impl->utf8_to_codepoints(utf8);
     }
 
     unicode_encoding::unicode_encoding() : m_p_impl{ std::make_unique<impl>() } {}

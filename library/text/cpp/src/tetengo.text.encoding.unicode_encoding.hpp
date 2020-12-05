@@ -9,6 +9,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -33,7 +34,7 @@ namespace tetengo::text::encoding
 
         // functions
 
-        std::vector<std::pair<char32_t, std::size_t>> utf8_to_codepoints(const std::string_view& string) const;
+        std::pair<std::u32string, std::vector<std::size_t>> utf8_to_codepoints(const std::string_view& utf8) const;
 
 
     private:
