@@ -118,23 +118,23 @@ BOOST_AUTO_TEST_CASE(encode)
 {
     BOOST_TEST_PASSPOINT();
 
-    // const auto& encoding = tetengo::text::encoding::utf16::instance();
-    //{
-    //    const auto encoded = encoding.encode(string1_utf8);
-    //    BOOST_CHECK(encoded == string1_utf16);
-    //}
-    //{
-    //    const auto encoded = encoding.encode(string2_utf8);
-    //    BOOST_CHECK(encoded == string2_utf16);
-    //}
-    //{
-    //    const auto encoded = encoding.encode(string3_utf8);
-    //    BOOST_CHECK(encoded == string3_utf16);
-    //}
-    //{
-    //    const auto encoded = encoding.encode(string4_utf8);
-    //    BOOST_CHECK(encoded == string4_utf16);
-    //}
+    const auto& encoding = tetengo::text::encoding::utf16::instance();
+    {
+        const auto encoded = encoding.encode(string1_utf8);
+        BOOST_CHECK(encoded == string1_utf16);
+    }
+    {
+        const auto encoded = encoding.encode(string2_utf8);
+        BOOST_CHECK(encoded == string2_utf16);
+    }
+    {
+        const auto encoded = encoding.encode(string3_utf8);
+        BOOST_CHECK(encoded == string3_utf16);
+    }
+    {
+        const auto encoded = encoding.encode(string4_utf8);
+        BOOST_CHECK(encoded == string4_utf16);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(decode)

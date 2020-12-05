@@ -37,56 +37,100 @@ namespace tetengo::text::encoding
             const auto last = std::end(utf8);
             while (current != last)
             {
-                auto       code_point = static_cast<char32_t>(0);
-                const auto offset = static_cast<std::size_t>(std::distance(std::begin(utf8), current));
+                constexpr char inconvertible = '?';
+                const auto     offset = static_cast<std::size_t>(std::distance(std::begin(utf8), current));
                 if (const auto leading = static_cast<unsigned char>(*current); leading <= 0x7F)
                 {
                     ++current;
-                    code_point = leading;
+                    code_points_and_offsets.first.push_back(leading);
+                    code_points_and_offsets.second.push_back(offset);
                 }
                 else if (0xC0 <= leading && leading <= 0xDF)
                 {
                     auto value = static_cast<char32_t>((leading & 0x1F) << 6);
                     ++current;
                     value |= utf8_following_value(current, last, 1);
-                    if (value <= 0x0000007F)
+                    if (value >= 0x00000080)
                     {
-                        throw std::invalid_argument{ "The string is not in valid UTF-8." };
+                        code_points_and_offsets.first.push_back(value);
+                        code_points_and_offsets.second.push_back(offset);
                     }
-                    code_point = value;
+                    else
+                    {
+                        for (auto i = static_cast<std::size_t>(0); i < 2; ++i)
+                        {
+                            code_points_and_offsets.first.push_back(inconvertible);
+                            code_points_and_offsets.second.push_back(offset + i);
+                        }
+                    }
                 }
                 else if (0xE0 <= leading && leading <= 0xEF)
                 {
                     auto value = static_cast<char32_t>((leading & 0x0F) << 12);
                     ++current;
                     value |= utf8_following_value(current, last, 2);
-                    if (value <= 0x000007FF)
+                    if (value >= 0x00000800)
                     {
-                        throw std::invalid_argument{ "The string is not in valid UTF-8." };
+                        code_points_and_offsets.first.push_back(value);
+                        code_points_and_offsets.second.push_back(offset);
                     }
-                    code_point = value;
+                    else
+                    {
+                        for (auto i = static_cast<std::size_t>(0); i < 3; ++i)
+                        {
+                            code_points_and_offsets.first.push_back(inconvertible);
+                            code_points_and_offsets.second.push_back(offset + i);
+                        }
+                    }
                 }
                 else if (0xF0 <= leading && leading <= 0xF7)
                 {
                     auto value = static_cast<char32_t>((leading & 0x07) << 18);
                     ++current;
                     value |= utf8_following_value(current, last, 3);
-                    if (value <= 0x0000FFFF)
+                    if (value >= 0x00010000)
                     {
-                        throw std::invalid_argument{ "The string is not in valid UTF-8." };
+                        code_points_and_offsets.first.push_back(value);
+                        code_points_and_offsets.second.push_back(offset);
                     }
-                    code_point = value;
+                    else
+                    {
+                        for (auto i = static_cast<std::size_t>(0); i < 4; ++i)
+                        {
+                            code_points_and_offsets.first.push_back(inconvertible);
+                            code_points_and_offsets.second.push_back(offset + i);
+                        }
+                    }
                 }
                 else
                 {
-                    throw std::invalid_argument{ "The string is not in valid UTF-8." };
+                    code_points_and_offsets.first.push_back(inconvertible);
+                    code_points_and_offsets.second.push_back(offset);
                 }
-
-                code_points_and_offsets.first.push_back(code_point);
-                code_points_and_offsets.second.push_back(offset);
             }
 
             return code_points_and_offsets;
+        }
+
+        std::u16string codepoints_to_utf16(const std::u32string_view& codepoints) const
+        {
+            std::u16string utf16;
+            utf16.reserve(codepoints.length());
+            for (const auto codepoint: codepoints)
+            {
+                if (codepoint < 0x10000)
+                {
+                    utf16.push_back(static_cast<char16_t>(codepoint));
+                }
+                else
+                {
+                    const auto high_surrogate = static_cast<char16_t>(0xD800 + (codepoint - 0x10000) / 0x400);
+                    utf16.push_back(high_surrogate);
+                    const auto low_surrogate = static_cast<char16_t>(0xDC00 + (codepoint - 0x10000) % 0x400);
+                    utf16.push_back(low_surrogate);
+                }
+            }
+            return utf16;
         }
 
 
@@ -139,6 +183,11 @@ namespace tetengo::text::encoding
     unicode_encoding::utf8_to_codepoints(const std::string_view& utf8) const
     {
         return m_p_impl->utf8_to_codepoints(utf8);
+    }
+
+    std::u16string unicode_encoding::codepoints_to_utf16(const std::u32string_view& codepoints) const
+    {
+        return m_p_impl->codepoints_to_utf16(codepoints);
     }
 
     unicode_encoding::unicode_encoding() : m_p_impl{ std::make_unique<impl>() } {}

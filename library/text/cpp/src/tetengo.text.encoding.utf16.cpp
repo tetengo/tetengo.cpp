@@ -7,10 +7,13 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/text/encoding/utf16.hpp>
+
+#include "tetengo.text.encoding.unicode_encoding.hpp"
 
 
 namespace tetengo::text::encoding
@@ -34,9 +37,10 @@ namespace tetengo::text::encoding
 
         // functions
 
-        encoded_string_type encode(const std::string_view& /*utf8*/) const
+        encoded_string_type encode(const std::string_view& utf8) const
         {
-            return encoded_string_type{};
+            return unicode_encoding::instance().codepoints_to_utf16(
+                unicode_encoding::instance().utf8_to_codepoints(utf8).first);
         }
 
         std::string decode(const encoded_string_type& /*string_*/) const
