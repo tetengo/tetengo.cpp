@@ -12,7 +12,6 @@
 #include <iterator>
 #include <locale>
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -27,6 +26,7 @@
 #include <tetengo/text/grapheme_splitting/east_asian_characX.hpp>
 #include <tetengo/text/grapheme_splitting/grapheme_segment.hpp>
 
+#include "tetengo.text.encoding.unicode_encoding.hpp"
 #include "tetengo.text.grapheme_splitting.character_property_map.hpp"
 
 
@@ -44,7 +44,7 @@ namespace tetengo::text
 
         std::vector<grapheme> split(const std::string_view& string_) const
         {
-            const auto code_points_and_offsets = to_code_points(string_);
+            const auto code_points_and_offsets = encoding::unicode_encoding::instance().utf8_to_codepoints(string_);
 
             std::vector<std::size_t> widths{};
             widths.reserve(std::size(code_points_and_offsets));
@@ -135,97 +135,6 @@ namespace tetengo::text
             const auto* const c_name = std::setlocale(LC_CTYPE, nullptr);
             assert(c_name);
             return c_name;
-        }
-
-        static std::vector<std::pair<char32_t, std::size_t>> to_code_points(const std::string_view& string)
-        {
-            std::vector<std::pair<char32_t, std::size_t>> code_points_and_offsets{};
-
-            auto       current = std::begin(string);
-            const auto last = std::end(string);
-            while (current != last)
-            {
-                auto       code_point = static_cast<char32_t>(0);
-                const auto offset = static_cast<std::size_t>(std::distance(std::begin(string), current));
-                if (const auto leading = static_cast<unsigned char>(*current); leading <= 0x7F)
-                {
-                    ++current;
-                    code_point = leading;
-                }
-                else if (0xC0 <= leading && leading <= 0xDF)
-                {
-                    auto value = static_cast<char32_t>((leading & 0x1F) << 6);
-                    ++current;
-                    value |= following_value(current, last, 1);
-                    if (value <= 0x0000007F)
-                    {
-                        throw std::invalid_argument{ "The string is not in valid UTF-8." };
-                    }
-                    code_point = value;
-                }
-                else if (0xE0 <= leading && leading <= 0xEF)
-                {
-                    auto value = static_cast<char32_t>((leading & 0x0F) << 12);
-                    ++current;
-                    value |= following_value(current, last, 2);
-                    if (value <= 0x000007FF)
-                    {
-                        throw std::invalid_argument{ "The string is not in valid UTF-8." };
-                    }
-                    code_point = value;
-                }
-                else if (0xF0 <= leading && leading <= 0xF7)
-                {
-                    auto value = static_cast<char32_t>((leading & 0x07) << 18);
-                    ++current;
-                    value |= following_value(current, last, 3);
-                    if (value <= 0x0000FFFF)
-                    {
-                        throw std::invalid_argument{ "The string is not in valid UTF-8." };
-                    }
-                    code_point = value;
-                }
-                else
-                {
-                    throw std::invalid_argument{ "The string is not in valid UTF-8." };
-                }
-
-                code_points_and_offsets.push_back(std::make_pair(code_point, offset));
-            }
-
-            return code_points_and_offsets;
-        }
-
-        static char32_t following_value(
-            std::string_view::const_iterator&      current,
-            const std::string_view::const_iterator last,
-            const std::size_t                      following_count)
-        {
-            char32_t value = 0;
-            for (auto i = static_cast<std::size_t>(0); i < following_count; ++i)
-            {
-                const auto following = following_byte(current, last);
-                value |= following << (6 * (following_count - i - 1));
-                ++current;
-            }
-            return value;
-        }
-
-        static unsigned char
-        following_byte(const std::string_view::const_iterator position, const std::string_view::const_iterator last)
-        {
-            if (position == last)
-            {
-                throw std::invalid_argument{ "The string is not in valid UTF-8." };
-            }
-
-            const auto following = static_cast<unsigned char>(*position);
-            if (following < 0x80 || 0xBF < following)
-            {
-                throw std::invalid_argument{ "The string is not in valid UTF-8." };
-            }
-
-            return following & 0x3F;
         }
 
         static std::tuple<

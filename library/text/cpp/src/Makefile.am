@@ -2,10 +2,12 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
+    tetengo.text.encoding.unicode_encoding.hpp \
     tetengo.text.grapheme_splitting.character_property_map.hpp
 
 sources = \
     tetengo.text.encoding.cp932.cpp \
+    tetengo.text.encoding.unicode_encoding.cpp \
     tetengo.text.encoding.utf8.cpp \
     tetengo.text.grapheme_splitter.cpp \
     tetengo.text.grapheme_splitting.character_property_map.cpp \
