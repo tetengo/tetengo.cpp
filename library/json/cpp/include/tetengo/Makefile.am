@@ -39,7 +39,7 @@ clean-iwyu:
 clean-local: clean-iwyu
 
 
-format: ${addsuffix .formatout, ${headers} ${sources}}
+format: ${addsuffix .formatout, ${pkg_headers} ${extra_headers}}
 
 %.formatout: %
 	${top_srcdir}/tools/call_clang-format.sh $< || true
