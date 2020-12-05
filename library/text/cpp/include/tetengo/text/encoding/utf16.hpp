@@ -1,11 +1,11 @@
 /*! \file
-    \brief A CP932 encoding.
+    \brief A UTF-16 encoding.
 
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_TEXT_ENCODING_CP932_HPP)
-#define TETENGO_TEXT_ENCODING_CP932_HPP
+#if !defined(TETENGO_TEXT_ENCODING_UTF16_HPP)
+#define TETENGO_TEXT_ENCODING_UTF16_HPP
 
 #include <memory>
 #include <string>
@@ -17,15 +17,15 @@
 namespace tetengo::text::encoding
 {
     /*!
-        \brief A CP932 encoding.
+        \brief A UTF-16 encoding.
     */
-    class cp932 : private boost::noncopyable
+    class utf16 : private boost::noncopyable
     {
     public:
         // types
 
         //! The encoded string type.
-        using encoded_string_type = std::string;
+        using encoded_string_type = std::u16string;
 
 
         // static functions
@@ -35,7 +35,7 @@ namespace tetengo::text::encoding
 
             \return The instance.
         */
-        [[nodiscard]] static const cp932& instance();
+        [[nodiscard]] static const utf16& instance();
 
 
         // constructors and destructor
@@ -43,7 +43,7 @@ namespace tetengo::text::encoding
         /*!
             \brief Destroys the encoding.
         */
-        ~cp932();
+        ~utf16();
 
 
         // functions
@@ -80,7 +80,7 @@ namespace tetengo::text::encoding
 
         // constructors
 
-        cp932();
+        utf16();
     };
 
 

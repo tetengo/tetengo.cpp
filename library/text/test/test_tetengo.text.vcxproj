@@ -117,6 +117,7 @@
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.text.encoding.cp932.cpp" />
+    <ClCompile Include="src\test_tetengo.text.encoding.utf16.cpp" />
     <ClCompile Include="src\test_tetengo.text.encoding.utf8.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitter.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.character_width.cpp" />

@@ -58,6 +58,9 @@
     <ClInclude Include="src\tetengo.text.encoding.unicode_encoding.hpp">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\text\encoding\utf16.hpp">
+      <Filter>header\tetengo::text\encoding</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
@@ -88,6 +91,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo.text.encoding.unicode_encoding.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.text.encoding.utf16.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

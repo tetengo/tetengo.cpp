@@ -6,6 +6,7 @@ headers =
 sources = \
     master.cpp \
     test_tetengo.text.encoding.cp932.cpp \
+    test_tetengo.text.encoding.utf16.cpp \
     test_tetengo.text.encoding.utf8.cpp \
     test_tetengo.text.grapheme_splitter.cpp \
     test_tetengo.text.grapheme_splitting.character_width.cpp \

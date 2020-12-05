@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\text\encoding\cp932.hpp" />
+    <ClInclude Include="include\tetengo\text\encoding\utf16.hpp" />
     <ClInclude Include="include\tetengo\text\encoding\utf8.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitter.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\character_width.hpp" />
@@ -133,6 +134,7 @@
     </ClCompile>
     <ClCompile Include="src\tetengo.text.encoding.cp932.cpp" />
     <ClCompile Include="src\tetengo.text.encoding.unicode_encoding.cpp" />
+    <ClCompile Include="src\tetengo.text.encoding.utf16.cpp" />
     <ClCompile Include="src\tetengo.text.encoding.utf8.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitter.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.character_property_map.cpp" />

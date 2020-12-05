@@ -8,6 +8,7 @@ headers = \
 sources = \
     tetengo.text.encoding.cp932.cpp \
     tetengo.text.encoding.unicode_encoding.cpp \
+    tetengo.text.encoding.utf16.cpp \
     tetengo.text.encoding.utf8.cpp \
     tetengo.text.grapheme_splitter.cpp \
     tetengo.text.grapheme_splitting.character_property_map.cpp \

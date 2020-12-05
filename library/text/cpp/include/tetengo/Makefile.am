@@ -3,6 +3,7 @@
 
 pkg_headers = \
     text/encoding/cp932.hpp \
+    text/encoding/utf16.hpp \
     text/encoding/utf8.hpp \
     text/grapheme_splitter.hpp \
     text/grapheme_splitting/character_width.hpp \
@@ -37,7 +38,7 @@ clean-iwyu:
 clean-local: clean-iwyu
 
 
-format: ${addsuffix .formatout, ${headers} ${sources}}
+format: ${addsuffix .formatout, ${pkg_headers} ${extra_headers}}
 
 %.formatout: %
 	${top_srcdir}/tools/call_clang-format.sh $< || true
