@@ -97,6 +97,20 @@ namespace
         // clang-format on
     };
 
+    // invalid UTF-16 sequence
+    const std::string string5_utf8{
+        // clang-format off
+        0x003F, 0x003F, 0x003F, 0x003F, 0x003F, 0xE7_c, 0x89_c, 0xB9_c, 0x003F,
+        // clang-format on
+    };
+
+    // invalid UTF-16 sequence
+    const std::u16string string5_utf16{
+        // clang-format off
+        0xD800, 0xD800, 0xDC00, 0xD800, 0xD800, 0x7279, 0xD800,
+        // clang-format on
+    };
+
 
 }
 
@@ -141,23 +155,23 @@ BOOST_AUTO_TEST_CASE(decode)
 {
     BOOST_TEST_PASSPOINT();
 
-    // const auto& encoding = tetengo::text::encoding::utf16::instance();
-    //{
-    //    const auto encoded = encoding.decode(string1_utf16);
-    //    BOOST_TEST(encoded == string1_utf8);
-    //}
-    //{
-    //    const auto encoded = encoding.decode(string2_utf16);
-    //    BOOST_TEST(encoded == string2_utf8);
-    //}
-    //{
-    //    const auto encoded = encoding.decode(string3_utf16);
-    //    BOOST_TEST(encoded == string3_utf8);
-    //}
-    //{
-    //    const auto encoded = encoding.decode(string4_utf16);
-    //    BOOST_TEST(encoded == string4_utf8);
-    //}
+    const auto& encoding = tetengo::text::encoding::utf16::instance();
+    {
+        const auto encoded = encoding.decode(string1_utf16);
+        BOOST_TEST(encoded == string1_utf8);
+    }
+    {
+        const auto encoded = encoding.decode(string2_utf16);
+        BOOST_TEST(encoded == string2_utf8);
+    }
+    {
+        const auto encoded = encoding.decode(string3_utf16);
+        BOOST_TEST(encoded == string3_utf8);
+    }
+    {
+        const auto encoded = encoding.decode(string5_utf16);
+        BOOST_TEST(encoded == string5_utf8);
+    }
 }
 
 

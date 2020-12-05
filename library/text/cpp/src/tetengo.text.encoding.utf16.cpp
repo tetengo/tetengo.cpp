@@ -43,9 +43,10 @@ namespace tetengo::text::encoding
                 unicode_encoding::instance().utf8_to_codepoints(utf8).first);
         }
 
-        std::string decode(const encoded_string_type& /*string_*/) const
+        std::string decode(const encoded_string_type& string_) const
         {
-            return std::string{};
+            return unicode_encoding::instance().codepoints_to_utf8(
+                unicode_encoding::instance().utf16_to_codepoints(string_).first);
         }
     };
 
