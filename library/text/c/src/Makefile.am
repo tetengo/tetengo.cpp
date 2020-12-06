@@ -4,6 +4,7 @@
 headers =
 
 sources = \
+    tetengo_text_encoder.cpp \
     tetengo_text_graphemeSplitter.cpp
 
 lib_LTLIBRARIES = libtetengo.text.la

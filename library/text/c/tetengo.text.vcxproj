@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\text\encoder.h" />
     <ClInclude Include="include\tetengo\text\graphemeSplitter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +123,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo_text_encoder.cpp" />
     <ClCompile Include="src\tetengo_text_graphemeSplitter.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,9 @@
     <ClInclude Include="include\tetengo\text\graphemeSplitter.h">
       <Filter>header\tetengo::text</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\text\encoder.h">
+      <Filter>header\tetengo::text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def">
@@ -31,6 +34,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo_text_graphemeSplitter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo_text_encoder.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
