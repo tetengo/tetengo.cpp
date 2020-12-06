@@ -5,7 +5,6 @@
 */
 
 #include <memory>
-#include <string_view>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -18,6 +17,10 @@ namespace tetengo::text::encoding
     {
     public:
         // types
+
+        using string_type = typename utf8::string_type;
+
+        using string_view_type = typename utf8::string_view_type;
 
         using encoded_string_type = typename utf8::encoded_string_type;
 
@@ -35,12 +38,12 @@ namespace tetengo::text::encoding
 
         // functions
 
-        encoded_string_type encode(const std::string_view& utf8) const
+        encoded_string_type encode(const string_view_type& utf8) const
         {
             return utf8;
         }
 
-        std::string_view decode(const encoded_string_view_type& string_) const
+        string_type decode(const encoded_string_view_type& string_) const
         {
             return string_;
         }
@@ -54,12 +57,12 @@ namespace tetengo::text::encoding
 
     utf8::~utf8() = default;
 
-    utf8::encoded_string_type utf8::encode(const std::string_view& utf8) const
+    typename utf8::encoded_string_type utf8::encode(const string_view_type& utf8) const
     {
         return m_p_impl->encode(utf8);
     }
 
-    std::string_view utf8::decode(const encoded_string_view_type& string_) const
+    typename utf8::string_type utf8::decode(const encoded_string_view_type& string_) const
     {
         return m_p_impl->decode(string_);
     }

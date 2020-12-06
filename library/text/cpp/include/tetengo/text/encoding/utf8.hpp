@@ -23,6 +23,12 @@ namespace tetengo::text::encoding
     public:
         // types
 
+        //! The string type.
+        using string_type = std::string_view;
+
+        //! The string view type.
+        using string_view_type = std::string_view;
+
         //! The encoded string type.
         using encoded_string_type = std::string_view;
 
@@ -57,7 +63,7 @@ namespace tetengo::text::encoding
 
             \return An encoded string.
         */
-        [[nodiscard]] encoded_string_type encode(const std::string_view& utf8) const;
+        [[nodiscard]] encoded_string_type encode(const string_view_type& utf8) const;
 
         /*!
             \brief Decodes a string in this encoding to UTF-8.
@@ -66,7 +72,7 @@ namespace tetengo::text::encoding
 
             \return A decoded string.
         */
-        [[nodiscard]] std::string_view decode(const encoded_string_view_type& string_) const;
+        [[nodiscard]] string_type decode(const encoded_string_view_type& string_) const;
 
 
     private:
