@@ -44,7 +44,7 @@ namespace tetengo::text
 
         std::vector<grapheme> split(const std::string_view& string_) const
         {
-            const auto code_points_and_offsets = encoding::unicode_encoding::instance().utf8_to_codepoints(string_);
+            const auto code_points_and_offsets = encoding::unicode_encoding::instance().utf8_to_code_points(string_);
 
             std::vector<std::size_t> widths{};
             widths.reserve(code_points_and_offsets.first.length());

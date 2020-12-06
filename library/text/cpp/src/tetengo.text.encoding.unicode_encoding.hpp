@@ -34,13 +34,14 @@ namespace tetengo::text::encoding
 
         // functions
 
-        std::pair<std::u32string, std::vector<std::size_t>> utf8_to_codepoints(const std::string_view& utf8) const;
+        std::pair<std::u32string, std::vector<std::size_t>> utf8_to_code_points(const std::string_view& utf8) const;
 
-        std::string codepoints_to_utf8(const std::u32string_view& codepoints) const;
+        std::string code_points_to_utf8(const std::u32string_view& code_points) const;
 
-        std::pair<std::u32string, std::vector<std::size_t>> utf16_to_codepoints(const std::u16string_view& utf16) const;
+        std::pair<std::u32string, std::vector<std::size_t>>
+        utf16_to_code_points(const std::u16string_view& utf16) const;
 
-        std::u16string codepoints_to_utf16(const std::u32string_view& codepoints) const;
+        std::u16string code_points_to_utf16(const std::u32string_view& code_points) const;
 
 
     private:

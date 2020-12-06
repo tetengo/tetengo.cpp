@@ -39,14 +39,14 @@ namespace tetengo::text::encoding
 
         encoded_string_type encode(const std::string_view& utf8) const
         {
-            return unicode_encoding::instance().codepoints_to_utf16(
-                unicode_encoding::instance().utf8_to_codepoints(utf8).first);
+            return unicode_encoding::instance().code_points_to_utf16(
+                unicode_encoding::instance().utf8_to_code_points(utf8).first);
         }
 
         std::string decode(const encoded_string_type& string_) const
         {
-            return unicode_encoding::instance().codepoints_to_utf8(
-                unicode_encoding::instance().utf16_to_codepoints(string_).first);
+            return unicode_encoding::instance().code_points_to_utf8(
+                unicode_encoding::instance().utf16_to_code_points(string_).first);
         }
     };
 
