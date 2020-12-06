@@ -5,6 +5,10 @@ headers =
 
 sources = \
     master.cpp \
+    test_tetengo.text.encoder.cpp \
+    test_tetengo.text.encoding.cp932.cpp \
+    test_tetengo.text.encoding.utf16.cpp \
+    test_tetengo.text.encoding.utf8.cpp \
     test_tetengo.text.grapheme_splitter.cpp \
     test_tetengo.text.grapheme_splitting.character_width.cpp \
     test_tetengo.text.grapheme_splitting.default_charactX.cpp \
@@ -17,12 +21,15 @@ test_tetengo_text_CPPFLAGS = \
     -I${top_srcdir}/library/text/c/include \
     -I${top_srcdir}/library/text/cpp/include
 test_tetengo_text_LDFLAGS = \
-    -L${top_builddir}/library/text/c/src
+    -L${top_builddir}/library/text/c/src \
+    -L${top_builddir}/library/platform_dependent/cpp/src/unixos
 test_tetengo_text_LDADD = \
     -ltetengo.text \
+    -ltetengo.platform_dependent.cpp \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_text_DEPENDENCIES = \
-    ${top_builddir}/library/text/c/src/libtetengo.text.la
+    ${top_builddir}/library/text/c/src/libtetengo.text.la \
+    ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.noinst.la
 test_tetengo_text_SOURCES = ${sources}
 
 TESTS = ${check_PROGRAMS}

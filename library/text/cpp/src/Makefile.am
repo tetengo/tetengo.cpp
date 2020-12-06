@@ -2,9 +2,14 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 headers = \
+    tetengo.text.encoding.unicode_encoding.hpp \
     tetengo.text.grapheme_splitting.character_property_map.hpp
 
 sources = \
+    tetengo.text.encoding.cp932.cpp \
+    tetengo.text.encoding.unicode_encoding.cpp \
+    tetengo.text.encoding.utf16.cpp \
+    tetengo.text.encoding.utf8.cpp \
     tetengo.text.grapheme_splitter.cpp \
     tetengo.text.grapheme_splitting.character_property_map.cpp \
     tetengo.text.grapheme_splitting.character_width.cpp \
@@ -15,7 +20,8 @@ sources = \
 lib_LIBRARIES = libtetengo.text.cpp.a
 
 libtetengo_text_cpp_a_CPPFLAGS = \
-    -I${top_srcdir}/library/text/cpp/include
+    -I${top_srcdir}/library/text/cpp/include \
+    -I${top_srcdir}/library/platform_dependent/cpp/include
 libtetengo_text_cpp_a_SOURCES = ${headers} ${sources}
 
 noinst_LTLIBRARIES = libtetengo.text.noinst.la

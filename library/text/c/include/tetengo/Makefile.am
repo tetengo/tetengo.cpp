@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    text/encoder.h \
     text/graphemeSplitter.h
 
 extra_headers =
@@ -30,7 +31,7 @@ clean-iwyu:
 clean-local: clean-iwyu
 
 
-format: ${addsuffix .formatout, ${headers} ${sources}}
+format: ${addsuffix .formatout, ${pkg_headers} ${extra_headers}}
 
 %.formatout: %
 	${top_srcdir}/tools/call_clang-format.sh $< || true

@@ -17,7 +17,7 @@ extern "C" {
 #if !defined(DOCUMENTATION)
 #if !defined(TYPEDEF_TETENGO_JSON_ELEMENT_T)
 #define TYPEDEF_TETENGO_JSON_ELEMENT_T
-typedef struct tetengo_json_element_tag    tetengo_json_element_t;
+typedef struct tetengo_json_element_tag tetengo_json_element_t;
 #endif
 #if !defined(TYPEDEF_TETENGO_JSON_JSONPARSER_T)
 #define TYPEDEF_TETENGO_JSON_JSONPARSER_T
@@ -25,7 +25,7 @@ typedef struct tetengo_json_jsonParser_tag tetengo_json_jsonParser_t;
 #endif
 #if !defined(TYPEDEF_TETENGO_JSON_READER_T)
 #define TYPEDEF_TETENGO_JSON_READER_T
-typedef struct tetengo_json_reader_tag     tetengo_json_reader_t;
+typedef struct tetengo_json_reader_tag tetengo_json_reader_t;
 #endif
 #endif
 

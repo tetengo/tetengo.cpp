@@ -90,21 +90,42 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="include\tetengo\text\0namespace.dox" />
     <None Include="include\tetengo\text\grapheme_splitting\0namespace.dox" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\text\encoder.hpp" />
+    <ClInclude Include="include\tetengo\text\encoding\cp932.hpp" />
+    <ClInclude Include="include\tetengo\text\encoding\utf16.hpp" />
+    <ClInclude Include="include\tetengo\text\encoding\utf8.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitter.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\character_width.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\default_characterX.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\east_asian_characX.hpp" />
     <ClInclude Include="include\tetengo\text\grapheme_splitting\grapheme_segment.hpp" />
+    <ClInclude Include="src\tetengo.text.encoding.unicode_encoding.hpp" />
     <ClInclude Include="src\tetengo.text.grapheme_splitting.character_property_map.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +133,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.text.encoding.cp932.cpp" />
+    <ClCompile Include="src\tetengo.text.encoding.unicode_encoding.cpp" />
+    <ClCompile Include="src\tetengo.text.encoding.utf16.cpp" />
+    <ClCompile Include="src\tetengo.text.encoding.utf8.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitter.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.character_property_map.cpp" />
     <ClCompile Include="src\tetengo.text.grapheme_splitting.character_width.cpp" />

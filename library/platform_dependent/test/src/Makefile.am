@@ -17,7 +17,7 @@ test_tetengo_platform_dependent_LDADD = \
     -ltetengo.platform_dependent.cpp \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_platform_dependent_DEPENDENCIES = \
-    ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.cpp.a
+    ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.noinst.la
 test_tetengo_platform_dependent_SOURCES = ${sources}
 
 TESTS = ${check_PROGRAMS}

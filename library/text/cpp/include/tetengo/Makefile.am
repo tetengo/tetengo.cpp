@@ -2,6 +2,10 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    text/encoder.hpp \
+    text/encoding/cp932.hpp \
+    text/encoding/utf16.hpp \
+    text/encoding/utf8.hpp \
     text/grapheme_splitter.hpp \
     text/grapheme_splitting/character_width.hpp \
     text/grapheme_splitting/default_characterX.hpp \
@@ -35,7 +39,7 @@ clean-iwyu:
 clean-local: clean-iwyu
 
 
-format: ${addsuffix .formatout, ${headers} ${sources}}
+format: ${addsuffix .formatout, ${pkg_headers} ${extra_headers}}
 
 %.formatout: %
 	${top_srcdir}/tools/call_clang-format.sh $< || true
