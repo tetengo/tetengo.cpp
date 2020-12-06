@@ -13,6 +13,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/text/encoder.h>
 #include <tetengo/text/encoder.hpp>
 #include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
 #include <tetengo/text/encoding/utf16.hpp> // IWYU pragma: keep
@@ -194,6 +195,23 @@ BOOST_AUTO_TEST_CASE(instance)
     }
     {
         [[maybe_unused]] const auto& encoder = tetengo::text::encoder<tetengo::text::encoding::cp932>::instance();
+    }
+
+    {
+        const auto* const p_encoder = tetengo_text_encoder_instance(tetengo_text_encoder_encoding_utf8);
+        BOOST_TEST(p_encoder);
+    }
+    {
+        const auto* const p_encoder = tetengo_text_encoder_instance(tetengo_text_encoder_encoding_utf16);
+        BOOST_TEST(p_encoder);
+    }
+    {
+        const auto* const p_encoder = tetengo_text_encoder_instance(tetengo_text_encoder_encoding_cp932);
+        BOOST_TEST(p_encoder);
+    }
+    {
+        const auto* const p_encoder = tetengo_text_encoder_instance(static_cast<tetengo_text_encoder_encoding_t>(-1));
+        BOOST_TEST(!p_encoder);
     }
 }
 

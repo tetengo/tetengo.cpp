@@ -34,7 +34,7 @@ typedef enum tetengo_text_encoder_encoding_tag
 
     \param encoding An encoding.
 
-    \return A pointer to the instance.
+    \return A pointer to the instance. Or NULL when encoding is invalid.
 */
 const tetengo_text_encoder_t* tetengo_text_encoder_instance(tetengo_text_encoder_encoding_t encoding);
 
