@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    text/encoder.hpp \
     text/encoding/cp932.hpp \
     text/encoding/utf16.hpp \
     text/encoding/utf8.hpp \

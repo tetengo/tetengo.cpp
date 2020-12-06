@@ -61,6 +61,9 @@
     <ClInclude Include="include\tetengo\text\encoding\utf16.hpp">
       <Filter>header\tetengo::text\encoding</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\text\encoder.hpp">
+      <Filter>header\tetengo::text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">

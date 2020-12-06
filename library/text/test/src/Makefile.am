@@ -5,6 +5,7 @@ headers =
 
 sources = \
     master.cpp \
+    test_tetengo.text.encoder.cpp \
     test_tetengo.text.encoding.cp932.cpp \
     test_tetengo.text.encoding.utf16.cpp \
     test_tetengo.text.encoding.utf8.cpp \

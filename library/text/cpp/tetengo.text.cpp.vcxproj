@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\text\encoder.hpp" />
     <ClInclude Include="include\tetengo\text\encoding\cp932.hpp" />
     <ClInclude Include="include\tetengo\text\encoding\utf16.hpp" />
     <ClInclude Include="include\tetengo\text\encoding\utf8.hpp" />
