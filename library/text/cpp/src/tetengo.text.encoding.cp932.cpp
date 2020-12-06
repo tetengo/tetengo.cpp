@@ -23,6 +23,8 @@ namespace tetengo::text::encoding
 
         using encoded_string_type = typename cp932::encoded_string_type;
 
+        using encoded_string_view_type = typename cp932::encoded_string_view_type;
+
 
         // static functions
 
@@ -40,7 +42,7 @@ namespace tetengo::text::encoding
             return tetengo::platform_dependent::text_encoder::instance().encode_to_cp932(utf8);
         }
 
-        std::string decode(const encoded_string_type& string_) const
+        std::string decode(const encoded_string_view_type& string_) const
         {
             return tetengo::platform_dependent::text_encoder::instance().decode_from_cp932(string_);
         }
@@ -59,7 +61,7 @@ namespace tetengo::text::encoding
         return m_p_impl->encode(utf8);
     }
 
-    std::string cp932::decode(const encoded_string_type& string_) const
+    std::string cp932::decode(const encoded_string_view_type& string_) const
     {
         return m_p_impl->decode(string_);
     }

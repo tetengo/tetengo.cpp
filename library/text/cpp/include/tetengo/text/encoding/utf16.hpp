@@ -27,6 +27,9 @@ namespace tetengo::text::encoding
         //! The encoded string type.
         using encoded_string_type = std::u16string;
 
+        //! The encoded string view type.
+        using encoded_string_view_type = std::u16string_view;
+
 
         // static functions
 
@@ -64,7 +67,7 @@ namespace tetengo::text::encoding
 
             \return A decoded string.
         */
-        [[nodiscard]] std::string decode(const encoded_string_type& string_) const;
+        [[nodiscard]] std::string decode(const encoded_string_view_type& string_) const;
 
 
     private:

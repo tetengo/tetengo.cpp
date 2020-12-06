@@ -25,6 +25,8 @@ namespace tetengo::text::encoding
 
         using encoded_string_type = typename utf16::encoded_string_type;
 
+        using encoded_string_view_type = typename utf16::encoded_string_view_type;
+
 
         // static functions
 
@@ -43,7 +45,7 @@ namespace tetengo::text::encoding
                 unicode_encoding::instance().utf8_to_code_points(utf8).first);
         }
 
-        std::string decode(const encoded_string_type& string_) const
+        std::string decode(const encoded_string_view_type& string_) const
         {
             return unicode_encoding::instance().code_points_to_utf8(
                 unicode_encoding::instance().utf16_to_code_points(string_).first);
@@ -63,7 +65,7 @@ namespace tetengo::text::encoding
         return m_p_impl->encode(utf8);
     }
 
-    std::string utf16::decode(const encoded_string_type& string_) const
+    std::string utf16::decode(const encoded_string_view_type& string_) const
     {
         return m_p_impl->decode(string_);
     }
