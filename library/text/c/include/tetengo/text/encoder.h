@@ -7,6 +7,8 @@
 #if !defined(TETENGO_TEXT_ENCODER_H)
 #define TETENGO_TEXT_ENCODER_H
 
+#include <stddef.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -37,6 +39,25 @@ typedef enum tetengo_text_encoder_encoding_tag
     \return A pointer to the instance. Or NULL when encoding is invalid.
 */
 const tetengo_text_encoder_t* tetengo_text_encoder_instance(tetengo_text_encoder_encoding_t encoding);
+
+/*!
+    \brief Encodes a string.
+
+    When encoding to UTF-16, cast unsigned short[] to char* for encoded_string and the unit of encoded_string_capacity
+    and the return value is an unsigned short character.
+
+    \param p_encoder               A pointer to an encoder.
+    \param string                  A string.
+    \param encoded_string          The storage for an encoded string. Can be NULL.
+    \param encoded_string_capacity The capacity of encoded_string including a terminator '\0'.
+
+    \return The length of encoded string. Or 0 when p_encoder is NULL or string is NULL.
+*/
+size_t tetengo_text_encoder_encode(
+    const tetengo_text_encoder_t* p_encoder,
+    const char*                   string,
+    char*                         encoded_string,
+    size_t                        encoded_string_capacity);
 
 
 #if defined(__cplusplus)

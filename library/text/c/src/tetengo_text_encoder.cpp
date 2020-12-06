@@ -4,7 +4,13 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
+#include <cassert>
+#include <cstddef>
+#include <iterator>
 #include <stdexcept>
+#include <string>
+#include <string_view>
 
 #include <tetengo/text/encoder.h>
 #include <tetengo/text/encoder.hpp>
@@ -58,5 +64,80 @@ const tetengo_text_encoder_t* tetengo_text_encoder_instance(const tetengo_text_e
     catch (...)
     {
         return nullptr;
+    }
+}
+
+namespace
+{
+    template <typename FromString, typename ToChar>
+    void copy_string(const FromString& from, ToChar* const to, std::size_t to_capacity)
+    {
+        if (!to || to_capacity == 0)
+        {
+            return;
+        }
+
+        const auto length_to_copy = std::min(from.length(), to_capacity);
+        std::copy(std::begin(from), std::next(std::begin(from), length_to_copy), to);
+        if (from.length() < to_capacity)
+        {
+            to[from.length()] = 0;
+        }
+    }
+
+}
+
+size_t tetengo_text_encoder_encode(
+    const tetengo_text_encoder_t* const p_encoder,
+    const char* const                   string,
+    char* const                         encoded_string,
+    const size_t                        encoded_string_capacity)
+{
+    try
+    {
+        if (!p_encoder)
+        {
+            throw std::invalid_argument{ "p_encoder is NULL." };
+        }
+        if (!string)
+        {
+            throw std::invalid_argument{ "string is NULL." };
+        }
+
+        switch (p_encoder->encoding)
+        {
+        case tetengo_text_encoder_encoding_utf8:
+        {
+            const auto& encoder =
+                dynamic_cast<const tetengo::text::encoder<tetengo::text::encoding::utf8>&>(p_encoder->cpp_encoder);
+            const auto encoded = encoder.encode(string);
+            copy_string(encoded, encoded_string, encoded_string_capacity);
+            return encoded.length();
+        }
+        case tetengo_text_encoder_encoding_utf16:
+        {
+            const auto& encoder =
+                dynamic_cast<const tetengo::text::encoder<tetengo::text::encoding::utf16>&>(p_encoder->cpp_encoder);
+            const auto encoded = encoder.encode(string);
+            static_assert(sizeof(char16_t) == sizeof(unsigned short));
+            copy_string(encoded, reinterpret_cast<unsigned short*>(encoded_string), encoded_string_capacity);
+            return encoded.length();
+        }
+        case tetengo_text_encoder_encoding_cp932:
+        {
+            const auto& encoder =
+                dynamic_cast<const tetengo::text::encoder<tetengo::text::encoding::cp932>&>(p_encoder->cpp_encoder);
+            const auto encoded = encoder.encode(string);
+            copy_string(encoded, encoded_string, encoded_string_capacity);
+            return encoded.length();
+        }
+        default:
+            assert(false);
+            throw std::logic_error{ "Invalid encoding." };
+        }
+    }
+    catch (...)
+    {
+        return 0;
     }
 }
