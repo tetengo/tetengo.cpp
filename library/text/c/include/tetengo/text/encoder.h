@@ -59,6 +59,24 @@ size_t tetengo_text_encoder_encode(
     char*                         encoded_string,
     size_t                        encoded_string_capacity);
 
+/*!
+    \brief Decodes a string.
+
+    When decoding from UTF-16, cast unsigned short[] to char* for encoded_string.
+
+    \param p_encoder       A pointer to an encoder.
+    \param encoded_string  An encoded string.
+    \param string          The storage for a string. Can be NULL.
+    \param string_capacity The capacity of string including a terminator '\0'.
+
+    \return The length of decoded string. Or 0 when p_encoder is NULL or string is NULL.
+*/
+size_t tetengo_text_encoder_decode(
+    const tetengo_text_encoder_t* p_encoder,
+    const char*                   encoded_string,
+    char*                         string,
+    size_t                        string_capacity);
+
 
 #if defined(__cplusplus)
 }

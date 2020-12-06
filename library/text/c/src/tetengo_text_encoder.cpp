@@ -141,3 +141,58 @@ size_t tetengo_text_encoder_encode(
         return 0;
     }
 }
+
+size_t tetengo_text_encoder_decode(
+    const tetengo_text_encoder_t* const p_encoder,
+    const char* const                   encoded_string,
+    char* const                         string,
+    const size_t                        string_capacity)
+{
+    try
+    {
+        if (!p_encoder)
+        {
+            throw std::invalid_argument{ "p_encoder is NULL." };
+        }
+        if (!encoded_string)
+        {
+            throw std::invalid_argument{ "encoded_string is NULL." };
+        }
+
+        switch (p_encoder->encoding)
+        {
+        case tetengo_text_encoder_encoding_utf8:
+        {
+            const auto& encoder =
+                dynamic_cast<const tetengo::text::encoder<tetengo::text::encoding::utf8>&>(p_encoder->cpp_encoder);
+            const auto decoded = encoder.decode(encoded_string);
+            copy_string(decoded, string, string_capacity);
+            return decoded.length();
+        }
+        case tetengo_text_encoder_encoding_utf16:
+        {
+            const auto& encoder =
+                dynamic_cast<const tetengo::text::encoder<tetengo::text::encoding::utf16>&>(p_encoder->cpp_encoder);
+            static_assert(sizeof(char16_t) == sizeof(unsigned short));
+            const auto decoded = encoder.decode(reinterpret_cast<const char16_t*>(encoded_string));
+            copy_string(decoded, string, string_capacity);
+            return decoded.length();
+        }
+        case tetengo_text_encoder_encoding_cp932:
+        {
+            const auto& encoder =
+                dynamic_cast<const tetengo::text::encoder<tetengo::text::encoding::cp932>&>(p_encoder->cpp_encoder);
+            const auto decoded = encoder.decode(encoded_string);
+            copy_string(decoded, string, string_capacity);
+            return decoded.length();
+        }
+        default:
+            assert(false);
+            throw std::logic_error{ "Invalid encoding." };
+        }
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
