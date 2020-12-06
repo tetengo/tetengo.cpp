@@ -13,12 +13,29 @@
 namespace tetengo::text
 {
     /*!
+        \brief An encoder base.
+    */
+    class encoder_base : private boost::noncopyable
+    {
+    public:
+        // constructors and destructor
+
+        /*!
+            \brief Destroys the encoder base.
+        */
+        virtual ~encoder_base() = 0;
+    };
+
+    encoder_base::~encoder_base() = default;
+
+
+    /*!
         \brief An encoder.
 
         \tparam Encoding An encoding type.
     */
     template <typename Encoding>
-    class encoder : private boost::noncopyable
+    class encoder : public encoder_base
     {
     public:
         // types
@@ -51,6 +68,14 @@ namespace tetengo::text
             static const encoder singleton{};
             return singleton;
         }
+
+
+        // constructors and destructor
+
+        /*!
+            \brief Destroys the encoder.
+        */
+        virtual ~encoder() = default;
 
 
         // functions

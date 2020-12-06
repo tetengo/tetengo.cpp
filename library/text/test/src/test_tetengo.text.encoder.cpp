@@ -21,6 +21,10 @@
 
 namespace
 {
+    class concrete_encoder : public tetengo::text::encoder_base
+    {};
+
+
     constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
@@ -163,6 +167,18 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(text)
+BOOST_AUTO_TEST_SUITE(encoder_base)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_encoder encoder{};
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(encoder)
 
 
