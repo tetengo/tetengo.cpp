@@ -15,7 +15,7 @@
 
 int main(const int argc, char** const argv)
 {
-    setlocale(LC_CTYPE, "");
+    setlocale(LC_ALL, "");
 
     if (argc <= 1)
     {

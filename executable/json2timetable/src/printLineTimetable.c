@@ -13,6 +13,8 @@
 
 #include <tetengo/text/graphemeSplitter.h>
 
+#include "encode.h"
+
 
 typedef struct grapheme_tag
 {
@@ -22,7 +24,9 @@ typedef struct grapheme_tag
 
 static void print_title(const timetable_t* const p_timetable)
 {
-    printf("%s\n", timetable_title(p_timetable));
+    const char* const encoded = create_encoded_for_print(timetable_title(p_timetable));
+    printf("%s\n", encoded);
+    free((void*)encoded);
 }
 
 static size_t max_station_name_width(const grapheme_t* const p_station_name_graphemes, const size_t station_count)
@@ -288,7 +292,9 @@ static void print_train_names(const timetable_t* const p_timetable, const size_t
         for (i = 0; i < timetable_trainCount(p_timetable); ++i)
         {
             const char* const display_name = create_train_display_name(timetable_trainNameAt(p_timetable, i));
-            printf("%4s|", display_name);
+            const char* const encoded = create_encoded_for_print(display_name);
+            printf("%4s|", encoded);
+            free((void*)encoded);
             free((void*)display_name);
         }
     }
@@ -318,7 +324,9 @@ static void print_station_name_and_train_times(
         for (i = 0; i < station_count; ++i)
         {
             {
-                printf("|%s|", p_station_display_names[i]);
+                const char* const encoded = create_encoded_for_print(p_station_display_names[i]);
+                printf("|%s|", encoded);
+                free((void*)encoded);
             }
             {
                 size_t j = 0;

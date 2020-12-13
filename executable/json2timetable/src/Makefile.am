@@ -3,6 +3,7 @@
 
 headers = \
     arrayList.h \
+    encode.h \
     loadTimetable.h \
     printLineTimetable.h \
     printStationTimetable.h \
@@ -10,6 +11,7 @@ headers = \
 
 sources = \
     arrayList.c \
+    encode.c \
     loadTimetable.c \
     main.c \
     printLineTimetable.c \
