@@ -28,7 +28,7 @@ typedef enum tetengo_text_encoder_encoding_tag
 {
     tetengo_text_encoder_encoding_utf8, /*!< UTF-8 */
     tetengo_text_encoder_encoding_utf16, /*!< UTF-16 */
-    tetengo_text_encoder_encoding_cp932, /*!< CP932 */
+    tetengo_text_encoder_encoding_cp932 /*!< CP932 */
 } tetengo_text_encoder_encoding_t;
 
 /*!

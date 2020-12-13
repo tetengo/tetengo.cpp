@@ -28,6 +28,9 @@
     <ClCompile Include="src\printStationTimetable.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\encode.c">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h">
@@ -46,6 +49,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\printStationTimetable.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\encode.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

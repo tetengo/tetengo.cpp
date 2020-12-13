@@ -120,6 +120,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\arrayList.c" />
+    <ClCompile Include="src\encode.c" />
     <ClCompile Include="src\loadTimetable.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\printLineTimetable.c" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\precompiled\precompiled.h" />
     <ClInclude Include="src\arrayList.h" />
+    <ClInclude Include="src\encode.h" />
     <ClInclude Include="src\loadTimetable.h" />
     <ClInclude Include="src\printLineTimetable.h" />
     <ClInclude Include="src\printStationTimetable.h" />
