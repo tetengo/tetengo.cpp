@@ -14,17 +14,20 @@
 #include <tetengo/text/graphemeSplitter.h>
 
 #include "arrayList.h"
+#include "encode.h"
 #include "timetable.h"
 
 
 static const char* create_departure(const size_t minute, const char* const destination_initial)
 {
-    char* const p_departure = malloc((2 + strlen(destination_initial) + 1) * sizeof(char));
+    const char* const encoded = create_encoded_for_print(destination_initial);
+    char* const       p_departure = malloc((2 + strlen(encoded) + 1) * sizeof(char));
     if (!p_departure)
     {
         return NULL;
     }
-    sprintf(p_departure, "%02u%s", (unsigned int)minute, destination_initial);
+    sprintf(p_departure, "%02u%s", (unsigned int)minute, encoded);
+    free((void*)encoded);
     return p_departure;
 }
 
@@ -235,7 +238,9 @@ static size_t calculate_max_departure_width(const arrayList_t* const p_departure
 
 static void print_title(const timetable_t* const p_timetable, const size_t station_index)
 {
-    printf("%s\n", timetable_stationAt(p_timetable, station_index));
+    const char* const encoded = create_encoded_for_print(timetable_stationAt(p_timetable, station_index));
+    printf("%s\n", encoded);
+    free((void*)encoded);
 }
 
 static void print_horizontal_line(const size_t max_departure_width)
@@ -266,7 +271,9 @@ static void print_table(const arrayList_t* const p_departure_lists, const size_t
                 size_t j = 0;
                 for (j = 0; j < arrayList_size(p_departure_list); ++j)
                 {
-                    printf(" %s", (const char*)arrayList_at(p_departure_list, j));
+                    const char* const encoded = create_encoded_for_print(arrayList_at(p_departure_list, j));
+                    printf(" %s", encoded);
+                    free((void*)encoded);
                 }
             }
             {

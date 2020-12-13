@@ -16,6 +16,7 @@
 #include <tetengo/json/reader.h>
 
 #include "arrayList.h"
+#include "encode.h"
 #include "timetable.h"
 
 
@@ -451,7 +452,9 @@ timetable_t* load_timetable(const char* const timetable_file_path)
             timetable_file_path, tetengo_json_reader_streamReaderDefaultBufferCapacity());
         if (!p_reader)
         {
-            fprintf(stderr, "Can't open: %s\n", timetable_file_path);
+            const char* const encoded = create_encoded_for_print(timetable_file_path);
+            fprintf(stderr, "Can't open: %s\n", encoded);
+            free((void*)encoded);
             return NULL;
         }
 
