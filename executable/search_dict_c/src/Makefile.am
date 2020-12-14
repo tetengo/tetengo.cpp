@@ -9,10 +9,13 @@ sources = \
 bin_PROGRAMS = search_dict_c
 
 search_dict_c_CPPFLAGS = \
+    -I${top_srcdir}/library/text/c/include \
     -I${top_srcdir}/library/trie/c/include
 search_dict_c_LDFLAGS = \
+    -L${top_builddir}/library/text/c/src \
     -L${top_builddir}/library/trie/c/src
 search_dict_c_LDADD = \
+    -ltetengo.text \
     -ltetengo.trie
 search_dict_c_SOURCES = ${sources}
 

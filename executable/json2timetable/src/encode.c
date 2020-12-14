@@ -27,7 +27,7 @@ static tetengo_text_encoder_encoding_t select_encoding()
     }
 }
 
-const char* create_encoded_for_print(const char* string)
+const char* create_encoded_for_print(const char* const string)
 {
     const tetengo_text_encoder_t* const p_encoder = tetengo_text_encoder_instance(select_encoding());
 
