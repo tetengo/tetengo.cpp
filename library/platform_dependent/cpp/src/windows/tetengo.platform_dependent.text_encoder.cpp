@@ -56,7 +56,7 @@ namespace tetengo::platform_dependent
         {
             const auto wide_length = ::MultiByteToWideChar(
                 code_page, 0, std::data(multibyte), static_cast<int>(multibyte.length()), nullptr, 0);
-            if (wide_length == 0)
+            if (multibyte.length() > 0 && wide_length == 0)
             {
                 throw std::invalid_argument{ "Invalid multibyte string." };
             }
@@ -82,7 +82,7 @@ namespace tetengo::platform_dependent
                 0,
                 replacement_for_inconvertible,
                 nullptr);
-            if (multibyte_length == 0)
+            if (wide.length() > 0 && multibyte_length == 0)
             {
                 throw std::invalid_argument{ "Invalid wide string." };
             }

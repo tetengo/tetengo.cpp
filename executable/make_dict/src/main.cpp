@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
+#include <clocale>
 #include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <exception>
@@ -15,6 +16,7 @@
 #include <iostream>
 #include <iterator>
 #include <limits>
+#include <locale>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -26,6 +28,9 @@
 
 #include <boost/format.hpp>
 
+#include <tetengo/text/encoder.hpp>
+#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>
@@ -33,6 +38,19 @@
 
 namespace
 {
+    std::string encode_for_print(const std::string_view& string_)
+    {
+        const char* const locale_name = std::setlocale(LC_CTYPE, nullptr);
+        if (locale_name && std::string_view{ locale_name } == "Japanese_Japan.932")
+        {
+            return tetengo::text::encoder<tetengo::text::encoding::cp932>::instance().encode(string_);
+        }
+        else
+        {
+            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_) };
+        }
+    }
+
     std::vector<std::string_view> split(const std::string_view& string, const char delimiter)
     {
         std::vector<std::string_view> elements{};
@@ -122,7 +140,7 @@ namespace
             const auto elements = split(line, ',');
             if (std::size(elements) != 33)
             {
-                std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \n" << std::flush;
+                std::cerr << boost::format{ "%8d: %s" } % i % encode_for_print(elements[0]) << "    \n" << std::flush;
                 throw std::runtime_error{ "Invalid UniDic lex.csv format." };
             }
 
@@ -138,7 +156,7 @@ namespace
 
             if (i % 10000 == 0)
             {
-                std::cerr << boost::format{ "%8d: %s" } % i % elements[0] << "    \r" << std::flush;
+                std::cerr << boost::format{ "%8d: %s" } % i % encode_for_print(elements[0]) << "    \r" << std::flush;
             }
 
             line_head += line.length() + 1;
@@ -157,7 +175,7 @@ namespace
         {
             if (m_index % 10000 == 0)
             {
-                std::cerr << boost::format{ "%8d: %s" } % m_index % key << "    \r" << std::flush;
+                std::cerr << boost::format{ "%8d: %s" } % m_index % encode_for_print(key) << "    \r" << std::flush;
             }
             ++m_index;
         }
@@ -245,17 +263,18 @@ namespace
         std::cerr << "Done.        " << std::endl;
     }
 
-
 }
 
 
 int main(const int argc, char** const argv)
 {
+    std::locale::global(std::locale{ "Japanese" });
+
     try
     {
         if (argc <= 2)
         {
-            std::cout << "Usage: make_dict UniDic_lex.csv trie.bin" << std::endl;
+            std::cerr << "Usage: make_dict UniDic_lex.csv trie.bin" << std::endl;
             return 0;
         }
 

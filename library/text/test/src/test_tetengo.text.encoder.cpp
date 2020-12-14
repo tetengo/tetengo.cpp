@@ -9,6 +9,7 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -238,6 +239,10 @@ BOOST_AUTO_TEST_CASE(encode)
             const auto encoded = encoder.encode(string4_utf8);
             BOOST_TEST(encoded == string4_utf8);
         }
+        {
+            const auto encoded = encoder.encode("");
+            BOOST_TEST(std::empty(encoded));
+        }
     }
     {
         const auto& encoder = tetengo::text::encoder<tetengo::text::encoding::utf16>::instance();
@@ -256,6 +261,10 @@ BOOST_AUTO_TEST_CASE(encode)
         {
             const auto encoded = encoder.encode(string4_utf8);
             BOOST_CHECK(encoded == string4_utf16);
+        }
+        {
+            const auto encoded = encoder.encode("");
+            BOOST_TEST(std::empty(encoded));
         }
     }
     {
@@ -277,6 +286,10 @@ BOOST_AUTO_TEST_CASE(encode)
             const auto       encoded = encoder.encode(string4_utf8);
             const std::regex regex_{ pattern4_cp932 };
             BOOST_TEST(std::regex_match(std::string{ encoded }, regex_));
+        }
+        {
+            const auto encoded = encoder.encode("");
+            BOOST_TEST(std::empty(encoded));
         }
     }
 
@@ -318,6 +331,10 @@ BOOST_AUTO_TEST_CASE(encode)
             BOOST_TEST(encoded_length == encoded_length_again);
             const std::string encoded_string{ std::data(encoded), std::next(std::data(encoded), encoded_length) };
             BOOST_TEST(encoded_string == string4_utf8);
+        }
+        {
+            const auto encoded_length = tetengo_text_encoder_encode(p_encoder, "", nullptr, 0);
+            BOOST_TEST(encoded_length == 0U);
         }
         {
             const auto encoded_length = tetengo_text_encoder_encode(p_encoder, nullptr, nullptr, 0);
@@ -362,6 +379,10 @@ BOOST_AUTO_TEST_CASE(encode)
             BOOST_TEST(encoded_length == encoded_length_again);
             const std::u16string encoded_string{ std::data(encoded), std::next(std::data(encoded), encoded_length) };
             BOOST_CHECK(encoded_string == string4_utf16);
+        }
+        {
+            const auto encoded_length = tetengo_text_encoder_encode(p_encoder, "", nullptr, 0);
+            BOOST_TEST(encoded_length == 0U);
         }
         {
             const auto encoded_length = tetengo_text_encoder_encode(p_encoder, nullptr, nullptr, 0);
@@ -410,6 +431,10 @@ BOOST_AUTO_TEST_CASE(encode)
             BOOST_TEST(std::regex_match(encoded_string, regex_));
         }
         {
+            const auto encoded_length = tetengo_text_encoder_encode(p_encoder, "", nullptr, 0);
+            BOOST_TEST(encoded_length == 0U);
+        }
+        {
             const auto encoded_length = tetengo_text_encoder_encode(p_encoder, nullptr, nullptr, 0);
             BOOST_TEST(encoded_length == 0U);
         }
@@ -442,6 +467,10 @@ BOOST_AUTO_TEST_CASE(decode)
             const auto decoded = encoder.decode(string4_utf8);
             BOOST_TEST(decoded == string4_utf8);
         }
+        {
+            const auto decoded = encoder.decode("");
+            BOOST_TEST(std::empty(decoded));
+        }
     }
     {
         const auto& encoder = tetengo::text::encoder<tetengo::text::encoding::utf16>::instance();
@@ -461,6 +490,10 @@ BOOST_AUTO_TEST_CASE(decode)
             const auto decoded = encoder.decode(string5_utf16);
             BOOST_TEST(decoded == string5_utf8);
         }
+        {
+            const auto decoded = encoder.decode(u"");
+            BOOST_TEST(std::empty(decoded));
+        }
     }
     {
         const auto& encoder = tetengo::text::encoder<tetengo::text::encoding::cp932>::instance();
@@ -471,6 +504,10 @@ BOOST_AUTO_TEST_CASE(decode)
         {
             const auto decoded = encoder.decode(string2_cp932);
             BOOST_TEST(decoded == string2_utf8);
+        }
+        {
+            const auto decoded = encoder.decode("");
+            BOOST_TEST(std::empty(decoded));
         }
     }
 
@@ -512,6 +549,10 @@ BOOST_AUTO_TEST_CASE(decode)
             BOOST_TEST(decoded_length == decoded_length_again);
             const std::string decoded_string{ std::data(decoded), std::next(std::data(decoded), decoded_length) };
             BOOST_TEST(decoded_string == string4_utf8);
+        }
+        {
+            const auto decoded_length = tetengo_text_encoder_decode(p_encoder, "", nullptr, 0);
+            BOOST_TEST(decoded_length == 0U);
         }
         {
             const auto decoded_length = tetengo_text_encoder_decode(p_encoder, nullptr, nullptr, 0);
@@ -574,6 +615,12 @@ BOOST_AUTO_TEST_CASE(decode)
             BOOST_TEST(decoded_string == string5_utf8);
         }
         {
+            static const std::u16string empty{};
+            const auto                  decoded_length =
+                tetengo_text_encoder_decode(p_encoder, reinterpret_cast<const char*>(empty.c_str()), nullptr, 0);
+            BOOST_TEST(decoded_length == 0U);
+        }
+        {
             const auto decoded_length = tetengo_text_encoder_decode(p_encoder, nullptr, nullptr, 0);
             BOOST_TEST(decoded_length == 0U);
         }
@@ -598,6 +645,10 @@ BOOST_AUTO_TEST_CASE(decode)
             BOOST_TEST(decoded_length == decoded_length_again);
             const std::string decoded_string{ std::data(decoded), std::next(std::data(decoded), decoded_length) };
             BOOST_TEST(decoded_string == string2_utf8);
+        }
+        {
+            const auto decoded_length = tetengo_text_encoder_decode(p_encoder, "", nullptr, 0);
+            BOOST_TEST(decoded_length == 0U);
         }
         {
             const auto decoded_length = tetengo_text_encoder_decode(p_encoder, nullptr, nullptr, 0);
