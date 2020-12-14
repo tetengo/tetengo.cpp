@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <iterator>
 #include <map>
 #include <regex>
 #include <sstream>
@@ -140,6 +141,10 @@ BOOST_AUTO_TEST_CASE(encode_to_cp932)
         const std::regex regex_{ pattern4_cp932 };
         BOOST_TEST(std::regex_match(encoded, regex_));
     }
+    {
+        const auto encoded = encoder.encode_to_cp932("");
+        BOOST_TEST(std::empty(encoded));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(decode_from_cp932)
@@ -154,6 +159,10 @@ BOOST_AUTO_TEST_CASE(decode_from_cp932)
     {
         const auto decoded = encoder.decode_from_cp932(string2_cp932);
         BOOST_TEST(decoded == string2_utf8);
+    }
+    {
+        const auto decoded = encoder.decode_from_cp932("");
+        BOOST_TEST(std::empty(decoded));
     }
 }
 

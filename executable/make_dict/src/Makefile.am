@@ -9,10 +9,15 @@ sources = \
 bin_PROGRAMS = make_dict
 
 make_dict_CPPFLAGS = \
+    -I${top_srcdir}/library/text/cpp/include \
     -I${top_srcdir}/library/trie/cpp/include
 make_dict_LDFLAGS = \
+    -L${top_builddir}/library/platform_dependent/cpp/src/unixos \
+    -L${top_builddir}/library/text/cpp/src \
     -L${top_builddir}/library/trie/cpp/src
 make_dict_LDADD = \
+    -ltetengo.text.cpp \
+    -ltetengo.platform_dependent.cpp \
     -ltetengo.trie.cpp
 make_dict_SOURCES = ${sources}
 

@@ -116,7 +116,7 @@ int main(const int argc, char** const argv)
     {
         if (argc <= 2)
         {
-            std::cout << "Usage: search_dict UniDic_lex.csv trie.bin" << std::endl;
+            std::cerr << "Usage: search_dict UniDic_lex.csv trie.bin" << std::endl;
             return 0;
         }
 

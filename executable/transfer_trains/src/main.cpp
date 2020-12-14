@@ -245,7 +245,7 @@ int main(const int argc, char** const argv)
     {
         if (argc <= 1)
         {
-            std::cout << "Usage: transfer_trains timetable.txt" << std::endl;
+            std::cerr << "Usage: transfer_trains timetable.txt" << std::endl;
             return 0;
         }
 

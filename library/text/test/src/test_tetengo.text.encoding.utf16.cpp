@@ -4,6 +4,7 @@
     Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 */
 
+#include <iterator>
 #include <string>
 
 #include <boost/preprocessor.hpp>
@@ -149,6 +150,10 @@ BOOST_AUTO_TEST_CASE(encode)
         const auto encoded = encoding.encode(string4_utf8);
         BOOST_CHECK(encoded == string4_utf16);
     }
+    {
+        const auto encoded = encoding.encode("");
+        BOOST_CHECK(std::empty(encoded));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(decode)
@@ -157,20 +162,24 @@ BOOST_AUTO_TEST_CASE(decode)
 
     const auto& encoding = tetengo::text::encoding::utf16::instance();
     {
-        const auto encoded = encoding.decode(string1_utf16);
-        BOOST_TEST(encoded == string1_utf8);
+        const auto decoded = encoding.decode(string1_utf16);
+        BOOST_TEST(decoded == string1_utf8);
     }
     {
-        const auto encoded = encoding.decode(string2_utf16);
-        BOOST_TEST(encoded == string2_utf8);
+        const auto decoded = encoding.decode(string2_utf16);
+        BOOST_TEST(decoded == string2_utf8);
     }
     {
-        const auto encoded = encoding.decode(string3_utf16);
-        BOOST_TEST(encoded == string3_utf8);
+        const auto decoded = encoding.decode(string3_utf16);
+        BOOST_TEST(decoded == string3_utf8);
     }
     {
-        const auto encoded = encoding.decode(string5_utf16);
-        BOOST_TEST(encoded == string5_utf8);
+        const auto decoded = encoding.decode(string5_utf16);
+        BOOST_TEST(decoded == string5_utf8);
+    }
+    {
+        const auto decoded = encoding.decode(u"");
+        BOOST_TEST(std::empty(decoded));
     }
 }
 
