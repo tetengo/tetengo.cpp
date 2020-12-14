@@ -5,11 +5,13 @@
 */
 
 #include <assert.h>
+#include <locale.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <tetengo/text/encoder.h>
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/trie.h>
 
@@ -175,11 +177,60 @@ static void to_array_of_lex_span(
     }
 }
 
+static tetengo_text_encoder_encoding_t select_encoding()
+{
+    const char* const locale = setlocale(LC_CTYPE, NULL);
+    if (locale && strcmp(locale, "Japanese_Japan.932") == 0)
+    {
+        return tetengo_text_encoder_encoding_cp932;
+    }
+    else
+    {
+        return tetengo_text_encoder_encoding_utf8;
+    }
+}
+
+static const char* create_decoded_from_input(const char* const encoded)
+{
+    const tetengo_text_encoder_t* const p_encoder = tetengo_text_encoder_instance(select_encoding());
+
+    const size_t length = tetengo_text_encoder_decode(p_encoder, encoded, NULL, 0);
+    char* const  decoded = malloc((length + 1) * sizeof(char));
+    if (!decoded)
+    {
+        assert(0);
+        return NULL;
+    }
+    tetengo_text_encoder_decode(p_encoder, encoded, decoded, length + 1);
+    decoded[length] = '\0';
+
+    return decoded;
+}
+
+static const char* create_encoded_for_print(const char* const string)
+{
+    const tetengo_text_encoder_t* const p_encoder = tetengo_text_encoder_instance(select_encoding());
+
+    const size_t length = tetengo_text_encoder_encode(p_encoder, string, NULL, 0);
+    char* const  encoded = malloc((length + 1) * sizeof(char));
+    if (!encoded)
+    {
+        assert(0);
+        return NULL;
+    }
+    tetengo_text_encoder_encode(p_encoder, string, encoded, length + 1);
+    encoded[length] = '\0';
+
+    return encoded;
+}
+
 int main(const int argc, char** const argv)
 {
+    setlocale(LC_ALL, "");
+
     if (argc <= 2)
     {
-        printf("Usage: search_dict_c UniDic_lex.csv trie.bin\n");
+        fprintf(stderr, "Usage: search_dict_c UniDic_lex.csv trie.bin\n");
         return 0;
     }
 
@@ -214,7 +265,9 @@ int main(const int argc, char** const argv)
                     continue;
                 }
                 {
-                    const void* const p_found = tetengo_trie_trie_find(p_trie, key);
+                    const char* const decoded = create_decoded_from_input(key);
+                    const void* const p_found = tetengo_trie_trie_find(p_trie, decoded);
+                    free((void*)decoded);
                     if (!p_found)
                     {
                         printf("ERROR: Not found.\n");
@@ -239,7 +292,18 @@ int main(const int argc, char** const argv)
                             to_array_of_lex_span((const char*)p_found, &byte_offset, p_lex_spans, lex_span_count_);
                             for (i = 0; i < lex_span_count_; ++i)
                             {
-                                printf("%.*s", (unsigned int)p_lex_spans[i].length, &lex_csv[p_lex_spans[i].offset]);
+                                char* const lex = malloc((p_lex_spans[i].length + 1) * sizeof(char));
+                                if (lex)
+                                {
+                                    strncpy(lex, &lex_csv[p_lex_spans[i].offset], p_lex_spans[i].length);
+                                    lex[p_lex_spans[i].length] = '\0';
+                                    {
+                                        const char* const encoded = create_encoded_for_print(lex);
+                                        printf("%s", encoded);
+                                        free((void*)encoded);
+                                    }
+                                    free(lex);
+                                }
                             }
                             free(p_lex_spans);
                         }
