@@ -19,6 +19,10 @@ search_dict_LDADD = \
     -ltetengo.text.cpp \
     -ltetengo.platform_dependent.cpp \
     -ltetengo.trie.cpp
+search_dict_DEPENDENCIES = \
+    ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.noinst.la \
+    ${top_builddir}/library/text/cpp/src/libtetengo.text.noinst.la \
+    ${top_builddir}/library/trie/cpp/src/libtetengo.trie.noinst.la
 search_dict_SOURCES = ${sources}
 
 
