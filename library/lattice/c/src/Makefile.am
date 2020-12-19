@@ -24,6 +24,8 @@ libtetengo_lattice_la_CPPFLAGS = \
     -I${top_srcdir}/library/lattice/cpp/include
 libtetengo_lattice_la_LIBADD = \
     ${top_builddir}/library/lattice/cpp/src/libtetengo.lattice.noinst.la
+libtetengo_lattice_la_DEPENDENCIES = \
+    ${top_builddir}/library/lattice/cpp/src/libtetengo.lattice.noinst.la
 libtetengo_lattice_la_SOURCES = ${headers} ${sources}
 
 EXTRA_DIST = \

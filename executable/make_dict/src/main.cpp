@@ -268,10 +268,10 @@ namespace
 
 int main(const int argc, char** const argv)
 {
-    std::locale::global(std::locale{ "Japanese" });
-
     try
     {
+        std::locale::global(std::locale{ "" });
+
         if (argc <= 2)
         {
             std::cerr << "Usage: make_dict UniDic_lex.csv trie.bin" << std::endl;

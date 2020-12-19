@@ -29,6 +29,9 @@ json2timetable_LDFLAGS = \
 json2timetable_LDADD = \
     -ltetengo.json \
     -ltetengo.text
+json2timetable_DEPENDENCIES = \
+    ${top_builddir}/library/json/c/src/libtetengo.json.la \
+    ${top_builddir}/library/text/c/src/libtetengo.text.la
 json2timetable_SOURCES = ${headers} ${sources}
 
 

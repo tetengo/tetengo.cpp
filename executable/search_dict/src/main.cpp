@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <clocale>
 #include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <exception>
@@ -12,18 +13,48 @@
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <iterator>
+#include <locale>
 #include <memory>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
+#include <tetengo/text/encoder.hpp>
+#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/trie.hpp>
 
 
 namespace
 {
+    std::string decode_from_input(const std::string_view& encoded)
+    {
+        const char* const locale_name = std::setlocale(LC_CTYPE, nullptr);
+        if (locale_name && std::string_view{ locale_name } == "Japanese_Japan.932")
+        {
+            return tetengo::text::encoder<tetengo::text::encoding::cp932>::instance().decode(encoded);
+        }
+        else
+        {
+            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().decode(encoded) };
+        }
+    }
+
+    std::string encode_for_print(const std::string_view& string_)
+    {
+        const char* const locale_name = std::setlocale(LC_CTYPE, nullptr);
+        if (locale_name && std::string_view{ locale_name } == "Japanese_Japan.932")
+        {
+            return tetengo::text::encoder<tetengo::text::encoding::cp932>::instance().encode(string_);
+        }
+        else
+        {
+            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_) };
+        }
+    }
+
     std::string load_lex_csv(const std::filesystem::path& lex_csv_path)
     {
         std::ifstream stream{ lex_csv_path };
@@ -114,6 +145,8 @@ int main(const int argc, char** const argv)
 {
     try
     {
+        std::locale::global(std::locale{ "" });
+
         if (argc <= 2)
         {
             std::cerr << "Usage: search_dict UniDic_lex.csv trie.bin" << std::endl;
@@ -133,16 +166,16 @@ int main(const int argc, char** const argv)
                 continue;
             }
 
-            const auto* const p_found = p_trie->find(key);
+            const auto* const p_found = p_trie->find(decode_from_input(key));
             if (!p_found)
             {
-                std::cout << "ERROR: Not found." << std::endl;
+                std::cout << encode_for_print("ERROR: Not found.") << std::endl;
                 continue;
             }
 
             for (const auto& e: *p_found)
             {
-                std::cout << substring_view(lex_csv, e.first, e.second);
+                std::cout << encode_for_print(substring_view(lex_csv, e.first, e.second));
             }
             std::cout << std::flush;
         }

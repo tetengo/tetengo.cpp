@@ -17,6 +17,9 @@ search_dict_c_LDFLAGS = \
 search_dict_c_LDADD = \
     -ltetengo.text \
     -ltetengo.trie
+search_dict_c_DEPENDENCIES = \
+    ${top_builddir}/library/text/c/src/libtetengo.text.la \
+    ${top_builddir}/library/trie/c/src/libtetengo.trie.la
 search_dict_c_SOURCES = ${sources}
 
 

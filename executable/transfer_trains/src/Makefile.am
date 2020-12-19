@@ -16,6 +16,8 @@ transfer_trains_LDFLAGS = \
     -L${top_builddir}/library/lattice/cpp/src
 transfer_trains_LDADD = \
     -ltetengo.lattice.cpp
+make_dic_DEPENDENCIES = \
+    ${top_builddir}/library/lattice/cpp/src/libtetengo.lattice.noinst.la
 transfer_trains_SOURCES = ${headers} ${sources}
 
 

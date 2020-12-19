@@ -17,6 +17,8 @@ libtetengo_json_la_CPPFLAGS = \
     -I${top_srcdir}/library/json/cpp/include
 libtetengo_json_la_LIBADD = \
     ${top_builddir}/library/json/cpp/src/libtetengo.json.noinst.la
+libtetengo_json_la_DEPENDENCIES = \
+    ${top_builddir}/library/json/cpp/src/libtetengo.json.noinst.la
 libtetengo_json_la_SOURCES = ${headers} ${sources}
 
 EXTRA_DIST = \
