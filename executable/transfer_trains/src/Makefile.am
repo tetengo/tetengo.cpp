@@ -11,13 +11,20 @@ sources = \
 bin_PROGRAMS = transfer_trains
 
 transfer_trains_CPPFLAGS = \
-    -I${top_srcdir}/library/lattice/cpp/include
+    -I${top_srcdir}/library/lattice/cpp/include \
+    -I${top_srcdir}/library/text/cpp/include
 transfer_trains_LDFLAGS = \
-    -L${top_builddir}/library/lattice/cpp/src
+    -L${top_builddir}/library/platform_dependent/cpp/src/unixos \
+    -L${top_builddir}/library/lattice/cpp/src \
+    -L${top_builddir}/library/text/cpp/src
 transfer_trains_LDADD = \
-    -ltetengo.lattice.cpp
-make_dic_DEPENDENCIES = \
-    ${top_builddir}/library/lattice/cpp/src/libtetengo.lattice.noinst.la
+    -ltetengo.lattice.cpp \
+    -ltetengo.text.cpp \
+    -ltetengo.platform_dependent.cpp
+transfer_trains_DEPENDENCIES = \
+    ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.noinst.la \
+    ${top_builddir}/library/lattice/cpp/src/libtetengo.lattice.noinst.la \
+    ${top_builddir}/library/text/cpp/src/libtetengo.text.noinst.la
 transfer_trains_SOURCES = ${headers} ${sources}
 
 

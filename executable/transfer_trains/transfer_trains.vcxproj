@@ -92,22 +92,22 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;$(SolutionDir)library\text\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;$(SolutionDir)library\text\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;$(SolutionDir)library\text\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\lattice\cpp\include;$(SolutionDir)library\text\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -125,6 +125,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\library\lattice\cpp\tetengo.lattice.cpp.vcxproj">
       <Project>{65c6d977-ac51-4e28-8b15-178fbdf69168}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\library\platform_dependent\cpp\tetengo.platform_dependent.cpp.vcxproj">
+      <Project>{3aaea971-dc2b-40d6-830c-b0d6a3368a7a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\library\text\cpp\tetengo.text.cpp.vcxproj">
+      <Project>{be228a1e-25d5-4825-89b4-c3513f1dc559}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,13 +6,16 @@
 
 #include <any>
 #include <cassert>
+#include <clocale>
 #include <cstddef> // IWYU pragma: keep
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <locale>
 #include <memory>
+#include <numeric>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -31,12 +34,42 @@
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.hpp>
 #include <tetengo/lattice/vocabulary.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoder.hpp>
+#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/grapheme_splitter.hpp>
 
 #include "timetable.hpp"
 
 
 namespace
 {
+    std::string decode_from_input(const std::string_view& encoded)
+    {
+        const char* const locale_name = std::setlocale(LC_CTYPE, nullptr);
+        if (locale_name && std::string_view{ locale_name } == "Japanese_Japan.932")
+        {
+            return tetengo::text::encoder<tetengo::text::encoding::cp932>::instance().decode(encoded);
+        }
+        else
+        {
+            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().decode(encoded) };
+        }
+    }
+
+    std::string encode_for_print(const std::string_view& string_)
+    {
+        const char* const locale_name = std::setlocale(LC_CTYPE, nullptr);
+        if (locale_name && std::string_view{ locale_name } == "Japanese_Japan.932")
+        {
+            return tetengo::text::encoder<tetengo::text::encoding::cp932>::instance().encode(string_);
+        }
+        else
+        {
+            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_) };
+        }
+    }
+
     std::unique_ptr<std::istream> create_input_stream(const std::filesystem::path& path)
     {
         auto p_stream = std::make_unique<std::ifstream>(path);
@@ -53,7 +86,7 @@ namespace
         std::string input{};
         std::cin >> input;
 
-        return timetable_.station_index(input);
+        return timetable_.station_index(decode_from_input(input));
     }
 
     std::size_t get_time(const std::string& prompt)
@@ -63,7 +96,7 @@ namespace
         std::cin >> input;
 
         std::vector<std::string> elements{};
-        boost::split(elements, input, boost::is_any_of(":"));
+        boost::split(elements, decode_from_input(input), boost::is_any_of(":"));
         if (std::size(elements) != 2)
         {
             return 1440;
@@ -207,6 +240,27 @@ namespace
         return trips;
     }
 
+    std::string to_fixed_width_train_name(const std::string_view& train_name, const std::size_t width)
+    {
+        const tetengo::text::grapheme_splitter grapheme_splitter_{};
+        const auto                             graphemes = grapheme_splitter_.split(train_name);
+        const auto                             train_name_width = std::accumulate(
+            std::begin(graphemes),
+            std::end(graphemes),
+            static_cast<std::size_t>(0),
+            [](const std::size_t subtotal, const tetengo::text::grapheme& grapheme) {
+                return subtotal + grapheme.width();
+            });
+        if (train_name_width >= width)
+        {
+            return std::string{ train_name };
+        }
+        else
+        {
+            return std::string{ train_name } + std::string(width - train_name_width, ' ');
+        }
+    }
+
     std::string to_time_string(const int time_value)
     {
         assert(0 <= time_value && time_value < 1440);
@@ -223,12 +277,13 @@ namespace
 
             for (const auto& section: trip_.sections)
             {
-                std::cout << boost::format("    %5s %-40s %5s->%5s %s->%s") % section.train_number %
-                                 section.train_name % to_time_string(static_cast<int>(section.departure_time)) %
-                                 to_time_string(static_cast<int>(section.arrival_time)) %
-                                 timetable_.stations()[section.departure_station].name() %
-                                 timetable_.stations()[section.arrival_station].name()
-                          << std::endl;
+                const auto train = boost::format("    %5s %s %5s->%5s %s->%s") % section.train_number %
+                                   to_fixed_width_train_name(section.train_name, 40) %
+                                   to_time_string(static_cast<int>(section.departure_time)) %
+                                   to_time_string(static_cast<int>(section.arrival_time)) %
+                                   timetable_.stations()[section.departure_station].name() %
+                                   timetable_.stations()[section.arrival_station].name();
+                std::cout << encode_for_print(train.str()) << std::endl;
             }
         }
 
@@ -243,6 +298,8 @@ int main(const int argc, char** const argv)
 {
     try
     {
+        std::locale::global(std::locale{ "" });
+
         if (argc <= 1)
         {
             std::cerr << "Usage: transfer_trains timetable.txt" << std::endl;
