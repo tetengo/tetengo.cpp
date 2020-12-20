@@ -4,7 +4,7 @@
 headers =
 
 sources = \
-    tetengo.platform_dependent.text_encoder.cpp
+    tetengo.platform_dependent.textX.cpp
 
 EXTRA_DIST = \
     ${headers} ${sources}

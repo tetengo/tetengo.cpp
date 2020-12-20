@@ -8,7 +8,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/platform_dependent/text_encoder.hpp>
+#include <tetengo/platform_dependent/text_encX.hpp>
 #include <tetengo/text/encoding/cp932.hpp>
 
 

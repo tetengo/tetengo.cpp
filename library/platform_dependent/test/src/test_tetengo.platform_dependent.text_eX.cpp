@@ -14,7 +14,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/platform_dependent/text_encoder.hpp>
+#include <tetengo/platform_dependent/text_encX.hpp>
 
 
 namespace

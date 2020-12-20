@@ -4,7 +4,7 @@
 headers =
 
 sources = \
-    tetengo.platform_dependent.text_encoder.cpp
+    tetengo.platform_dependent.text_X.cpp
 
 lib_LIBRARIES = libtetengo.platform_dependent.cpp.a
 
