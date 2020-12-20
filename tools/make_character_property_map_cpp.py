@@ -96,10 +96,10 @@ def make_cpp_source(elements):
 
 #include <cstddef>
 
-#include "tetengo.text.character_property_map.hpp"
+#include "tetengo.text.grapheme_splitting.character_property_map.hpp"
 
 
-namespace tetengo::text
+namespace tetengo::text::grapheme_splitting
 {
 '''
     content += "    const std::size_t character_property_map_size = {};\n\n".format(len(elements))

@@ -10,10 +10,10 @@
     <ClCompile Include="src\master.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.platform_dependent.text_encoder.cpp">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+    <ClCompile Include="src\test_tetengo.platform_dependent.text_eX.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

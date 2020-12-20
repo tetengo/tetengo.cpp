@@ -25,21 +25,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tetengo\platform_dependent\text_encoder.hpp">
-      <Filter>header\tetengo::platform_dependent</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src\windows</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\platform_dependent\text_encX.hpp">
+      <Filter>header\tetengo::platform_dependent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\unixos\tetengo.platform_dependent.text_encoder.cpp">
-      <Filter>src\unixos</Filter>
-    </ClCompile>
-    <ClCompile Include="src\windows\tetengo.platform_dependent.text_encoder.cpp">
+    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src\windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
+    <ClCompile Include="src\unixos\tetengo.platform_dependent.text_X.cpp">
+      <Filter>src\unixos</Filter>
+    </ClCompile>
+    <ClCompile Include="src\windows\tetengo.platform_dependent.textX.cpp">
       <Filter>src\windows</Filter>
     </ClCompile>
   </ItemGroup>

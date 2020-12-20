@@ -10,4 +10,4 @@ curl http://www.unicode.org/Public/13.0.0/ucd/auxiliary/GraphemeBreakProperty.tx
 
 $TOOLS_DIR/make_character_property_map.py $TOOLS_DIR/EastAsianWidth.txt $TOOLS_DIR/emoji-data.txt $TOOLS_DIR/GraphemeBreakProperty.txt $TOOLS_DIR/character_property_map.txt
 
-$TOOLS_DIR/make_character_property_map_cpp.py $TOOLS_DIR/character_property_map.txt $TOOLS_DIR/../library/text/cpp/src/tetengo.text.character_property_map.cpp
+$TOOLS_DIR/make_character_property_map_cpp.py $TOOLS_DIR/character_property_map.txt $TOOLS_DIR/../library/text/cpp/src/tetengo.text.grapheme_splitting.character_property_map.cpp

@@ -19,7 +19,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/platform_dependent/text_encoder.hpp>
+#include <tetengo/platform_dependent/text_encX.hpp>
 
 
 namespace tetengo::platform_dependent

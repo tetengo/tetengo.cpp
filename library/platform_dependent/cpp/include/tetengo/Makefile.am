@@ -2,7 +2,7 @@
 # Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    platform_dependent/text_encoder.hpp
+    platform_dependent/text_encX.hpp
 
 extra_headers = \
     platform_dependent/0namespace.dox
