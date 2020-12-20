@@ -20,14 +20,16 @@ if not ""%INSTALL_PATH%""=="""" (
     
     echo Installing tetengo...
     
-    xcopy /s /i /f /y "%~dp0"..\library\text\c\include\tetengo\text   %INSTALL_PATH%\include\tetengo\text\
-    xcopy /s /i /f /y "%~dp0"..\library\text\cpp\include\tetengo\text %INSTALL_PATH%\include.cpp\tetengo\text\
-    
     xcopy /s /i /f /y "%~dp0"..\library\json\c\include\tetengo\json   %INSTALL_PATH%\include\tetengo\json\
     xcopy /s /i /f /y "%~dp0"..\library\json\cpp\include\tetengo\json %INSTALL_PATH%\include.cpp\tetengo\json\
     
     xcopy /s /i /f /y "%~dp0"..\library\lattice\c\include\tetengo\lattice   %INSTALL_PATH%\include\tetengo\lattice\
     xcopy /s /i /f /y "%~dp0"..\library\lattice\cpp\include\tetengo\lattice %INSTALL_PATH%\include.cpp\tetengo\lattice\
+    
+    xcopy /s /i /f /y "%~dp0"..\library\platform_dependent\cpp\include\tetengo\platform_dependent %INSTALL_PATH%\include.cpp\tetengo\platform_dependent\
+    
+    xcopy /s /i /f /y "%~dp0"..\library\text\c\include\tetengo\text   %INSTALL_PATH%\include\tetengo\text\
+    xcopy /s /i /f /y "%~dp0"..\library\text\cpp\include\tetengo\text %INSTALL_PATH%\include.cpp\tetengo\text\
     
     xcopy /s /i /f /y "%~dp0"..\library\trie\c\include\tetengo\trie   %INSTALL_PATH%\include\tetengo\trie\
     xcopy /s /i /f /y "%~dp0"..\library\trie\cpp\include\tetengo\trie %INSTALL_PATH%\include.cpp\tetengo\trie\
