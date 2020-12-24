@@ -80,7 +80,6 @@ AC_CONFIG_FILES([
     library/trie/test/src/Makefile
     precompiled/Makefile
     tools/Makefile
-    vsprops/Makefile
     kogyan/Makefile
     kogyan/tools/Makefile
     kogyan/vsprops/Makefile

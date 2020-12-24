@@ -58,35 +58,35 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_Win32.props" />
-    <Import Project="..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\vsprops\application.props" />
+    <Import Project="..\..\kogyan\vsprops\common.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_Win32.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_debug.props" />
+    <Import Project="..\..\kogyan\vsprops\application.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_x64.props" />
-    <Import Project="..\..\vsprops\compilation_debug.props" />
-    <Import Project="..\..\vsprops\application.props" />
+    <Import Project="..\..\kogyan\vsprops\common.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_x64.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_debug.props" />
+    <Import Project="..\..\kogyan\vsprops\application.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.Win32.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_Win32.props" />
-    <Import Project="..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\vsprops\application.props" />
+    <Import Project="..\..\kogyan\vsprops\common.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_Win32.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_release.props" />
+    <Import Project="..\..\kogyan\vsprops\application.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.x64.user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\vsprops\common.props" />
-    <Import Project="..\..\vsprops\compilation.props" />
-    <Import Project="..\..\vsprops\compilation_x64.props" />
-    <Import Project="..\..\vsprops\compilation_release.props" />
-    <Import Project="..\..\vsprops\application.props" />
+    <Import Project="..\..\kogyan\vsprops\common.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_x64.props" />
+    <Import Project="..\..\kogyan\vsprops\compilation_release.props" />
+    <Import Project="..\..\kogyan\vsprops\application.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />

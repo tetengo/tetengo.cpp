@@ -12,7 +12,6 @@ SUBDIRS = \
     docsrc \
     precompiled \
     tools \
-    vsprops \
     kogyan
 
 EXTRA_DIST = \
