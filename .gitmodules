@@ -1,0 +1,3 @@
+[submodule "kogyan"]
+	path = kogyan
+	url = https://github.com/kaorut/kogyan.git

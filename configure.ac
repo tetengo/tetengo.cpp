@@ -81,6 +81,9 @@ AC_CONFIG_FILES([
     precompiled/Makefile
     tools/Makefile
     vsprops/Makefile
+    kogyan/Makefile
+    kogyan/tools/Makefile
+    kogyan/vsprops/Makefile
 ])
 
 AC_LANG([C++])

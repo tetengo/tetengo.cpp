@@ -12,7 +12,8 @@ SUBDIRS = \
     docsrc \
     precompiled \
     tools \
-    vsprops
+    vsprops \
+    kogyan
 
 EXTRA_DIST = \
     bootstrap.sh \
