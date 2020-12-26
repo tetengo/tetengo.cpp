@@ -11,19 +11,9 @@ AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
-    executable/Makefile
-    executable/json2timetable/Makefile
-    executable/json2timetable/data/Makefile
-    executable/json2timetable/src/Makefile
-    executable/make_dict/Makefile
-    executable/make_dict/src/Makefile
-    executable/search_dict/Makefile
-    executable/search_dict/src/Makefile
-    executable/search_dict_c/Makefile
-    executable/search_dict_c/src/Makefile
-    executable/transfer_trains/Makefile
-    executable/transfer_trains/data/Makefile
-    executable/transfer_trains/src/Makefile
+    kogyan/Makefile
+    kogyan/tools/Makefile
+    kogyan/vsprops/Makefile
     library/Makefile
     library/json/Makefile
     library/json/c/Makefile
@@ -79,10 +69,20 @@ AC_CONFIG_FILES([
     library/trie/test/Makefile
     library/trie/test/src/Makefile
     precompiled/Makefile
+    sample/Makefile
+    sample/json2timetable/Makefile
+    sample/json2timetable/data/Makefile
+    sample/json2timetable/src/Makefile
+    sample/make_dict/Makefile
+    sample/make_dict/src/Makefile
+    sample/search_dict/Makefile
+    sample/search_dict/src/Makefile
+    sample/search_dict_c/Makefile
+    sample/search_dict_c/src/Makefile
+    sample/transfer_trains/Makefile
+    sample/transfer_trains/data/Makefile
+    sample/transfer_trains/src/Makefile
     tools/Makefile
-    kogyan/Makefile
-    kogyan/tools/Makefile
-    kogyan/vsprops/Makefile
 ])
 
 AC_LANG([C++])

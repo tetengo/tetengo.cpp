@@ -5,7 +5,7 @@
 from pathlib import Path
 
 
-directories = ['executable', 'library']
+directories = ['library', 'sample']
 extensions = ['h', 'hpp', 'c', 'cpp']
 
 def list_iter(root_path, directory, extension):
