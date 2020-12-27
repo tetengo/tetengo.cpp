@@ -64,7 +64,7 @@ jobs:
     - name: Install
       shell: cmd
       run: |
-        tools\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
+        tool\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
     
     - name: Make archive
       shell: powershell
