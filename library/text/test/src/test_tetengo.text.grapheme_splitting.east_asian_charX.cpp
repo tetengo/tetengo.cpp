@@ -1,7 +1,7 @@
 /*! \file
     \brief An east Asian character width.
 
-    Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
 #include <boost/preprocessor.hpp>

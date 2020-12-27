@@ -1,6 +1,6 @@
 @echo off
 rem Installs tetengo library
-rem Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+rem Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 setlocal
 set INSTALL_PATH=%1

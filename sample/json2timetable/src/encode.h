@@ -1,7 +1,7 @@
 /*! \file
     \brief A string encode.
 
-    Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(ENCODE_H)
