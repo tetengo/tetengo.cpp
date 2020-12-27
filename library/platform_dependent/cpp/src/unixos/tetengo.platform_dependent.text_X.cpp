@@ -3,7 +3,7 @@
 
     For UNIX.
 
-    Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
 #include <iterator>
