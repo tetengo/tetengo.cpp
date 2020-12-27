@@ -107,7 +107,7 @@ test -z $IWYU && \
     AC_MSG_WARN([You cannot check the includes for lack of include-what-you-use.])
 AC_SUBST([IWYU_OPTS_CXX], "-Xiwyu --max_line_length=200 -x c++ -std=c++17 -DIWYU")
 AC_SUBST([IWYU_OPTS_C],   "-Xiwyu --max_line_length=200 -x c -std=c89 -DIWYU")
-AC_SUBST([IWYU_IMP_PATH], "tool/iwyu_mappings.imp")
+AC_SUBST([IWYU_IMP_PATH], "kogyan/tool/iwyu_mappings.imp")
 
 AC_ARG_WITH(
     unix2dos,
