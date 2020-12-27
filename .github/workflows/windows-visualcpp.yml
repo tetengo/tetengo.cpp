@@ -45,7 +45,9 @@ jobs:
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
     
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
     
     - name: Build 32bit
       shell: cmd

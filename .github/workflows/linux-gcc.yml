@@ -48,7 +48,9 @@ jobs:
         (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
     
     - name: Configure
       shell: bash
