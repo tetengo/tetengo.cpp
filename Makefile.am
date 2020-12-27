@@ -5,14 +5,14 @@ ACLOCAL_AMFLAGS = -I m4
 
 SOURCE_SUBDIRS = \
     library \
-    executable
+    sample
 
 SUBDIRS = \
     ${SOURCE_SUBDIRS} \
     docsrc \
     precompiled \
-    tools \
-    vsprops
+    tool \
+    kogyan
 
 EXTRA_DIST = \
     bootstrap.sh \
@@ -23,7 +23,7 @@ EXTRA_DIST = \
 
 .PHONY: precompiled_h
 precompiled_h:
-	cd $(top_srcdir) && ./tools/make_precompiled_h.py
+	cd $(top_srcdir) && ./kogyan/tool/make_precompiled_h.py
 
 .PHONY: doc
 doc:
@@ -41,9 +41,13 @@ clean-doc:
 distclean-local: clean-doc
 
 iwyu: ${SOURCE_SUBDIRS}
-	for f in $$(find -name "*.iwyuout"); do ${top_srcdir}/tools/filter_iwyuout.py < $$f; done
+	for f in $$(find -name "*.iwyuout"); do ${top_srcdir}/kogyan/tool/filter_iwyuout.py < $$f; done
 
 clean-iwyu: ${SOURCE_SUBDIRS}
+
+.PHONY: check_file_name_lengths
+check_file_name_lengths:
+	cd $(top_srcdir) && ./kogyan/tool/check_file_name_lengths.py
 
 format: ${SOURCE_SUBDIRS}
 
@@ -55,6 +59,7 @@ ${SOURCE_SUBDIRS}:
 
 .PHONY: pushcheck
 pushcheck:
+	${MAKE} -s check_file_name_lengths
 	${MAKE} -s format
 	${MAKE} check
 	${MAKE} iwyu

@@ -92,12 +92,12 @@ Execute the menu command [Build]-[Build Solution] in Visual Studio.
 #### Installing
 
 You can "install" tetengo library. Open a command prompt and execute the batch
-file `install_tetengo_library.bat` in the directory `tools` in the top
+file `install_tetengo_library.bat` in the directory `tool` in the top
 directory. That copies the header files and the built library files into your
 preferred path.
 
 ```bat
-> tools\install_tetengo_library.bat [your_preferred_path]
+> tool\install_tetengo_library.bat [your_preferred_path]
 ```
 
 #### Generating documents
