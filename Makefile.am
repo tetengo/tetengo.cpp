@@ -45,6 +45,10 @@ iwyu: ${SOURCE_SUBDIRS}
 
 clean-iwyu: ${SOURCE_SUBDIRS}
 
+.PHONY: check_file_name_lengths
+check_file_name_lengths:
+	cd $(top_srcdir) && ./kogyan/tool/check_file_name_lengths.py
+
 format: ${SOURCE_SUBDIRS}
 
 clean-format: ${SOURCE_SUBDIRS}
@@ -55,6 +59,7 @@ ${SOURCE_SUBDIRS}:
 
 .PHONY: pushcheck
 pushcheck:
+	${MAKE} -s check_file_name_lengths
 	${MAKE} -s format
 	${MAKE} check
 	${MAKE} iwyu
