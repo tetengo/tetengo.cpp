@@ -54,7 +54,7 @@ clean-local: clean-iwyu
 format: ${addsuffix .formatout, ${headers} ${sources}}
 
 %.formatout: %
-	${top_srcdir}/tools/call_clang-format.sh $< || true
+	${top_srcdir}/tool/call_clang-format.sh $< || true
 	${MKDIR_P} ${dir $@}
 	touch $@
 

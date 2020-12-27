@@ -11,7 +11,7 @@ SUBDIRS = \
     ${SOURCE_SUBDIRS} \
     docsrc \
     precompiled \
-    tools \
+    tool \
     kogyan
 
 EXTRA_DIST = \
@@ -23,7 +23,7 @@ EXTRA_DIST = \
 
 .PHONY: precompiled_h
 precompiled_h:
-	cd $(top_srcdir) && ./kogyan/tools/make_precompiled_h.py
+	cd $(top_srcdir) && ./kogyan/tool/make_precompiled_h.py
 
 .PHONY: doc
 doc:
@@ -41,7 +41,7 @@ clean-doc:
 distclean-local: clean-doc
 
 iwyu: ${SOURCE_SUBDIRS}
-	for f in $$(find -name "*.iwyuout"); do ${top_srcdir}/tools/filter_iwyuout.py < $$f; done
+	for f in $$(find -name "*.iwyuout"); do ${top_srcdir}/tool/filter_iwyuout.py < $$f; done
 
 clean-iwyu: ${SOURCE_SUBDIRS}
 
