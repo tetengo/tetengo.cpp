@@ -46,7 +46,7 @@ clean-local: clean-iwyu
 format: ${addsuffix .formatout, ${headers} ${sources}}
 
 %.formatout: %
-	${top_srcdir}/tool/call_clang-format.sh $< || true
+	${top_srcdir}/kogyan/tool/call_clang-format.sh $< || true
 	${MKDIR_P} ${dir $@}
 	touch $@
 
