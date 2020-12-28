@@ -82,7 +82,7 @@ Expand the archive into your preferred path.
 Clone the source files from GitHub:
 
 ```bat
-> git clone https://github.com/kaorut/tetengo.git
+> git clone --recurse-submodules https://github.com/kaorut/tetengo.git
 ```
 
 Open the file `tetengo.sln` in the work tree.
@@ -155,7 +155,7 @@ $ tar -xf tetengo-X.Y.Z.tar.bz2
 Clone the source files from GitHub:
 
 ```shell-session
-$ git clone https://github.com/kaorut/tetengo.git
+$ git clone --recurse-submodules https://github.com/kaorut/tetengo.git
 ```
 
 Run the script `bootstrap.sh` in the top directory to generate the script
