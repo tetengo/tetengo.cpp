@@ -4,6 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef> // IWYU pragma: keep
 #include <filesystem>
 #include <fstream>
 #include <iterator>
