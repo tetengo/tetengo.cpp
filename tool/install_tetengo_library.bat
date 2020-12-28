@@ -39,44 +39,44 @@ if not ""%INSTALL_PATH%""=="""" (
     xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.lib   %INSTALL_PATH%\lib.x64\
     xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.dll   %INSTALL_PATH%\lib.x64\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\json2timetable.exe          %INSTALL_PATH%\tool\json2timetable.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.json.dll            %INSTALL_PATH%\tool\json2timetable.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.text.dll            %INSTALL_PATH%\tool\json2timetable.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_down.json %INSTALL_PATH%\tool\json2timetable.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_up.json   %INSTALL_PATH%\tool\json2timetable.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\json2timetable\README.md           %INSTALL_PATH%\tool\json2timetable.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\json2timetable.exe            %INSTALL_PATH%\tool\json2timetable.x64\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.json.dll              %INSTALL_PATH%\tool\json2timetable.x64\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.text.dll              %INSTALL_PATH%\tool\json2timetable.x64\
-    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_down.json %INSTALL_PATH%\tool\json2timetable.x64\
-    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_up.json   %INSTALL_PATH%\tool\json2timetable.x64\
-    xcopy /i /f /y "%~dp0"..\sample\json2timetable\README.md           %INSTALL_PATH%\tool\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\json2timetable.exe      %INSTALL_PATH%\sample\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.json.dll        %INSTALL_PATH%\sample\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.text.dll        %INSTALL_PATH%\sample\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_down.json %INSTALL_PATH%\sample\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_up.json   %INSTALL_PATH%\sample\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\json2timetable\README.md           %INSTALL_PATH%\sample\json2timetable.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\json2timetable.exe        %INSTALL_PATH%\sample\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.json.dll          %INSTALL_PATH%\sample\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.text.dll          %INSTALL_PATH%\sample\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_down.json %INSTALL_PATH%\sample\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\sample\json2timetable\data\hohi_up.json   %INSTALL_PATH%\sample\json2timetable.x64\
+    xcopy /i /f /y "%~dp0"..\sample\json2timetable\README.md           %INSTALL_PATH%\sample\json2timetable.x64\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\make_dict.exe %INSTALL_PATH%\tool\make_dict.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\make_dict\README.md  %INSTALL_PATH%\tool\make_dict.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\make_dict.exe   %INSTALL_PATH%\tool\make_dict.x64\
-    xcopy /i /f /y "%~dp0"..\sample\make_dict\README.md  %INSTALL_PATH%\tool\make_dict.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\make_dict.exe %INSTALL_PATH%\sample\make_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\make_dict\README.md      %INSTALL_PATH%\sample\make_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\make_dict.exe   %INSTALL_PATH%\sample\make_dict.x64\
+    xcopy /i /f /y "%~dp0"..\sample\make_dict\README.md      %INSTALL_PATH%\sample\make_dict.x64\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\search_dict.exe %INSTALL_PATH%\tool\search_dict.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\search_dict\README.md  %INSTALL_PATH%\tool\search_dict.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\search_dict.exe   %INSTALL_PATH%\tool\search_dict.x64\
-    xcopy /i /f /y "%~dp0"..\sample\search_dict\README.md  %INSTALL_PATH%\tool\search_dict.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\search_dict.exe %INSTALL_PATH%\sample\search_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\search_dict\README.md      %INSTALL_PATH%\sample\search_dict.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\search_dict.exe   %INSTALL_PATH%\sample\search_dict.x64\
+    xcopy /i /f /y "%~dp0"..\sample\search_dict\README.md      %INSTALL_PATH%\sample\search_dict.x64\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\search_dict_c.exe %INSTALL_PATH%\tool\search_dict_c.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.trie.dll  %INSTALL_PATH%\tool\search_dict_c.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\search_dict_c\README.md  %INSTALL_PATH%\tool\search_dict_c.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\search_dict_c.exe   %INSTALL_PATH%\tool\search_dict_c.x64\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.trie.dll    %INSTALL_PATH%\tool\search_dict_c.x64\
-    xcopy /i /f /y "%~dp0"..\sample\search_dict_c\README.md  %INSTALL_PATH%\tool\search_dict_c.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\search_dict_c.exe %INSTALL_PATH%\sample\search_dict_c.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.trie.dll  %INSTALL_PATH%\sample\search_dict_c.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\search_dict_c\README.md      %INSTALL_PATH%\sample\search_dict_c.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\search_dict_c.exe   %INSTALL_PATH%\sample\search_dict_c.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.trie.dll    %INSTALL_PATH%\sample\search_dict_c.x64\
+    xcopy /i /f /y "%~dp0"..\sample\search_dict_c\README.md      %INSTALL_PATH%\sample\search_dict_c.x64\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\transfer_trains.exe              %INSTALL_PATH%\tool\transfer_trains.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kagoshima_down.txt %INSTALL_PATH%\tool\transfer_trains.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kotoku_up.txt      %INSTALL_PATH%\tool\transfer_trains.Win32\
-    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\README.md               %INSTALL_PATH%\tool\transfer_trains.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\transfer_trains.exe                %INSTALL_PATH%\tool\transfer_trains.x64\
-    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kagoshima_down.txt %INSTALL_PATH%\tool\transfer_trains.x64\
-    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kotoku_up.txt      %INSTALL_PATH%\tool\transfer_trains.x64\
-    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\README.md               %INSTALL_PATH%\tool\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\transfer_trains.exe          %INSTALL_PATH%\sample\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kagoshima_down.txt %INSTALL_PATH%\sample\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kotoku_up.txt      %INSTALL_PATH%\sample\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\README.md               %INSTALL_PATH%\sample\transfer_trains.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\transfer_trains.exe            %INSTALL_PATH%\sample\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kagoshima_down.txt %INSTALL_PATH%\sample\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\data\kotoku_up.txt      %INSTALL_PATH%\sample\transfer_trains.x64\
+    xcopy /i /f /y "%~dp0"..\sample\transfer_trains\README.md               %INSTALL_PATH%\sample\transfer_trains.x64\
     
     xcopy /f /y "%~dp0"..\README.md %INSTALL_PATH%\
     xcopy /f /y "%~dp0"..\COPYING   %INSTALL_PATH%\
