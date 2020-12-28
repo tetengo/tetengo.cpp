@@ -1,7 +1,7 @@
 /*! \file
     \brief An array list.
 
-    Copyright (C) 2019-2020 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
 #include "arrayList.h"
