@@ -16,7 +16,7 @@
 #include <iostream>
 #include <iterator>
 #include <limits>
-#include <locale>
+#include <locale> // IWYU pragma: keep
 #include <memory>
 #include <stdexcept>
 #include <string>

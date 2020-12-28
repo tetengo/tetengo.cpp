@@ -5,11 +5,11 @@
 */
 
 #include <iterator>
-#include <map>
+#include <map> // IWYU pragma: keep
 #include <regex>
-#include <sstream>
+#include <sstream> // IWYU pragma: keep
 #include <string>
-#include <vector>
+#include <vector> // IWYU pragma: keep
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
