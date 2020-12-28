@@ -13,7 +13,7 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
-#include <locale>
+#include <locale> // IWYU pragma: keep
 #include <memory>
 #include <numeric>
 #include <optional>

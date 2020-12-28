@@ -5,9 +5,9 @@
 */
 
 #include <iterator>
-#include <map>
+#include <map> // IWYU pragma: keep
 #include <regex>
-#include <sstream>
+#include <sstream> // IWYU pragma: keep
 #include <string>
 #include <string_view>
 #include <vector>
