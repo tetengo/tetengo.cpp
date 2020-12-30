@@ -10,9 +10,9 @@ SOURCE_SUBDIRS = \
 SUBDIRS = \
     ${SOURCE_SUBDIRS} \
     docsrc \
+    kogyan \
     precompiled \
-    tool \
-    kogyan
+    tool
 
 EXTRA_DIST = \
     bootstrap.sh \
