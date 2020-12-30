@@ -14,7 +14,7 @@ on:
 env:
   CACHE_REV:        0
   CONCURRENT_BUILD: 4
-  DOXYGEN_VER:      1.8.20
+  DOXYGEN_VER:      1.9.0
   BOOST_VER:        1_75_0
   BOOST_VER_DOT:    1.75.0
 
