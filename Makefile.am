@@ -49,9 +49,13 @@ clean-iwyu: ${SOURCE_SUBDIRS}
 check_file_name_lengths:
 	cd $(top_srcdir) && ./kogyan/tool/check_file_name_lengths.py
 
-format: ${SOURCE_SUBDIRS}
+${top_srcdir}/.clang-format: kogyan/.clang-format
+	cp $< $@
+
+format: ${top_srcdir}/.clang-format ${SOURCE_SUBDIRS}
 
 clean-format: ${SOURCE_SUBDIRS}
+	-rm -f .clang-format
 
 .PHONY: ${SOURCE_SUBDIRS}
 ${SOURCE_SUBDIRS}:
