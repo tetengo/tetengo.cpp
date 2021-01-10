@@ -54,6 +54,7 @@ ${top_srcdir}/.clang-format: kogyan/.clang-format
 
 format: ${top_srcdir}/.clang-format ${SOURCE_SUBDIRS}
 	${MAKE} -C kogyan format
+	${MAKE} -C tool format
 
 clean-format: ${SOURCE_SUBDIRS}
 	-rm -f .clang-format
