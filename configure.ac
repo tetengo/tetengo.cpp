@@ -126,7 +126,22 @@ AC_ARG_WITH(
 )
 AC_CHECK_PROG(CLANGFORMAT, clang-format, clang-format)
 (test -z $UNIX2DOS || test -z $CLANGFORMAT) && \
-    AC_MSG_WARN([You cannot format the source files for lack of unix2dos and/or clang-format.])
+    AC_MSG_WARN([You cannot format the C++ source files for lack of unix2dos and/or clang-format.])
+
+AC_ARG_WITH(
+    black,
+    AS_HELP_STRING([--with-black=COMMAND], [Specify the black command. Or uses `black'.]),
+    BLACK=$withval
+)
+AC_CHECK_PROG(BLACK, black, black)
+AC_ARG_WITH(
+    isort,
+    AS_HELP_STRING([--with-isort=COMMAND], [Specify the isort command. Or uses `isort'.]),
+    ISORT=$withval
+)
+AC_CHECK_PROG(ISORT, isort, isort)
+test -z $ISORT && \
+    AC_MSG_WARN([You cannot format the python script files for lack of black and/or isort.])
 
 AC_ARG_WITH(
     doxygen,
