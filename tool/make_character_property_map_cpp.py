@@ -126,7 +126,6 @@ namespace tetengo::text::grapheme_splitting
     content += "    const std::size_t character_property_map_size = {};\n\n".format(
         len(elements)
     )
-
     content += "    // clang-format off\n"
     content += (
         "    const character_property_map_element_type character_property_map[] = {\n"
@@ -135,7 +134,6 @@ namespace tetengo::text::grapheme_splitting
         content += e
     content += "    };\n"
     content += "    // clang-format on\n"
-
     content += """
 
 }
