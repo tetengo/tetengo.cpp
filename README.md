@@ -61,7 +61,11 @@ How to Build and Install
 - [Boost C++ libraries 1.75.0](https://www.boost.org/)
 - [Doxygen 1.9.0](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
-- [Python 3](https://www.python.org/)
+- [Python 3.6](https://www.python.org/),
+  [Python 3.7](https://www.python.org/) or
+  [Python 3.9](https://www.python.org/)
+- [Black](https://black.readthedocs.io/en/stable/)
+- [isort](https://pycqa.github.io/isort/)
 
 If you build the source cloned from the GitHub repository, the following is
 necessary in addition the above tools.
@@ -126,7 +130,11 @@ Doxygen will output the documents into the directory `doc`.
 - [Clang Format 7.0](https://clang.llvm.org/docs/ClangFormat.html) or
   [Clang Format 9](https://clang.llvm.org/docs/ClangFormat.html)
 - [Dos2Unix](https://waterlan.home.xs4all.nl/dos2unix.html)
-- [Python 3](https://www.python.org/)
+- [Python 3.6](https://www.python.org/),
+  [Python 3.7](https://www.python.org/) or
+  [Python 3.9](https://www.python.org/)
+- [Black](https://black.readthedocs.io/en/stable/)
+- [isort](https://pycqa.github.io/isort/)
 
 If you build the source cloned from the GitHub repository, the followings are
 necessary in addition the above tools.
