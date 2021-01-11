@@ -1,46 +1,58 @@
 #! /usr/bin/env python3
-# Makes character_property_map.txt for tetengo::text
-# Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+"""Makes character_property_map.txt for tetengo::text
 
+    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+"""
+
+import pathlib
 import re
 import sys
-from pathlib import Path
+from typing import List
 
 
-def main():
-    if len(sys.argv) <= 3:
+def main(args: List[str]) -> None:
+    """The main function.
+
+    Args:
+        args (list[str]): Program rguments
+    """
+    if len(args) < 3:
         print(
             "Usage: ./make_character_property_map.py EastAsianWidth.txt emoji-data.txt GraphemeBreakProperty.txt character_property_map.txt",
             file=sys.stderr,
         )
         sys.exit(0)
-    east_asian_width_map = load_file(Path(sys.argv[1]), "N")
-    emoji_data_map = load_file(Path(sys.argv[2]), "N")
-    grapheme_map = load_file(Path(sys.argv[3]), "Other")
-    save_file(Path(sys.argv[4]), east_asian_width_map, emoji_data_map, grapheme_map)
+    east_asian_width_map: List[str] = _load_file(pathlib.Path(args[0]), "N")
+    emoji_data_map: List[str] = _load_file(pathlib.Path(args[1]), "N")
+    grapheme_map: List[str] = _load_file(pathlib.Path(args[2]), "Other")
+    _save_file(
+        pathlib.Path(args[3]), east_asian_width_map, emoji_data_map, grapheme_map
+    )
 
 
-def load_file(path, default_value):
-    map = [default_value for code in range(0x110000)]
+def _load_file(path: pathlib.Path, default_value: str) -> List[str]:
+    map: List[str] = [default_value for code in range(0x110000)]
     with path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
-            line = remove_comment(line)
+            line = _remove_comment(line)
             if not line:
                 continue
-            matched = re.match("^([0-9A-F]+)(\.\.([0-9A-F]+))?\s*;\s*([A-Za-z]+)", line)
+            matched: re.Match = re.match(
+                "^([0-9A-F]+)(\.\.([0-9A-F]+))?\s*;\s*([A-Za-z]+)", line
+            )
             code_from = int(matched.group(1), 16)
             if matched.group(3):
                 code_to = int(matched.group(3), 16)
             else:
                 code_to = int(matched.group(1), 16)
-            value = matched.group(4)
+            value: str = matched.group(4)
             for code in range(code_from, code_to + 1):
                 if map[code] == default_value:
                     map[code] = value
     return map
 
 
-def remove_comment(line):
+def _remove_comment(line: str) -> str:
     line = line.rstrip("\r\n")
     if "#" in line:
         line = line[0 : line.find("#")]
@@ -48,11 +60,16 @@ def remove_comment(line):
     return line
 
 
-def save_file(path, east_asian_width_map, emoji_data_map, grapheme_map):
+def _save_file(
+    path: pathlib.Path,
+    east_asian_width_map: List[str],
+    emoji_data_map: List[str],
+    grapheme_map: List[str],
+) -> None:
     with path.open(mode="w", newline="\r\n", encoding="UTF-8") as stream:
-        previous_value = ""
+        previous_value: str = ""
         for code in range(0x110000):
-            value = "{}\t{}\t{}".format(
+            value: str = "{}\t{}\t{}".format(
                 east_asian_width_map[code], emoji_data_map[code], grapheme_map[code]
             )
             if value != previous_value:
@@ -60,4 +77,5 @@ def save_file(path, east_asian_width_map, emoji_data_map, grapheme_map):
                 previous_value = value
 
 
-main()
+if __name__ == "__main__":
+    main(sys.argv[1:])
