@@ -7,7 +7,7 @@
 import pathlib
 import re
 import sys
-from typing import List
+from typing import List, Optional
 
 
 def main(args: List[str]) -> None:
@@ -37,9 +37,11 @@ def _load_file(path: pathlib.Path, default_value: str) -> List[str]:
             line = _remove_comment(line)
             if not line:
                 continue
-            matched: re.Match = re.match(
+            matched: Optional[re.Match[str]] = re.match(
                 "^([0-9A-F]+)(\.\.([0-9A-F]+))?\s*;\s*([A-Za-z]+)", line
             )
+            if not matched:
+                continue
             code_from = int(matched.group(1), 16)
             if matched.group(3):
                 code_to = int(matched.group(3), 16)

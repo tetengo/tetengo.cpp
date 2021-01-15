@@ -12,6 +12,9 @@ EXTRA_DIST = \
     make_character_property_map_cpp.sh
 
 
+mypy: ${script_files}
+	${MYPY} ${srcdir}
+
 format: ${script_files}
 	${BLACK} ${srcdir}
 	${ISORT} ${srcdir}

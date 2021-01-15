@@ -144,6 +144,15 @@ test -z $ISORT && \
     AC_MSG_WARN([You cannot format the python script files for lack of black and/or isort.])
 
 AC_ARG_WITH(
+    mypy,
+    AS_HELP_STRING([--with-mypy=COMMAND], [Specify the mypy command. Or uses `mypy'.]),
+    MYPY=$withval
+)
+AC_CHECK_PROG(MYPY, mypy, mypy)
+test -z $MYPY && \
+    AC_MSG_WARN([You cannot check the python script files for lack of mypy.])
+
+AC_ARG_WITH(
     doxygen,
     AS_HELP_STRING([--with-doxygen=COMMAND], [Specify the Doxygen command. Or uses `doxygen'.]),
     DOXYGEN=$withval

@@ -64,6 +64,7 @@ How to Build and Install
 - [Python 3.6](https://www.python.org/),
   [Python 3.7](https://www.python.org/) or
   [Python 3.9](https://www.python.org/)
+- [mypy](http://www.mypy-lang.org/)
 - [Black](https://black.readthedocs.io/en/stable/)
 - [isort](https://pycqa.github.io/isort/)
 
@@ -133,6 +134,7 @@ Doxygen will output the documents into the directory `doc`.
 - [Python 3.6](https://www.python.org/),
   [Python 3.7](https://www.python.org/) or
   [Python 3.9](https://www.python.org/)
+- [mypy](http://www.mypy-lang.org/)
 - [Black](https://black.readthedocs.io/en/stable/)
 - [isort](https://pycqa.github.io/isort/)
 
