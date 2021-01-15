@@ -1,4 +1,4 @@
 [submodule "kogyan"]
 	path = kogyan
 	url = https://github.com/kaorut/kogyan.git
-	branch = v1.2.0
+	branch = v1.3.0

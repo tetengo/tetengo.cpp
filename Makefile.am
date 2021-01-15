@@ -7,12 +7,15 @@ SOURCE_SUBDIRS = \
     library \
     sample
 
+SCRIPT_SUBDIRS = \
+    kogyan \
+    tool
+
 SUBDIRS = \
     ${SOURCE_SUBDIRS} \
+    ${SCRIPT_SUBDIRS} \
     docsrc \
-    kogyan \
-    precompiled \
-    tool
+    precompiled
 
 EXTRA_DIST = \
     bootstrap.sh \
@@ -49,18 +52,22 @@ clean-iwyu: ${SOURCE_SUBDIRS}
 check_file_name_lengths:
 	cd $(top_srcdir) && ./kogyan/tool/check_file_name_lengths.py
 
+mypy: ${SCRIPT_SUBDIRS}
+
 ${top_srcdir}/.clang-format: kogyan/.clang-format
 	cp $< $@
 
-format: ${top_srcdir}/.clang-format ${SOURCE_SUBDIRS}
-	${MAKE} -C kogyan format
-	${MAKE} -C tool format
+format: ${top_srcdir}/.clang-format ${SOURCE_SUBDIRS} ${SCRIPT_SUBDIRS}
 
 clean-format: ${SOURCE_SUBDIRS}
 	-rm -f .clang-format
 
 .PHONY: ${SOURCE_SUBDIRS}
 ${SOURCE_SUBDIRS}:
+	${MAKE} -C $@ ${MAKECMDGOALS}
+
+.PHONY: ${SCRIPT_SUBDIRS}
+${SCRIPT_SUBDIRS}:
 	${MAKE} -C $@ ${MAKECMDGOALS}
 
 .PHONY: pushcheck
