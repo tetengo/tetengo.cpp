@@ -76,4 +76,5 @@ pushcheck:
 	${MAKE} -s format
 	${MAKE} check
 	${MAKE} iwyu
+	${MAKE} mypy
 	${MAKE} doc > /dev/null
