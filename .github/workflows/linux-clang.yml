@@ -5,6 +5,7 @@
 name: Linux - Clang
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
     tags:     [ v* ]
