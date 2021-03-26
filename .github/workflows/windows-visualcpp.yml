@@ -57,6 +57,7 @@ jobs:
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
+        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
     
     - name: Build 64bit
       shell: cmd
@@ -64,6 +65,7 @@ jobs:
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
+        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64 tetengo.sln
     
     - name: Install
       shell: cmd
