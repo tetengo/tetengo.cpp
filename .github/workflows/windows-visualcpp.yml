@@ -5,6 +5,7 @@
 name: Windows - Visual C++
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
     tags:     [ v* ]

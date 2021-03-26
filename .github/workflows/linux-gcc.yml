@@ -5,6 +5,7 @@
 name: Linux - GCC
 
 on:
+  workflow_dispatch:
   push:
     branches: [ master ]
     tags:     [ v* ]
