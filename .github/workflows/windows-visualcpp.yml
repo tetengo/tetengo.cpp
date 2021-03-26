@@ -47,6 +47,7 @@ jobs:
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=32 variant=debug   link=static --stagedir="stage\Win32" stage
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=debug   link=static --stagedir="stage\x64"   stage
+        rd /s /q bin.v2
     
     - name: Checkout
       uses: actions/checkout@v2
@@ -60,6 +61,9 @@ jobs:
         set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
+        tool\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
+        msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
+        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
     
     - name: Build 64bit
       shell: cmd
@@ -68,11 +72,9 @@ jobs:
         set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64 tetengo.sln
-    
-    - name: Install
-      shell: cmd
-      run: |
         tool\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
+        msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
+        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x64 tetengo.sln
     
     - name: Make archive
       shell: powershell
