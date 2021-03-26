@@ -34,10 +34,18 @@ if not ""%INSTALL_PATH%""=="""" (
     xcopy /s /i /f /y "%~dp0"..\library\trie\c\include\tetengo\trie   %INSTALL_PATH%\include\tetengo\trie\
     xcopy /s /i /f /y "%~dp0"..\library\trie\cpp\include\tetengo\trie %INSTALL_PATH%\include.cpp\tetengo\trie\
     
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\*.lib %INSTALL_PATH%\lib.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\*.dll %INSTALL_PATH%\lib.Win32\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.lib   %INSTALL_PATH%\lib.x64\
-    xcopy /i /f /y "%~dp0"..\bin\Release.x64\*.dll   %INSTALL_PATH%\lib.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.*.lib %INSTALL_PATH%\lib.Release.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.*.dll %INSTALL_PATH%\lib.Release.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.*.pdb %INSTALL_PATH%\lib.Release.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Debug.Win32\tetengo.*.lib   %INSTALL_PATH%\lib.Debug.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Debug.Win32\tetengo.*.dll   %INSTALL_PATH%\lib.Debug.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Debug.Win32\tetengo.*.pdb   %INSTALL_PATH%\lib.Debug.Win32\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.*.lib   %INSTALL_PATH%\lib.Release.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.*.dll   %INSTALL_PATH%\lib.Release.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Release.x64\tetengo.*.pdb   %INSTALL_PATH%\lib.Release.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Debug.x64\tetengo.*.lib     %INSTALL_PATH%\lib.Debug.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Debug.x64\tetengo.*.dll     %INSTALL_PATH%\lib.Debug.x64\
+    xcopy /i /f /y "%~dp0"..\bin\Debug.x64\tetengo.*.pdb     %INSTALL_PATH%\lib.Debug.x64\
     
     xcopy /i /f /y "%~dp0"..\bin\Release.Win32\json2timetable.exe      %INSTALL_PATH%\sample\json2timetable.Win32\
     xcopy /i /f /y "%~dp0"..\bin\Release.Win32\tetengo.json.dll        %INSTALL_PATH%\sample\json2timetable.Win32\
