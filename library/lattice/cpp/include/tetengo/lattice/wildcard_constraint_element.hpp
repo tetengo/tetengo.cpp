@@ -34,7 +34,7 @@ namespace tetengo::lattice
         explicit wildcard_constraint_element(std::size_t preceding_step);
 
         /*!
-            \brief Destroys the node constraint element.
+            \brief Destroys the wildcard constraint element.
         */
         virtual ~wildcard_constraint_element();
 
