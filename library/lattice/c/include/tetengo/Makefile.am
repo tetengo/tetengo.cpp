@@ -42,7 +42,7 @@ clean-local: clean-iwyu
 format: ${addsuffix .formatout, ${pkg_headers} ${extra_headers}}
 
 %.formatout: %
-	${top_srcdir}/kogyan/tool/call_clang-format.sh $< || true
+	CLANGFORMAT=${CLANGFORMAT} DOS2UNIX=${DOS2UNIX} ${top_srcdir}/kogyan/tool/call_clang-format.sh $< || true
 	${MKDIR_P} ${dir $@}
 	touch $@
 
