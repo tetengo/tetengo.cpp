@@ -39,10 +39,10 @@ namespace tetengo::text
         // functions
 
         /*!
-            \brief Returns true when one location is equal to another.
+            \brief Returns true when one grapheme is equal to another.
 
-            \param one   One location.
-            \param another Another location.
+            \param one   One grapheme.
+            \param another Another grapheme.
 
             \retval true  When one is equal to another.
             \retval false Otherwise.

@@ -7,7 +7,7 @@ Synopsis
 --------
 
 ```sh
-transer_trains timetable.txt
+transfer_trains timetable.txt
 ```
 
 Description
@@ -46,7 +46,7 @@ Here is the format of arrival and departure time cells:
 - Blank
   - Out of the operational section of the train.
 
-Sample timetable files are supplied in data directory. (data directory is
+There are sample timetable files supplied in data directory. (data directory is
 located in the same directory where this README.md exists.)
 
 - kagoshima_down.txt
