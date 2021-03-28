@@ -61,7 +61,12 @@ How to Build and Install
 - [Boost C++ libraries 1.75.0](https://www.boost.org/)
 - [Doxygen 1.9.1](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
-- [Python 3](https://www.python.org/)
+- [Python 3.7](https://www.python.org/),
+  [Python 3.8](https://www.python.org/) or
+  [Python 3.9](https://www.python.org/)
+- [mypy](http://www.mypy-lang.org/)
+- [Black](https://black.readthedocs.io/en/stable/)
+- [isort](https://pycqa.github.io/isort/)
 
 If you build the source cloned from the GitHub repository, the following is
 necessary in addition the above tools.
@@ -115,18 +120,23 @@ Doxygen will output the documents into the directory `doc`.
 #### Requirements
 
 - [Clang 7.0.1](https://clang.llvm.org/),
-  [Clang 9.0.0](https://clang.llvm.org/),
+  [Clang 11.0.0](https://clang.llvm.org/),
   [GCC 8.3.0](https://gcc.gnu.org/) or
-  [GCC 9.2.1](https://gcc.gnu.org/)
+  [GCC 10.2.0](https://gcc.gnu.org/)
 - [Boost C++ libraries 1.75.0](https://www.boost.org/)
 - [Doxygen 1.9.1](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [include-what-you-use 0.11](https://include-what-you-use.org/) or
-  [include-what-you-use 5.0](https://include-what-you-use.org/)
-- [Clang Format 7.0](https://clang.llvm.org/docs/ClangFormat.html) or
-  [Clang Format 9](https://clang.llvm.org/docs/ClangFormat.html)
+  [include-what-you-use 0.12](https://include-what-you-use.org/)
+- [Clang Format 7.0.1](https://clang.llvm.org/docs/ClangFormat.html) or
+  [Clang Format 11.0.0](https://clang.llvm.org/docs/ClangFormat.html)
 - [Dos2Unix](https://waterlan.home.xs4all.nl/dos2unix.html)
-- [Python 3](https://www.python.org/)
+- [Python 3.7](https://www.python.org/),
+  [Python 3.8](https://www.python.org/) or
+  [Python 3.9](https://www.python.org/)
+- [mypy](http://www.mypy-lang.org/)
+- [Black](https://black.readthedocs.io/en/stable/)
+- [isort](https://pycqa.github.io/isort/)
 
 If you build the source cloned from the GitHub repository, the followings are
 necessary in addition the above tools.
