@@ -22,7 +22,7 @@ env:
 jobs:
   build:
     name:    Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Install dependencies
       shell: bash
@@ -31,7 +31,7 @@ jobs:
         sudo apt-get -y install \
           autoconf-archive \
           bison \
-          clang-5.0 \
+          clang-9 \
           cmake \
           dos2unix \
           flex \
@@ -73,8 +73,8 @@ jobs:
         tar -xf boost_${BOOST_VER}.tar.bz2
         cd boost_${BOOST_VER}
         ./bootstrap.sh --with-toolset=clang
-        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static install --prefix=/usr/local || :)
+        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang-11 variant=release link=static cxxflags="-std=gnu++11" || :)
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang-11 variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
       uses: actions/checkout@v2
@@ -85,8 +85,8 @@ jobs:
       shell: bash
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
-          CC=clang-9 \
-          CXX=clang++-9 \
+          CC=clang-11 \
+          CXX=clang++-11 \
         "
         ./bootstrap.sh
         mkdir -p build
@@ -103,8 +103,8 @@ jobs:
       shell: bash
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
-          CC=clang-9 \
-          CXX=clang++-9 \
+          CC=clang-11 \
+          CXX=clang++-11 \
         "
         export BOOST_TEST_LOG_LEVEL=warning
         cd build

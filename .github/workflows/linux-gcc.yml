@@ -21,7 +21,7 @@ env:
 jobs:
   build:
     name:    Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Install dependencies
       shell: bash
@@ -46,8 +46,8 @@ jobs:
         tar xvf boost_${BOOST_VER}.tar.bz2
         cd boost_${BOOST_VER}
         ./bootstrap.sh --with-toolset=gcc
-        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc variant=release link=static install --prefix=/usr/local || :)
+        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
       uses: actions/checkout@v2
@@ -58,8 +58,8 @@ jobs:
       shell: bash
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
-          CC=gcc-9 \
-          CXX=g++-9 \
+          CC=gcc-10 \
+          CXX=g++-10 \
         "
         ./bootstrap.sh
         mkdir -p build
@@ -70,8 +70,8 @@ jobs:
       shell: bash
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
-          CC=gcc-9 \
-          CXX=g++-9 \
+          CC=gcc-10 \
+          CXX=g++-10 \
         "
         export BOOST_TEST_LOG_LEVEL=warning
         cd build
