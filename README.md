@@ -58,7 +58,7 @@ How to Build and Install
 #### Requirements
 
 - [Visual Studio 2019](https://visualstudio.microsoft.com/)
-- [Boost C++ libraries 1.75.0](https://www.boost.org/)
+- [Boost C++ libraries 1.76.0](https://www.boost.org/)
 - [Doxygen 1.9.1](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [Python 3.7](https://www.python.org/),
@@ -123,7 +123,7 @@ Doxygen will output the documents into the directory `doc`.
   [Clang 11.0.0](https://clang.llvm.org/),
   [GCC 8.3.0](https://gcc.gnu.org/) or
   [GCC 10.2.0](https://gcc.gnu.org/)
-- [Boost C++ libraries 1.75.0](https://www.boost.org/)
+- [Boost C++ libraries 1.76.0](https://www.boost.org/)
 - [Doxygen 1.9.1](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [include-what-you-use 0.11](https://include-what-you-use.org/) or
