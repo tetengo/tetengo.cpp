@@ -69,7 +69,7 @@ How to Build and Install
 - [isort](https://pycqa.github.io/isort/)
 
 If you build the source cloned from the GitHub repository, the following is
-necessary in addition the above tools.
+necessary in addition to the above tools.
 
 - [Git](https://git-scm.com/)
 
@@ -139,7 +139,7 @@ Doxygen will output the documents into the directory `doc`.
 - [isort](https://pycqa.github.io/isort/)
 
 If you build the source cloned from the GitHub repository, the followings are
-necessary in addition the above tools.
+necessary in addition to the above tools.
 
 - [Git](https://git-scm.com/)
 - [Autoconf](https://www.gnu.org/software/autoconf/) and
