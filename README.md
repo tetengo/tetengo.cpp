@@ -5,7 +5,8 @@ tetengo 1.4.0
 
 A multipurpose library set.
 
-It provides class-based libraries for C++ and function-based libraries for C.
+It provides both class-based libraries for C++ and function-based libraries for
+C.
 
 Features
 --------
@@ -15,15 +16,15 @@ Features
 A JSON parser library.
 
 It is a pull-style parser based on
-[RFC 8259](https://tools.ietf.org/html/rfc8259), plus an extensional support
-for UNIX shell style comments.
+[RFC 8259](https://tools.ietf.org/html/rfc8259), plus an extension for
+supporting UNIX shell style comments.
 
 ### tetengo::lattice
 
 A Viterbi search library.
 
 The Viterbi search is a dynamic programming algorithm. It finds the most likely
-path in the lattice consisted of the observed event nodes.
+path in the lattice consisting of the observed event nodes.
 
 This library also provides the A* search algorithm for the lattice created by
 the Viterbi search.
@@ -32,7 +33,7 @@ the Viterbi search.
 
 A text library.
 
-The utility for text processings.
+The utility for text processing.
 
 This library provides the following features:
 
@@ -48,7 +49,7 @@ The trie is an associative data structure.
 Given a key, it returns the corresponding value in a constant time.
 
 The trie is also able to perform a prefix search.
-It has a method to enumerates the values with the same prefix.
+It has a method to enumerate the values with the same prefix.
 
 How to Build and Install
 ------------------------
@@ -186,8 +187,8 @@ $ sudo make install
 ```
 
 By default, tetengo will be installed in the directory `/usr/local`.
-To change the directory where tetengo is installed, specify the option
-`--prefix` to the script `configure`.
+To change the directory where to install tetengo, specify the option `--prefix`
+to the script `configure`.
 
 #### Generating documents
 
