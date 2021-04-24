@@ -9,25 +9,28 @@ LIGHT="$(WIX)bin\light.exe"
 MKDIR=mkdir
 RMDIR=rmdir
 
-BINDIR=bin
 OBJDIR=obj.$(PLATFORM)
+BINDIR=bin
 
 all: $(BINDIR)\tetengo.msi $(BINDIR)\tetengo.ja.msi
-
-$(BINDIR)\tetengo.msi: $(OBJDIR)\main.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $?
-
-$(BINDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
-
-$(BINDIR):
-	$(MKDIR) $(BINDIR)
 
 $(OBJDIR)\main.wixobj: main.wxs
 	$(CANDLE) -arch $(ARCH) -out $@ -wx $?
 
+$(OBJDIR)\content.wixobj: content.wxs
+	$(CANDLE) -arch $(ARCH) -out $@ -wx $?
+
 $(OBJDIR):
 	$(MKDIR) $(OBJDIR)
+
+$(BINDIR)\tetengo.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $?
+
+$(BINDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
+
+$(BINDIR):
+	$(MKDIR) $(BINDIR)
 
 clean:
 	-$(RMDIR) /s /q $(OBJDIR)
