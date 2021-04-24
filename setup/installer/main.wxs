@@ -31,7 +31,18 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
     <WixVariable Id="WixUILicenseRtf" Value="COPYING.rtf"/>
     
-    <DirectoryRef Id="TARGETDIR"/>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder" Name="PFiles">
+        <Directory Id="INSTALLDIR" Name="tetengo">
+          <Directory Id="include" Name="include">
+            <Directory Id="tetengo" Name="tetengo"/>
+          </Directory>
+          <Directory Id="include.cpp" Name="include.cpp">
+            <Directory Id="tetengo.cpp" Name="tetengo"/>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
 
     <FeatureRef Id="Essential"/>
   </Product>
