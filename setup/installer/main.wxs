@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The installer main
+  Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Name="tetengo"
+    Id="EA38548A-0408-44AD-91F2-B52FF8A4B911"
+    UpgradeCode="952185DF-9262-470C-959A-6CB9FE2182B5"
+    Language="1033"
+    Codepage="1252"
+    Version="1.4.0"
+    Manufacturer="kaoru"
+  >
+    <Package
+      Id="*"
+      Description="tetengo Installer"
+      Manufacturer="kaoru"
+      InstallerVersion="500"
+      Languages="1033"
+      Compressed="yes"
+      SummaryCodepage="1252"
+    />
+    <Media Id='1' Cabinet='main.cab' EmbedCab='yes' DiskPrompt='Insert the media #1.'/>
+    <Property Id='DiskPrompt' Value="tetengo Installer"/>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder" Name="PFiles">
+        <Directory Id="INSTALLDIR" Name="tetengo" FileSource="..\..\library\json\c">
+          <Directory Id="include" Name="include">
+            <Directory Id="tetengo" Name="tetengo">
+              <Directory Id="json" Name="json">
+                <Component Id="jsonParser.h" Guid="B2EFD808-C839-4B0D-B258-581CFDFE0A46">
+                  <File Id="jsonParser.h" Name="jsonParser.h" KeyPath="yes"/>
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Feature Id="Complete" Level="1">
+      <ComponentRef Id="jsonParser.h"/>
+    </Feature>
+  </Product>
+</Wix>

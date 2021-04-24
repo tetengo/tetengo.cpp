@@ -22,6 +22,8 @@ Makefile.in
 m4/*.m4
 missing
 obj/
+obj.Win32/
+obj.x64/
 stamp-h1
 test-driver
 __pycache__/
