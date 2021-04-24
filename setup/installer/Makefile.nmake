@@ -6,28 +6,32 @@ PLATFORM=x64
 
 CANDLE="$(WIX)bin\candle.exe"
 LIGHT="$(WIX)bin\light.exe"
+TORCH="$(WIX)bin\torch.exe"
 MKDIR=mkdir
 RMDIR=rmdir
 
 OBJDIR=obj.$(PLATFORM)
 BINDIR=bin
 
-all: $(BINDIR)\tetengo.msi $(BINDIR)\tetengo.ja.msi
+all: $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
+
+$(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.msi $(OBJDIR)\tetengo.ja.msi
+	$(TORCH) -out $@ -wx -p -t language $?
+
+$(OBJDIR)\tetengo.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $?
+
+$(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
 
 $(OBJDIR)\main.wixobj: main.wxs
-	$(CANDLE) -arch $(ARCH) -out $@ -wx $?
+	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
 
 $(OBJDIR)\content.wixobj: content.wxs
-	$(CANDLE) -arch $(ARCH) -out $@ -wx $?
+	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
 
 $(OBJDIR):
 	$(MKDIR) $(OBJDIR)
-
-$(BINDIR)\tetengo.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $?
-
-$(BINDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
 
 $(BINDIR):
 	$(MKDIR) $(BINDIR)
