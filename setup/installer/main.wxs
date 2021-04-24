@@ -33,12 +33,17 @@
     
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder" Name="PFiles">
-        <Directory Id="INSTALLDIR" Name="tetengo" FileSource="..\..\library\json\c">
+        <Directory Id="INSTALLDIR" Name="tetengo">
           <Directory Id="include" Name="include">
             <Directory Id="tetengo" Name="tetengo">
-              <Directory Id="json" Name="json">
-                <Component Id="jsonParser.h" Guid="B2EFD808-C839-4B0D-B258-581CFDFE0A46">
+              <Directory Id="json" Name="json" FileSource="..\..\library\json\c\include\tetengo\json">
+                <Component Id="tetengo.json.jsonParser.h" Guid="B2EFD808-C839-4B0D-B258-581CFDFE0A46">
                   <File Id="jsonParser.h" Name="jsonParser.h" DiskId="1" KeyPath="yes"/>
+                </Component>
+              </Directory>
+              <Directory Id="lattice" Name="lattice" FileSource="..\..\library\lattice\cpp\include\tetengo\lattice">
+                <Component Id="tetengo.lattice.node.hpp" Guid="6E9E4279-16D5-424D-8064-98B26772B874">
+                  <File Id="node.hpp" Name="node.hpp" DiskId="1" KeyPath="yes"/>
                 </Component>
               </Directory>
             </Directory>
@@ -61,7 +66,8 @@
         Display="expand"
         Level="1"
       >
-        <ComponentRef Id="jsonParser.h"/>
+        <ComponentRef Id="tetengo.json.jsonParser.h"/>
+        <ComponentRef Id="tetengo.lattice.node.hpp"/>
       </Feature>
     </Feature>
   </Product>
