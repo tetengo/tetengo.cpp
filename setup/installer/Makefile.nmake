@@ -12,10 +12,13 @@ RMDIR=rmdir
 BINDIR=bin
 OBJDIR=obj.$(PLATFORM)
 
-all: $(BINDIR)\tetengo.msi
+all: $(BINDIR)\tetengo.msi $(BINDIR)\tetengo.ja.msi
 
 $(BINDIR)\tetengo.msi: $(OBJDIR)\main.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension $?
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $?
+
+$(BINDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
 
 $(BINDIR):
 	$(MKDIR) $(BINDIR)
