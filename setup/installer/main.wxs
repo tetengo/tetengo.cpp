@@ -29,6 +29,7 @@
     <UIRef Id="WixUI_InstallDir"/>
     <UIRef Id="WixUI_ErrorProgressText"/>
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
+    <WixVariable Id="WixUILicenseRtf" Value="COPYING.rtf"/>
     
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder" Name="PFiles">
