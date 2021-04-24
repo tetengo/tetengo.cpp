@@ -22,8 +22,14 @@
       Compressed="yes"
       SummaryCodepage="1252"
     />
+    
     <Media Id='1' Cabinet='main.cab' EmbedCab='yes' DiskPrompt='Insert the media #1.'/>
     <Property Id='DiskPrompt' Value="tetengo Installer"/>
+    
+    <UIRef Id="WixUI_InstallDir"/>
+    <UIRef Id="WixUI_ErrorProgressText"/>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
+    
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder" Name="PFiles">
         <Directory Id="INSTALLDIR" Name="tetengo" FileSource="..\..\library\json\c">
@@ -31,7 +37,7 @@
             <Directory Id="tetengo" Name="tetengo">
               <Directory Id="json" Name="json">
                 <Component Id="jsonParser.h" Guid="B2EFD808-C839-4B0D-B258-581CFDFE0A46">
-                  <File Id="jsonParser.h" Name="jsonParser.h" KeyPath="yes"/>
+                  <File Id="jsonParser.h" Name="jsonParser.h" DiskId="1" KeyPath="yes"/>
                 </Component>
               </Directory>
             </Directory>
@@ -39,8 +45,23 @@
         </Directory>
       </Directory>
     </Directory>
-    <Feature Id="Complete" Level="1">
-      <ComponentRef Id="jsonParser.h"/>
+    
+    <Feature
+      Id="Essential"
+      Title="Essential files"
+      Description="Essential files description"
+      Level="1"
+      ConfigurableDirectory="INSTALLDIR"
+    >
+      <Feature
+        Id="Header"
+        Title="Header files"
+        Description="Header files description"
+        Display="expand"
+        Level="1"
+      >
+        <ComponentRef Id="jsonParser.h"/>
+      </Feature>
     </Feature>
   </Product>
 </Wix>

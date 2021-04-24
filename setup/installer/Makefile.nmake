@@ -15,7 +15,7 @@ OBJDIR=obj.$(PLATFORM)
 all: $(BINDIR)\tetengo.msi
 
 $(BINDIR)\tetengo.msi: $(OBJDIR)\main.wixobj
-	$(LIGHT) -out $@ -wx $?
+	$(LIGHT) -out $@ -wx -ext WixUIExtension $?
 
 $(BINDIR):
 	$(MKDIR) $(BINDIR)
