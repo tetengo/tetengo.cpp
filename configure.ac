@@ -82,6 +82,8 @@ AC_CONFIG_FILES([
     sample/transfer_trains/Makefile
     sample/transfer_trains/data/Makefile
     sample/transfer_trains/src/Makefile
+    setup/Makefile
+    setup/installer/Makefile
     tool/Makefile
 ])
 

@@ -1,0 +1,13 @@
+library\json\c\include\tetengo\json\*   include\tetengo\json\
+library\json\cpp\include\tetengo\json\* include.cpp\tetengo\json\
+
+library\lattice\c\include\tetengo\lattice\*   include\tetengo\lattice\
+library\lattice\cpp\include\tetengo\lattice\* include.cpp\tetengo\lattice\
+
+library\platform_dependent\cpp\include\tetengo\platform_dependent\* include.cpp\tetengo\platform_dependent\
+
+library\text\c\include\tetengo\text\*   include\tetengo\text\
+library\text\cpp\include\tetengo\text\* include.cpp\tetengo\text\
+
+library\trie\c\include\tetengo\trie\*   include\tetengo\trie\
+library\trie\cpp\include\tetengo\trie\* include.cpp\tetengo\trie\

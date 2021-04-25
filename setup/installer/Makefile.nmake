@@ -7,13 +7,15 @@ PLATFORM=x64
 CANDLE="$(WIX)bin\candle.exe"
 LIGHT="$(WIX)bin\light.exe"
 TORCH="$(WIX)bin\torch.exe"
+PYTHON=python3
 MKDIR=mkdir
 RMDIR=rmdir
 
+SOLUTIONDIR=..\..
 OBJDIR=obj.$(PLATFORM)
 BINDIR=bin
 
-all: $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
+all: $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst $(OBJDIR)\content_wxs_source.txt
 
 $(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.msi $(OBJDIR)\tetengo.ja.msi
 	$(TORCH) -out $@ -wx -p -t language $?
@@ -29,6 +31,9 @@ $(OBJDIR)\main.wixobj: main.wxs
 
 $(OBJDIR)\content.wixobj: content.wxs
 	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
+
+$(OBJDIR)\content_wxs_source.txt: files_to_install.txt file_guid_map.txt
+	$(PYTHON) generate_content_wxs_source.py $? $@ $(SOLUTIONDIR)
 
 $(OBJDIR):
 	$(MKDIR) $(OBJDIR)
