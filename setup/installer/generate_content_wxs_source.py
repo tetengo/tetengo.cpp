@@ -32,7 +32,7 @@ def main(args: List[str]) -> None:
     solution_path = pathlib.Path(args[3])
 
     files_to_install = _load_files_to_install(files_to_install_path)
-    file_guid_map = FileGuidMap(file_guid_map_path, solution_path)
+    file_guid_map = _FileGuidMap(file_guid_map_path, solution_path)
 
     _make_content_wxs_source(
         files_to_install, file_guid_map, content_wxs_source_path, solution_path
@@ -42,21 +42,27 @@ def main(args: List[str]) -> None:
 
 def _load_files_to_install(
     path: pathlib.Path,
-) -> List[Tuple[pathlib.Path, pathlib.Path]]:
-    files: List[Tuple[pathlib.Path, pathlib.Path]] = []
+) -> List[Tuple[str, pathlib.Path, pathlib.Path]]:
+    files: List[Tuple[str, pathlib.Path, pathlib.Path]] = []
     with path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
             line = line.rstrip("\r\n")
-            matched: Optional[re.Match[str]] = re.match("^([^ ]+)[ ]+([^ ]+)", line)
+            matched: Optional[re.Match[str]] = re.match(
+                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
+            )
             if not matched:
                 continue
             files.append(
-                (pathlib.Path(matched.group(1)), pathlib.Path(matched.group(2)))
+                (
+                    matched.group(1),
+                    pathlib.Path(matched.group(2)),
+                    pathlib.Path(matched.group(3)),
+                )
             )
     return files
 
 
-class FileGuidMap:
+class _FileGuidMap:
     _map: Dict[pathlib.Path, Tuple[str, bool]] = {}
 
     def __init__(self, file_guid_map_path: pathlib.Path, solution_path: pathlib.Path):
@@ -86,18 +92,24 @@ class FileGuidMap:
 
 
 def _make_content_wxs_source(
-    files_to_install: List[Tuple[pathlib.Path, pathlib.Path]],
-    file_guid_map: FileGuidMap,
+    files_to_install: List[Tuple[str, pathlib.Path, pathlib.Path]],
+    file_guid_map: _FileGuidMap,
     content_wxs_source_path: pathlib.Path,
     solution_path: pathlib.Path,
 ) -> None:
     with content_wxs_source_path.open(mode="w", encoding="UTF-8") as stream:
         for wildcard in files_to_install:
-            for extended in glob.glob(str(solution_path / wildcard[0])):
+            wildcard_path: pathlib.Path = solution_path / wildcard[1]
+            source_directory: str = str(wildcard_path.parent)
+            for extended in glob.glob(str(wildcard_path), recursive=True):
+                if not pathlib.Path(extended).is_file():
+                    continue
                 print(
-                    "{} {} {}".format(
-                        extended,
-                        wildcard[1],
+                    "{} {} {} {} {}".format(
+                        wildcard[0],
+                        source_directory,
+                        extended[len(source_directory) + 1 :],
+                        wildcard[2],
                         file_guid_map.guid_of(
                             _remove_solution_path(pathlib.Path(extended), solution_path)
                         ),
