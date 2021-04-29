@@ -28,6 +28,8 @@ $(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
 	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
 
 $(OBJDIR)\main.wixobj: $(WORKDIR)\main.wxs
+	set WORKDIR=$(WORKDIR)
+	set PLATFORM=$(PLATFORM)
 	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
 
 $(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
