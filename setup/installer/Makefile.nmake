@@ -9,44 +9,48 @@ WORKDIR=.
 CANDLE="$(WIX)bin\candle.exe"
 LIGHT="$(WIX)bin\light.exe"
 TORCH="$(WIX)bin\torch.exe"
+EMBEDTRANSFORM="$(WIX)bin\EmbedTransform.exe"
 PYTHON=python3
+COPY=copy
 MKDIR=mkdir
 RMDIR=rmdir
 
 OBJDIR=$(WORKDIR)\obj.$(PLATFORM)
 BINDIR=$(WORKDIR)\bin
 
-all: $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst $(OBJDIR)\content_wxs_source.txt
+all: $(BINDIR)\tetengo.$(PLATFORM).msi
 
-$(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.msi $(OBJDIR)\tetengo.ja.msi
-	$(TORCH) -out $@ -wx -p -t language $?
-
-$(OBJDIR)\tetengo.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $?
-
-$(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
-
-$(OBJDIR)\main.wixobj: $(WORKDIR)\main.wxs
-	set WORKDIR=$(WORKDIR)
-	set PLATFORM=$(PLATFORM)
-	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
-
-$(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
-	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
-
-$(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
-	$(PYTHON) $(WORKDIR)\generate_content_wxs.py $? $@
-
-$(OBJDIR)\content_wxs_source.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\file_guid_map.txt
-	$(PYTHON) $(WORKDIR)\generate_content_wxs_source.py $? $@ $(SOLUTIONDIR)
-
-$(OBJDIR):
-	$(MKDIR) $(OBJDIR)
+$(BINDIR)\tetengo.$(PLATFORM).msi: $(BINDIR) $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
+	$(COPY) $(OBJDIR)\tetengo.msi $@
+	$(EMBEDTRANSFORM) $@  $(OBJDIR)\ja.mst
 
 $(BINDIR):
 	$(MKDIR) $(BINDIR)
 
+$(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.msi $(OBJDIR)\tetengo.ja.msi
+	$(TORCH) -out $@ -wx -p -t language $**
+
+$(OBJDIR)\tetengo.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $**
+
+$(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $**
+
+$(OBJDIR)\main.wixobj: $(WORKDIR)\main.wxs
+	set WORKDIR=$(WORKDIR)
+	set PLATFORM=$(PLATFORM)
+	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
+
+$(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
+	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
+
+$(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
+	$(PYTHON) $(WORKDIR)\generate_content_wxs.py $** $@
+
+$(OBJDIR)\content_wxs_source.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\file_guid_map.txt
+	$(PYTHON) $(WORKDIR)\generate_content_wxs_source.py $** $@ $(SOLUTIONDIR)
+
+.PHONY: clean
 clean:
 	-$(RMDIR) /s /q $(OBJDIR)
 	-$(RMDIR) /s /q $(BINDIR)
