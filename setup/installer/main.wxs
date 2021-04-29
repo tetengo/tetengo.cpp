@@ -29,12 +29,18 @@
     <UIRef Id="WixUI_InstallDir"/>
     <UIRef Id="WixUI_ErrorProgressText"/>
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
-    <WixVariable Id="WixUILicenseRtf" Value="COPYING.rtf"/>
+    <WixVariable Id="WixUILicenseRtf" Value="$(env.WORKDIR)\COPYING.rtf"/>
     
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFiles64Folder" Name="PFiles">
-        <Directory Id="INSTALLDIR" Name="tetengo"/>
-      </Directory>
+      <?if $(env.PLATFORM) = "Win32"?>
+        <Directory Id="ProgramFilesFolder" Name="PFiles">
+          <Directory Id="INSTALLDIR" Name="tetengo"/>
+        </Directory>
+      <?elseif $(env.PLATFORM) = "x64"?>
+        <Directory Id="ProgramFiles64Folder" Name="PFiles">
+          <Directory Id="INSTALLDIR" Name="tetengo"/>
+        </Directory>
+      <?endif?>
     </Directory>
 
     <FeatureRef Id="All"/>

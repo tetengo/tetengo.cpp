@@ -3,6 +3,8 @@
 
 ARCH=x64
 PLATFORM=x64
+SOLUTIONDIR=..\..
+WORKDIR=.
 
 CANDLE="$(WIX)bin\candle.exe"
 LIGHT="$(WIX)bin\light.exe"
@@ -11,9 +13,8 @@ PYTHON=python3
 MKDIR=mkdir
 RMDIR=rmdir
 
-SOLUTIONDIR=..\..
-OBJDIR=obj.$(PLATFORM)
-BINDIR=bin
+OBJDIR=$(WORKDIR)\obj.$(PLATFORM)
+BINDIR=$(WORKDIR)\bin
 
 all: $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst $(OBJDIR)\content_wxs_source.txt
 
@@ -26,17 +27,17 @@ $(OBJDIR)\tetengo.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
 $(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
 	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $?
 
-$(OBJDIR)\main.wixobj: main.wxs
+$(OBJDIR)\main.wixobj: $(WORKDIR)\main.wxs
 	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
 
 $(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
 	$(CANDLE) -out $@ -wx -arch $(ARCH) $?
 
 $(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
-	$(PYTHON) generate_content_wxs.py $? $@
+	$(PYTHON) $(WORKDIR)\generate_content_wxs.py $? $@
 
-$(OBJDIR)\content_wxs_source.txt: files_to_install.txt file_guid_map.txt
-	$(PYTHON) generate_content_wxs_source.py $? $@ $(SOLUTIONDIR)
+$(OBJDIR)\content_wxs_source.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\file_guid_map.txt
+	$(PYTHON) $(WORKDIR)\generate_content_wxs_source.py $? $@ $(SOLUTIONDIR)
 
 $(OBJDIR):
 	$(MKDIR) $(OBJDIR)
