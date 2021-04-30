@@ -64,23 +64,47 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakeOutput>tetengo.msi</NMakeOutput>
-    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <OutDir>$(SolutionDir)bin.setup\$(Configuration).$(Platform)</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration).$(Platform)</IntDir>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NMakeOutput>tetengo.msi</NMakeOutput>
-    <NMakePreprocessorDefinitions>_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <OutDir>$(SolutionDir)bin.setup\$(Configuration).$(Platform)</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration).$(Platform)</IntDir>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeOutput>tetengo.msi</NMakeOutput>
-    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <OutDir>$(SolutionDir)bin.setup\$(Configuration).$(Platform)</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration).$(Platform)</IntDir>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <NMakeOutput>tetengo.msi</NMakeOutput>
-    <NMakePreprocessorDefinitions>NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <OutDir>$(SolutionDir)bin.setup\$(Configuration).$(Platform)</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Configuration).$(Platform)</IntDir>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="COPYING.rtf" />
+    <None Include="generate_content_wxs.py" />
+    <None Include="generate_content_wxs_source.py" />
+    <None Include="main.wxs" />
+    <None Include="Makefile.nmake" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="files_to_install.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

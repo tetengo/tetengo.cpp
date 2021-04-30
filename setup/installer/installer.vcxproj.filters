@@ -5,5 +5,30 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{67c0c217-4fb8-49ef-899c-762228c540c1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="generate_content_wxs.py">
+      <Filter>src</Filter>
+    </None>
+    <None Include="generate_content_wxs_source.py">
+      <Filter>src</Filter>
+    </None>
+    <None Include="main.wxs">
+      <Filter>src</Filter>
+    </None>
+    <None Include="Makefile.nmake">
+      <Filter>src</Filter>
+    </None>
+    <None Include="COPYING.rtf">
+      <Filter>res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="files_to_install.txt">
+      <Filter>src</Filter>
+    </Text>
   </ItemGroup>
 </Project>

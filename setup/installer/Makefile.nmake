@@ -3,6 +3,7 @@
 
 ARCH=x64
 PLATFORM=x64
+CONFIGURATION=Release
 SOLUTIONDIR=..\..
 WORKDIR=.
 
@@ -13,14 +14,14 @@ EMBEDTRANSFORM="$(WIX)bin\EmbedTransform.exe"
 PYTHON=python3
 COPY=copy
 MKDIR=mkdir
-RMDIR=rmdir
+DEL=del
 
-OBJDIR=$(WORKDIR)\obj.$(PLATFORM)
-BINDIR=$(WORKDIR)\bin
+OBJDIR=$(WORKDIR)\obj\$(CONFIGURATION).$(PLATFORM)
+BINDIR=$(WORKDIR)\bin.setup\$(CONFIGURATION).$(PLATFORM)
 
-all: $(BINDIR)\tetengo.$(PLATFORM).msi
+all: $(BINDIR)\tetengo.msi
 
-$(BINDIR)\tetengo.$(PLATFORM).msi: $(BINDIR) $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
+$(BINDIR)\tetengo.msi: $(BINDIR) $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
 	$(COPY) $(OBJDIR)\tetengo.msi $@
 	$(EMBEDTRANSFORM) $@  $(OBJDIR)\ja.mst
 
@@ -52,5 +53,5 @@ $(OBJDIR)\content_wxs_source.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\fil
 
 .PHONY: clean
 clean:
-	-$(RMDIR) /s /q $(OBJDIR)
-	-$(RMDIR) /s /q $(BINDIR)
+	-$(DEL) /f /q $(OBJDIR)\*
+	-$(DEL) /f /q $(BINDIR)\*
