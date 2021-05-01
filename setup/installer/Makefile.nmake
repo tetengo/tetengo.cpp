@@ -7,10 +7,14 @@ CONFIGURATION=Release
 SOLUTIONDIR=..\..
 WORKDIR=.
 
-CANDLE="$(WIX)bin\candle.exe"
-LIGHT="$(WIX)bin\light.exe"
-TORCH="$(WIX)bin\torch.exe"
-EMBEDTRANSFORM="$(WIX)bin\EmbedTransform.exe"
+WIXBINDIR="$(WIX)bin\"
+CANDLE="$(WIXBINDIR)candle.exe"
+LIGHT="$(WIXBINDIR)light.exe"
+TORCH="$(WIXBINDIR)torch.exe"
+!IFNDEF EMBEDTRANSFORMDIR
+EMBEDTRANSFORMDIR=$(WIXBINDIR)
+!ENDIF
+EMBEDTRANSFORM="$(EMBEDTRANSFORMDIR)EmbedTransform.exe"
 PYTHON=python3
 COPY=copy
 MKDIR=mkdir
@@ -21,17 +25,16 @@ BINDIR=$(WORKDIR)\bin.setup\$(CONFIGURATION).$(PLATFORM)
 
 all: $(BINDIR)\tetengo.msi
 
-$(BINDIR)\tetengo.msi: $(BINDIR) $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
-	$(COPY) $(OBJDIR)\tetengo.msi $@
-	$(EMBEDTRANSFORM) $@  $(OBJDIR)\ja.mst
+$(BINDIR)\tetengo.msi: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\ja.mst
+	-$(MKDIR) $(BINDIR)
+	$(COPY) /y $(OBJDIR)\tetengo.en.msi $(OBJDIR)\tetengo.msi
+	$(EMBEDTRANSFORM) $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
+	$(COPY) /y $(OBJDIR)\tetengo.msi $@
 
-$(BINDIR):
-	$(MKDIR) $(BINDIR)
-
-$(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.msi $(OBJDIR)\tetengo.ja.msi
+$(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\tetengo.ja.msi
 	$(TORCH) -out $@ -wx -p -t language $**
 
-$(OBJDIR)\tetengo.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+$(OBJDIR)\tetengo.en.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
 	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $**
 
 $(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
