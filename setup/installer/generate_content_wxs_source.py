@@ -104,15 +104,14 @@ def _make_content_wxs_source(
             for extended in glob.glob(str(wildcard_path), recursive=True):
                 if not pathlib.Path(extended).is_file():
                     continue
+                extended_file_name: str = extended[len(source_directory) + 1 :]
                 print(
                     "{} {} {} {} {}".format(
                         wildcard[0],
                         source_directory,
-                        extended[len(source_directory) + 1 :],
+                        extended_file_name,
                         wildcard[2],
-                        file_guid_map.guid_of(
-                            _remove_solution_path(pathlib.Path(extended), solution_path)
-                        ),
+                        file_guid_map.guid_of(pathlib.Path(wildcard[2]) / extended_file_name),
                     ),
                     file=stream,
                 )
