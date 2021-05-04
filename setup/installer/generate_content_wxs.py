@@ -151,15 +151,15 @@ def _save_wxs(
 def _write_directory_fragment(
     destination_tree: _DestinationDirectory, stream: TextIO
 ) -> None:
-    print('  <Fragment Id="DirectoryTree">', file=stream)
+    print('    <Fragment Id="DirectoryTree">', file=stream)
     _write_directory_fragment_iter(destination_tree, stream)
-    print("  </Fragment>", file=stream)
+    print("    </Fragment>", file=stream)
 
 
 def _write_directory_fragment_iter(
     destination_tree: _DestinationDirectory, stream: TextIO
 ) -> None:
-    indent: str = "    " + "  " * destination_tree.level
+    indent: str = "        " + "    " * destination_tree.level
     if len(destination_tree.name) == 0:
         print('{}<DirectoryRef Id="INSTALLDIR">'.format(indent), file=stream)
     else:
@@ -190,16 +190,16 @@ def _write_directory_fragment_iter(
 
 
 def _write_feature_fragment(feature_map: Dict[str, List[str]], stream: TextIO):
-    print('  <Fragment Id="Features">', file=stream)
-    print('    <Feature Id="All">', file=stream)
+    print('    <Fragment Id="Features">', file=stream)
+    print('        <Feature Id="All">', file=stream)
     for feature in feature_map:
-        print('      <Feature Id="{}">'.format(feature), file=stream)
+        print('            <Feature Id="{}">'.format(feature), file=stream)
         for id in feature_map[feature]:
-            print('        <ComponentRef Id="{}"/>'.format(id), file=stream)
-        print("      </Feature>", file=stream)
+            print('                <ComponentRef Id="{}"/>'.format(id), file=stream)
+        print("            </Feature>", file=stream)
 
-    print("    </Feature>", file=stream)
-    print("  </Fragment>", file=stream)
+    print("        </Feature>", file=stream)
+    print("    </Fragment>", file=stream)
 
 
 if __name__ == "__main__":

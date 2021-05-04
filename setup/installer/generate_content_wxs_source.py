@@ -111,7 +111,9 @@ def _make_content_wxs_source(
                         source_directory,
                         extended_file_name,
                         wildcard[2],
-                        file_guid_map.guid_of(pathlib.Path(wildcard[2]) / extended_file_name),
+                        file_guid_map.guid_of(
+                            pathlib.Path(wildcard[2]) / extended_file_name
+                        ),
                     ),
                     file=stream,
                 )
