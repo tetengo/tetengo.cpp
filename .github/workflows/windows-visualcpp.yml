@@ -70,7 +70,6 @@ jobs:
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
-        call tool\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
         msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
         msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
     
@@ -83,20 +82,21 @@ jobs:
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
-        call tool\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
         msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
         msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
     
     - name: Make archive
       shell: powershell
       run: |
-        Compress-Archive -Path .\bin\tetengo-windows-$env:TETENGO_VER -DestinationPath .\bin\tetengo-windows-$env:TETENGO_VER.zip
+        Compress-Archive -Path .\bin.setup\Release.Win32 -DestinationPath .\bin.setup\tetengo-windows-Win32-$env:TETENGO_VER.zip
+        Compress-Archive -Path .\bin.setup\Release.x64   -DestinationPath .\bin.setup\tetengo-windows-x64-$env:TETENGO_VER.zip
     
     - name: Move artifacts
       shell: cmd
       run: |
         mkdir artifacts
-        move bin\tetengo-windows-%TETENGO_VER%.zip artifacts
+        move bin.setup\tetengo-windows-Win32-$env:TETENGO_VER.zip artifacts
+        move bin.setup\tetengo-windows-x64-$env:TETENGO_VER.zip   artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1

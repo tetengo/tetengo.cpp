@@ -81,9 +81,9 @@ necessary in addition to the above tools.
 Download the .zip archive file for Windows from the website
 [www.tetengo.org](https://www.tetengo.org/).
 
-Expand the archive into your preferred path.
+Execute `setup.exe` in the archive..
 
-##### Building the source files cloned from the GitHub repository
+##### Building from the source files cloned from the GitHub repository
 
 Clone the source files from GitHub:
 
@@ -95,16 +95,13 @@ Open the file `tetengo.sln` in the work tree.
 
 Execute the menu command [Build]-[Build Solution] in Visual Studio.
 
-#### Installing
+#### Building setup
 
-You can "install" tetengo library. Open a command prompt and execute the batch
-file `install_tetengo_library.bat` in the directory `tool` in the top
-directory. That copies the header files and the built library files into your
-preferred path.
+Open the file `tetengo.setup.sln` in the work tree, and execute the menu
+command [Build]-[Build Solution] in Visual Studio.
 
-```bat
-> tool\install_tetengo_library.bat [your_preferred_path]
-```
+`setup.exe` and `tetengi.msi` will be created under the `bin.setup` folder in
+the work tree.
 
 #### Generating documents
 

@@ -22,7 +22,8 @@ EXTRA_DIST = \
     bootstrap.sh \
     Doxyfile \
     README.md \
-    tetengo.sln
+    tetengo.sln \
+    tetengo.setup.sln
 
 
 .PHONY: precompiled_h
