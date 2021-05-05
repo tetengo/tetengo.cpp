@@ -31,7 +31,7 @@ jobs:
       shell: powershell
       run: |
         Write-Output $env:WIX
-        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip EmbedTransform.zip
+        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
         Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
         $env:EMBEDTRANSFORMDIR="EmbedTransform\"
         Invoke-Expression $env:EMBEDTRANSFORMDIR"\EmbedTransform.exe"
