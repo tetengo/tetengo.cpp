@@ -7,7 +7,6 @@ script_files = \
 
 EXTRA_DIST = \
     ${script_files} \
-    install_tetengo_library.bat \
     make_character_property_map_cpp.bat \
     make_character_property_map_cpp.sh
 
