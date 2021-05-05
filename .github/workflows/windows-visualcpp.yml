@@ -48,6 +48,14 @@ jobs:
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=debug   link=static --stagedir="stage\x64"   stage
         rd /s /q bin.v2
     
+    - name: Setup EmbedTransform
+      shell: powershell
+      run: |
+        New-Item -Path .. -Name EmbedTransform -ItemType directory
+        Set-Location ..\EmbedTransform
+        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
+        Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
+    
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -58,22 +66,26 @@ jobs:
       run: |
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
+        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
-        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
+        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
         call tool\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
         msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
-        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
+        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
     
     - name: Build 64bit
       shell: cmd
       run: |
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
+        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
-        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64 tetengo.sln
+        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
         call tool\install_tetengo_library.bat bin\tetengo-windows-%TETENGO_VER%
         msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
-        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x64 tetengo.sln
+        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
     
     - name: Make archive
       shell: powershell
@@ -85,12 +97,6 @@ jobs:
       run: |
         mkdir artifacts
         move bin\tetengo-windows-%TETENGO_VER%.zip artifacts
-    
-    - name: Setup EmbedTransform
-      shell: powershell
-      run: |
-        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
-        Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
