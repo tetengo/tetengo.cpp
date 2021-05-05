@@ -27,15 +27,6 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
     
-    - name: Stup EmbedTransform
-      shell: powershell
-      run: |
-        Write-Output $env:WIX
-        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
-        Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
-        $env:EMBEDTRANSFORMDIR="EmbedTransform\"
-        Invoke-Expression $env:EMBEDTRANSFORMDIR"\EmbedTransform.exe"
-    
     - name: Cache Boost build
       uses: actions/cache@v1
       with:
@@ -95,6 +86,12 @@ jobs:
       run: |
         mkdir artifacts
         move bin\tetengo-windows-%TETENGO_VER%.zip artifacts
+    
+    - name: Setup EmbedTransform
+      shell: powershell
+      run: |
+        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
+        Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
