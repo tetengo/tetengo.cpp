@@ -9,6 +9,7 @@ SOURCE_SUBDIRS = \
 
 SCRIPT_SUBDIRS = \
     kogyan \
+    setup \
     tool
 
 SUBDIRS = \

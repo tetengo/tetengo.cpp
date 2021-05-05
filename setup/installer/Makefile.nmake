@@ -1,0 +1,60 @@
+# Builds tetengo installer
+# Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+
+ARCH=x64
+PLATFORM=x64
+CONFIGURATION=Release
+SOLUTIONDIR="..\..\"
+WORKDIR=".\"
+
+WIXBINDIR="$(WIX)bin\"
+CANDLE="$(WIXBINDIR)candle.exe"
+LIGHT="$(WIXBINDIR)light.exe"
+TORCH="$(WIXBINDIR)torch.exe"
+!IFNDEF EMBEDTRANSFORMDIR
+EMBEDTRANSFORMDIR=$(WIXBINDIR)
+!ENDIF
+EMBEDTRANSFORM="$(EMBEDTRANSFORMDIR)EmbedTransform.exe"
+PYTHON=python3
+COPY=copy
+MKDIR=mkdir
+DEL=del
+
+OBJDIR=$(WORKDIR)obj\$(CONFIGURATION).$(PLATFORM)
+BINDIR=$(WORKDIR)bin.setup\$(CONFIGURATION).$(PLATFORM)
+
+all: $(BINDIR)\tetengo.msi
+
+$(BINDIR)\tetengo.msi: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\ja.mst
+	-$(MKDIR) $(BINDIR)
+	$(COPY) /y $(OBJDIR)\tetengo.en.msi $(OBJDIR)\tetengo.msi
+	$(EMBEDTRANSFORM) $(OBJDIR)\tetengo.msi $(OBJDIR)\ja.mst
+	$(COPY) /y $(OBJDIR)\tetengo.msi $@
+
+$(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\tetengo.ja.msi
+	$(TORCH) -out $@ -wx -p -t language $**
+
+$(OBJDIR)\tetengo.en.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $**
+
+$(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
+	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $**
+
+$(OBJDIR)\main.wixobj: $(WORKDIR)main.wxs
+	set WORKDIR=$(WORKDIR)
+	set PLATFORM=$(PLATFORM)
+	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
+
+$(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
+	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
+
+$(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
+	$(PYTHON) "$(WORKDIR)generate_content_wxs.py" $** $@
+
+$(OBJDIR)\content_wxs_source.txt: $(WORKDIR)files_to_install.txt $(WORKDIR)file_guid_map.txt
+	$(PYTHON) "$(WORKDIR)generate_content_wxs_source.py" $** $@ $(SOLUTIONDIR)
+
+.PHONY: clean
+clean:
+	-$(DEL) /f /q $(OBJDIR)\*
+	-$(DEL) /f /q $(BINDIR)\*
