@@ -30,6 +30,7 @@ test-driver
 __pycache__/
 *~
 *.a
+*.aps
 *.la
 *.lo
 *.log

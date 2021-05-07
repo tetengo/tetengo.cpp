@@ -22,5 +22,18 @@
     <ClInclude Include="..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="res\resource.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\setup.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\setup.ico">
+      <Filter>res</Filter>
+    </Image>
   </ItemGroup>
 </Project>
