@@ -4,8 +4,8 @@
 ARCH=x64
 PLATFORM=x64
 CONFIGURATION=Release
-SOLUTIONDIR="..\..\"
-WORKDIR=".\"
+SOLUTIONDIR=..\..
+WORKDIR=.
 
 WIXBINDIR="$(WIX)bin\"
 CANDLE="$(WIXBINDIR)candle.exe"
@@ -20,8 +20,8 @@ COPY=copy
 MKDIR=mkdir
 DEL=del
 
-OBJDIR=$(WORKDIR)obj\$(CONFIGURATION).$(PLATFORM)
-BINDIR=$(WORKDIR)bin.setup\$(CONFIGURATION).$(PLATFORM)
+OBJDIR=$(WORKDIR)\obj\$(CONFIGURATION).$(PLATFORM)
+BINDIR=$(WORKDIR)\bin.setup\$(CONFIGURATION).$(PLATFORM)
 
 all: $(BINDIR)\tetengo.msi
 
@@ -40,7 +40,7 @@ $(OBJDIR)\tetengo.en.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
 $(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
 	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $**
 
-$(OBJDIR)\main.wixobj: $(WORKDIR)main.wxs
+$(OBJDIR)\main.wixobj: $(WORKDIR)\main.wxs
 	set WORKDIR=$(WORKDIR)
 	set PLATFORM=$(PLATFORM)
 	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
@@ -49,10 +49,10 @@ $(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
 	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
 
 $(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
-	$(PYTHON) "$(WORKDIR)generate_content_wxs.py" $** $@
+	$(PYTHON) "$(WORKDIR)\generate_content_wxs.py" $** $@
 
-$(OBJDIR)\content_wxs_source.txt: $(WORKDIR)files_to_install.txt $(WORKDIR)file_guid_map.txt
-	$(PYTHON) "$(WORKDIR)generate_content_wxs_source.py" $** $@ $(SOLUTIONDIR)
+$(OBJDIR)\content_wxs_source.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\file_guid_map.txt
+	$(PYTHON) "$(WORKDIR)\generate_content_wxs_source.py" $** $@ $(SOLUTIONDIR)
 
 .PHONY: clean
 clean:
