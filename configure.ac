@@ -11,6 +11,10 @@ AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_FILES([
     Makefile
     docsrc/Makefile
+    executable/Makefile
+    executable/setup/Makefile
+    executable/setup/res/Makefile
+    executable/setup/src/Makefile
     kogyan/Makefile
     kogyan/tool/Makefile
     kogyan/vsprops/Makefile
