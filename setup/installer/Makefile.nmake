@@ -17,13 +17,15 @@ EMBEDTRANSFORMDIR=$(WIXBINDIR)
 EMBEDTRANSFORM="$(EMBEDTRANSFORMDIR)EmbedTransform.exe"
 PYTHON=python3
 COPY=copy
+ECHO=echo
 MKDIR=mkdir
 DEL=del
 
 OBJDIR=$(WORKDIR)\obj\$(CONFIGURATION).$(PLATFORM)
 BINDIR=$(WORKDIR)\bin.setup\$(CONFIGURATION).$(PLATFORM)
+TETENGOOUTDIR=$(WORKDIR)\..\..\bin\$(CONFIGURATION).$(PLATFORM)
 
-all: $(BINDIR)\tetengo.msi
+all: $(BINDIR)\tetengo.msi $(BINDIR)\setup.exe $(BINDIR)\setup.conf
 
 $(BINDIR)\tetengo.msi: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\ja.mst
 	-$(MKDIR) $(BINDIR)
@@ -53,6 +55,12 @@ $(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
 
 $(OBJDIR)\content_wxs_source.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\file_guid_map.txt
 	$(PYTHON) "$(WORKDIR)\generate_content_wxs_source.py" $** $@ $(SOLUTIONDIR)
+
+$(BINDIR)\setup.exe: $(TETENGOOUTDIR)\setup.exe
+	$(COPY) /y $** $@
+
+$(BINDIR)\setup.conf:
+	$(ECHO) tetengo.msi > $@
 
 .PHONY: clean
 clean:
