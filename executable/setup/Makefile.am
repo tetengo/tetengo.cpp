@@ -6,12 +6,11 @@ SOURCE_SUBDIRS = \
 
 SUBDIRS = \
     ${SOURCE_SUBDIRS} \
-    data
+    res
 
 EXTRA_DIST = \
-    README.md \
-    json2timetable.vcxproj \
-    json2timetable.vcxproj.filters
+    setup.vcxproj \
+    setup.vcxproj.filters
 
 
 iwyu: ${SOURCE_SUBDIRS}
@@ -23,5 +22,5 @@ format: ${SOURCE_SUBDIRS}
 clean-format: ${SOURCE_SUBDIRS}
 
 .PHONY: ${SOURCE_SUBDIRS}
-${SOURCE_SUBDIRS}:
+${SUBDIRS}:
 	${MAKE} -C $@ ${MAKECMDGOALS}

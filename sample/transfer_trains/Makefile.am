@@ -20,7 +20,7 @@ clean-iwyu: ${SOURCE_SUBDIRS}
 
 format: ${SOURCE_SUBDIRS}
 
-clean-format: ${SUBDIRS}
+clean-format: ${SOURCE_SUBDIRS}
 
 .PHONY: ${SOURCE_SUBDIRS}
 ${SOURCE_SUBDIRS}:
