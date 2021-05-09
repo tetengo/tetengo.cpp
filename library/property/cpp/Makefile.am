@@ -2,12 +2,12 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
-    json \
-    lattice \
-    platform_dependent \
-    property \
-    text \
-    trie
+    include \
+    src
+
+EXTRA_DIST = \
+    tetengo.property.cpp.vcxproj \
+    tetengo.property.cpp.vcxproj.filters
 
 
 iwyu: ${SUBDIRS}

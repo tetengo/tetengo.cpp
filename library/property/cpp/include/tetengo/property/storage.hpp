@@ -7,6 +7,8 @@
 #if !defined(TETENGO_PROPERTY_STORAGE_HPP)
 #define TETENGO_PROPERTY_STORAGE_HPP
 
+#include <boost/core/noncopyable.hpp>
+
 
 namespace tetengo::property
 {
@@ -29,8 +31,6 @@ namespace tetengo::property
 
     private:
         // virtual functions
-
-
     };
 
 
