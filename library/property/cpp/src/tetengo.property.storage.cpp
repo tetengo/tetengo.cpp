@@ -21,9 +21,14 @@ namespace tetengo::property
         return get_uint32_impl(key);
     }
 
-    void storage::set_uint32(const std::filesystem::path& key, std::uint32_t value)
+    void storage::set_uint32(const std::filesystem::path& key, const std::uint32_t value)
     {
         set_uint32_impl(key, value);
+    }
+
+    void storage::save() const
+    {
+        return save_impl();
     }
 
 

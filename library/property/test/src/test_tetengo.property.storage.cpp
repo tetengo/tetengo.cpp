@@ -40,6 +40,8 @@ namespace
         {
             m_value = value;
         };
+
+        virtual void save_impl() const override {}
     };
 
     class concrete_storage_factory : public tetengo::property::storage_factory
@@ -89,6 +91,14 @@ BOOST_AUTO_TEST_CASE(set_uint32)
     const auto o_value = storage.get_uint32(key);
     BOOST_REQUIRE(o_value);
     BOOST_TEST(*o_value == 42U);
+}
+
+BOOST_AUTO_TEST_CASE(save)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage{};
+    storage.save();
 }
 
 

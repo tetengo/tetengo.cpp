@@ -50,6 +50,11 @@ namespace tetengo::property
         */
         void set_uint32(const std::filesystem::path& key, std::uint32_t value);
 
+        /*!
+            \brief Saves the values.
+        */
+        void save() const;
+
 
     private:
         // virtual functions
@@ -57,6 +62,8 @@ namespace tetengo::property
         virtual std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const = 0;
 
         virtual void set_uint32_impl(const std::filesystem::path& key, std::uint32_t value) = 0;
+
+        virtual void save_impl() const = 0;
     };
 
 
