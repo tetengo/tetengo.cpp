@@ -68,17 +68,17 @@ namespace tetengo::property
 
 
     /*!
-        \brief A storage factory.
+        \brief A storage loader.
     */
-    class storage_factory : private boost::noncopyable
+    class storage_loader : private boost::noncopyable
     {
     public:
         // constructors and destructor
 
         /*!
-            \brief Destroys the storage factory.
+            \brief Destroys the storage loader.
         */
-        virtual ~storage_factory();
+        virtual ~storage_loader();
 
 
         // functions
@@ -86,15 +86,17 @@ namespace tetengo::property
         /*!
             \brief Loads a storage.
 
+            \param path A path.
+
             \return A unique pointer to a storage. Or nullptr on error.
         */
-        [[nodiscard]] std::unique_ptr<storage> load() const;
+        [[nodiscard]] std::unique_ptr<storage> load(const std::filesystem::path& path) const;
 
 
     private:
         // virtual functions
 
-        virtual std::unique_ptr<storage> load_impl() const = 0;
+        virtual std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const = 0;
     };
 
 

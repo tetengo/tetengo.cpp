@@ -32,11 +32,11 @@ namespace tetengo::property
     }
 
 
-    storage_factory::~storage_factory() = default;
+    storage_loader::~storage_loader() = default;
 
-    std::unique_ptr<storage> storage_factory::load() const
+    std::unique_ptr<storage> storage_loader::load(const std::filesystem::path& path) const
     {
-        return load_impl();
+        return load_impl(path);
     }
 
 

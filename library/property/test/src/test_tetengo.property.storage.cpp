@@ -44,13 +44,14 @@ namespace
         virtual void save_impl() const override {}
     };
 
-    class concrete_storage_factory : public tetengo::property::storage_factory
+    class concrete_storage_loader : public tetengo::property::storage_loader
     {
     public:
-        virtual ~concrete_storage_factory() = default;
+        virtual ~concrete_storage_loader() = default;
 
     private:
-        virtual std::unique_ptr<tetengo::property::storage> load_impl() const override
+        virtual std::unique_ptr<tetengo::property::storage>
+        load_impl(const std::filesystem::path& /*path*/) const override
         {
             return std::make_unique<concrete_storage>();
         }
@@ -103,7 +104,7 @@ BOOST_AUTO_TEST_CASE(save)
 
 
 BOOST_AUTO_TEST_SUITE_END()
-BOOST_AUTO_TEST_SUITE(storage_factory)
+BOOST_AUTO_TEST_SUITE(storage_loader)
 
 
 BOOST_AUTO_TEST_CASE(construction)
@@ -111,7 +112,7 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const concrete_storage_factory factory{};
+        const concrete_storage_loader factory{};
     }
 }
 
@@ -120,9 +121,10 @@ BOOST_AUTO_TEST_CASE(load)
     BOOST_TEST_PASSPOINT();
 
     {
-        const concrete_storage_factory factory{};
+        const concrete_storage_loader factory{};
 
-        const auto p_storage = factory.load();
+        const auto path = std::filesystem::path{ "foo" } / "bar";
+        const auto p_storage = factory.load(path);
         BOOST_CHECK(p_storage);
     }
 }
