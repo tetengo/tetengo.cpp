@@ -7,7 +7,10 @@
 #if !defined(TETENGO_PROPERTY_STORAGE_HPP)
 #define TETENGO_PROPERTY_STORAGE_HPP
 
+#include <cstdint>
+#include <filesystem>
 #include <memory>
+#include <optional>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -30,9 +33,30 @@ namespace tetengo::property
 
         // functions
 
+        /*!
+            \brief Returns the value in an unsigned 32-bit integer.
+
+            \param key A key.
+
+            \return The value. Or std::nullopt when no such key.
+        */
+        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const;
+
+        /*!
+            \brief Sets a value in an unsigned 32-bit integer.
+
+            \param key   A key.
+            \param value A value.
+        */
+        void set_uint32(const std::filesystem::path& key, std::uint32_t value);
+
 
     private:
         // virtual functions
+
+        virtual std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const = 0;
+
+        virtual void set_uint32_impl(const std::filesystem::path& key, std::uint32_t value) = 0;
     };
 
 
