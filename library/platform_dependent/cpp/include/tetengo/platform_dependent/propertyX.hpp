@@ -52,6 +52,17 @@ namespace tetengo::platform_dependent
         */
         [[nodiscard]] std::filesystem::path to_native_path(const std::filesystem::path& generic_path) const;
 
+        /*!
+            \brief Converts a generic path to a native top path.
+
+            \param generic_path A generic path.
+
+            \return A native top path.
+
+            \throw std::invalid_argument When generic_path is empty.
+        */
+        [[nodiscard]] std::filesystem::path to_native_top_path(const std::filesystem::path& generic_path) const;
+
 
     private:
         // types

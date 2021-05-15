@@ -35,7 +35,8 @@ namespace tetengo::property
 
 
     file_storage::file_storage(value_map_type value_map) :
-    storage{ std::move(value_map) }, m_p_impl{ std::make_unique<impl>() }
+    storage{ std::move(value_map) },
+        m_p_impl{ std::make_unique<impl>() }
     {}
 
     file_storage::~file_storage() = default;

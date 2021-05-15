@@ -12,6 +12,7 @@ sources = \
 check_PROGRAMS = test_tetengo.property
 
 test_tetengo_property_CPPFLAGS = \
+    -I${top_srcdir}/library/platform_dependent/cpp/include \
     -I${top_srcdir}/library/property/c/include \
     -I${top_srcdir}/library/property/cpp/include
 test_tetengo_property_LDFLAGS = \
