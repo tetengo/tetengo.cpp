@@ -4,6 +4,7 @@
 headers =
 
 sources = \
+    tetengo.platform_dependent.propX.cpp \
     tetengo.platform_dependent.textX.cpp
 
 EXTRA_DIST = \

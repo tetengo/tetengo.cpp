@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    platform_dependent/propertyX.hpp \
     platform_dependent/text_encX.hpp
 
 extra_headers = \
