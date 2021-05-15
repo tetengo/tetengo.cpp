@@ -1,0 +1,82 @@
+/*! \file
+    \brief A file storage.
+
+    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+*/
+
+#include <filesystem>
+#include <utility>
+
+#include <boost/preprocessor.hpp>
+#include <boost/test/unit_test.hpp>
+
+#include <tetengo/property/file_storage.hpp>
+#include <tetengo/property/storage.hpp>
+
+
+BOOST_AUTO_TEST_SUITE(test_tetengo)
+BOOST_AUTO_TEST_SUITE(property)
+BOOST_AUTO_TEST_SUITE(file_storage)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        tetengo::property::file_storage::value_map_type value_map{};
+        const tetengo::property::file_storage           storage{ std::move(value_map) };
+    }
+}
+
+BOOST_AUTO_TEST_CASE(save)
+{
+    BOOST_TEST_PASSPOINT();
+
+    //{
+    //    tetengo::property::file_storage::value_map_type master_value_map{};
+    //    tetengo::property::file_storage                 storage1{ master_value_map };
+
+    //    const auto key = std::filesystem::path{ "hoge" } / "fuga";
+    //    storage1.set_uint32(key, 42);
+
+    //    const tetengo::property::file_storage storage2{ master_value_map };
+    //    BOOST_TEST(!storage2.get_uint32(key));
+
+    //    storage1.save();
+
+    //    const tetengo::property::file_storage storage3{ master_value_map };
+    //    BOOST_REQUIRE(storage3.get_uint32(key));
+    //    BOOST_TEST(*storage3.get_uint32(key) == 42U);
+    //}
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE(file_storage_loader)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::property::file_storage_loader loader{};
+    }
+}
+
+BOOST_AUTO_TEST_CASE(load)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(std::filesystem::path{});
+        BOOST_CHECK(p_storage);
+    }
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END()

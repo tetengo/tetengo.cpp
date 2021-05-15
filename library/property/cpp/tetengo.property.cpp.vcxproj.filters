@@ -23,6 +23,9 @@
     <ClCompile Include="src\tetengo.property.memory_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.property.file_storage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
@@ -32,6 +35,9 @@
       <Filter>header\tetengo::property</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\property\memory_storage.hpp">
+      <Filter>header\tetengo::property</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\property\file_storage.hpp">
       <Filter>header\tetengo::property</Filter>
     </ClInclude>
   </ItemGroup>
