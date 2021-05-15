@@ -25,8 +25,10 @@ namespace tetengo::property
 
         /*!
             \brief Creates a memory storage.
+
+            \param master_value_map A master value map.
         */
-        memory_storage();
+        explicit memory_storage(value_map_type& master_value_map);
 
         /*!
             \brief Destroys the memory storage.

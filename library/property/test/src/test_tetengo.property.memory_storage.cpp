@@ -4,12 +4,15 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <filesystem>
+#include <optional>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/property/memory_storage.hpp>
+#include <tetengo/property/storage.hpp>
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -22,7 +25,8 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::property::memory_storage storage{};
+        tetengo::property::memory_storage::value_map_type master_value_map{};
+        const tetengo::property::memory_storage           storage{ master_value_map };
     }
 }
 
@@ -30,7 +34,22 @@ BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        tetengo::property::memory_storage::value_map_type master_value_map{};
+        tetengo::property::memory_storage                 storage1{ master_value_map };
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        storage1.set_uint32(key, 42);
+
+        const tetengo::property::memory_storage storage2{ master_value_map };
+        BOOST_TEST(!storage2.get_uint32(key));
+
+        storage1.save();
+
+        const tetengo::property::memory_storage storage3{ master_value_map };
+        BOOST_REQUIRE(storage3.get_uint32(key));
+        BOOST_TEST(*storage3.get_uint32(key) == 42U);
+    }
 }
 
 

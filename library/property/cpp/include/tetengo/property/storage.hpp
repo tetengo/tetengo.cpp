@@ -26,6 +26,12 @@ namespace tetengo::property
     class storage : private boost::noncopyable
     {
     public:
+        // types
+
+        //! The value map type.
+        using value_map_type = std::unordered_map<std::string, std::variant<std::uint32_t>>;
+
+
         // constructors and destructor
 
         /*!
@@ -60,12 +66,6 @@ namespace tetengo::property
 
 
     protected:
-        // types
-
-        //! The value map type.
-        using value_map_type = std::unordered_map<std::string, std::variant<std::uint32_t>>;
-
-
         // constructors
 
         /*!
