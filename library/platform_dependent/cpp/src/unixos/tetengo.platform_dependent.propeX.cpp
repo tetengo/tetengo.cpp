@@ -6,9 +6,11 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdlib>
 #include <filesystem>
 #include <memory>
 #include <stdexcept>
+#include <string>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -38,7 +40,14 @@ namespace tetengo::platform_dependent
                 throw std::invalid_argument{ "generic_path is empty." };
             }
 
-            return generic_path;
+            const auto* const p_home_path = std::getenv("HOME");
+            if (!p_home_path)
+            {
+                throw std::runtime_error{ "Can't obtain the home directory path." };
+            }
+
+            const auto native_path = std::filesystem::path{ p_home_path } / (std::string{ "." } + generic_path.c_str());
+            return native_path;
         }
     };
 

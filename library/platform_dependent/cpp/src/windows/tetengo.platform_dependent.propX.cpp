@@ -10,7 +10,11 @@
 #include <memory>
 #include <stdexcept>
 
+#include <ShlObj.h>
+#include <Windows.h>
+
 #include <boost/core/noncopyable.hpp>
+#include <boost/scope_exit.hpp>
 
 #include <tetengo/platform_dependent/propertyX.hpp>
 
@@ -38,7 +42,21 @@ namespace tetengo::platform_dependent
                 throw std::invalid_argument{ "generic_path is empty." };
             }
 
-            return generic_path;
+            PWSTR      p_appdata_path = nullptr;
+            const auto result =
+                ::SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_DEFAULT, nullptr, &p_appdata_path);
+            BOOST_SCOPE_EXIT(p_appdata_path)
+            {
+                ::CoTaskMemFree(p_appdata_path);
+            }
+            BOOST_SCOPE_EXIT_END;
+            if (result != S_OK)
+            {
+                throw std::runtime_error{ "Can't obtain the application data folder path." };
+            }
+
+            auto native_path = std::filesystem::path{ p_appdata_path } / generic_path;
+            return native_path;
         }
     };
 
