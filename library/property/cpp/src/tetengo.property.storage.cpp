@@ -8,7 +8,10 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
-#include <type_traits>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <variant>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -20,24 +23,50 @@ namespace tetengo::property
     class storage::impl : private boost::noncopyable
     {
     public:
+        // types
+
+        using value_map_type = storage::value_map_type;
+
+
         // constructors and destructor
 
-        explicit impl() {}
+        explicit impl(value_map_type value_map) : m_value_map{ std::move(value_map) } {}
 
 
         // functions
 
-        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& /*key*/) const
+        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const
         {
-            return std::make_optional(42);
+            const auto found = m_value_map.find(key.string());
+            if (found == m_value_map.end())
+            {
+                return std::nullopt;
+            }
+            if (found->second.index() != 0)
+            {
+                return std::nullopt;
+            }
+            return std::get<0>(found->second);
         }
 
-        void set_uint32(const std::filesystem::path& /*key*/, const std::uint32_t /*value*/) {}
+        void set_uint32(const std::filesystem::path& key, const std::uint32_t value)
+        {
+            m_value_map.insert(std::make_pair(key.string(), value));
+        }
 
         void save(const storage& self) const
         {
             self.save_impl();
         }
+
+        const value_map_type& value_map() const
+        {
+            return m_value_map;
+        }
+
+
+    private:
+        value_map_type m_value_map;
     };
 
 
@@ -58,7 +87,12 @@ namespace tetengo::property
         return m_p_impl->save(*this);
     }
 
-    storage::storage() : m_p_impl{ std::make_unique<impl>() } {}
+    storage::storage(value_map_type value_map) : m_p_impl{ std::make_unique<impl>(std::move(value_map)) } {}
+
+    const storage::value_map_type& storage::value_map() const
+    {
+        return m_p_impl->value_map();
+    }
 
 
     storage_loader::~storage_loader() = default;

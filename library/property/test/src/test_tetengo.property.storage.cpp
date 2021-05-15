@@ -7,6 +7,9 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
+#include <unordered_map>
+#include <utility>
+#include <variant>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
@@ -19,9 +22,17 @@ namespace
     class concrete_storage : public tetengo::property::storage
     {
     public:
-        concrete_storage() {}
+        concrete_storage() : tetengo::property::storage{ value_map_type{} } {}
 
         virtual ~concrete_storage() = default;
+
+        bool call_value_map() const
+        {
+            const auto& map = value_map();
+            const auto  key = std::filesystem::path{ "hoge" } / "fuga";
+            const auto  found = map.find(key.string());
+            return found != map.end() && std::get<0>(found->second) == 42;
+        }
 
     private:
         virtual void save_impl() const override {}
@@ -62,7 +73,7 @@ BOOST_AUTO_TEST_CASE(get_uint32)
 
     const concrete_storage storage{};
     const auto             key = std::filesystem::path{ "hoge" } / "fuga";
-    // BOOST_TEST(!storage.get_uint32(key));
+    BOOST_TEST(!storage.get_uint32(key));
 }
 
 BOOST_AUTO_TEST_CASE(set_uint32)
@@ -83,6 +94,16 @@ BOOST_AUTO_TEST_CASE(save)
 
     const concrete_storage storage{};
     storage.save();
+}
+
+BOOST_AUTO_TEST_CASE(value_map)
+{
+    BOOST_TEST_PASSPOINT();
+
+    concrete_storage storage{};
+    const auto       key = std::filesystem::path{ "hoge" } / "fuga";
+    storage.set_uint32(key, 42);
+    BOOST_TEST(storage.call_value_map());
 }
 
 

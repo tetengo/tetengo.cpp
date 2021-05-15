@@ -24,7 +24,7 @@ namespace tetengo::property
     };
 
 
-    memory_storage::memory_storage() : m_p_impl{ std::make_unique<impl>() } {}
+    memory_storage::memory_storage() : storage{ value_map_type{} }, m_p_impl{ std::make_unique<impl>() } {}
 
     memory_storage::~memory_storage() = default;
 

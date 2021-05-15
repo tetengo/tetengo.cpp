@@ -11,6 +11,9 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
+#include <string>
+#include <unordered_map>
+#include <variant>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -40,7 +43,7 @@ namespace tetengo::property
 
             \return The value. Or std::nullopt when no such key.
         */
-        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const;
+        [[nodiscard]] std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const;
 
         /*!
             \brief Sets a value in an unsigned 32-bit integer.
@@ -57,12 +60,30 @@ namespace tetengo::property
 
 
     protected:
+        // types
+
+        //! The value map type.
+        using value_map_type = std::unordered_map<std::string, std::variant<std::uint32_t>>;
+
+
         // constructors
 
         /*!
             \brief Creates a storage.
+
+            \param value_map A value map.
         */
-        explicit storage();
+        explicit storage(value_map_type value_map);
+
+
+        // functions
+
+        /*!
+            \brief Returns the value map.
+
+            \return The value map.
+        */
+        [[nodiscard]] const value_map_type& value_map() const;
 
 
     private:
