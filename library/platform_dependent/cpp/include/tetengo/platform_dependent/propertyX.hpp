@@ -7,6 +7,7 @@
 #if !defined(TETENGO_PLATFORMDEPENDENT_PROPERTYSETFILEPATH_HPP)
 #define TETENGO_PLATFORMDEPENDENT_PROPERTYSETFILEPATH_HPP
 
+#include <filesystem>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -39,6 +40,17 @@ namespace tetengo::platform_dependent
 
 
         // functions
+
+        /*!
+            \brief Converts a generic path to a native path.
+
+            \param generic_path A generic path.
+
+            \return A native path.
+
+            \throw std::invalid_argument When generic_path is empty.
+        */
+        [[nodiscard]] std::filesystem::path to_native_path(const std::filesystem::path& generic_path) const;
 
 
     private:

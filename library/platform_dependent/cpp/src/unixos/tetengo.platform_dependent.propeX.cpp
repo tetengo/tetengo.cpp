@@ -6,7 +6,9 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <filesystem>
 #include <memory>
+#include <stdexcept>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -28,6 +30,16 @@ namespace tetengo::platform_dependent
 
 
         // functions
+
+        std::filesystem::path to_native_path(const std::filesystem::path& generic_path) const
+        {
+            if (generic_path.empty())
+            {
+                throw std::invalid_argument{ "generic_path is empty." };
+            }
+
+            return generic_path;
+        }
     };
 
 
@@ -37,6 +49,11 @@ namespace tetengo::platform_dependent
     }
 
     property_set_file_path::~property_set_file_path() = default;
+
+    std::filesystem::path property_set_file_path::to_native_path(const std::filesystem::path& generic_path) const
+    {
+        return m_p_impl->to_native_path(generic_path);
+    }
 
     property_set_file_path::property_set_file_path() : m_p_impl{ std::make_unique<impl>() } {}
 }
