@@ -10,6 +10,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/platform_dependent/propertyX.hpp>
 #include <tetengo/property/file_storage.hpp>
 #include <tetengo/property/storage.hpp>
 
@@ -53,8 +54,10 @@ namespace tetengo::property
 
         // functions
 
-        std::unique_ptr<storage> load_impl(const std::filesystem::path&) const
+        std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
+            const auto native_path =
+                tetengo::platform_dependent::property_set_file_path::instance().to_native_path(path);
             return std::make_unique<file_storage>(storage::value_map_type{});
         }
 

@@ -124,6 +124,9 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\platform_dependent\cpp\tetengo.platform_dependent.cpp.vcxproj">
+      <Project>{3aaea971-dc2b-40d6-830c-b0d6a3368a7a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\cpp\tetengo.property.cpp.vcxproj">
       <Project>{4356ff6a-22d4-4835-8321-145998f26d68}</Project>
     </ProjectReference>

@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(load)
 
     {
         const tetengo::property::file_storage_loader loader{};
-        const auto                                   p_storage = loader.load(std::filesystem::path{});
+        const auto                                   p_storage = loader.load(std::filesystem::path{ "hoge" } / "fuga");
         BOOST_CHECK(p_storage);
     }
 }

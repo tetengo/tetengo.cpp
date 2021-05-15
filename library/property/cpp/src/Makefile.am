@@ -11,6 +11,7 @@ sources = \
 lib_LIBRARIES = libtetengo.property.cpp.a
 
 libtetengo_property_cpp_a_CPPFLAGS = \
+    -I${top_srcdir}/library/platform_dependent/cpp/include \
     -I${top_srcdir}/library/property/cpp/include
 libtetengo_property_cpp_a_SOURCES = ${headers} ${sources}
 
