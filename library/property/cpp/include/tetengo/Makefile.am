@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
+    property/memory_storage.hpp \
     property/storage.hpp
 
 extra_headers = \

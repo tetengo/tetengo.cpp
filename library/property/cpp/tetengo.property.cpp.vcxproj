@@ -99,10 +99,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.property.memory_storage.cpp" />
     <ClCompile Include="src\tetengo.property.storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\property\memory_storage.hpp" />
     <ClInclude Include="include\tetengo\property\storage.hpp" />
   </ItemGroup>
   <ItemGroup>

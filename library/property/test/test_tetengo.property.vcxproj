@@ -116,6 +116,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
+    <ClCompile Include="src\test_tetengo.property.memory_storage.cpp" />
     <ClCompile Include="src\test_tetengo.property.storage.cpp" />
   </ItemGroup>
   <ItemGroup>

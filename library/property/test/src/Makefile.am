@@ -5,6 +5,7 @@ headers =
 
 sources = \
     master.cpp \
+    test_tetengo.property.memory_storage.cpp \
     test_tetengo.property.storage.cpp
 
 check_PROGRAMS = test_tetengo.property
