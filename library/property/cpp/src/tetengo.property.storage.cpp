@@ -8,28 +8,57 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
+#include <type_traits>
+
+#include <boost/core/noncopyable.hpp>
 
 #include <tetengo/property/storage.hpp>
 
 
 namespace tetengo::property
 {
+    class storage::impl : private boost::noncopyable
+    {
+    public:
+        // constructors and destructor
+
+        explicit impl() {}
+
+
+        // functions
+
+        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& /*key*/) const
+        {
+            return std::make_optional(42);
+        }
+
+        void set_uint32(const std::filesystem::path& /*key*/, const std::uint32_t /*value*/) {}
+
+        void save(const storage& self) const
+        {
+            self.save_impl();
+        }
+    };
+
+
     storage::~storage() = default;
 
     std::optional<std::uint32_t> storage::get_uint32(const std::filesystem::path& key) const
     {
-        return get_uint32_impl(key);
+        return m_p_impl->get_uint32(key);
     }
 
     void storage::set_uint32(const std::filesystem::path& key, const std::uint32_t value)
     {
-        set_uint32_impl(key, value);
+        m_p_impl->set_uint32(key, value);
     }
 
     void storage::save() const
     {
-        return save_impl();
+        return m_p_impl->save(*this);
     }
+
+    storage::storage() : m_p_impl{ std::make_unique<impl>() } {}
 
 
     storage_loader::~storage_loader() = default;

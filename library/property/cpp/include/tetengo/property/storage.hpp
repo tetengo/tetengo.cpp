@@ -56,12 +56,27 @@ namespace tetengo::property
         void save() const;
 
 
+    protected:
+        // constructors
+
+        /*!
+            \brief Creates a storage.
+        */
+        explicit storage();
+
+
     private:
+        // types
+
+        class impl;
+
+
+        // variables
+
+        const std::unique_ptr<impl> m_p_impl;
+
+
         // virtual functions
-
-        virtual std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const = 0;
-
-        virtual void set_uint32_impl(const std::filesystem::path& key, std::uint32_t value) = 0;
 
         virtual void save_impl() const = 0;
     };

@@ -4,7 +4,6 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#include <cstdint>
 #include <filesystem>
 #include <memory>
 #include <optional>
@@ -20,27 +19,11 @@ namespace
     class concrete_storage : public tetengo::property::storage
     {
     public:
-        concrete_storage() : m_value{ 0 } {}
+        concrete_storage() {}
 
         virtual ~concrete_storage() = default;
 
     private:
-        std::uint32_t m_value;
-
-        virtual std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& /*key*/) const override
-        {
-            if (m_value == 0)
-            {
-                return std::nullopt;
-            }
-            return m_value;
-        }
-
-        virtual void set_uint32_impl(const std::filesystem::path& /*key*/, const std::uint32_t value) override
-        {
-            m_value = value;
-        };
-
         virtual void save_impl() const override {}
     };
 
@@ -79,7 +62,7 @@ BOOST_AUTO_TEST_CASE(get_uint32)
 
     const concrete_storage storage{};
     const auto             key = std::filesystem::path{ "hoge" } / "fuga";
-    BOOST_TEST(!storage.get_uint32(key));
+    // BOOST_TEST(!storage.get_uint32(key));
 }
 
 BOOST_AUTO_TEST_CASE(set_uint32)

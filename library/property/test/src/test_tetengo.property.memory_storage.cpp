@@ -26,20 +26,6 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
-BOOST_AUTO_TEST_CASE(get_uint32)
-{
-    BOOST_TEST_PASSPOINT();
-
-    BOOST_WARN_MESSAGE(false, "Implement it.");
-}
-
-BOOST_AUTO_TEST_CASE(set_uint32)
-{
-    BOOST_TEST_PASSPOINT();
-
-    BOOST_WARN_MESSAGE(false, "Implement it.");
-}
-
 BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();

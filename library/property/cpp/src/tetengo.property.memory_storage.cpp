@@ -4,10 +4,8 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#include <cstdint>
 #include <filesystem>
 #include <memory>
-#include <optional>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -22,13 +20,6 @@ namespace tetengo::property
     public:
         // functions
 
-        std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& /*key*/) const
-        {
-            return std::nullopt;
-        }
-
-        void set_uint32_impl(const std::filesystem::path& /*key*/, const std::uint32_t /*value*/) {}
-
         void save_impl() const {}
     };
 
@@ -36,16 +27,6 @@ namespace tetengo::property
     memory_storage::memory_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
     memory_storage::~memory_storage() = default;
-
-    std::optional<std::uint32_t> memory_storage::get_uint32_impl(const std::filesystem::path& key) const
-    {
-        return m_p_impl->get_uint32_impl(key);
-    }
-
-    void memory_storage::set_uint32_impl(const std::filesystem::path& key, const std::uint32_t value)
-    {
-        m_p_impl->set_uint32_impl(key, value);
-    }
 
     void memory_storage::save_impl() const
     {
