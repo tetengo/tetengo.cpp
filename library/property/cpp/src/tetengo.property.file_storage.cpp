@@ -5,11 +5,14 @@
 */
 
 #include <filesystem>
+#include <fstream>
 #include <memory>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/json/json_parser.hpp>
+#include <tetengo/json/stream_reader.hpp>
 #include <tetengo/platform_dependent/propertyX.hpp>
 #include <tetengo/property/file_storage.hpp>
 #include <tetengo/property/storage.hpp>
@@ -32,8 +35,7 @@ namespace tetengo::property
 
 
     file_storage::file_storage(value_map_type value_map) :
-    storage{ std::move(value_map) },
-        m_p_impl{ std::make_unique<impl>() }
+    storage{ std::move(value_map) }, m_p_impl{ std::make_unique<impl>() }
     {}
 
     file_storage::~file_storage() = default;
@@ -58,11 +60,45 @@ namespace tetengo::property
         {
             const auto native_path =
                 tetengo::platform_dependent::property_set_file_path::instance().to_native_path(path);
-            return std::make_unique<file_storage>(storage::value_map_type{});
+            return std::make_unique<file_storage>(load_value_map(native_path));
         }
 
 
     private:
+        // types
+
+        using value_map_type = storage::value_map_type;
+
+
+        // static functions
+
+        static value_map_type load_value_map(const std::filesystem::path& native_path)
+        {
+            auto p_stream = std::make_unique<std::ifstream>(native_path);
+            if (!p_stream || !*p_stream)
+            {
+                return value_map_type{};
+            }
+
+            auto           p_parser = build_json_parser(std::move(p_stream));
+            value_map_type value_map{};
+            parse_json_object(*p_parser, value_map, std::filesystem::path{});
+            return value_map;
+        }
+
+        static std::unique_ptr<tetengo::json::json_parser> build_json_parser(std::unique_ptr<std::istream>&& p_stream)
+        {
+            auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::move(p_stream));
+            return std::make_unique<tetengo::json::json_parser>(std::move(p_reader));
+        }
+
+        static void parse_json_object(
+            tetengo::json::json_parser& /*parser*/,
+            value_map_type& /*value_map*/,
+            const std::filesystem::path& /*key_prefix*/)
+        {}
+
+
         // variables
 
         mutable storage::value_map_type m_master_value_map;

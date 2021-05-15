@@ -124,6 +124,9 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\json\cpp\tetengo.json.cpp.vcxproj">
+      <Project>{cba672b4-259e-4bd2-9072-1d34cf941d4c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\platform_dependent\cpp\tetengo.platform_dependent.cpp.vcxproj">
       <Project>{3aaea971-dc2b-40d6-830c-b0d6a3368a7a}</Project>
     </ProjectReference>

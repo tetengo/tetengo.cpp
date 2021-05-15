@@ -15,13 +15,16 @@ test_tetengo_property_CPPFLAGS = \
     -I${top_srcdir}/library/property/c/include \
     -I${top_srcdir}/library/property/cpp/include
 test_tetengo_property_LDFLAGS = \
+    -L${top_builddir}/library/json/cpp/src \
     -L${top_builddir}/library/platform_dependent/cpp/src/unixos \
     -L${top_builddir}/library/property/c/src
 test_tetengo_property_LDADD = \
     -ltetengo.property \
+    -ltetengo.json.cpp \
     -ltetengo.platform_dependent.cpp \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_property_DEPENDENCIES = \
+    ${top_builddir}/library/json/cpp/src/libtetengo.json.noinst.la \
     ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.noinst.la \
     ${top_builddir}/library/property/c/src/libtetengo.property.la
 test_tetengo_property_SOURCES = ${sources}
