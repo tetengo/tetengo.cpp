@@ -4,6 +4,8 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <filesystem>
+
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -63,7 +65,11 @@ BOOST_AUTO_TEST_CASE(load)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const tetengo::property::memory_storage_loader loader{};
+        const auto                                     p_storage = loader.load(std::filesystem::path{});
+        BOOST_CHECK(p_storage);
+    }
 }
 
 

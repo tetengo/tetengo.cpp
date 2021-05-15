@@ -58,7 +58,7 @@ namespace tetengo::property
     public:
         // functions
 
-        std::unique_ptr<storage> load_impl(const std::filesystem::path& /*path*/) const
+        std::unique_ptr<storage> load_impl(const std::filesystem::path&) const
         {
             return std::make_unique<memory_storage>();
         }
