@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -27,6 +28,9 @@ namespace
     tetengo::property::file_storage::value_map_type make_value_map1()
     {
         tetengo::property::file_storage::value_map_type value_map{};
+        value_map.insert(std::make_pair("hoge", true));
+        value_map.insert(std::make_pair("fuga", static_cast<std::uint32_t>(42)));
+        value_map.insert(std::make_pair((std::filesystem::path{ "piyo" } / "HOGE").string(), "foo"));
         return value_map;
     }
 
