@@ -6,6 +6,7 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <unordered_map>
@@ -32,7 +33,7 @@ namespace
             const auto& map = value_map();
             const auto  key = std::filesystem::path{ "hoge" } / "fuga";
             const auto  found = map.find(key.string());
-            return found != map.end() && std::get<std::uint32_t>(found->second) == 42;
+            return found != std::end(map) && std::get<std::uint32_t>(found->second) == 42;
         }
 
     private:

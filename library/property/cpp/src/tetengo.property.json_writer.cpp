@@ -4,8 +4,13 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
+#include <filesystem>
+#include <iterator>
 #include <memory>
 #include <ostream>
+#include <unordered_map>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -33,7 +38,25 @@ namespace tetengo::property
 
         // functions
 
-        void write(const value_map_type& /*value_map*/, std::ostream& /*stream*/) const {}
+        void write(const value_map_type& value_map, std::ostream& /*stream*/) const
+        {
+            const auto keys = keys_of(value_map);
+        }
+
+
+    private:
+        // static functions
+
+        static std::vector<std::filesystem::path> keys_of(const value_map_type& value_map)
+        {
+            std::vector<std::filesystem::path> keys{};
+            keys.reserve(value_map.size());
+            std::transform(std::begin(value_map), std::end(value_map), std::back_inserter(keys), [](const auto& v) {
+                return v.first;
+            });
+            std::sort(std::begin(keys), std::end(keys));
+            return keys;
+        }
     };
 
 

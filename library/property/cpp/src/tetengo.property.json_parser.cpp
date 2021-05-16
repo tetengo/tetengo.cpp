@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <stdexcept>
@@ -98,7 +99,7 @@ namespace tetengo::property
             const auto& member_element = parser.peek();
             const auto& attributes = member_element.attributes();
             const auto  name_found = attributes.find("name");
-            if (name_found == attributes.end())
+            if (name_found == std::end(attributes))
             {
                 return false;
             }

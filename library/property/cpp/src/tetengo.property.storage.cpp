@@ -6,6 +6,7 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -38,7 +39,7 @@ namespace tetengo::property
         std::optional<bool> get_bool(const std::filesystem::path& key) const
         {
             const auto found = m_value_map.find(key.string());
-            if (found == m_value_map.end())
+            if (found == std::end(m_value_map))
             {
                 return std::nullopt;
             }
@@ -57,7 +58,7 @@ namespace tetengo::property
         std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const
         {
             const auto found = m_value_map.find(key.string());
-            if (found == m_value_map.end())
+            if (found == std::end(m_value_map))
             {
                 return std::nullopt;
             }
@@ -76,7 +77,7 @@ namespace tetengo::property
         std::optional<std::string> get_string(const std::filesystem::path& key) const
         {
             const auto found = m_value_map.find(key.string());
-            if (found == m_value_map.end())
+            if (found == std::end(m_value_map))
             {
                 return std::nullopt;
             }
