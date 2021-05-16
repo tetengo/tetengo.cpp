@@ -51,8 +51,9 @@ namespace
 
         ~input_file()
         {
-            // const auto native_path =
-            //    tetengo::platform_dependent::property_set_file_path::instance().to_native_path(top_element(m_path.root_path()));
+            const auto native_top_path =
+                tetengo::platform_dependent::property_set_file_path::instance().to_native_top_path(m_path);
+            std::filesystem::remove_all(native_top_path);
         }
 
         const std::filesystem::path& path() const
@@ -75,14 +76,6 @@ namespace
             std::ofstream stream{ native_path };
             stream.write(content.data(), content.size());
         }
-
-        // static std::filesystem::path top_element(const std::filesystem::path& path) {
-        //    if (!path.has_parent_path())
-        //    {
-        //        return path;
-        //    }
-        //    return top_element(path.parent_path());
-        //}
 
         const std::filesystem::path m_path;
     };

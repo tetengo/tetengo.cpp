@@ -31,6 +31,10 @@ BOOST_AUTO_TEST_CASE(to_native_path)
 
     {
         const auto& resolver = tetengo::platform_dependent::property_set_file_path::instance();
+        const auto  native_path = resolver.to_native_path(std::filesystem::path{ "hoge" } );
+    }
+    {
+        const auto& resolver = tetengo::platform_dependent::property_set_file_path::instance();
         const auto  native_path = resolver.to_native_path(std::filesystem::path{ "hoge" } / "fuga");
     }
     {
@@ -46,12 +50,16 @@ BOOST_AUTO_TEST_CASE(to_native_top_path)
 
     {
         const auto& resolver = tetengo::platform_dependent::property_set_file_path::instance();
-        const auto  native_path = resolver.to_native_path(std::filesystem::path{ "hoge" } / "fuga");
+        const auto  native_path = resolver.to_native_top_path(std::filesystem::path{ "hoge" } );
+    }
+    {
+        const auto& resolver = tetengo::platform_dependent::property_set_file_path::instance();
+        const auto  native_path = resolver.to_native_top_path(std::filesystem::path{ "hoge" } / "fuga");
     }
     {
         const auto& resolver = tetengo::platform_dependent::property_set_file_path::instance();
         BOOST_CHECK_THROW(
-            const auto native_path = resolver.to_native_path(std::filesystem::path{}), std::invalid_argument);
+            const auto native_path = resolver.to_native_top_path(std::filesystem::path{}), std::invalid_argument);
     }
 }
 
