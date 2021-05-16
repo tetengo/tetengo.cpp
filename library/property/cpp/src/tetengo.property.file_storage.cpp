@@ -7,11 +7,14 @@
 #include <filesystem>
 #include <fstream>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/json/comment_removing_reader.hpp>
 #include <tetengo/json/json_parser.hpp>
+#include <tetengo/json/line_counting_reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
 #include <tetengo/platform_dependent/propertyX.hpp>
 #include <tetengo/property/file_storage.hpp>
@@ -37,7 +40,8 @@ namespace tetengo::property
 
 
     file_storage::file_storage(value_map_type value_map) :
-    storage{ std::move(value_map) }, m_p_impl{ std::make_unique<impl>() }
+    storage{ std::move(value_map) },
+        m_p_impl{ std::make_unique<impl>() }
     {}
 
     file_storage::~file_storage() = default;
@@ -83,13 +87,24 @@ namespace tetengo::property
             }
 
             auto p_parser = build_json_parser(std::move(p_stream));
-            return json_parser::instance().parse(*p_parser);
+            try
+            {
+                return json_parser::instance().parse(*p_parser);
+            }
+            catch (const std::runtime_error&)
+            {
+                return value_map_type{};
+            }
         }
 
         static std::unique_ptr<tetengo::json::json_parser> build_json_parser(std::unique_ptr<std::istream>&& p_stream)
         {
-            auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::move(p_stream));
-            return std::make_unique<tetengo::json::json_parser>(std::move(p_reader));
+            auto p_stream_reader = std::make_unique<tetengo::json::stream_reader>(std::move(p_stream));
+            auto p_line_counting_reader =
+                std::make_unique<tetengo::json::line_counting_reader>(std::move(p_stream_reader));
+            auto p_comment_removing_reader =
+                std::make_unique<tetengo::json::comment_removing_reader>(std::move(p_line_counting_reader), "#");
+            return std::make_unique<tetengo::json::json_parser>(std::move(p_comment_removing_reader));
         }
 
 

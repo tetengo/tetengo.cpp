@@ -4,8 +4,11 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -29,10 +32,24 @@ namespace
 
     const std::string_view json1{
         // clang-format off
+        "# comment1\n"
         "{\n"
-        "  'hoge': 42,\n"
-        "  'fuga': {\n"
-        "    'piyo': 24\n"
+        "  \"hoge\": 42,\n"
+        "  \"fuga\": { # comment2\n"
+        "    \"piyo\": 24\n"
+        "  }\n"
+        "}\n"
+        // clang-format on
+    };
+
+    const std::string_view json11_empty{};
+
+    const std::string_view json12_syntax_error{
+        // clang-format off
+        "{\n"
+        "  \"hoge\": 42,\n"
+        "  \"fuga\": {\n"
+        "    \"piyo\": <>\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -142,7 +159,39 @@ BOOST_AUTO_TEST_CASE(load)
         const input_file                             file{ generic_path1(), json1 };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
-        BOOST_CHECK(p_storage);
+
+        BOOST_REQUIRE(p_storage);
+        BOOST_REQUIRE(p_storage->get_uint32("hoge"));
+        BOOST_TEST(*p_storage->get_uint32("hoge") == 42U);
+        BOOST_REQUIRE(p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
+        BOOST_TEST(*p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo") == 24U);
+        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" }));
+    }
+    {
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load("NONEXISTENT_FILE");
+
+        BOOST_REQUIRE(p_storage);
+        BOOST_CHECK(!p_storage->get_uint32("hoge"));
+        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
+    }
+    {
+        const input_file                             file{ generic_path1(), json11_empty };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+
+        BOOST_REQUIRE(p_storage);
+        BOOST_CHECK(!p_storage->get_uint32("hoge"));
+        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
+    }
+    {
+        const input_file                             file{ generic_path1(), json12_syntax_error };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+
+        BOOST_REQUIRE(p_storage);
+        BOOST_CHECK(!p_storage->get_uint32("hoge"));
+        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
     }
 }
 
