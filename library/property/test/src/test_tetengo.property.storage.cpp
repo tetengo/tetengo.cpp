@@ -86,6 +86,31 @@ BOOST_AUTO_TEST_CASE(set_uint32)
     const auto o_value = storage.get_uint32(key);
     BOOST_REQUIRE(o_value);
     BOOST_TEST(*o_value == 42U);
+
+    BOOST_CHECK(!storage.get_string(key));
+}
+
+BOOST_AUTO_TEST_CASE(get_string)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage{};
+    const auto             key = std::filesystem::path{ "hoge" } / "fuga";
+    BOOST_TEST(!storage.get_string(key));
+}
+
+BOOST_AUTO_TEST_CASE(set_string)
+{
+    BOOST_TEST_PASSPOINT();
+
+    concrete_storage storage{};
+    const auto       key = std::filesystem::path{ "hoge" } / "fuga";
+    storage.set_string(key, "foo");
+    const auto o_value = storage.get_string(key);
+    BOOST_REQUIRE(o_value);
+    BOOST_TEST(*o_value == "foo");
+
+    BOOST_CHECK(!storage.get_uint32(key));
 }
 
 BOOST_AUTO_TEST_CASE(save)

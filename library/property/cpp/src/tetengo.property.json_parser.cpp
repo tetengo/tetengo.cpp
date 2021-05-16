@@ -111,6 +111,13 @@ namespace tetengo::property
                     return false;
                 }
             }
+            if (next_is_string(parser))
+            {
+                if (!parse_string(parser, value_map, key))
+                {
+                    return false;
+                }
+            }
             else if (next_is_object_open(parser))
             {
                 if (!parse_object(parser, value_map, key))
@@ -144,6 +151,17 @@ namespace tetengo::property
             return true;
         }
 
+        static bool
+        parse_string(tetengo::json::json_parser& parser, value_map_type& value_map, const std::filesystem::path& key)
+        {
+            assert(next_is_string(parser));
+            const auto& string_element = parser.peek();
+            value_map.insert(std::make_pair(key.string(), string_element.value()));
+            parser.next();
+
+            return true;
+        }
+
         static bool next_is_object_open(const tetengo::json::json_parser& parser)
         {
             return next_is(
@@ -171,6 +189,11 @@ namespace tetengo::property
         static bool next_is_number(const tetengo::json::json_parser& parser)
         {
             return next_is(parser, element_type::type_name_type::number, element_type::type_category_type::primitive);
+        }
+
+        static bool next_is_string(const tetengo::json::json_parser& parser)
+        {
+            return next_is(parser, element_type::type_name_type::string, element_type::type_category_type::primitive);
         }
 
         static bool next_is(

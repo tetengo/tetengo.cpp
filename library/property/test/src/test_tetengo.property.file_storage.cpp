@@ -36,7 +36,7 @@ namespace
         "{\n"
         "  \"hoge\": 42,\n"
         "  \"fuga\": { # comment2\n"
-        "    \"piyo\": 24\n"
+        "    \"piyo\": \"foo\"\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -163,9 +163,9 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_REQUIRE(p_storage);
         BOOST_REQUIRE(p_storage->get_uint32("hoge"));
         BOOST_TEST(*p_storage->get_uint32("hoge") == 42U);
-        BOOST_REQUIRE(p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
-        BOOST_TEST(*p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo") == 24U);
-        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" }));
+        BOOST_REQUIRE(p_storage->get_string(std::filesystem::path{ "fuga" } / "piyo"));
+        BOOST_TEST(*p_storage->get_string(std::filesystem::path{ "fuga" } / "piyo") == "foo");
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "fuga" }));
     }
     {
         const tetengo::property::file_storage_loader loader{};

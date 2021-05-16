@@ -12,6 +12,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <variant>
 
@@ -29,7 +30,7 @@ namespace tetengo::property
         // types
 
         //! The value map type.
-        using value_map_type = std::unordered_map<std::string, std::variant<std::uint32_t>>;
+        using value_map_type = std::unordered_map<std::string, std::variant<std::uint32_t, std::string>>;
 
 
         // constructors and destructor
@@ -58,6 +59,23 @@ namespace tetengo::property
             \param value A value.
         */
         void set_uint32(const std::filesystem::path& key, std::uint32_t value);
+
+        /*!
+            \brief Returns the value in a string.
+
+            \param key A key.
+
+            \return The value. Or std::nullopt when no such key.
+        */
+        [[nodiscard]] std::optional<std::string> get_string(const std::filesystem::path& key) const;
+
+        /*!
+            \brief Sets a value in a string.
+
+            \param key   A key.
+            \param value A value.
+        */
+        void set_string(const std::filesystem::path& key, const std::string& value);
 
         /*!
             \brief Saves the values.

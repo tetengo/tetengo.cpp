@@ -54,6 +54,25 @@ namespace tetengo::property
             m_value_map.insert(std::make_pair(key.string(), value));
         }
 
+        std::optional<std::string> get_string(const std::filesystem::path& key) const
+        {
+            const auto found = m_value_map.find(key.string());
+            if (found == m_value_map.end())
+            {
+                return std::nullopt;
+            }
+            if (found->second.index() != 1)
+            {
+                return std::nullopt;
+            }
+            return std::get<1>(found->second);
+        }
+
+        void set_string(const std::filesystem::path& key, const std::string& value)
+        {
+            m_value_map.insert(std::make_pair(key.string(), value));
+        }
+
         void save(const storage& self) const
         {
             self.save_impl();
@@ -80,6 +99,16 @@ namespace tetengo::property
     void storage::set_uint32(const std::filesystem::path& key, const std::uint32_t value)
     {
         m_p_impl->set_uint32(key, value);
+    }
+
+    std::optional<std::string> storage::get_string(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_string(key);
+    }
+
+    void storage::set_string(const std::filesystem::path& key, const std::string& value)
+    {
+        m_p_impl->set_string(key, value);
     }
 
     void storage::save() const
