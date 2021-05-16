@@ -117,6 +117,7 @@
     </ClCompile>
     <ClCompile Include="src\tetengo.property.file_storage.cpp" />
     <ClCompile Include="src\tetengo.property.json_parser.cpp" />
+    <ClCompile Include="src\tetengo.property.json_writer.cpp" />
     <ClCompile Include="src\tetengo.property.memory_storage.cpp" />
     <ClCompile Include="src\tetengo.property.storage.cpp" />
   </ItemGroup>
@@ -126,6 +127,7 @@
     <ClInclude Include="include\tetengo\property\memory_storage.hpp" />
     <ClInclude Include="include\tetengo\property\storage.hpp" />
     <ClInclude Include="src\tetengo.property.json_parser.hpp" />
+    <ClInclude Include="src\tetengo.property.json_writer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\tetengo\property\0namespace.dox" />

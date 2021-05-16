@@ -2,11 +2,13 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 headers = \
-    tetengo.property.json_parser.hpp
+    tetengo.property.json_parser.hpp \
+    tetengo.property.json_writer.hpp
 
 sources = \
     tetengo.property.file_storage.cpp \
     tetengo.property.json_parser.cpp \
+    tetengo.property.json_writer.cpp \
     tetengo.property.memory_storage.cpp \
     tetengo.property.storage.cpp
 

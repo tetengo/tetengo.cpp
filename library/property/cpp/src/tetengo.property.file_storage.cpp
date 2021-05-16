@@ -21,6 +21,7 @@
 #include <tetengo/property/storage.hpp>
 
 #include "tetengo.property.json_parser.hpp"
+#include "tetengo.property.json_writer.hpp"
 
 
 namespace tetengo::property
@@ -42,7 +43,14 @@ namespace tetengo::property
 
         void save_impl(const file_storage& self) const
         {
-            [[maybe_unused]] const auto& value_map = self.value_map();
+            const auto native_path =
+                tetengo::platform_dependent::property_set_file_path::instance().to_native_path(m_path);
+            std::ofstream stream{ native_path };
+            if (!stream)
+            {
+                throw std::runtime_error{ "Can't save the property set." };
+            }
+            json_writer::instance().write(self.value_map(), stream);
         }
 
 

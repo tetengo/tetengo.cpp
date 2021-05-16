@@ -29,6 +29,9 @@
     <ClCompile Include="src\tetengo.property.json_parser.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.property.json_writer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
@@ -44,6 +47,9 @@
       <Filter>header\tetengo::property</Filter>
     </ClInclude>
     <ClInclude Include="src\tetengo.property.json_parser.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tetengo.property.json_writer.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
