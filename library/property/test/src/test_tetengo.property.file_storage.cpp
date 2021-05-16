@@ -57,6 +57,19 @@ namespace
         // clang-format on
     };
 
+    const std::string_view json13_unsupported_syntax{
+        // clang-format off
+        "{\n"
+        "  \"hoge\": true,\n"
+        "  \"fuga\": 42,\n"
+        "  \"piyo\": {\n"
+        "    \"HOGE\": [24, \"foo\"],\n"
+        "    \"FUGA\": 4242\n"
+        "  }\n"
+        "}\n"
+        // clang-format on
+    };
+
     class input_file : private boost::noncopyable
     {
     public:
@@ -199,6 +212,20 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_bool("hoge"));
         BOOST_CHECK(!p_storage->get_uint32("fuga"));
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
+    }
+    {
+        const input_file                             file{ generic_path1(), json13_unsupported_syntax };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+
+        BOOST_REQUIRE(p_storage);
+        BOOST_REQUIRE(p_storage->get_bool("hoge"));
+        BOOST_TEST(*p_storage->get_bool("hoge"));
+        BOOST_REQUIRE(p_storage->get_uint32("fuga"));
+        BOOST_TEST(*p_storage->get_uint32("fuga") == 42U);
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
+        BOOST_REQUIRE(p_storage->get_uint32(std::filesystem::path{ "piyo" } / "FUGA"));
+        BOOST_TEST(*p_storage->get_uint32(std::filesystem::path{ "piyo" } / "FUGA") == 4242U);
     }
 }
 

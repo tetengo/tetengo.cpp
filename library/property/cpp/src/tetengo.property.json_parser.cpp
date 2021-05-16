@@ -5,6 +5,7 @@
 */
 
 #include <cassert>
+#include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <memory>
@@ -132,6 +133,17 @@ namespace tetengo::property
                     return false;
                 }
             }
+            else if (next_is_primitive(parser))
+            {
+                parser.next();
+            }
+            else if (next_is_structure_open(parser))
+            {
+                if (!skip_structure(parser))
+                {
+                    return false;
+                }
+            }
 
             if (!next_is_member_close(parser))
             {
@@ -185,6 +197,28 @@ namespace tetengo::property
             return true;
         }
 
+        static bool skip_structure(tetengo::json::json_parser& parser)
+        {
+            assert(next_is_structure_open(parser));
+            parser.next();
+
+            std::size_t level = 1;
+            while (level > 0 && parser.has_next())
+            {
+                if (next_is_structure_open(parser))
+                {
+                    ++level;
+                }
+                else if (next_is_structure_close(parser))
+                {
+                    --level;
+                }
+                parser.next();
+            }
+
+            return level == 0;
+        }
+
         static bool next_is_object_open(const tetengo::json::json_parser& parser)
         {
             return next_is(
@@ -224,17 +258,37 @@ namespace tetengo::property
             return next_is(parser, element_type::type_name_type::string, element_type::type_category_type::primitive);
         }
 
+        static bool next_is_primitive(const tetengo::json::json_parser& parser)
+        {
+            return next_is(parser, element_type::type_category_type::primitive);
+        }
+
+        static bool next_is_structure_open(const tetengo::json::json_parser& parser)
+        {
+            return next_is(parser, element_type::type_category_type::structure_open);
+        }
+
+        static bool next_is_structure_close(const tetengo::json::json_parser& parser)
+        {
+            return next_is(parser, element_type::type_category_type::structure_close);
+        }
+
         static bool next_is(
             const tetengo::json::json_parser&      parser,
             const element_type::type_name_type     name,
             const element_type::type_category_type category)
+        {
+            return next_is(parser, category) && parser.peek().type().name == name;
+        }
+
+        static bool next_is(const tetengo::json::json_parser& parser, const element_type::type_category_type category)
         {
             if (!parser.has_next())
             {
                 return false;
             }
             const auto& next = parser.peek();
-            return next.type().name == name && next.type().category == category;
+            return next.type().category == category;
         }
 
         static std::optional<bool> to_bool(const std::string& string)
