@@ -83,7 +83,7 @@ namespace tetengo::property
 
             auto           p_parser = build_json_parser(std::move(p_stream));
             value_map_type value_map{};
-            parse_json_object(*p_parser, value_map, std::filesystem::path{});
+            // parse_json_object(*p_parser, value_map, std::filesystem::path{});
             return value_map;
         }
 
@@ -92,12 +92,6 @@ namespace tetengo::property
             auto p_reader = std::make_unique<tetengo::json::stream_reader>(std::move(p_stream));
             return std::make_unique<tetengo::json::json_parser>(std::move(p_reader));
         }
-
-        static void parse_json_object(
-            tetengo::json::json_parser& /*parser*/,
-            value_map_type& /*value_map*/,
-            const std::filesystem::path& /*key_prefix*/)
-        {}
 
 
         // variables
