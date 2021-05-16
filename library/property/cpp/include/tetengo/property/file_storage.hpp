@@ -26,9 +26,10 @@ namespace tetengo::property
         /*!
             \brief Creates a file storage.
 
-            \param value_map  A value map.
+            \param value_map A value map.
+            \param path      A path.
         */
-        explicit file_storage(value_map_type value_map);
+        file_storage(value_map_type value_map, const std::filesystem::path path);
 
         /*!
             \brief Destroys the file storage.

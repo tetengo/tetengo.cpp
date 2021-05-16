@@ -24,13 +24,25 @@
 
 namespace
 {
-    std::filesystem::path generic_path1()
+    tetengo::property::file_storage::value_map_type make_value_map1()
     {
-        std::string name = "test_tetengo.property.file_storage";
-        return std::filesystem::path{ name };
+        tetengo::property::file_storage::value_map_type value_map{};
+        return value_map;
     }
 
-    const std::string_view json1{
+    [[maybe_unused]] const std::string_view json1{
+        // clang-format off
+        "{\n"
+        "  \"hoge\": true,\n"
+        "  \"fuga\": 42,\n"
+        "  \"piyo\": {\n"
+        "    \"HOGE\": \"foo\"\n"
+        "  }\n"
+        "}\n"
+        // clang-format on
+    };
+
+    const std::string_view json1_with_comment{
         // clang-format off
         "# comment1\n"
         "{\n"
@@ -70,10 +82,16 @@ namespace
         // clang-format on
     };
 
-    class input_file : private boost::noncopyable
+    std::filesystem::path generic_path1()
+    {
+        std::string name = "test_tetengo.property.file_storage";
+        return std::filesystem::path{ name };
+    }
+
+    class test_file : private boost::noncopyable
     {
     public:
-        input_file(const std::filesystem::path& path, const std::string_view& content) : m_path{ path }
+        test_file(const std::filesystem::path& path, const std::string_view& content) : m_path{ path }
         {
             const auto native_path =
                 tetengo::platform_dependent::property_set_file_path::instance().to_native_path(m_path);
@@ -81,7 +99,7 @@ namespace
             write_content(native_path, content);
         }
 
-        ~input_file()
+        ~test_file()
         {
             const auto native_top_path =
                 tetengo::platform_dependent::property_set_file_path::instance().to_native_top_path(m_path);
@@ -126,7 +144,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         tetengo::property::file_storage::value_map_type value_map{};
-        const tetengo::property::file_storage           storage{ std::move(value_map) };
+        const tetengo::property::file_storage           storage{ std::move(value_map), generic_path1() };
     }
 }
 
@@ -134,22 +152,12 @@ BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();
 
-    //{
-    //    tetengo::property::file_storage::value_map_type master_value_map{};
-    //    tetengo::property::file_storage                 storage1{ master_value_map };
-
-    //    const auto key = std::filesystem::path{ "hoge" } / "fuga";
-    //    storage1.set_uint32(key, 42);
-
-    //    const tetengo::property::file_storage storage2{ master_value_map };
-    //    BOOST_TEST(!storage2.get_uint32(key));
-
-    //    storage1.save();
-
-    //    const tetengo::property::file_storage storage3{ master_value_map };
-    //    BOOST_REQUIRE(storage3.get_uint32(key));
-    //    BOOST_TEST(*storage3.get_uint32(key) == 42U);
-    //}
+    {
+        const test_file                                 file{ generic_path1(), "" };
+        tetengo::property::file_storage::value_map_type value_map = make_value_map1();
+        const tetengo::property::file_storage           storage{ std::move(value_map), file.path() };
+        storage.save();
+    }
 }
 
 
@@ -171,7 +179,7 @@ BOOST_AUTO_TEST_CASE(load)
     BOOST_TEST_PASSPOINT();
 
     {
-        const input_file                             file{ generic_path1(), json1 };
+        const test_file                              file{ generic_path1(), json1_with_comment };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
@@ -194,7 +202,7 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
     }
     {
-        const input_file                             file{ generic_path1(), json11_empty };
+        const test_file                              file{ generic_path1(), json11_empty };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
@@ -204,7 +212,7 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
     }
     {
-        const input_file                             file{ generic_path1(), json12_syntax_error };
+        const test_file                              file{ generic_path1(), json12_syntax_error };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
@@ -214,7 +222,7 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
     }
     {
-        const input_file                             file{ generic_path1(), json13_unsupported_syntax };
+        const test_file                              file{ generic_path1(), json13_unsupported_syntax };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
