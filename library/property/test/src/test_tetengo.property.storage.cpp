@@ -4,6 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <filesystem>
 #include <memory>
 #include <optional>
@@ -31,7 +32,7 @@ namespace
             const auto& map = value_map();
             const auto  key = std::filesystem::path{ "hoge" } / "fuga";
             const auto  found = map.find(key.string());
-            return found != map.end() && std::get<0>(found->second) == 42;
+            return found != map.end() && std::get<std::uint32_t>(found->second) == 42;
         }
 
     private:
@@ -65,6 +66,29 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     const concrete_storage storage{};
+}
+
+BOOST_AUTO_TEST_CASE(get_bool)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage{};
+    const auto             key = std::filesystem::path{ "hoge" } / "fuga";
+    BOOST_TEST(!storage.get_bool(key));
+}
+
+BOOST_AUTO_TEST_CASE(set_bool)
+{
+    BOOST_TEST_PASSPOINT();
+
+    concrete_storage storage{};
+    const auto       key = std::filesystem::path{ "hoge" } / "fuga";
+    storage.set_bool(key, true);
+    const auto o_value = storage.get_bool(key);
+    BOOST_REQUIRE(o_value);
+    BOOST_TEST(*o_value);
+
+    BOOST_CHECK(!storage.get_string(key));
 }
 
 BOOST_AUTO_TEST_CASE(get_uint32)

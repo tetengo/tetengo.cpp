@@ -34,9 +34,10 @@ namespace
         // clang-format off
         "# comment1\n"
         "{\n"
-        "  \"hoge\": 42,\n"
-        "  \"fuga\": { # comment2\n"
-        "    \"piyo\": \"foo\"\n"
+        "  \"hoge\": true,\n"
+        "  \"fuga\": 42,\n"
+        "  \"piyo\": { # comment2\n"
+        "    \"HOGE\": \"foo\"\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -47,9 +48,10 @@ namespace
     const std::string_view json12_syntax_error{
         // clang-format off
         "{\n"
-        "  \"hoge\": 42,\n"
-        "  \"fuga\": {\n"
-        "    \"piyo\": <>\n"
+        "  \"hoge\": true,\n"
+        "  \"fuga\": 42,\n"
+        "  \"piyo\": {\n"
+        "    \"HOGE\": <>\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -161,19 +163,22 @@ BOOST_AUTO_TEST_CASE(load)
         const auto                                   p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
-        BOOST_REQUIRE(p_storage->get_uint32("hoge"));
-        BOOST_TEST(*p_storage->get_uint32("hoge") == 42U);
-        BOOST_REQUIRE(p_storage->get_string(std::filesystem::path{ "fuga" } / "piyo"));
-        BOOST_TEST(*p_storage->get_string(std::filesystem::path{ "fuga" } / "piyo") == "foo");
-        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "fuga" }));
+        BOOST_REQUIRE(p_storage->get_bool("hoge"));
+        BOOST_TEST(*p_storage->get_bool("hoge"));
+        BOOST_REQUIRE(p_storage->get_uint32("fuga"));
+        BOOST_TEST(*p_storage->get_uint32("fuga") == 42U);
+        BOOST_REQUIRE(p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
+        BOOST_TEST(*p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE") == "foo");
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" }));
     }
     {
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load("NONEXISTENT_FILE");
 
         BOOST_REQUIRE(p_storage);
-        BOOST_CHECK(!p_storage->get_uint32("hoge"));
-        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
+        BOOST_CHECK(!p_storage->get_bool("hoge"));
+        BOOST_CHECK(!p_storage->get_uint32("fuga"));
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
     }
     {
         const input_file                             file{ generic_path1(), json11_empty };
@@ -181,8 +186,9 @@ BOOST_AUTO_TEST_CASE(load)
         const auto                                   p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
-        BOOST_CHECK(!p_storage->get_uint32("hoge"));
-        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
+        BOOST_CHECK(!p_storage->get_bool("hoge"));
+        BOOST_CHECK(!p_storage->get_uint32("fuga"));
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
     }
     {
         const input_file                             file{ generic_path1(), json12_syntax_error };
@@ -190,8 +196,9 @@ BOOST_AUTO_TEST_CASE(load)
         const auto                                   p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
-        BOOST_CHECK(!p_storage->get_uint32("hoge"));
-        BOOST_CHECK(!p_storage->get_uint32(std::filesystem::path{ "fuga" } / "piyo"));
+        BOOST_CHECK(!p_storage->get_bool("hoge"));
+        BOOST_CHECK(!p_storage->get_uint32("fuga"));
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
     }
 }
 

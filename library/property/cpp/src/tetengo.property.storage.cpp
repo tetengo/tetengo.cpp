@@ -35,6 +35,25 @@ namespace tetengo::property
 
         // functions
 
+        std::optional<bool> get_bool(const std::filesystem::path& key) const
+        {
+            const auto found = m_value_map.find(key.string());
+            if (found == m_value_map.end())
+            {
+                return std::nullopt;
+            }
+            if (!std::holds_alternative<bool>(found->second))
+            {
+                return std::nullopt;
+            }
+            return std::get<bool>(found->second);
+        }
+
+        void set_bool(const std::filesystem::path& key, const bool value)
+        {
+            m_value_map.insert(std::make_pair(key.string(), value));
+        }
+
         std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const
         {
             const auto found = m_value_map.find(key.string());
@@ -42,11 +61,11 @@ namespace tetengo::property
             {
                 return std::nullopt;
             }
-            if (found->second.index() != 0)
+            if (!std::holds_alternative<std::uint32_t>(found->second))
             {
                 return std::nullopt;
             }
-            return std::get<0>(found->second);
+            return std::get<std::uint32_t>(found->second);
         }
 
         void set_uint32(const std::filesystem::path& key, const std::uint32_t value)
@@ -61,11 +80,11 @@ namespace tetengo::property
             {
                 return std::nullopt;
             }
-            if (found->second.index() != 1)
+            if (!std::holds_alternative<std::string>(found->second))
             {
                 return std::nullopt;
             }
-            return std::get<1>(found->second);
+            return std::get<std::string>(found->second);
         }
 
         void set_string(const std::filesystem::path& key, const std::string& value)
@@ -90,6 +109,16 @@ namespace tetengo::property
 
 
     storage::~storage() = default;
+
+    std::optional<bool> storage::get_bool(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_bool(key);
+    }
+
+    void storage::set_bool(const std::filesystem::path& key, const bool value)
+    {
+        m_p_impl->set_bool(key, value);
+    }
 
     std::optional<std::uint32_t> storage::get_uint32(const std::filesystem::path& key) const
     {

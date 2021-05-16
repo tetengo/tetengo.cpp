@@ -12,7 +12,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <unordered_map>
 #include <variant>
 
@@ -30,7 +29,7 @@ namespace tetengo::property
         // types
 
         //! The value map type.
-        using value_map_type = std::unordered_map<std::string, std::variant<std::uint32_t, std::string>>;
+        using value_map_type = std::unordered_map<std::string, std::variant<bool, std::uint32_t, std::string>>;
 
 
         // constructors and destructor
@@ -42,6 +41,23 @@ namespace tetengo::property
 
 
         // functions
+
+        /*!
+            \brief Returns the value in a boolean.
+
+            \param key A key.
+
+            \return The value. Or std::nullopt when no such key.
+        */
+        [[nodiscard]] std::optional<bool> get_bool(const std::filesystem::path& key) const;
+
+        /*!
+            \brief Sets a value in a boolean.
+
+            \param key   A key.
+            \param value A value.
+        */
+        void set_bool(const std::filesystem::path& key, bool value);
 
         /*!
             \brief Returns the value in an unsigned 32-bit integer.

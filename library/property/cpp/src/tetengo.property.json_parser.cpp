@@ -104,14 +104,21 @@ namespace tetengo::property
             const auto key = key_prefix / name_found->second;
             parser.next();
 
-            if (next_is_number(parser))
+            if (next_is_boolean(parser))
+            {
+                if (!parse_boolean(parser, value_map, key))
+                {
+                    return false;
+                }
+            }
+            else if (next_is_number(parser))
             {
                 if (!parse_number(parser, value_map, key))
                 {
                     return false;
                 }
             }
-            if (next_is_string(parser))
+            else if (next_is_string(parser))
             {
                 if (!parse_string(parser, value_map, key))
                 {
@@ -130,6 +137,22 @@ namespace tetengo::property
             {
                 return false;
             }
+            parser.next();
+
+            return true;
+        }
+
+        static bool
+        parse_boolean(tetengo::json::json_parser& parser, value_map_type& value_map, const std::filesystem::path& key)
+        {
+            assert(next_is_boolean(parser));
+            const auto& boolean_element = parser.peek();
+            const auto  o_value = to_bool(boolean_element.value());
+            if (!o_value)
+            {
+                return false;
+            }
+            value_map.insert(std::make_pair(key.string(), *o_value));
             parser.next();
 
             return true;
@@ -186,6 +209,11 @@ namespace tetengo::property
                 parser, element_type::type_name_type::member, element_type::type_category_type::structure_close);
         }
 
+        static bool next_is_boolean(const tetengo::json::json_parser& parser)
+        {
+            return next_is(parser, element_type::type_name_type::boolean, element_type::type_category_type::primitive);
+        }
+
         static bool next_is_number(const tetengo::json::json_parser& parser)
         {
             return next_is(parser, element_type::type_name_type::number, element_type::type_category_type::primitive);
@@ -207,6 +235,22 @@ namespace tetengo::property
             }
             const auto& next = parser.peek();
             return next.type().name == name && next.type().category == category;
+        }
+
+        static std::optional<bool> to_bool(const std::string& string)
+        {
+            if (string == "true")
+            {
+                return std::make_optional(true);
+            }
+            else if (string == "false")
+            {
+                return std::make_optional(false);
+            }
+            else
+            {
+                return std::nullopt;
+            }
         }
 
         static std::optional<std::uint32_t> to_integer(const std::string& string)
