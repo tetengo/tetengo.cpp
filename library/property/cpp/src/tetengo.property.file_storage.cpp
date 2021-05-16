@@ -17,6 +17,8 @@
 #include <tetengo/property/file_storage.hpp>
 #include <tetengo/property/storage.hpp>
 
+#include "tetengo.property.json_parser.hpp"
+
 
 namespace tetengo::property
 {
@@ -35,8 +37,7 @@ namespace tetengo::property
 
 
     file_storage::file_storage(value_map_type value_map) :
-    storage{ std::move(value_map) },
-        m_p_impl{ std::make_unique<impl>() }
+    storage{ std::move(value_map) }, m_p_impl{ std::make_unique<impl>() }
     {}
 
     file_storage::~file_storage() = default;
@@ -81,10 +82,8 @@ namespace tetengo::property
                 return value_map_type{};
             }
 
-            auto           p_parser = build_json_parser(std::move(p_stream));
-            value_map_type value_map{};
-            // parse_json_object(*p_parser, value_map, std::filesystem::path{});
-            return value_map;
+            auto p_parser = build_json_parser(std::move(p_stream));
+            return json_parser::instance().parse(*p_parser);
         }
 
         static std::unique_ptr<tetengo::json::json_parser> build_json_parser(std::unique_ptr<std::istream>&& p_stream)

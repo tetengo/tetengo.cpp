@@ -1,10 +1,12 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    tetengo.property.json_parser.hpp
 
 sources = \
     tetengo.property.file_storage.cpp \
+    tetengo.property.json_parser.cpp \
     tetengo.property.memory_storage.cpp \
     tetengo.property.storage.cpp
 
