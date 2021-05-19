@@ -14,6 +14,7 @@
 #include <numeric>
 #include <ostream>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <utility>
 #include <variant>
@@ -151,7 +152,7 @@ namespace tetengo::property
             for (auto i = std::begin(key_tree.get()); i != std::end(key_tree.get()); ++i)
             {
                 const auto& key_tree_element = *i;
-                stream << std::string((level + 1) * 2, ' ') << "\"" << key_tree_element.first << "\": ";
+                stream << std::string((level + 1) * 2, ' ') << "\"" << escape(key_tree_element.first) << "\": ";
                 if (std::holds_alternative<std::unique_ptr<key_tree_type>>(key_tree_element.second))
                 {
                     stream << "{" << std::endl;
@@ -187,8 +188,47 @@ namespace tetengo::property
             else
             {
                 assert(std::holds_alternative<std::string>(value));
-                return "\"" + std::get<std::string>(value) + "\"";
+                return "\"" + escape(std::get<std::string>(value)) + "\"";
             }
+        }
+
+        static std::string escape(const std::string_view& unescaped)
+        {
+            std::string escaped{};
+            for (const auto u: unescaped)
+            {
+                switch (u)
+                {
+                case '"':
+                    escaped += "\\\"";
+                    break;
+                case '\\':
+                    escaped += "\\\\";
+                    break;
+                case '/':
+                    escaped += "\\/";
+                    break;
+                case '\b':
+                    escaped += "\\b";
+                    break;
+                case '\f':
+                    escaped += "\\f";
+                    break;
+                case '\n':
+                    escaped += "\\n";
+                    break;
+                case '\r':
+                    escaped += "\\r";
+                    break;
+                case '\t':
+                    escaped += "\\t";
+                    break;
+                default:
+                    escaped += u;
+                    break;
+                }
+            }
+            return escaped;
         }
     };
 

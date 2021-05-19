@@ -37,6 +37,13 @@ namespace
         return value_map;
     }
 
+    tetengo::property::file_storage::value_map_type make_value_map2()
+    {
+        tetengo::property::file_storage::value_map_type value_map{};
+        value_map.insert(std::make_pair("\"\b\f\n\r\t", std::string{ "\xE3\x81\x82\\/\xF0\x9F\x98\x80" }));
+        return value_map;
+    }
+
     const std::string_view json1{
         // clang-format off
         "{\n"
@@ -49,7 +56,15 @@ namespace
         // clang-format on
     };
 
-    const std::string_view json1_with_comment{
+    const std::string_view json2{
+        // clang-format off
+        "{\n"
+        "  \"\\\"\\b\\f\\n\\r\\t\": \"\xE3\x81\x82\\\\\\/\xF0\x9F\x98\x80\"\n"
+        "}\n"
+        // clang-format on
+    };
+
+    const std::string_view json3_with_comment{
         // clang-format off
         "# comment1\n"
         "{\n"
@@ -62,7 +77,7 @@ namespace
         // clang-format on
     };
 
-    const std::string_view json2_escaped{
+    const std::string_view json4_escaped{
         // clang-format off
         "# comment1\n"
         "{\n"
@@ -98,7 +113,7 @@ namespace
         // clang-format on
     };
 
-    std::filesystem::path generic_path1()
+    std::filesystem::path generic_path()
     {
         std::string name = "test_tetengo.property.file_storage";
         return std::filesystem::path{ name };
@@ -180,7 +195,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         tetengo::property::file_storage::value_map_type value_map{};
-        const tetengo::property::file_storage           storage{ std::move(value_map), generic_path1() };
+        const tetengo::property::file_storage           storage{ std::move(value_map), generic_path() };
     }
 }
 
@@ -189,12 +204,20 @@ BOOST_AUTO_TEST_CASE(save)
     BOOST_TEST_PASSPOINT();
 
     {
-        const test_file                                 file{ generic_path1(), "" };
+        const test_file                                 file{ generic_path(), "" };
         tetengo::property::file_storage::value_map_type value_map = make_value_map1();
         const tetengo::property::file_storage           storage{ std::move(value_map), file.path() };
         storage.save();
 
-        BOOST_TEST(file_content_equal_to(generic_path1(), json1));
+        BOOST_TEST(file_content_equal_to(generic_path(), json1));
+    }
+    {
+        const test_file                                 file{ generic_path(), "" };
+        tetengo::property::file_storage::value_map_type value_map = make_value_map2();
+        const tetengo::property::file_storage           storage{ std::move(value_map), file.path() };
+        storage.save();
+
+        BOOST_TEST(file_content_equal_to(generic_path(), json2));
     }
 }
 
@@ -217,7 +240,7 @@ BOOST_AUTO_TEST_CASE(load)
     BOOST_TEST_PASSPOINT();
 
     {
-        const test_file                              file{ generic_path1(), json1_with_comment };
+        const test_file                              file{ generic_path(), json3_with_comment };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
@@ -231,7 +254,7 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" }));
     }
     {
-        const test_file                              file{ generic_path1(), json2_escaped };
+        const test_file                              file{ generic_path(), json4_escaped };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
@@ -250,7 +273,7 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
-        const test_file                              file{ generic_path1(), json11_empty };
+        const test_file                              file{ generic_path(), json11_empty };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
@@ -260,7 +283,7 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
-        const test_file                              file{ generic_path1(), json12_syntax_error };
+        const test_file                              file{ generic_path(), json12_syntax_error };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
@@ -270,7 +293,7 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
-        const test_file                              file{ generic_path1(), json13_unsupported_syntax };
+        const test_file                              file{ generic_path(), json13_unsupported_syntax };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
 
