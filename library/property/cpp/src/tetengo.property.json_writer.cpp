@@ -148,25 +148,29 @@ namespace tetengo::property
             std::ostream&         stream,
             const std::size_t     level)
         {
-            for (const auto& key_tree_element: key_tree.get())
+            for (auto i = std::begin(key_tree.get()); i != std::end(key_tree.get()); ++i)
             {
+                const auto& key_tree_element = *i;
+                stream << std::string((level + 1) * 2, ' ') << "\"" << key_tree_element.first << "\": ";
                 if (std::holds_alternative<std::unique_ptr<key_tree_type>>(key_tree_element.second))
                 {
-                    stream << std::string((level + 1) * 2, ' ') << "\"" << key_tree_element.first << "\": {"
-                           << std::endl;
+                    stream << "{" << std::endl;
                     print_json_iter(
                         *std::get<std::unique_ptr<key_tree_type>>(key_tree_element.second),
                         value_map,
                         stream,
                         level + 1);
-                    stream << std::string((level + 1) * 2, ' ') << "}" << std::endl;
+                    stream << std::string((level + 1) * 2, ' ') << "}";
                 }
                 else
                 {
-                    stream << std::string((level + 1) * 2, ' ') << "\"" << key_tree_element.first << "\": "
-                           << to_string(*std::get<const value_map_type::mapped_type*>(key_tree_element.second))
-                           << std::endl;
+                    stream << to_string(*std::get<const value_map_type::mapped_type*>(key_tree_element.second));
                 }
+                if (std::next(i) != std::end(key_tree.get()))
+                {
+                    stream << ",";
+                }
+                stream << std::endl;
             }
         }
 

@@ -14,6 +14,7 @@
 #include <system_error>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 #include <boost/preprocessor.hpp>
@@ -29,19 +30,20 @@ namespace
     tetengo::property::file_storage::value_map_type make_value_map1()
     {
         tetengo::property::file_storage::value_map_type value_map{};
-        value_map.insert(std::make_pair("hoge", true));
-        value_map.insert(std::make_pair("fuga", static_cast<std::uint32_t>(42)));
-        value_map.insert(std::make_pair((std::filesystem::path{ "piyo" } / "HOGE").string(), std::string{ "foo" }));
+        value_map.insert(std::make_pair("alpha", true));
+        value_map.insert(std::make_pair("bravo", static_cast<std::uint32_t>(42)));
+        value_map.insert(
+            std::make_pair((std::filesystem::path{ "charlie" } / "delta").string(), std::string{ "echo" }));
         return value_map;
     }
 
-    [[maybe_unused]] const std::string_view json1{
+    const std::string_view json1{
         // clang-format off
         "{\n"
-        "  \"hoge\": true,\n"
-        "  \"fuga\": 42,\n"
-        "  \"piyo\": {\n"
-        "    \"HOGE\": \"foo\"\n"
+        "  \"alpha\": true,\n"
+        "  \"bravo\": 42,\n"
+        "  \"charlie\": {\n"
+        "    \"delta\": \"echo\"\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -51,10 +53,10 @@ namespace
         // clang-format off
         "# comment1\n"
         "{\n"
-        "  \"hoge\": true,\n"
-        "  \"fuga\": 42,\n"
-        "  \"piyo\": { # comment2\n"
-        "    \"HOGE\": \"foo\"\n"
+        "  \"alpha\": true,\n"
+        "  \"bravo\": 42,\n"
+        "  \"charlie\": { # comment2\n"
+        "    \"delta\": \"echo\"\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -65,10 +67,10 @@ namespace
     const std::string_view json12_syntax_error{
         // clang-format off
         "{\n"
-        "  \"hoge\": true,\n"
-        "  \"fuga\": 42,\n"
-        "  \"piyo\": {\n"
-        "    \"HOGE\": <>\n"
+        "  \"alpha\": true,\n"
+        "  \"bravo\": 42,\n"
+        "  \"charlie\": {\n"
+        "    \"delta\": <>\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -77,11 +79,11 @@ namespace
     const std::string_view json13_unsupported_syntax{
         // clang-format off
         "{\n"
-        "  \"hoge\": true,\n"
-        "  \"fuga\": 42,\n"
-        "  \"piyo\": {\n"
-        "    \"HOGE\": [24, \"foo\"],\n"
-        "    \"FUGA\": 4242\n"
+        "  \"alpha\": true,\n"
+        "  \"bravo\": 42,\n"
+        "  \"charlie\": {\n"
+        "    \"delta\": [24, \"echo\"],\n"
+        "    \"foxtrot\": 4242\n"
         "  }\n"
         "}\n"
         // clang-format on
@@ -136,6 +138,25 @@ namespace
         const std::filesystem::path m_path;
     };
 
+    bool file_content_equal_to(const std::filesystem::path& path, const std::string_view& expected)
+    {
+        std::string content{};
+        {
+            const auto native_path =
+                tetengo::platform_dependent::property_set_file_path::instance().to_native_path(path);
+            std::ifstream stream{ native_path };
+            while (stream)
+            {
+                std::vector<char> read(1024, '\0');
+                stream.read(read.data(), read.size());
+                content.append(read.data(), stream.gcount());
+            }
+        }
+
+        return content == expected;
+    }
+
+
 }
 
 
@@ -163,6 +184,8 @@ BOOST_AUTO_TEST_CASE(save)
         tetengo::property::file_storage::value_map_type value_map = make_value_map1();
         const tetengo::property::file_storage           storage{ std::move(value_map), file.path() };
         storage.save();
+
+        BOOST_TEST(file_content_equal_to(generic_path1(), json1));
     }
 }
 
@@ -190,22 +213,22 @@ BOOST_AUTO_TEST_CASE(load)
         const auto                                   p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
-        BOOST_REQUIRE(p_storage->get_bool("hoge"));
-        BOOST_TEST(*p_storage->get_bool("hoge"));
-        BOOST_REQUIRE(p_storage->get_uint32("fuga"));
-        BOOST_TEST(*p_storage->get_uint32("fuga") == 42U);
-        BOOST_REQUIRE(p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
-        BOOST_TEST(*p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE") == "foo");
-        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" }));
+        BOOST_REQUIRE(p_storage->get_bool("alpha"));
+        BOOST_TEST(*p_storage->get_bool("alpha"));
+        BOOST_REQUIRE(p_storage->get_uint32("bravo"));
+        BOOST_TEST(*p_storage->get_uint32("bravo") == 42U);
+        BOOST_REQUIRE(p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
+        BOOST_TEST(*p_storage->get_string(std::filesystem::path{ "charlie" } / "delta") == "echo");
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" }));
     }
     {
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load("NONEXISTENT_FILE");
 
         BOOST_REQUIRE(p_storage);
-        BOOST_CHECK(!p_storage->get_bool("hoge"));
-        BOOST_CHECK(!p_storage->get_uint32("fuga"));
-        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
+        BOOST_CHECK(!p_storage->get_bool("alpha"));
+        BOOST_CHECK(!p_storage->get_uint32("bravo"));
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
         const test_file                              file{ generic_path1(), json11_empty };
@@ -213,9 +236,9 @@ BOOST_AUTO_TEST_CASE(load)
         const auto                                   p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
-        BOOST_CHECK(!p_storage->get_bool("hoge"));
-        BOOST_CHECK(!p_storage->get_uint32("fuga"));
-        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
+        BOOST_CHECK(!p_storage->get_bool("alpha"));
+        BOOST_CHECK(!p_storage->get_uint32("bravo"));
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
         const test_file                              file{ generic_path1(), json12_syntax_error };
@@ -223,9 +246,9 @@ BOOST_AUTO_TEST_CASE(load)
         const auto                                   p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
-        BOOST_CHECK(!p_storage->get_bool("hoge"));
-        BOOST_CHECK(!p_storage->get_uint32("fuga"));
-        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
+        BOOST_CHECK(!p_storage->get_bool("alpha"));
+        BOOST_CHECK(!p_storage->get_uint32("bravo"));
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
         const test_file                              file{ generic_path1(), json13_unsupported_syntax };
@@ -233,13 +256,13 @@ BOOST_AUTO_TEST_CASE(load)
         const auto                                   p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
-        BOOST_REQUIRE(p_storage->get_bool("hoge"));
-        BOOST_TEST(*p_storage->get_bool("hoge"));
-        BOOST_REQUIRE(p_storage->get_uint32("fuga"));
-        BOOST_TEST(*p_storage->get_uint32("fuga") == 42U);
-        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "piyo" } / "HOGE"));
-        BOOST_REQUIRE(p_storage->get_uint32(std::filesystem::path{ "piyo" } / "FUGA"));
-        BOOST_TEST(*p_storage->get_uint32(std::filesystem::path{ "piyo" } / "FUGA") == 4242U);
+        BOOST_REQUIRE(p_storage->get_bool("alpha"));
+        BOOST_TEST(*p_storage->get_bool("alpha"));
+        BOOST_REQUIRE(p_storage->get_uint32("bravo"));
+        BOOST_TEST(*p_storage->get_uint32("bravo") == 42U);
+        BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
+        BOOST_REQUIRE(p_storage->get_uint32(std::filesystem::path{ "charlie" } / "foxtrot"));
+        BOOST_TEST(*p_storage->get_uint32(std::filesystem::path{ "charlie" } / "foxtrot") == 4242U);
     }
 }
 
