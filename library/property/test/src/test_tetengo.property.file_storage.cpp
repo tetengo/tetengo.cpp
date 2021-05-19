@@ -173,7 +173,7 @@ namespace
             {
                 std::vector<char> read(1024, '\0');
                 stream.read(read.data(), read.size());
-                content.append(read.data(), stream.gcount());
+                content.append(read.data(), static_cast<std::size_t>(stream.gcount()));
             }
         }
 
