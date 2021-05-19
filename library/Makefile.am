@@ -5,8 +5,8 @@ SUBDIRS = \
     json \
     lattice \
     platform_dependent \
-    property \
     text \
+    property \
     trie
 
 
