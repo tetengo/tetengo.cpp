@@ -62,6 +62,15 @@ namespace
         // clang-format on
     };
 
+    const std::string_view json2_escaped{
+        // clang-format off
+        "# comment1\n"
+        "{\n"
+        "  \"\\\"\\\\\\/\\b\\f\\n\\r\\t\": \"\\uD83d\\uDe00\"\n"
+        "}\n"
+        // clang-format on
+    };
+
     const std::string_view json11_empty{};
 
     const std::string_view json12_syntax_error{
@@ -220,6 +229,16 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_REQUIRE(p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
         BOOST_TEST(*p_storage->get_string(std::filesystem::path{ "charlie" } / "delta") == "echo");
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" }));
+    }
+    {
+        const test_file                              file{ generic_path1(), json2_escaped };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+
+        BOOST_REQUIRE(p_storage);
+        BOOST_REQUIRE(p_storage->get_string("\"\\/\b\f\n\r\t"));
+        constexpr std::string_view emoji{ "\xF0\x9F\x98\x80" };
+        BOOST_TEST(*p_storage->get_string("\"\\/\b\f\n\r\t") == emoji);
     }
     {
         const tetengo::property::file_storage_loader loader{};

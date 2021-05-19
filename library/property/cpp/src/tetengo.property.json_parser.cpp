@@ -13,6 +13,7 @@
 #include <optional>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
@@ -21,6 +22,8 @@
 
 #include <tetengo/json/element.hpp>
 #include <tetengo/json/json_parser.hpp>
+#include <tetengo/text/encoder.hpp>
+#include <tetengo/text/encoding/utf16.hpp> // IWYU pragma: keep
 
 #include "tetengo.property.json_parser.hpp"
 
@@ -103,7 +106,7 @@ namespace tetengo::property
             {
                 return false;
             }
-            const auto key = key_prefix / name_found->second;
+            const auto key = key_prefix / unescape(name_found->second);
             parser.next();
 
             if (next_is_boolean(parser))
@@ -192,7 +195,7 @@ namespace tetengo::property
         {
             assert(next_is_string(parser));
             const auto& string_element = parser.peek();
-            value_map.insert(std::make_pair(key.string(), string_element.value()));
+            value_map.insert(std::make_pair(key.string(), unescape(string_element.value())));
             parser.next();
 
             return true;
@@ -317,6 +320,119 @@ namespace tetengo::property
             catch (const std::invalid_argument&)
             {
                 return std::nullopt;
+            }
+        }
+
+        static std::string unescape(const std::string_view& escaped)
+        {
+            std::string unescaped{};
+            for (auto i = static_cast<std::size_t>(0); i < escaped.length();)
+            {
+                if (escaped[i] == '\\')
+                {
+                    ++i;
+                    if (i < escaped.length())
+                    {
+                        if (escaped[i] == 'u' && i + 4 < escaped.length())
+                        {
+                            ++i;
+                            const auto upper_code_string = escaped.substr(i, 4);
+                            const auto o_upper_code = to_utf16_code(upper_code_string);
+                            i += 4;
+                            if (!o_upper_code)
+                            {
+                                unescaped += upper_code_string;
+                            }
+                            else if (
+                                is_high_surrogate(*o_upper_code) && i + 5 < escaped.length() && escaped[i] == '\\' &&
+                                escaped[i + 1] == 'u')
+                            {
+                                i += 2;
+                                const auto lower_code_string = escaped.substr(i, 4);
+                                const auto o_lower_code = to_utf16_code(lower_code_string);
+                                i += 4;
+                                if (!o_lower_code)
+                                {
+                                    unescaped += unescape_utf16(*o_upper_code);
+                                    unescaped += lower_code_string;
+                                }
+                                else
+                                {
+                                    unescaped += unescape_utf16(*o_upper_code, *o_lower_code);
+                                }
+                            }
+                            else
+                            {
+                                unescaped += unescape_utf16(*o_upper_code);
+                            }
+                        }
+                        else
+                        {
+                            unescaped += unescape_control_code(escaped[i]);
+                            ++i;
+                        }
+                    }
+                }
+                else
+                {
+                    unescaped += escaped[i];
+                    ++i;
+                }
+            }
+            return unescaped;
+        }
+
+        static std::optional<char16_t> to_utf16_code(const std::string_view& string)
+        {
+            try
+            {
+                return std::make_optional(static_cast<char16_t>(std::stoul(std::string{ string }, nullptr, 16)));
+            }
+            catch (const std::invalid_argument&)
+            {
+                return std::nullopt;
+            }
+        }
+
+        static bool is_high_surrogate(const char16_t code)
+        {
+            return 0xD800 <= code && code <= 0xDBFF;
+        }
+
+        static std::string unescape_utf16(const char16_t upper_code, const char16_t lower_code = 0)
+        {
+            static const auto& encoder = tetengo::text::encoder<tetengo::text::encoding::utf16>::instance();
+
+            std::u16string utf16{ upper_code };
+            if (lower_code > 0)
+            {
+                utf16 += lower_code;
+            }
+            return encoder.decode(utf16);
+        }
+
+        static char unescape_control_code(const char escaped)
+        {
+            switch (escaped)
+            {
+            case '"':
+                return '"';
+            case '\\':
+                return '\\';
+            case '/':
+                return '/';
+            case 'b':
+                return '\b';
+            case 'f':
+                return '\f';
+            case 'n':
+                return '\n';
+            case 'r':
+                return '\r';
+            case 't':
+                return '\t';
+            default:
+                return escaped;
             }
         }
     };
