@@ -66,7 +66,7 @@ namespace
         // clang-format off
         "# comment1\n"
         "{\n"
-        "  \"\\\"\\\\\\/\\b\\f\\n\\r\\t\": \"\\uD83d\\uDe00\"\n"
+        "  \"\\\"\\\\\\/\\b\\f\\n\\r\\t\": \"\\u3042\\uD83d\\uDe00\"\n"
         "}\n"
         // clang-format on
     };
@@ -237,8 +237,8 @@ BOOST_AUTO_TEST_CASE(load)
 
         BOOST_REQUIRE(p_storage);
         BOOST_REQUIRE(p_storage->get_string("\"\\/\b\f\n\r\t"));
-        constexpr std::string_view emoji{ "\xF0\x9F\x98\x80" };
-        BOOST_TEST(*p_storage->get_string("\"\\/\b\f\n\r\t") == emoji);
+        constexpr std::string_view expected{ "\xE3\x81\x82\xF0\x9F\x98\x80" };
+        BOOST_TEST(*p_storage->get_string("\"\\/\b\f\n\r\t") == expected);
     }
     {
         const tetengo::property::file_storage_loader loader{};

@@ -335,36 +335,9 @@ namespace tetengo::property
                     {
                         if (escaped[i] == 'u' && i + 4 < escaped.length())
                         {
-                            ++i;
-                            const auto upper_code_string = escaped.substr(i, 4);
-                            const auto o_upper_code = to_utf16_code(upper_code_string);
-                            i += 4;
-                            if (!o_upper_code)
-                            {
-                                unescaped += upper_code_string;
-                            }
-                            else if (
-                                is_high_surrogate(*o_upper_code) && i + 5 < escaped.length() && escaped[i] == '\\' &&
-                                escaped[i + 1] == 'u')
-                            {
-                                i += 2;
-                                const auto lower_code_string = escaped.substr(i, 4);
-                                const auto o_lower_code = to_utf16_code(lower_code_string);
-                                i += 4;
-                                if (!o_lower_code)
-                                {
-                                    unescaped += unescape_utf16(*o_upper_code);
-                                    unescaped += lower_code_string;
-                                }
-                                else
-                                {
-                                    unescaped += unescape_utf16(*o_upper_code, *o_lower_code);
-                                }
-                            }
-                            else
-                            {
-                                unescaped += unescape_utf16(*o_upper_code);
-                            }
+                            const auto utf16_unescaped = unescape_utf16(escaped, i);
+                            unescaped += utf16_unescaped.first;
+                            i += utf16_unescaped.second;
                         }
                         else
                         {
@@ -380,6 +353,43 @@ namespace tetengo::property
                 }
             }
             return unescaped;
+        }
+
+        static std::pair<std::string, std::size_t>
+        unescape_utf16(const std::string_view& escaped, const std::size_t offset)
+        {
+            auto index = offset;
+
+            ++index;
+            const auto upper_code_string = escaped.substr(index, 4);
+            const auto o_upper_code = to_utf16_code(upper_code_string);
+            index += 4;
+            if (!o_upper_code)
+            {
+                return std::make_pair(std::string{ upper_code_string }, index - offset);
+            }
+            else if (
+                is_high_surrogate(*o_upper_code) && index + 5 < escaped.length() && escaped[index] == '\\' &&
+                escaped[index + 1] == 'u')
+            {
+                index += 2;
+                const auto lower_code_string = escaped.substr(index, 4);
+                const auto o_lower_code = to_utf16_code(lower_code_string);
+                index += 4;
+                if (!o_lower_code)
+                {
+                    return std::make_pair(
+                        unescape_utf16_codes(*o_upper_code) + std::string{ lower_code_string }, index - offset);
+                }
+                else
+                {
+                    return std::make_pair(unescape_utf16_codes(*o_upper_code, *o_lower_code), index - offset);
+                }
+            }
+            else
+            {
+                return std::make_pair(unescape_utf16_codes(*o_upper_code), index - offset);
+            }
         }
 
         static std::optional<char16_t> to_utf16_code(const std::string_view& string)
@@ -399,7 +409,7 @@ namespace tetengo::property
             return 0xD800 <= code && code <= 0xDBFF;
         }
 
-        static std::string unescape_utf16(const char16_t upper_code, const char16_t lower_code = 0)
+        static std::string unescape_utf16_codes(const char16_t upper_code, const char16_t lower_code = 0)
         {
             static const auto& encoder = tetengo::text::encoder<tetengo::text::encoding::utf16>::instance();
 
