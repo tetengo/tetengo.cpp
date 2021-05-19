@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{3c7661ca-2b8c-47a6-a722-fc9dde182425}</ProjectGuid>
-    <RootNamespace>testtetengoplatformdependent</RootNamespace>
+    <ProjectGuid>{770bc269-b483-424a-bf64-adc43d81f5be}</ProjectGuid>
+    <RootNamespace>testtetengoproperty</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -92,22 +92,22 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\library\platform_dependent\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -116,15 +116,25 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\master.cpp" />
-    <ClCompile Include="src\test_tetengo.platform_dependent.properX.cpp" />
-    <ClCompile Include="src\test_tetengo.platform_dependent.text_eX.cpp" />
+    <ClCompile Include="src\test_tetengo.property.file_storage.cpp" />
+    <ClCompile Include="src\test_tetengo.property.memory_storage.cpp" />
+    <ClCompile Include="src\test_tetengo.property.storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cpp\tetengo.platform_dependent.cpp.vcxproj">
+    <ProjectReference Include="..\..\json\cpp\tetengo.json.cpp.vcxproj">
+      <Project>{cba672b4-259e-4bd2-9072-1d34cf941d4c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\platform_dependent\cpp\tetengo.platform_dependent.cpp.vcxproj">
       <Project>{3aaea971-dc2b-40d6-830c-b0d6a3368a7a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\text\cpp\tetengo.text.cpp.vcxproj">
+      <Project>{be228a1e-25d5-4825-89b4-c3513f1dc559}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\cpp\tetengo.property.cpp.vcxproj">
+      <Project>{4356ff6a-22d4-4835-8321-145998f26d68}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

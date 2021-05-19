@@ -5,18 +5,19 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="header\tetengo::property">
+      <UniqueIdentifier>{50777c80-bc3e-4b41-9a3e-12869f7c6bdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\master.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.platform_dependent.text_eX.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\test_tetengo.platform_dependent.properX.cpp">
+    <ClCompile Include="src\tetengo_property_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -24,5 +25,13 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\property\storage.h">
+      <Filter>header\tetengo::property</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\dll_exports.def">
+      <Filter>src</Filter>
+    </None>
   </ItemGroup>
 </Project>

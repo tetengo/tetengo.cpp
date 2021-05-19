@@ -50,6 +50,17 @@ AC_CONFIG_FILES([
     library/platform_dependent/cpp/src/windows/Makefile
     library/platform_dependent/test/Makefile
     library/platform_dependent/test/src/Makefile
+    library/property/Makefile
+    library/property/c/Makefile
+    library/property/c/include/Makefile
+    library/property/c/include/tetengo/Makefile
+    library/property/c/src/Makefile
+    library/property/cpp/Makefile
+    library/property/cpp/include/Makefile
+    library/property/cpp/include/tetengo/Makefile
+    library/property/cpp/src/Makefile
+    library/property/test/Makefile
+    library/property/test/src/Makefile
     library/text/Makefile
     library/text/c/Makefile
     library/text/c/include/Makefile

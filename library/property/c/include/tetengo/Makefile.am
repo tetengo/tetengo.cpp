@@ -2,11 +2,9 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
-    platform_dependent/propertyX.hpp \
-    platform_dependent/text_encX.hpp
+    property/storage.h
 
-extra_headers = \
-    platform_dependent/0namespace.dox
+extra_headers =
 
 nobase_pkginclude_HEADERS = ${pkg_headers}
 
@@ -15,7 +13,8 @@ EXTRA_DIST = ${extra_headers}
 
 IWYU_OPTS_CXX += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 iwyu_CPPFLAGS = \
-    -I${top_srcdir}/library/platform_dependent/cpp/include
+    -I${top_srcdir}/library/property/c/include \
+    -I${top_srcdir}/library/property/cpp/include
 
 iwyu: ${addsuffix .iwyuout, ${pkg_headers} ${extra_headers}}
 

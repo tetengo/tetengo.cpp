@@ -7,16 +7,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\master.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.platform_dependent.text_eX.cpp">
+    <ClCompile Include="src\master.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\test_tetengo.platform_dependent.properX.cpp">
+    <ClCompile Include="src\test_tetengo.property.storage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.property.memory_storage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_tetengo.property.file_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,21 +4,29 @@
 headers =
 
 sources = \
-    tetengo.platform_dependent.propX.cpp \
-    tetengo.platform_dependent.textX.cpp
+    tetengo_property_storage.cpp
+
+lib_LTLIBRARIES = libtetengo.property.la
+
+libtetengo_property_la_CPPFLAGS = \
+    -I${top_srcdir}/library/property/c/include \
+    -I${top_srcdir}/library/property/cpp/include
+libtetengo_property_la_LIBADD = \
+    ${top_builddir}/library/property/cpp/src/libtetengo.property.noinst.la
+libtetengo_property_la_DEPENDENCIES = \
+    ${top_builddir}/library/property/cpp/src/libtetengo.property.noinst.la
+libtetengo_property_la_SOURCES = ${headers} ${sources}
 
 EXTRA_DIST = \
-    ${headers} ${sources}
+    dll_exports.def
 
-libtetengo_platform_dependent_cpp_a_CPPFLAGS = \
-    -I${top_srcdir}/library/platform_dependent/cpp/include
 
 IWYU_OPTS_CXX += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
 %.iwyuout: %
-	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${libtetengo_platform_dependent_cpp_a_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${libtetengo_property_la_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 .PHONY: clean-iwyu

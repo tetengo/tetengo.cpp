@@ -2,12 +2,9 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
-    json \
-    lattice \
-    platform_dependent \
-    property \
-    text \
-    trie
+    cpp \
+    c \
+    test
 
 
 iwyu: ${SUBDIRS}
