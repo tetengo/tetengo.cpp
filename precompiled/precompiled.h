@@ -31,6 +31,7 @@
 #include <condition_variable>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <exception>
 #include <filesystem>
 #include <fstream>
@@ -47,6 +48,7 @@
 #include <mutex>
 #include <numeric>
 #include <optional>
+#include <ostream>
 #include <queue>
 #include <regex>
 #include <sstream>
@@ -54,6 +56,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <system_error>
 #include <thread>
 #include <tuple>
 #include <type_traits>

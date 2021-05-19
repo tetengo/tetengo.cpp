@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <system_error>
 #include <type_traits>
 #include <utility>
 
@@ -30,7 +31,7 @@ namespace
         tetengo::property::file_storage::value_map_type value_map{};
         value_map.insert(std::make_pair("hoge", true));
         value_map.insert(std::make_pair("fuga", static_cast<std::uint32_t>(42)));
-        value_map.insert(std::make_pair((std::filesystem::path{ "piyo" } / "HOGE").string(), "foo"));
+        value_map.insert(std::make_pair((std::filesystem::path{ "piyo" } / "HOGE").string(), std::string{ "foo" }));
         return value_map;
     }
 
@@ -107,7 +108,8 @@ namespace
         {
             const auto native_top_path =
                 tetengo::platform_dependent::property_set_file_path::instance().to_native_top_path(m_path);
-            std::filesystem::remove_all(native_top_path);
+            std::error_code ec{};
+            std::filesystem::remove_all(native_top_path, ec);
         }
 
         const std::filesystem::path& path() const

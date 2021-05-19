@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
 #include <filesystem>
 #include <iterator>
 #include <map>
@@ -15,6 +16,7 @@
 #include <string>
 #include <unordered_map>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -47,8 +49,9 @@ namespace tetengo::property
         {
             const auto    keys = keys_of(value_map);
             key_tree_type key_tree{};
-            std::for_each(
-                std::begin(keys), std::end(keys), [&key_tree](const auto& key) { add_to_key_tree(key, key_tree); });
+            std::for_each(std::begin(keys), std::end(keys), [&value_map, &key_tree](const auto& key) {
+                add_to_key_tree(key, key, value_map, key_tree);
+            });
             print_json(key_tree, value_map, stream);
         }
 
@@ -58,7 +61,8 @@ namespace tetengo::property
 
         struct key_tree_type
         {
-            using type = std::map<std::string, std::unique_ptr<key_tree_type>>;
+            using type =
+                std::map<std::string, std::variant<std::unique_ptr<key_tree_type>, const value_map_type::mapped_type*>>;
 
             type m_value;
 
@@ -89,7 +93,11 @@ namespace tetengo::property
             return keys;
         }
 
-        static void add_to_key_tree(const std::filesystem::path& key, key_tree_type& key_tree)
+        static void add_to_key_tree(
+            const std::filesystem::path& key,
+            const std::filesystem::path& full_key,
+            const value_map_type&        value_map,
+            key_tree_type&               key_tree)
         {
             const auto  top_and_descendant = split(key);
             const auto  top = top_and_descendant.first.string();
@@ -100,11 +108,17 @@ namespace tetengo::property
                 {
                     key_tree.get().insert(std::make_pair(top, std::make_unique<key_tree_type>()));
                 }
-                add_to_key_tree(descendant, *key_tree.get().find(top)->second);
+                add_to_key_tree(
+                    descendant,
+                    full_key,
+                    value_map,
+                    *std::get<std::unique_ptr<key_tree_type>>(key_tree.get().find(top)->second));
             }
             else
             {
-                key_tree.get().insert(std::make_pair(top, std::unique_ptr<key_tree_type>{}));
+                const auto value_found = value_map.find(full_key.string());
+                assert(value_found != std::end(value_map));
+                key_tree.get().insert(std::make_pair(top, &value_found->second));
             }
         }
 
@@ -136,17 +150,40 @@ namespace tetengo::property
         {
             for (const auto& key_tree_element: key_tree.get())
             {
-                if (key_tree_element.second)
+                if (std::holds_alternative<std::unique_ptr<key_tree_type>>(key_tree_element.second))
                 {
-                    stream << std::string((level + 1) * 2, ' ') << key_tree_element.first << ": {" << std::endl;
-                    print_json_iter(*key_tree_element.second, value_map, stream, level + 1);
+                    stream << std::string((level + 1) * 2, ' ') << "\"" << key_tree_element.first << "\": {"
+                           << std::endl;
+                    print_json_iter(
+                        *std::get<std::unique_ptr<key_tree_type>>(key_tree_element.second),
+                        value_map,
+                        stream,
+                        level + 1);
                     stream << std::string((level + 1) * 2, ' ') << "}" << std::endl;
                 }
                 else
                 {
-                    stream << std::string((level + 1) * 2, ' ') << key_tree_element.first << ": "
-                           << "value" << std::endl;
+                    stream << std::string((level + 1) * 2, ' ') << "\"" << key_tree_element.first << "\": "
+                           << to_string(*std::get<const value_map_type::mapped_type*>(key_tree_element.second))
+                           << std::endl;
                 }
+            }
+        }
+
+        static std::string to_string(const value_map_type::mapped_type& value)
+        {
+            if (std::holds_alternative<bool>(value))
+            {
+                return std::get<bool>(value) ? "true" : "false";
+            }
+            else if (std::holds_alternative<std::uint32_t>(value))
+            {
+                return std::to_string(std::get<std::uint32_t>(value));
+            }
+            else
+            {
+                assert(std::holds_alternative<std::string>(value));
+                return "\"" + std::get<std::string>(value) + "\"";
             }
         }
     };
