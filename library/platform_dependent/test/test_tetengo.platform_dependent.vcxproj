@@ -118,6 +118,7 @@
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.platform_dependent.properX.cpp" />
     <ClCompile Include="src\test_tetengo.platform_dependent.text_eX.cpp" />
+    <ClCompile Include="src\test_tetengo.platform_dependent.windowX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
