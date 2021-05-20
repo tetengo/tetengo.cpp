@@ -16,21 +16,18 @@ namespace tetengo::platform_dependent
 {
     /*!
         \brief A Windows registry access.
+
+        This class is only available on Windows.
     */
     class windows_registry : private boost::noncopyable
     {
     public:
-        // static functions
+        // constructors and destructor
 
         /*!
-            \brief Returns the instance.
-
-            \return The instance.
+            \brief Creates a Windows registry access.
         */
-        [[nodiscard]] static const windows_registry& instance();
-
-
-        // constructors and destructor
+        windows_registry();
 
         /*!
             \brief Destroys the Windows registry access.
@@ -50,11 +47,6 @@ namespace tetengo::platform_dependent
         // variables
 
         const std::unique_ptr<impl> m_p_impl;
-
-
-        // constructors
-
-        windows_registry();
     };
 
 

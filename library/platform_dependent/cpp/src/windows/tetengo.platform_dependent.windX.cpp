@@ -18,25 +18,20 @@ namespace tetengo::platform_dependent
     class windows_registry::impl : private boost::noncopyable
     {
     public:
-        // static functions
+        // constructors and destructor
 
-        static const windows_registry& instance()
-        {
-            static const windows_registry singleton{};
-            return singleton;
-        }
+        impl() {}
+
+        ~impl() {}
 
 
         // functions
     };
 
 
-    const windows_registry& windows_registry::instance()
-    {
-        return impl::instance();
-    }
+    windows_registry::windows_registry() : m_p_impl{ std::make_unique<impl>() } {}
 
     windows_registry::~windows_registry() = default;
 
-    windows_registry::windows_registry() : m_p_impl{ std::make_unique<impl>() } {}
+
 }

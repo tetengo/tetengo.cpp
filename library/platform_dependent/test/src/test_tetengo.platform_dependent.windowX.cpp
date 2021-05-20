@@ -17,11 +17,11 @@ BOOST_AUTO_TEST_SUITE(platform_dependent)
 BOOST_AUTO_TEST_SUITE(windows_registry)
 
 
-BOOST_AUTO_TEST_CASE(instance)
+BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    [[maybe_unused]] const auto& registry = tetengo::platform_dependent::windows_registry::instance();
+    const tetengo::platform_dependent::windows_registry registry{};
 }
 
 
