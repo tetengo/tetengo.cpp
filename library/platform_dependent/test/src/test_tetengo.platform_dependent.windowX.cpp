@@ -9,6 +9,8 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/platform_dependent/windows_X.hpp>
+
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(platform_dependent)
@@ -19,7 +21,7 @@ BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    [[maybe_unused]] const auto& registry = tetengo::platform_dependent::windows_registry::instance();
 }
 
 
