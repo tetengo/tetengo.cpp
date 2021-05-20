@@ -6,10 +6,24 @@
 
 #if _WIN32
 
+#include <filesystem>
+
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/platform_dependent/windows_X.hpp>
+
+
+namespace
+{
+    static const std::filesystem::path& subkey()
+    {
+        static const std::filesystem::path singleton{ "test_tetengo.platform_dependent.windows_registry" };
+        return singleton;
+    }
+
+
+}
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -21,7 +35,16 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::platform_dependent::windows_registry registry{};
+    {
+        const tetengo::platform_dependent::windows_registry registry{
+            subkey(), tetengo::platform_dependent::windows_registry::open_mode_type::read
+        };
+    }
+    {
+        const tetengo::platform_dependent::windows_registry registry{
+            subkey(), tetengo::platform_dependent::windows_registry::open_mode_type::write
+        };
+    }
 }
 
 
