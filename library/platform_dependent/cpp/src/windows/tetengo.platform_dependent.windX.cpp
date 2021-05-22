@@ -28,9 +28,29 @@ namespace tetengo::platform_dependent
 {
     namespace
     {
-        static std::filesystem::path to_native_subkey(const std::filesystem::path& subkey)
+        std::filesystem::path to_native_subkey(const std::filesystem::path& subkey)
         {
             return "SOFTWARE" / subkey;
+        }
+
+        const tetengo::text::encoder<tetengo::text::encoding::utf16>& encoder()
+        {
+            static const tetengo::text::encoder<tetengo::text::encoding::utf16> singleton;
+            return singleton;
+        }
+
+        const std::wstring to_wstring(const std::u16string_view& utf16)
+        {
+            static_assert(sizeof(wchar_t) == sizeof(char16_t));
+            static_assert(static_cast<std::uint16_t>(L'\u12AB') == static_cast<std::uint16_t>(u'\u12AB'));
+            return std::wstring{ std::begin(utf16), std::end(utf16) };
+        }
+
+        const std::u16string to_u16string(const std::wstring_view& wide)
+        {
+            static_assert(sizeof(wchar_t) == sizeof(char16_t));
+            static_assert(static_cast<std::uint16_t>(L'\u12AB') == static_cast<std::uint16_t>(u'\u12AB'));
+            return std::u16string{ std::begin(wide), std::end(wide) };
         }
 
 
@@ -132,26 +152,6 @@ namespace tetengo::platform_dependent
             return handle;
         }
 
-        static const tetengo::text::encoder<tetengo::text::encoding::utf16>& encoder()
-        {
-            static const tetengo::text::encoder<tetengo::text::encoding::utf16> singleton;
-            return singleton;
-        }
-
-        static const std::wstring to_wstring(const std::u16string_view& utf16)
-        {
-            static_assert(sizeof(wchar_t) == sizeof(char16_t));
-            static_assert(static_cast<std::uint16_t>(L'\u12AB') == static_cast<std::uint16_t>(u'\u12AB'));
-            return std::wstring{ std::begin(utf16), std::end(utf16) };
-        }
-
-        static const std::u16string to_u16string(const std::wstring_view& wide)
-        {
-            static_assert(sizeof(wchar_t) == sizeof(char16_t));
-            static_assert(static_cast<std::uint16_t>(L'\u12AB') == static_cast<std::uint16_t>(u'\u12AB'));
-            return std::u16string{ std::begin(wide), std::end(wide) };
-        }
-
 
         // variables
 
@@ -196,9 +196,37 @@ namespace tetengo::platform_dependent
 
         // functions
 
-        void set_dword_value_of(const std::string_view& /*name*/, const std::uint32_t /*value*/) const {}
+        void set_dword_value_of(const std::string_view& name, const std::uint32_t value) const
+        {
+            const auto dword_value = static_cast<::DWORD>(value);
+            const auto result = ::RegSetValueExW(
+                m_handle,
+                to_wstring(encoder().encode(name)).c_str(),
+                0,
+                REG_DWORD,
+                reinterpret_cast<const ::BYTE*>(&dword_value),
+                sizeof(::DWORD));
+            if (result != ERROR_SUCCESS)
+            {
+                throw std::runtime_error{ "Can't set a DWORD value to the registry." };
+            }
+        }
 
-        void set_string_value_of(const std::string_view& /*name*/, const std::string_view& /*value*/) const {}
+        void set_string_value_of(const std::string_view& name, const std::string_view& value) const
+        {
+            const auto wstring_value = to_wstring(encoder().encode(value));
+            const auto result = ::RegSetValueExW(
+                m_handle,
+                to_wstring(encoder().encode(name)).c_str(),
+                0,
+                REG_SZ,
+                reinterpret_cast<const ::BYTE*>(wstring_value.c_str()),
+                static_cast<::DWORD>((wstring_value.length() + 1) * sizeof(wchar_t)));
+            if (result != ERROR_SUCCESS)
+            {
+                throw std::runtime_error{ "Can't set a string value to the registry." };
+            }
+        }
 
 
     private:

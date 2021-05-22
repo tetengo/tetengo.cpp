@@ -140,6 +140,70 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(set_dword_value_of)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const test_registry_entry test_registry_entry_{ false };
+        {
+            const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
+            writer.set_dword_value_of("hoge", 24);
+        }
+        {
+            const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+            const auto                                                 o_value = reader.dword_value_of("hoge");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == 24U);
+        }
+    }
+    {
+        const test_registry_entry test_registry_entry_{ true };
+        {
+            const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
+            writer.set_dword_value_of("hoge", 24);
+        }
+        {
+            const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+            const auto                                                 o_value = reader.dword_value_of("hoge");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == 24U);
+        }
+    }
+}
+
+BOOST_AUTO_TEST_CASE(set_string_value_of)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const test_registry_entry test_registry_entry_{ false };
+        {
+            const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
+            writer.set_string_value_of("fuga", "bar");
+        }
+        {
+            const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+            const auto                                                 o_value = reader.string_value_of("fuga");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == "bar");
+        }
+    }
+    {
+        const test_registry_entry test_registry_entry_{ true };
+        {
+            const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
+            writer.set_string_value_of("fuga", "bar");
+        }
+        {
+            const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+            const auto                                                 o_value = reader.string_value_of("fuga");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == "bar");
+        }
+    }
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
