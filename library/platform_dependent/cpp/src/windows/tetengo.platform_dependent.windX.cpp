@@ -26,6 +26,17 @@
 
 namespace tetengo::platform_dependent
 {
+    namespace
+    {
+        static std::filesystem::path to_native_subkey(const std::filesystem::path& subkey)
+        {
+            return "SOFTWARE" / subkey;
+        }
+
+
+    }
+
+
     class windows_registry_reader::impl : private boost::noncopyable
     {
     public:
@@ -110,11 +121,6 @@ namespace tetengo::platform_dependent
     private:
         // static functions
 
-        static std::filesystem::path to_native_subkey(const std::filesystem::path& subkey)
-        {
-            return "SOFTWARE" / subkey;
-        }
-
         static ::HKEY open_registry_key(const std::filesystem::path& native_subkey)
         {
             ::HKEY     handle = nullptr;
@@ -177,28 +183,54 @@ namespace tetengo::platform_dependent
     public:
         // constructors and destructor
 
-        explicit impl(const std::filesystem::path& /*subkey*/) /*:
-        m_native_subkey{ to_native_subkey(subkey) }, m_handle{ open_registry_key(m_native_subkey) }*/
+        explicit impl(const std::filesystem::path& subkey) :
+        m_native_subkey{ to_native_subkey(subkey) },
+            m_handle{ create_registry_key(m_native_subkey) }
         {}
 
         ~impl()
         {
-            //::RegCloseKey(m_handle);
+            ::RegCloseKey(m_handle);
         }
 
 
         // functions
 
+        void set_dword_value_of(const std::string_view& /*name*/, const std::uint32_t /*value*/) const {}
+
+        void set_string_value_of(const std::string_view& /*name*/, const std::string_view& /*value*/) const {}
+
 
     private:
         // static functions
 
+        static ::HKEY create_registry_key(const std::filesystem::path& native_subkey)
+        {
+            ::HKEY     handle = nullptr;
+            auto       disposition = static_cast<::DWORD>(0);
+            const auto result = ::RegCreateKeyExW(
+                HKEY_CURRENT_USER,
+                native_subkey.c_str(),
+                0,
+                nullptr,
+                REG_OPTION_NON_VOLATILE,
+                KEY_WRITE,
+                nullptr,
+                &handle,
+                &disposition);
+            if (result != ERROR_SUCCESS)
+            {
+                throw std::runtime_error{ "Can't create as Windows registry key." };
+            }
+            return handle;
+        }
+
 
         // variables
 
-        // const std::filesystem::path m_native_subkey;
+        const std::filesystem::path m_native_subkey;
 
-        // const ::HKEY m_handle;
+        const ::HKEY m_handle;
     };
 
 
@@ -207,6 +239,16 @@ namespace tetengo::platform_dependent
     {}
 
     windows_registry_writer::~windows_registry_writer() = default;
+
+    void windows_registry_writer::set_dword_value_of(const std::string_view& name, const std::uint32_t value) const
+    {
+        return m_p_impl->set_dword_value_of(name, value);
+    }
+
+    void windows_registry_writer::set_string_value_of(const std::string_view& name, const std::string_view& value) const
+    {
+        return m_p_impl->set_string_value_of(name, value);
+    }
 
 
 }

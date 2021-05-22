@@ -106,6 +106,22 @@ namespace tetengo::platform_dependent
 
         // functions
 
+        /*!
+            \brief Sets a DWORD value.
+
+            \param name  A name.
+            \param value A value.
+        */
+        void set_dword_value_of(const std::string_view& name, std::uint32_t value) const;
+
+        /*!
+            \brief Sets a string value.
+
+            \param name  A name.
+            \param value A value.
+        */
+        void set_string_value_of(const std::string_view& name, const std::string_view& value) const;
+
 
     private:
         // types
