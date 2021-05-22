@@ -79,6 +79,46 @@ namespace tetengo::platform_dependent
     };
 
 
+    /*!
+        \brief A Windows registry writer.
+
+        This class is only available on Windows.
+
+        The read and write target is fixed to \\HKEY_CURRENT_USER\\SOFTWARE.
+    */
+    class windows_registry_writer : private boost::noncopyable
+    {
+    public:
+        // constructors and destructor
+
+        /*!
+            \brief Creates a Windows registry writer.
+
+            \param subkey A subkey.
+        */
+        explicit windows_registry_writer(const std::filesystem::path& subkey);
+
+        /*!
+            \brief Destroys the Windows registry writer.
+        */
+        ~windows_registry_writer();
+
+
+        // functions
+
+
+    private:
+        // types
+
+        class impl;
+
+
+        // variables
+
+        const std::unique_ptr<impl> m_p_impl;
+    };
+
+
 }
 
 

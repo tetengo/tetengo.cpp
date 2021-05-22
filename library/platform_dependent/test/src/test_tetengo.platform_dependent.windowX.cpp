@@ -121,6 +121,27 @@ BOOST_AUTO_TEST_CASE(string_value_of)
 
 
 BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE(windows_registry_writer)
+
+
+BOOST_AUTO_TEST_CASE(construction)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const test_registry_entry test_registry_entry_{ false };
+
+        const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
+    }
+    {
+        const test_registry_entry test_registry_entry_{ true };
+
+        const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
+    }
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 

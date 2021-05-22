@@ -172,4 +172,41 @@ namespace tetengo::platform_dependent
     }
 
 
+    class windows_registry_writer::impl : private boost::noncopyable
+    {
+    public:
+        // constructors and destructor
+
+        explicit impl(const std::filesystem::path& /*subkey*/) /*:
+        m_native_subkey{ to_native_subkey(subkey) }, m_handle{ open_registry_key(m_native_subkey) }*/
+        {}
+
+        ~impl()
+        {
+            //::RegCloseKey(m_handle);
+        }
+
+
+        // functions
+
+
+    private:
+        // static functions
+
+
+        // variables
+
+        // const std::filesystem::path m_native_subkey;
+
+        // const ::HKEY m_handle;
+    };
+
+
+    windows_registry_writer::windows_registry_writer(const std::filesystem::path& subkey) :
+    m_p_impl{ std::make_unique<impl>(subkey) }
+    {}
+
+    windows_registry_writer::~windows_registry_writer() = default;
+
+
 }
