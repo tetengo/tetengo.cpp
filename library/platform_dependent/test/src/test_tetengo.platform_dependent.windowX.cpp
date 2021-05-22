@@ -6,8 +6,10 @@
 
 #if _WIN32
 
+#include <algorithm>
 #include <cstdlib>
 #include <filesystem>
+#include <iterator>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
@@ -73,6 +75,19 @@ BOOST_AUTO_TEST_CASE(construction)
     const test_registry_entry test_registry_entry_{ true };
 
     const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+}
+
+BOOST_AUTO_TEST_CASE(value_names)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const test_registry_entry test_registry_entry_{ true };
+
+    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+    const auto                                                 value_names = reader.value_names();
+    BOOST_TEST(value_names.size() == 2U);
+    BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "hoge") != std::end(value_names));
+    BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "fuga") != std::end(value_names));
 }
 
 BOOST_AUTO_TEST_CASE(dword_value_of)

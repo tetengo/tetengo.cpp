@@ -9,11 +9,13 @@
 #include <cassert>
 #include <cstdint>
 #include <filesystem>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include <Windows.h>
 
@@ -71,6 +73,25 @@ namespace tetengo::platform_dependent
 
 
         // functions
+
+        std::vector<std::string> value_names() const
+        {
+            std::vector<std::string> names{};
+            for (auto i = static_cast<::DWORD>(0);; ++i)
+            {
+                std::vector<wchar_t> wstring_name(32768, L'\0');
+                auto                 name_length = static_cast<::DWORD>(std::size(wstring_name));
+                const auto           result =
+                    ::RegEnumValueW(m_handle, i, std::data(wstring_name), &name_length, NULL, NULL, NULL, NULL);
+                if (result != ERROR_SUCCESS)
+                {
+                    break;
+                }
+                names.push_back(
+                    encoder().decode(to_u16string(std::wstring_view{ std::data(wstring_name), name_length })));
+            }
+            return names;
+        }
 
         std::optional<std::uint32_t> dword_value_of(const std::string_view& name) const
         {
@@ -157,6 +178,11 @@ namespace tetengo::platform_dependent
     {}
 
     windows_registry_reader::~windows_registry_reader() = default;
+
+    std::vector<std::string> windows_registry_reader::value_names() const
+    {
+        return m_p_impl->value_names();
+    }
 
     std::optional<std::uint32_t> windows_registry_reader::dword_value_of(const std::string_view& name) const
     {

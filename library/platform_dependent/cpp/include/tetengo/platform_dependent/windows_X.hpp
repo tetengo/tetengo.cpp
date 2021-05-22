@@ -13,6 +13,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -45,6 +46,13 @@ namespace tetengo::platform_dependent
 
 
         // functions
+
+        /*!
+            \brief Returns the value name list.
+
+            \return The value name list.
+        */
+        std::vector<std::string> value_names() const;
 
         /*!
             \brief Returns the DWORD value.
