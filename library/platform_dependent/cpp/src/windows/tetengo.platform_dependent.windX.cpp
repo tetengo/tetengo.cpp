@@ -62,10 +62,7 @@ namespace tetengo::platform_dependent
     public:
         // constructors and destructor
 
-        explicit impl(const std::filesystem::path& subkey) :
-        m_native_subkey{ to_native_subkey(subkey) },
-            m_handle{ open_registry_key(m_native_subkey) }
-        {}
+        explicit impl(const std::filesystem::path& subkey) : m_handle{ open_registry_key(subkey) } {}
 
         ~impl()
         {
@@ -80,19 +77,17 @@ namespace tetengo::platform_dependent
             auto       type = static_cast<::DWORD>(0);
             auto       data = static_cast<::DWORD>(0);
             auto       data_length = static_cast<::DWORD>(sizeof(::DWORD));
-            const auto result = ::RegGetValueW(
-                HKEY_CURRENT_USER,
-                m_native_subkey.c_str(),
+            const auto result = ::RegQueryValueExW(
+                m_handle,
                 to_wstring(encoder().encode(name)).c_str(),
-                RRF_RT_REG_DWORD,
+                nullptr,
                 &type,
-                &data,
+                reinterpret_cast<::BYTE*>(&data),
                 &data_length);
-            if (result != ERROR_SUCCESS)
+            if (result != ERROR_SUCCESS || type != REG_DWORD)
             {
                 return std::nullopt;
             }
-            assert(type == REG_DWORD);
             return std::make_optional(data);
         }
 
@@ -101,30 +96,27 @@ namespace tetengo::platform_dependent
             auto data_length_in_bytes = static_cast<::DWORD>(0);
             {
                 auto       type = static_cast<::DWORD>(0);
-                const auto result = ::RegGetValueW(
-                    HKEY_CURRENT_USER,
-                    m_native_subkey.c_str(),
+                const auto result = ::RegQueryValueExW(
+                    m_handle,
                     to_wstring(encoder().encode(name)).c_str(),
-                    RRF_RT_REG_SZ,
+                    nullptr,
                     &type,
                     nullptr,
                     &data_length_in_bytes);
-                if (result != ERROR_SUCCESS)
+                if (result != ERROR_SUCCESS || type != REG_SZ)
                 {
                     return std::nullopt;
                 }
-                assert(type == REG_SZ);
             }
             std::vector<wchar_t> data(data_length_in_bytes / sizeof(wchar_t), L'\0');
             {
                 auto       type = static_cast<::DWORD>(0);
-                const auto result = ::RegGetValueW(
-                    HKEY_CURRENT_USER,
-                    m_native_subkey.c_str(),
+                const auto result = ::RegQueryValueExW(
+                    m_handle,
                     to_wstring(encoder().encode(name)).c_str(),
-                    RRF_RT_REG_SZ,
+                    nullptr,
                     &type,
-                    std::data(data),
+                    reinterpret_cast<::BYTE*>(std::data(data)),
                     &data_length_in_bytes);
                 if (result != ERROR_SUCCESS)
                 {
@@ -141,10 +133,11 @@ namespace tetengo::platform_dependent
     private:
         // static functions
 
-        static ::HKEY open_registry_key(const std::filesystem::path& native_subkey)
+        static ::HKEY open_registry_key(const std::filesystem::path& subkey)
         {
             ::HKEY     handle = nullptr;
-            const auto result = ::RegOpenKeyExW(HKEY_CURRENT_USER, native_subkey.c_str(), 0, KEY_READ, &handle);
+            const auto result =
+                ::RegOpenKeyExW(HKEY_CURRENT_USER, to_native_subkey(subkey).c_str(), 0, KEY_READ, &handle);
             if (result != ERROR_SUCCESS)
             {
                 throw std::runtime_error{ "Can't open the Windows registry key." };
@@ -154,8 +147,6 @@ namespace tetengo::platform_dependent
 
 
         // variables
-
-        const std::filesystem::path m_native_subkey;
 
         const ::HKEY m_handle;
     };
@@ -183,10 +174,7 @@ namespace tetengo::platform_dependent
     public:
         // constructors and destructor
 
-        explicit impl(const std::filesystem::path& subkey) :
-        m_native_subkey{ to_native_subkey(subkey) },
-            m_handle{ create_registry_key(m_native_subkey) }
-        {}
+        explicit impl(const std::filesystem::path& subkey) : m_handle{ create_registry_key(subkey) } {}
 
         ~impl()
         {
@@ -232,13 +220,13 @@ namespace tetengo::platform_dependent
     private:
         // static functions
 
-        static ::HKEY create_registry_key(const std::filesystem::path& native_subkey)
+        static ::HKEY create_registry_key(const std::filesystem::path& subkey)
         {
             ::HKEY     handle = nullptr;
             auto       disposition = static_cast<::DWORD>(0);
             const auto result = ::RegCreateKeyExW(
                 HKEY_CURRENT_USER,
-                native_subkey.c_str(),
+                to_native_subkey(subkey).c_str(),
                 0,
                 nullptr,
                 REG_OPTION_NON_VOLATILE,
@@ -255,8 +243,6 @@ namespace tetengo::platform_dependent
 
 
         // variables
-
-        const std::filesystem::path m_native_subkey;
 
         const ::HKEY m_handle;
     };
