@@ -72,7 +72,51 @@ BOOST_AUTO_TEST_CASE(construction)
 
     const test_registry_entry test_registry_entry_{ true };
 
-    const tetengo::platform_dependent::windows_registry_reader registry{ subkey() };
+    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+}
+
+BOOST_AUTO_TEST_CASE(dword_value_of)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const test_registry_entry test_registry_entry_{ true };
+
+    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+    {
+        const auto o_value = reader.dword_value_of("hoge");
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value == 42U);
+    }
+    {
+        const auto o_value = reader.dword_value_of("fuga");
+        BOOST_CHECK(!o_value);
+    }
+    {
+        const auto o_value = reader.dword_value_of("piyo");
+        BOOST_CHECK(!o_value);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(string_value_of)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const test_registry_entry test_registry_entry_{ true };
+
+    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+    {
+        const auto o_value = reader.string_value_of("fuga");
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value == "foo");
+    }
+    {
+        const auto o_value = reader.string_value_of("hoge");
+        BOOST_CHECK(!o_value);
+    }
+    {
+        const auto o_value = reader.string_value_of("piyo");
+        BOOST_CHECK(!o_value);
+    }
 }
 
 

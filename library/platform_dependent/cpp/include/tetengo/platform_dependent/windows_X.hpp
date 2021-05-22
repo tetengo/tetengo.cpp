@@ -7,8 +7,12 @@
 #if !defined(TETENGO_PLATFORMDEPENDENT_WINDOWSREGISTRY_HPP)
 #define TETENGO_PLATFORMDEPENDENT_WINDOWSREGISTRY_HPP
 
+#include <cstdint>
 #include <filesystem>
 #include <memory>
+#include <optional>
+#include <string>
+#include <string_view>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -41,6 +45,26 @@ namespace tetengo::platform_dependent
 
 
         // functions
+
+        /*!
+            \brief Returns the DWORD value.
+
+            \param name A name.
+
+            \return The value.
+                    Or std::nullopt when no value is found for the name or the value type is different from DWORD.
+        */
+        std::optional<std::uint32_t> dword_value_of(const std::string_view& name) const;
+
+        /*!
+            \brief Returns the string value.
+
+            \param name A name.
+
+            \return The value.
+                    Or std::nullopt when no value is found for the name or the value type is different from string.
+        */
+        std::optional<std::string> string_value_of(const std::string_view& name) const;
 
 
     private:
