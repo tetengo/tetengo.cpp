@@ -16,11 +16,11 @@
 
 namespace
 {
-    static const std::filesystem::path& subkey()
-    {
-        static const std::filesystem::path singleton{ "test_tetengo.platform_dependent.windows_registry" };
-        return singleton;
-    }
+    // static const std::filesystem::path& subkey()
+    //{
+    //    static const std::filesystem::path singleton{ "test_tetengo.platform_dependent.windows_registry_reader" };
+    //    return singleton;
+    //}
 
 
 }
@@ -28,23 +28,16 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(platform_dependent)
-BOOST_AUTO_TEST_SUITE(windows_registry)
+BOOST_AUTO_TEST_SUITE(windows_registry_reader)
 
 
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    {
-        const tetengo::platform_dependent::windows_registry registry{
-            subkey(), tetengo::platform_dependent::windows_registry::open_mode_type::read
-        };
-    }
-    {
-        const tetengo::platform_dependent::windows_registry registry{
-            subkey(), tetengo::platform_dependent::windows_registry::open_mode_type::write
-        };
-    }
+    // const tetengo::platform_dependent::windows_registry_reader registry{
+    //    subkey(), tetengo::platform_dependent::windows_registry_reader::open_mode_type::read
+    //};
 }
 
 

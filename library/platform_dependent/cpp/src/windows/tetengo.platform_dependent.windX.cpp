@@ -18,19 +18,12 @@
 
 namespace tetengo::platform_dependent
 {
-    class windows_registry::impl : private boost::noncopyable
+    class windows_registry_reader::impl : private boost::noncopyable
     {
     public:
-        // types
-
-        using open_mode_type = windows_registry::open_mode_type;
-
-
         // constructors and destructor
 
-        impl(const std::filesystem::path& subkey, const open_mode_type open_mode) :
-        m_handle{ open_or_create_registry_key(subkey, open_mode) }
-        {}
+        explicit impl(const std::filesystem::path& subkey) : m_handle{ open_registry_key(subkey) } {}
 
         ~impl()
         {
@@ -44,11 +37,6 @@ namespace tetengo::platform_dependent
     private:
         // static functions
 
-        static ::HKEY open_or_create_registry_key(const std::filesystem::path& subkey, const open_mode_type open_mode)
-        {
-            return open_mode == open_mode_type::read ? open_registry_key(subkey) : create_registry_key(subkey);
-        }
-
         static ::HKEY open_registry_key(const std::filesystem::path& subkey)
         {
             const auto native_subkey = "SOFTWARE" / subkey;
@@ -61,11 +49,6 @@ namespace tetengo::platform_dependent
             return handle;
         }
 
-        static ::HKEY create_registry_key(const std::filesystem::path& /*subkey*/)
-        {
-            return nullptr;
-        }
-
 
         // variables
 
@@ -73,11 +56,11 @@ namespace tetengo::platform_dependent
     };
 
 
-    windows_registry::windows_registry(const std::filesystem::path& subkey, const open_mode_type open_mode) :
-    m_p_impl{ std::make_unique<impl>(subkey, open_mode) }
+    windows_registry_reader::windows_registry_reader(const std::filesystem::path& subkey) :
+    m_p_impl{ std::make_unique<impl>(subkey) }
     {}
 
-    windows_registry::~windows_registry() = default;
+    windows_registry_reader::~windows_registry_reader() = default;
 
 
 }

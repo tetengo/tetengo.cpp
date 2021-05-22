@@ -16,39 +16,28 @@
 namespace tetengo::platform_dependent
 {
     /*!
-        \brief A Windows registry access.
+        \brief A Windows registry reader.
 
         This class is only available on Windows.
 
         The read and write target is fixed to \\HKEY_CURRENT_USER\\SOFTWARE.
     */
-    class windows_registry : private boost::noncopyable
+    class windows_registry_reader : private boost::noncopyable
     {
     public:
-        // types
-
-        //! The open mode type.
-        enum class open_mode_type
-        {
-            read, //!< Read.
-            write, //!< Write.
-        };
-
-
         // constructors and destructor
 
         /*!
-            \brief Creates a Windows registry access.
+            \brief Creates a Windows registry reader.
 
-            \param subkey    A subkey.
-            \param open_mode An open mode.
+            \param subkey A subkey.
         */
-        windows_registry(const std::filesystem::path& subkey, open_mode_type open_mode);
+        explicit windows_registry_reader(const std::filesystem::path& subkey);
 
         /*!
-            \brief Destroys the Windows registry access.
+            \brief Destroys the Windows registry reader.
         */
-        ~windows_registry();
+        ~windows_registry_reader();
 
 
         // functions
