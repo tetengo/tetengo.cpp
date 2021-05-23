@@ -135,32 +135,32 @@ BOOST_AUTO_TEST_CASE(load)
             BOOST_CHECK(!o_value);
         }
     }
-    //{
-    //    test_registry_entry                                      test_registry_entry_{ true };
-    //    const tetengo::property::windows_registry_storage_loader loader{};
-    //    const auto                                               p_storage = loader.load(subkey());
-    //    BOOST_REQUIRE(p_storage);
-    //    {
-    //        const auto o_value = p_storage->get_bool("alpha");
-    //        BOOST_REQUIRE(o_value);
-    //        BOOST_TEST(!*o_value);
-    //    }
-    //    {
-    //        const auto o_value = p_storage->get_bool("bravo");
-    //        BOOST_REQUIRE(o_value);
-    //        BOOST_TEST(*o_value);
-    //    }
-    //    {
-    //        const auto o_value = p_storage->get_uint32("charlie");
-    //        BOOST_REQUIRE(o_value);
-    //        BOOST_TEST(*o_value == 42U);
-    //    }
-    //    {
-    //        const auto o_value = p_storage->get_string(std::filesystem::path{ "delta" } / "echo");
-    //        BOOST_REQUIRE(o_value);
-    //        BOOST_TEST(*o_value == "foxtrot");
-    //    }
-    //}
+    {
+        test_registry_entry                                      test_registry_entry_{ true };
+        const tetengo::property::windows_registry_storage_loader loader{};
+        const auto                                               p_storage = loader.load(subkey());
+        BOOST_REQUIRE(p_storage);
+        {
+            const auto o_value = p_storage->get_bool("alpha");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(!*o_value);
+        }
+        {
+            const auto o_value = p_storage->get_bool("bravo");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value);
+        }
+        {
+            const auto o_value = p_storage->get_uint32("charlie");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == 42U);
+        }
+        //{
+        //    const auto o_value = p_storage->get_string(std::filesystem::path{ "delta" } / "echo");
+        //    BOOST_REQUIRE(o_value);
+        //    BOOST_TEST(*o_value == "foxtrot");
+        //}
+    }
 }
 
 
