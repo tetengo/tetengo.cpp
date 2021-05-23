@@ -38,8 +38,7 @@ namespace tetengo::property
 
 
     windows_registry_storage::windows_registry_storage(value_map_type value_map) :
-    storage{ std::move(value_map) },
-        m_p_impl{ std::make_unique<impl>() }
+    storage{ std::move(value_map) }, m_p_impl{ std::make_unique<impl>() }
     {}
 
     windows_registry_storage::~windows_registry_storage() = default;
@@ -58,8 +57,19 @@ namespace tetengo::property
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
             const tetengo::platform_dependent::windows_registry_reader reader{ path };
-            const auto                                                 value_names = reader.value_names();
-            return std::make_unique<windows_registry_storage>(value_map_type{});
+            value_map_type                                             value_map{};
+            for (const auto value_name: reader.value_names())
+            {
+                if (const auto o_dword_value = reader.dword_value_of(value_name); o_dword_value)
+                {
+                    value_map.insert(std::make_pair(value_name, *o_dword_value));
+                }
+                else if (const auto o_string_value = reader.string_value_of(value_name); o_string_value)
+                {
+                    value_map.insert(std::make_pair(value_name, *o_string_value));
+                }
+            }
+            return std::make_unique<windows_registry_storage>(std::move(value_map));
         }
 
 
