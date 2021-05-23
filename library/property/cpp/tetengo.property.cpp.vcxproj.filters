@@ -32,6 +32,9 @@
     <ClCompile Include="src\tetengo.property.json_writer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.property.windows_registry_storage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
@@ -51,6 +54,9 @@
     </ClInclude>
     <ClInclude Include="src\tetengo.property.json_writer.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\property\windows_registry_storage.hpp">
+      <Filter>header\tetengo::property</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
