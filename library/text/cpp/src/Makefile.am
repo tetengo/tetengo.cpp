@@ -6,6 +6,7 @@ headers = \
     tetengo.text.grapheme_splitting.character_property_map.hpp
 
 sources = \
+    tetengo.text.encoder.cpp \
     tetengo.text.encoding.cp932.cpp \
     tetengo.text.encoding.unicode_encoding.cpp \
     tetengo.text.encoding.utf16.cpp \
