@@ -34,11 +34,20 @@ namespace
             if (preset)
             {
                 {
-                    const auto command = "reg add " + key_full_path().string() + " /f /v hoge /t REG_DWORD /d 42";
+                    const auto command = "reg add " + key_full_path().string() + " /f /v alpha /t REG_DWORD /d 0";
                     std::system(command.c_str());
                 }
                 {
-                    const auto command = "reg add " + key_full_path().string() + " /f /v fuga /t REG_SZ /d foo";
+                    const auto command = "reg add " + key_full_path().string() + " /f /v bravo /t REG_DWORD /d 1";
+                    std::system(command.c_str());
+                }
+                {
+                    const auto command = "reg add " + key_full_path().string() + " /f /v charlie /t REG_DWORD /d 42";
+                    std::system(command.c_str());
+                }
+                {
+                    const auto command =
+                        "reg add " + (key_full_path() / "delta").string() + " /f /v echo /t REG_SZ /d foxtrot";
                     std::system(command.c_str());
                 }
             }
