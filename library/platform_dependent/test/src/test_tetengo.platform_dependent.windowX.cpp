@@ -72,42 +72,58 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const test_registry_entry test_registry_entry_{ true };
-
-    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+    {
+        const test_registry_entry                                  test_registry_entry_{ true };
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+    }
+    {
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+    }
 }
 
 BOOST_AUTO_TEST_CASE(value_names)
 {
     BOOST_TEST_PASSPOINT();
 
-    const test_registry_entry test_registry_entry_{ true };
-
-    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
-    const auto                                                 value_names = reader.value_names();
-    BOOST_TEST(value_names.size() == 2U);
-    BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "hoge") != std::end(value_names));
-    BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "fuga") != std::end(value_names));
+    {
+        const test_registry_entry                                  test_registry_entry_{ true };
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        const auto                                                 value_names = reader.value_names();
+        BOOST_TEST(value_names.size() == 2U);
+        BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "hoge") != std::end(value_names));
+        BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "fuga") != std::end(value_names));
+    }
+    {
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        const auto                                                 value_names = reader.value_names();
+        BOOST_TEST(value_names.empty());
+    }
 }
 
 BOOST_AUTO_TEST_CASE(dword_value_of)
 {
     BOOST_TEST_PASSPOINT();
 
-    const test_registry_entry test_registry_entry_{ true };
-
-    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
     {
-        const auto o_value = reader.dword_value_of("hoge");
-        BOOST_REQUIRE(o_value);
-        BOOST_TEST(*o_value == 42U);
+        const test_registry_entry                                  test_registry_entry_{ true };
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        {
+            const auto o_value = reader.dword_value_of("hoge");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == 42U);
+        }
+        {
+            const auto o_value = reader.dword_value_of("fuga");
+            BOOST_CHECK(!o_value);
+        }
+        {
+            const auto o_value = reader.dword_value_of("piyo");
+            BOOST_CHECK(!o_value);
+        }
     }
     {
-        const auto o_value = reader.dword_value_of("fuga");
-        BOOST_CHECK(!o_value);
-    }
-    {
-        const auto o_value = reader.dword_value_of("piyo");
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        const auto                                                 o_value = reader.dword_value_of("hoge");
         BOOST_CHECK(!o_value);
     }
 }
@@ -116,20 +132,26 @@ BOOST_AUTO_TEST_CASE(string_value_of)
 {
     BOOST_TEST_PASSPOINT();
 
-    const test_registry_entry test_registry_entry_{ true };
-
-    const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
     {
-        const auto o_value = reader.string_value_of("fuga");
-        BOOST_REQUIRE(o_value);
-        BOOST_TEST(*o_value == "foo");
+        const test_registry_entry                                  test_registry_entry_{ true };
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        {
+            const auto o_value = reader.string_value_of("fuga");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == "foo");
+        }
+        {
+            const auto o_value = reader.string_value_of("hoge");
+            BOOST_CHECK(!o_value);
+        }
+        {
+            const auto o_value = reader.string_value_of("piyo");
+            BOOST_CHECK(!o_value);
+        }
     }
     {
-        const auto o_value = reader.string_value_of("hoge");
-        BOOST_CHECK(!o_value);
-    }
-    {
-        const auto o_value = reader.string_value_of("piyo");
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        const auto                                                 o_value = reader.string_value_of("fuga");
         BOOST_CHECK(!o_value);
     }
 }
@@ -144,13 +166,11 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const test_registry_entry test_registry_entry_{ false };
-
+        const test_registry_entry                                  test_registry_entry_{ false };
         const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
     }
     {
-        const test_registry_entry test_registry_entry_{ true };
-
+        const test_registry_entry                                  test_registry_entry_{ true };
         const tetengo::platform_dependent::windows_registry_writer writer{ subkey() };
     }
 }

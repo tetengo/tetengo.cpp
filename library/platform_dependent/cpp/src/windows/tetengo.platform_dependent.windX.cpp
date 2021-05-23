@@ -76,6 +76,11 @@ namespace tetengo::platform_dependent
 
         std::vector<std::string> value_names() const
         {
+            if (!m_handle)
+            {
+                return std::vector<std::string>{};
+            }
+
             std::vector<std::string> names{};
             for (auto i = static_cast<::DWORD>(0);; ++i)
             {
@@ -95,6 +100,11 @@ namespace tetengo::platform_dependent
 
         std::optional<std::uint32_t> dword_value_of(const std::string_view& name) const
         {
+            if (!m_handle)
+            {
+                return std::nullopt;
+            }
+
             auto       type = static_cast<::DWORD>(0);
             auto       data = static_cast<::DWORD>(0);
             auto       data_length = static_cast<::DWORD>(sizeof(::DWORD));
@@ -114,6 +124,11 @@ namespace tetengo::platform_dependent
 
         std::optional<std::string> string_value_of(const std::string_view& name) const
         {
+            if (!m_handle)
+            {
+                return std::nullopt;
+            }
+
             auto data_length_in_bytes = static_cast<::DWORD>(0);
             {
                 auto       type = static_cast<::DWORD>(0);
@@ -161,7 +176,7 @@ namespace tetengo::platform_dependent
                 ::RegOpenKeyExW(HKEY_CURRENT_USER, to_native_subkey(subkey).c_str(), 0, KEY_READ, &handle);
             if (result != ERROR_SUCCESS)
             {
-                throw std::runtime_error{ "Can't open the Windows registry key." };
+                return nullptr;
             }
             return handle;
         }
