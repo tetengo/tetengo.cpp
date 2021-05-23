@@ -48,6 +48,13 @@ namespace tetengo::platform_dependent
         // functions
 
         /*!
+            \brief Returns the child subkeys.
+
+            \return The child subkeys.
+        */
+        std::vector<std::string> child_subkeys() const;
+
+        /*!
             \brief Returns the value name list.
 
             \return The value name list.

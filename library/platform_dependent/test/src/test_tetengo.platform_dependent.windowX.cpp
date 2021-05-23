@@ -40,6 +40,11 @@ namespace
                     const auto command = "reg add " + key_full_path().string() + " /f /v fuga /t REG_SZ /d foo";
                     std::system(command.c_str());
                 }
+                {
+                    const auto command =
+                        "reg add " + (key_full_path() / "piyo").string() + " /f /v piyoyo /t REG_SZ /d bar";
+                    std::system(command.c_str());
+                }
             }
         }
 
@@ -78,6 +83,30 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+    }
+}
+
+BOOST_AUTO_TEST_CASE(child_subkeys)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const test_registry_entry                                  test_registry_entry_{ true };
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        const auto                                                 child_subkeys = reader.child_subkeys();
+        BOOST_TEST_REQUIRE(child_subkeys.size() == 1U);
+        BOOST_CHECK(child_subkeys[0] == "piyo");
+    }
+    {
+        const test_registry_entry                                  test_registry_entry_{ true };
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() / "piyo" };
+        const auto                                                 child_subkeys = reader.child_subkeys();
+        BOOST_TEST(child_subkeys.empty());
+    }
+    {
+        const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
+        const auto                                                 child_subkeys = reader.child_subkeys();
+        BOOST_TEST(child_subkeys.empty());
     }
 }
 

@@ -74,6 +74,30 @@ namespace tetengo::platform_dependent
 
         // functions
 
+        std::vector<std::string> child_subkeys() const
+        {
+            if (!m_handle)
+            {
+                return std::vector<std::string>{};
+            }
+
+            std::vector<std::string> child_subkeys{};
+            for (auto i = static_cast<::DWORD>(0);; ++i)
+            {
+                std::vector<wchar_t> wstring_name(256, L'\0');
+                auto                 name_length = static_cast<::DWORD>(std::size(wstring_name));
+                const auto           result = ::RegEnumKeyExW(
+                    m_handle, i, std::data(wstring_name), &name_length, nullptr, nullptr, nullptr, nullptr);
+                if (result != ERROR_SUCCESS)
+                {
+                    break;
+                }
+                child_subkeys.push_back(
+                    encoder().decode(to_u16string(std::wstring_view{ std::data(wstring_name), name_length })));
+            }
+            return child_subkeys;
+        }
+
         std::vector<std::string> value_names() const
         {
             if (!m_handle)
@@ -86,8 +110,8 @@ namespace tetengo::platform_dependent
             {
                 std::vector<wchar_t> wstring_name(32768, L'\0');
                 auto                 name_length = static_cast<::DWORD>(std::size(wstring_name));
-                const auto           result =
-                    ::RegEnumValueW(m_handle, i, std::data(wstring_name), &name_length, NULL, NULL, NULL, NULL);
+                const auto           result = ::RegEnumValueW(
+                    m_handle, i, std::data(wstring_name), &name_length, nullptr, nullptr, nullptr, nullptr);
                 if (result != ERROR_SUCCESS)
                 {
                     break;
@@ -193,6 +217,11 @@ namespace tetengo::platform_dependent
     {}
 
     windows_registry_reader::~windows_registry_reader() = default;
+
+    std::vector<std::string> windows_registry_reader::child_subkeys() const
+    {
+        return m_p_impl->child_subkeys();
+    }
 
     std::vector<std::string> windows_registry_reader::value_names() const
     {
