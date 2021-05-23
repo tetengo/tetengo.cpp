@@ -4,7 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#if _WIN32
+#if defined(_WIN32)
 
 #include <cstdlib>
 #include <filesystem>

@@ -97,7 +97,7 @@ namespace tetengo::text
             });
             const std::string_view name_view{ name.c_str() };
 
-#if _WIN32
+#if defined(_WIN32)
             constexpr const char* const separator = "_-";
 #else
             constexpr const char* const separator = "_";
@@ -108,7 +108,7 @@ namespace tetengo::text
             {
                 return true;
             }
-#if _WIN32
+#if defined(_WIN32)
             else if (
                 language == "chinese" || language == "chinese (simplified)" || language == "chinese (traditional)" ||
                 language == "japanese" || language == "korean")
