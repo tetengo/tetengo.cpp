@@ -155,11 +155,11 @@ BOOST_AUTO_TEST_CASE(load)
             BOOST_REQUIRE(o_value);
             BOOST_TEST(*o_value == 42U);
         }
-        //{
-        //    const auto o_value = p_storage->get_string(std::filesystem::path{ "delta" } / "echo");
-        //    BOOST_REQUIRE(o_value);
-        //    BOOST_TEST(*o_value == "foxtrot");
-        //}
+        {
+            const auto o_value = p_storage->get_string(std::filesystem::path{ "delta" } / "echo");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == "foxtrot");
+        }
     }
 }
 

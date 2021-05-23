@@ -57,19 +57,8 @@ namespace tetengo::property
 
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
-            const tetengo::platform_dependent::windows_registry_reader reader{ path };
-            value_map_type                                             value_map{};
-            for (const auto value_name: reader.value_names())
-            {
-                if (const auto o_dword_value = reader.dword_value_of(value_name); o_dword_value)
-                {
-                    value_map.insert(std::make_pair(value_name, *o_dword_value));
-                }
-                else if (const auto o_string_value = reader.string_value_of(value_name); o_string_value)
-                {
-                    value_map.insert(std::make_pair(value_name, *o_string_value));
-                }
-            }
+            value_map_type value_map{};
+            load_impl_iter(path, std::filesystem::path{}, value_map);
             return std::make_unique<windows_registry_storage>(std::move(value_map));
         }
 
@@ -78,6 +67,33 @@ namespace tetengo::property
         // types
 
         using value_map_type = storage::value_map_type;
+
+
+        // static functions
+
+        static void load_impl_iter(
+            const std::filesystem::path& path,
+            const std::filesystem::path& relative_path,
+            value_map_type&              value_map)
+        {
+            const tetengo::platform_dependent::windows_registry_reader reader{ path };
+            for (const auto& value_name: reader.value_names())
+            {
+                const auto key = relative_path / value_name;
+                if (const auto o_dword_value = reader.dword_value_of(value_name); o_dword_value)
+                {
+                    value_map.insert(std::make_pair(key.string(), *o_dword_value));
+                }
+                else if (const auto o_string_value = reader.string_value_of(value_name); o_string_value)
+                {
+                    value_map.insert(std::make_pair(key.string(), *o_string_value));
+                }
+            }
+            for (const auto& child_subkey: reader.child_subkeys())
+            {
+                load_impl_iter(path / child_subkey, relative_path / child_subkey, value_map);
+            }
+        }
     };
 
 
