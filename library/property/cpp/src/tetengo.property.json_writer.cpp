@@ -1,5 +1,5 @@
 /*! \file
-    \brief A json writer.
+    \brief A JSON writer.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
