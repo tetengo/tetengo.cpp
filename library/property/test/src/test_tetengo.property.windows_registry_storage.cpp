@@ -4,9 +4,12 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <utility>
+
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/property/storage.hpp>
 #include <tetengo/property/windows_registry_storage.hpp>
 
 
@@ -20,7 +23,8 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::property::windows_registry_storage storage{};
+        tetengo::property::windows_registry_storage::value_map_type value_map{};
+        const tetengo::property::windows_registry_storage           storage{ std::move(value_map) };
     }
 }
 

@@ -25,8 +25,10 @@ namespace tetengo::property
 
         /*!
             \brief Creates a Windows registry storage.
+
+            \param value_map A value map.
         */
-        windows_registry_storage();
+        explicit windows_registry_storage(value_map_type value_map);
 
         /*!
             \brief Destroys the Windows registry storage.

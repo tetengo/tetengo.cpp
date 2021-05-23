@@ -6,6 +6,7 @@
 
 #include <filesystem>
 #include <memory>
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -23,11 +24,6 @@ namespace tetengo::property
         using value_map_type = windows_registry_storage::value_map_type;
 
 
-        // constructors and destructor
-
-        impl() {}
-
-
         // functions
 
         void save_impl(const windows_registry_storage& /*self*/) const {}
@@ -38,8 +34,8 @@ namespace tetengo::property
     };
 
 
-    windows_registry_storage::windows_registry_storage() :
-    storage{ value_map_type{} },
+    windows_registry_storage::windows_registry_storage(value_map_type value_map) :
+    storage{ std::move(value_map) },
         m_p_impl{ std::make_unique<impl>() }
     {}
 
@@ -54,17 +50,18 @@ namespace tetengo::property
     class windows_registry_storage_loader::impl : private boost::noncopyable
     {
     public:
-        // constructors
-
-        impl() {}
-
-
         // functions
 
-        std::unique_ptr<storage> load_impl(const std::filesystem::path&) const
+        std::unique_ptr<storage> load_impl(const std::filesystem::path& /*path*/) const
         {
-            return std::make_unique<windows_registry_storage>();
+            return std::make_unique<windows_registry_storage>(value_map_type{});
         }
+
+
+    private:
+        // types
+
+        using value_map_type = storage::value_map_type;
     };
 
 
