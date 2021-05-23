@@ -4,12 +4,15 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#if defined(_WIN32)
+
 #include <filesystem>
 #include <memory>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
+#include <tetengo/platform_dependent/windows_X.hpp>
 #include <tetengo/property/storage.hpp>
 #include <tetengo/property/windows_registry_storage.hpp>
 
@@ -52,8 +55,10 @@ namespace tetengo::property
     public:
         // functions
 
-        std::unique_ptr<storage> load_impl(const std::filesystem::path& /*path*/) const
+        std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
+            const tetengo::platform_dependent::windows_registry_reader reader{ path };
+            const auto                                                 value_names = reader.value_names();
             return std::make_unique<windows_registry_storage>(value_map_type{});
         }
 
@@ -76,3 +81,5 @@ namespace tetengo::property
 
 
 }
+
+#endif
