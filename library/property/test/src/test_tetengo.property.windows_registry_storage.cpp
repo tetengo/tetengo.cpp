@@ -20,34 +20,52 @@
 
 namespace
 {
-    static const std::filesystem::path& subkey()
+    tetengo::property::windows_registry_storage::value_map_type make_value_map()
+    {
+        tetengo::property::windows_registry_storage::value_map_type value_map{};
+        value_map.insert(std::make_pair("alpha", true));
+        value_map.insert(std::make_pair("bravo", static_cast<std::uint32_t>(42)));
+        value_map.insert(
+            std::make_pair((std::filesystem::path{ "charlie" } / "delta").string(), std::string{ "echo" }));
+        return value_map;
+    }
+
+    const std::filesystem::path& subkey()
     {
         static const std::filesystem::path singleton{ "test_tetengo.property.windows_registry_storage" };
         return singleton;
     }
 
-    class test_registry_entry
+    const std::filesystem::path& key_full_path()
     {
-    public:
+        static const std::filesystem::path singleton{ "HKCU\\SOFTWARE" / subkey() };
+        return singleton;
+    }
+
+    struct test_registry_entry
+    {
         explicit test_registry_entry(const bool preset)
         {
             if (preset)
             {
                 {
-                    const auto command = "reg add " + key_full_path().string() + " /f /v alpha /t REG_DWORD /d 0";
-                    std::system(command.c_str());
-                }
-                {
-                    const auto command = "reg add " + key_full_path().string() + " /f /v bravo /t REG_DWORD /d 1";
-                    std::system(command.c_str());
-                }
-                {
-                    const auto command = "reg add " + key_full_path().string() + " /f /v charlie /t REG_DWORD /d 42";
+                    const auto command =
+                        "reg add " + key_full_path().string() + " /f /v alpha /t REG_DWORD /d 0 > NUL 2> NUL";
                     std::system(command.c_str());
                 }
                 {
                     const auto command =
-                        "reg add " + (key_full_path() / "delta").string() + " /f /v echo /t REG_SZ /d foxtrot";
+                        "reg add " + key_full_path().string() + " /f /v bravo /t REG_DWORD /d 1 > NUL 2> NUL";
+                    std::system(command.c_str());
+                }
+                {
+                    const auto command =
+                        "reg add " + key_full_path().string() + " /f /v charlie /t REG_DWORD /d 42 > NUL 2> NUL 2> NUL";
+                    std::system(command.c_str());
+                }
+                {
+                    const auto command =
+                        "reg add " + (key_full_path() / "delta").string() + " /f /v echo /t REG_SZ /d foxtrot > NUL";
                     std::system(command.c_str());
                 }
             }
@@ -56,18 +74,24 @@ namespace
         ~test_registry_entry()
         {
             {
-                const auto command = "reg delete " + key_full_path().string() + " /f";
+                const auto command = "reg delete " + key_full_path().string() + " /f > NUL 2> NUL";
                 std::system(command.c_str());
             }
         }
-
-    private:
-        static const std::filesystem::path& key_full_path()
-        {
-            static const std::filesystem::path singleton{ "HKCU\\SOFTWARE" / subkey() };
-            return singleton;
-        }
     };
+
+    bool has_registry_key(const std::filesystem::path& value_name)
+    {
+        auto       registry_key = key_full_path();
+        const auto value_name_leaf = value_name.filename();
+        if (value_name.has_parent_path())
+        {
+            registry_key /= value_name.parent_path();
+        }
+        const auto command = "reg query " + registry_key.string() + " /v " + value_name_leaf.string() + " > NUL 2> NUL";
+        const auto result = std::system(command.c_str());
+        return result == 0;
+    }
 
 
 }
@@ -92,7 +116,17 @@ BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        test_registry_entry                               test_registry_entry_{ true };
+        const auto                                        value_map = make_value_map();
+        const tetengo::property::windows_registry_storage storage{ value_map };
+        storage.save();
+
+        BOOST_TEST(has_registry_key("alpha"));
+        BOOST_TEST(has_registry_key("bravo"));
+        BOOST_TEST(has_registry_key("charlie"));
+        BOOST_TEST(has_registry_key("delta\\echo"));
+    }
 }
 
 

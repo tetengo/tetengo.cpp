@@ -29,7 +29,10 @@ namespace tetengo::property
 
         // functions
 
-        void save_impl(const windows_registry_storage& /*self*/) const {}
+        void save_impl(const windows_registry_storage& self) const
+        {
+            [[maybe_unused]] const auto& map = self.value_map();
+        }
 
 
     private:
