@@ -11,8 +11,11 @@
 #include <string>
 #include <utility>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 #include <tetengo/property/storage.hpp>
 #include <tetengo/property/windows_registry_storage.hpp>
@@ -41,6 +44,25 @@ namespace
         static const std::filesystem::path singleton{ "HKCU\\SOFTWARE" / subkey() };
         return singleton;
     }
+
+    struct temporary_file
+    {
+        static const std::filesystem::path& path()
+        {
+            static const auto singleton =
+                std::filesystem::temp_directory_path() / ("test_tetengo.property.windows_registry_storage." +
+                                                          boost::uuids::to_string(boost::uuids::random_generator{}()));
+            return singleton;
+        }
+
+        ~temporary_file()
+        {
+            if (std::filesystem::exists(path()))
+            {
+                std::filesystem::remove(path());
+            }
+        }
+    };
 
     struct test_registry_entry
     {
@@ -80,7 +102,31 @@ namespace
         }
     };
 
-    bool has_registry_key(const std::filesystem::path& value_name)
+    bool has_registry_value_impl(
+        const std::filesystem::path& file_path,
+        const std::filesystem::path& value_name_leaf,
+        const std::string_view&      value_type,
+        const std::string_view&      value_data)
+    {
+        std::ifstream stream{ file_path };
+        while (stream)
+        {
+            std::string line{};
+            std::getline(stream, line);
+            std::vector<std::string> split{};
+            boost::algorithm::split(split, line, boost::is_any_of(" "), boost::algorithm::token_compress_on);
+            if (split.size() >= 4 && split[1] == value_name_leaf && split[2] == value_type && split[3] == value_data)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool has_registry_value(
+        const std::filesystem::path& value_name,
+        const std::string_view&      value_type,
+        const std::string_view&      value_data)
     {
         auto       registry_key = key_full_path();
         const auto value_name_leaf = value_name.filename();
@@ -88,9 +134,12 @@ namespace
         {
             registry_key /= value_name.parent_path();
         }
-        const auto command = "reg query " + registry_key.string() + " /v " + value_name_leaf.string() + " > NUL 2> NUL";
+
+        const temporary_file temporary_file_;
+        const auto command = "reg query " + registry_key.string() + " /v " + value_name_leaf.string() + " > " +
+                             temporary_file::path().string() + " 2> NUL";
         const auto result = std::system(command.c_str());
-        return result == 0;
+        return result == 0 && has_registry_value_impl(temporary_file::path(), value_name_leaf, value_type, value_data);
     }
 
 
@@ -122,10 +171,10 @@ BOOST_AUTO_TEST_CASE(save)
         const tetengo::property::windows_registry_storage storage{ value_map };
         storage.save();
 
-        BOOST_TEST(has_registry_key("alpha"));
-        BOOST_TEST(has_registry_key("bravo"));
-        BOOST_TEST(has_registry_key("charlie"));
-        BOOST_TEST(has_registry_key("delta\\echo"));
+        BOOST_TEST(has_registry_value("alpha", "REG_DWORD", "0x0"));
+        BOOST_TEST(has_registry_value("bravo", "REG_DWORD", "0x1"));
+        BOOST_TEST(has_registry_value("charlie", "REG_DWORD", "0x2a"));
+        BOOST_TEST(has_registry_value("delta\\echo", "REG_SZ", "foxtrot"));
     }
 }
 

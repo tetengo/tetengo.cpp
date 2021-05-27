@@ -33,16 +33,18 @@ namespace
             if (preset)
             {
                 {
-                    const auto command = "reg add " + key_full_path().string() + " /f /v hoge /t REG_DWORD /d 42";
-                    std::system(command.c_str());
-                }
-                {
-                    const auto command = "reg add " + key_full_path().string() + " /f /v fuga /t REG_SZ /d foo";
+                    const auto command =
+                        "reg add " + key_full_path().string() + " /f /v hoge /t REG_DWORD /d 42 > NUL 2> NUL";
                     std::system(command.c_str());
                 }
                 {
                     const auto command =
-                        "reg add " + (key_full_path() / "piyo").string() + " /f /v piyoyo /t REG_SZ /d bar";
+                        "reg add " + key_full_path().string() + " /f /v fuga /t REG_SZ /d foo > NUL 2> NUL";
+                    std::system(command.c_str());
+                }
+                {
+                    const auto command = "reg add " + (key_full_path() / "piyo").string() +
+                                         " /f /v piyoyo /t REG_SZ /d bar > NUL 2> NUL";
                     std::system(command.c_str());
                 }
             }
@@ -51,7 +53,7 @@ namespace
         ~test_registry_entry()
         {
             {
-                const auto command = "reg delete " + key_full_path().string() + " /f";
+                const auto command = "reg delete " + key_full_path().string() + " /f > NUL 2> NUL";
                 std::system(command.c_str());
             }
         }
