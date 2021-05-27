@@ -34,6 +34,9 @@
     <ClInclude Include="include\tetengo\platform_dependent\propertyX.hpp">
       <Filter>header\tetengo::platform_dependent</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\platform_dependent\windows_X.hpp">
+      <Filter>header\tetengo::platform_dependent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
@@ -49,6 +52,9 @@
       <Filter>src\unixos</Filter>
     </ClCompile>
     <ClCompile Include="src\windows\tetengo.platform_dependent.propX.cpp">
+      <Filter>src\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\windows\tetengo.platform_dependent.windX.cpp">
       <Filter>src\windows</Filter>
     </ClCompile>
   </ItemGroup>

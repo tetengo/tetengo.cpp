@@ -4,7 +4,8 @@
 pkg_headers = \
     property/file_storage.hpp \
     property/memory_storage.hpp \
-    property/storage.hpp
+    property/storage.hpp \
+    property/windows_registry_storage.hpp
 
 extra_headers = \
     property/0namespace.dox

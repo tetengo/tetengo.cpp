@@ -6,7 +6,8 @@ headers =
 sources = \
     master.cpp \
     test_tetengo.platform_dependent.properX.cpp \
-    test_tetengo.platform_dependent.text_eX.cpp
+    test_tetengo.platform_dependent.text_eX.cpp \
+    test_tetengo.platform_dependent.windowX.cpp
 
 check_PROGRAMS = test_tetengo.platform_dependent
 

@@ -1,5 +1,5 @@
 /*! \file
-    \brief A json writer.
+    \brief A JSON writer.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -86,7 +86,7 @@ namespace tetengo::property
         static std::vector<std::filesystem::path> keys_of(const value_map_type& value_map)
         {
             std::vector<std::filesystem::path> keys{};
-            keys.reserve(value_map.size());
+            keys.reserve(std::size(value_map));
             std::transform(std::begin(value_map), std::end(value_map), std::back_inserter(keys), [](const auto& v) {
                 return v.first;
             });
@@ -103,7 +103,7 @@ namespace tetengo::property
             const auto  top_and_descendant = split(key);
             const auto  top = top_and_descendant.first.string();
             const auto& descendant = top_and_descendant.second;
-            if (!top_and_descendant.second.empty())
+            if (!std::empty(top_and_descendant.second))
             {
                 if (key_tree.get().find(top) == std::end(key_tree.get()))
                 {
@@ -126,7 +126,7 @@ namespace tetengo::property
         static std::pair<std::filesystem::path, std::filesystem::path> split(const std::filesystem::path& key)
         {
             const std::vector<std::filesystem::path> elements{ std::begin(key), std::end(key) };
-            assert(!elements.empty());
+            assert(!std::empty(elements));
             return std::make_pair(
                 elements[0],
                 std::accumulate(

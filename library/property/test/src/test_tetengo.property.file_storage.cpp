@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -156,7 +157,7 @@ namespace
         static void write_content(const std::filesystem::path& native_path, const std::string_view& content)
         {
             std::ofstream stream{ native_path };
-            stream.write(content.data(), content.size());
+            stream.write(std::data(content), std::size(content));
         }
 
         const std::filesystem::path m_path;
@@ -172,8 +173,8 @@ namespace
             while (stream)
             {
                 std::vector<char> read(1024, '\0');
-                stream.read(read.data(), read.size());
-                content.append(read.data(), static_cast<std::size_t>(stream.gcount()));
+                stream.read(std::data(read), std::size(read));
+                content.append(std::data(read), static_cast<std::size_t>(stream.gcount()));
             }
         }
 

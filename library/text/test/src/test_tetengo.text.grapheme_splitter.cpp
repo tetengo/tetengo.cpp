@@ -28,7 +28,7 @@ namespace
     {
         try
         {
-#if _WIN32
+#if defined(_WIN32)
             return std::locale{ "Chinese (Simplified)_China" };
 #else
             return std::locale{ "zh_CN" };
@@ -45,7 +45,7 @@ namespace
     {
         try
         {
-#if _WIN32
+#if defined(_WIN32)
             return std::locale{ "Japanese_Japan" };
 #else
             return std::locale{ "ja_JP" };
@@ -62,7 +62,7 @@ namespace
     {
         try
         {
-#if _WIN32
+#if defined(_WIN32)
             return std::locale{ "Korean_Korea" };
 #else
             return std::locale{ "ko_KR" };
@@ -79,7 +79,7 @@ namespace
     {
         try
         {
-#if _WIN32
+#if defined(_WIN32)
             return std::locale{ "English_United States" };
 #else
             return std::locale{ "en_US" };

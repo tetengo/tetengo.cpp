@@ -133,6 +133,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo.text.encoder.cpp" />
     <ClCompile Include="src\tetengo.text.encoding.cp932.cpp" />
     <ClCompile Include="src\tetengo.text.encoding.unicode_encoding.cpp" />
     <ClCompile Include="src\tetengo.text.encoding.utf16.cpp" />

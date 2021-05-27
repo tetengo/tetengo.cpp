@@ -36,7 +36,7 @@ namespace tetengo::property
 
         // constructors and destructor
 
-        explicit impl(const std::filesystem::path path) : m_path{ path } {}
+        explicit impl(const std::filesystem::path& path) : m_path{ path } {}
 
 
         // functions
@@ -61,7 +61,7 @@ namespace tetengo::property
     };
 
 
-    file_storage::file_storage(value_map_type value_map, const std::filesystem::path path) :
+    file_storage::file_storage(value_map_type value_map, const std::filesystem::path& path) :
     storage{ std::move(value_map) },
         m_p_impl{ std::make_unique<impl>(path) }
     {}

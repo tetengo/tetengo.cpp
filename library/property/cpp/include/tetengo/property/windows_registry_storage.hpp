@@ -1,11 +1,11 @@
 /*! \file
-    \brief A file storage.
+    \brief A Windows registry storage.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#if !defined(TETENGO_PROPERTY_FILESTORAGE_HPP)
-#define TETENGO_PROPERTY_FILESTORAGE_HPP
+#if !defined(TETENGO_PROPERTY_WINDOWSREGISTRYSTORAGE_HPP)
+#define TETENGO_PROPERTY_WINDOWSREGISTRYSTORAGE_HPP
 
 #include <filesystem>
 #include <memory>
@@ -16,25 +16,25 @@
 namespace tetengo::property
 {
     /*!
-        \brief A file storage.
+        \brief A Windows registry storage.
     */
-    class file_storage : public storage
+    class windows_registry_storage : public storage
     {
     public:
         // constructors and destructor
 
         /*!
-            \brief Creates a file storage.
+            \brief Creates a Windows registry storage.
 
             \param value_map A value map.
             \param path      A path.
         */
-        file_storage(value_map_type value_map, const std::filesystem::path& path);
+        windows_registry_storage(value_map_type value_map, const std::filesystem::path& path);
 
         /*!
-            \brief Destroys the file storage.
+            \brief Destroys the Windows registry storage.
         */
-        virtual ~file_storage();
+        virtual ~windows_registry_storage();
 
 
     private:
@@ -55,24 +55,22 @@ namespace tetengo::property
 
 
     /*!
-        \brief A file storage loader.
-
-        The storage path specified for the member function load() is not used and ignored.
+        \brief A Windows registry storage loader.
     */
-    class file_storage_loader : public storage_loader
+    class windows_registry_storage_loader : public storage_loader
     {
     public:
         // constructors and destructor
 
         /*!
-            \brief Creates a file storage loader.
+            \brief Creates a Windows registry storage loader.
         */
-        file_storage_loader();
+        windows_registry_storage_loader();
 
         /*!
-            \brief Destroys the file storage loader.
+            \brief Destroys the Windows registry storage loader.
         */
-        virtual ~file_storage_loader();
+        virtual ~windows_registry_storage_loader();
 
 
     private:
@@ -88,7 +86,7 @@ namespace tetengo::property
 
         // virtual functions
 
-        virtual std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const override;
+        virtual std::unique_ptr<storage> load_impl(const std::filesystem::path&) const override;
     };
 
 

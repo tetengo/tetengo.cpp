@@ -8,6 +8,7 @@
 
 #include <cstdlib>
 #include <filesystem>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <string_view>
@@ -35,7 +36,7 @@ namespace tetengo::platform_dependent
 
         std::filesystem::path to_native_path(const std::filesystem::path& generic_path) const
         {
-            if (generic_path.empty())
+            if (std::empty(generic_path))
             {
                 throw std::invalid_argument{ "generic_path is empty." };
             }
@@ -46,7 +47,7 @@ namespace tetengo::platform_dependent
 
         std::filesystem::path to_native_top_path(const std::filesystem::path& generic_path) const
         {
-            if (generic_path.empty())
+            if (std::empty(generic_path))
             {
                 throw std::invalid_argument{ "generic_path is empty." };
             }

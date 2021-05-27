@@ -43,11 +43,18 @@ namespace tetengo::property
             {
                 return std::nullopt;
             }
-            if (!std::holds_alternative<bool>(found->second))
+            if (std::holds_alternative<bool>(found->second))
+            {
+                return std::get<bool>(found->second);
+            }
+            else if (std::holds_alternative<std::uint32_t>(found->second))
+            {
+                return std::get<std::uint32_t>(found->second);
+            }
+            else
             {
                 return std::nullopt;
             }
-            return std::get<bool>(found->second);
         }
 
         void set_bool(const std::filesystem::path& key, const bool value)
@@ -62,11 +69,14 @@ namespace tetengo::property
             {
                 return std::nullopt;
             }
-            if (!std::holds_alternative<std::uint32_t>(found->second))
+            if (std::holds_alternative<std::uint32_t>(found->second))
+            {
+                return std::get<std::uint32_t>(found->second);
+            }
+            else
             {
                 return std::nullopt;
             }
-            return std::get<std::uint32_t>(found->second);
         }
 
         void set_uint32(const std::filesystem::path& key, const std::uint32_t value)
@@ -81,11 +91,14 @@ namespace tetengo::property
             {
                 return std::nullopt;
             }
-            if (!std::holds_alternative<std::string>(found->second))
+            if (std::holds_alternative<std::string>(found->second))
+            {
+                return std::get<std::string>(found->second);
+            }
+            else
             {
                 return std::nullopt;
             }
-            return std::get<std::string>(found->second);
         }
 
         void set_string(const std::filesystem::path& key, const std::string& value)

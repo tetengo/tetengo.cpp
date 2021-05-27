@@ -26,8 +26,6 @@ namespace tetengo::text
         virtual ~encoder_base() = 0;
     };
 
-    encoder_base::~encoder_base() = default;
-
 
     /*!
         \brief An encoder.

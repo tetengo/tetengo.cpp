@@ -3,7 +3,8 @@
 
 pkg_headers = \
     platform_dependent/propertyX.hpp \
-    platform_dependent/text_encX.hpp
+    platform_dependent/text_encX.hpp \
+    platform_dependent/windows_X.hpp
 
 extra_headers = \
     platform_dependent/0namespace.dox

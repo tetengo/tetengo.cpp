@@ -118,11 +118,15 @@
     <ClCompile Include="src\master.cpp" />
     <ClCompile Include="src\test_tetengo.platform_dependent.properX.cpp" />
     <ClCompile Include="src\test_tetengo.platform_dependent.text_eX.cpp" />
+    <ClCompile Include="src\test_tetengo.platform_dependent.windowX.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\text\cpp\tetengo.text.cpp.vcxproj">
+      <Project>{be228a1e-25d5-4825-89b4-c3513f1dc559}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\cpp\tetengo.platform_dependent.cpp.vcxproj">
       <Project>{3aaea971-dc2b-40d6-830c-b0d6a3368a7a}</Project>
     </ProjectReference>

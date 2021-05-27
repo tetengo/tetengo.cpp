@@ -101,6 +101,7 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\platform_dependent\propertyX.hpp" />
     <ClInclude Include="include\tetengo\platform_dependent\text_encX.hpp" />
+    <ClInclude Include="include\tetengo\platform_dependent\windows_X.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
@@ -121,6 +122,7 @@
     </ClCompile>
     <ClCompile Include="src\windows\tetengo.platform_dependent.propX.cpp" />
     <ClCompile Include="src\windows\tetengo.platform_dependent.textX.cpp" />
+    <ClCompile Include="src\windows\tetengo.platform_dependent.windX.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
