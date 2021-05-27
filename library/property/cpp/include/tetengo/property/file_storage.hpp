@@ -29,7 +29,7 @@ namespace tetengo::property
             \param value_map A value map.
             \param path      A path.
         */
-        file_storage(value_map_type value_map, const std::filesystem::path path);
+        file_storage(value_map_type value_map, const std::filesystem::path& path);
 
         /*!
             \brief Destroys the file storage.

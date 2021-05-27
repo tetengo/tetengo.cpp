@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         tetengo::property::windows_registry_storage::value_map_type value_map{};
-        const tetengo::property::windows_registry_storage           storage{ std::move(value_map) };
+        const tetengo::property::windows_registry_storage           storage{ std::move(value_map), subkey() };
     }
 }
 
@@ -166,15 +166,14 @@ BOOST_AUTO_TEST_CASE(save)
     BOOST_TEST_PASSPOINT();
 
     {
-        test_registry_entry                               test_registry_entry_{ true };
+        test_registry_entry                               test_registry_entry_{ false };
         const auto                                        value_map = make_value_map();
-        const tetengo::property::windows_registry_storage storage{ value_map };
+        const tetengo::property::windows_registry_storage storage{ value_map, subkey() };
         storage.save();
 
-        BOOST_TEST(has_registry_value("alpha", "REG_DWORD", "0x0"));
-        BOOST_TEST(has_registry_value("bravo", "REG_DWORD", "0x1"));
-        BOOST_TEST(has_registry_value("charlie", "REG_DWORD", "0x2a"));
-        BOOST_TEST(has_registry_value("delta\\echo", "REG_SZ", "foxtrot"));
+        BOOST_TEST(has_registry_value("alpha", "REG_DWORD", "0x1"));
+        BOOST_TEST(has_registry_value("bravo", "REG_DWORD", "0x2a"));
+        BOOST_TEST(has_registry_value("charlie\\delta", "REG_SZ", "echo"));
     }
 }
 

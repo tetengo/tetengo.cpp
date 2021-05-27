@@ -6,9 +6,11 @@
 
 #if defined(_WIN32)
 
+#include <cassert>
 #include <filesystem>
 #include <memory>
 #include <utility>
+#include <variant>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -27,22 +29,56 @@ namespace tetengo::property
         using value_map_type = windows_registry_storage::value_map_type;
 
 
+        // constructors and destructor
+
+        explicit impl(const std::filesystem::path& path) : m_path{ path } {}
+
+
         // functions
 
         void save_impl(const windows_registry_storage& self) const
         {
-            [[maybe_unused]] const auto& map = self.value_map();
+            std::filesystem::path current_subkey = m_path;
+            auto p_writer = std::make_unique<tetengo::platform_dependent::windows_registry_writer>(current_subkey);
+            for (const auto& value: self.value_map())
+            {
+                const std::filesystem::path subkey_and_value_name{ value.first };
+                const std::filesystem::path subkey =
+                    subkey_and_value_name.has_parent_path() ? m_path / subkey_and_value_name.parent_path() : m_path;
+                const std::filesystem::path value_name = subkey_and_value_name.filename();
+                if (subkey != current_subkey)
+                {
+                    current_subkey = subkey;
+                    p_writer = std::make_unique<tetengo::platform_dependent::windows_registry_writer>(current_subkey);
+                }
+
+                if (std::holds_alternative<bool>(value.second))
+                {
+                    p_writer->set_dword_value_of(value_name.string(), std::get<bool>(value.second) ? 1 : 0);
+                }
+                else if (std::holds_alternative<std::uint32_t>(value.second))
+                {
+                    p_writer->set_dword_value_of(value_name.string(), std::get<std::uint32_t>(value.second));
+                }
+                else
+                {
+                    assert(std::holds_alternative<std::string>(value.second));
+                    p_writer->set_string_value_of(value_name.string(), std::get<std::string>(value.second));
+                }
+            }
         }
 
 
     private:
         // variables
+
+        const std::filesystem::path m_path;
     };
 
 
-    windows_registry_storage::windows_registry_storage(value_map_type value_map) :
+    windows_registry_storage::windows_registry_storage(value_map_type value_map, const std::filesystem::path& path) :
     storage{ std::move(value_map) },
-        m_p_impl{ std::make_unique<impl>() }
+        m_p_impl{ std::make_unique<impl>(path) }
     {}
 
     windows_registry_storage::~windows_registry_storage() = default;
@@ -62,7 +98,7 @@ namespace tetengo::property
         {
             value_map_type value_map{};
             load_impl_iter(path, std::filesystem::path{}, value_map);
-            return std::make_unique<windows_registry_storage>(std::move(value_map));
+            return std::make_unique<windows_registry_storage>(std::move(value_map), path);
         }
 
 
