@@ -227,12 +227,12 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(file_storage_loader)
 
 
-BOOST_AUTO_TEST_CASE(construction)
+BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::property::file_storage_loader loader{};
+        [[maybe_unused]] const auto& loader = tetengo::property::file_storage_loader::instance();
     }
 }
 
@@ -241,9 +241,9 @@ BOOST_AUTO_TEST_CASE(load)
     BOOST_TEST_PASSPOINT();
 
     {
-        const test_file                              file{ generic_path(), json3_with_comment };
-        const tetengo::property::file_storage_loader loader{};
-        const auto                                   p_storage = loader.load(file.path());
+        const test_file file{ generic_path(), json3_with_comment };
+        const auto&     loader = tetengo::property::file_storage_loader::instance();
+        const auto      p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
         BOOST_REQUIRE(p_storage->get_bool("alpha"));
@@ -255,9 +255,9 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" }));
     }
     {
-        const test_file                              file{ generic_path(), json4_escaped };
-        const tetengo::property::file_storage_loader loader{};
-        const auto                                   p_storage = loader.load(file.path());
+        const test_file file{ generic_path(), json4_escaped };
+        const auto&     loader = tetengo::property::file_storage_loader::instance();
+        const auto      p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
         BOOST_REQUIRE(p_storage->get_string("\"\\/\b\f\n\r\t"));
@@ -265,8 +265,8 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_TEST(*p_storage->get_string("\"\\/\b\f\n\r\t") == expected);
     }
     {
-        const tetengo::property::file_storage_loader loader{};
-        const auto                                   p_storage = loader.load("NONEXISTENT_FILE");
+        const auto& loader = tetengo::property::file_storage_loader::instance();
+        const auto  p_storage = loader.load("NONEXISTENT_FILE");
 
         BOOST_REQUIRE(p_storage);
         BOOST_CHECK(!p_storage->get_bool("alpha"));
@@ -274,9 +274,9 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
-        const test_file                              file{ generic_path(), json11_empty };
-        const tetengo::property::file_storage_loader loader{};
-        const auto                                   p_storage = loader.load(file.path());
+        const test_file file{ generic_path(), json11_empty };
+        const auto&     loader = tetengo::property::file_storage_loader::instance();
+        const auto      p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
         BOOST_CHECK(!p_storage->get_bool("alpha"));
@@ -284,9 +284,9 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
-        const test_file                              file{ generic_path(), json12_syntax_error };
-        const tetengo::property::file_storage_loader loader{};
-        const auto                                   p_storage = loader.load(file.path());
+        const test_file file{ generic_path(), json12_syntax_error };
+        const auto&     loader = tetengo::property::file_storage_loader::instance();
+        const auto      p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
         BOOST_CHECK(!p_storage->get_bool("alpha"));
@@ -294,9 +294,9 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_CHECK(!p_storage->get_string(std::filesystem::path{ "charlie" } / "delta"));
     }
     {
-        const test_file                              file{ generic_path(), json13_unsupported_syntax };
-        const tetengo::property::file_storage_loader loader{};
-        const auto                                   p_storage = loader.load(file.path());
+        const test_file file{ generic_path(), json13_unsupported_syntax };
+        const auto&     loader = tetengo::property::file_storage_loader::instance();
+        const auto      p_storage = loader.load(file.path());
 
         BOOST_REQUIRE(p_storage);
         BOOST_REQUIRE(p_storage->get_bool("alpha"));

@@ -5,7 +5,11 @@
 */
 
 #include <filesystem>
+#include <iterator>
 #include <memory>
+#include <string>
+#include <unordered_map>
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -59,27 +63,46 @@ namespace tetengo::property
     class memory_storage_loader::impl : private boost::noncopyable
     {
     public:
+        // static functions
+
+        static const memory_storage_loader& instance()
+        {
+            static const memory_storage_loader singleton{};
+            return singleton;
+        }
+
+
         // constructors
 
-        impl() : m_master_value_map{} {}
+        impl() : m_master_value_map_map{} {}
 
 
         // functions
 
-        std::unique_ptr<storage> load_impl(const std::filesystem::path&) const
+        std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
-            return std::make_unique<memory_storage>(m_master_value_map);
+            auto found = m_master_value_map_map.find(path.string());
+            if (found == std::end(m_master_value_map_map))
+            {
+                const auto inserted =
+                    m_master_value_map_map.insert(std::make_pair(path.string(), storage::value_map_type{}));
+                found = inserted.first;
+            }
+            return std::make_unique<memory_storage>(found->second);
         }
 
 
     private:
         // variables
 
-        mutable storage::value_map_type m_master_value_map;
+        mutable std::unordered_map<std::string, storage::value_map_type> m_master_value_map_map;
     };
 
 
-    memory_storage_loader::memory_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
+    const memory_storage_loader& memory_storage_loader::instance()
+    {
+        return impl::instance();
+    }
 
     memory_storage_loader::~memory_storage_loader() = default;
 
@@ -87,6 +110,8 @@ namespace tetengo::property
     {
         return m_p_impl->load_impl(path);
     }
+
+    memory_storage_loader::memory_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
 
 
 }

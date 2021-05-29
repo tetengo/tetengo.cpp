@@ -77,9 +77,13 @@ namespace tetengo::property
     class file_storage_loader::impl : private boost::noncopyable
     {
     public:
-        // constructors
+        // static functions
 
-        impl() : m_master_value_map{} {}
+        static const file_storage_loader& instance()
+        {
+            static const file_storage_loader singleton{};
+            return singleton;
+        }
 
 
         // functions
@@ -128,17 +132,17 @@ namespace tetengo::property
                 std::make_unique<tetengo::json::comment_removing_reader>(std::move(p_line_counting_reader), "#");
             return std::make_unique<tetengo::json::json_parser>(std::move(p_comment_removing_reader));
         }
-
-
-        // variables
-
-        mutable storage::value_map_type m_master_value_map;
     };
 
 
-    file_storage_loader::file_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
+    const file_storage_loader& file_storage_loader::instance()
+    {
+        return impl::instance();
+    }
 
     file_storage_loader::~file_storage_loader() = default;
+
+    file_storage_loader::file_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
 
     std::unique_ptr<storage> file_storage_loader::load_impl(const std::filesystem::path& path) const
     {

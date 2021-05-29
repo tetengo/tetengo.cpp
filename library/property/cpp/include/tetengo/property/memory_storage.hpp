@@ -61,12 +61,17 @@ namespace tetengo::property
     class memory_storage_loader : public storage_loader
     {
     public:
-        // constructors and destructor
+        // static functions
 
         /*!
-            \brief Creates a memory storage loader.
+            \brief Returns the instance.
+
+            \return The instance.
         */
-        memory_storage_loader();
+        [[nodiscard]] static const memory_storage_loader& instance();
+
+
+        // constructors and destructor
 
         /*!
             \brief Destroys the memory storage loader.
@@ -83,6 +88,11 @@ namespace tetengo::property
         // variables
 
         const std::unique_ptr<impl> m_p_impl;
+
+
+        // constructors
+
+        memory_storage_loader();
 
 
         // virtual functions
