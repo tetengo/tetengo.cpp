@@ -57,12 +57,12 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(memory_storage_loader)
 
 
-BOOST_AUTO_TEST_CASE(construction)
+BOOST_AUTO_TEST_CASE(instance)
 {
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::property::memory_storage_loader loader{};
+        [[maybe_unused]] const auto& loader = tetengo::property::memory_storage_loader::instance();
     }
 }
 
@@ -71,8 +71,8 @@ BOOST_AUTO_TEST_CASE(load)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::property::memory_storage_loader loader{};
-        const auto                                     p_storage = loader.load("foo");
+        const auto& loader = tetengo::property::memory_storage_loader::instance();
+        const auto  p_storage = loader.load("foo");
         BOOST_CHECK(p_storage);
     }
 }

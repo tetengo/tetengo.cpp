@@ -63,6 +63,15 @@ namespace tetengo::property
     class memory_storage_loader::impl : private boost::noncopyable
     {
     public:
+        // static functions
+
+        static const memory_storage_loader& instance()
+        {
+            static const memory_storage_loader singleton{};
+            return singleton;
+        }
+
+
         // constructors
 
         impl() : m_master_value_map_map{} {}
@@ -90,7 +99,10 @@ namespace tetengo::property
     };
 
 
-    memory_storage_loader::memory_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
+    const memory_storage_loader& memory_storage_loader::instance()
+    {
+        return impl::instance();
+    }
 
     memory_storage_loader::~memory_storage_loader() = default;
 
@@ -98,6 +110,8 @@ namespace tetengo::property
     {
         return m_p_impl->load_impl(path);
     }
+
+    memory_storage_loader::memory_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
 
 
 }
