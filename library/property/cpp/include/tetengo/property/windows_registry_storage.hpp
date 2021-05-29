@@ -60,17 +60,12 @@ namespace tetengo::property
     class windows_registry_storage_loader : public storage_loader
     {
     public:
-        // static functions
+        // constructors and destructor
 
         /*!
-            \brief Returns the instance.
-
-            \return The instance.
+            \brief Creates a Windows registry storage loader.
         */
-        [[nodiscard]] static const windows_registry_storage_loader& instance();
-
-
-        // constructors and destructor
+        windows_registry_storage_loader();
 
         /*!
             \brief Destroys the Windows registry storage loader.
@@ -87,11 +82,6 @@ namespace tetengo::property
         // variables
 
         const std::unique_ptr<impl> m_p_impl;
-
-
-        // constructors
-
-        windows_registry_storage_loader();
 
 
         // virtual functions
