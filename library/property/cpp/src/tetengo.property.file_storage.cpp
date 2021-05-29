@@ -77,6 +77,15 @@ namespace tetengo::property
     class file_storage_loader::impl : private boost::noncopyable
     {
     public:
+        // static functions
+
+        static const file_storage_loader& instance()
+        {
+            static const file_storage_loader singleton{};
+            return singleton;
+        }
+
+
         // functions
 
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
@@ -126,9 +135,14 @@ namespace tetengo::property
     };
 
 
-    file_storage_loader::file_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
+    const file_storage_loader& file_storage_loader::instance()
+    {
+        return impl::instance();
+    }
 
     file_storage_loader::~file_storage_loader() = default;
+
+    file_storage_loader::file_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
 
     std::unique_ptr<storage> file_storage_loader::load_impl(const std::filesystem::path& path) const
     {
