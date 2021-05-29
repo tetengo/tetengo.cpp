@@ -77,11 +77,6 @@ namespace tetengo::property
     class file_storage_loader::impl : private boost::noncopyable
     {
     public:
-        // constructors
-
-        impl() : m_master_value_map{} {}
-
-
         // functions
 
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
@@ -128,11 +123,6 @@ namespace tetengo::property
                 std::make_unique<tetengo::json::comment_removing_reader>(std::move(p_line_counting_reader), "#");
             return std::make_unique<tetengo::json::json_parser>(std::move(p_comment_removing_reader));
         }
-
-
-        // variables
-
-        mutable storage::value_map_type m_master_value_map;
     };
 
 
