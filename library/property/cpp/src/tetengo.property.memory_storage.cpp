@@ -63,20 +63,15 @@ namespace tetengo::property
     class memory_storage_loader::impl : private boost::noncopyable
     {
     public:
-        // constructors
-
-        impl() : m_master_value_map_map{} {}
-
-
         // functions
 
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
-            auto found = m_master_value_map_map.find(path.string());
-            if (found == std::end(m_master_value_map_map))
+            auto found = master_value_map_map().find(path.string());
+            if (found == std::end(master_value_map_map()))
             {
                 const auto inserted =
-                    m_master_value_map_map.insert(std::make_pair(path.string(), storage::value_map_type{}));
+                    master_value_map_map().insert(std::make_pair(path.string(), storage::value_map_type{}));
                 found = inserted.first;
             }
             return std::make_unique<memory_storage>(found->second);
@@ -84,9 +79,13 @@ namespace tetengo::property
 
 
     private:
-        // variables
+        // static functions
 
-        mutable std::unordered_map<std::string, storage::value_map_type> m_master_value_map_map;
+        static std::unordered_map<std::string, storage::value_map_type>& master_value_map_map()
+        {
+            static std::unordered_map<std::string, storage::value_map_type> singleton{};
+            return singleton;
+        }
     };
 
 
