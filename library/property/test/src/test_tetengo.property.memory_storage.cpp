@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(load)
 
     {
         const tetengo::property::memory_storage_loader loader{};
-        const auto                                     p_storage = loader.load(std::filesystem::path{});
+        const auto                                     p_storage = loader.load("foo");
         BOOST_CHECK(p_storage);
     }
 }
