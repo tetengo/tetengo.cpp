@@ -4,8 +4,11 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <filesystem>
 #include <memory>
+#include <optional>
+#include <string>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -29,6 +32,36 @@ namespace tetengo::property
 
 
         // functions
+
+        std::optional<bool> get_bool(const std::filesystem::path& key) const
+        {
+            return m_p_storage->get_bool(key);
+        }
+
+        void set_bool(const std::filesystem::path& key, const bool value)
+        {
+            m_p_storage->set_bool(key, value);
+        }
+
+        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const
+        {
+            return m_p_storage->get_uint32(key);
+        }
+
+        void set_uint32(const std::filesystem::path& key, const std::uint32_t value)
+        {
+            m_p_storage->set_uint32(key, value);
+        }
+
+        std::optional<std::string> get_string(const std::filesystem::path& key) const
+        {
+            return m_p_storage->get_string(key);
+        }
+
+        void set_string(const std::filesystem::path& key, const std::string& value)
+        {
+            m_p_storage->set_string(key, value);
+        }
 
         void update()
         {
@@ -57,6 +90,36 @@ namespace tetengo::property
     {}
 
     property_set::~property_set() = default;
+
+    std::optional<bool> property_set::get_bool(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_bool(key);
+    }
+
+    void property_set::set_bool(const std::filesystem::path& key, const bool value)
+    {
+        m_p_impl->set_bool(key, value);
+    }
+
+    std::optional<std::uint32_t> property_set::get_uint32(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_uint32(key);
+    }
+
+    void property_set::set_uint32(const std::filesystem::path& key, const std::uint32_t value)
+    {
+        m_p_impl->set_uint32(key, value);
+    }
+
+    std::optional<std::string> property_set::get_string(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_string(key);
+    }
+
+    void property_set::set_string(const std::filesystem::path& key, const std::string& value)
+    {
+        m_p_impl->set_string(key, value);
+    }
 
     void property_set::update()
     {
