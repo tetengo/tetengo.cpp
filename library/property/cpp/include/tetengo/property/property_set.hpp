@@ -7,6 +7,7 @@
 #if !defined(TETENGO_PROPERTY_PROPERTYSET_HPP)
 #define TETENGO_PROPERTY_PROPERTYSET_HPP
 
+#include <filesystem>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -29,8 +30,9 @@ namespace tetengo::property
             \brief Creates a property set.
 
             \param p_storage_loader A unique pointer to a storage loader.
+            \param path             A path.
         */
-        explicit property_set(std::unique_ptr<storage_loader>&& p_storage_loader);
+        property_set(std::unique_ptr<storage_loader>&& p_storage_loader, const std::filesystem::path& path);
 
         /*!
             \brief Destroys the property set.
@@ -39,6 +41,16 @@ namespace tetengo::property
 
 
         // functions
+
+        /*!
+            \brief Updates the property values to the latest state in the storage.
+        */
+        void update();
+
+        /*!
+            \brief Commits the property value changes to the storage.
+        */
+        void commit() const;
 
 
     private:
