@@ -4,8 +4,15 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <memory>
+#include <utility>
+
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
+
+#include <tetengo/property/memory_storage.hpp>
+#include <tetengo/property/property_set.hpp>
+#include <tetengo/property/storage.hpp>
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -17,7 +24,8 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+    const tetengo::property::property_set property_set_{ std::move(p_storage_loader) };
 }
 
 

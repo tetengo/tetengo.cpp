@@ -14,6 +14,9 @@
 
 namespace tetengo::property
 {
+    class storage_loader;
+
+
     /*!
         \brief A property set.
     */
@@ -24,8 +27,10 @@ namespace tetengo::property
 
         /*!
             \brief Creates a property set.
+
+            \param p_storage_loader A unique pointer to a storage loader.
         */
-        property_set();
+        explicit property_set(std::unique_ptr<storage_loader>&& p_storage_loader);
 
         /*!
             \brief Destroys the property set.
