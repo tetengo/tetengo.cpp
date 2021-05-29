@@ -119,6 +119,7 @@
     <ClCompile Include="src\tetengo.property.json_parser.cpp" />
     <ClCompile Include="src\tetengo.property.json_writer.cpp" />
     <ClCompile Include="src\tetengo.property.memory_storage.cpp" />
+    <ClCompile Include="src\tetengo.property.property_set.cpp" />
     <ClCompile Include="src\tetengo.property.storage.cpp" />
     <ClCompile Include="src\tetengo.property.windows_registry_storage.cpp" />
   </ItemGroup>
@@ -126,6 +127,7 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\property\file_storage.hpp" />
     <ClInclude Include="include\tetengo\property\memory_storage.hpp" />
+    <ClInclude Include="include\tetengo\property\property_set.hpp" />
     <ClInclude Include="include\tetengo\property\storage.hpp" />
     <ClInclude Include="include\tetengo\property\windows_registry_storage.hpp" />
     <ClInclude Include="src\tetengo.property.json_parser.hpp" />
