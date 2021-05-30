@@ -55,8 +55,6 @@ namespace tetengo::property
 
     /*!
         \brief A memory storage loader.
-
-        The storage path specified for the member function load() is not used and ignored.
     */
     class memory_storage_loader : public storage_loader
     {
