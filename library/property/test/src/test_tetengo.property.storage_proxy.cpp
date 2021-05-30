@@ -4,8 +4,16 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <memory>
+#include <optional>
+#include <utility>
+
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
+
+#include <tetengo/property/memory_storage.hpp>
+#include <tetengo/property/storage.hpp>
+#include <tetengo/property/storage_proxy.hpp>
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -17,14 +25,126 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+    }
+}
+
+BOOST_AUTO_TEST_CASE(get_bool)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+        const auto o_value = proxy.get_bool("alpha");
+        BOOST_CHECK(!o_value);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(set_bool)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+        proxy.set_bool("alpha", false);
+        const auto o_value = proxy.get_bool("alpha");
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(!*o_value);
+    }
+    {
+        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+        proxy.set_bool("alpha", true);
+        const auto o_value = proxy.get_bool("alpha");
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(get_uint32)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+        const auto o_value = proxy.get_uint32("bravo");
+        BOOST_CHECK(!o_value);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(set_uint32)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+        proxy.set_uint32("bravo", 42);
+        const auto o_value = proxy.get_uint32("bravo");
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value == 42U);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(get_string)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+        const auto o_value = proxy.get_string("charlie");
+        BOOST_CHECK(!o_value);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(set_string)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+        proxy.set_string("charlie", "foo");
+        const auto o_value = proxy.get_string("charlie");
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value == "foo");
+    }
 }
 
 BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        {
+            const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+            tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+            proxy.set_uint32("bravo", 42);
+            proxy.save();
+        }
+        {
+            const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
+            const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+
+            const auto o_value = proxy.get_uint32("bravo");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == 42U);
+        }
+    }
 }
 
 
@@ -36,14 +156,23 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+    }
 }
 
 BOOST_AUTO_TEST_CASE(load)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+
+        const auto p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
+    }
 }
 
 

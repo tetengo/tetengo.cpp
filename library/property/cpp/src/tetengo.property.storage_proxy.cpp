@@ -34,35 +34,48 @@ namespace tetengo::property
 
         std::optional<bool> get_bool_impl(const std::filesystem::path& key) const
         {
+            ensure_real_loaded();
             return m_p_real_storage->get_bool(key);
         }
 
         void set_bool_impl(const std::filesystem::path& key, const bool value)
         {
+            ensure_real_loaded();
             m_p_real_storage->set_bool(key, value);
         }
 
         std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const
         {
+            ensure_real_loaded();
             return m_p_real_storage->get_uint32(key);
         }
 
         void set_uint32_impl(const std::filesystem::path& key, const std::uint32_t value)
         {
+            ensure_real_loaded();
             m_p_real_storage->set_uint32(key, value);
         }
 
         std::optional<std::string> get_string_impl(const std::filesystem::path& key) const
         {
+            ensure_real_loaded();
             return m_p_real_storage->get_string(key);
         }
 
         void set_string_impl(const std::filesystem::path& key, const std::string& value)
         {
+            ensure_real_loaded();
             m_p_real_storage->set_string(key, value);
         }
 
-        void save_impl() const {}
+        void save_impl() const
+        {
+            if (!m_p_real_storage)
+            {
+                return;
+            }
+            m_p_real_storage->save();
+        }
 
 
     private:
@@ -73,6 +86,18 @@ namespace tetengo::property
         const std::filesystem::path m_path;
 
         mutable std::unique_ptr<storage> m_p_real_storage;
+
+
+        // functions
+
+        void ensure_real_loaded() const
+        {
+            if (m_p_real_storage)
+            {
+                return;
+            }
+            m_p_real_storage = m_p_real_storage_loader->load(m_path);
+        }
     };
 
 
