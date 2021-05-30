@@ -22,11 +22,6 @@ namespace tetengo::property
     class storage_proxy::impl : private boost::noncopyable
     {
     public:
-        // types
-
-        using value_map_type = storage_proxy::value_map_type;
-
-
         // constructors and destructor
 
         impl(std::shared_ptr<storage_loader> p_real_storage_loader, const std::filesystem::path& path) :

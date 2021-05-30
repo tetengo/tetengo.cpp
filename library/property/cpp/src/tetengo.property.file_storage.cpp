@@ -29,11 +29,6 @@ namespace tetengo::property
     class file_storage::impl : private boost::noncopyable
     {
     public:
-        // types
-
-        using value_map_type = file_storage::value_map_type;
-
-
         // constructors and destructor
 
         explicit impl(const std::filesystem::path& path) : m_path{ path } {}
