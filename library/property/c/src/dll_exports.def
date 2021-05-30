@@ -1,2 +1,4 @@
 LIBRARY tetengo.property.dll
 EXPORTS
+	tetengo_property_storageLoader_createMemoryStorageLoader
+	tetengo_property_storageLoader_destroy

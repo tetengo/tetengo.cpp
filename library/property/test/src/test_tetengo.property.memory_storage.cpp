@@ -9,9 +9,11 @@
 #include <optional>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/property/memory_storage.hpp>
+#include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>
 
 
@@ -63,6 +65,15 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::property::memory_storage_loader loader{};
+    }
+
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
 }
 
