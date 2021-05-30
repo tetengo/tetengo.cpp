@@ -4,7 +4,9 @@
 pkg_headers = \
     property/file_storage.hpp \
     property/memory_storage.hpp \
+    property/property_set.hpp \
     property/storage.hpp \
+    property/storage_proxy.hpp \
     property/windows_registry_storage.hpp
 
 extra_headers = \

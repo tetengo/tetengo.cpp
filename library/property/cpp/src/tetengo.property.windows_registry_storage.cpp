@@ -24,11 +24,6 @@ namespace tetengo::property
     class windows_registry_storage::impl : private boost::noncopyable
     {
     public:
-        // types
-
-        using value_map_type = windows_registry_storage::value_map_type;
-
-
         // constructors and destructor
 
         explicit impl(const std::filesystem::path& path) : m_path{ path } {}
@@ -92,15 +87,6 @@ namespace tetengo::property
     class windows_registry_storage_loader::impl : private boost::noncopyable
     {
     public:
-        // static functions
-
-        static const windows_registry_storage_loader& instance()
-        {
-            static const windows_registry_storage_loader singleton{};
-            return singleton;
-        }
-
-
         // functions
 
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
@@ -145,10 +131,7 @@ namespace tetengo::property
     };
 
 
-    const windows_registry_storage_loader& windows_registry_storage_loader::instance()
-    {
-        return impl::instance();
-    }
+    windows_registry_storage_loader::windows_registry_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
 
     windows_registry_storage_loader::~windows_registry_storage_loader() = default;
 
@@ -156,8 +139,6 @@ namespace tetengo::property
     {
         return m_p_impl->load_impl(path);
     }
-
-    windows_registry_storage_loader::windows_registry_storage_loader() : m_p_impl{ std::make_unique<impl>() } {}
 
 
 }

@@ -10,7 +10,9 @@ sources = \
     tetengo.property.json_parser.cpp \
     tetengo.property.json_writer.cpp \
     tetengo.property.memory_storage.cpp \
+    tetengo.property.property_set.cpp \
     tetengo.property.storage.cpp \
+    tetengo.property.storage_proxy.cpp \
     tetengo.property.windows_registry_storage.cpp
 
 lib_LIBRARIES = libtetengo.property.cpp.a

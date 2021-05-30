@@ -182,12 +182,12 @@ BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE(windows_registry_storage_loader)
 
 
-BOOST_AUTO_TEST_CASE(instance)
+BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
     {
-        [[maybe_unused]] const auto& loader = tetengo::property::windows_registry_storage_loader::instance();
+        const tetengo::property::windows_registry_storage_loader loader{};
     }
 }
 
@@ -196,9 +196,9 @@ BOOST_AUTO_TEST_CASE(load)
     BOOST_TEST_PASSPOINT();
 
     {
-        test_registry_entry test_registry_entry_{ false };
-        const auto&         loader = tetengo::property::windows_registry_storage_loader::instance();
-        const auto          p_storage = loader.load(subkey());
+        test_registry_entry                                      test_registry_entry_{ false };
+        const tetengo::property::windows_registry_storage_loader loader{};
+        const auto                                               p_storage = loader.load(subkey());
         BOOST_REQUIRE(p_storage);
         {
             const auto o_value = p_storage->get_bool("alpha");
@@ -218,9 +218,9 @@ BOOST_AUTO_TEST_CASE(load)
         }
     }
     {
-        test_registry_entry test_registry_entry_{ true };
-        const auto&         loader = tetengo::property::windows_registry_storage_loader::instance();
-        const auto          p_storage = loader.load(subkey());
+        test_registry_entry                                      test_registry_entry_{ true };
+        const tetengo::property::windows_registry_storage_loader loader{};
+        const auto                                               p_storage = loader.load(subkey());
         BOOST_REQUIRE(p_storage);
         {
             const auto o_value = p_storage->get_bool("alpha");
