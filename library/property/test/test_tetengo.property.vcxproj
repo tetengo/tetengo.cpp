@@ -120,6 +120,7 @@
     <ClCompile Include="src\test_tetengo.property.memory_storage.cpp" />
     <ClCompile Include="src\test_tetengo.property.property_set.cpp" />
     <ClCompile Include="src\test_tetengo.property.storage.cpp" />
+    <ClCompile Include="src\test_tetengo.property.storage_proxy.cpp" />
     <ClCompile Include="src\test_tetengo.property.windows_registry_storage.cpp" />
   </ItemGroup>
   <ItemGroup>

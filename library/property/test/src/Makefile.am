@@ -9,6 +9,7 @@ sources = \
     test_tetengo.property.memory_storage.cpp \
     test_tetengo.property.property_set.cpp \
     test_tetengo.property.storage.cpp \
+    test_tetengo.property.storage_proxy.cpp \
     test_tetengo.property.windows_registry_storage.cpp
 
 check_PROGRAMS = test_tetengo.property
