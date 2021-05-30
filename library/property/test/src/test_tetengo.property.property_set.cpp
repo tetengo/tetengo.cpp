@@ -142,10 +142,23 @@ BOOST_AUTO_TEST_CASE(update)
     BOOST_TEST_PASSPOINT();
 
     {
-        auto                            p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
-        tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
+        auto p_storage_loader1 = std::make_unique<tetengo::property::memory_storage_loader>();
+        tetengo::property::property_set property_set1{ std::move(p_storage_loader1), property_set_path() };
+        auto p_storage_loader2 = std::make_unique<tetengo::property::memory_storage_loader>();
+        tetengo::property::property_set property_set2{ std::move(p_storage_loader2), property_set_path() };
 
-        property_set_.update();
+        property_set1.set_uint32("hoge", 42);
+        property_set1.commit();
+        {
+            const auto o_value = property_set2.get_uint32("hoge");
+            BOOST_CHECK(!o_value);
+        }
+        property_set2.update();
+        {
+            const auto o_value = property_set2.get_uint32("hoge");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == 42U);
+        }
     }
 }
 
@@ -154,10 +167,21 @@ BOOST_AUTO_TEST_CASE(commit)
     BOOST_TEST_PASSPOINT();
 
     {
-        auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
-        const tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
+        {
+            auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+            tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
 
-        property_set_.commit();
+            property_set_.set_uint32("hoge", 42);
+            property_set_.commit();
+        }
+        {
+            auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+            const tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
+
+            const auto o_value = property_set_.get_uint32("hoge");
+            BOOST_REQUIRE(o_value);
+            BOOST_TEST(*o_value == 42U);
+        }
     }
 }
 
