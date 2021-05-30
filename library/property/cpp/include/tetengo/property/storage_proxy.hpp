@@ -7,8 +7,11 @@
 #if !defined(TETENGO_PROPERTY_STORAGEPROXY_HPP)
 #define TETENGO_PROPERTY_STORAGEPROXY_HPP
 
+#include <cstdint>
 #include <filesystem>
 #include <memory>
+#include <optional>
+#include <string>
 
 #include <tetengo/property/storage.hpp>
 
@@ -49,6 +52,18 @@ namespace tetengo::property
 
 
         // virtual functions
+
+        virtual std::optional<bool> get_bool_impl(const std::filesystem::path& key) const override;
+
+        virtual void set_bool_impl(const std::filesystem::path& key, bool value) override;
+
+        virtual std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const override;
+
+        virtual void set_uint32_impl(const std::filesystem::path& key, std::uint32_t value) override;
+
+        virtual std::optional<std::string> get_string_impl(const std::filesystem::path& key) const override;
+
+        virtual void set_string_impl(const std::filesystem::path& key, const std::string& value) override;
 
         virtual void save_impl() const override;
     };

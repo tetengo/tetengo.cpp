@@ -4,8 +4,11 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <filesystem>
 #include <memory>
+#include <optional>
+#include <string>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -27,22 +30,54 @@ namespace tetengo::property
         // constructors and destructor
 
         impl(std::shared_ptr<storage_loader> p_real_storage_loader, const std::filesystem::path& path) :
-        m_p_readl_storage_loader{ std::move(p_real_storage_loader) },
+        m_p_real_storage_loader{ std::move(p_real_storage_loader) },
             m_path{ path }
         {}
 
 
         // functions
 
-        void save_impl(const storage_proxy& /*self*/) const {}
+        std::optional<bool> get_bool_impl(const std::filesystem::path& key) const
+        {
+            return m_p_real_storage->get_bool(key);
+        }
+
+        void set_bool_impl(const std::filesystem::path& key, const bool value)
+        {
+            m_p_real_storage->set_bool(key, value);
+        }
+
+        std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const
+        {
+            return m_p_real_storage->get_uint32(key);
+        }
+
+        void set_uint32_impl(const std::filesystem::path& key, const std::uint32_t value)
+        {
+            m_p_real_storage->set_uint32(key, value);
+        }
+
+        std::optional<std::string> get_string_impl(const std::filesystem::path& key) const
+        {
+            return m_p_real_storage->get_string(key);
+        }
+
+        void set_string_impl(const std::filesystem::path& key, const std::string& value)
+        {
+            m_p_real_storage->set_string(key, value);
+        }
+
+        void save_impl() const {}
 
 
     private:
         // variables
 
-        const std::shared_ptr<storage_loader> m_p_readl_storage_loader;
+        const std::shared_ptr<storage_loader> m_p_real_storage_loader;
 
         const std::filesystem::path m_path;
+
+        mutable std::unique_ptr<storage> m_p_real_storage;
     };
 
 
@@ -55,9 +90,39 @@ namespace tetengo::property
 
     storage_proxy::~storage_proxy() = default;
 
+    std::optional<bool> storage_proxy::get_bool_impl(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_bool_impl(key);
+    }
+
+    void storage_proxy::set_bool_impl(const std::filesystem::path& key, const bool value)
+    {
+        m_p_impl->set_bool_impl(key, value);
+    }
+
+    std::optional<std::uint32_t> storage_proxy::get_uint32_impl(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_uint32_impl(key);
+    }
+
+    void storage_proxy::set_uint32_impl(const std::filesystem::path& key, const std::uint32_t value)
+    {
+        m_p_impl->set_uint32_impl(key, value);
+    }
+
+    std::optional<std::string> storage_proxy::get_string_impl(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_string_impl(key);
+    }
+
+    void storage_proxy::set_string_impl(const std::filesystem::path& key, const std::string& value)
+    {
+        m_p_impl->set_string_impl(key, value);
+    }
+
     void storage_proxy::save_impl() const
     {
-        m_p_impl->save_impl(*this);
+        m_p_impl->save_impl();
     }
 
 
