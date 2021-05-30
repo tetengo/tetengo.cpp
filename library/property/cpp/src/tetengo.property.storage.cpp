@@ -36,7 +36,47 @@ namespace tetengo::property
 
         // functions
 
-        std::optional<bool> get_bool(const std::filesystem::path& key) const
+        std::optional<bool> get_bool(const std::filesystem::path& key, const storage& self) const
+        {
+            return self.get_bool_impl(key);
+        }
+
+        void set_bool(const std::filesystem::path& key, const bool value, storage& self)
+        {
+            self.set_bool_impl(key, value);
+        }
+
+        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key, const storage& self) const
+        {
+            return self.get_uint32_impl(key);
+        }
+
+        void set_uint32(const std::filesystem::path& key, const std::uint32_t value, storage& self)
+        {
+            self.set_uint32_impl(key, value);
+        }
+
+        std::optional<std::string> get_string(const std::filesystem::path& key, const storage& self) const
+        {
+            return self.get_string_impl(key);
+        }
+
+        void set_string(const std::filesystem::path& key, const std::string& value, storage& self)
+        {
+            self.set_string_impl(key, value);
+        }
+
+        void save(const storage& self) const
+        {
+            self.save_impl();
+        }
+
+        const value_map_type& value_map() const
+        {
+            return m_value_map;
+        }
+
+        std::optional<bool> get_bool_impl(const std::filesystem::path& key) const
         {
             const auto found = m_value_map.find(key.string());
             if (found == std::end(m_value_map))
@@ -57,12 +97,12 @@ namespace tetengo::property
             }
         }
 
-        void set_bool(const std::filesystem::path& key, const bool value)
+        void set_bool_impl(const std::filesystem::path& key, bool value)
         {
             m_value_map.insert(std::make_pair(key.string(), value));
         }
 
-        std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const
+        std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const
         {
             const auto found = m_value_map.find(key.string());
             if (found == std::end(m_value_map))
@@ -79,12 +119,12 @@ namespace tetengo::property
             }
         }
 
-        void set_uint32(const std::filesystem::path& key, const std::uint32_t value)
+        void set_uint32_impl(const std::filesystem::path& key, std::uint32_t value)
         {
             m_value_map.insert(std::make_pair(key.string(), value));
         }
 
-        std::optional<std::string> get_string(const std::filesystem::path& key) const
+        std::optional<std::string> get_string_impl(const std::filesystem::path& key) const
         {
             const auto found = m_value_map.find(key.string());
             if (found == std::end(m_value_map))
@@ -101,19 +141,9 @@ namespace tetengo::property
             }
         }
 
-        void set_string(const std::filesystem::path& key, const std::string& value)
+        void set_string_impl(const std::filesystem::path& key, const std::string& value)
         {
             m_value_map.insert(std::make_pair(key.string(), value));
-        }
-
-        void save(const storage& self) const
-        {
-            self.save_impl();
-        }
-
-        const value_map_type& value_map() const
-        {
-            return m_value_map;
         }
 
 
@@ -126,32 +156,32 @@ namespace tetengo::property
 
     std::optional<bool> storage::get_bool(const std::filesystem::path& key) const
     {
-        return m_p_impl->get_bool(key);
+        return m_p_impl->get_bool(key, *this);
     }
 
     void storage::set_bool(const std::filesystem::path& key, const bool value)
     {
-        m_p_impl->set_bool(key, value);
+        m_p_impl->set_bool(key, value, *this);
     }
 
     std::optional<std::uint32_t> storage::get_uint32(const std::filesystem::path& key) const
     {
-        return m_p_impl->get_uint32(key);
+        return m_p_impl->get_uint32(key, *this);
     }
 
     void storage::set_uint32(const std::filesystem::path& key, const std::uint32_t value)
     {
-        m_p_impl->set_uint32(key, value);
+        m_p_impl->set_uint32(key, value, *this);
     }
 
     std::optional<std::string> storage::get_string(const std::filesystem::path& key) const
     {
-        return m_p_impl->get_string(key);
+        return m_p_impl->get_string(key, *this);
     }
 
     void storage::set_string(const std::filesystem::path& key, const std::string& value)
     {
-        m_p_impl->set_string(key, value);
+        m_p_impl->set_string(key, value, *this);
     }
 
     void storage::save() const
@@ -164,6 +194,36 @@ namespace tetengo::property
     const storage::value_map_type& storage::value_map() const
     {
         return m_p_impl->value_map();
+    }
+
+    std::optional<bool> storage::get_bool_impl(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_bool_impl(key);
+    }
+
+    void storage::set_bool_impl(const std::filesystem::path& key, bool value)
+    {
+        m_p_impl->set_bool_impl(key, value);
+    }
+
+    std::optional<std::uint32_t> storage::get_uint32_impl(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_uint32_impl(key);
+    }
+
+    void storage::set_uint32_impl(const std::filesystem::path& key, std::uint32_t value)
+    {
+        m_p_impl->set_uint32_impl(key, value);
+    }
+
+    std::optional<std::string> storage::get_string_impl(const std::filesystem::path& key) const
+    {
+        return m_p_impl->get_string_impl(key);
+    }
+
+    void storage::set_string_impl(const std::filesystem::path& key, const std::string& value)
+    {
+        m_p_impl->set_string_impl(key, value);
     }
 
 

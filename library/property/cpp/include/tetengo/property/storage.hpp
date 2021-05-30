@@ -133,6 +133,18 @@ namespace tetengo::property
 
         // virtual functions
 
+        virtual std::optional<bool> get_bool_impl(const std::filesystem::path& key) const;
+
+        virtual void set_bool_impl(const std::filesystem::path& key, bool value);
+
+        virtual std::optional<std::uint32_t> get_uint32_impl(const std::filesystem::path& key) const;
+
+        virtual void set_uint32_impl(const std::filesystem::path& key, std::uint32_t value);
+
+        virtual std::optional<std::string> get_string_impl(const std::filesystem::path& key) const;
+
+        virtual void set_string_impl(const std::filesystem::path& key, const std::string& value);
+
         virtual void save_impl() const = 0;
     };
 
