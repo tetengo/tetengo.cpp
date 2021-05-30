@@ -27,7 +27,8 @@ namespace tetengo::property
         impl(std::unique_ptr<storage_loader>&& p_storage_loader, const std::filesystem::path& path) :
         m_p_storage_loader{ std::move(p_storage_loader) },
             m_path{ path },
-            m_p_storage{ m_p_storage_loader->load(m_path) }
+            m_p_storage{ m_p_storage_loader->load(m_path) },
+            m_dirty{ false }
         {}
 
 
@@ -41,6 +42,7 @@ namespace tetengo::property
         void set_bool(const std::filesystem::path& key, const bool value)
         {
             m_p_storage->set_bool(key, value);
+            m_dirty = true;
         }
 
         std::optional<std::uint32_t> get_uint32(const std::filesystem::path& key) const
@@ -51,6 +53,7 @@ namespace tetengo::property
         void set_uint32(const std::filesystem::path& key, const std::uint32_t value)
         {
             m_p_storage->set_uint32(key, value);
+            m_dirty = true;
         }
 
         std::optional<std::string> get_string(const std::filesystem::path& key) const
@@ -61,16 +64,24 @@ namespace tetengo::property
         void set_string(const std::filesystem::path& key, const std::string& value)
         {
             m_p_storage->set_string(key, value);
+            m_dirty = true;
         }
 
         void update()
         {
             m_p_storage = m_p_storage_loader->load(m_path);
+            m_dirty = false;
         }
 
         void commit() const
         {
+            if (!m_dirty)
+            {
+                return;
+            }
+
             m_p_storage->save();
+            m_dirty = false;
         }
 
 
@@ -82,6 +93,8 @@ namespace tetengo::property
         const std::filesystem::path m_path;
 
         std::unique_ptr<storage> m_p_storage;
+
+        mutable bool m_dirty;
     };
 
 
