@@ -588,6 +588,25 @@ BOOST_AUTO_TEST_CASE(save)
         const concrete_storage storage{};
         storage.save();
     }
+
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        tetengo_property_storage_save(p_storage);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(value_map)
@@ -609,22 +628,18 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    {
-        const concrete_storage_loader factory{};
-    }
+    const concrete_storage_loader factory{};
 }
 
 BOOST_AUTO_TEST_CASE(load)
 {
     BOOST_TEST_PASSPOINT();
 
-    {
-        const concrete_storage_loader factory{};
+    const concrete_storage_loader factory{};
 
-        const auto path = std::filesystem::path{ "foo" } / "bar";
-        const auto p_storage = factory.load(path);
-        BOOST_CHECK(p_storage);
-    }
+    const auto path = std::filesystem::path{ "foo" } / "bar";
+    const auto p_storage = factory.load(path);
+    BOOST_CHECK(p_storage);
 }
 
 
