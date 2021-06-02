@@ -269,6 +269,70 @@ BOOST_AUTO_TEST_CASE(get_uint32)
         const auto             key = std::filesystem::path{ "hoge" } / "fuga";
         BOOST_TEST(!storage.get_uint32(key));
     }
+
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        auto       value = static_cast<::uint32_t>(0);
+        BOOST_TEST(!tetengo_property_storage_getUint32(p_storage, key.string().c_str(), &value));
+    }
+    {
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        auto       value = static_cast<::uint32_t>(0);
+        BOOST_TEST(!tetengo_property_storage_getUint32(nullptr, key.string().c_str(), &value));
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        auto value = static_cast<::uint32_t>(0);
+        BOOST_TEST(!tetengo_property_storage_getUint32(p_storage, nullptr, &value));
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        BOOST_TEST(!tetengo_property_storage_getUint32(p_storage, key.string().c_str(), nullptr));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(set_uint32)
@@ -284,6 +348,93 @@ BOOST_AUTO_TEST_CASE(set_uint32)
         BOOST_TEST(*o_value == 42U);
 
         BOOST_CHECK(!storage.get_string(key));
+    }
+
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setUint32(p_storage, key.string().c_str(), 0);
+        auto value = static_cast<::uint32_t>(0);
+        BOOST_TEST(tetengo_property_storage_getUint32(p_storage, key.string().c_str(), &value));
+        BOOST_TEST(!value);
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setUint32(p_storage, key.string().c_str(), 1);
+        auto value = static_cast<::uint32_t>(0);
+        BOOST_TEST(tetengo_property_storage_getUint32(p_storage, key.string().c_str(), &value));
+        BOOST_TEST(value);
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setUint32(nullptr, key.string().c_str(), 1);
+        auto value = static_cast<::uint32_t>(0);
+        BOOST_TEST(!tetengo_property_storage_getUint32(p_storage, key.string().c_str(), &value));
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setUint32(p_storage, nullptr, 1);
+        auto value = static_cast<::uint32_t>(0);
+        BOOST_TEST(!tetengo_property_storage_getUint32(p_storage, key.string().c_str(), &value));
     }
 }
 

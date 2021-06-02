@@ -104,18 +104,59 @@ void tetengo_property_storage_setBool(
 }
 
 int tetengo_property_storage_getUint32(
-    const tetengo_property_storage_t* const /*p_storage*/,
-    const char* const /*key*/,
-    uint32_t* const /*p_value*/)
+    const tetengo_property_storage_t* const p_storage,
+    const char* const                       key,
+    uint32_t* const                         p_value)
 {
-    return 0;
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+        if (!p_value)
+        {
+            throw std::invalid_argument{ "p_value is NULL." };
+        }
+
+        const auto o_cpp_value = p_storage->p_cpp_storage->get_uint32(key);
+        if (o_cpp_value)
+        {
+            *p_value = *o_cpp_value;
+        }
+        return static_cast<bool>(o_cpp_value);
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 void tetengo_property_storage_setUint32(
-    tetengo_property_storage_t* const /*p_storage*/,
-    const char* const /*key*/,
-    const uint32_t /*value*/)
-{}
+    tetengo_property_storage_t* const p_storage,
+    const char* const                 key,
+    const uint32_t                    value)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+
+        p_storage->p_cpp_storage->set_uint32(key, value);
+    }
+    catch (...)
+    {}
+}
 
 size_t tetengo_property_storage_getString(
     const tetengo_property_storage_t* const /*p_storage*/,
