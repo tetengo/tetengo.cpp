@@ -6,6 +6,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <utility>
 
@@ -48,18 +49,59 @@ void tetengo_property_storage_destroy(const tetengo_property_storage_t* const p_
 }
 
 int tetengo_property_storage_getBool(
-    const tetengo_property_storage_t* const /*p_storage*/,
-    const char* const /*key*/,
-    int* const /*p_value*/)
+    const tetengo_property_storage_t* const p_storage,
+    const char* const                       key,
+    int* const                              p_value)
 {
-    return 0;
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+        if (!p_value)
+        {
+            throw std::invalid_argument{ "p_value is NULL." };
+        }
+
+        const auto o_cpp_value = p_storage->p_cpp_storage->get_bool(key);
+        if (o_cpp_value)
+        {
+            *p_value = *o_cpp_value ? 1 : 0;
+        }
+        return static_cast<bool>(o_cpp_value);
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 void tetengo_property_storage_setBool(
-    tetengo_property_storage_t* const /*p_storage*/,
-    const char* const /*key*/,
-    const int /*value*/)
-{}
+    tetengo_property_storage_t* const p_storage,
+    const char* const                 key,
+    const int                         value)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+
+        p_storage->p_cpp_storage->set_bool(key, value);
+    }
+    catch (...)
+    {}
+}
 
 int tetengo_property_storage_getUint32(
     const tetengo_property_storage_t* const /*p_storage*/,

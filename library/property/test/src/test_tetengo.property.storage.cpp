@@ -9,13 +9,16 @@
 #include <iterator>
 #include <memory>
 #include <optional>
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <variant>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>
 
 
@@ -73,77 +76,252 @@ BOOST_AUTO_TEST_CASE(get_bool)
 {
     BOOST_TEST_PASSPOINT();
 
-    const concrete_storage storage{};
-    const auto             key = std::filesystem::path{ "hoge" } / "fuga";
-    BOOST_TEST(!storage.get_bool(key));
+    {
+        const concrete_storage storage{};
+        const auto             key = std::filesystem::path{ "hoge" } / "fuga";
+        BOOST_TEST(!storage.get_bool(key));
+    }
+
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        auto       value = static_cast<int>(0);
+        BOOST_TEST(!tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
+    }
+    {
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        auto       value = static_cast<int>(0);
+        BOOST_TEST(!tetengo_property_storage_getBool(nullptr, key.string().c_str(), &value));
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        auto value = static_cast<int>(0);
+        BOOST_TEST(!tetengo_property_storage_getBool(p_storage, nullptr, &value));
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        BOOST_TEST(!tetengo_property_storage_getBool(p_storage, key.string().c_str(), nullptr));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(set_bool)
 {
     BOOST_TEST_PASSPOINT();
 
-    concrete_storage storage{};
-    const auto       key = std::filesystem::path{ "hoge" } / "fuga";
-    storage.set_bool(key, true);
-    const auto o_value = storage.get_bool(key);
-    BOOST_REQUIRE(o_value);
-    BOOST_TEST(*o_value);
+    {
+        concrete_storage storage{};
+        const auto       key = std::filesystem::path{ "hoge" } / "fuga";
+        storage.set_bool(key, false);
+        const auto o_value = storage.get_bool(key);
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(!*o_value);
 
-    BOOST_CHECK(!storage.get_string(key));
+        BOOST_CHECK(!storage.get_string(key));
+    }
+    {
+        concrete_storage storage{};
+        const auto       key = std::filesystem::path{ "hoge" } / "fuga";
+        storage.set_bool(key, true);
+        const auto o_value = storage.get_bool(key);
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value);
+
+        BOOST_CHECK(!storage.get_string(key));
+    }
+
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setBool(p_storage, key.string().c_str(), 0);
+        auto value = static_cast<int>(0);
+        BOOST_TEST(tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
+        BOOST_TEST(!value);
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setBool(p_storage, key.string().c_str(), 1);
+        auto value = static_cast<int>(0);
+        BOOST_TEST(tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
+        BOOST_TEST(value);
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setBool(nullptr, key.string().c_str(), 1);
+        auto value = static_cast<int>(0);
+        BOOST_TEST(!tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setBool(p_storage, nullptr, 1);
+        auto value = static_cast<int>(0);
+        BOOST_TEST(!tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(get_uint32)
 {
     BOOST_TEST_PASSPOINT();
 
-    const concrete_storage storage{};
-    const auto             key = std::filesystem::path{ "hoge" } / "fuga";
-    BOOST_TEST(!storage.get_uint32(key));
+    {
+        const concrete_storage storage{};
+        const auto             key = std::filesystem::path{ "hoge" } / "fuga";
+        BOOST_TEST(!storage.get_uint32(key));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(set_uint32)
 {
     BOOST_TEST_PASSPOINT();
 
-    concrete_storage storage{};
-    const auto       key = std::filesystem::path{ "hoge" } / "fuga";
-    storage.set_uint32(key, 42);
-    const auto o_value = storage.get_uint32(key);
-    BOOST_REQUIRE(o_value);
-    BOOST_TEST(*o_value == 42U);
+    {
+        concrete_storage storage{};
+        const auto       key = std::filesystem::path{ "hoge" } / "fuga";
+        storage.set_uint32(key, 42);
+        const auto o_value = storage.get_uint32(key);
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value == 42U);
 
-    BOOST_CHECK(!storage.get_string(key));
+        BOOST_CHECK(!storage.get_string(key));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(get_string)
 {
     BOOST_TEST_PASSPOINT();
 
-    const concrete_storage storage{};
-    const auto             key = std::filesystem::path{ "hoge" } / "fuga";
-    BOOST_TEST(!storage.get_string(key));
+    {
+        const concrete_storage storage{};
+        const auto             key = std::filesystem::path{ "hoge" } / "fuga";
+        BOOST_TEST(!storage.get_string(key));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(set_string)
 {
     BOOST_TEST_PASSPOINT();
 
-    concrete_storage storage{};
-    const auto       key = std::filesystem::path{ "hoge" } / "fuga";
-    storage.set_string(key, "foo");
-    const auto o_value = storage.get_string(key);
-    BOOST_REQUIRE(o_value);
-    BOOST_TEST(*o_value == "foo");
+    {
+        concrete_storage storage{};
+        const auto       key = std::filesystem::path{ "hoge" } / "fuga";
+        storage.set_string(key, "foo");
+        const auto o_value = storage.get_string(key);
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value == "foo");
 
-    BOOST_CHECK(!storage.get_uint32(key));
+        BOOST_CHECK(!storage.get_uint32(key));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();
 
-    const concrete_storage storage{};
-    storage.save();
+    {
+        const concrete_storage storage{};
+        storage.save();
+    }
 }
 
 BOOST_AUTO_TEST_CASE(value_map)
