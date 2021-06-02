@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <optional>
+#include <string>
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
@@ -39,7 +40,8 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        const auto* const p_storage =
+            tetengo_property_storageLoader_load(p_loader, "test_tetengo.property.memory_storage");
         BOOST_SCOPE_EXIT(p_storage)
         {
             tetengo_property_storage_destroy(p_storage);
@@ -78,13 +80,44 @@ BOOST_AUTO_TEST_CASE(save)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const auto* const p_storage1 = tetengo_property_storageLoader_load(p_loader, "foo");
+        auto* const p_storage1 = tetengo_property_storageLoader_load(p_loader, "test_tetengo.property.memory_storage");
         BOOST_SCOPE_EXIT(p_storage1)
         {
             tetengo_property_storage_destroy(p_storage1);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage1);
+
+        const auto key = std::filesystem::path{ "hoge" } / "fuga";
+        tetengo_property_storage_setUint32(p_storage1, key.string().c_str(), 42);
+
+        const auto* const p_storage2 =
+            tetengo_property_storageLoader_load(p_loader, "test_tetengo.property.memory_storage");
+        BOOST_SCOPE_EXIT(p_storage2)
+        {
+            tetengo_property_storage_destroy(p_storage2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage2);
+        auto value2 = static_cast<::uint32_t>(0);
+        BOOST_TEST(!tetengo_property_storage_getUint32(p_storage2, key.string().c_str(), &value2));
+
+        tetengo_property_storage_save(p_storage1);
+
+        const auto* const p_storage3 =
+            tetengo_property_storageLoader_load(p_loader, "test_tetengo.property.memory_storage");
+        BOOST_SCOPE_EXIT(p_storage3)
+        {
+            tetengo_property_storage_destroy(p_storage3);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage3);
+        auto value3 = static_cast<::uint32_t>(0);
+        BOOST_TEST(tetengo_property_storage_getUint32(p_storage3, key.string().c_str(), &value3));
+        BOOST_TEST(value3 == 42U);
+    }
+    {
+        tetengo_property_storage_save(nullptr);
     }
 }
 
@@ -130,7 +163,8 @@ BOOST_AUTO_TEST_CASE(load)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
+        const auto* const p_storage =
+            tetengo_property_storageLoader_load(p_loader, "test_tetengo.property.memory_storage");
         BOOST_SCOPE_EXIT(p_storage)
         {
             tetengo_property_storage_destroy(p_storage);

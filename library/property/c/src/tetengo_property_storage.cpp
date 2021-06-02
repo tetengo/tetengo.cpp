@@ -222,7 +222,20 @@ void tetengo_property_storage_setString(
     {}
 }
 
-void tetengo_property_storage_save(const tetengo_property_storage_t* const /*p_storage*/) {}
+void tetengo_property_storage_save(const tetengo_property_storage_t* const p_storage)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        p_storage->p_cpp_storage->save();
+    }
+    catch (...)
+    {}
+}
 
 tetengo_property_storageLoader_t* tetengo_property_storageLoader_createMemoryStorageLoader()
 {
