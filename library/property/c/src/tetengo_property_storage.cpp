@@ -4,9 +4,13 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <memory>
 #include <stdexcept>
 #include <utility>
+
+#include <stddef.h>
+#include <stdint.h> // IWYU pragma: keep
 
 #include <tetengo/property/memory_storage.hpp>
 #include <tetengo/property/storage.h>
@@ -42,6 +46,51 @@ void tetengo_property_storage_destroy(const tetengo_property_storage_t* const p_
     catch (...)
     {}
 }
+
+int tetengo_property_storage_getBool(
+    const tetengo_property_storage_t* const /*p_storage*/,
+    const char* const /*key*/,
+    int* const /*p_value*/)
+{
+    return 0;
+}
+
+void tetengo_property_storage_setBool(
+    tetengo_property_storage_t* const /*p_storage*/,
+    const char* const /*key*/,
+    const int /*value*/)
+{}
+
+int tetengo_property_storage_getUint32(
+    const tetengo_property_storage_t* const /*p_storage*/,
+    const char* const /*key*/,
+    uint32_t* const /*p_value*/)
+{
+    return 0;
+}
+
+void tetengo_property_storage_setUint32(
+    tetengo_property_storage_t* const /*p_storage*/,
+    const char* const /*key*/,
+    const uint32_t /*value*/)
+{}
+
+size_t tetengo_property_storage_getString(
+    const tetengo_property_storage_t* const /*p_storage*/,
+    const char* const /*key*/,
+    char* const /*p_value*/,
+    const size_t /*value_capacity*/)
+{
+    return 0;
+}
+
+void tetengo_property_storage_setString(
+    tetengo_property_storage_t* const /*p_storage*/,
+    const char* const /*key*/,
+    const char* const /*value*/)
+{}
+
+void tetengo_property_storage_save(const tetengo_property_storage_t* const /*p_storage*/) {}
 
 tetengo_property_storageLoader_t* tetengo_property_storageLoader_createMemoryStorageLoader()
 {
