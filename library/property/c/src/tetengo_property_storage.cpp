@@ -4,10 +4,13 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
 #include <cstdint>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include <stddef.h>
@@ -159,19 +162,65 @@ void tetengo_property_storage_setUint32(
 }
 
 size_t tetengo_property_storage_getString(
-    const tetengo_property_storage_t* const /*p_storage*/,
-    const char* const /*key*/,
-    char* const /*p_value*/,
-    const size_t /*value_capacity*/)
+    const tetengo_property_storage_t* const p_storage,
+    const char* const                       key,
+    char* const                             p_value,
+    const size_t                            value_capacity)
 {
-    return 0;
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+
+        const auto o_cpp_value = p_storage->p_cpp_storage->get_string(key);
+        if (o_cpp_value)
+        {
+            if (p_value && value_capacity > 0)
+            {
+                const auto length_to_copy = std::min(o_cpp_value->length(), value_capacity - 1);
+                std::copy_n(std::begin(*o_cpp_value), length_to_copy, p_value);
+                p_value[length_to_copy] = '\0';
+            }
+            return o_cpp_value->length();
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    catch (...)
+    {
+        return 0;
+    }
 }
 
 void tetengo_property_storage_setString(
-    tetengo_property_storage_t* const /*p_storage*/,
-    const char* const /*key*/,
-    const char* const /*value*/)
-{}
+    tetengo_property_storage_t* const p_storage,
+    const char* const                 key,
+    const char* const                 value)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+
+        p_storage->p_cpp_storage->set_string(key, value);
+    }
+    catch (...)
+    {}
+}
 
 void tetengo_property_storage_save(const tetengo_property_storage_t* const /*p_storage*/) {}
 

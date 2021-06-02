@@ -29,6 +29,7 @@ typedef struct tetengo_property_storageLoader_tag tetengo_property_storageLoader
 #endif
 #endif
 
+
 /*!
     \brief Destroys a storage.
 
@@ -86,7 +87,7 @@ void tetengo_property_storage_setUint32(tetengo_property_storage_t* p_storage, c
     \param p_value        The storage for a value. Can be NULL.
     \param value_capacity A value capacity.
 
-    \return The value length.
+    \return The value length. Or 0 when no value for key is found.
 */
 size_t tetengo_property_storage_getString(
     const tetengo_property_storage_t* p_storage,
