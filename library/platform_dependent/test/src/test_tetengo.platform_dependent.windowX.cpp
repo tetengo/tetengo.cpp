@@ -96,19 +96,19 @@ BOOST_AUTO_TEST_CASE(child_subkeys)
         const test_registry_entry                                  test_registry_entry_{ true };
         const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
         const auto                                                 child_subkeys = reader.child_subkeys();
-        BOOST_TEST_REQUIRE(child_subkeys.size() == 1U);
+        BOOST_TEST_REQUIRE(std::size(child_subkeys) == 1U);
         BOOST_CHECK(child_subkeys[0] == "piyo");
     }
     {
         const test_registry_entry                                  test_registry_entry_{ true };
         const tetengo::platform_dependent::windows_registry_reader reader{ subkey() / "piyo" };
         const auto                                                 child_subkeys = reader.child_subkeys();
-        BOOST_TEST(child_subkeys.empty());
+        BOOST_TEST(std::empty(child_subkeys));
     }
     {
         const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
         const auto                                                 child_subkeys = reader.child_subkeys();
-        BOOST_TEST(child_subkeys.empty());
+        BOOST_TEST(std::empty(child_subkeys));
     }
 }
 
@@ -120,14 +120,14 @@ BOOST_AUTO_TEST_CASE(value_names)
         const test_registry_entry                                  test_registry_entry_{ true };
         const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
         const auto                                                 value_names = reader.value_names();
-        BOOST_TEST(value_names.size() == 2U);
+        BOOST_TEST(std::size(value_names) == 2U);
         BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "hoge") != std::end(value_names));
         BOOST_CHECK(std::find(std::begin(value_names), std::end(value_names), "fuga") != std::end(value_names));
     }
     {
         const tetengo::platform_dependent::windows_registry_reader reader{ subkey() };
         const auto                                                 value_names = reader.value_names();
-        BOOST_TEST(value_names.empty());
+        BOOST_TEST(std::empty(value_names));
     }
 }
 

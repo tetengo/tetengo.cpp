@@ -115,7 +115,8 @@ namespace
             std::getline(stream, line);
             std::vector<std::string> split{};
             boost::algorithm::split(split, line, boost::is_any_of(" "), boost::algorithm::token_compress_on);
-            if (split.size() >= 4 && split[1] == value_name_leaf && split[2] == value_type && split[3] == value_data)
+            if (std::size(split) >= 4 && split[1] == value_name_leaf && split[2] == value_type &&
+                split[3] == value_data)
             {
                 return true;
             }
