@@ -139,8 +139,7 @@ BOOST_AUTO_TEST_CASE(load)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const auto* const p_storage =
-            tetengo_property_storageLoader_load(p_loader, "test_tetengo.property.memory_storage");
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, "foo");
         BOOST_SCOPE_EXIT(p_storage)
         {
             tetengo_property_storage_destroy(p_storage);
