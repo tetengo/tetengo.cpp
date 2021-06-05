@@ -203,6 +203,56 @@ BOOST_AUTO_TEST_CASE(save)
 
         BOOST_TEST(file_content_equal_to(generic_path(), json2));
     }
+
+    {
+        const test_file   file{ generic_path(), "" };
+        const auto* const p_loader = tetengo_property_storageLoader_createFileStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, file.path().string().c_str());
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        tetengo_property_storage_setBool(p_storage, "alpha", true);
+        tetengo_property_storage_setUint32(p_storage, "bravo", static_cast<std::uint32_t>(42));
+        tetengo_property_storage_setString(
+            p_storage, (std::filesystem::path{ "charlie" } / "delta").string().c_str(), "echo");
+
+        tetengo_property_storage_save(p_storage);
+
+        BOOST_TEST(file_content_equal_to(generic_path(), json1));
+    }
+    {
+        const test_file   file{ generic_path(), "" };
+        const auto* const p_loader = tetengo_property_storageLoader_createFileStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, file.path().string().c_str());
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        tetengo_property_storage_setString(p_storage, "\"\b\f\n\r\t", "\xE3\x81\x82\\/\xF0\x9F\x98\x80");
+
+        tetengo_property_storage_save(p_storage);
+
+        BOOST_TEST(file_content_equal_to(generic_path(), json2));
+    }
 }
 
 
