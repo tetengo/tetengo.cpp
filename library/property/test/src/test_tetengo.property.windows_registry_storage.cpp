@@ -348,7 +348,7 @@ BOOST_AUTO_TEST_CASE(load)
         {
             const auto length = tetengo_property_storage_getString(
                 p_storage, (std::filesystem::path{ "delta" } / "echo").string().c_str(), nullptr, 0);
-            BOOST_TEST_REQUIRE(length > 0);
+            BOOST_TEST_REQUIRE(length == 7U);
             std::vector<char> value(length + 1, '\0');
             const auto        length_again = tetengo_property_storage_getString(
                 p_storage,
