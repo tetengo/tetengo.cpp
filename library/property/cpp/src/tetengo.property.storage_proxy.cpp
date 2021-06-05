@@ -146,7 +146,7 @@ namespace tetengo::property
     }
 
 
-    class storage_proxy_loader::impl : private boost::noncopyable
+    class storage_loader_proxy::impl : private boost::noncopyable
     {
     public:
         // constructors and destructor
@@ -177,13 +177,13 @@ namespace tetengo::property
     };
 
 
-    storage_proxy_loader::storage_proxy_loader(std::unique_ptr<storage_loader>&& p_real_storage_loader) :
+    storage_loader_proxy::storage_loader_proxy(std::unique_ptr<storage_loader>&& p_real_storage_loader) :
     m_p_impl{ std::make_unique<impl>(std::move(p_real_storage_loader)) }
     {}
 
-    storage_proxy_loader::~storage_proxy_loader() = default;
+    storage_loader_proxy::~storage_loader_proxy() = default;
 
-    std::unique_ptr<storage> storage_proxy_loader::load_impl(const std::filesystem::path& path) const
+    std::unique_ptr<storage> storage_loader_proxy::load_impl(const std::filesystem::path& path) const
     {
         return m_p_impl->load_impl(path);
     }

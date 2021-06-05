@@ -37,7 +37,7 @@ namespace tetengo::property
 
         class impl;
 
-        friend class storage_proxy_loader;
+        friend class storage_loader_proxy;
 
 
         // variables
@@ -69,24 +69,24 @@ namespace tetengo::property
 
 
     /*!
-        \brief A storage proxy loader.
+        \brief A storage loader proxy.
     */
-    class storage_proxy_loader : public storage_loader
+    class storage_loader_proxy : public storage_loader
     {
     public:
         // constructors and destructor
 
         /*!
-            \brief Creates a storage proxy loader.
+            \brief Creates a storage loader proxy.
 
             \param p_real_storage_loader A unique pointer to a real storage loader.
         */
-        explicit storage_proxy_loader(std::unique_ptr<storage_loader>&& p_real_storage_loader);
+        explicit storage_loader_proxy(std::unique_ptr<storage_loader>&& p_real_storage_loader);
 
         /*!
-            \brief Destroys the storage proxy loader.
+            \brief Destroys the storage loader proxy.
         */
-        virtual ~storage_proxy_loader();
+        virtual ~storage_loader_proxy();
 
 
     private:
