@@ -119,6 +119,13 @@ void tetengo_property_storage_save(const tetengo_property_storage_t* p_storage);
 tetengo_property_storageLoader_t* tetengo_property_storageLoader_createMemoryStorageLoader();
 
 /*!
+    \brief Creates a file storage loader.
+
+    \return A pointer to a storage loader.
+*/
+tetengo_property_storageLoader_t* tetengo_property_storageLoader_createFileStorageLoader();
+
+/*!
     \brief Destroys a storage loader.
 
     \param p_storage_loader A pointer to a storage loader.

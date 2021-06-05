@@ -16,6 +16,7 @@
 #include <stddef.h>
 #include <stdint.h> // IWYU pragma: keep
 
+#include <tetengo/property/file_storage.hpp>
 #include <tetengo/property/memory_storage.hpp>
 #include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>
@@ -242,6 +243,21 @@ tetengo_property_storageLoader_t* tetengo_property_storageLoader_createMemorySto
     try
     {
         auto p_cpp_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+
+        auto p_instance = std::make_unique<tetengo_property_storageLoader_t>(std::move(p_cpp_storage_loader));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+tetengo_property_storageLoader_t* tetengo_property_storageLoader_createFileStorageLoader()
+{
+    try
+    {
+        auto p_cpp_storage_loader = std::make_unique<tetengo::property::file_storage_loader>();
 
         auto p_instance = std::make_unique<tetengo_property_storageLoader_t>(std::move(p_cpp_storage_loader));
         return p_instance.release();
