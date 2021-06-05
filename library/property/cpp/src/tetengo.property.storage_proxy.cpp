@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -153,7 +154,12 @@ namespace tetengo::property
 
         explicit impl(std::unique_ptr<storage_loader>&& p_real_storage_loader) :
         m_p_real_storage_loader{ std::move(p_real_storage_loader) }
-        {}
+        {
+            if (!m_p_real_storage_loader)
+            {
+                throw std::invalid_argument{ "p_real_storage_loader is nullptr." };
+            }
+        }
 
 
         // functions

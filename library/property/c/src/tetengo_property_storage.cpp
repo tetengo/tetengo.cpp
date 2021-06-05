@@ -16,10 +16,14 @@
 #include <stddef.h>
 #include <stdint.h> // IWYU pragma: keep
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
 #include <tetengo/property/file_storage.hpp>
 #include <tetengo/property/memory_storage.hpp>
 #include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>
+#include <tetengo/property/storage_proxy.hpp>
 #if defined(_WIN32)
 #include <tetengo/property/windows_registry_storage.hpp>
 #endif
@@ -219,6 +223,10 @@ void tetengo_property_storage_setString(
         {
             throw std::invalid_argument{ "key is NULL." };
         }
+        if (!value)
+        {
+            throw std::invalid_argument{ "value is NULL." };
+        }
 
         p_storage->p_cpp_storage->set_string(key, value);
     }
@@ -287,6 +295,34 @@ tetengo_property_storageLoader_t* tetengo_property_storageLoader_createWindowsRe
     }
 }
 #endif
+
+tetengo_property_storageLoader_t*
+tetengo_property_storageLoader_createStorageLoaderProxy(tetengo_property_storageLoader_t* const p_real_storage_loader)
+{
+    try
+    {
+        if (!p_real_storage_loader)
+        {
+            throw std::invalid_argument{ "p_real_storage_loader is NULL." };
+        }
+        BOOST_SCOPE_EXIT(p_real_storage_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_real_storage_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto p_cpp_real_storage_loader = std::move(p_real_storage_loader->p_cpp_storage_loader);
+        auto p_cpp_storage_loader =
+            std::make_unique<tetengo::property::storage_loader_proxy>(std::move(p_cpp_real_storage_loader));
+
+        auto p_instance = std::make_unique<tetengo_property_storageLoader_t>(std::move(p_cpp_storage_loader));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
 
 void tetengo_property_storageLoader_destroy(const tetengo_property_storageLoader_t* const p_storage_loader)
 {

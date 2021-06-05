@@ -80,6 +80,8 @@ namespace tetengo::property
             \brief Creates a storage loader proxy.
 
             \param p_real_storage_loader A unique pointer to a real storage loader.
+
+            \throw std::invalid_argument When p_real_storage_loader is nullptr.
         */
         explicit storage_loader_proxy(std::unique_ptr<storage_loader>&& p_real_storage_loader);
 
