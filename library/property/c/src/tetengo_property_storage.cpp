@@ -20,6 +20,9 @@
 #include <tetengo/property/memory_storage.hpp>
 #include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>
+#if defined(_WIN32)
+#include <tetengo/property/windows_registry_storage.hpp>
+#endif
 
 
 struct tetengo_property_storage_tag
@@ -267,6 +270,23 @@ tetengo_property_storageLoader_t* tetengo_property_storageLoader_createFileStora
         return nullptr;
     }
 }
+
+#if defined(_WIN32)
+tetengo_property_storageLoader_t* tetengo_property_storageLoader_createWindowsRegistoryStorageLoader()
+{
+    try
+    {
+        auto p_cpp_storage_loader = std::make_unique<tetengo::property::windows_registry_storage_loader>();
+
+        auto p_instance = std::make_unique<tetengo_property_storageLoader_t>(std::move(p_cpp_storage_loader));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+#endif
 
 void tetengo_property_storageLoader_destroy(const tetengo_property_storageLoader_t* const p_storage_loader)
 {

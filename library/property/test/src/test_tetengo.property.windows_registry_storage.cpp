@@ -17,6 +17,7 @@
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>
 #include <tetengo/property/windows_registry_storage.hpp>
 
@@ -162,6 +163,35 @@ BOOST_AUTO_TEST_CASE(save)
         BOOST_TEST(has_registry_value("bravo", "REG_DWORD", "0x2a"));
         BOOST_TEST(has_registry_value("charlie\\delta", "REG_SZ", "echo"));
     }
+
+    {
+        test_registry_entry test_registry_entry_{ false };
+        const auto* const   p_loader = tetengo_property_storageLoader_createWindowsRegistoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, subkey().string().c_str());
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        tetengo_property_storage_setBool(p_storage, "alpha", true);
+        tetengo_property_storage_setUint32(p_storage, "bravo", static_cast<std::uint32_t>(42));
+        tetengo_property_storage_setString(
+            p_storage, (std::filesystem::path{ "charlie" } / "delta").string().c_str(), "echo");
+
+        tetengo_property_storage_save(p_storage);
+
+        BOOST_TEST(has_registry_value("alpha", "REG_DWORD", "0x1"));
+        BOOST_TEST(has_registry_value("bravo", "REG_DWORD", "0x2a"));
+        BOOST_TEST(has_registry_value("charlie\\delta", "REG_SZ", "echo"));
+    }
 }
 
 
@@ -175,6 +205,17 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::property::windows_registry_storage_loader loader{};
+    }
+
+    {
+        test_registry_entry test_registry_entry_{ false };
+        const auto* const   p_loader = tetengo_property_storageLoader_createWindowsRegistoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_loader);
     }
 }
 
@@ -229,6 +270,110 @@ BOOST_AUTO_TEST_CASE(load)
             BOOST_REQUIRE(o_value);
             BOOST_TEST(*o_value == "foxtrot");
         }
+    }
+
+    {
+        test_registry_entry test_registry_entry_{ false };
+        const auto* const   p_loader = tetengo_property_storageLoader_createWindowsRegistoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, subkey().string().c_str());
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_storage);
+
+        {
+            auto       value = static_cast<int>(0);
+            const auto result = tetengo_property_storage_getBool(p_storage, "alpha", &value);
+            BOOST_TEST(!result);
+        }
+        {
+            auto       value = static_cast<int>(0);
+            const auto result = tetengo_property_storage_getBool(p_storage, "bravo", &value);
+            BOOST_TEST(!result);
+        }
+        {
+            auto       value = static_cast<::uint32_t>(0);
+            const auto result = tetengo_property_storage_getUint32(p_storage, "charlie", &value);
+            BOOST_TEST(!result);
+        }
+        {
+            const auto length = tetengo_property_storage_getString(
+                p_storage, (std::filesystem::path{ "delta" } / "echo").string().c_str(), nullptr, 0);
+            BOOST_TEST(length == 0U);
+        }
+    }
+    {
+        test_registry_entry test_registry_entry_{ true };
+        const auto* const   p_loader = tetengo_property_storageLoader_createWindowsRegistoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, subkey().string().c_str());
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_storage);
+
+        {
+            auto       value = static_cast<int>(0);
+            const auto result = tetengo_property_storage_getBool(p_storage, "alpha", &value);
+            BOOST_TEST_REQUIRE(result);
+            BOOST_TEST(!value);
+        }
+        {
+            auto       value = static_cast<int>(0);
+            const auto result = tetengo_property_storage_getBool(p_storage, "bravo", &value);
+            BOOST_TEST_REQUIRE(result);
+            BOOST_TEST(value);
+        }
+        {
+            auto       value = static_cast<::uint32_t>(0);
+            const auto result = tetengo_property_storage_getUint32(p_storage, "charlie", &value);
+            BOOST_TEST_REQUIRE(result);
+            BOOST_TEST(value == 42U);
+        }
+        {
+            const auto length = tetengo_property_storage_getString(
+                p_storage, (std::filesystem::path{ "delta" } / "echo").string().c_str(), nullptr, 0);
+            BOOST_TEST_REQUIRE(length > 0);
+            std::vector<char> value(length + 1, '\0');
+            const auto        length_again = tetengo_property_storage_getString(
+                p_storage,
+                (std::filesystem::path{ "delta" } / "echo").string().c_str(),
+                std::data(value),
+                std::size(value));
+            BOOST_TEST_REQUIRE(length_again == length);
+            BOOST_TEST((std::string_view{ std::data(value), length } == "foxtrot"));
+        }
+    }
+    {
+        test_registry_entry test_registry_entry_{ false };
+        const auto* const   p_storage = tetengo_property_storageLoader_load(nullptr, subkey().string().c_str());
+        BOOST_TEST(!p_storage);
+    }
+    {
+        const auto* const p_loader = tetengo_property_storageLoader_createWindowsRegistoryStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_property_storageLoader_load(p_loader, nullptr);
+        BOOST_TEST(!p_storage);
     }
 }
 

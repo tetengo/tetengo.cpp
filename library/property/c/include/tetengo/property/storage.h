@@ -126,6 +126,13 @@ tetengo_property_storageLoader_t* tetengo_property_storageLoader_createMemorySto
 tetengo_property_storageLoader_t* tetengo_property_storageLoader_createFileStorageLoader();
 
 /*!
+    \brief Creates a Windows registry storage loader.
+
+    \return A pointer to a storage loader.
+*/
+tetengo_property_storageLoader_t* tetengo_property_storageLoader_createWindowsRegistoryStorageLoader();
+
+/*!
     \brief Destroys a storage loader.
 
     \param p_storage_loader A pointer to a storage loader.
