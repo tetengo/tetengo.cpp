@@ -92,22 +92,22 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\c\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\c\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\c\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\platform_dependent\cpp\include;$(SolutionDir)library\property\c\include;$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -138,6 +138,9 @@
     </ProjectReference>
     <ProjectReference Include="..\cpp\tetengo.property.cpp.vcxproj">
       <Project>{4356ff6a-22d4-4835-8321-145998f26d68}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\c\tetengo.property.vcxproj">
+      <Project>{21380636-4355-4aed-8a76-8b6a9fba5650}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

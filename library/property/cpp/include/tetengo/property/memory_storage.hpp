@@ -24,13 +24,6 @@ namespace tetengo::property
         // constructors and destructor
 
         /*!
-            \brief Creates a memory storage.
-
-            \param master_value_map A master value map.
-        */
-        explicit memory_storage(value_map_type& master_value_map);
-
-        /*!
             \brief Destroys the memory storage.
         */
         virtual ~memory_storage();
@@ -41,10 +34,17 @@ namespace tetengo::property
 
         class impl;
 
+        friend class memory_storage_loader;
+
 
         // variables
 
         const std::unique_ptr<impl> m_p_impl;
+
+
+        // constructors
+
+        explicit memory_storage(value_map_type& master_value_map);
 
 
         // virtual functions

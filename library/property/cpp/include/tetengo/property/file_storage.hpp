@@ -24,14 +24,6 @@ namespace tetengo::property
         // constructors and destructor
 
         /*!
-            \brief Creates a file storage.
-
-            \param value_map A value map.
-            \param path      A path.
-        */
-        file_storage(value_map_type value_map, const std::filesystem::path& path);
-
-        /*!
             \brief Destroys the file storage.
         */
         virtual ~file_storage();
@@ -42,10 +34,17 @@ namespace tetengo::property
 
         class impl;
 
+        friend class file_storage_loader;
+
 
         // variables
 
         const std::unique_ptr<impl> m_p_impl;
+
+
+        // constructors
+
+        file_storage(value_map_type value_map, const std::filesystem::path& path);
 
 
         // virtual functions

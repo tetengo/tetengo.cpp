@@ -56,12 +56,12 @@ namespace tetengo::property
     };
 
 
+    file_storage::~file_storage() = default;
+
     file_storage::file_storage(value_map_type value_map, const std::filesystem::path& path) :
     storage{ std::move(value_map) },
         m_p_impl{ std::make_unique<impl>(path) }
     {}
-
-    file_storage::~file_storage() = default;
 
     void file_storage::save_impl() const
     {
@@ -78,7 +78,14 @@ namespace tetengo::property
         {
             const auto native_path =
                 tetengo::platform_dependent::property_set_file_path::instance().to_native_path(path);
-            return std::make_unique<file_storage>(load_value_map(native_path), path);
+
+            struct storage_impl : public file_storage
+            {
+                storage_impl(value_map_type value_map, const std::filesystem::path& path) :
+                file_storage{ std::move(value_map), path }
+                {}
+            };
+            return std::make_unique<storage_impl>(load_value_map(native_path), path);
         }
 
 

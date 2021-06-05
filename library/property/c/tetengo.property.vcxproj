@@ -91,12 +91,24 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)library\property\cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\precompiled\precompiled.cpp">
@@ -111,6 +123,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\json\cpp\tetengo.json.cpp.vcxproj">
+      <Project>{cba672b4-259e-4bd2-9072-1d34cf941d4c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\platform_dependent\cpp\tetengo.platform_dependent.cpp.vcxproj">
+      <Project>{3aaea971-dc2b-40d6-830c-b0d6a3368a7a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\text\cpp\tetengo.text.cpp.vcxproj">
+      <Project>{be228a1e-25d5-4825-89b4-c3513f1dc559}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\cpp\tetengo.property.cpp.vcxproj">
+      <Project>{4356ff6a-22d4-4835-8321-145998f26d68}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

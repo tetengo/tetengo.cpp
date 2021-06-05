@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -101,14 +102,14 @@ namespace tetengo::property
     };
 
 
+    storage_proxy::~storage_proxy() = default;
+
     storage_proxy::storage_proxy(
         std::shared_ptr<storage_loader> p_real_storage_loader,
         const std::filesystem::path&    path) :
     storage{ value_map_type{} },
         m_p_impl{ std::make_unique<impl>(std::move(p_real_storage_loader), path) }
     {}
-
-    storage_proxy::~storage_proxy() = default;
 
     std::optional<bool> storage_proxy::get_bool_impl(const std::filesystem::path& key) const
     {
@@ -146,21 +147,32 @@ namespace tetengo::property
     }
 
 
-    class storage_proxy_loader::impl : private boost::noncopyable
+    class storage_loader_proxy::impl : private boost::noncopyable
     {
     public:
         // constructors and destructor
 
         explicit impl(std::unique_ptr<storage_loader>&& p_real_storage_loader) :
         m_p_real_storage_loader{ std::move(p_real_storage_loader) }
-        {}
+        {
+            if (!m_p_real_storage_loader)
+            {
+                throw std::invalid_argument{ "p_real_storage_loader is nullptr." };
+            }
+        }
 
 
         // functions
 
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
-            return std::make_unique<storage_proxy>(m_p_real_storage_loader, path);
+            struct storage_impl : public storage_proxy
+            {
+                storage_impl(std::shared_ptr<storage_loader> p_real_storage_loader, const std::filesystem::path& path) :
+                storage_proxy{ std::move(p_real_storage_loader), path }
+                {}
+            };
+            return std::make_unique<storage_impl>(m_p_real_storage_loader, path);
         }
 
 
@@ -171,13 +183,13 @@ namespace tetengo::property
     };
 
 
-    storage_proxy_loader::storage_proxy_loader(std::unique_ptr<storage_loader>&& p_real_storage_loader) :
+    storage_loader_proxy::storage_loader_proxy(std::unique_ptr<storage_loader>&& p_real_storage_loader) :
     m_p_impl{ std::make_unique<impl>(std::move(p_real_storage_loader)) }
     {}
 
-    storage_proxy_loader::~storage_proxy_loader() = default;
+    storage_loader_proxy::~storage_loader_proxy() = default;
 
-    std::unique_ptr<storage> storage_proxy_loader::load_impl(const std::filesystem::path& path) const
+    std::unique_ptr<storage> storage_loader_proxy::load_impl(const std::filesystem::path& path) const
     {
         return m_p_impl->load_impl(path);
     }

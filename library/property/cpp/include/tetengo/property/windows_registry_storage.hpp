@@ -24,14 +24,6 @@ namespace tetengo::property
         // constructors and destructor
 
         /*!
-            \brief Creates a Windows registry storage.
-
-            \param value_map A value map.
-            \param path      A path.
-        */
-        windows_registry_storage(value_map_type value_map, const std::filesystem::path& path);
-
-        /*!
             \brief Destroys the Windows registry storage.
         */
         virtual ~windows_registry_storage();
@@ -42,10 +34,17 @@ namespace tetengo::property
 
         class impl;
 
+        friend class windows_registry_storage_loader;
+
 
         // variables
 
         const std::unique_ptr<impl> m_p_impl;
+
+
+        // constructors
+
+        windows_registry_storage(value_map_type value_map, const std::filesystem::path& path);
 
 
         // virtual functions

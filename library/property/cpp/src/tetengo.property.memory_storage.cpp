@@ -47,12 +47,12 @@ namespace tetengo::property
     };
 
 
+    memory_storage::~memory_storage() = default;
+
     memory_storage::memory_storage(value_map_type& master_value_map) :
     storage{ master_value_map },
         m_p_impl{ std::make_unique<impl>(master_value_map) }
     {}
-
-    memory_storage::~memory_storage() = default;
 
     void memory_storage::save_impl() const
     {
@@ -74,7 +74,12 @@ namespace tetengo::property
                     master_value_map_map().insert(std::make_pair(path.string(), storage::value_map_type{}));
                 found = inserted.first;
             }
-            return std::make_unique<memory_storage>(found->second);
+
+            struct storage_impl : public memory_storage
+            {
+                explicit storage_impl(value_map_type& master_value_map) : memory_storage{ master_value_map } {}
+            };
+            return std::make_unique<storage_impl>(found->second);
         }
 
 
