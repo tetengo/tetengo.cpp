@@ -21,25 +21,17 @@ BOOST_AUTO_TEST_SUITE(property)
 BOOST_AUTO_TEST_SUITE(storage_proxy)
 
 
-BOOST_AUTO_TEST_CASE(construction)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
-    }
-}
-
 BOOST_AUTO_TEST_CASE(get_bool)
 {
     BOOST_TEST_PASSPOINT();
 
     {
-        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+        const auto                                    p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
 
-        const auto o_value = proxy.get_bool("alpha");
+        const auto o_value = p_storage->get_bool("alpha");
         BOOST_CHECK(!o_value);
     }
 }
@@ -49,20 +41,24 @@ BOOST_AUTO_TEST_CASE(set_bool)
     BOOST_TEST_PASSPOINT();
 
     {
-        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+        const auto                                    p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
 
-        proxy.set_bool("alpha", false);
-        const auto o_value = proxy.get_bool("alpha");
+        p_storage->set_bool("alpha", false);
+        const auto o_value = p_storage->get_bool("alpha");
         BOOST_REQUIRE(o_value);
         BOOST_TEST(!*o_value);
     }
     {
-        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+        const auto                                    p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
 
-        proxy.set_bool("alpha", true);
-        const auto o_value = proxy.get_bool("alpha");
+        p_storage->set_bool("alpha", true);
+        const auto o_value = p_storage->get_bool("alpha");
         BOOST_REQUIRE(o_value);
         BOOST_TEST(*o_value);
     }
@@ -73,10 +69,12 @@ BOOST_AUTO_TEST_CASE(get_uint32)
     BOOST_TEST_PASSPOINT();
 
     {
-        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+        const auto                                    p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
 
-        const auto o_value = proxy.get_uint32("bravo");
+        const auto o_value = p_storage->get_uint32("bravo");
         BOOST_CHECK(!o_value);
     }
 }
@@ -86,11 +84,13 @@ BOOST_AUTO_TEST_CASE(set_uint32)
     BOOST_TEST_PASSPOINT();
 
     {
-        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+        const auto                                    p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
 
-        proxy.set_uint32("bravo", 42);
-        const auto o_value = proxy.get_uint32("bravo");
+        p_storage->set_uint32("bravo", 42);
+        const auto o_value = p_storage->get_uint32("bravo");
         BOOST_REQUIRE(o_value);
         BOOST_TEST(*o_value == 42U);
     }
@@ -101,10 +101,12 @@ BOOST_AUTO_TEST_CASE(get_string)
     BOOST_TEST_PASSPOINT();
 
     {
-        const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+        const auto                                    p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
 
-        const auto o_value = proxy.get_string("charlie");
+        const auto o_value = p_storage->get_string("charlie");
         BOOST_CHECK(!o_value);
     }
 }
@@ -114,11 +116,13 @@ BOOST_AUTO_TEST_CASE(set_string)
     BOOST_TEST_PASSPOINT();
 
     {
-        const auto                       p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-        tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+        auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+        const auto                                    p_storage = loader.load("hoge");
+        BOOST_CHECK(p_storage);
 
-        proxy.set_string("charlie", "foo");
-        const auto o_value = proxy.get_string("charlie");
+        p_storage->set_string("charlie", "foo");
+        const auto o_value = p_storage->get_string("charlie");
         BOOST_REQUIRE(o_value);
         BOOST_TEST(*o_value == "foo");
     }
@@ -130,17 +134,21 @@ BOOST_AUTO_TEST_CASE(save)
 
     {
         {
-            const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-            tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+            auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+            const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+            const auto                                    p_storage = loader.load("hoge");
+            BOOST_CHECK(p_storage);
 
-            proxy.set_uint32("bravo", 42);
-            proxy.save();
+            p_storage->set_uint32("bravo", 42);
+            p_storage->save();
         }
         {
-            const auto p_real_loader = std::make_shared<tetengo::property::memory_storage_loader>();
-            const tetengo::property::storage_proxy proxy{ p_real_loader, "hoge" };
+            auto p_real_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+            const tetengo::property::storage_proxy_loader loader{ std::move(p_real_loader) };
+            const auto                                    p_storage = loader.load("hoge");
+            BOOST_CHECK(p_storage);
 
-            const auto o_value = proxy.get_uint32("bravo");
+            const auto o_value = p_storage->get_uint32("bravo");
             BOOST_REQUIRE(o_value);
             BOOST_TEST(*o_value == 42U);
         }

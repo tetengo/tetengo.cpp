@@ -67,13 +67,6 @@ BOOST_AUTO_TEST_SUITE(property)
 BOOST_AUTO_TEST_SUITE(storage)
 
 
-BOOST_AUTO_TEST_CASE(construction)
-{
-    BOOST_TEST_PASSPOINT();
-
-    const concrete_storage storage{};
-}
-
 BOOST_AUTO_TEST_CASE(get_bool)
 {
     BOOST_TEST_PASSPOINT();

@@ -71,12 +71,12 @@ namespace tetengo::property
     };
 
 
+    windows_registry_storage::~windows_registry_storage() = default;
+
     windows_registry_storage::windows_registry_storage(value_map_type value_map, const std::filesystem::path& path) :
     storage{ std::move(value_map) },
         m_p_impl{ std::make_unique<impl>(path) }
     {}
-
-    windows_registry_storage::~windows_registry_storage() = default;
 
     void windows_registry_storage::save_impl() const
     {
@@ -93,7 +93,14 @@ namespace tetengo::property
         {
             value_map_type value_map{};
             load_impl_iter(path, std::filesystem::path{}, value_map);
-            return std::make_unique<windows_registry_storage>(std::move(value_map), path);
+
+            struct storage_impl : public windows_registry_storage
+            {
+                storage_impl(value_map_type value_map, const std::filesystem::path& path) :
+                windows_registry_storage{ std::move(value_map), path }
+                {}
+            };
+            return std::make_unique<storage_impl>(std::move(value_map), path);
         }
 
 

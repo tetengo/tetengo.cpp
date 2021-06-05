@@ -13,8 +13,6 @@
 #include <string>
 #include <string_view>
 #include <system_error>
-#include <type_traits>
-#include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
@@ -28,23 +26,6 @@
 
 namespace
 {
-    tetengo::property::file_storage::value_map_type make_value_map1()
-    {
-        tetengo::property::file_storage::value_map_type value_map{};
-        value_map.insert(std::make_pair("alpha", true));
-        value_map.insert(std::make_pair("bravo", static_cast<std::uint32_t>(42)));
-        value_map.insert(
-            std::make_pair((std::filesystem::path{ "charlie" } / "delta").string(), std::string{ "echo" }));
-        return value_map;
-    }
-
-    tetengo::property::file_storage::value_map_type make_value_map2()
-    {
-        tetengo::property::file_storage::value_map_type value_map{};
-        value_map.insert(std::make_pair("\"\b\f\n\r\t", std::string{ "\xE3\x81\x82\\/\xF0\x9F\x98\x80" }));
-        return value_map;
-    }
-
     const std::string_view json1{
         // clang-format off
         "{\n"
@@ -190,33 +171,33 @@ BOOST_AUTO_TEST_SUITE(property)
 BOOST_AUTO_TEST_SUITE(file_storage)
 
 
-BOOST_AUTO_TEST_CASE(construction)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        tetengo::property::file_storage::value_map_type value_map{};
-        const tetengo::property::file_storage           storage{ std::move(value_map), generic_path() };
-    }
-}
-
 BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();
 
     {
-        const test_file                                 file{ generic_path(), "" };
-        tetengo::property::file_storage::value_map_type value_map = make_value_map1();
-        const tetengo::property::file_storage           storage{ std::move(value_map), file.path() };
-        storage.save();
+        const test_file                              file{ generic_path(), "" };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+        BOOST_REQUIRE(p_storage);
+
+        p_storage->set_bool("alpha", true);
+        p_storage->set_uint32("bravo", static_cast<std::uint32_t>(42));
+        p_storage->set_string((std::filesystem::path{ "charlie" } / "delta").string(), std::string{ "echo" });
+
+        p_storage->save();
 
         BOOST_TEST(file_content_equal_to(generic_path(), json1));
     }
     {
-        const test_file                                 file{ generic_path(), "" };
-        tetengo::property::file_storage::value_map_type value_map = make_value_map2();
-        const tetengo::property::file_storage           storage{ std::move(value_map), file.path() };
-        storage.save();
+        const test_file                              file{ generic_path(), "" };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+        BOOST_REQUIRE(p_storage);
+
+        p_storage->set_string("\"\b\f\n\r\t", std::string{ "\xE3\x81\x82\\/\xF0\x9F\x98\x80" });
+
+        p_storage->save();
 
         BOOST_TEST(file_content_equal_to(generic_path(), json2));
     }

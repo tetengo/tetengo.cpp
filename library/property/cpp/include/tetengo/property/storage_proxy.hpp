@@ -27,14 +27,6 @@ namespace tetengo::property
         // constructors and destructor
 
         /*!
-            \brief Creates a storage proxy.
-
-            \param p_real_storage_loader A shared pointer to a real storage loader.
-            \param path                  A path.
-        */
-        storage_proxy(std::shared_ptr<storage_loader> p_real_storage_loader, const std::filesystem::path& path);
-
-        /*!
             \brief Destroys the storage proxy.
         */
         virtual ~storage_proxy();
@@ -45,10 +37,17 @@ namespace tetengo::property
 
         class impl;
 
+        friend class storage_proxy_loader;
+
 
         // variables
 
         const std::unique_ptr<impl> m_p_impl;
+
+
+        // constructors
+
+        storage_proxy(std::shared_ptr<storage_loader> p_real_storage_loader, const std::filesystem::path& path);
 
 
         // virtual functions

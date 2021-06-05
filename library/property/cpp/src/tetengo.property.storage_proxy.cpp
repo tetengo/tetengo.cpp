@@ -101,14 +101,14 @@ namespace tetengo::property
     };
 
 
+    storage_proxy::~storage_proxy() = default;
+
     storage_proxy::storage_proxy(
         std::shared_ptr<storage_loader> p_real_storage_loader,
         const std::filesystem::path&    path) :
     storage{ value_map_type{} },
         m_p_impl{ std::make_unique<impl>(std::move(p_real_storage_loader), path) }
     {}
-
-    storage_proxy::~storage_proxy() = default;
 
     std::optional<bool> storage_proxy::get_bool_impl(const std::filesystem::path& key) const
     {
@@ -160,7 +160,13 @@ namespace tetengo::property
 
         std::unique_ptr<storage> load_impl(const std::filesystem::path& path) const
         {
-            return std::make_unique<storage_proxy>(m_p_real_storage_loader, path);
+            struct storage_impl : public storage_proxy
+            {
+                storage_impl(std::shared_ptr<storage_loader> p_real_storage_loader, const std::filesystem::path& path) :
+                storage_proxy{ std::move(p_real_storage_loader), path }
+                {}
+            };
+            return std::make_unique<storage_impl>(m_p_real_storage_loader, path);
         }
 
 

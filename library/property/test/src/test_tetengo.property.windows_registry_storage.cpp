@@ -23,16 +23,6 @@
 
 namespace
 {
-    tetengo::property::windows_registry_storage::value_map_type make_value_map()
-    {
-        tetengo::property::windows_registry_storage::value_map_type value_map{};
-        value_map.insert(std::make_pair("alpha", true));
-        value_map.insert(std::make_pair("bravo", static_cast<std::uint32_t>(42)));
-        value_map.insert(
-            std::make_pair((std::filesystem::path{ "charlie" } / "delta").string(), std::string{ "echo" }));
-        return value_map;
-    }
-
     const std::filesystem::path& subkey()
     {
         static const std::filesystem::path singleton{ "test_tetengo.property.windows_registry_storage" };
@@ -152,25 +142,21 @@ BOOST_AUTO_TEST_SUITE(property)
 BOOST_AUTO_TEST_SUITE(windows_registry_storage)
 
 
-BOOST_AUTO_TEST_CASE(construction)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        tetengo::property::windows_registry_storage::value_map_type value_map{};
-        const tetengo::property::windows_registry_storage           storage{ std::move(value_map), subkey() };
-    }
-}
-
 BOOST_AUTO_TEST_CASE(save)
 {
     BOOST_TEST_PASSPOINT();
 
     {
-        test_registry_entry                               test_registry_entry_{ false };
-        const auto                                        value_map = make_value_map();
-        const tetengo::property::windows_registry_storage storage{ value_map, subkey() };
-        storage.save();
+        test_registry_entry                                      test_registry_entry_{ false };
+        const tetengo::property::windows_registry_storage_loader loader{};
+        const auto                                               p_storage = loader.load(subkey());
+        BOOST_REQUIRE(p_storage);
+
+        p_storage->set_bool("alpha", true);
+        p_storage->set_uint32("bravo", static_cast<std::uint32_t>(42));
+        p_storage->set_string((std::filesystem::path{ "charlie" } / "delta").string(), std::string{ "echo" });
+
+        p_storage->save();
 
         BOOST_TEST(has_registry_value("alpha", "REG_DWORD", "0x1"));
         BOOST_TEST(has_registry_value("bravo", "REG_DWORD", "0x2a"));
