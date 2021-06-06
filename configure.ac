@@ -28,6 +28,8 @@ AC_CONFIG_FILES([
     library/json/cpp/include/Makefile
     library/json/cpp/include/tetengo/Makefile
     library/json/cpp/src/Makefile
+#    library/json/test/Makefile
+#    library/json/test/src/Makefile
     library/lattice/Makefile
     library/lattice/c/Makefile
     library/lattice/c/include/Makefile
