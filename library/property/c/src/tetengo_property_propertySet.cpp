@@ -226,7 +226,6 @@ size_t tetengo_property_propertySet_getString(
     }
 }
 
-
 void tetengo_property_propertySet_setString(
     tetengo_property_propertySet_t* const p_property_set,
     const char* const                     key,
@@ -248,6 +247,36 @@ void tetengo_property_propertySet_setString(
         }
 
         p_property_set->p_cpp_property_set->set_string(key, value);
+    }
+    catch (...)
+    {}
+}
+
+void tetengo_property_propertySet_update(tetengo_property_propertySet_t* const p_property_set)
+{
+    try
+    {
+        if (!p_property_set)
+        {
+            throw std::invalid_argument{ "p_property_set is NULL." };
+        }
+
+        p_property_set->p_cpp_property_set->update();
+    }
+    catch (...)
+    {}
+}
+
+void tetengo_property_propertySet_commit(const tetengo_property_propertySet_t* const p_property_set)
+{
+    try
+    {
+        if (!p_property_set)
+        {
+            throw std::invalid_argument{ "p_property_set is NULL." };
+        }
+
+        p_property_set->p_cpp_property_set->commit();
     }
     catch (...)
     {}

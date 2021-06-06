@@ -130,6 +130,20 @@ void tetengo_property_propertySet_setString(
     const char*                     key,
     const char*                     value);
 
+/*!
+    \brief Updates the property values to the latest state in the storage.
+
+    \param p_property_set A pointer to a property set.
+*/
+void tetengo_property_propertySet_update(tetengo_property_propertySet_t* p_property_set);
+
+/*!
+    \brief Commits the property value changes to the storage.
+
+    \param p_property_set A pointer to a property set.
+*/
+void tetengo_property_propertySet_commit(const tetengo_property_propertySet_t* p_property_set);
+
 
 #if defined(__cplusplus)
 }

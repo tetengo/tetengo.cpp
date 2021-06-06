@@ -437,17 +437,54 @@ BOOST_AUTO_TEST_CASE(update)
         auto p_storage_loader2 = std::make_unique<tetengo::property::memory_storage_loader>();
         tetengo::property::property_set property_set2{ std::move(p_storage_loader2), property_set_path() };
 
-        property_set1.set_uint32("hoge", 42);
+        property_set1.set_uint32("hoge.cpp", 42);
         property_set1.commit();
         {
-            const auto o_value = property_set2.get_uint32("hoge");
+            const auto o_value = property_set2.get_uint32("hoge.cpp");
             BOOST_CHECK(!o_value);
         }
         property_set2.update();
         {
-            const auto o_value = property_set2.get_uint32("hoge");
+            const auto o_value = property_set2.get_uint32("hoge.cpp");
             BOOST_REQUIRE(o_value);
             BOOST_TEST(*o_value == 42U);
+        }
+    }
+
+    {
+        auto* const p_storage_loader1 = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set1 =
+            tetengo_property_propertySet_create(p_storage_loader1, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set1)
+        {
+            tetengo_property_propertySet_destroy(p_property_set1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set1);
+
+        auto* const p_storage_loader2 = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set2 =
+            tetengo_property_propertySet_create(p_storage_loader2, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set2)
+        {
+            tetengo_property_propertySet_destroy(p_property_set2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set2);
+
+        tetengo_property_propertySet_setUint32(p_property_set1, "hoge", 42);
+        tetengo_property_propertySet_commit(p_property_set1);
+        {
+            auto       value = static_cast<::uint32_t>(0);
+            const auto result = tetengo_property_propertySet_getUint32(p_property_set2, "hoge", &value);
+            BOOST_TEST(!result);
+        }
+        tetengo_property_propertySet_update(p_property_set2);
+        {
+            auto       value = static_cast<::uint32_t>(0);
+            const auto result = tetengo_property_propertySet_getUint32(p_property_set2, "hoge", &value);
+            BOOST_TEST_REQUIRE(result);
+            BOOST_TEST(value == 42U);
         }
     }
 }
@@ -457,21 +494,50 @@ BOOST_AUTO_TEST_CASE(commit)
     BOOST_TEST_PASSPOINT();
 
     {
-        {
-            auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
-            tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
+        auto                            p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
 
-            property_set_.set_uint32("hoge", 42);
-            property_set_.commit();
-        }
-        {
-            auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
-            const tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
+        property_set_.set_uint32("hoge.cpp", 42);
+        property_set_.commit();
+    }
+    {
+        auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
+        const tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
 
-            const auto o_value = property_set_.get_uint32("hoge");
-            BOOST_REQUIRE(o_value);
-            BOOST_TEST(*o_value == 42U);
+        const auto o_value = property_set_.get_uint32("hoge.cpp");
+        BOOST_REQUIRE(o_value);
+        BOOST_TEST(*o_value == 42U);
+    }
+
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
         }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setUint32(p_property_set, "hoge", 42);
+        tetengo_property_propertySet_commit(p_property_set);
+    }
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        auto       value = static_cast<::uint32_t>(0);
+        const auto result = tetengo_property_propertySet_getUint32(p_property_set, "hoge", &value);
+        BOOST_TEST_REQUIRE(result);
+        BOOST_TEST(value == 42U);
     }
 }
 
