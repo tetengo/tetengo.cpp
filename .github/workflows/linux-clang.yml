@@ -13,7 +13,7 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        0
+  CACHE_REV:        1
   CONCURRENT_BUILD: 4
   DOXYGEN_VER:      1.9.1
   BOOST_VER:        1_76_0
@@ -72,8 +72,8 @@ jobs:
         tar -xf boost_${BOOST_VER}.tar.bz2
         cd boost_${BOOST_VER}
         ./bootstrap.sh --with-toolset=clang
-        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang-11 variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang-11 variant=release link=static install --prefix=/usr/local || :)
+        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
       uses: actions/checkout@v2
