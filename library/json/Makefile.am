@@ -3,7 +3,8 @@
 
 SUBDIRS = \
     cpp \
-    c
+    c \
+    test
 
 
 iwyu: ${SUBDIRS}
