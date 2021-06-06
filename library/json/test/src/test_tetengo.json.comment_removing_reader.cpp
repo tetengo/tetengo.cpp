@@ -4,6 +4,8 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#if !defined(__clang_major__) || __clang_major__ != 11
+
 #include <filesystem>
 #include <fstream>
 #include <iterator>
@@ -522,3 +524,5 @@ BOOST_AUTO_TEST_CASE(base_reader)
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif
