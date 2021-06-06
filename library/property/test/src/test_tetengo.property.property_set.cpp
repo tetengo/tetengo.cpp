@@ -6,10 +6,15 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
+#include <vector>
+
+#include <stddef.h>
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
@@ -275,6 +280,40 @@ BOOST_AUTO_TEST_CASE(set_uint32)
         BOOST_REQUIRE(o_value);
         BOOST_TEST(*o_value == 42U);
     }
+
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setUint32(p_property_set, "bravo", 42);
+        auto       value = static_cast<::uint32_t>(0);
+        const auto result = tetengo_property_propertySet_getUint32(p_property_set, "bravo", &value);
+        BOOST_TEST_REQUIRE(result);
+        BOOST_TEST(value == 42U);
+    }
+    {
+        tetengo_property_propertySet_setUint32(nullptr, "bravo", 0);
+    }
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setUint32(p_property_set, nullptr, 0);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(get_string)
@@ -287,6 +326,39 @@ BOOST_AUTO_TEST_CASE(get_string)
 
         const auto o_value = property_set_.get_string("charlie");
         BOOST_CHECK(!o_value);
+    }
+
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        const auto length = tetengo_property_propertySet_getString(p_property_set, "charlie", nullptr, 0);
+        BOOST_TEST(length == static_cast<size_t>(-1));
+    }
+    {
+        const auto length = tetengo_property_propertySet_getString(nullptr, "charlie", nullptr, 0);
+        BOOST_TEST(length == static_cast<size_t>(-1));
+    }
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        const auto length = tetengo_property_propertySet_getString(p_property_set, nullptr, nullptr, 0);
+        BOOST_TEST(length == static_cast<size_t>(-1));
     }
 }
 
@@ -302,6 +374,56 @@ BOOST_AUTO_TEST_CASE(set_string)
         const auto o_value = property_set_.get_string("charlie");
         BOOST_REQUIRE(o_value);
         BOOST_TEST(*o_value == "hoge");
+    }
+
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setString(p_property_set, "charlie", "hoge");
+        const auto length = tetengo_property_propertySet_getString(p_property_set, "charlie", nullptr, 0);
+        BOOST_TEST_REQUIRE(length == 4U);
+        std::vector<char> value(length + 1, '\0');
+        const auto        length_again =
+            tetengo_property_propertySet_getString(p_property_set, "charlie", std::data(value), std::size(value));
+        BOOST_TEST_REQUIRE(length_again == length);
+        BOOST_TEST((std::string_view{ std::data(value), length } == "hoge"));
+    }
+    {
+        tetengo_property_propertySet_setString(nullptr, "charlie", "hoge");
+    }
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setString(p_property_set, nullptr, "hoge");
+    }
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setString(p_property_set, "charlie", nullptr);
     }
 }
 

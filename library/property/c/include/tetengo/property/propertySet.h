@@ -7,6 +7,7 @@
 #if !defined(TETENGO_PROPERTY_PROPERTYSET_H)
 #define TETENGO_PROPERTY_PROPERTYSET_H
 
+#include <stddef.h>
 #include <stdint.h> // IWYU pragma: keep
 #if defined(IWYU)
 #include <cstdint> // Just silencing IWYU
@@ -96,10 +97,38 @@ int tetengo_property_propertySet_getUint32(
     \param key            A key.
     \param value          A value.
 */
-void tetengo_property_propertySet_setUInt32(
+void tetengo_property_propertySet_setUint32(
     tetengo_property_propertySet_t* p_property_set,
     const char*                     key,
     uint32_t                        value);
+
+/*!
+    \brief Returns the value in a string.
+
+    \param p_property_set A pointer to a property set.
+    \param key            A key.
+    \param p_value        The storage for a value. Can be NULL.
+    \param value_capacity A value capacity.
+
+    \return The value length. Or (size_t)-1 when no value for key is found.
+*/
+size_t tetengo_property_propertySet_getString(
+    const tetengo_property_propertySet_t* p_property_set,
+    const char*                           key,
+    char*                                 p_value,
+    size_t                                value_capacity);
+
+/*!
+    \brief Sets a value in a string.
+
+    \param p_property_set A pointer to a property set.
+    \param key            A key.
+    \param value          A value.
+*/
+void tetengo_property_propertySet_setString(
+    tetengo_property_propertySet_t* p_property_set,
+    const char*                     key,
+    const char*                     value);
 
 
 #if defined(__cplusplus)
