@@ -4,6 +4,7 @@
 headers =
 
 sources = \
+    tetengo_property_propertySet.cpp \
     tetengo_property_storage.cpp
 
 lib_LTLIBRARIES = libtetengo.property.la
