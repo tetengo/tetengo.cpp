@@ -7,12 +7,15 @@
 #if !defined(TETENGO_PROPERTY_PROPERTYSET_H)
 #define TETENGO_PROPERTY_PROPERTYSET_H
 
+#include <stdint.h> // IWYU pragma: keep
+#if defined(IWYU)
+#include <cstdint> // Just silencing IWYU
+#endif
+
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
-#include <tetengo/property/storage.h>
 
 #if !defined(DOCUMENTATION)
 #if !defined(TYPEDEF_TETENGO_PROPERTY_PROPERTYSET_T)
@@ -70,6 +73,33 @@ int tetengo_property_propertySet_getBool(
     \param value          A value.
 */
 void tetengo_property_propertySet_setBool(tetengo_property_propertySet_t* p_property_set, const char* key, int value);
+
+/*!
+    \brief Returns the value in an unsigned 32-bit integer.
+
+    \param p_property_set A pointer to a property set.
+    \param key            A key.
+    \param p_value        The storage for a value.
+
+    \retval non-zero When the value is set to p_value.
+    \retval 0        Otherwise.
+*/
+int tetengo_property_propertySet_getUint32(
+    const tetengo_property_propertySet_t* p_property_set,
+    const char*                           key,
+    uint32_t*                             p_value);
+
+/*!
+    \brief Sets a value in an unsigned 32-bit integer.
+
+    \param p_property_set A pointer to a property set.
+    \param key            A key.
+    \param value          A value.
+*/
+void tetengo_property_propertySet_setUInt32(
+    tetengo_property_propertySet_t* p_property_set,
+    const char*                     key,
+    uint32_t                        value);
 
 
 #if defined(__cplusplus)

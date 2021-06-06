@@ -4,6 +4,8 @@ EXPORTS
 	tetengo_property_propertySet_destroy
 	tetengo_property_propertySet_getBool
 	tetengo_property_propertySet_setBool
+	tetengo_property_propertySet_getUint32
+	tetengo_property_propertySet_setUInt32
 	tetengo_property_storage_destroy
 	tetengo_property_storage_getBool
 	tetengo_property_storage_setBool

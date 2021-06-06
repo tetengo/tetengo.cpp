@@ -4,6 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <filesystem>
 #include <memory>
 #include <optional>
@@ -208,6 +209,56 @@ BOOST_AUTO_TEST_CASE(get_uint32)
 
         const auto o_value = property_set_.get_uint32("bravo");
         BOOST_CHECK(!o_value);
+    }
+
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        auto       value = static_cast<::uint32_t>(0);
+        const auto result = tetengo_property_propertySet_getUint32(p_property_set, "alpha", &value);
+        BOOST_TEST(!result);
+    }
+    {
+        auto       value = static_cast<::uint32_t>(0);
+        const auto result = tetengo_property_propertySet_getUint32(nullptr, "alpha", &value);
+        BOOST_TEST(!result);
+    }
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        auto       value = static_cast<::uint32_t>(0);
+        const auto result = tetengo_property_propertySet_getUint32(p_property_set, nullptr, &value);
+        BOOST_TEST(!result);
+    }
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        const auto result = tetengo_property_propertySet_getUint32(p_property_set, "alpha", nullptr);
+        BOOST_TEST(!result);
     }
 }
 

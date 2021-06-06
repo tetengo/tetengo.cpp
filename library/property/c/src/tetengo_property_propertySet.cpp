@@ -4,6 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <stdexcept>
@@ -121,6 +122,62 @@ void tetengo_property_propertySet_setBool(
         }
 
         p_property_set->p_cpp_property_set->set_bool(key, value);
+    }
+    catch (...)
+    {}
+}
+
+int tetengo_property_propertySet_getUint32(
+    const tetengo_property_propertySet_t* const p_property_set,
+    const char* const                           key,
+    uint32_t* const                             p_value)
+{
+    try
+    {
+        if (!p_property_set)
+        {
+            throw std::invalid_argument{ "p_property_set is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+        if (!p_value)
+        {
+            throw std::invalid_argument{ "p_value is NULL." };
+        }
+
+        const auto o_cpp_value = p_property_set->p_cpp_property_set->get_uint32(key);
+        if (o_cpp_value)
+        {
+            *p_value = *o_cpp_value ? 1 : 0;
+        }
+        return static_cast<bool>(o_cpp_value);
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+
+void tetengo_property_propertySet_setUInt32(
+    tetengo_property_propertySet_t* const p_property_set,
+    const char* const                     key,
+    const uint32_t                        value)
+{
+    try
+    {
+        if (!p_property_set)
+        {
+            throw std::invalid_argument{ "p_property_set is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+
+        p_property_set->p_cpp_property_set->set_uint32(key, value);
     }
     catch (...)
     {}
