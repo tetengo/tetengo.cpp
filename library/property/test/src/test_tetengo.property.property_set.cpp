@@ -56,6 +56,7 @@ BOOST_AUTO_TEST_CASE(construction)
             tetengo_property_propertySet_destroy(p_property_set);
         }
         BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_property_set);
     }
 }
 
@@ -69,6 +70,56 @@ BOOST_AUTO_TEST_CASE(get_bool)
 
         const auto o_value = property_set_.get_bool("alpha");
         BOOST_CHECK(!o_value);
+    }
+
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        auto       value = static_cast<int>(0);
+        const auto result = tetengo_property_propertySet_getBool(p_property_set, "alpha", &value);
+        BOOST_TEST(!result);
+    }
+    {
+        auto       value = static_cast<int>(0);
+        const auto result = tetengo_property_propertySet_getBool(nullptr, "alpha", &value);
+        BOOST_TEST(!result);
+    }
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        auto       value = static_cast<int>(0);
+        const auto result = tetengo_property_propertySet_getBool(p_property_set, nullptr, &value);
+        BOOST_TEST(!result);
+    }
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        const auto result = tetengo_property_propertySet_getBool(p_property_set, "alpha", nullptr);
+        BOOST_TEST(!result);
     }
 }
 
@@ -93,6 +144,57 @@ BOOST_AUTO_TEST_CASE(set_bool)
         const auto o_value = property_set_.get_bool("alpha");
         BOOST_REQUIRE(o_value);
         BOOST_TEST(*o_value);
+    }
+
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setBool(p_property_set, "alpha", 0);
+        auto       value = static_cast<int>(0);
+        const auto result = tetengo_property_propertySet_getBool(p_property_set, "alpha", &value);
+        BOOST_TEST_REQUIRE(result);
+        BOOST_TEST(!value);
+    }
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setBool(p_property_set, "alpha", 1);
+        auto       value = static_cast<int>(0);
+        const auto result = tetengo_property_propertySet_getBool(p_property_set, "alpha", &value);
+        BOOST_TEST_REQUIRE(result);
+        BOOST_TEST(value);
+    }
+    {
+        tetengo_property_propertySet_setBool(nullptr, "alpha", 0);
+    }
+    {
+        auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_property_set);
+
+        tetengo_property_propertySet_setBool(p_property_set, nullptr, 0);
     }
 }
 

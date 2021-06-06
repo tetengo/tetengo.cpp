@@ -47,6 +47,30 @@ tetengo_property_propertySet_create(tetengo_property_storageLoader_t* p_storage_
 */
 void tetengo_property_propertySet_destroy(const tetengo_property_propertySet_t* p_property_set);
 
+/*!
+    \brief Returns the value in a boolean.
+
+    \param p_property_set A pointer to a property set.
+    \param key            A key.
+    \param p_value        The storage for a value.
+
+    \retval non-zero When the value is set to p_value.
+    \retval 0        Otherwise.
+*/
+int tetengo_property_propertySet_getBool(
+    const tetengo_property_propertySet_t* p_property_set,
+    const char*                           key,
+    int*                                  p_value);
+
+/*!
+    \brief Sets a value in a boolean.
+
+    \param p_property_set A pointer to a property set.
+    \param key            A key.
+    \param value          A value.
+*/
+void tetengo_property_propertySet_setBool(tetengo_property_propertySet_t* p_property_set, const char* key, int value);
+
 
 #if defined(__cplusplus)
 }

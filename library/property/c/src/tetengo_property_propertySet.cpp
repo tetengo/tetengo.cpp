@@ -5,6 +5,7 @@
 */
 
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <utility>
 
@@ -65,6 +66,61 @@ void tetengo_property_propertySet_destroy(const tetengo_property_propertySet_t* 
     try
     {
         const std::unique_ptr<const tetengo_property_propertySet_t> p_instance{ p_property_set };
+    }
+    catch (...)
+    {}
+}
+
+int tetengo_property_propertySet_getBool(
+    const tetengo_property_propertySet_t* const p_property_set,
+    const char* const                           key,
+    int* const                                  p_value)
+{
+    try
+    {
+        if (!p_property_set)
+        {
+            throw std::invalid_argument{ "p_property_set is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+        if (!p_value)
+        {
+            throw std::invalid_argument{ "p_value is NULL." };
+        }
+
+        const auto o_cpp_value = p_property_set->p_cpp_property_set->get_bool(key);
+        if (o_cpp_value)
+        {
+            *p_value = *o_cpp_value ? 1 : 0;
+        }
+        return static_cast<bool>(o_cpp_value);
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+void tetengo_property_propertySet_setBool(
+    tetengo_property_propertySet_t* const p_property_set,
+    const char* const                     key,
+    const int                             value)
+{
+    try
+    {
+        if (!p_property_set)
+        {
+            throw std::invalid_argument{ "p_property_set is NULL." };
+        }
+        if (!key)
+        {
+            throw std::invalid_argument{ "key is NULL." };
+        }
+
+        p_property_set->p_cpp_property_set->set_bool(key, value);
     }
     catch (...)
     {}
