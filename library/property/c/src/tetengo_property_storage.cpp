@@ -191,12 +191,12 @@ size_t tetengo_property_storage_getString(
         }
         else
         {
-            return 0;
+            return static_cast<size_t>(-1);
         }
     }
     catch (...)
     {
-        return 0;
+        return static_cast<size_t>(-1);
     }
 }
 

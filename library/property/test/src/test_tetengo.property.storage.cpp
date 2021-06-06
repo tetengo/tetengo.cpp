@@ -16,6 +16,8 @@
 #include <variant>
 #include <vector>
 
+#include <stddef.h>
+
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -438,11 +440,13 @@ BOOST_AUTO_TEST_CASE(get_string)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        BOOST_TEST(!tetengo_property_storage_getString(p_storage, key.string().c_str(), nullptr, 0));
+        BOOST_TEST(
+            tetengo_property_storage_getString(p_storage, key.string().c_str(), nullptr, 0) == static_cast<size_t>(-1));
     }
     {
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        BOOST_TEST(!tetengo_property_storage_getString(nullptr, key.string().c_str(), nullptr, 0));
+        BOOST_TEST(
+            tetengo_property_storage_getString(nullptr, key.string().c_str(), nullptr, 0) == static_cast<size_t>(-1));
     }
     {
         const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
@@ -460,7 +464,7 @@ BOOST_AUTO_TEST_CASE(get_string)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        BOOST_TEST(!tetengo_property_storage_getString(p_storage, nullptr, nullptr, 0));
+        BOOST_TEST(tetengo_property_storage_getString(p_storage, nullptr, nullptr, 0) == static_cast<size_t>(-1));
     }
 }
 
@@ -549,7 +553,8 @@ BOOST_AUTO_TEST_CASE(set_string)
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
         tetengo_property_storage_setString(nullptr, key.string().c_str(), "foo");
-        BOOST_TEST(!tetengo_property_storage_getString(p_storage, key.string().c_str(), nullptr, 0));
+        BOOST_TEST(
+            tetengo_property_storage_getString(p_storage, key.string().c_str(), nullptr, 0) == static_cast<size_t>(-1));
     }
     {
         const auto* const p_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
@@ -569,7 +574,8 @@ BOOST_AUTO_TEST_CASE(set_string)
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
         tetengo_property_storage_setString(p_storage, nullptr, "foo");
-        BOOST_TEST(!tetengo_property_storage_getString(p_storage, key.string().c_str(), nullptr, 0));
+        BOOST_TEST(
+            tetengo_property_storage_getString(p_storage, key.string().c_str(), nullptr, 0) == static_cast<size_t>(-1));
     }
 }
 
