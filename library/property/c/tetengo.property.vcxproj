@@ -115,11 +115,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\tetengo_property_propertySet.cpp" />
     <ClCompile Include="src\tetengo_property_storage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="include\tetengo\property\propertySet.h" />
     <ClInclude Include="include\tetengo\property\storage.h" />
+    <ClInclude Include="src\tetengo_property_storage.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def" />

@@ -15,6 +15,8 @@
 #include <system_error>
 #include <vector>
 
+#include <stddef.h>
+
 #include <boost/core/noncopyable.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
@@ -395,7 +397,7 @@ BOOST_AUTO_TEST_CASE(load)
         }
         {
             const auto length = tetengo_property_storage_getString(p_storage, "charlie", nullptr, 0);
-            BOOST_TEST(length == 0U);
+            BOOST_TEST(length == static_cast<size_t>(-1));
         }
     }
     {
@@ -471,7 +473,7 @@ BOOST_AUTO_TEST_CASE(load)
         {
             const auto length = tetengo_property_storage_getString(
                 p_storage, (std::filesystem::path{ "charlie" } / "delta").string().c_str(), nullptr, 0);
-            BOOST_TEST(length == 0U);
+            BOOST_TEST(length == static_cast<size_t>(-1));
         }
     }
     {
@@ -504,7 +506,7 @@ BOOST_AUTO_TEST_CASE(load)
         {
             const auto length = tetengo_property_storage_getString(
                 p_storage, (std::filesystem::path{ "charlie" } / "delta").string().c_str(), nullptr, 0);
-            BOOST_TEST(length == 0U);
+            BOOST_TEST(length == static_cast<size_t>(-1));
         }
     }
     {
@@ -537,7 +539,7 @@ BOOST_AUTO_TEST_CASE(load)
         {
             const auto length = tetengo_property_storage_getString(
                 p_storage, (std::filesystem::path{ "charlie" } / "delta").string().c_str(), nullptr, 0);
-            BOOST_TEST(length == 0U);
+            BOOST_TEST(length == static_cast<size_t>(-1));
         }
     }
     {
@@ -572,7 +574,7 @@ BOOST_AUTO_TEST_CASE(load)
         {
             const auto length = tetengo_property_storage_getString(
                 p_storage, (std::filesystem::path{ "charlie" } / "delta").string().c_str(), nullptr, 0);
-            BOOST_TEST(length == 0);
+            BOOST_TEST(length == static_cast<size_t>(-1));
         }
         {
             auto       value = static_cast<::uint32_t>(0);

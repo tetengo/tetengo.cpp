@@ -20,6 +20,9 @@
     <ClCompile Include="src\tetengo_property_storage.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo_property_propertySet.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
@@ -27,6 +30,12 @@
     </ClInclude>
     <ClInclude Include="include\tetengo\property\storage.h">
       <Filter>header\tetengo::property</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\property\propertySet.h">
+      <Filter>header\tetengo::property</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tetengo_property_storage.hpp">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

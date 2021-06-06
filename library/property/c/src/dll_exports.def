@@ -1,5 +1,15 @@
 LIBRARY tetengo.property.dll
 EXPORTS
+	tetengo_property_propertySet_create
+	tetengo_property_propertySet_destroy
+	tetengo_property_propertySet_getBool
+	tetengo_property_propertySet_setBool
+	tetengo_property_propertySet_getUint32
+	tetengo_property_propertySet_setUint32
+	tetengo_property_propertySet_getString
+	tetengo_property_propertySet_setString
+	tetengo_property_propertySet_update
+	tetengo_property_propertySet_commit
 	tetengo_property_storage_destroy
 	tetengo_property_storage_getBool
 	tetengo_property_storage_setBool

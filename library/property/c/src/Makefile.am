@@ -1,9 +1,11 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    tetengo_property_storage.hpp
 
 sources = \
+    tetengo_property_propertySet.cpp \
     tetengo_property_storage.cpp
 
 lib_LTLIBRARIES = libtetengo.property.la

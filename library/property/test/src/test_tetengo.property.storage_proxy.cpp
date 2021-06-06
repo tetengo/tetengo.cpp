@@ -13,6 +13,8 @@
 #include <utility>
 #include <vector>
 
+#include <stddef.h>
+
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -386,11 +388,11 @@ BOOST_AUTO_TEST_CASE(get_string)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto length = tetengo_property_storage_getString(p_storage, "charlie", nullptr, 0);
-        BOOST_TEST(length == 0U);
+        BOOST_TEST(length == static_cast<size_t>(-1));
     }
     {
         const auto length = tetengo_property_storage_getString(nullptr, "charlie", nullptr, 0);
-        BOOST_TEST(length == 0U);
+        BOOST_TEST(length == static_cast<size_t>(-1));
     }
     {
         auto* const       p_real_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
@@ -410,7 +412,7 @@ BOOST_AUTO_TEST_CASE(get_string)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto length = tetengo_property_storage_getString(p_storage, nullptr, nullptr, 0);
-        BOOST_TEST(length == 0U);
+        BOOST_TEST(length == static_cast<size_t>(-1));
     }
 }
 
