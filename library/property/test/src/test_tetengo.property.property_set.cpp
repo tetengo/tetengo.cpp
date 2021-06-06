@@ -7,13 +7,17 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/property/memory_storage.hpp>
+#include <tetengo/property/propertySet.h>
 #include <tetengo/property/property_set.hpp>
+#include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>
 
 
@@ -41,6 +45,17 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         auto p_storage_loader = std::make_unique<tetengo::property::memory_storage_loader>();
         const tetengo::property::property_set property_set_{ std::move(p_storage_loader), property_set_path() };
+    }
+
+    {
+        auto* const       p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
+        const auto* const p_property_set =
+            tetengo_property_propertySet_create(p_storage_loader, property_set_path().string().c_str());
+        BOOST_SCOPE_EXIT(p_property_set)
+        {
+            tetengo_property_propertySet_destroy(p_property_set);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
 }
 

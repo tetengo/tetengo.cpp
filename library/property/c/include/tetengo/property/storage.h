@@ -8,14 +8,15 @@
 #define TETENGO_PROPERTY_STORAGE_H
 
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 #include <stddef.h>
 #include <stdint.h> // IWYU pragma: keep
 #if defined(IWYU)
 #include <cstdint> // Just silencing IWYU
+#endif
+
+
+#if defined(__cplusplus)
+extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)

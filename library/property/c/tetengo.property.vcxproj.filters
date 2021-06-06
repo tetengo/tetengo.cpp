@@ -34,6 +34,9 @@
     <ClInclude Include="include\tetengo\property\propertySet.h">
       <Filter>header\tetengo::property</Filter>
     </ClInclude>
+    <ClInclude Include="src\tetengo_property_storage.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def">

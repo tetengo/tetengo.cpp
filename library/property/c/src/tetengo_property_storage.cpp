@@ -28,6 +28,8 @@
 #include <tetengo/property/windows_registry_storage.hpp>
 #endif
 
+#include "tetengo_property_storage.hpp"
+
 
 struct tetengo_property_storage_tag
 {
@@ -35,16 +37,6 @@ struct tetengo_property_storage_tag
 
     explicit tetengo_property_storage_tag(std::unique_ptr<tetengo::property::storage>&& p_cpp_storage) :
     p_cpp_storage{ std::move(p_cpp_storage) }
-    {}
-};
-
-struct tetengo_property_storageLoader_tag
-{
-    std::unique_ptr<tetengo::property::storage_loader> p_cpp_storage_loader;
-
-    explicit tetengo_property_storageLoader_tag(
-        std::unique_ptr<tetengo::property::storage_loader>&& p_cpp_storage_loader) :
-    p_cpp_storage_loader{ std::move(p_cpp_storage_loader) }
     {}
 };
 

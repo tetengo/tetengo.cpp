@@ -122,6 +122,7 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
     <ClInclude Include="include\tetengo\property\propertySet.h" />
     <ClInclude Include="include\tetengo\property\storage.h" />
+    <ClInclude Include="src\tetengo_property_storage.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\dll_exports.def" />
