@@ -29,6 +29,16 @@ path in the lattice consisting of the observed event nodes.
 This library also provides the A* search algorithm for the lattice created by
 the Viterbi search.
 
+### tetengo::property
+
+An application setting library.
+
+It enables to acquire and save the settings in a common, platform-independent
+way.
+
+The storage of the settings is platform-specific: the Windows registry on
+Windows, home directory dot files on UNIX, etc.
+
 ### tetengo::text
 
 A text library.
@@ -62,6 +72,7 @@ How to Build and Install
 - [Boost C++ libraries 1.76.0](https://www.boost.org/)
 - [Doxygen 1.9.1](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
+- [WiX toolset 3.11.2](https://wixtoolset.org/)
 - [Python 3.7](https://www.python.org/),
   [Python 3.8](https://www.python.org/) or
   [Python 3.9](https://www.python.org/)
