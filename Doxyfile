@@ -860,6 +860,8 @@ INPUT                  = docsrc \
                          library/lattice/c/include \
                          library/lattice/cpp/include \
                          library/platform_dependent/cpp/include \
+                         library/property/c/include \
+                         library/property/cpp/include \
                          library/text/c/include \
                          library/text/cpp/include \
                          library/trie/c/include \
