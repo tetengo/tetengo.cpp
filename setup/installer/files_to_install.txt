@@ -3,6 +3,8 @@ include                      library\json\cpp\include\tetengo\json\**           
 include                      library\lattice\c\include\tetengo\lattice\**                         include\tetengo\lattice\
 include                      library\lattice\cpp\include\tetengo\lattice\**                       include.cpp\tetengo\lattice\
 include                      library\platform_dependent\cpp\include\tetengo\platform_dependent\** include.cpp\tetengo\platform_dependent\
+include                      library\property\c\include\tetengo\property\**                       include\tetengo\property\
+include                      library\property\cpp\include\tetengo\property\**                     include.cpp\tetengo\property\
 include                      library\text\c\include\tetengo\text\**                               include\tetengo\text\
 include                      library\text\cpp\include\tetengo\text\**                             include.cpp\tetengo\text\
 include                      library\trie\c\include\tetengo\trie\**                               include\tetengo\trie\
