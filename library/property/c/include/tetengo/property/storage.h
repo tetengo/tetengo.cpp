@@ -140,7 +140,7 @@ tetengo_property_storageLoader_t* tetengo_property_storageLoader_createWindowsRe
     proxy.
     There is no need to destroy the real storage loader after calling this function.
 
-    \param p_readl_storage_loader A pointer to a real storage loader.
+    \param p_real_storage_loader A pointer to a real storage loader.
 
     \return A pointer to a storage loader.
 */
