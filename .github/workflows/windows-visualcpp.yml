@@ -69,9 +69,6 @@ jobs:
         set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
-        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
-        msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
-        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
     
     - name: Build 64bit
       shell: cmd
@@ -81,9 +78,10 @@ jobs:
         set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
+    
+    - name: Build setups
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
-        msbuild /t:Clean   /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
-        msbuild /t:Clean   /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
     
     - name: Make archive
       shell: powershell
