@@ -80,6 +80,8 @@ jobs:
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
     
     - name: Build setups
+      shell: cmd
+      run: |
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
     
