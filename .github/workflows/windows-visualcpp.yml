@@ -61,12 +61,11 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Build 32bit
+    - name: Build product 32bit
       shell: cmd
       run: |
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
-        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
@@ -76,12 +75,11 @@ jobs:
         for /r %%f in (*.ipch) do del /f /q %%f
         for /r %%f in (*.VC.db) do del /f /q %%f
     
-    - name: Build 64bit
+    - name: Build product 64bit
       shell: cmd
       run: |
         set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
         set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
-        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
@@ -91,10 +89,20 @@ jobs:
         for /r %%f in (*.ipch) do del /f /q %%f
         for /r %%f in (*.VC.db) do del /f /q %%f
     
-    - name: Build setups
+    - name: Build setup 32bit
       shell: cmd
       run: |
+        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
+        set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
+        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
+    
+    - name: Build setup 64bit
+      shell: cmd
+      run: |
+        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
+        set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
+        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
     
     - name: Make archive
