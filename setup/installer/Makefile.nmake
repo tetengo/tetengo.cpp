@@ -20,12 +20,14 @@ COPY=copy
 ECHO=echo
 MKDIR=mkdir
 DEL=del
+RMDIR=rmdir
 
 OBJDIR=$(WORKDIR)\obj\$(CONFIGURATION).$(PLATFORM)
 BINDIR=$(WORKDIR)\bin.setup\$(CONFIGURATION).$(PLATFORM)
+LIBIMAGEBINDIR=$(WORKDIR)\bin.libimage\$(CONFIGURATION).$(PLATFORM)
 TETENGOOUTDIR=$(WORKDIR)\..\..\bin\$(CONFIGURATION).$(PLATFORM)
 
-all: $(BINDIR)\tetengo.msi $(BINDIR)\setup.exe $(BINDIR)\setup.conf
+all: $(BINDIR)\tetengo.msi $(BINDIR)\setup.exe $(BINDIR)\setup.conf $(LIBIMAGEBINDIR)
 
 $(BINDIR)\tetengo.msi: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\ja.mst
 	-$(MKDIR) $(BINDIR)
@@ -62,7 +64,12 @@ $(BINDIR)\setup.exe: $(TETENGOOUTDIR)\setup.exe
 $(BINDIR)\setup.conf:
 	$(ECHO) tetengo.msi > $@
 
+$(LIBIMAGEBINDIR): $(OBJDIR)\content_wxs_source.txt
+	-$(MKDIR) $(LIBIMAGEBINDIR)
+	$(PYTHON) "$(WORKDIR)\copy_libimage_files.py" $** $@
+
 .PHONY: clean
 clean:
 	-$(DEL) /f /q $(OBJDIR)\*
 	-$(DEL) /f /q $(BINDIR)\*
+	-$(RMDIR) /s /q $(LIBIMAGEBINDIR)

@@ -72,32 +72,33 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakeOutput>$(OutDir)tetengo.msi</NMakeOutput>
-    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeOutput>$(OutDir)tetengo.msi</NMakeOutput>
-    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NMakeOutput>$(OutDir)tetengo.msi</NMakeOutput>
-    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <NMakeOutput>$(OutDir)tetengo.msi</NMakeOutput>
-    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) all</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean all</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) all</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean all</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f $(ProjectDir)Makefile.nmake ARCH=$(PlatformTarget) PLATFORM=$(Platform) SOLUTIONDIR=$(SolutionDir) WORKDIR=$(ProjectDir) OBJDIR=$(IntDir) BINDIR=$(OutDir) LIBIMAGEBINDIR=$(SolutionDir)bin.libimage\$(Configuration).$(Platform) clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="COPYING.rtf" />
+    <None Include="copy_libimage_files.py" />
     <None Include="generate_content_wxs.py" />
     <None Include="generate_content_wxs_source.py" />
     <None Include="main.wxs" />

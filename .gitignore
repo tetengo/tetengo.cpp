@@ -4,6 +4,7 @@
 aclocal.m4
 autom4te.cache/
 bin/
+bin.libimage/
 bin.setup/
 compile
 config.guess

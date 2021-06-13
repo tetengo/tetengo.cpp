@@ -2,6 +2,7 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 script_files = \
+    copy_libimage_files.py \
     generate_content_wxs.py \
     generate_content_wxs_source.py
 

@@ -108,15 +108,17 @@ jobs:
     - name: Make archive
       shell: powershell
       run: |
-        Compress-Archive -Path .\bin.setup\Release.Win32 -DestinationPath .\bin.setup\tetengo-windows-Win32-$env:TETENGO_VER.zip
-        Compress-Archive -Path .\bin.setup\Release.x64   -DestinationPath .\bin.setup\tetengo-windows-x64-$env:TETENGO_VER.zip
+        Compress-Archive -Path .\bin.setup\Release.Win32  -DestinationPath .\bin.setup\tetengo-windows-Win32-$env:TETENGO_VER.zip
+        Compress-Archive -Path .\bin.setup\Release.x64    -DestinationPath .\bin.setup\tetengo-windows-x64-$env:TETENGO_VER.zip
+        Compress-Archive -Path .\bin.libimage\Release.x64 -DestinationPath .\bin.libimage\tetengo-windows-libimage-x64-$env:TETENGO_VER.zip
     
     - name: Move artifacts
       shell: cmd
       run: |
         mkdir artifacts
-        move bin.setup\tetengo-windows-Win32-%TETENGO_VER%.zip artifacts
-        move bin.setup\tetengo-windows-x64-%TETENGO_VER%.zip   artifacts
+        move bin.setup\tetengo-windows-Win32-%TETENGO_VER%.zip              artifacts
+        move bin.setup\tetengo-windows-x64-%TETENGO_VER%.zip                artifacts
+        move bin.libimage\tetengo-windows-libimage-x64-$env:TETENGO_VER.zip artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
