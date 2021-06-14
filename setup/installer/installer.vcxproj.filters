@@ -25,6 +25,9 @@
     <None Include="COPYING.rtf">
       <Filter>res</Filter>
     </None>
+    <None Include="copy_libimage_files.py">
+      <Filter>src</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="files_to_install.txt">
