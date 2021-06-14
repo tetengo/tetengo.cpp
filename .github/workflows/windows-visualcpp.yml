@@ -116,9 +116,9 @@ jobs:
       shell: cmd
       run: |
         mkdir artifacts
-        move bin.setup\tetengo-windows-Win32-%TETENGO_VER%.zip              artifacts
-        move bin.setup\tetengo-windows-x64-%TETENGO_VER%.zip                artifacts
-        move bin.libimage\tetengo-windows-libimage-x64-$env:TETENGO_VER.zip artifacts
+        move bin.setup\tetengo-windows-Win32-%TETENGO_VER%.zip           artifacts
+        move bin.setup\tetengo-windows-x64-%TETENGO_VER%.zip             artifacts
+        move bin.libimage\tetengo-windows-libimage-x64-%TETENGO_VER%.zip artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
