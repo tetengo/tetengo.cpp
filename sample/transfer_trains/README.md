@@ -13,7 +13,7 @@ transfer_trains timetable.txt
 Description
 -----------
 
-At first, this program asks you a departure station and time, and a arrival
+At first, this program asks you a departure station and time, and an arrival
 station.
 
 Then, this program lists trains. Some list items have several trains. That
