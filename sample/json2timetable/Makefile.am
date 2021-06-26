@@ -8,10 +8,17 @@ SUBDIRS = \
     ${SOURCE_SUBDIRS} \
     data
 
+data_files = \
+    README.md
+
 EXTRA_DIST = \
-    README.md \
+    ${data_files} \
     json2timetable.vcxproj \
     json2timetable.vcxproj.filters
+
+json2timetable_datadir = ${pkgdatadir}/json2timetable
+
+json2timetable_data_DATA = ${data_files}
 
 
 iwyu: ${SOURCE_SUBDIRS}
