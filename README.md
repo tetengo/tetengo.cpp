@@ -99,7 +99,7 @@ Execute `setup.exe` in the archive..
 Clone the source files from GitHub:
 
 ```bat
-> git clone --recurse-submodules https://github.com/kaorut/tetengo.git
+> git clone --recurse-submodules https://github.com/tetengo/tetengo.git
 ```
 
 Open the file `tetengo.sln` in the work tree.
@@ -174,7 +174,7 @@ $ tar -xf tetengo-X.Y.Z.tar.bz2
 Clone the source files from GitHub:
 
 ```shell-session
-$ git clone --recurse-submodules https://github.com/kaorut/tetengo.git
+$ git clone --recurse-submodules https://github.com/tetengo/tetengo.git
 ```
 
 Run the script `bootstrap.sh` in the top directory to generate the script
@@ -211,5 +211,5 @@ $ make doc
 Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 This product is released under the MIT license.
-See [the COPYING file](https://github.com/kaorut/tetengo/blob/master/COPYING)
+See [the COPYING file](https://github.com/tetengo/tetengo/blob/master/COPYING)
 for details.
