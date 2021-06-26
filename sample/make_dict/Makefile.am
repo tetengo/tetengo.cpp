@@ -4,10 +4,17 @@
 SUBDIRS = \
     src
 
+data_files = \
+    README.md
+
 EXTRA_DIST = \
-    README.md \
+    ${data_files} \
     make_dict.vcxproj \
     make_dict.vcxproj.filters
+
+make_dict_datadir = ${pkgdatadir}/make_dict
+
+make_dict_data_DATA = ${data_files}
 
 
 iwyu: ${SUBDIRS}

@@ -19,12 +19,20 @@ SUBDIRS = \
     docsrc \
     precompiled
 
+data_files = \
+    COPYING \
+    README.md
+
 EXTRA_DIST = \
+    ${data_files} \
     bootstrap.sh \
     Doxyfile \
-    README.md \
     tetengo.sln \
     tetengo.setup.sln
+
+
+nobase_pkgdata_DATA = \
+    ${data_files}
 
 
 .PHONY: precompiled_h
