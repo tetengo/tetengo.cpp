@@ -1,7 +1,7 @@
 make_dict
 =========
 
-Makes a index file of UniDic lex.csv.
+Makes an index file of UniDic lex.csv.
 
 Synopsis
 --------

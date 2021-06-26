@@ -39,7 +39,7 @@ namespace tetengo::lattice
             \param entries        Entries.
             \param connections    Connections.
             \param entry_hash     A hash function for an entry.
-            \param entry_equal_to A eqaul_to function for an entry.
+            \param entry_equal_to An eqaul_to function for an entry.
         */
         unordered_map_vocabulary(
             std::vector<std::pair<std::string, std::vector<entry>>>   entries,

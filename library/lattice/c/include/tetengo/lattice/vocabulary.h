@@ -50,7 +50,7 @@ typedef struct tetengo_lattice_vocabulary_tag tetengo_lattice_vocabulary_t;
     \param p_connections    A pointer to connections.
     \param connection_count A connection count.
     \param p_entry_hash     A pointer to a hash function for an entry.
-    \param p_entry_equal_to A pointer to a eqaul_to function for an entry.
+    \param p_entry_equal_to A pointer to an eqaul_to function for an entry.
 
     \return A pointer to an unordered_map vocabulary.
             Or NULL when p_entries and/or p_connections are NULL, and entry_count and/or connection_count are greater
