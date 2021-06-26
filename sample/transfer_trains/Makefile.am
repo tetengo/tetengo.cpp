@@ -8,10 +8,17 @@ SUBDIRS = \
     ${SOURCE_SUBDIRS} \
     data
 
+data_files = \
+    README.md
+
 EXTRA_DIST = \
-    README.md \
+    ${data_files} \
     transfer_trains.vcxproj \
     transfer_trains.vcxproj.filters
+
+transfer_trains_datadir = ${pkgdatadir}/transfer_trains
+
+transfer_trains_data_DATA = ${data_files}
 
 
 iwyu: ${SOURCE_SUBDIRS}

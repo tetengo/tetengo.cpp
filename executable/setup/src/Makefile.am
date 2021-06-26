@@ -7,7 +7,8 @@ sources = \
     winmain.cpp
 
 EXTRA_DIST = \
-    $(headers) $(sources)
+    ${headers} \
+    ${sources}
 
 
 iwyu:

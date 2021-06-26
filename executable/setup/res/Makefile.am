@@ -8,4 +8,4 @@ resource_files = \
     setup.rc
 
 EXTRA_DIST = \
-    $(resource_files)
+    ${resource_files}

@@ -19,30 +19,38 @@ SUBDIRS = \
     docsrc \
     precompiled
 
+data_files = \
+    COPYING \
+    README.md
+
 EXTRA_DIST = \
+    ${data_files} \
     bootstrap.sh \
     Doxyfile \
-    README.md \
     tetengo.sln \
     tetengo.setup.sln
 
 
+nobase_pkgdata_DATA = \
+    ${data_files}
+
+
 .PHONY: precompiled_h
 precompiled_h:
-	cd $(top_srcdir) && ./kogyan/tool/make_precompiled_h.py
+	cd ${top_srcdir} && ./kogyan/tool/make_precompiled_h.py
 
 .PHONY: doc
 doc:
-	cd $(top_srcdir) && $(DOXYGEN) Doxyfile
-	if test "$(top_srcdir)" != "$(top_builddir)"; \
+	cd ${top_srcdir} && ${DOXYGEN} Doxyfile
+	if test "${top_srcdir}" != "${top_builddir}"; \
 	then \
-	    rm -rf $(top_builddir)/doc; \
-	    mv $(top_srcdir)/doc $(top_builddir); \
+	    rm -rf ${top_builddir}/doc; \
+	    mv ${top_srcdir}/doc ${top_builddir}; \
 	fi
 
 .PHONY: clean-doc
 clean-doc:
-	-rm -rf $(top_builddir)/doc
+	-rm -rf ${top_builddir}/doc
 
 distclean-local: clean-doc
 
@@ -53,7 +61,7 @@ clean-iwyu: ${SOURCE_SUBDIRS}
 
 .PHONY: check_file_name_lengths
 check_file_name_lengths:
-	cd $(top_srcdir) && ./kogyan/tool/check_file_name_lengths.py
+	cd ${top_srcdir} && ./kogyan/tool/check_file_name_lengths.py
 
 mypy: ${SCRIPT_SUBDIRS}
 
