@@ -6,4 +6,14 @@
 
 /*! \namespace tetengo::json
     \brief A JSON library.
+
+    \section usage Usage
+
+    \subsection usage-cpp C++
+
+    \snippet json/test/src/usage_tetengo.json.snippets_cpp.cpp json_parser
+
+    \subsection usage-c C
+
+    \snippet json/test/src/usage_tetengo.json.snippets_c.c jsonParser
 */
