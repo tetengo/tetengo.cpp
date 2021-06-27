@@ -10,11 +10,10 @@
 
 
 #if defined(__cplusplus)
-extern "C"
-{
+extern "C" {
 #endif
 
-    void usage_tetengo_json_jsonParser();
+void usage_tetengo_json_jsonParser();
 
 
 #if defined(__cplusplus)

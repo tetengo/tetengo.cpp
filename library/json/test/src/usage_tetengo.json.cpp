@@ -20,7 +20,8 @@ BOOST_AUTO_TEST_CASE(snippets)
 {
     BOOST_TEST_PASSPOINT();
 
-
+    usage_tetengo::json::json_parser();
+    usage_tetengo_json_jsonParser();
 }
 
 

@@ -8,8 +8,5 @@
 
 
 /* [jsonParser] */
-void usage_tetengo_json_jsonParser()
-{
-
-}
+void usage_tetengo_json_jsonParser() {}
 /* [jsonParser] */
