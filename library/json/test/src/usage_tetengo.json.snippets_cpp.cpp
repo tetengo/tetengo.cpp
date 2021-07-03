@@ -77,6 +77,8 @@ namespace usage_tetengo::json
     std::string to_string(const tetengo::json::element& element_)
     {
         std::string result{};
+
+        // Obtains the element type name.
         switch (element_.type().name)
         {
         case tetengo::json::element::type_name_type::string:
@@ -102,6 +104,8 @@ namespace usage_tetengo::json
             result = "array:";
             break;
         }
+
+        // Obtains the element type category.
         switch (element_.type().category)
         {
         case tetengo::json::element::type_category_type::primitive:
@@ -114,11 +118,16 @@ namespace usage_tetengo::json
             result += "close:";
             break;
         }
+
+        // Obtains the element attributes.
         for (const auto& attribute: element_.attributes())
         {
             result += attribute.first + "=" + attribute.second + ":";
         }
+
+        // Obtains the element value.
         result += element_.value();
+
         return result;
     }
 }

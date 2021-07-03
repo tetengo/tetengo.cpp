@@ -9,6 +9,7 @@
 /* [jsonParser] */
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <tetengo/json/element.h>
@@ -97,6 +98,7 @@ const char* to_string(const tetengo_json_element_t* const p_element)
     static char result[32] = { 0 };
     result[0] = '\0';
     {
+        /* Obtains the element type name. */
         const tetengo_json_element_type_t* const p_type = tetengo_json_element_type(p_element);
         if (p_type->name == tetengo_json_element_typeName_string())
         {
@@ -127,6 +129,8 @@ const char* to_string(const tetengo_json_element_t* const p_element)
             assert(p_type->name == tetengo_json_element_typeName_array());
             strcat(result, "array:");
         }
+
+        /* Obtains the element type category. */
         if (p_type->category == tetengo_json_element_typeCategory_primitive())
         {
         }
@@ -139,17 +143,34 @@ const char* to_string(const tetengo_json_element_t* const p_element)
             assert(p_type->category == tetengo_json_element_typeCategory_structureClose());
             strcat(result, "close:");
         }
+
         {
-            const char*  key = NULL;
-            const size_t attribute_count = tetengo_json_element_attributeKeys(p_element, &key);
+            /* Obtains the element attributes. */
+            const size_t attribute_count = tetengo_json_element_attributeKeys(p_element, NULL);
             if (attribute_count > 0)
             {
-                strcat(result, key);
-                strcat(result, "=");
-                strcat(result, tetengo_json_element_attributeValueOf(p_element, key));
-                strcat(result, ":");
+                const char** const p_keys = (const char**)malloc(attribute_count * sizeof(const char*));
+                if (!p_keys)
+                {
+                    fprintf(stderr, "Failed to allocate a memory.");
+                    return result;
+                }
+                tetengo_json_element_attributeKeys(p_element, p_keys);
+                {
+                    size_t i = 0;
+                    for (i = 0; i < attribute_count; ++i)
+                    {
+                        strcat(result, p_keys[i]);
+                        strcat(result, "=");
+                        strcat(result, tetengo_json_element_attributeValueOf(p_element, p_keys[i]));
+                        strcat(result, ":");
+                    }
+                }
+                free((void*)p_keys);
             }
         }
+
+        /* Obtains the element value. */
         strcat(result, tetengo_json_element_value(p_element));
     }
     strcat(result, "\n");
