@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage snippets.
+    \brief The usage of JSON parsing
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -8,15 +8,15 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include "usage_tetengo.json.snippets_c.h"
-#include "usage_tetengo.json.snippets_cpp.hpp"
+#include "usage_tetengo.json.parsing_c.h"
+#include "usage_tetengo.json.parsing_cpp.hpp"
 
 
 BOOST_AUTO_TEST_SUITE(usage_tetengo)
 BOOST_AUTO_TEST_SUITE(json)
 
 
-BOOST_AUTO_TEST_CASE(snippets)
+BOOST_AUTO_TEST_CASE(parsing)
 {
     BOOST_TEST_PASSPOINT();
 

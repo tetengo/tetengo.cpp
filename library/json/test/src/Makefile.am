@@ -2,8 +2,8 @@
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
 headers = \
-    usage_tetengo.json.snippets_c.h \
-    usage_tetengo.json.snippets_cpp.hpp
+    usage_tetengo.json.parsing_c.h \
+    usage_tetengo.json.parsing_cpp.hpp
 
 sources = \
     master.cpp \
@@ -18,8 +18,8 @@ sources = \
     test_tetengo.json.reader_iterator.cpp \
     test_tetengo.json.stream_reader.cpp \
     usage_tetengo.json.cpp \
-    usage_tetengo.json.snippets_c.c \
-    usage_tetengo.json.snippets_cpp.cpp
+    usage_tetengo.json.parsing_c.c \
+    usage_tetengo.json.parsing_cpp.cpp
 
 check_PROGRAMS = test_tetengo.json
 

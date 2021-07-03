@@ -1,10 +1,10 @@
 /*! \file
-    \brief The usage snippets.
+    \brief The usage of JSON parsing
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#include "usage_tetengo.json.snippets_cpp.hpp"
+#include "usage_tetengo.json.parsing_cpp.hpp"
 
 // [json_parser]
 #include <cassert>

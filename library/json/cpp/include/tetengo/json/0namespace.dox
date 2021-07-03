@@ -13,9 +13,9 @@
 
     \subsubsection usage-parsing-cpp C++
 
-    \snippet json/test/src/usage_tetengo.json.snippets_cpp.cpp json_parser
+    \snippet json/test/src/usage_tetengo.json.parsing_cpp.cpp json_parser
 
     \subsubsection usage-parsing-c C
 
-    \snippet json/test/src/usage_tetengo.json.snippets_c.c jsonParser
+    \snippet json/test/src/usage_tetengo.json.parsing_c.c jsonParser
 */

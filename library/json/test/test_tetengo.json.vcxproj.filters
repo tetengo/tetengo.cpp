@@ -46,10 +46,10 @@
     <ClCompile Include="src\usage_tetengo.json.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\usage_tetengo.json.snippets_c.c">
+    <ClCompile Include="src\usage_tetengo.json.parsing_c.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\usage_tetengo.json.snippets_cpp.cpp">
+    <ClCompile Include="src\usage_tetengo.json.parsing_cpp.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -57,10 +57,10 @@
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\usage_tetengo.json.snippets_c.h">
+    <ClInclude Include="src\usage_tetengo.json.parsing_c.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\usage_tetengo.json.snippets_cpp.hpp">
+    <ClInclude Include="src\usage_tetengo.json.parsing_cpp.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
