@@ -11,7 +11,7 @@
 
 namespace usage_tetengo::json
 {
-    void json_parser();
+    void parsing();
 
 
 }

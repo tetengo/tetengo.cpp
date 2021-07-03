@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage of JSON parsing
+    \brief The usage test of tetengo::json
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -12,7 +12,7 @@
 #include "usage_tetengo.json.parsing_cpp.hpp"
 
 
-BOOST_AUTO_TEST_SUITE(usage_tetengo)
+BOOST_AUTO_TEST_SUITE(usagetest_tetengo)
 BOOST_AUTO_TEST_SUITE(json)
 
 
@@ -20,8 +20,8 @@ BOOST_AUTO_TEST_CASE(parsing)
 {
     BOOST_TEST_PASSPOINT();
 
-    usage_tetengo::json::json_parser();
-    usage_tetengo_json_jsonParser();
+    usage_tetengo::json::parsing();
+    usage_tetengo_json_parsing();
 }
 
 

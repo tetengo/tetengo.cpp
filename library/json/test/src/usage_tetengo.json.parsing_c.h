@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void usage_tetengo_json_jsonParser();
+void usage_tetengo_json_parsing();
 
 
 #if defined(__cplusplus)

@@ -6,7 +6,7 @@
 
 #include "usage_tetengo.json.parsing_cpp.hpp"
 
-// [json_parser]
+// [parsing]
 #include <cassert>
 #include <memory>
 #include <sstream>
@@ -25,7 +25,7 @@ namespace usage_tetengo::json
 {
     std::string to_string(const tetengo::json::element& element_);
 
-    void json_parser()
+    void parsing()
     {
         static const std::string json_text{
             // clang-format off
@@ -131,4 +131,4 @@ namespace usage_tetengo::json
         return result;
     }
 }
-// [json_parser]
+// [parsing]

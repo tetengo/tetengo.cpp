@@ -6,7 +6,7 @@
 
 #include "usage_tetengo.json.parsing_c.h"
 
-/* [jsonParser] */
+/* [parsing] */
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +20,7 @@
 int         make_json_file(const char* text, const char* path);
 const char* to_string(const tetengo_json_element_t* p_element);
 
-void usage_tetengo_json_jsonParser()
+void usage_tetengo_json_parsing()
 {
     /* clang-format off */
     static const char* const json_text =
@@ -176,4 +176,4 @@ const char* to_string(const tetengo_json_element_t* const p_element)
     strcat(result, "\n");
     return result;
 }
-/* [jsonParser] */
+/* [parsing] */
