@@ -57,18 +57,18 @@ void usage_tetengo_json_jsonParser()
 
         {
             /* clang-format off */
-        static const char* const expected =
-            "object:open:\n"
-            "member:open:name=hoge:\n"
-            "number:42\n"
-            "member:close:\n"
-            "member:open:name=fuga:\n"
-            "array:open:\n"
-            "string:foo\n"
-            "string:bar\n"
-            "array:close:\n"
-            "member:close:\n"
-            "object:close:\n";
+            static const char* const expected =
+                "object:open:\n"
+                "member:open:name=hoge:\n"
+                "number:42\n"
+                "member:close:\n"
+                "member:open:name=fuga:\n"
+                "array:open:\n"
+                "string:foo\n"
+                "string:bar\n"
+                "array:close:\n"
+                "member:close:\n"
+                "object:close:\n";
             /* clang-format on */
             assert(strcmp(element_list_string, expected) == 0);
         }

@@ -9,11 +9,13 @@
 
     \section usage Usage
 
-    \subsection usage-cpp C++
+    \subsection usage-parsing Parsing JSON
+
+    \subsubsection usage-parsing-cpp C++
 
     \snippet json/test/src/usage_tetengo.json.snippets_cpp.cpp json_parser
 
-    \subsection usage-c C
+    \subsubsection usage-parsing-c C
 
     \snippet json/test/src/usage_tetengo.json.snippets_c.c jsonParser
 */
