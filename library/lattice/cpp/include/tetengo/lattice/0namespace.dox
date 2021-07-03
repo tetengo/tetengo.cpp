@@ -6,4 +6,16 @@
 
 /*! \namespace tetengo::lattice
     \brief A lattice library.
+
+    \section usage-lattice Usage
+
+    \subsection usage-lattice-viterbi Viterbi Search
+
+    \subsubsection usage-lattice-viterbi-cpp C++
+
+    \snippet lattice/test/src/usage_tetengo.lattice.viterbi_cpp.cpp viterbi
+
+    \subsubsection usage-lattice-viterbi-c C
+
+    \snippet lattice/test/src/usage_tetengo.lattice.viterbi_c.c viterbi
 */

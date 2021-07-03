@@ -7,15 +7,15 @@
 /*! \namespace tetengo::json
     \brief A JSON library.
 
-    \section usage Usage
+    \section usage-json Usage
 
-    \subsection usage-parsing Parsing JSON
+    \subsection usage-json-parsing Parsing JSON
 
-    \subsubsection usage-parsing-cpp C++
+    \subsubsection usage-json-parsing-cpp C++
 
     \snippet json/test/src/usage_tetengo.json.parsing_cpp.cpp parsing
 
-    \subsubsection usage-parsing-c C
+    \subsubsection usage-json-parsing-c C
 
     \snippet json/test/src/usage_tetengo.json.parsing_c.c parsing
 */

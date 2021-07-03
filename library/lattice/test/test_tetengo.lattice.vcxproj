@@ -131,9 +131,17 @@
     <ClCompile Include="src\test_tetengo.lattice.unordered_map_vocabulary.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.vocabulary.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.wildcard_constraint_element.cpp" />
+    <ClCompile Include="src\usage_tetengo.lattice.cpp" />
+    <ClCompile Include="src\usage_tetengo.lattice.viterbi_c.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.lattice.viterbi_cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="src\usage_tetengo.lattice.viterbi_c.h" />
+    <ClInclude Include="src\usage_tetengo.lattice.viterbi_cpp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cpp\tetengo.lattice.cpp.vcxproj">

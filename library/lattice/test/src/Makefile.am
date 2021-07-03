@@ -1,7 +1,9 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    usage_tetengo.lattice.viterbi_c.h \
+    usage_tetengo.lattice.viterbi_cpp.hpp
 
 sources = \
     master.cpp \
@@ -17,7 +19,10 @@ sources = \
     test_tetengo.lattice.string_view.cpp \
     test_tetengo.lattice.unordered_map_vocabulary.cpp \
     test_tetengo.lattice.vocabulary.cpp \
-    test_tetengo.lattice.wildcard_constraint_element.cpp
+    test_tetengo.lattice.wildcard_constraint_element.cpp \
+    usage_tetengo.lattice.cpp \
+    usage_tetengo.lattice.viterbi_c.c \
+    usage_tetengo.lattice.viterbi_cpp.cpp
 
 check_PROGRAMS = test_tetengo.lattice
 
