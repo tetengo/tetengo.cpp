@@ -4,6 +4,9 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include "usage_tetengo.json.snippets_cpp.hpp"
+
+// [json_parser]
 #include <cassert>
 #include <memory>
 #include <sstream>
@@ -17,10 +20,7 @@
 #include <tetengo/json/reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
 
-#include "usage_tetengo.json.snippets_cpp.hpp"
 
-
-// [json_parser]
 namespace usage_tetengo::json
 {
     std::string to_string(const tetengo::json::element& element_);
