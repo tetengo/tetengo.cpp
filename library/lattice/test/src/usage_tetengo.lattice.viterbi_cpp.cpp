@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
-#include <cstddef>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -37,15 +36,19 @@ namespace usage_tetengo::lattice
     void viterbi()
     {
         /*
-                  (3)    (2)   (4)   (7)    (2)
+                    /-----[ab:AwaBizan]-----\
+                   /  (7)      (9)      (1)  \
+                  /                           \
+                 /       (2)   (4)   (7)       \
             [BOS]-----[a:Alpha]---[b:Bravo]-----[EOS]
-                 \             \ /(1)          /
+                 \(3)          \ /(1)       (2)/
                   \(1)          X             /(6)
                    \           / \(5)        /
                     `-[a:Alice]---[b:Bob]---'
                          (1)   (9)  (8)
             Path                         Cost
             [BOS]-[Alice]-[Bravo]-[EOS]  1+1+1+7+2=12
+            [BOS]---[AwaBizan]----[EOS]  7+9+1    =17
             [BOS]-[Alpha]-[Bravo]-[EOS]  3+2+4+7+2=18
             [BOS]-[Alpha]-[Bob]---[EOS]  3+2+5+8+6=24
             [BOS]-[Alice]-[Bob]---[EOS]  1+1+9+8+6=25
@@ -69,10 +72,13 @@ namespace usage_tetengo::lattice
             });
 
         static const std::vector<std::string> expected{
+            // clang-format off
             "[BOS]-[Alice]-[Bravo]-[EOS] (12)",
+            "[BOS]-[AwaBizan]-[EOS] (17)",
             "[BOS]-[Alpha]-[Bravo]-[EOS] (18)",
             "[BOS]-[Alpha]-[Bob]-[EOS] (24)",
             "[BOS]-[Alice]-[Bob]-[EOS] (25)",
+            // clang-format on
         };
         assert(paths == expected);
     }
@@ -80,6 +86,49 @@ namespace usage_tetengo::lattice
     std::string value_of(const tetengo::lattice::entry_view& entry)
     {
         return entry.value()->has_value() ? std::any_cast<std::string>(*entry.value()) : std::string{};
+    }
+
+    std::unique_ptr<tetengo::lattice::vocabulary> build_vocabulary()
+    {
+        static const std::vector<tetengo::lattice::entry> entries{
+            // clang-format off
+            { "a", std::string{ "Alpha" }, 2 },
+            { "a", std::string{ "Alice" }, 1 },
+            { "b", std::string{ "Bravo" }, 7 },
+            { "b", std::string{ "Bob" }, 8 }, 
+            { "ab", std::string{ "AwaBizan" }, 9 },
+            // clang-format on
+        };
+        std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entry_mappings{
+            // clang-format off
+            { "a", { entries[0], entries[1] } },
+            { "b", { entries[2], entries[3] } },
+            { "ab", { entries[4] }},
+            // clang-format on
+        };
+        std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{
+            // clang-format off
+            { { tetengo::lattice::entry::bos_eos(), entries[0] }, 3 },
+            { { tetengo::lattice::entry::bos_eos(), entries[1] }, 1 },
+            { { tetengo::lattice::entry::bos_eos(), entries[4] }, 7 },
+            { { entries[0], entries[2] }, 4 },
+            { { entries[0], entries[3] }, 5 },
+            { { entries[1], entries[2] }, 1 },
+            { { entries[1], entries[3] }, 9 },
+            { { entries[2], tetengo::lattice::entry::bos_eos() }, 2 },
+            { { entries[3], tetengo::lattice::entry::bos_eos() }, 6 },
+            { { entries[4], tetengo::lattice::entry::bos_eos() }, 1 },
+            // clang-format on
+        };
+        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
+            std::move(entry_mappings),
+            std::move(connections),
+            [](const tetengo::lattice::entry_view& entry) {
+                return std::hash<std::string_view>{}(entry.key()) ^ std::hash<std::string>{}(value_of(entry));
+            },
+            [](const tetengo::lattice::entry_view& entry1, const tetengo::lattice::entry_view& entry2) {
+                return entry1.key() == entry2.key() && value_of(entry1) == value_of(entry2);
+            });
     }
 
     std::string value_of(const tetengo::lattice::node& node_, const bool first)
@@ -98,54 +147,16 @@ namespace usage_tetengo::lattice
         }
     }
 
-    std::size_t entry_hash(const tetengo::lattice::entry_view& entry)
-    {
-        return std::hash<std::string_view>{}(entry.key()) ^ std::hash<std::string>{}(value_of(entry));
-    }
-
-    bool entry_equal_to(const tetengo::lattice::entry_view& entry1, const tetengo::lattice::entry_view& entry2)
-    {
-        return entry1.key() == entry2.key() && value_of(entry1) == value_of(entry2);
-    }
-
-    std::unique_ptr<tetengo::lattice::vocabulary> build_vocabulary()
-    {
-        static const std::vector<tetengo::lattice::entry> entries{
-            { "a", std::string{ "Alpha" }, 2 },
-            { "a", std::string{ "Alice" }, 1 },
-            { "b", std::string{ "Bravo" }, 7 },
-            { "b", std::string{ "Bob" }, 8 },
-        };
-        std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entry_mappings{
-            { "a", { entries[0], entries[1] } },
-            { "b", { entries[2], entries[3] } },
-        };
-        std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{
-            { { tetengo::lattice::entry::bos_eos(), entries[0] }, 3 },
-            { { tetengo::lattice::entry::bos_eos(), entries[1] }, 1 },
-            { { entries[0], entries[2] }, 4 },
-            { { entries[0], entries[3] }, 5 },
-            { { entries[1], entries[2] }, 1 },
-            { { entries[1], entries[3] }, 9 },
-            { { entries[2], tetengo::lattice::entry::bos_eos() }, 2 },
-            { { entries[3], tetengo::lattice::entry::bos_eos() }, 6 },
-        };
-        return std::make_unique<tetengo::lattice::unordered_map_vocabulary>(
-            std::move(entry_mappings), std::move(connections), entry_hash, entry_equal_to);
-    }
-
     std::string to_string(const tetengo::lattice::path& path_)
     {
         std::string result{};
-        bool        first = true;
         for (const auto& node: path_.nodes())
         {
-            if (!first)
+            if (!result.empty())
             {
                 result += "-";
             }
-            result += "[" + value_of(node, first) + "]";
-            first = false;
+            result += "[" + value_of(node, result.empty()) + "]";
         }
         result += " (" + std::to_string(path_.cost()) + ")";
         return result;
