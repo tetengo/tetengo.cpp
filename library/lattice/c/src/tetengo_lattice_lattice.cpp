@@ -17,11 +17,13 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
+#include <tetengo/lattice/vocabulary.h>
 
 #include "tetengo_lattice_lattice.hpp"
 #include "tetengo_lattice_vocabulary.hpp" // IWYU pragma: keep

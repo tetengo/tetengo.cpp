@@ -9,22 +9,12 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/stringView.h>
 
 
 #if defined(__cplusplus)
 extern "C" {
-#endif
-
-#if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRYVIEW_T)
-#define TYPEDEF_TETENGO_LATTICE_ENTRYVIEW_T
-typedef struct tetengo_lattice_entryView_tag tetengo_lattice_entryView_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_ENTRY_VALUEHANDLE_T)
-#define TYPEDEF_TETENGO_LATTICE_ENTRY_VALUEHANDLE_T
-typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entry_valueHandle_t;
-#endif
 #endif
 
 
