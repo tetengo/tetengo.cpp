@@ -9,21 +9,14 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/node.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-#if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_LATTICE_CONSTRAINTELEMENT_T)
-#define TYPEDEF_TETENGO_LATTICE_CONSTRAINTELEMENT_T
 typedef struct tetengo_lattice_constraintElement_tag tetengo_lattice_constraintElement_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_NODE_T)
-#define TYPEDEF_TETENGO_LATTICE_NODE_T
-typedef struct tetengo_lattice_node_tag tetengo_lattice_node_t;
-#endif
-#endif
 
 
 /*!

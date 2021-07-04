@@ -15,12 +15,7 @@ extern "C" {
 #endif
 
 
-#if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_TEXT_ENCODER_T)
-#define TYPEDEF_TETENGO_TEXT_ENCODER_T
 typedef struct tetengo_text_encoder_tag tetengo_text_encoder_t;
-#endif
-#endif
 
 
 /*! Encoding type */

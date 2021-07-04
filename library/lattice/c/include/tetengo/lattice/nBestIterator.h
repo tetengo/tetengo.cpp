@@ -8,32 +8,17 @@
 #define TETENGO_LATTICE_NBESTITERATOR_H
 
 
+#include <tetengo/lattice/constraint.h>
+#include <tetengo/lattice/lattice.h>
+#include <tetengo/lattice/node.h>
+#include <tetengo/lattice/path.h>
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-#if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_LATTICE_CONSTRAINT_T)
-#define TYPEDEF_TETENGO_LATTICE_CONSTRAINT_T
-typedef struct tetengo_lattice_constraint_tag tetengo_lattice_constraint_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_LATTICE_T)
-#define TYPEDEF_TETENGO_LATTICE_LATTICE_T
-typedef struct tetengo_lattice_lattice_tag tetengo_lattice_lattice_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_NBESTITERATOR_T)
-#define TYPEDEF_TETENGO_LATTICE_NBESTITERATOR_T
 typedef struct tetengo_lattice_nBestIterator_tag tetengo_lattice_nBestIterator_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_NODE_T)
-#define TYPEDEF_TETENGO_LATTICE_NODE_T
-typedef struct tetengo_lattice_node_tag tetengo_lattice_node_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_PATH_T)
-#define TYPEDEF_TETENGO_LATTICE_PATH_T
-typedef struct tetengo_lattice_path_tag tetengo_lattice_path_t;
-#endif
-#endif
 
 
 /*!

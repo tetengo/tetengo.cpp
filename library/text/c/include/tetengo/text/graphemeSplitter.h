@@ -15,12 +15,7 @@ extern "C" {
 #endif
 
 
-#if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_TEXT_GRAPHEMESPLITTER_T)
-#define TYPEDEF_TETENGO_TEXT_GRAPHEMESPLITTER_T
 typedef struct tetengo_text_graphemeSplitter_tag tetengo_text_graphemeSplitter_t;
-#endif
-#endif
 
 
 /*!

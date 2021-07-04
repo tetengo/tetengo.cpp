@@ -24,11 +24,6 @@
 
 #include "tetengo_trie_trie.hpp"
 
-#if !defined(TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T)
-#define TYPEDEF_TETENGO_TRIE_TRIEITERATOR_T
-typedef struct tetengo_trie_trieIterator_tag tetengo_trie_trieIterator_t;
-#endif
-
 
 void tetengo_trie_trie_nullAddingObserver(const char*, void*) {}
 

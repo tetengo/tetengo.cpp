@@ -14,12 +14,7 @@
 extern "C" {
 #endif
 
-#if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_JSON_READER_T)
-#define TYPEDEF_TETENGO_JSON_READER_T
 typedef struct tetengo_json_reader_tag tetengo_json_reader_t;
-#endif
-#endif
 
 
 /*!

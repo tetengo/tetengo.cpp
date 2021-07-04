@@ -9,25 +9,15 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/node.h>
+#include <tetengo/lattice/vocabulary.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
-#if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_LATTICE_LATTICE_T)
-#define TYPEDEF_TETENGO_LATTICE_LATTICE_T
 typedef struct tetengo_lattice_lattice_tag tetengo_lattice_lattice_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_NODE_T)
-#define TYPEDEF_TETENGO_LATTICE_NODE_T
-typedef struct tetengo_lattice_node_tag tetengo_lattice_node_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_LATTICE_VOCABULARY_T)
-#define TYPEDEF_TETENGO_LATTICE_VOCABULARY_T
-typedef struct tetengo_lattice_vocabulary_tag tetengo_lattice_vocabulary_t;
-#endif
-#endif
 
 
 /*!
