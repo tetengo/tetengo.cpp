@@ -13,20 +13,15 @@
 #include <cstdint> // Just silencing IWYU
 #endif
 
+#include <tetengo/property/storage.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
 
 #if !defined(DOCUMENTATION)
-#if !defined(TYPEDEF_TETENGO_PROPERTY_PROPERTYSET_T)
-#define TYPEDEF_TETENGO_PROPERTY_PROPERTYSET_T
 typedef struct tetengo_property_propertySet_tag tetengo_property_propertySet_t;
-#endif
-#if !defined(TYPEDEF_TETENGO_PROPERTY_STORAGELOADER_T)
-#define TYPEDEF_TETENGO_PROPERTY_STORAGELOADER_T
-typedef struct tetengo_property_storageLoader_tag tetengo_property_storageLoader_t;
-#endif
 #endif
 
 
