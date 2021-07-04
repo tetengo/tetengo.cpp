@@ -80,7 +80,7 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             const auto& connection_element = p_connections[i];
 
             std::any cpp_from_value{ connection_element.p_from->p_value };
-            std::any cpp_to_value{ connection_element.p_from->p_value };
+            std::any cpp_to_value{ connection_element.p_to->p_value };
             auto     cpp_key = std::make_pair(
                 tetengo::lattice::entry{
                     std::string{ connection_element.p_from->key.p_head, connection_element.p_from->key.length },
