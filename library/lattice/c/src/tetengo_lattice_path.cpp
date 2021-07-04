@@ -16,6 +16,7 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.h>

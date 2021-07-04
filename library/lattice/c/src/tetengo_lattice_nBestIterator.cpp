@@ -17,6 +17,8 @@
 #include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/lattice/constraint.h>
+#include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.h> // IWYU pragma: keep
