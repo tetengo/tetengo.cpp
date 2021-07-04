@@ -16,7 +16,9 @@
 extern "C" {
 #endif
 
+#if !defined(DOCUMENTATION)
 typedef struct tetengo_lattice_constraintElement_tag tetengo_lattice_constraintElement_t;
+#endif
 
 
 /*!

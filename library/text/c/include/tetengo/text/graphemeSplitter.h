@@ -14,8 +14,9 @@
 extern "C" {
 #endif
 
-
+#if !defined(DOCUMENTATION)
 typedef struct tetengo_text_graphemeSplitter_tag tetengo_text_graphemeSplitter_t;
+#endif
 
 
 /*!

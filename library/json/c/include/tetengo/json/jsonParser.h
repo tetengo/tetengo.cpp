@@ -17,7 +17,9 @@
 extern "C" {
 #endif
 
+#if !defined(DOCUMENTATION)
 typedef struct tetengo_json_jsonParser_tag tetengo_json_jsonParser_t;
+#endif
 
 
 /*!

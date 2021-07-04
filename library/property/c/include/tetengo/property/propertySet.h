@@ -20,7 +20,9 @@
 extern "C" {
 #endif
 
+#if !defined(DOCUMENTATION)
 typedef struct tetengo_property_propertySet_tag tetengo_property_propertySet_t;
+#endif
 
 
 /*!

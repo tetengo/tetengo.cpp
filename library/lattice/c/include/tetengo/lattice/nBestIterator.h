@@ -18,7 +18,9 @@
 extern "C" {
 #endif
 
+#if !defined(DOCUMENTATION)
 typedef struct tetengo_lattice_nBestIterator_tag tetengo_lattice_nBestIterator_t;
+#endif
 
 
 /*!

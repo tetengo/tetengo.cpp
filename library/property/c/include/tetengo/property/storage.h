@@ -19,9 +19,10 @@
 extern "C" {
 #endif
 
-typedef struct tetengo_property_storage_tag tetengo_property_storage_t;
-
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_property_storage_tag       tetengo_property_storage_t;
 typedef struct tetengo_property_storageLoader_tag tetengo_property_storageLoader_t;
+#endif
 
 
 /*!
