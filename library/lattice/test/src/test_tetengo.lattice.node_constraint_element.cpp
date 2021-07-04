@@ -15,6 +15,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/lattice/constraintElement.h>
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/node_constraint_element.hpp>
