@@ -118,10 +118,18 @@ namespace
 
         ~test_file()
         {
-            const auto native_top_path =
-                tetengo::platform_dependent::property_set_file_path::instance().to_native_top_path(m_path);
-            std::error_code ec{};
-            std::filesystem::remove_all(native_top_path, ec);
+            {
+                const auto native_top_path =
+                    tetengo::platform_dependent::property_set_file_path::instance().to_native_top_path(m_path);
+                std::error_code ec{};
+                std::filesystem::remove_all(native_top_path, ec);
+            }
+            {
+                const auto native_path =
+                    tetengo::platform_dependent::property_set_file_path::instance().to_native_path(m_path);
+                std::error_code ec{};
+                std::filesystem::remove_all(native_path, ec);
+            }
         }
 
         const std::filesystem::path& path() const
