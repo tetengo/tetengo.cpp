@@ -40,6 +40,10 @@ namespace tetengo::property
         {
             const auto native_path =
                 tetengo::platform_dependent::property_set_file_path::instance().to_native_path(m_path);
+            if (!std::filesystem::exists(native_path.parent_path()))
+            {
+                std::filesystem::create_directories(native_path.parent_path());
+            }
             std::ofstream stream{ native_path };
             if (!stream)
             {
