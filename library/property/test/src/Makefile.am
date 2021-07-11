@@ -1,7 +1,9 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    usage_tetengo.property.save_load_cpp.hpp \
+    usage_tetengo.property.saveLoad_c.h
 
 sources = \
     master.cpp \
@@ -10,7 +12,10 @@ sources = \
     test_tetengo.property.property_set.cpp \
     test_tetengo.property.storage.cpp \
     test_tetengo.property.storage_proxy.cpp \
-    test_tetengo.property.windows_registry_storage.cpp
+    test_tetengo.property.windows_registry_storage.cpp \
+    usage_tetengo.property.cpp \
+    usage_tetengo.property.save_load_cpp.cpp \
+    usage_tetengo.property.saveLoad_c.c
 
 check_PROGRAMS = test_tetengo.property
 
