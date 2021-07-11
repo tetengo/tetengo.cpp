@@ -108,6 +108,22 @@ namespace
     class test_file : private boost::noncopyable
     {
     public:
+        explicit test_file(const std::filesystem::path& path) : m_path{ path }
+        {
+            {
+                const auto native_top_path =
+                    tetengo::platform_dependent::property_set_file_path::instance().to_native_top_path(m_path);
+                std::error_code ec{};
+                std::filesystem::remove_all(native_top_path, ec);
+            }
+            {
+                const auto native_path =
+                    tetengo::platform_dependent::property_set_file_path::instance().to_native_path(m_path);
+                std::error_code ec{};
+                std::filesystem::remove_all(native_path, ec);
+            }
+        }
+
         test_file(const std::filesystem::path& path, const std::string_view& content) : m_path{ path }
         {
             const auto native_path =
@@ -188,6 +204,20 @@ BOOST_AUTO_TEST_CASE(save)
     BOOST_TEST_PASSPOINT();
 
     {
+        const test_file                              file{ generic_path() };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+        BOOST_REQUIRE(p_storage);
+
+        p_storage->set_bool("alpha", true);
+        p_storage->set_uint32("bravo", static_cast<std::uint32_t>(42));
+        p_storage->set_string((std::filesystem::path{ "charlie" } / "delta").string(), std::string{ "echo" });
+
+        p_storage->save();
+
+        BOOST_TEST(file_content_equal_to(generic_path(), json1));
+    }
+    {
         const test_file                              file{ generic_path(), "" };
         const tetengo::property::file_storage_loader loader{};
         const auto                                   p_storage = loader.load(file.path());
@@ -214,6 +244,32 @@ BOOST_AUTO_TEST_CASE(save)
         BOOST_TEST(file_content_equal_to(generic_path(), json2));
     }
 
+    {
+        const test_file   file{ generic_path() };
+        const auto* const p_loader = tetengo_property_storageLoader_createFileStorageLoader();
+        BOOST_SCOPE_EXIT(p_loader)
+        {
+            tetengo_property_storageLoader_destroy(p_loader);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_property_storageLoader_load(p_loader, file.path().string().c_str());
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_property_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        tetengo_property_storage_setBool(p_storage, "alpha", true);
+        tetengo_property_storage_setUint32(p_storage, "bravo", static_cast<std::uint32_t>(42));
+        tetengo_property_storage_setString(
+            p_storage, (std::filesystem::path{ "charlie" } / "delta").string().c_str(), "echo");
+
+        tetengo_property_storage_save(p_storage);
+
+        BOOST_TEST(file_content_equal_to(generic_path(), json1));
+    }
     {
         const test_file   file{ generic_path(), "" };
         const auto* const p_loader = tetengo_property_storageLoader_createFileStorageLoader();
@@ -293,6 +349,13 @@ BOOST_AUTO_TEST_CASE(load)
 {
     BOOST_TEST_PASSPOINT();
 
+    {
+        const test_file                              file{ generic_path() };
+        const tetengo::property::file_storage_loader loader{};
+        const auto                                   p_storage = loader.load(file.path());
+
+        BOOST_CHECK(p_storage);
+    }
     {
         const test_file                              file{ generic_path(), json3_with_comment };
         const tetengo::property::file_storage_loader loader{};
