@@ -34,6 +34,15 @@ namespace usage_tetengo::property
         tetengo::property::property_set props_for_getting{ std::make_unique<tetengo::property::file_storage_loader>(),
                                                            "tetengo_property_sample" };
 
+        // On Windows, by using tetengo::property::windows_registry_storage_loader, the values will be stored into the
+        // Windows registry.
+        // tetengo::property::property_set props_for_setting{
+        //    std::make_unique<tetengo::property::windows_registry_storage_loader>(), "tetengo_property_sample"
+        //};
+        // tetengo::property::property_set props_for_getting{
+        //    std::make_unique<tetengo::property::windows_registry_storage_loader>(), "tetengo_property_sample"
+        //};
+
         // Sets a string value "bar" for the key "foo".
         props_for_setting.set_string("foo", "bar");
 
@@ -43,6 +52,7 @@ namespace usage_tetengo::property
 
         // Saves the values of the property set for setting to the file.
         props_for_setting.commit();
+        assert(std::filesystem::exists(setting_file_path()));
 
         // The value cannot be yet obtained from the property set for getting.
         const auto loaded_value2 = props_for_getting.get_string("foo");
