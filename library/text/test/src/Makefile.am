@@ -3,7 +3,9 @@
 
 headers = \
     usage_tetengo.text.encoding_c.h \
-    usage_tetengo.text.encoding_cpp.hpp
+    usage_tetengo.text.encoding_cpp.hpp \
+    usage_tetengo.text.graphemeSplit_c.h \
+    usage_tetengo.text.grapheme_split_cpp.hpp
 
 sources = \
     master.cpp \
@@ -18,7 +20,9 @@ sources = \
     test_tetengo.text.grapheme_splitting.grapheme_segment.cpp \
     usage_tetengo.text.cpp \
     usage_tetengo.text.encoding_c.c \
-    usage_tetengo.text.encoding_cpp.cpp
+    usage_tetengo.text.encoding_cpp.cpp \
+    usage_tetengo.text.graphemeSplit_c.c \
+    usage_tetengo.text.grapheme_split_cpp.cpp
 
 check_PROGRAMS = test_tetengo.text
 
