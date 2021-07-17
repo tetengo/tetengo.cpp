@@ -10,6 +10,8 @@
 
 #include "usage_tetengo.text.encoding_c.h"
 #include "usage_tetengo.text.encoding_cpp.hpp"
+#include "usage_tetengo.text.graphemeSplit_c.h"
+#include "usage_tetengo.text.grapheme_split_cpp.hpp"
 
 
 BOOST_AUTO_TEST_SUITE(usagetest_tetengo)
@@ -22,6 +24,9 @@ BOOST_AUTO_TEST_CASE(encoding)
 
     usage_tetengo::text::encoding();
     usage_tetengo_text_encoding();
+
+    usage_tetengo::text::grapheme_split();
+    usage_tetengo_text_graphemeSplit();
 }
 
 
