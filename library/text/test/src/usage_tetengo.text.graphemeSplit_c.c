@@ -56,12 +56,15 @@ void usage_tetengo_text_graphemeSplit()
             const size_t                   grapheme_count = tetengo_text_graphemeSplitter_split(p_gs, string, NULL);
             tetengo_text_grapheme_t* const p_graphemes =
                 (tetengo_text_grapheme_t*)malloc(grapheme_count * sizeof(tetengo_text_grapheme_t));
-            tetengo_text_graphemeSplitter_split(p_gs, string, p_graphemes);
-            assert(grapheme_count == 3U);
-            assert(p_graphemes[0].offset == 0U && p_graphemes[0].width == 2U);
-            assert(p_graphemes[1].offset == 4U && p_graphemes[1].width == 2U);
-            assert(p_graphemes[2].offset == 17U && p_graphemes[2].width == 2U);
-            free((void*)p_graphemes);
+            if (p_graphemes)
+            {
+                tetengo_text_graphemeSplitter_split(p_gs, string, p_graphemes);
+                assert(grapheme_count == 3U);
+                assert(p_graphemes[0].offset == 0U && p_graphemes[0].width == 2U);
+                assert(p_graphemes[1].offset == 4U && p_graphemes[1].width == 2U);
+                assert(p_graphemes[2].offset == 17U && p_graphemes[2].width == 2U);
+                free((void*)p_graphemes);
+            }
 
             /* Destroys the grapheme splitter. */
             tetengo_text_graphemeSplitter_destroy(p_gs);
@@ -88,12 +91,15 @@ void usage_tetengo_text_graphemeSplit()
             const size_t                   grapheme_count = tetengo_text_graphemeSplitter_split(p_gs, string, NULL);
             tetengo_text_grapheme_t* const p_graphemes =
                 (tetengo_text_grapheme_t*)malloc(grapheme_count * sizeof(tetengo_text_grapheme_t));
-            tetengo_text_graphemeSplitter_split(p_gs, string, p_graphemes);
-            assert(grapheme_count == 3U);
-            assert(p_graphemes[0].offset == 0U && p_graphemes[0].width == 2U);
-            assert(p_graphemes[1].offset == 4U && p_graphemes[1].width == 2U);
-            assert(p_graphemes[2].offset == 17U && p_graphemes[2].width == 1U);
-            free((void*)p_graphemes);
+            if (p_graphemes)
+            {
+                tetengo_text_graphemeSplitter_split(p_gs, string, p_graphemes);
+                assert(grapheme_count == 3U);
+                assert(p_graphemes[0].offset == 0U && p_graphemes[0].width == 2U);
+                assert(p_graphemes[1].offset == 4U && p_graphemes[1].width == 2U);
+                assert(p_graphemes[2].offset == 17U && p_graphemes[2].width == 1U);
+                free((void*)p_graphemes);
+            }
 
             /* Destroys the grapheme splitter. */
             tetengo_text_graphemeSplitter_destroy(p_gs);
