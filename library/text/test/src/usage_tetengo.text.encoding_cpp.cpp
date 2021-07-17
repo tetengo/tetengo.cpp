@@ -33,6 +33,8 @@ namespace usage_tetengo::text
             0xE2_c, 0x80_c, 0x8D_c, // U+200D
             0xE2_c, 0x9D_c, 0x84_c, // U+2744
             0xEF_c, 0xB8_c, 0x8F_c, // U+FE0F
+            // SNOWFLAKE
+            0xE2_c, 0x9D_c, 0x84_c, // U+2744
             // clang-format on
         };
         static const std::u16string utf16{
@@ -44,6 +46,8 @@ namespace usage_tetengo::text
             0x200D, // U+200D
             0x2744, // U+2744
             0xFE0F, // U+FE0F
+            // SNOWFLAKE
+            0x2744, // U+2744
             // clang-format on
         };
 

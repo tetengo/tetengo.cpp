@@ -27,6 +27,9 @@ void usage_tetengo_text_encoding()
         (char)(unsigned char)0xE2, (char)(unsigned char)0x80, (char)(unsigned char)0x8D, /* U+200D */
         (char)(unsigned char)0xE2, (char)(unsigned char)0x9D, (char)(unsigned char)0x84, /* U+2744 */
         (char)(unsigned char)0xEF, (char)(unsigned char)0xB8, (char)(unsigned char)0x8F, /* U+FE0F */
+        /* SNOWFLAKE */
+        (char)(unsigned char)0xE2, (char)(unsigned char)0x9D, (char)(unsigned char)0x84, /* U+2744 */
+        0x00,
         /* clang-format on */
     };
     static const unsigned short utf16[] = {
@@ -38,6 +41,9 @@ void usage_tetengo_text_encoding()
         0x200D, /* U+200D */
         0x2744, /* U+2744 */
         0xFE0F, /* U+FE0F */
+        /* SNOWFLAKE */
+        0x2744, /* U+2744 */
+        0x0000,
         /* clang-format on */
     };
 
