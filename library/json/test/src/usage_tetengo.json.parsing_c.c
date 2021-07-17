@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage of JSON parsing
+    \brief The usage of JSON parsing.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */

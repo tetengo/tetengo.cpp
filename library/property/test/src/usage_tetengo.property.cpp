@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage test of tetengo::property
+    \brief The usage test of tetengo::property.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */

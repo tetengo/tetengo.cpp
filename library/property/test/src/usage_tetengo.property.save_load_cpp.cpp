@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage of property saving and loading
+    \brief The usage of property saving and loading.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */

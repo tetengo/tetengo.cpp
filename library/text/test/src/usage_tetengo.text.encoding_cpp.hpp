@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage of character encoding conversion
+    \brief The usage of character encoding conversion.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */

@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage test of tetengo::text
+    \brief The usage test of tetengo::text.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */

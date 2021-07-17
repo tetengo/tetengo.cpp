@@ -1,5 +1,5 @@
 /*! \file
-    \brief The usage test of tetengo::lattice
+    \brief The usage test of tetengo::lattice.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
