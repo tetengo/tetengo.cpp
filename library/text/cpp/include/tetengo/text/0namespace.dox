@@ -6,4 +6,16 @@
 
 /*! \namespace tetengo::text
     \brief A text library.
+
+    \section usage-text Usage
+
+    \subsection usage-text-encoding Character Encoding Conversion
+
+    \subsubsection usage-text-encoding-cpp C++
+
+    \snippet text/test/src/usage_tetengo.text.encoding_cpp.cpp encoding
+
+    \subsubsection usage-text-encoding-c C
+
+    \snippet text/test/src/usage_tetengo.text.encoding_c.c encoding
 */

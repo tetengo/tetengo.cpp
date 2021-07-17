@@ -1,7 +1,9 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    usage_tetengo.text.encoding_c.h \
+    usage_tetengo.text.encoding_cpp.hpp
 
 sources = \
     master.cpp \
@@ -13,7 +15,10 @@ sources = \
     test_tetengo.text.grapheme_splitting.character_width.cpp \
     test_tetengo.text.grapheme_splitting.default_charactX.cpp \
     test_tetengo.text.grapheme_splitting.east_asian_charX.cpp \
-    test_tetengo.text.grapheme_splitting.grapheme_segment.cpp
+    test_tetengo.text.grapheme_splitting.grapheme_segment.cpp \
+    usage_tetengo.text.cpp \
+    usage_tetengo.text.encoding_c.c \
+    usage_tetengo.text.encoding_cpp.cpp
 
 check_PROGRAMS = test_tetengo.text
 

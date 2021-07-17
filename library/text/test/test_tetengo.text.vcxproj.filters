@@ -40,9 +40,24 @@
     <ClCompile Include="src\test_tetengo.text.encoder.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\usage_tetengo.text.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.text.encoding_c.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.text.encoding_cpp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\usage_tetengo.text.encoding_c.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\usage_tetengo.text.encoding_cpp.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
