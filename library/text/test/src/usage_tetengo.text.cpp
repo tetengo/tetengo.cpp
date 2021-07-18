@@ -24,6 +24,11 @@ BOOST_AUTO_TEST_CASE(encoding)
 
     usage_tetengo::text::encoding();
     usage_tetengo_text_encoding();
+}
+
+BOOST_AUTO_TEST_CASE(grapheme_split)
+{
+    BOOST_TEST_PASSPOINT();
 
     usage_tetengo::text::grapheme_split();
     usage_tetengo_text_graphemeSplit();
