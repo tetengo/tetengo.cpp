@@ -63,7 +63,7 @@ namespace usage_tetengo::trie
                                               "DONE",
                                           }));
 
-        // Search the trie.
+        // Searches the trie.
         // If a perfect-matching key is found, its value is returned.
         const int* const p_found_for_gionbashi = trie_.find("gionbashi");
         assert(p_found_for_gionbashi);
