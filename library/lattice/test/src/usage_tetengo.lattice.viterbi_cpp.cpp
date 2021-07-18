@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -168,11 +169,11 @@ namespace usage_tetengo::lattice
         std::string result{};
         for (const auto& node: path_.nodes())
         {
-            if (!result.empty())
+            if (!std::empty(result))
             {
                 result += "-";
             }
-            result += "[" + value_of(node, result.empty()) + "]";
+            result += "[" + value_of(node, std::empty(result)) + "]";
         }
         result += " (" + std::to_string(path_.cost()) + ")";
         return result;

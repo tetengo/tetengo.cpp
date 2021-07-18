@@ -8,6 +8,7 @@
 
 // [grapheme_split]
 #include <cassert>
+#include <iterator>
 #include <locale>
 #include <memory>
 #include <string>
@@ -51,7 +52,7 @@ namespace usage_tetengo::text
             // The splitter will return three graphemes.
             // The width of the grapheme of SNOWFLAKE will be 2.
             const auto graphemes = gs.split(string_);
-            assert(graphemes.size() == 3U);
+            assert(std::size(graphemes) == 3U);
             assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
             assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
             assert(graphemes[2].offset() == 17U && graphemes[2].width() == 2U);
@@ -64,7 +65,7 @@ namespace usage_tetengo::text
             // The splitter will return three graphemes.
             // The width of the grapheme of SNOWFLAKE will be 1.
             const auto graphemes = gs.split(string_);
-            assert(graphemes.size() == 3U);
+            assert(std::size(graphemes) == 3U);
             assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
             assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
             assert(graphemes[2].offset() == 17U && graphemes[2].width() == 1U);
