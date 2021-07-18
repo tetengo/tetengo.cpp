@@ -1,7 +1,9 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    usage_tetengo.trie.search_c.h \
+    usage_tetengo.trie.search_cpp.hpp
 
 sources = \
     master.cpp \
@@ -12,7 +14,10 @@ sources = \
     test_tetengo.trie.shared_storage.cpp \
     test_tetengo.trie.storage.cpp \
     test_tetengo.trie.trie.cpp \
-    test_tetengo.trie.trie_iterator.cpp
+    test_tetengo.trie.trie_iterator.cpp \
+    usage_tetengo.trie.cpp \
+    usage_tetengo.trie.search_c.c \
+    usage_tetengo.trie.search_cpp.cpp
 
 check_PROGRAMS = test_tetengo.trie
 
