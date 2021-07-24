@@ -6,4 +6,16 @@
 
 /*! \namespace tetengo::property
     \brief A property set library.
+
+    \section usage-property Usage
+
+    \subsection usage-property-save_load Saving and Loading Settings
+
+    \subsubsection usage-property-save_load-cpp C++
+
+    \snippet property/test/src/usage_tetengo.property.save_load_cpp.cpp save_load
+
+    \subsubsection usage-property-save_load-c C
+
+    \snippet property/test/src/usage_tetengo.property.saveLoad_c.c save_load
 */

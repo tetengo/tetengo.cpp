@@ -6,4 +6,26 @@
 
 /*! \namespace tetengo::text
     \brief A text library.
+
+    \section usage-text Usage
+
+    \subsection usage-text-encoding Character Encoding Conversion
+
+    \subsubsection usage-text-encoding-cpp C++
+
+    \snippet text/test/src/usage_tetengo.text.encoding_cpp.cpp encoding
+
+    \subsubsection usage-text-encoding-c C
+
+    \snippet text/test/src/usage_tetengo.text.encoding_c.c encoding
+
+    \subsection usage-text-grapheme_split Grapheme Splitting
+
+    \subsubsection usage-text-grapheme_split-cpp C++
+
+    \snippet text/test/src/usage_tetengo.text.grapheme_split_cpp.cpp grapheme_split
+
+    \subsubsection usage-text-grapheme_split-c C
+
+    \snippet text/test/src/usage_tetengo.text.graphemeSplit_c.c grapheme_split
 */

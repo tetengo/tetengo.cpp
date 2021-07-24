@@ -1,7 +1,11 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    usage_tetengo.text.encoding_c.h \
+    usage_tetengo.text.encoding_cpp.hpp \
+    usage_tetengo.text.graphemeSplit_c.h \
+    usage_tetengo.text.grapheme_split_cpp.hpp
 
 sources = \
     master.cpp \
@@ -13,7 +17,12 @@ sources = \
     test_tetengo.text.grapheme_splitting.character_width.cpp \
     test_tetengo.text.grapheme_splitting.default_charactX.cpp \
     test_tetengo.text.grapheme_splitting.east_asian_charX.cpp \
-    test_tetengo.text.grapheme_splitting.grapheme_segment.cpp
+    test_tetengo.text.grapheme_splitting.grapheme_segment.cpp \
+    usage_tetengo.text.cpp \
+    usage_tetengo.text.encoding_c.c \
+    usage_tetengo.text.encoding_cpp.cpp \
+    usage_tetengo.text.graphemeSplit_c.c \
+    usage_tetengo.text.grapheme_split_cpp.cpp
 
 check_PROGRAMS = test_tetengo.text
 
@@ -27,7 +36,7 @@ test_tetengo_text_LDADD = \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_text_DEPENDENCIES = \
     ${top_builddir}/library/text/c/src/libtetengo.text.la
-test_tetengo_text_SOURCES = ${sources}
+test_tetengo_text_SOURCES = ${headers} ${sources}
 
 TESTS = ${check_PROGRAMS}
 

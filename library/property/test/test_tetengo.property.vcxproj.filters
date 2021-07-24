@@ -31,9 +31,24 @@
     <ClCompile Include="src\test_tetengo.property.storage_proxy.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\usage_tetengo.property.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.property.save_load_cpp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.property.saveLoad_c.c">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\usage_tetengo.property.save_load_cpp.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\usage_tetengo.property.saveLoad_c.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

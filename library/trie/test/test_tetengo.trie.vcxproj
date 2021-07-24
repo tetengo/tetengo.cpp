@@ -124,9 +124,17 @@
     <ClCompile Include="src\test_tetengo.trie.storage.cpp" />
     <ClCompile Include="src\test_tetengo.trie.trie.cpp" />
     <ClCompile Include="src\test_tetengo.trie.trie_iterator.cpp" />
+    <ClCompile Include="src\usage_tetengo.trie.cpp" />
+    <ClCompile Include="src\usage_tetengo.trie.search_c.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.trie.search_cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="src\usage_tetengo.trie.search_c.h" />
+    <ClInclude Include="src\usage_tetengo.trie.search_cpp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cpp\tetengo.trie.cpp.vcxproj">

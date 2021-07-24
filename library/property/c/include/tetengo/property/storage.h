@@ -9,9 +9,9 @@
 
 
 #include <stddef.h>
-#include <stdint.h> // IWYU pragma: keep
+#include <stdint.h> /* IWYU pragma: keep */
 #if defined(IWYU)
-#include <cstdint> // Just silencing IWYU
+#include <cstdint> /* Just silencing IWYU */
 #endif
 
 

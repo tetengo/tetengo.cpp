@@ -52,9 +52,24 @@
     <ClCompile Include="src\test_tetengo.lattice.path.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\usage_tetengo.lattice.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.lattice.viterbi_c.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.lattice.viterbi_cpp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\usage_tetengo.lattice.viterbi_c.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\usage_tetengo.lattice.viterbi_cpp.hpp">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
