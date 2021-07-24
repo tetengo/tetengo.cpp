@@ -85,16 +85,14 @@ necessary in addition to the above tools.
 
 - [Git](https://git-scm.com/)
 
-#### Getting built library files
-
-##### Downloading the prebuilt library files
+#### Downloading the prebuilt library files
 
 Download the .zip archive file for Windows from the website
 [www.tetengo.org](https://www.tetengo.org/).
 
 Execute `setup.exe` in the archive..
 
-##### Building from the source files cloned from the GitHub repository
+#### Building from the source files cloned from the GitHub repository
 
 Clone the source files from GitHub:
 
@@ -111,7 +109,7 @@ Execute the menu command [Build]-[Build Solution] in Visual Studio.
 Open the file `tetengo.setup.sln` in the work tree, and execute the menu
 command [Build]-[Build Solution] in Visual Studio.
 
-`setup.exe` and `tetengi.msi` will be created under the `bin.setup` folder in
+`setup.exe` and `tetengo.msi` will be created under the `bin.setup` folder in
 the work tree.
 
 #### Generating documents
