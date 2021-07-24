@@ -11,6 +11,7 @@
 #include <iterator>
 #include <locale>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -24,9 +25,9 @@ namespace usage_tetengo::text
         return static_cast<char>(value);
     }
 
-    const std::locale& japanese_locale();
+    std::optional<std::locale> japanese_locale();
 
-    const std::locale& english_locale();
+    std::optional<std::locale> english_locale();
 
     void grapheme_split()
     {
@@ -45,51 +46,71 @@ namespace usage_tetengo::text
         };
 
         {
-            // Creates a grapheme splitter for the Japanese locale.
-            const tetengo::text::grapheme_splitter gs{ std::locale{ japanese_locale() } };
+            auto o_locale = japanese_locale();
+            if (o_locale)
+            {
+                // Creates a grapheme splitter for the Japanese locale.
+                const tetengo::text::grapheme_splitter gs{ *o_locale };
 
-            // Splits the string into graphemes.
-            // The splitter will return three graphemes.
-            // The width of the grapheme of SNOWFLAKE will be 2.
-            const auto graphemes = gs.split(string_);
-            assert(std::size(graphemes) == 3U);
-            assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
-            assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
-            assert(graphemes[2].offset() == 17U && graphemes[2].width() == 2U);
+                // Splits the string into graphemes.
+                // The splitter will return three graphemes.
+                // The width of the grapheme of SNOWFLAKE will be 2.
+                const auto graphemes = gs.split(string_);
+                assert(std::size(graphemes) == 3U);
+                assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
+                assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
+                assert(graphemes[2].offset() == 17U && graphemes[2].width() == 2U);
+            }
         }
         {
-            // Creates a grapheme splitter for the English locale.
-            const tetengo::text::grapheme_splitter gs{ std::locale{ english_locale() } };
+            auto o_locale = english_locale();
+            if (o_locale)
+            {
+                // Creates a grapheme splitter for the English locale.
+                const tetengo::text::grapheme_splitter gs{ *o_locale };
 
-            // Splits the string into graphemes.
-            // The splitter will return three graphemes.
-            // The width of the grapheme of SNOWFLAKE will be 1.
-            const auto graphemes = gs.split(string_);
-            assert(std::size(graphemes) == 3U);
-            assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
-            assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
-            assert(graphemes[2].offset() == 17U && graphemes[2].width() == 1U);
+                // Splits the string into graphemes.
+                // The splitter will return three graphemes.
+                // The width of the grapheme of SNOWFLAKE will be 1.
+                const auto graphemes = gs.split(string_);
+                assert(std::size(graphemes) == 3U);
+                assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
+                assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
+                assert(graphemes[2].offset() == 17U && graphemes[2].width() == 1U);
+            }
         }
     }
 
-    const std::locale& japanese_locale()
+    std::optional<std::locale> japanese_locale()
     {
+        try
+        {
 #if defined(_WIN32)
-        static const std::locale singleton{ "Japanese_Japan.932" };
+            return std::make_optional<std::locale>("Japanese_Japan.932");
 #else
-        static const std::locale singleton{ "ja_JP.UTF-8" };
+            return std::make_optional<std::locale>("ja_JP.UTF-8");
 #endif
-        return singleton;
+        }
+        catch (const std::runtime_error&)
+        {
+            return std::nullopt;
+        }
     }
 
-    const std::locale& english_locale()
+    std::optional<std::locale> english_locale()
     {
+        try
+        {
 #if defined(_WIN32)
-        static const std::locale singleton{ "English_United States.1252" };
+            return std::make_optional<std::locale>("English_United States.1252");
 #else
-        static const std::locale singleton{ "en_US.UTF-8" };
+            return std::make_optional<std::locale>("en_US.UTF-8");
 #endif
-        return singleton;
+        }
+        catch (const std::runtime_error&)
+        {
+            return std::nullopt;
+        }
     }
 }
 // [grapheme_split]

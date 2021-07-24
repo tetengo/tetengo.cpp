@@ -42,8 +42,7 @@ void usage_tetengo_text_graphemeSplit()
         /* Switches the locale to Japanese. */
         char initial_locale[256] = { '\0' };
         save_current_locale(LC_CTYPE, initial_locale, 256);
-        setlocale(LC_CTYPE, japanese_locale_name());
-
+        if (setlocale(LC_CTYPE, japanese_locale_name()))
         {
             /* Creates a grapheme splitter for the Japanese locale. */
             const tetengo_text_graphemeSplitter_t* const p_gs = tetengo_text_graphemeSplitter_create();
@@ -70,17 +69,16 @@ void usage_tetengo_text_graphemeSplit()
 
             /* Destroys the grapheme splitter. */
             tetengo_text_graphemeSplitter_destroy(p_gs);
-        }
 
-        /* Restores the locale. */
-        setlocale(LC_CTYPE, initial_locale);
+            /* Restores the locale. */
+            setlocale(LC_CTYPE, initial_locale);
+        }
     }
     {
         /* Switches the locale to English. */
         char initial_locale[256] = { '\0' };
         save_current_locale(LC_CTYPE, initial_locale, 256);
-        setlocale(LC_CTYPE, english_locale_name());
-
+        if (setlocale(LC_CTYPE, english_locale_name()))
         {
             /* Creates a grapheme splitter for the Japanese locale. */
             const tetengo_text_graphemeSplitter_t* const p_gs = tetengo_text_graphemeSplitter_create();
@@ -107,10 +105,10 @@ void usage_tetengo_text_graphemeSplit()
 
             /* Destroys the grapheme splitter. */
             tetengo_text_graphemeSplitter_destroy(p_gs);
-        }
 
-        /* Restores the locale. */
-        setlocale(LC_CTYPE, initial_locale);
+            /* Restores the locale. */
+            setlocale(LC_CTYPE, initial_locale);
+        }
     }
 }
 
