@@ -75,4 +75,3 @@ jobs:
         export BOOST_TEST_LOG_LEVEL=warning
         cd build
         make -j ${{ env.CONCURRENT_BUILD }} check
-        find -name "*.log" | xargs cat
