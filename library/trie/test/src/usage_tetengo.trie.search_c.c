@@ -82,12 +82,11 @@ void usage_tetengo_trie_search()
             const int* const p_found_for_gionbashi = (const int*)tetengo_trie_trie_find(p_trie, "gionbashi");
             assert(p_found_for_gionbashi);
             assert(*p_found_for_gionbashi == 5);
-
-            {
-                /* If not found, NULL is returned. */
-                const int* const p_found_for_hanabatachou = (const int*)tetengo_trie_trie_find(p_trie, "hanabatachou");
-                assert(!p_found_for_hanabatachou);
-            }
+        }
+        {
+            /* If not found, NULL is returned. */
+            const int* const p_found_for_hanabatachou = (const int*)tetengo_trie_trie_find(p_trie, "hanabatachou");
+            assert(!p_found_for_hanabatachou);
         }
 
         {
