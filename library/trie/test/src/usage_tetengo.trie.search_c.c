@@ -76,8 +76,8 @@ void usage_tetengo_trie_search()
                 "tasakibashi\n"
                 "DONE") == 0);
 
+        /* Searches the trie. */
         {
-            /* Searches the trie. */
             /* If a perfect-matching key is found, its value is returned. */
             const int* const p_found_for_gionbashi = (const int*)tetengo_trie_trie_find(p_trie, "gionbashi");
             assert(p_found_for_gionbashi);
