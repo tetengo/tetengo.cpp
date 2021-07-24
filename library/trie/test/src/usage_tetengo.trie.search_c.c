@@ -33,7 +33,7 @@ void usage_tetengo_trie_search()
     };
     tetengo_trie_trieElement_t initial_elements[] = {
         /* clang-format off */
-        { "tasaki", NULL },
+        { "tasakibashi", NULL },
         { "nihongiguchi", NULL },
         { "kumamotoekimae", NULL },
         { "gionbashi", NULL },
@@ -73,7 +73,7 @@ void usage_tetengo_trie_search()
                 "keitokukoumae\n"
                 "kumamotoekimae\n"
                 "nihongiguchi\n"
-                "tasaki\n"
+                "tasakibashi\n"
                 "DONE") == 0);
 
         {

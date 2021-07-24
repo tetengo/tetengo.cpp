@@ -39,7 +39,7 @@ namespace usage_tetengo::trie
 
         // Builds a trie with initial elements.
         const tetengo::trie::trie<std::string, int> trie_{ {
-                                                               { "tasaki", -5 },
+                                                               { "tasakibashi", -5 },
                                                                { "nihongiguchi", -3 },
                                                                { "kumamotoekimae", 0 },
                                                                { "gionbashi", 5 },
@@ -59,7 +59,7 @@ namespace usage_tetengo::trie
                                               "keitokukoumae",
                                               "kumamotoekimae",
                                               "nihongiguchi",
-                                              "tasaki",
+                                              "tasakibashi",
                                               "DONE",
                                           }));
 
