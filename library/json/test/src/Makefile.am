@@ -33,7 +33,7 @@ test_tetengo_json_LDADD = \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_json_DEPENDENCIES = \
     ${top_builddir}/library/json/c/src/libtetengo.json.la
-test_tetengo_json_SOURCES = ${sources}
+test_tetengo_json_SOURCES = ${headers} ${sources}
 
 TESTS = ${check_PROGRAMS}
 

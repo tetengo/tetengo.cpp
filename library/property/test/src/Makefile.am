@@ -39,7 +39,7 @@ test_tetengo_property_DEPENDENCIES = \
     ${top_builddir}/library/platform_dependent/cpp/src/unixos/libtetengo.platform_dependent.noinst.la \
     ${top_builddir}/library/property/c/src/libtetengo.property.la \
     ${top_builddir}/library/text/cpp/src/libtetengo.text.noinst.la
-test_tetengo_property_SOURCES = ${sources}
+test_tetengo_property_SOURCES = ${headers} ${sources}
 
 TESTS = ${check_PROGRAMS}
 

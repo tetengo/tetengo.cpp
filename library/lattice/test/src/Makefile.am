@@ -36,7 +36,7 @@ test_tetengo_lattice_LDADD = \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_lattice_DEPENDENCIES = \
     ${top_builddir}/library/lattice/c/src/libtetengo.lattice.la
-test_tetengo_lattice_SOURCES = ${sources}
+test_tetengo_lattice_SOURCES = ${headers} ${sources}
 
 TESTS = ${check_PROGRAMS}
 

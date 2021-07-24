@@ -36,7 +36,7 @@ test_tetengo_text_LDADD = \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_text_DEPENDENCIES = \
     ${top_builddir}/library/text/c/src/libtetengo.text.la
-test_tetengo_text_SOURCES = ${sources}
+test_tetengo_text_SOURCES = ${headers} ${sources}
 
 TESTS = ${check_PROGRAMS}
 
