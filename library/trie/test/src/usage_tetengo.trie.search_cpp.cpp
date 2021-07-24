@@ -37,7 +37,7 @@ namespace usage_tetengo::trie
             [&building_observer_reports]() { building_observer_reports.push_back("DONE"); }
         };
 
-        // Builds a trie with initial values.
+        // Builds a trie with initial elements.
         const tetengo::trie::trie<std::string, int> trie_{ {
                                                                { "tasaki", -5 },
                                                                { "nihongiguchi", -3 },
