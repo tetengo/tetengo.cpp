@@ -125,9 +125,24 @@
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.default_charactX.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.east_asian_charX.cpp" />
     <ClCompile Include="src\test_tetengo.text.grapheme_splitting.grapheme_segment.cpp" />
+    <ClCompile Include="src\usage_tetengo.text.cpp" />
+    <ClCompile Include="src\usage_tetengo.text.encoding_c.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.text.encoding_cpp.cpp" />
+    <ClCompile Include="src\usage_tetengo.text.graphemeSplit_c.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.text.grapheme_split_cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="src\usage_tetengo.text.encoding_c.h" />
+    <ClInclude Include="src\usage_tetengo.text.encoding_cpp.hpp" />
+    <ClInclude Include="src\usage_tetengo.text.graphemeSplit_c.h" />
+    <ClInclude Include="src\usage_tetengo.text.grapheme_split_cpp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\platform_dependent\cpp\tetengo.platform_dependent.cpp.vcxproj">

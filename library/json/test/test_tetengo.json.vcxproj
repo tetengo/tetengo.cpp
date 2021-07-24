@@ -126,9 +126,17 @@
     <ClCompile Include="src\test_tetengo.json.reader.cpp" />
     <ClCompile Include="src\test_tetengo.json.reader_iterator.cpp" />
     <ClCompile Include="src\test_tetengo.json.stream_reader.cpp" />
+    <ClCompile Include="src\usage_tetengo.json.cpp" />
+    <ClCompile Include="src\usage_tetengo.json.parsing_c.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\usage_tetengo.json.parsing_cpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h" />
+    <ClInclude Include="src\usage_tetengo.json.parsing_c.h" />
+    <ClInclude Include="src\usage_tetengo.json.parsing_cpp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cpp\tetengo.json.cpp.vcxproj">

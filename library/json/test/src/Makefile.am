@@ -1,7 +1,9 @@
 # Automake Settings
 # Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 
-headers =
+headers = \
+    usage_tetengo.json.parsing_c.h \
+    usage_tetengo.json.parsing_cpp.hpp
 
 sources = \
     master.cpp \
@@ -14,7 +16,10 @@ sources = \
     test_tetengo.json.line_counting_reader.cpp \
     test_tetengo.json.reader.cpp \
     test_tetengo.json.reader_iterator.cpp \
-    test_tetengo.json.stream_reader.cpp
+    test_tetengo.json.stream_reader.cpp \
+    usage_tetengo.json.cpp \
+    usage_tetengo.json.parsing_c.c \
+    usage_tetengo.json.parsing_cpp.cpp
 
 check_PROGRAMS = test_tetengo.json
 
@@ -28,7 +33,7 @@ test_tetengo_json_LDADD = \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_json_DEPENDENCIES = \
     ${top_builddir}/library/json/c/src/libtetengo.json.la
-test_tetengo_json_SOURCES = ${sources}
+test_tetengo_json_SOURCES = ${headers} ${sources}
 
 TESTS = ${check_PROGRAMS}
 

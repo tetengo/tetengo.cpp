@@ -6,4 +6,16 @@
 
 /*! \namespace tetengo::trie
     \brief A trie library.
+
+    \section usage-trie Usage
+
+    \subsection usage-trie-search Search
+
+    \subsubsection usage-trie-search-cpp C++
+
+    \snippet trie/test/src/usage_tetengo.trie.search_cpp.cpp search
+
+    \subsubsection usage-trie-search-c C
+
+    \snippet trie/test/src/usage_tetengo.trie.search_c.c search
 */
