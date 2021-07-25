@@ -69,12 +69,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "kaoru"
             VALUE "FileDescription", "An install bootstrapper."
-            VALUE "FileVersion", "1.4.0"
+            VALUE "FileVersion", "1.4.3"
             VALUE "InternalName", "setup.exe"
             VALUE "LegalCopyright", "Copyright (C) 2019-2021 kaoru"
             VALUE "OriginalFilename", "setup.exe"
             VALUE "ProductName", "tetengo"
-            VALUE "ProductVersion", "1.4.0"
+            VALUE "ProductVersion", "1.4.3"
         END
     END
     BLOCK "VarFileInfo"
