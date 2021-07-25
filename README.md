@@ -19,6 +19,9 @@ It is a pull-style parser based on
 [RFC 8259](https://tools.ietf.org/html/rfc8259), plus an extension for
 supporting UNIX shell style comments.
 
+- [Detail
+  description](https://www.tetengo.org/doc/namespacetetengo_1_1json.html)
+
 ### tetengo::lattice
 
 A Viterbi search library.
@@ -29,6 +32,9 @@ path in the lattice consisting of the observed event nodes.
 This library also provides the A* search algorithm for the lattice created by
 the Viterbi search.
 
+- [Detail
+  description](https://www.tetengo.org/doc/namespacetetengo_1_1lattice.html)
+
 ### tetengo::property
 
 An application setting library.
@@ -38,6 +44,9 @@ way.
 
 The storage of the settings is platform-specific: the Windows registry on
 Windows, home directory dot files on UNIX, etc.
+
+- [Detail
+  description](https://www.tetengo.org/doc/namespacetetengo_1_1property.html)
 
 ### tetengo::text
 
@@ -50,6 +59,8 @@ This library provides the following features:
 - A string encoding converter.
 - A grapheme splitter conforming to
   [Unicode 13.0.0](https://unicode.org/versions/Unicode13.0.0/).
+- [Detail
+  description](https://www.tetengo.org/doc/namespacetetengo_1_1text.html)
 
 ### tetengo::trie
 
@@ -60,6 +71,8 @@ Given a key, it returns the corresponding value in a constant time.
 
 The trie is also able to perform a prefix search.
 It has a method to enumerate the values with the same prefix.
+
+- [Detail description](https://www.tetengo.org/doc/namespacetetengo_1_1trie.html)
 
 How to Build and Install
 ------------------------
@@ -85,16 +98,14 @@ necessary in addition to the above tools.
 
 - [Git](https://git-scm.com/)
 
-#### Getting built library files
-
-##### Downloading the prebuilt library files
+#### Downloading the prebuilt library files
 
 Download the .zip archive file for Windows from the website
 [www.tetengo.org](https://www.tetengo.org/).
 
 Execute `setup.exe` in the archive..
 
-##### Building from the source files cloned from the GitHub repository
+#### Building from the source files cloned from the GitHub repository
 
 Clone the source files from GitHub:
 
@@ -111,7 +122,7 @@ Execute the menu command [Build]-[Build Solution] in Visual Studio.
 Open the file `tetengo.setup.sln` in the work tree, and execute the menu
 command [Build]-[Build Solution] in Visual Studio.
 
-`setup.exe` and `tetengi.msi` will be created under the `bin.setup` folder in
+`setup.exe` and `tetengo.msi` will be created under the `bin.setup` folder in
 the work tree.
 
 #### Generating documents
