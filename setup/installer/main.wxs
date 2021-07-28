@@ -4,8 +4,9 @@
   Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Name="tetengo" Id="EA38548A-0408-44AD-91F2-B52FF8A4B911" UpgradeCode="952185DF-9262-470C-959A-6CB9FE2182B5" Language="1033" Codepage="1252" Version="1.4.0" Manufacturer="kaoru">
+    <Product Name="tetengo 1.5.0" Version="1.5.0" Id="86A787F8-F428-43B8-B855-D4CB3D0DCDA6" UpgradeCode="952185DF-9262-470C-959A-6CB9FE2182B5" Language="1033" Codepage="1252" Manufacturer="kaoru">
         <Package Id="*" Description="tetengo Installer" Manufacturer="kaoru" InstallerVersion="500" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
+        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
         <Media Id="1" Cabinet="main.cab" EmbedCab="yes" DiskPrompt="Insert the media #1." />
         <Property Id="DiskPrompt" Value="tetengo Installer" />
