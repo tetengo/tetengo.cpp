@@ -50,6 +50,7 @@ void usage_tetengo_property_saveLoad()
         {
             /* The value cannot be yet obtained from the property set for getting. */
             const size_t value_length1 = tetengo_property_propertySet_getString(p_props_for_getting, "foo", NULL, 0);
+            (void)value_length1;
             assert(value_length1 == (size_t)-1);
         }
 
@@ -60,6 +61,7 @@ void usage_tetengo_property_saveLoad()
         {
             /* The value cannot be yet obtained from the property set for getting. */
             const size_t value_length2 = tetengo_property_propertySet_getString(p_props_for_getting, "foo", NULL, 0);
+            (void)value_length2;
             assert(value_length2 == (size_t)-1);
         }
 

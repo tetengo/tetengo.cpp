@@ -80,12 +80,14 @@ void usage_tetengo_trie_search()
         {
             /* If a perfect-matching key is found, its value is returned. */
             const int* const p_found_for_gionbashi = (const int*)tetengo_trie_trie_find(p_trie, "gionbashi");
+            (void)p_found_for_gionbashi;
             assert(p_found_for_gionbashi);
             assert(*p_found_for_gionbashi == 5);
         }
         {
             /* If not found, NULL is returned. */
             const int* const p_found_for_hanabatachou = (const int*)tetengo_trie_trie_find(p_trie, "hanabatachou");
+            (void)p_found_for_hanabatachou;
             assert(!p_found_for_hanabatachou);
         }
 
