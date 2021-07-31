@@ -106,7 +106,7 @@ def _make_content_wxs_source(
                     continue
                 extended_file_name: str = extended[len(source_directory) + 1 :]
                 print(
-                    "{} {} {} {} {}".format(
+                    "file {} {} {} {} {}".format(
                         wildcard[0],
                         source_directory,
                         extended_file_name,
@@ -117,19 +117,6 @@ def _make_content_wxs_source(
                     ),
                     file=stream,
                 )
-
-
-def _remove_solution_path(
-    path: pathlib.Path, solution_path: pathlib.Path
-) -> pathlib.Path:
-    path_str = str(path)
-    solution_path_str = str(solution_path)
-    if path_str.find(solution_path_str) != 0:
-        return path
-    removed = path_str[len(solution_path_str) :]
-    if len(solution_path_str) > 0 and removed[0] == "\\":
-        removed = removed[1:]
-    return pathlib.Path(removed)
 
 
 if __name__ == "__main__":

@@ -71,7 +71,7 @@ class _DestinationDirectory:
         self.children: Dict[str, _DestinationDirectory] = {}
         self.files = []
 
-    def add(
+    def add_file(
         self, path: pathlib.Path, feature: str, guid: str, source_path: pathlib.Path
     ) -> None:
         if len(path.parents) > 1:
@@ -83,7 +83,7 @@ class _DestinationDirectory:
                     child_id, child_name, self.level + 1
                 )
             grandchild_path = pathlib.Path(str(path)[len(child_name) + 1 :])
-            self.children[child_name].add(grandchild_path, feature, guid, source_path)
+            self.children[child_name].add_file(grandchild_path, feature, guid, source_path)
         else:
             file_name: str = str(path)
             file_id: str = self.id + "." + file_name
@@ -97,18 +97,22 @@ def _build_destination_tree(source_path: pathlib.Path) -> _DestinationDirectory:
         for line in stream:
             line = line.rstrip("\r\n")
             matched: Optional[re.Match[str]] = re.match(
-                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
+                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
             )
             if not matched:
                 continue
-            feature: str = matched.group(1)
-            source_directory = pathlib.Path(matched.group(2))
-            source_path = pathlib.Path(matched.group(3))
-            destination = pathlib.Path(matched.group(4))
-            guid = matched.group(5)
-            destination_tree.add(
-                destination / source_path, feature, guid, source_directory / source_path
-            )
+            kind: str = matched.group(1)
+            if kind == "file":
+                feature: str = matched.group(2)
+                source_directory = pathlib.Path(matched.group(3))
+                source_path = pathlib.Path(matched.group(4))
+                destination = pathlib.Path(matched.group(5))
+                guid = matched.group(6)
+                destination_tree.add_file(
+                    destination / source_path, feature, guid, source_directory / source_path
+                )
+            else:
+                raise "error: " + kind
     return destination_tree
 
 

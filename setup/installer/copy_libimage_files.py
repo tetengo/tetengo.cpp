@@ -32,23 +32,25 @@ def _list_files(source_path: pathlib.Path) -> List[Tuple[pathlib.Path, pathlib.P
     with source_path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
             matched: Optional[re.Match[str]] = re.match(
-                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
+                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
             )
             if not matched:
                 continue
-            feature: str = matched.group(1)
-            source_directory = pathlib.Path(matched.group(2))
-            source_path = pathlib.Path(matched.group(3))
-            destination = pathlib.Path(matched.group(4))
-            if (
-                feature != "include"
-                and feature != "lib.Release.Win32"
-                and feature != "lib.Release.x64"
-            ):
-                continue
-            files.append(
-                (source_directory / source_path, (destination / source_path).parent)
-            )
+            kind: str = matched.group(1)
+            if kind == "file":
+                feature: str = matched.group(2)
+                source_directory = pathlib.Path(matched.group(3))
+                source_path = pathlib.Path(matched.group(4))
+                destination = pathlib.Path(matched.group(5))
+                if (
+                    feature != "include"
+                    and feature != "lib.Release.Win32"
+                    and feature != "lib.Release.x64"
+                ):
+                    continue
+                files.append(
+                    (source_directory / source_path, (destination / source_path).parent)
+                )
     return files
 
 
