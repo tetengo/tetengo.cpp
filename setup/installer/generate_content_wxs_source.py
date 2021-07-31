@@ -21,21 +21,27 @@ def main(args: List[str]) -> None:
     if len(args) < 4:
         print(
             "Usage: ./generate_content_wxs_source.py "
-            "files_to_install.txt file_guid_map.txt content_wxs_source.txt solution_path",
+            "files_to_install.txt file_guid_map.txt envvars_to_install.txt content_wxs_source.txt solution_path",
             file=sys.stderr,
         )
         sys.exit(0)
 
     files_to_install_path = pathlib.Path(args[0])
     file_guid_map_path = pathlib.Path(args[1])
-    content_wxs_source_path = pathlib.Path(args[2])
-    solution_path = pathlib.Path(args[3])
+    envvars_to_install_path = pathlib.Path(args[2])
+    content_wxs_source_path = pathlib.Path(args[3])
+    solution_path = pathlib.Path(args[4])
 
     files_to_install = _load_files_to_install(files_to_install_path)
     file_guid_map = _FileGuidMap(file_guid_map_path, solution_path)
+    envvars_to_install = _load_envvars_to_install(envvars_to_install_path)
 
     _make_content_wxs_source(
-        files_to_install, file_guid_map, content_wxs_source_path, solution_path
+        files_to_install,
+        file_guid_map,
+        envvars_to_install,
+        content_wxs_source_path,
+        solution_path,
     )
     file_guid_map.save(file_guid_map_path)
 
@@ -60,6 +66,19 @@ def _load_files_to_install(
                 )
             )
     return files
+
+
+def _load_envvars_to_install(path: pathlib.Path) -> List[Tuple[str, str, str]]:
+    envvars: List[Tuple[str, str, str]] = []
+    with path.open(mode="r", encoding="UTF-8") as stream:
+        for line in stream:
+            matched: Optional[re.Match[str]] = re.match(
+                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
+            )
+            if not matched:
+                continue
+            envvars.append((matched.group(1), matched.group(2), matched.group(3)))
+    return envvars
 
 
 class _FileGuidMap:
@@ -94,6 +113,7 @@ class _FileGuidMap:
 def _make_content_wxs_source(
     files_to_install: List[Tuple[str, pathlib.Path, pathlib.Path]],
     file_guid_map: _FileGuidMap,
+    envvars_to_install: List[Tuple[str, str, str]],
     content_wxs_source_path: pathlib.Path,
     solution_path: pathlib.Path,
 ) -> None:
@@ -117,6 +137,10 @@ def _make_content_wxs_source(
                     ),
                     file=stream,
                 )
+        for envvar in envvars_to_install:
+            print(
+                "envvar {} {} {}".format(envvar[0], envvar[1], envvar[2]), file=stream
+            )
 
 
 if __name__ == "__main__":
