@@ -65,12 +65,12 @@ namespace usage_tetengo::trie
 
         // Searches the trie.
         // If a perfect-matching key is found, its value is returned.
-        const int* const p_found_for_gionbashi = trie_.find("gionbashi");
+        [[maybe_unused]] const int* const p_found_for_gionbashi = trie_.find("gionbashi");
         assert(p_found_for_gionbashi);
         assert(*p_found_for_gionbashi == 5);
 
         // If not found, nullptr is returned.
-        const int* const p_found_for_hanabatachou = trie_.find("hanabatachou");
+        [[maybe_unused]] const int* const p_found_for_hanabatachou = trie_.find("hanabatachou");
         assert(!p_found_for_hanabatachou);
 
         // Creates a subtrie consisting of the elements with the common key prefix.
