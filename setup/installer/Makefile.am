@@ -9,6 +9,7 @@ script_files = \
 EXTRA_DIST = \
     ${script_files} \
     COPYING.rtf \
+    envvars_to_install.txt \
     file_guid_map.txt \
     files_to_install.txt \
     installer.vcxproj \

@@ -105,6 +105,7 @@
     <None Include="Makefile.nmake" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="envvars_to_install.txt" />
     <Text Include="files_to_install.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

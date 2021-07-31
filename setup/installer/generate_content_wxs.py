@@ -53,6 +53,22 @@ class File:
         self.source = source
 
 
+class EnvVar:
+    id: str
+
+    name: str
+
+    value: str
+
+    guid: str
+
+    def __init__(self, id: str, name: str, value: str, guid: str):
+        self.id = id
+        self.name = name
+        self.value = value
+        self.guid = guid
+
+
 class _DestinationDirectory:
     id: str
 
@@ -64,14 +80,17 @@ class _DestinationDirectory:
 
     files: List[File]
 
+    envvars: List[EnvVar]
+
     def __init__(self, id: str, name: str, level: int):
         self.id = id
         self.name = name
         self.level = level
         self.children: Dict[str, _DestinationDirectory] = {}
         self.files = []
+        self.envvars = []
 
-    def add(
+    def add_file(
         self, path: pathlib.Path, feature: str, guid: str, source_path: pathlib.Path
     ) -> None:
         if len(path.parents) > 1:
@@ -83,12 +102,18 @@ class _DestinationDirectory:
                     child_id, child_name, self.level + 1
                 )
             grandchild_path = pathlib.Path(str(path)[len(child_name) + 1 :])
-            self.children[child_name].add(grandchild_path, feature, guid, source_path)
+            self.children[child_name].add_file(
+                grandchild_path, feature, guid, source_path
+            )
         else:
             file_name: str = str(path)
             file_id: str = self.id + "." + file_name
             file_id = file_id[-72:]
             self.files.append(File(file_id, file_name, feature, guid, source_path))
+
+    def add_envvar(self, name: str, value: str, guid: str) -> None:
+        envvar_id: str = self.id + "." + name
+        self.envvars.append(EnvVar(envvar_id, name, value, guid))
 
 
 def _build_destination_tree(source_path: pathlib.Path) -> _DestinationDirectory:
@@ -96,19 +121,36 @@ def _build_destination_tree(source_path: pathlib.Path) -> _DestinationDirectory:
     with source_path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
             line = line.rstrip("\r\n")
-            matched: Optional[re.Match[str]] = re.match(
-                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
+            matched_as_file: Optional[re.Match[str]] = re.match(
+                "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
             )
-            if not matched:
-                continue
-            feature: str = matched.group(1)
-            source_directory = pathlib.Path(matched.group(2))
-            source_path = pathlib.Path(matched.group(3))
-            destination = pathlib.Path(matched.group(4))
-            guid = matched.group(5)
-            destination_tree.add(
-                destination / source_path, feature, guid, source_directory / source_path
-            )
+            if matched_as_file:
+                kind_as_file: str = matched_as_file.group(1)
+                if kind_as_file == "file":
+                    feature_as_file: str = matched_as_file.group(2)
+                    source_directory_as_file = pathlib.Path(matched_as_file.group(3))
+                    source_path_as_file = pathlib.Path(matched_as_file.group(4))
+                    destination_as_file = pathlib.Path(matched_as_file.group(5))
+                    guid_as_file = matched_as_file.group(6)
+                    destination_tree.add_file(
+                        destination_as_file / source_path_as_file,
+                        feature_as_file,
+                        guid_as_file,
+                        source_directory_as_file / source_path_as_file,
+                    )
+            else:
+                matched_as_envvar: Optional[re.Match[str]] = re.match(
+                    "^([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)[ ]+([^ ]+)", line
+                )
+                if matched_as_envvar:
+                    kind_as_envvar: str = matched_as_envvar.group(1)
+                    if kind_as_envvar == "envvar":
+                        name_as_envvar: str = matched_as_envvar.group(2)
+                        value_as_envvar: str = matched_as_envvar.group(3)
+                        guid_as_envvar: str = matched_as_envvar.group(4)
+                        destination_tree.add_envvar(
+                            name_as_envvar, value_as_envvar, guid_as_envvar
+                        )
     return destination_tree
 
 
@@ -127,6 +169,10 @@ def _build_feature_map_iter(
         feature_map[file.feature].append(file.id)
     for child_key in destination_tree.children:
         _build_feature_map_iter(destination_tree.children[child_key], feature_map)
+    for envvar in destination_tree.envvars:
+        if not "environment_variable" in feature_map:
+            feature_map["environment_variable"] = []
+        feature_map["environment_variable"].append(envvar.id)
 
 
 def _save_wxs(
@@ -179,6 +225,19 @@ def _write_directory_fragment_iter(
         print(
             '{}    <File Id="{}" Name="{}" Source="{}"/>'.format(
                 indent, file.id, file.name, file.source
+            ),
+            file=stream,
+        )
+        print("{}  </Component>".format(indent), file=stream)
+    for envvar in destination_tree.envvars:
+        print(
+            '{}  <Component Id="{}" Guid="{}">'.format(indent, envvar.id, envvar.guid),
+            file=stream,
+        )
+        print("{}    <CreateFolder/>".format(indent), file=stream)
+        print(
+            '{}    <Environment Id="{}" Name="{}" Action="set" System="yes" Part="all" Value="{}"/>'.format(
+                indent, envvar.id, envvar.name, envvar.value
             ),
             file=stream,
         )
