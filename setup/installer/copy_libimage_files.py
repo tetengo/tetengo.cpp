@@ -43,7 +43,9 @@ def _list_files(source_path: pathlib.Path) -> List[Tuple[pathlib.Path, pathlib.P
                 source_path = pathlib.Path(matched.group(4))
                 destination = pathlib.Path(matched.group(5))
                 if (
-                    feature != "include"
+                    feature != "bin.Win32"
+                    and feature != "bin.x64"
+                    and feature != "include"
                     and feature != "lib.Release.Win32"
                     and feature != "lib.Release.x64"
                 ):
