@@ -44,7 +44,7 @@ struct tetengo_lattice_nBestIterator_tag
                                             p_cpp_iterator_pair,
         std::unique_ptr<std::vector<int>>&& p_cpp_eos_preceding_edge_costs) :
     p_cpp_iterator_pair{ std::move(p_cpp_iterator_pair) },
-        p_cpp_eos_preceding_edge_costs{ std::move(p_cpp_eos_preceding_edge_costs) }
+    p_cpp_eos_preceding_edge_costs{ std::move(p_cpp_eos_preceding_edge_costs) }
     {}
 };
 

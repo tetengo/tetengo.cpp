@@ -16,7 +16,7 @@ namespace tetengo::trie
 {
     trie_iterator_impl::trie_iterator_impl(double_array_iterator double_array_iterator_, storage& storage_) :
     m_double_array_iterator{ std::move(double_array_iterator_) },
-        m_p_storage{ &storage_ }
+    m_p_storage{ &storage_ }
     {}
 
     trie_iterator_impl::trie_iterator_impl() : m_double_array_iterator{}, m_p_storage{ nullptr } {}

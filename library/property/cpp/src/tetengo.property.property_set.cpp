@@ -26,9 +26,9 @@ namespace tetengo::property
 
         impl(std::unique_ptr<storage_loader>&& p_storage_loader, const std::filesystem::path& path) :
         m_p_storage_loader{ std::move(p_storage_loader) },
-            m_path{ path },
-            m_p_storage{ m_p_storage_loader->load(m_path) },
-            m_dirty{ false }
+        m_path{ path },
+        m_p_storage{ m_p_storage_loader->load(m_path) },
+        m_dirty{ false }
         {}
 
 

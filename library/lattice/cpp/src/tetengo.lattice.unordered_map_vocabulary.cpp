@@ -38,8 +38,8 @@ namespace tetengo::lattice
             std::function<std::size_t(const entry_view&)>             entry_hash,
             std::function<bool(const entry_view&, const entry_view&)> entry_equal_to) :
         m_entry_map{ make_entry_map(std::move(entries)) },
-            m_connection_keys{},
-            m_p_connection_map{}
+        m_connection_keys{},
+        m_p_connection_map{}
         {
             build_connection_map(
                 std::move(connections),

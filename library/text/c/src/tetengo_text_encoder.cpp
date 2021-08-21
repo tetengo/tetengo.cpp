@@ -29,7 +29,7 @@ struct tetengo_text_encoder_tag
         const tetengo::text::encoder_base&    cpp_encoder,
         const tetengo_text_encoder_encoding_t encoding) :
     cpp_encoder{ cpp_encoder },
-        encoding{ encoding }
+    encoding{ encoding }
     {}
 };
 

@@ -23,8 +23,8 @@ namespace tetengo::lattice
 
     entry::entry(std::string key, std::any value, const int cost) :
     m_key{ std::move(key) },
-        m_value{ std::move(value) },
-        m_cost{ cost }
+    m_value{ std::move(value) },
+    m_cost{ cost }
     {}
 
     entry::entry(const entry_view& view) : m_key{ view.key() }, m_value{ *view.value() }, m_cost{ view.cost() } {}

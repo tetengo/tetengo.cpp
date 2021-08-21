@@ -198,8 +198,8 @@ public:
     */
     constexpr section(const train* p_train, std::size_t from, std::size_t to) :
     m_p_train{ p_train },
-        m_from{ from },
-        m_to{ to }
+    m_from{ from },
+    m_to{ to }
     {}
 
 

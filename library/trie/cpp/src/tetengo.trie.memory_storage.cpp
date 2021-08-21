@@ -40,7 +40,7 @@ namespace tetengo::trie
             std::istream&                                            input_stream,
             const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
         m_base_check_array{},
-            m_value_array{}
+        m_value_array{}
         {
             deserialize(input_stream, value_deserializer, m_base_check_array, m_value_array);
         };

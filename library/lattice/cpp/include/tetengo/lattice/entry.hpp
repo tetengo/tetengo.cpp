@@ -115,8 +115,8 @@ namespace tetengo::lattice
         */
         constexpr entry_view(std::string_view key, const std::any* value, int cost) :
         m_key{ std::move(key) },
-            m_value{ std::move(value) },
-            m_cost{ cost }
+        m_value{ std::move(value) },
+        m_cost{ cost }
         {}
 
         /*!

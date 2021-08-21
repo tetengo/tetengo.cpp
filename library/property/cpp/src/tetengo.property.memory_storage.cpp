@@ -51,7 +51,7 @@ namespace tetengo::property
 
     memory_storage::memory_storage(value_map_type& master_value_map) :
     storage{ master_value_map },
-        m_p_impl{ std::make_unique<impl>(master_value_map) }
+    m_p_impl{ std::make_unique<impl>(master_value_map) }
     {}
 
     void memory_storage::save_impl() const

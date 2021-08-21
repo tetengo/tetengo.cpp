@@ -29,8 +29,8 @@ namespace tetengo::lattice
 {
     cap::cap(std::vector<node> tail_path, const int tail_path_cost, const int whole_path_cost) :
     m_tail_path{ std::move(tail_path) },
-        m_tail_path_cost{ tail_path_cost },
-        m_whole_path_cost{ whole_path_cost }
+    m_tail_path_cost{ tail_path_cost },
+    m_whole_path_cost{ whole_path_cost }
     {}
 
     bool operator<(const cap& one, const cap& another)
@@ -157,11 +157,11 @@ namespace tetengo::lattice
 
     n_best_iterator::n_best_iterator() :
     m_p_lattice{},
-        m_caps{},
-        m_eos_hash{ 0 },
-        m_p_constraint{ std::make_shared<constraint>() },
-        m_path{},
-        m_index{ 0 }
+    m_caps{},
+    m_eos_hash{ 0 },
+    m_p_constraint{ std::make_shared<constraint>() },
+    m_path{},
+    m_index{ 0 }
     {}
 
     n_best_iterator::n_best_iterator(
@@ -169,11 +169,11 @@ namespace tetengo::lattice
         node                          eos_node,
         std::unique_ptr<constraint>&& p_constraint) :
     m_p_lattice{ &lattice_ },
-        m_caps{},
-        m_eos_hash{ calc_node_hash(eos_node) },
-        m_p_constraint{ std::move(p_constraint) },
-        m_path{},
-        m_index{ 0 }
+    m_caps{},
+    m_eos_hash{ calc_node_hash(eos_node) },
+    m_p_constraint{ std::move(p_constraint) },
+    m_path{},
+    m_index{ 0 }
     {
         if (!m_p_constraint)
         {

@@ -46,10 +46,10 @@ namespace tetengo::json
 
         impl(std::unique_ptr<reader>&& p_reader, const std::size_t buffer_capacity) :
         m_p_reader{ build_decorated_reader(std::move(p_reader)) },
-            m_p_worker{},
-            m_channel{ buffer_capacity },
-            m_parsing_abortion_requested{ false },
-            m_mutex{}
+        m_p_worker{},
+        m_channel{ buffer_capacity },
+        m_parsing_abortion_requested{ false },
+        m_mutex{}
         {
             if (!m_p_reader)
             {

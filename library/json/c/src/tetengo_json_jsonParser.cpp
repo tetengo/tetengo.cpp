@@ -30,7 +30,7 @@ struct tetengo_json_jsonParser_tag
 
     explicit tetengo_json_jsonParser_tag(std::unique_ptr<tetengo::json::json_parser>&& p_cpp_parser) :
     p_cpp_parser{ std::move(p_cpp_parser) },
-        p_current_element{}
+    p_current_element{}
     {}
 };
 

@@ -38,7 +38,7 @@ namespace tetengo::json
 
         impl(std::unique_ptr<std::istream>&& p_stream, const std::size_t buffer_capacity) :
         m_p_stream{ std::move(p_stream) },
-            m_buffer{ buffer_capacity }
+        m_buffer{ buffer_capacity }
         {
             if (!m_p_stream)
             {
