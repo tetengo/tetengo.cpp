@@ -12,6 +12,7 @@
 #include <stack>
 #include <stdexcept>
 #include <string>
+#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 
