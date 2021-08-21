@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <utility> // IWYU pragma: keep
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 

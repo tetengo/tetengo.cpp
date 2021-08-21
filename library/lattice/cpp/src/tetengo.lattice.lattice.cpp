@@ -13,7 +13,6 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 

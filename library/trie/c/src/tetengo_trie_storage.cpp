@@ -21,7 +21,7 @@
 #include <tetengo/trie/trie.hpp>
 
 #include "tetengo_trie_storage.hpp"
-#include "tetengo_trie_trie.hpp" // IWYU pragma: keep
+#include "tetengo_trie_trie.hpp"
 
 
 tetengo_trie_storage_t* tetengo_trie_storage_createStorage(const tetengo_trie_trie_t* const p_trie)

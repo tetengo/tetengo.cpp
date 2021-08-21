@@ -4,7 +4,6 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#include <cstddef> // IWYU pragma: keep
 #include <istream>
 #include <iterator>
 #include <memory>
@@ -14,6 +13,7 @@
 
 #include <boost/circular_buffer.hpp>
 #include <boost/core/noncopyable.hpp>
+#include <boost/core/pointer_traits.hpp>
 
 #include <tetengo/json/stream_reader.hpp>
 

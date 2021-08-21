@@ -9,10 +9,10 @@
 #include <stdexcept>
 #include <utility>
 
-#include <tetengo/trie/storage.h> // IWYU pragma: keep
-#include <tetengo/trie/trie.h> // IWYU pragma: keep
+#include <tetengo/trie/storage.h>
+#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
-#include <tetengo/trie/trieIterator.h> // IWYU pragma: keep
+#include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
 
 #include "tetengo_trie_trie.hpp"

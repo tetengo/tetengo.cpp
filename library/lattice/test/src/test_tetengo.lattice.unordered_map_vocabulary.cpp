@@ -20,9 +20,9 @@
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/lattice/connection.h> // IWYU pragma: keep
+#include <tetengo/lattice/connection.h>
 #include <tetengo/lattice/connection.hpp>
-#include <tetengo/lattice/entry.h> // IWYU pragma: keep
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>

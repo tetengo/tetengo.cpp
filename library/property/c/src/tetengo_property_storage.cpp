@@ -5,7 +5,6 @@
 */
 
 #include <algorithm>
-#include <cstdint>
 #include <iterator>
 #include <memory>
 #include <optional>
@@ -14,7 +13,7 @@
 #include <utility>
 
 #include <stddef.h>
-#include <stdint.h> // IWYU pragma: keep
+#include <stdint.h>
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>

@@ -5,9 +5,9 @@
 */
 
 #include <iterator>
-#include <map> // IWYU pragma: keep
+#include <map>
 #include <regex>
-#include <sstream> // IWYU pragma: keep
+#include <sstream>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -17,9 +17,9 @@
 
 #include <tetengo/text/encoder.h>
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf16.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/cp932.hpp>
+#include <tetengo/text/encoding/utf16.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 
 
 namespace

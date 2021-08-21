@@ -9,9 +9,6 @@
 
 #include <stddef.h>
 #include <stdint.h> /* IWYU pragma: keep */
-#if defined(IWYU)
-#include <cstdint> /* Just silencing IWYU */
-#endif
 
 #include <tetengo/property/storage.h>
 

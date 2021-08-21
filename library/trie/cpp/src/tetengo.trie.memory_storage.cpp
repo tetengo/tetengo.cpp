@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
-#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <functional>
 #include <istream>
@@ -15,8 +14,7 @@
 #include <limits>
 #include <memory>
 #include <optional>
-#include <type_traits>
-#include <utility> // IWYU pragma: keep
+#include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>

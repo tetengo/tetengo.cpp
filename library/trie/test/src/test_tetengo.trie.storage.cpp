@@ -5,14 +5,12 @@
 */
 
 #include <any>
-#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <functional>
 #include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
-#include <utility> // IWYU pragma: keep
 #include <vector>
 
 #include <boost/preprocessor.hpp>

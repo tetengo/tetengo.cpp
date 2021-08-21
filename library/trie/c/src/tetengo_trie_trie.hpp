@@ -17,7 +17,7 @@
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/trie.hpp>
 
-#include "tetengo_trie_storage.hpp" // IWYU pragma: keep
+#include "tetengo_trie_storage.hpp"
 
 
 using cpp_trie_type = tetengo::trie::trie<std::string_view, std::vector<char>>;

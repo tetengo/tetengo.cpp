@@ -12,7 +12,7 @@
 
 #include <stddef.h>
 
-#include <tetengo/lattice/entry.h> // IWYU pragma: keep
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>

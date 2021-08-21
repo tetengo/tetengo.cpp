@@ -14,9 +14,9 @@
 
 #include <tetengo/text/encoder.h>
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf16.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/cp932.hpp>
+#include <tetengo/text/encoding/utf16.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 
 
 struct tetengo_text_encoder_tag

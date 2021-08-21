@@ -11,7 +11,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string_view>
-#include <utility> // IWYU pragma: keep
+#include <utility>
 #include <vector>
 
 #include <stddef.h>

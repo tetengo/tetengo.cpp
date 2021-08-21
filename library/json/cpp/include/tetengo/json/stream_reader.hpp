@@ -7,7 +7,6 @@
 #if !defined(TETENGO_JSON_STREAMREADER_HPP)
 #define TETENGO_JSON_STREAMREADER_HPP
 
-#include <cstddef> // IWYU pragma: keep
 #include <istream>
 #include <memory>
 

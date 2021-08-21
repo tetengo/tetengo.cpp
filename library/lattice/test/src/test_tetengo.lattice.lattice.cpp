@@ -19,12 +19,12 @@
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/lattice/connection.h> // IWYU pragma: keep
-#include <tetengo/lattice/entry.h> // IWYU pragma: keep
+#include <tetengo/lattice/connection.h>
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
-#include <tetengo/lattice/node.h> // IWYU pragma: keep
+#include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
