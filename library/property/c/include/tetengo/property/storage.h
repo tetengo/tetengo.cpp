@@ -10,9 +10,6 @@
 
 #include <stddef.h>
 #include <stdint.h> /* IWYU pragma: keep */
-#if defined(IWYU)
-#include <cstdint> /* Just silencing IWYU */
-#endif
 
 
 #if defined(__cplusplus)

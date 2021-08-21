@@ -8,7 +8,6 @@
 #include <any>
 #include <cassert>
 #include <clocale>
-#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <exception>
 #include <filesystem>
@@ -16,12 +15,12 @@
 #include <iostream>
 #include <iterator>
 #include <limits>
-#include <locale> // IWYU pragma: keep
+#include <locale>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <type_traits> // IWYU pragma: keep
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -29,8 +28,8 @@
 #include <boost/format.hpp>
 
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/cp932.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>

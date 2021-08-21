@@ -8,7 +8,6 @@
 #define TETENGO_TRIE_STORAGE_HPP
 
 #include <any>
-#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <functional>
 #include <istream>

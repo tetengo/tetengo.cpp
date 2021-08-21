@@ -20,18 +20,18 @@
 #include <boost/stl_interfaces/iterator_interface.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/lattice/connection.h> // IWYU pragma: keep
+#include <tetengo/lattice/connection.h>
 #include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/constraintElement.h>
 #include <tetengo/lattice/constraint_element.hpp>
-#include <tetengo/lattice/entry.h> // IWYU pragma: keep
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
-#include <tetengo/lattice/node.h> // IWYU pragma: keep
+#include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/node_constraint_element.hpp>
 #include <tetengo/lattice/path.h>

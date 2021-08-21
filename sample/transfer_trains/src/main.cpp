@@ -7,13 +7,12 @@
 #include <any>
 #include <cassert>
 #include <clocale>
-#include <cstddef> // IWYU pragma: keep
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
-#include <locale> // IWYU pragma: keep
+#include <locale>
 #include <memory>
 #include <numeric>
 #include <optional>
@@ -35,8 +34,8 @@
 #include <tetengo/lattice/path.hpp>
 #include <tetengo/lattice/vocabulary.hpp> // IWYU pragma: keep
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/cp932.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 #include <tetengo/text/grapheme_splitter.hpp>
 
 #include "timetable.hpp"

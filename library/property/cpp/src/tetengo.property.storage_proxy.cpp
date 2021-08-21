@@ -27,7 +27,7 @@ namespace tetengo::property
 
         impl(std::shared_ptr<storage_loader> p_real_storage_loader, const std::filesystem::path& path) :
         m_p_real_storage_loader{ std::move(p_real_storage_loader) },
-            m_path{ path }
+        m_path{ path }
         {}
 
 
@@ -108,7 +108,7 @@ namespace tetengo::property
         std::shared_ptr<storage_loader> p_real_storage_loader,
         const std::filesystem::path&    path) :
     storage{ value_map_type{} },
-        m_p_impl{ std::make_unique<impl>(std::move(p_real_storage_loader), path) }
+    m_p_impl{ std::make_unique<impl>(std::move(p_real_storage_loader), path) }
     {}
 
     std::optional<bool> storage_proxy::get_bool_impl(const std::filesystem::path& key) const

@@ -14,9 +14,9 @@
 
 #include <tetengo/text/encoder.h>
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf16.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/cp932.hpp>
+#include <tetengo/text/encoding/utf16.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 
 
 struct tetengo_text_encoder_tag
@@ -29,7 +29,7 @@ struct tetengo_text_encoder_tag
         const tetengo::text::encoder_base&    cpp_encoder,
         const tetengo_text_encoder_encoding_t encoding) :
     cpp_encoder{ cpp_encoder },
-        encoding{ encoding }
+    encoding{ encoding }
     {}
 };
 

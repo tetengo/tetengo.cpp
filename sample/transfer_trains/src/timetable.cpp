@@ -41,7 +41,7 @@ namespace
 
         timetable_value(std::vector<station>&& stations, std::vector<train>&& trains) :
         stations{ std::move(stations) },
-            trains{ std::move(trains) }
+        trains{ std::move(trains) }
         {}
     };
 
@@ -101,7 +101,7 @@ namespace
 
 station::station(std::string name, std::string telegram_code) :
 m_name{ std::move(name) },
-    m_telegram_code{ std::move(telegram_code) }
+m_telegram_code{ std::move(telegram_code) }
 {}
 
 const std::string& station::name() const
@@ -117,7 +117,7 @@ const std::string& station::telegram_code() const
 
 stop::stop(std::optional<std::size_t> arrival_time, std::optional<std::size_t> departure_time) :
 m_arrival_time{ std::move(arrival_time) },
-    m_departure_time{ std::move(departure_time) }
+m_departure_time{ std::move(departure_time) }
 {}
 
 std::optional<std::size_t> stop::arrival_time() const
@@ -143,8 +143,8 @@ void stop::set_departure_time(std::size_t time)
 
 train::train(std::string number, std::string name, std::vector<stop> stops) :
 m_number{ std::move(number) },
-    m_name{ std::move(name) },
-    m_stops{ std::move(stops) }
+m_name{ std::move(name) },
+m_stops{ std::move(stops) }
 {}
 
 const std::string& train::number() const

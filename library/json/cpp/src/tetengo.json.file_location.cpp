@@ -16,8 +16,8 @@ namespace tetengo::json
 {
     file_location::file_location(std::string line, std::size_t line_index, std::size_t column_index) :
     m_line{ std::move(line) },
-        m_line_index{ line_index },
-        m_column_index{ column_index }
+    m_line_index{ line_index },
+    m_column_index{ column_index }
     {
         if (m_column_index > m_line.length())
         {

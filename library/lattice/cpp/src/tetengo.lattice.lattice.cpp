@@ -13,7 +13,6 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 
@@ -38,8 +37,8 @@ namespace tetengo::lattice
             std::vector<node>                                nodes,
             std::vector<std::unique_ptr<std::vector<int>>>&& p_preceding_edge_costs) :
         m_input_tail{ input_tail },
-            m_nodes{ std::move(nodes) },
-            m_p_preceding_edge_costs{ std::move(p_preceding_edge_costs) }
+        m_nodes{ std::move(nodes) },
+        m_p_preceding_edge_costs{ std::move(p_preceding_edge_costs) }
         {}
 
 
@@ -81,8 +80,8 @@ namespace tetengo::lattice
 
         explicit impl(std::unique_ptr<vocabulary>&& p_vocabulary) :
         m_p_vocabulary{ std::move(p_vocabulary) },
-            m_input{},
-            m_graph{}
+        m_input{},
+        m_graph{}
         {
             m_graph.push_back(bos_step());
         }

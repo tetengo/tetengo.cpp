@@ -75,7 +75,7 @@ namespace tetengo::property
 
     windows_registry_storage::windows_registry_storage(value_map_type value_map, const std::filesystem::path& path) :
     storage{ std::move(value_map) },
-        m_p_impl{ std::make_unique<impl>(path) }
+    m_p_impl{ std::make_unique<impl>(path) }
     {}
 
     void windows_registry_storage::save_impl() const

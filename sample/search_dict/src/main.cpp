@@ -6,14 +6,13 @@
 
 #include <any>
 #include <clocale>
-#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <exception>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
 #include <iostream>
 #include <iterator>
-#include <locale> // IWYU pragma: keep
+#include <locale>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -21,8 +20,8 @@
 #include <vector>
 
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/cp932.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/trie.hpp>
 

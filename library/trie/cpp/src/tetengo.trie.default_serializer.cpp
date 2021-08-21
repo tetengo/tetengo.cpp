@@ -134,8 +134,8 @@ namespace tetengo::trie
 
 
     template <typename Char>
-    std::vector<char> default_serializer<std::basic_string_view<Char>>::
-                      operator()(const std::basic_string_view<Char>& object) const
+    std::vector<char>
+    default_serializer<std::basic_string_view<Char>>::operator()(const std::basic_string_view<Char>& object) const
     {
         std::vector<char> serialized{};
         serialized.reserve(object.length() * sizeof(Char) / sizeof(char));
@@ -147,19 +147,19 @@ namespace tetengo::trie
         return serialized;
     }
 
-    template std::vector<char> default_serializer<std::basic_string_view<wchar_t>>::
-                               operator()(const std::basic_string_view<wchar_t>& object) const;
+    template std::vector<char> default_serializer<std::basic_string_view<wchar_t>>::operator()(
+        const std::basic_string_view<wchar_t>& object) const;
 
-    template std::vector<char> default_serializer<std::basic_string_view<char16_t>>::
-                               operator()(const std::basic_string_view<char16_t>& object) const;
+    template std::vector<char> default_serializer<std::basic_string_view<char16_t>>::operator()(
+        const std::basic_string_view<char16_t>& object) const;
 
-    template std::vector<char> default_serializer<std::basic_string_view<char32_t>>::
-                               operator()(const std::basic_string_view<char32_t>& object) const;
+    template std::vector<char> default_serializer<std::basic_string_view<char32_t>>::operator()(
+        const std::basic_string_view<char32_t>& object) const;
 
 
     template <typename Char>
-    std::vector<char> default_serializer<std::basic_string<Char>>::
-                      operator()(const std::basic_string<Char>& object) const
+    std::vector<char>
+    default_serializer<std::basic_string<Char>>::operator()(const std::basic_string<Char>& object) const
     {
         std::vector<char> serialized{};
         serialized.reserve(object.length() * sizeof(Char) / sizeof(char));
@@ -171,69 +171,73 @@ namespace tetengo::trie
         return serialized;
     }
 
-    template std::vector<char> default_serializer<std::basic_string<wchar_t>>::
-                               operator()(const std::basic_string<wchar_t>& object) const;
+    template std::vector<char>
+    default_serializer<std::basic_string<wchar_t>>::operator()(const std::basic_string<wchar_t>& object) const;
 
-    template std::vector<char> default_serializer<std::basic_string<char16_t>>::
-                               operator()(const std::basic_string<char16_t>& object) const;
+    template std::vector<char>
+    default_serializer<std::basic_string<char16_t>>::operator()(const std::basic_string<char16_t>& object) const;
 
-    template std::vector<char> default_serializer<std::basic_string<char32_t>>::
-                               operator()(const std::basic_string<char32_t>& object) const;
+    template std::vector<char>
+    default_serializer<std::basic_string<char32_t>>::operator()(const std::basic_string<char32_t>& object) const;
 
 
     template <typename Integer>
-    std::vector<char> default_serializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::
-                      operator()(const Integer object) const
+    std::vector<char>
+    default_serializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::operator()(const Integer object) const
     {
         return to_bytes(object);
     }
 
-    template std::vector<char> default_serializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::
-                               operator()(bool object) const;
-
-    template std::vector<char> default_serializer<char, std::enable_if_t<std::is_integral_v<char>>>::
-                               operator()(char object) const;
-
-    template std::vector<char> default_serializer<signed char, std::enable_if_t<std::is_integral_v<signed char>>>::
-                               operator()(signed char object) const;
-
-    template std::vector<char> default_serializer<unsigned char, std::enable_if_t<std::is_integral_v<unsigned char>>>::
-                               operator()(unsigned char object) const;
-
-    template std::vector<char> default_serializer<wchar_t, std::enable_if_t<std::is_integral_v<wchar_t>>>::
-                               operator()(wchar_t object) const;
-
-    template std::vector<char> default_serializer<char16_t, std::enable_if_t<std::is_integral_v<char16_t>>>::
-                               operator()(char16_t object) const;
-
-    template std::vector<char> default_serializer<char32_t, std::enable_if_t<std::is_integral_v<char32_t>>>::
-                               operator()(char32_t object) const;
-
-    template std::vector<char> default_serializer<int, std::enable_if_t<std::is_integral_v<int>>>::
-                               operator()(int object) const;
-
-    template std::vector<char> default_serializer<unsigned int, std::enable_if_t<std::is_integral_v<unsigned int>>>::
-                               operator()(unsigned int object) const;
-
-    template std::vector<char> default_serializer<short, std::enable_if_t<std::is_integral_v<short>>>::
-                               operator()(short object) const;
+    template std::vector<char>
+    default_serializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::operator()(bool object) const;
 
     template std::vector<char>
-    default_serializer<unsigned short, std::enable_if_t<std::is_integral_v<unsigned short>>>::
-    operator()(unsigned short object) const;
-
-    template std::vector<char> default_serializer<long, std::enable_if_t<std::is_integral_v<long>>>::
-                               operator()(long object) const;
-
-    template std::vector<char> default_serializer<unsigned long, std::enable_if_t<std::is_integral_v<unsigned long>>>::
-                               operator()(unsigned long object) const;
-
-    template std::vector<char> default_serializer<long long, std::enable_if_t<std::is_integral_v<long long>>>::
-                               operator()(long long object) const;
+    default_serializer<char, std::enable_if_t<std::is_integral_v<char>>>::operator()(char object) const;
 
     template std::vector<char>
-    default_serializer<unsigned long long, std::enable_if_t<std::is_integral_v<unsigned long long>>>::
-    operator()(unsigned long long object) const;
+    default_serializer<signed char, std::enable_if_t<std::is_integral_v<signed char>>>::operator()(
+        signed char object) const;
+
+    template std::vector<char>
+    default_serializer<unsigned char, std::enable_if_t<std::is_integral_v<unsigned char>>>::operator()(
+        unsigned char object) const;
+
+    template std::vector<char>
+    default_serializer<wchar_t, std::enable_if_t<std::is_integral_v<wchar_t>>>::operator()(wchar_t object) const;
+
+    template std::vector<char>
+    default_serializer<char16_t, std::enable_if_t<std::is_integral_v<char16_t>>>::operator()(char16_t object) const;
+
+    template std::vector<char>
+    default_serializer<char32_t, std::enable_if_t<std::is_integral_v<char32_t>>>::operator()(char32_t object) const;
+
+    template std::vector<char>
+    default_serializer<int, std::enable_if_t<std::is_integral_v<int>>>::operator()(int object) const;
+
+    template std::vector<char>
+    default_serializer<unsigned int, std::enable_if_t<std::is_integral_v<unsigned int>>>::operator()(
+        unsigned int object) const;
+
+    template std::vector<char>
+    default_serializer<short, std::enable_if_t<std::is_integral_v<short>>>::operator()(short object) const;
+
+    template std::vector<char>
+    default_serializer<unsigned short, std::enable_if_t<std::is_integral_v<unsigned short>>>::operator()(
+        unsigned short object) const;
+
+    template std::vector<char>
+    default_serializer<long, std::enable_if_t<std::is_integral_v<long>>>::operator()(long object) const;
+
+    template std::vector<char>
+    default_serializer<unsigned long, std::enable_if_t<std::is_integral_v<unsigned long>>>::operator()(
+        unsigned long object) const;
+
+    template std::vector<char>
+    default_serializer<long long, std::enable_if_t<std::is_integral_v<long long>>>::operator()(long long object) const;
+
+    template std::vector<char>
+    default_serializer<unsigned long long, std::enable_if_t<std::is_integral_v<unsigned long long>>>::operator()(
+        unsigned long long object) const;
 
 
     const std::string& default_deserializer<std::string>::operator()(const std::string& bytes) const
@@ -243,8 +247,8 @@ namespace tetengo::trie
 
 
     template <typename Char>
-    std::basic_string<Char> default_deserializer<std::basic_string<Char>>::
-                            operator()(const std::vector<char>& bytes) const
+    std::basic_string<Char>
+    default_deserializer<std::basic_string<Char>>::operator()(const std::vector<char>& bytes) const
     {
         assert(std::size(bytes) % sizeof(Char) == 0);
         std::basic_string<Char> object{};
@@ -255,68 +259,73 @@ namespace tetengo::trie
         return object;
     }
 
-    template std::basic_string<wchar_t> default_deserializer<std::basic_string<wchar_t>>::
-                                        operator()(const std::vector<char>& bytes) const;
+    template std::basic_string<wchar_t>
+    default_deserializer<std::basic_string<wchar_t>>::operator()(const std::vector<char>& bytes) const;
 
-    template std::basic_string<char16_t> default_deserializer<std::basic_string<char16_t>>::
-                                         operator()(const std::vector<char>& bytes) const;
+    template std::basic_string<char16_t>
+    default_deserializer<std::basic_string<char16_t>>::operator()(const std::vector<char>& bytes) const;
 
-    template std::basic_string<char32_t> default_deserializer<std::basic_string<char32_t>>::
-                                         operator()(const std::vector<char>& bytes) const;
+    template std::basic_string<char32_t>
+    default_deserializer<std::basic_string<char32_t>>::operator()(const std::vector<char>& bytes) const;
 
 
     template <typename Integer>
-    Integer default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::
-            operator()(const std::vector<char>& bytes) const
+    Integer default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::operator()(
+        const std::vector<char>& bytes) const
     {
         return from_bytes<Integer>(std::data(bytes), std::size(bytes));
     }
 
-    template bool default_deserializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::
-                  operator()(const std::vector<char>& bytes) const;
+    template bool default_deserializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template char default_deserializer<char, std::enable_if_t<std::is_integral_v<char>>>::
-                  operator()(const std::vector<char>& bytes) const;
+    template char default_deserializer<char, std::enable_if_t<std::is_integral_v<char>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template signed char default_deserializer<signed char, std::enable_if_t<std::is_integral_v<signed char>>>::
-                         operator()(const std::vector<char>& bytes) const;
+    template signed char
+    default_deserializer<signed char, std::enable_if_t<std::is_integral_v<signed char>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template unsigned char default_deserializer<unsigned char, std::enable_if_t<std::is_integral_v<unsigned char>>>::
-                           operator()(const std::vector<char>& bytes) const;
+    template unsigned char
+    default_deserializer<unsigned char, std::enable_if_t<std::is_integral_v<unsigned char>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template wchar_t default_deserializer<wchar_t, std::enable_if_t<std::is_integral_v<wchar_t>>>::
-                     operator()(const std::vector<char>& bytes) const;
+    template wchar_t default_deserializer<wchar_t, std::enable_if_t<std::is_integral_v<wchar_t>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template char16_t default_deserializer<char16_t, std::enable_if_t<std::is_integral_v<char16_t>>>::
-                      operator()(const std::vector<char>& bytes) const;
+    template char16_t default_deserializer<char16_t, std::enable_if_t<std::is_integral_v<char16_t>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template char32_t default_deserializer<char32_t, std::enable_if_t<std::is_integral_v<char32_t>>>::
-                      operator()(const std::vector<char>& bytes) const;
+    template char32_t default_deserializer<char32_t, std::enable_if_t<std::is_integral_v<char32_t>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template int default_deserializer<int, std::enable_if_t<std::is_integral_v<int>>>::
-                 operator()(const std::vector<char>& bytes) const;
+    template int default_deserializer<int, std::enable_if_t<std::is_integral_v<int>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template unsigned int default_deserializer<unsigned int, std::enable_if_t<std::is_integral_v<unsigned int>>>::
-                          operator()(const std::vector<char>& bytes) const;
+    template unsigned int
+    default_deserializer<unsigned int, std::enable_if_t<std::is_integral_v<unsigned int>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template short default_deserializer<short, std::enable_if_t<std::is_integral_v<short>>>::
-                   operator()(const std::vector<char>& bytes) const;
+    template short default_deserializer<short, std::enable_if_t<std::is_integral_v<short>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template unsigned short default_deserializer<unsigned short, std::enable_if_t<std::is_integral_v<unsigned short>>>::
-                            operator()(const std::vector<char>& bytes) const;
+    template unsigned short
+    default_deserializer<unsigned short, std::enable_if_t<std::is_integral_v<unsigned short>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template long default_deserializer<long, std::enable_if_t<std::is_integral_v<long>>>::
-                  operator()(const std::vector<char>& bytes) const;
+    template long default_deserializer<long, std::enable_if_t<std::is_integral_v<long>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template unsigned long default_deserializer<unsigned long, std::enable_if_t<std::is_integral_v<unsigned long>>>::
-                           operator()(const std::vector<char>& bytes) const;
+    template unsigned long
+    default_deserializer<unsigned long, std::enable_if_t<std::is_integral_v<unsigned long>>>::operator()(
+        const std::vector<char>& bytes) const;
 
-    template long long default_deserializer<long long, std::enable_if_t<std::is_integral_v<long long>>>::
-                       operator()(const std::vector<char>& bytes) const;
+    template long long default_deserializer<long long, std::enable_if_t<std::is_integral_v<long long>>>::operator()(
+        const std::vector<char>& bytes) const;
 
     template unsigned long long
-    default_deserializer<unsigned long long, std::enable_if_t<std::is_integral_v<unsigned long long>>>::
-    operator()(const std::vector<char>& bytes) const;
+    default_deserializer<unsigned long long, std::enable_if_t<std::is_integral_v<unsigned long long>>>::operator()(
+        const std::vector<char>& bytes) const;
 #endif
 
 

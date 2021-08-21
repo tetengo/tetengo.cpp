@@ -5,7 +5,6 @@
 */
 
 #include <any>
-#include <cstddef> // IWYU pragma: keep
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
 #include <functional>
@@ -18,7 +17,7 @@
 #include <utility>
 #include <vector>
 
-#include <stddef.h> // IWYU pragma: keep
+#include <stddef.h>
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>

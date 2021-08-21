@@ -18,7 +18,7 @@
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.h>
-#include <tetengo/trie/trie.h> // IWYU pragma: keep
+#include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trieIterator.h>
 

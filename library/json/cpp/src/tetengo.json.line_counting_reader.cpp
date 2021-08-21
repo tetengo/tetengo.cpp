@@ -29,10 +29,10 @@ namespace tetengo::json
 
         explicit impl(std::unique_ptr<reader>&& p_base_reader) :
         m_p_base_reader{ std::move(p_base_reader) },
-            m_line{},
-            m_line_index{ 0 },
-            m_column_index{ 0 },
-            m_file_location{ std::string{ std::data(m_line), std::size(m_line) }, m_line_index, m_column_index }
+        m_line{},
+        m_line_index{ 0 },
+        m_column_index{ 0 },
+        m_file_location{ std::string{ std::data(m_line), std::size(m_line) }, m_line_index, m_column_index }
         {
             if (!m_p_base_reader)
             {

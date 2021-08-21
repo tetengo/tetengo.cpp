@@ -13,13 +13,13 @@
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 
-#include <tetengo/json/element.h> // IWYU pragma: keep
+#include <tetengo/json/element.h>
 #include <tetengo/json/jsonParser.h>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/json/reader.h>
 
 #include "tetengo_json_element.hpp"
-#include "tetengo_json_reader.hpp" // IWYU pragma: keep
+#include "tetengo_json_reader.hpp"
 
 
 struct tetengo_json_jsonParser_tag
@@ -30,7 +30,7 @@ struct tetengo_json_jsonParser_tag
 
     explicit tetengo_json_jsonParser_tag(std::unique_ptr<tetengo::json::json_parser>&& p_cpp_parser) :
     p_cpp_parser{ std::move(p_cpp_parser) },
-        p_current_element{}
+    p_current_element{}
     {}
 };
 

@@ -81,12 +81,12 @@ namespace tetengo::lattice
             int                     node_cost,
             int                     path_cost) :
         m_key{ std::move(key) },
-            m_p_value{ p_value },
-            m_preceding_step{ preceding_step },
-            m_p_preceding_edge_costs{ p_preceding_edge_costs },
-            m_best_preceding_node{ best_preceding_node },
-            m_node_cost{ node_cost },
-            m_path_cost{ path_cost }
+        m_p_value{ p_value },
+        m_preceding_step{ preceding_step },
+        m_p_preceding_edge_costs{ p_preceding_edge_costs },
+        m_best_preceding_node{ best_preceding_node },
+        m_node_cost{ node_cost },
+        m_path_cost{ path_cost }
         {}
 
         /*!

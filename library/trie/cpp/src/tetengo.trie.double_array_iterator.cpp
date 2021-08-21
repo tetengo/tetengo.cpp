@@ -12,7 +12,7 @@
 #include <stack>
 #include <stdexcept>
 #include <string>
-#include <type_traits>
+#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 
@@ -28,9 +28,9 @@ namespace tetengo::trie
 
     double_array_iterator::double_array_iterator(const storage& storage_, const std::size_t root_base_check_index) :
     m_p_storage{ &storage_ },
-        m_base_check_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
-            std::make_pair(root_base_check_index, std::string{}) } },
-        m_current{}
+    m_base_check_index_key_stack{ std::vector<std::pair<std::size_t, std::string>>{
+        std::make_pair(root_base_check_index, std::string{}) } },
+    m_current{}
     {
         operator++();
     }

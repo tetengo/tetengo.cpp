@@ -4,11 +4,11 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#include <cstddef> // IWYU pragma: keep
 #include <filesystem>
-#include <fstream>
+#include <fstream> // IWYU pragma: keep
 #include <iterator>
 #include <memory>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <string_view>

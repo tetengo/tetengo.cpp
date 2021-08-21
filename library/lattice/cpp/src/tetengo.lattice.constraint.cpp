@@ -15,7 +15,7 @@
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/constraint_element.hpp>
-#include <tetengo/lattice/node.hpp> // IWYU pragma: keep
+#include <tetengo/lattice/node.hpp>
 
 
 namespace tetengo::lattice

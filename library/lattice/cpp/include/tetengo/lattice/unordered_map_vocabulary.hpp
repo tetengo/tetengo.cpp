@@ -8,7 +8,7 @@
 #define TETENGO_LATTICE_UNORDEREDMAPVOCABULARY_HPP
 
 #include <cstddef>
-#include <functional> // IWYU pragma: keep
+#include <functional>
 #include <memory>
 #include <string>
 #include <string_view>

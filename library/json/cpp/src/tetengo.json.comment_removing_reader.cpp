@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <utility> // IWYU pragma: keep
+#include <utility>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -30,8 +30,8 @@ namespace tetengo::json
 
         impl(std::unique_ptr<reader>&& p_base_reader, std::string single_line_begin) :
         m_p_base_reader{ std::move(p_base_reader) },
-            m_single_line_begin{ std::move(single_line_begin) },
-            m_queue{}
+        m_single_line_begin{ std::move(single_line_begin) },
+        m_queue{}
         {
             if (!m_p_base_reader)
             {

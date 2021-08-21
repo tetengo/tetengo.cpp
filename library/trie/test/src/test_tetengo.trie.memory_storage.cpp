@@ -7,7 +7,6 @@
 #include <any>
 #include <cassert>
 #include <cmath>
-#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
@@ -16,12 +15,10 @@
 #include <memory>
 #include <sstream>
 #include <string>
-#include <utility> // IWYU pragma: keep
 #include <vector>
 
-#include <stddef.h> // IWYU pragma: keep
+#include <stddef.h>
 
-#include <boost/cstdint.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>

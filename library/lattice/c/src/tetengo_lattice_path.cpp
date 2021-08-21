@@ -11,7 +11,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string_view>
-#include <utility> // IWYU pragma: keep
+#include <utility>
 #include <vector>
 
 #include <stddef.h>
@@ -34,7 +34,7 @@ struct tetengo_lattice_path_tag
         std::vector<std::vector<int>>&&           p_cpp_preceding_edge_cost_lists,
         std::unique_ptr<tetengo::lattice::path>&& p_cpp_path) :
     p_cpp_preceding_edge_cost_lists{ std::move(p_cpp_preceding_edge_cost_lists) },
-        p_cpp_path{ std::move(p_cpp_path) }
+    p_cpp_path{ std::move(p_cpp_path) }
     {}
 };
 

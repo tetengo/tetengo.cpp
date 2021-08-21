@@ -47,37 +47,37 @@ namespace tetengo::json
 
         impl(primitive_handler_type primitive_handler, structure_handler_type structure_handler) :
         m_primitive_handler{ std::move(primitive_handler) },
-            m_structure_handler{ std::move(structure_handler) },
-            m_json_text{},
-            m_begin_array{},
-            m_begin_object{},
-            m_end_array{},
-            m_end_object{},
-            m_name_separator{},
-            m_value_separator{},
-            m_ws{},
-            m_value{},
-            m_false{},
-            m_null{},
-            m_true{},
-            m_object{},
-            m_member{},
-            m_array{},
-            m_number{},
-            m_decimal_point{},
-            m_digit1_9{},
-            m_e{},
-            m_exp{},
-            m_frac{},
-            m_int{},
-            m_minus{},
-            m_plus{},
-            m_zero{},
-            m_string{},
-            m_char{},
-            m_escape{},
-            m_quotation_mark{},
-            m_unescaped{}
+        m_structure_handler{ std::move(structure_handler) },
+        m_json_text{},
+        m_begin_array{},
+        m_begin_object{},
+        m_end_array{},
+        m_end_object{},
+        m_name_separator{},
+        m_value_separator{},
+        m_ws{},
+        m_value{},
+        m_false{},
+        m_null{},
+        m_true{},
+        m_object{},
+        m_member{},
+        m_array{},
+        m_number{},
+        m_decimal_point{},
+        m_digit1_9{},
+        m_e{},
+        m_exp{},
+        m_frac{},
+        m_int{},
+        m_minus{},
+        m_plus{},
+        m_zero{},
+        m_string{},
+        m_char{},
+        m_escape{},
+        m_quotation_mark{},
+        m_unescaped{}
         {
             define_rules();
         }
@@ -111,7 +111,7 @@ namespace tetengo::json
 
             call_primitieve_handler_type(const primitive_handler_type& handler, const primitive_type_type type) :
             m_handler{ handler },
-                m_type{ type }
+            m_type{ type }
             {}
 
             void operator()(const std::string& attribute, const boost::spirit::qi::unused_type&, bool& pass) const
@@ -135,8 +135,8 @@ namespace tetengo::json
                 const structure_type_type       type,
                 const structure_open_close_type open_close) :
             m_handler{ handler },
-                m_type{ type },
-                m_open_close{ open_close }
+            m_type{ type },
+            m_open_close{ open_close }
             {}
 
             void operator()(const std::string& attribute, const boost::spirit::qi::unused_type&, bool& pass) const

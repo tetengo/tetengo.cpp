@@ -22,9 +22,9 @@ namespace tetengo::json
         std::unordered_map<std::string, std::string> attributes,
         file_location                                file_location_) :
     m_type{ std::move(type) },
-        m_value{ std::move(value) },
-        m_attributes{ std::move(attributes) },
-        m_file_location{ std::move(file_location_) }
+    m_value{ std::move(value) },
+    m_attributes{ std::move(attributes) },
+    m_file_location{ std::move(file_location_) }
     {
         if (m_type.name == type_name_type::string || m_type.name == type_name_type::number ||
             m_type.name == type_name_type::boolean || m_type.name == type_name_type::null)

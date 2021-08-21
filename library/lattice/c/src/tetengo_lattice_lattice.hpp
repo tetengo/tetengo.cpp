@@ -13,7 +13,7 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/vocabulary.h>
 
-#include "tetengo_lattice_vocabulary.hpp" // IWYU pragma: keep
+#include "tetengo_lattice_vocabulary.hpp"
 
 
 struct tetengo_lattice_lattice_tag
@@ -26,7 +26,7 @@ struct tetengo_lattice_lattice_tag
         std::unique_ptr<tetengo::lattice::lattice>&& p_cpp_lattice,
         tetengo_lattice_vocabulary_t* const          p_vocabulary) :
     p_cpp_lattice{ std::move(p_cpp_lattice) },
-        p_vocabulary{ p_vocabulary }
+    p_vocabulary{ p_vocabulary }
     {}
 };
 

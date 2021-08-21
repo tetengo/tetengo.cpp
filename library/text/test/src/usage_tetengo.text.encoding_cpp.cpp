@@ -11,8 +11,8 @@
 #include <string>
 
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/utf16.hpp> // IWYU pragma: keep
-#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/utf16.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 
 
 namespace usage_tetengo::text

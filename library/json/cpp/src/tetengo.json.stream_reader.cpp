@@ -4,7 +4,6 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#include <cstddef> // IWYU pragma: keep
 #include <istream>
 #include <iterator>
 #include <memory>
@@ -14,6 +13,7 @@
 
 #include <boost/circular_buffer.hpp>
 #include <boost/core/noncopyable.hpp>
+#include <boost/core/pointer_traits.hpp>
 
 #include <tetengo/json/stream_reader.hpp>
 
@@ -38,7 +38,7 @@ namespace tetengo::json
 
         impl(std::unique_ptr<std::istream>&& p_stream, const std::size_t buffer_capacity) :
         m_p_stream{ std::move(p_stream) },
-            m_buffer{ buffer_capacity }
+        m_buffer{ buffer_capacity }
         {
             if (!m_p_stream)
             {

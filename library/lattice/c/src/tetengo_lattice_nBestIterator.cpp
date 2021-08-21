@@ -21,15 +21,14 @@
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
-#include <tetengo/lattice/node.h> // IWYU pragma: keep
+#include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.h>
 #include <tetengo/lattice/path.hpp>
 #include <tetengo/lattice/stringView.h>
 
-#include "tetengo_lattice_constraint.hpp" // IWYU pragma: keep
+#include "tetengo_lattice_constraint.hpp"
 #include "tetengo_lattice_lattice.hpp"
-#include "tetengo_lattice_vocabulary.hpp" // IWYU pragma: keep
 
 
 struct tetengo_lattice_nBestIterator_tag
@@ -44,7 +43,7 @@ struct tetengo_lattice_nBestIterator_tag
                                             p_cpp_iterator_pair,
         std::unique_ptr<std::vector<int>>&& p_cpp_eos_preceding_edge_costs) :
     p_cpp_iterator_pair{ std::move(p_cpp_iterator_pair) },
-        p_cpp_eos_preceding_edge_costs{ std::move(p_cpp_eos_preceding_edge_costs) }
+    p_cpp_eos_preceding_edge_costs{ std::move(p_cpp_eos_preceding_edge_costs) }
     {}
 };
 
