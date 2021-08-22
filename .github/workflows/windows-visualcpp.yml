@@ -16,8 +16,8 @@ env:
   CACHE_REV:        0
   TETENGO_VER:      1.6.0
   CONCURRENT_BUILD: 4
-  BOOST_VER:        1_76_0
-  BOOST_VER_DOT:    1.76.0
+  BOOST_VER:        1_77_0
+  BOOST_VER_DOT:    1.77.0
 
 jobs:
   build:
