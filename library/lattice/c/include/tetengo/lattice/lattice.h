@@ -25,13 +25,11 @@ typedef struct tetengo_lattice_lattice_tag tetengo_lattice_lattice_t;
 /*!
     \brief Creates a lattice.
 
-    p_vocabulary is destroyed by this lattice.
-
     \param p_vocabulary A pointer to a vocabulary.
 
     \return A pointer to a lattice. Or NULL when p_vocabulary is NULL.
 */
-tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabulary_t* p_vocabulary);
+tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(const tetengo_lattice_vocabulary_t* p_vocabulary);
 
 /*!
     \brief Destroys a lattice.

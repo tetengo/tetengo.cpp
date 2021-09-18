@@ -33,9 +33,9 @@ namespace tetengo::lattice
         /*!
             \brief Creates a lattice.
 
-            \param p_vocabulary A unique pointer to a vocabulary.
+            \param vocabulary_ A vocabulary.
         */
-        explicit lattice(std::unique_ptr<vocabulary>&& p_vocabulary);
+        explicit lattice(const vocabulary& vocabulary_);
 
         /*!
             \brief Destroys the lattice.

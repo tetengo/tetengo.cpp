@@ -50,7 +50,7 @@ void usage_tetengo_lattice_viterbi()
     */
 
     /* Builds a vocabulary. */
-    tetengo_lattice_vocabulary_t* const p_vocabulary = build_vocabulary();
+    const tetengo_lattice_vocabulary_t* const p_vocabulary = build_vocabulary();
 
     /* Creates an object for a lattice. */
     tetengo_lattice_lattice_t* const p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
@@ -104,6 +104,7 @@ void usage_tetengo_lattice_viterbi()
         }
     }
     tetengo_lattice_lattice_destroy(p_lattice);
+    tetengo_lattice_vocabulary_destroy(p_vocabulary);
 }
 
 static size_t hash(const char* const string, const size_t length)
