@@ -315,7 +315,8 @@ int main(const int argc, char** const argv)
                 continue;
             }
 
-            tetengo::lattice::lattice lattice_{ timetable_.create_vocabulary(departure_and_arrival->first.second) };
+            const auto                p_vocabulary = timetable_.create_vocabulary(departure_and_arrival->first.second);
+            tetengo::lattice::lattice lattice_{ *p_vocabulary };
             build_lattice(*departure_and_arrival, timetable_, lattice_);
             const auto eos_and_precedings = lattice_.settle();
 
