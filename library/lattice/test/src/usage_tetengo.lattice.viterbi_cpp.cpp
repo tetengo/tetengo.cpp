@@ -58,10 +58,10 @@ namespace usage_tetengo::lattice
         */
 
         // Builds a vocabulary.
-        auto p_vocabulary = build_vocabulary();
+        const auto p_vocabulary = build_vocabulary();
 
         // Creates an object for a lattice.
-        tetengo::lattice::lattice lattice_{ std::move(p_vocabulary) };
+        tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
         // Enters key characters to construct the lattice.
         lattice_.push_back("a");

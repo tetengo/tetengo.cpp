@@ -78,10 +78,7 @@ namespace tetengo::lattice
     public:
         // constructors and destructor
 
-        explicit impl(std::unique_ptr<vocabulary>&& p_vocabulary) :
-        m_p_vocabulary{ std::move(p_vocabulary) },
-        m_input{},
-        m_graph{}
+        explicit impl(const vocabulary& vocabulary_) : m_vocabulary{ vocabulary_ }, m_input{}, m_graph{}
         {
             m_graph.push_back(bos_step());
         }
@@ -116,7 +113,7 @@ namespace tetengo::lattice
 
                 const std::string_view node_key{ std::next(std::data(m_input), step.input_tail()),
                                                  m_input.length() - step.input_tail() };
-                const auto             found = m_p_vocabulary->find_entries(node_key);
+                const auto             found = m_vocabulary.find_entries(node_key);
 
                 std::vector<std::size_t> preceding_edge_cost_indexes{};
                 preceding_edge_cost_indexes.reserve(std::size(found));
@@ -211,7 +208,7 @@ namespace tetengo::lattice
 
         // variables
 
-        const std::unique_ptr<vocabulary> m_p_vocabulary;
+        const vocabulary& m_vocabulary;
 
         std::string m_input;
 
@@ -231,16 +228,14 @@ namespace tetengo::lattice
                 std::end(step.nodes()),
                 std::back_inserter(costs),
                 [this, &next_entry](const auto& node) {
-                    return m_p_vocabulary->find_connection(node, next_entry).cost();
+                    return m_vocabulary.find_connection(node, next_entry).cost();
                 });
             return std::make_unique<std::vector<int>>(std::move(costs));
         }
     };
 
 
-    lattice::lattice(std::unique_ptr<vocabulary>&& p_vocabulary) :
-    m_p_impl{ std::make_unique<impl>(std::move(p_vocabulary)) }
-    {}
+    lattice::lattice(const vocabulary& vocabulary_) : m_p_impl{ std::make_unique<impl>(vocabulary_) } {}
 
     lattice::~lattice() = default;
 

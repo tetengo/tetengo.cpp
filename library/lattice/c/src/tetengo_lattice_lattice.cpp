@@ -29,7 +29,7 @@
 #include "tetengo_lattice_vocabulary.hpp"
 
 
-tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabulary_t* const p_vocabulary)
+tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(const tetengo_lattice_vocabulary_t* const p_vocabulary)
 {
     try
     {
@@ -38,9 +38,9 @@ tetengo_lattice_lattice_t* tetengo_lattice_lattice_create(tetengo_lattice_vocabu
             throw std::invalid_argument{ "p_vocabulary is NULL." };
         }
 
-        auto p_cpp_lattice = std::make_unique<tetengo::lattice::lattice>(std::move(p_vocabulary->p_cpp_vocabulary));
+        auto p_cpp_lattice = std::make_unique<tetengo::lattice::lattice>(*p_vocabulary->p_cpp_vocabulary);
 
-        auto p_instance = std::make_unique<tetengo_lattice_lattice_t>(std::move(p_cpp_lattice), p_vocabulary);
+        auto p_instance = std::make_unique<tetengo_lattice_lattice_t>(std::move(p_cpp_lattice));
         return p_instance.release();
     }
     catch (...)

@@ -257,14 +257,17 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        const auto                      p_vocabulary = create_cpp_vocabulary();
+        const tetengo::lattice::lattice lattice_{ *p_vocabulary };
     }
 
     {
-        const auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_vocabulary();
+        const auto* const p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
 
@@ -282,7 +285,8 @@ BOOST_AUTO_TEST_CASE(step_count)
     BOOST_TEST_PASSPOINT();
 
     {
-        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        const auto                p_vocabulary = create_cpp_vocabulary();
+        tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
         BOOST_TEST(lattice_.step_count() == 1U);
 
@@ -300,10 +304,12 @@ BOOST_AUTO_TEST_CASE(step_count)
     }
 
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
@@ -332,7 +338,8 @@ BOOST_AUTO_TEST_CASE(nodes_at)
     BOOST_TEST_PASSPOINT();
 
     {
-        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        const auto                p_vocabulary = create_cpp_vocabulary();
+        tetengo::lattice::lattice lattice_{ *p_vocabulary };
         lattice_.push_back("[HakataTosu]");
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
@@ -376,10 +383,12 @@ BOOST_AUTO_TEST_CASE(nodes_at)
     }
 
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
@@ -473,23 +482,27 @@ BOOST_AUTO_TEST_CASE(push_back)
     BOOST_TEST_PASSPOINT();
 
     {
-        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        const auto                p_vocabulary = create_cpp_vocabulary();
+        tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
         lattice_.push_back("[HakataTosu]");
         lattice_.push_back("[TosuOmuta]");
         lattice_.push_back("[OmutaKumamoto]");
     }
     {
-        tetengo::lattice::lattice lattice_{ create_cpp_empty_vocabulary() };
+        const auto                p_vocabulary = create_cpp_empty_vocabulary();
+        tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
         BOOST_CHECK_THROW(lattice_.push_back("[HakataTosu]"), std::invalid_argument);
     }
 
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
@@ -499,10 +512,12 @@ BOOST_AUTO_TEST_CASE(push_back)
         BOOST_TEST(tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]"));
     }
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_empty_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_empty_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
@@ -510,10 +525,12 @@ BOOST_AUTO_TEST_CASE(push_back)
         BOOST_TEST(!tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]"));
     }
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
@@ -528,7 +545,8 @@ BOOST_AUTO_TEST_CASE(settle)
     BOOST_TEST_PASSPOINT();
 
     {
-        tetengo::lattice::lattice lattice_{ create_cpp_vocabulary() };
+        const auto                p_vocabulary = create_cpp_vocabulary();
+        tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
         {
             const auto eos_node_and_preceding_edge_costs = lattice_.settle();
@@ -594,16 +612,19 @@ BOOST_AUTO_TEST_CASE(settle)
         }
     }
     {
-        tetengo::lattice::lattice lattice_{ create_cpp_empty_vocabulary() };
+        const auto                p_vocabulary = create_cpp_empty_vocabulary();
+        tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
         const auto eos_node_and_preceding_edge_costs = lattice_.settle();
     }
 
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
@@ -700,10 +721,12 @@ BOOST_AUTO_TEST_CASE(settle)
         }
     }
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_empty_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_empty_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
@@ -723,10 +746,12 @@ BOOST_AUTO_TEST_CASE(settle)
         BOOST_TEST(tetengo_lattice_lattice_settle(nullptr, &eos_node, std::data(preceding_edge_costs)) == 0U);
     }
     {
-        auto* const p_lattice = tetengo_lattice_lattice_create(create_c_vocabulary());
-        BOOST_SCOPE_EXIT(p_lattice)
+        const auto* const p_vocabulary = create_c_vocabulary();
+        auto* const       p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
+        BOOST_SCOPE_EXIT(p_lattice, p_vocabulary)
         {
             tetengo_lattice_lattice_destroy(p_lattice);
+            tetengo_lattice_vocabulary_destroy(p_vocabulary);
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
