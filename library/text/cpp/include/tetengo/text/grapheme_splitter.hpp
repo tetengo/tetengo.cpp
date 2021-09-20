@@ -112,6 +112,9 @@ namespace tetengo::text
             in the Unicode standard, this function returns a character width of 2 in the East Asian
             (Chinese, Japanese or Korean) locale, or 1 in the other locale.
 
+            The returned graphemes include a sentinel at the tail. Its offset is the length of the string and its width
+            is 0.
+
             \param string_ A string.
 
             \return Graphemes.

@@ -57,6 +57,8 @@ void tetengo_text_graphemeSplitter_destroy(const tetengo_text_graphemeSplitter_t
     in the Unicode standard, this function returns a character width of 2 in the East Asian
     (Chinese, Japanese or Korean) locale, or 1 in the other locale.
 
+    The returned graphemes include a sentinel at the tail. Its offset is the length of the string and its width is 0.
+
     \param p_grapheme_splitter A pointer to a grapheme splitter.
     \param string              A string.
     \param p_graphemes         The storage for graphemes. Can be NULL.

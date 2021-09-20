@@ -60,7 +60,7 @@ namespace tetengo::text
                 grapheme_splitting::grapheme_segment::instance().segment_offsets(break_properties);
 
             std::vector<grapheme> graphemes{};
-            graphemes.reserve(std::size(grapheme_offsets));
+            graphemes.reserve(std::size(grapheme_offsets) + 1);
             for (auto i = static_cast<std::size_t>(0); i + 1 < std::size(grapheme_offsets); ++i)
             {
                 graphemes.emplace_back(
@@ -69,6 +69,8 @@ namespace tetengo::text
                         std::next(std::begin(widths), grapheme_offsets[i]),
                         std::next(std::begin(widths), grapheme_offsets[i + 1])));
             }
+
+            graphemes.emplace_back(string_.length(), 0);
 
             return graphemes;
         }
