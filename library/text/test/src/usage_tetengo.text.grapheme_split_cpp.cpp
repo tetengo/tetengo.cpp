@@ -57,10 +57,11 @@ namespace usage_tetengo::text
                 // The splitter will return three graphemes.
                 // The width of the grapheme of SNOWFLAKE will be 2.
                 const auto graphemes = gs.split(string_);
-                assert(std::size(graphemes) == 3U);
+                assert(std::size(graphemes) == 4U);
                 assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
                 assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
                 assert(graphemes[2].offset() == 17U && graphemes[2].width() == 2U);
+                assert(graphemes[3].offset() == 20U && graphemes[3].width() == 0U);
             }
         }
         {
@@ -74,10 +75,11 @@ namespace usage_tetengo::text
                 // The splitter will return three graphemes.
                 // The width of the grapheme of SNOWFLAKE will be 1.
                 const auto graphemes = gs.split(string_);
-                assert(std::size(graphemes) == 3U);
+                assert(std::size(graphemes) == 4U);
                 assert(graphemes[0].offset() == 0U && graphemes[0].width() == 2U);
                 assert(graphemes[1].offset() == 4U && graphemes[1].width() == 2U);
                 assert(graphemes[2].offset() == 17U && graphemes[2].width() == 1U);
+                assert(graphemes[3].offset() == 20U && graphemes[3].width() == 0U);
             }
         }
     }
