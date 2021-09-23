@@ -15,6 +15,7 @@ sources = \
     test_tetengo.trie.storage.cpp \
     test_tetengo.trie.trie.cpp \
     test_tetengo.trie.trie_iterator.cpp \
+    test_tetengo.trie.value_serializer.cpp \
     usage_tetengo.trie.cpp \
     usage_tetengo.trie.search_c.c \
     usage_tetengo.trie.search_cpp.cpp

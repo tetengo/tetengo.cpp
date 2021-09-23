@@ -46,6 +46,9 @@
     <ClCompile Include="src\usage_tetengo.trie.search_cpp.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\test_tetengo.trie.value_serializer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">

@@ -9,7 +9,8 @@ pkg_headers = \
     trie/shared_storage.hpp \
     trie/storage.hpp \
     trie/trie.hpp \
-    trie/trie_iterator.hpp
+    trie/trie_iterator.hpp \
+    trie/value_serializer.hpp
 
 extra_headers = \
     trie/0namespace.dox
