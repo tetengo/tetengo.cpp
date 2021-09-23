@@ -33,6 +33,7 @@
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace
@@ -291,21 +292,29 @@ BOOST_AUTO_TEST_CASE(construction)
         };
     }
     {
-        auto p_input_stream = create_input_stream();
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::vector<char>& serialized) {
+        auto                              p_input_stream = create_input_stream();
+        tetengo::trie::value_deserializer value_deserializer_{
+            [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
-            });
+            },
+            0
+        };
+        auto p_storage =
+            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, std::move(value_deserializer_));
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
     }
     {
-        auto p_input_stream = create_input_stream();
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::vector<char>& serialized) {
+        auto                              p_input_stream = create_input_stream();
+        tetengo::trie::value_deserializer value_deserializer_{
+            [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
-            });
+            },
+            0
+        };
+        auto p_storage =
+            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, std::move(value_deserializer_));
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage),
                                                                    tetengo::trie::default_serializer<std::string>{} };
     }
@@ -1251,12 +1260,16 @@ BOOST_AUTO_TEST_CASE(get_storage)
         [[maybe_unused]] const auto& storage = trie_.get_storage();
     }
     {
-        auto p_input_stream = create_input_stream();
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::vector<char>& serialized) {
+        auto                              p_input_stream = create_input_stream();
+        tetengo::trie::value_deserializer value_deserializer_{
+            [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
-            });
+            },
+            0
+        };
+        auto p_storage =
+            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, std::move(value_deserializer_));
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
 
         const auto& storage = trie_.get_storage();

@@ -10,6 +10,7 @@
 #include <exception>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <locale>
@@ -24,6 +25,7 @@
 #include <tetengo/text/encoding/utf8.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace
@@ -124,7 +126,8 @@ namespace
             throw std::ios_base::failure{ "Can't open the trie.bin file." };
         }
 
-        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(stream, deserialize_value);
+        tetengo::trie::value_deserializer value_deserializer_{ deserialize_value, 0 };
+        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(stream, std::move(value_deserializer_));
         auto p_trie =
             std::make_unique<tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>>(
                 std::move(p_storage));

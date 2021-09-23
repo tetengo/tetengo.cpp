@@ -23,6 +23,7 @@
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace tetengo::trie
@@ -34,13 +35,11 @@ namespace tetengo::trie
 
         impl() : m_base_check_array{ 0x00000000U | double_array::vacant_check_value() }, m_value_array{} {};
 
-        explicit impl(
-            std::istream&                                            input_stream,
-            const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
+        explicit impl(std::istream& input_stream, const value_deserializer& value_deserializer_) :
         m_base_check_array{},
         m_value_array{}
         {
-            deserialize(input_stream, value_deserializer, m_base_check_array, m_value_array);
+            deserialize(input_stream, value_deserializer_, m_base_check_array, m_value_array);
         };
 
 
@@ -175,13 +174,13 @@ namespace tetengo::trie
         }
 
         static void deserialize(
-            std::istream&                                            input_stream,
-            const std::function<std::any(const std::vector<char>&)>& value_deserializer,
-            std::vector<std::uint32_t>&                              base_check_array,
-            std::vector<std::optional<std::any>>&                    value_array)
+            std::istream&                         input_stream,
+            const value_deserializer&             value_deserializer_,
+            std::vector<std::uint32_t>&           base_check_array,
+            std::vector<std::optional<std::any>>& value_array)
         {
             deserialize_base_check_array(input_stream, base_check_array);
-            deserialize_value_array(input_stream, value_deserializer, value_array);
+            deserialize_value_array(input_stream, value_deserializer_, value_array);
         }
 
         static void
@@ -196,9 +195,9 @@ namespace tetengo::trie
         }
 
         static void deserialize_value_array(
-            std::istream&                                            input_stream,
-            const std::function<std::any(const std::vector<char>&)>& value_deserializer,
-            std::vector<std::optional<std::any>>&                    value_array)
+            std::istream&                         input_stream,
+            const value_deserializer&             value_deserializer_,
+            std::vector<std::optional<std::any>>& value_array)
         {
             const auto size = read_uint32(input_stream);
             value_array.reserve(size);
@@ -213,7 +212,7 @@ namespace tetengo::trie
                     {
                         throw std::ios_base::failure("Can't read value.");
                     }
-                    value_array.push_back(value_deserializer(to_deserialize));
+                    value_array.push_back(value_deserializer_(to_deserialize));
                 }
                 else
                 {
@@ -274,10 +273,8 @@ namespace tetengo::trie
 
     memory_storage::memory_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
-    memory_storage::memory_storage(
-        std::istream&                                            input_stream,
-        const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
-    m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer) }
+    memory_storage::memory_storage(std::istream& input_stream, const value_deserializer& value_deserializer_) :
+    m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer_) }
     {}
 
     memory_storage::~memory_storage() = default;
