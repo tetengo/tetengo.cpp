@@ -19,6 +19,9 @@
 
 namespace tetengo::trie
 {
+    class value_deserializer;
+
+
     /*!
         \brief A shared storage.
     */
@@ -35,12 +38,10 @@ namespace tetengo::trie
         /*!
             \brief Creates a shared storage.
 
-            \param input_stream       An input stream.
-            \param value_deserializer A deserializer for value objects.
+            \param input_stream        An input stream.
+            \param value_deserializer_ A deserializer for value objects.
         */
-        explicit shared_storage(
-            std::istream&                                            input_stream,
-            const std::function<std::any(const std::vector<char>&)>& value_deserializer);
+        shared_storage(std::istream& input_stream, const value_deserializer& value_deserializer_);
 
         /*!
             \brief Destroys the shared storage.

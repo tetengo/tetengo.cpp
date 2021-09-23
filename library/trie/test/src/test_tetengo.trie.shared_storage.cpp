@@ -13,6 +13,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -25,6 +26,7 @@
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.h>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace
@@ -134,14 +136,15 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::shared_storage storage_{};
     }
     {
-        const auto                          p_input_stream = create_input_stream();
-        const tetengo::trie::shared_storage storage_{
-            *p_input_stream,
+        const auto                        p_input_stream = create_input_stream();
+        tetengo::trie::value_deserializer deserializer{
             [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
-            }
+            },
+            0
         };
+        const tetengo::trie::shared_storage storage_{ *p_input_stream, std::move(deserializer) };
 
         BOOST_TEST(storage_.base_check_array() == base_check_array);
         BOOST_REQUIRE(storage_.value_at(4));
@@ -154,12 +157,16 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const auto p_input_stream = create_broken_input_stream();
 
-        const auto deserializer = [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
-            return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
+        tetengo::trie::value_deserializer deserializer{
+            [](const std::vector<char>& serialized) {
+                static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
+                return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
+            },
+            0
         };
         BOOST_CHECK_THROW(
-            const tetengo::trie::shared_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
+            const tetengo::trie::shared_storage storage_(*p_input_stream, std::move(deserializer)),
+            std::ios_base::failure);
     }
     {
         const auto file_path = temporary_file_path(serialized_c_if);

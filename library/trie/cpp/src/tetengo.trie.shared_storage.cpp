@@ -18,6 +18,7 @@
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/shared_storage.hpp>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/value_serializer.hpp> // IWYU pragma: keep
 
 
 namespace tetengo::trie
@@ -29,10 +30,8 @@ namespace tetengo::trie
 
         impl() : m_p_entity{ std::make_shared<memory_storage>() } {};
 
-        explicit impl(
-            std::istream&                                            input_stream,
-            const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
-        m_p_entity{ std::make_shared<memory_storage>(input_stream, value_deserializer) } {};
+        impl(std::istream& input_stream, const value_deserializer& value_deserializer_) :
+        m_p_entity{ std::make_shared<memory_storage>(input_stream, value_deserializer_) } {};
 
 
         // functions
@@ -106,10 +105,8 @@ namespace tetengo::trie
 
     shared_storage::shared_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
-    shared_storage::shared_storage(
-        std::istream&                                            input_stream,
-        const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
-    m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer) }
+    shared_storage::shared_storage(std::istream& input_stream, const value_deserializer& value_deserializer_) :
+    m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer_) }
     {}
 
     shared_storage::~shared_storage() = default;
