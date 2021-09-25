@@ -6,7 +6,6 @@
 
 #include <any>
 #include <cstdint>
-#include <functional>
 #include <istream>
 #include <iterator>
 #include <memory>
@@ -81,11 +80,9 @@ namespace tetengo::trie
             m_p_entity->add_value_at(value_index, std::move(value));
         }
 
-        void serialize_impl(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+        void serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
         {
-            m_p_entity->serialize(output_stream, value_serializer);
+            m_p_entity->serialize(output_stream, value_serializer_);
         }
 
         std::unique_ptr<storage> clone_impl() const
@@ -156,11 +153,9 @@ namespace tetengo::trie
         return m_p_impl->add_value_at_impl(value_index, std::move(value));
     }
 
-    void shared_storage::serialize_impl(
-        std::ostream&                                            output_stream,
-        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+    void shared_storage::serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
     {
-        m_p_impl->serialize_impl(output_stream, value_serializer);
+        m_p_impl->serialize_impl(output_stream, value_serializer_);
     }
 
     std::unique_ptr<storage> shared_storage::clone_impl() const

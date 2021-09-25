@@ -6,7 +6,6 @@
 
 #include <any>
 #include <cstdint>
-#include <functional>
 #include <istream>
 #include <memory>
 #include <utility>
@@ -17,6 +16,9 @@
 
 namespace tetengo::trie
 {
+    class value_serializer;
+
+
     storage::storage() = default;
 
     storage::~storage() = default;
@@ -66,11 +68,9 @@ namespace tetengo::trie
         add_value_at_impl(value_index, std::move(value));
     }
 
-    void storage::serialize(
-        std::ostream&                                            output_stream,
-        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+    void storage::serialize(std::ostream& output_stream, const value_serializer& value_serializer_) const
     {
-        serialize_impl(output_stream, value_serializer);
+        serialize_impl(output_stream, value_serializer_);
     }
 
     std::unique_ptr<storage> storage::clone() const

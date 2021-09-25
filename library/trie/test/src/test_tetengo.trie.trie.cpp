@@ -292,29 +292,27 @@ BOOST_AUTO_TEST_CASE(construction)
         };
     }
     {
-        auto                              p_input_stream = create_input_stream();
-        tetengo::trie::value_deserializer value_deserializer_{
+        auto                                    p_input_stream = create_input_stream();
+        const tetengo::trie::value_deserializer value_deserializer_{
             [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
             },
             0
         };
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, std::move(value_deserializer_));
+        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
     }
     {
-        auto                              p_input_stream = create_input_stream();
-        tetengo::trie::value_deserializer value_deserializer_{
+        auto                                    p_input_stream = create_input_stream();
+        const tetengo::trie::value_deserializer value_deserializer_{
             [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
             },
             0
         };
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, std::move(value_deserializer_));
+        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage),
                                                                    tetengo::trie::default_serializer<std::string>{} };
     }
@@ -1260,26 +1258,29 @@ BOOST_AUTO_TEST_CASE(get_storage)
         [[maybe_unused]] const auto& storage = trie_.get_storage();
     }
     {
-        auto                              p_input_stream = create_input_stream();
-        tetengo::trie::value_deserializer value_deserializer_{
+        auto                                    p_input_stream = create_input_stream();
+        const tetengo::trie::value_deserializer value_deserializer_{
             [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
             },
             0
         };
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, std::move(value_deserializer_));
+        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
 
         const auto& storage = trie_.get_storage();
 
-        std::stringstream stream{};
-        storage.serialize(stream, [](const std::any& value) {
-            static const tetengo::trie::default_serializer<std::string> serializer{};
-            const auto serialized = serializer(std::any_cast<std::string>(value));
-            return std::vector<char>{ std::begin(serialized), std::end(serialized) };
-        });
+        std::stringstream                     stream{};
+        const tetengo::trie::value_serializer serializer{
+            [](const std::any& value) {
+                static const tetengo::trie::default_serializer<std::string> serializer{};
+                const auto serialized = serializer(std::any_cast<std::string>(value));
+                return std::vector<char>{ std::begin(serialized), std::end(serialized) };
+            },
+            0
+        };
+        storage.serialize(stream, serializer);
         const auto storage_serialized = stream.str();
 
         BOOST_CHECK_EQUAL_COLLECTIONS(

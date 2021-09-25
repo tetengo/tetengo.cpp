@@ -9,7 +9,6 @@
 
 #include <any>
 #include <cstdint>
-#include <functional>
 #include <istream>
 #include <memory>
 #include <vector>
@@ -20,6 +19,7 @@
 namespace tetengo::trie
 {
     class value_deserializer;
+    class value_serializer;
 
 
     /*!
@@ -80,9 +80,8 @@ namespace tetengo::trie
 
         virtual void add_value_at_impl(std::size_t value_index, std::any value) override;
 
-        virtual void serialize_impl(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer) const override;
+        virtual void
+        serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const override;
 
         virtual std::unique_ptr<storage> clone_impl() const override;
     };

@@ -17,6 +17,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace
@@ -65,7 +66,7 @@ namespace
 
         virtual void serialize_impl(
             std::ostream& /*output_stream*/,
-            const std::function<std::vector<char>(const std::any&)>& /*value_serializer*/) const override
+            const tetengo::trie::value_serializer& /*value_serializer_*/) const override
         {}
 
         std::unique_ptr<storage> clone_impl() const override
@@ -180,8 +181,9 @@ BOOST_AUTO_TEST_CASE(serialize)
 
     const concrete_storage storage_{};
 
-    std::ostringstream output_stream{};
-    storage_.serialize(output_stream, [](const std::any&) { return std::vector<char>{}; });
+    std::ostringstream                    output_stream{};
+    const tetengo::trie::value_serializer serializer{ [](const std::any&) { return std::vector<char>{}; }, 0 };
+    storage_.serialize(output_stream, serializer);
 }
 
 BOOST_AUTO_TEST_CASE(clone)

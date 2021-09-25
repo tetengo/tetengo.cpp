@@ -8,7 +8,6 @@
 #include <any>
 #include <cassert>
 #include <cstdint>
-#include <functional>
 #include <istream>
 #include <iterator>
 #include <limits>
@@ -106,9 +105,7 @@ namespace tetengo::trie
             m_value_array[value_index] = std::move(value);
         }
 
-        void serialize_impl(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+        void serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
         {
             if (!output_stream)
             {
@@ -116,7 +113,7 @@ namespace tetengo::trie
             }
 
             serialize_base_check_array(output_stream, m_base_check_array);
-            serialize_value_array(output_stream, value_serializer, m_value_array);
+            serialize_value_array(output_stream, value_serializer_, m_value_array);
         }
 
         std::unique_ptr<storage> clone_impl() const
@@ -143,9 +140,9 @@ namespace tetengo::trie
         }
 
         static void serialize_value_array(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer,
-            const std::vector<std::optional<std::any>>&              value_array)
+            std::ostream&                               output_stream,
+            const value_serializer&                     value_serializer_,
+            const std::vector<std::optional<std::any>>& value_array)
         {
             assert(std::size(value_array) < std::numeric_limits<std::uint32_t>::max());
             write_uint32(output_stream, static_cast<std::uint32_t>(std::size(value_array)));
@@ -153,7 +150,7 @@ namespace tetengo::trie
             {
                 if (v)
                 {
-                    const auto serialized = value_serializer(*v);
+                    const auto serialized = value_serializer_(*v);
                     assert(std::size(serialized) < std::numeric_limits<std::uint32_t>::max());
                     write_uint32(output_stream, static_cast<std::uint32_t>(std::size(serialized)));
                     output_stream.write(std::data(serialized), std::size(serialized));
@@ -324,11 +321,9 @@ namespace tetengo::trie
         return m_p_impl->add_value_at_impl(value_index, std::move(value));
     }
 
-    void memory_storage::serialize_impl(
-        std::ostream&                                            output_stream,
-        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+    void memory_storage::serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
     {
-        m_p_impl->serialize_impl(output_stream, value_serializer);
+        m_p_impl->serialize_impl(output_stream, value_serializer_);
     }
 
     std::unique_ptr<storage> memory_storage::clone_impl() const

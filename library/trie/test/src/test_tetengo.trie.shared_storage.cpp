@@ -13,7 +13,6 @@
 #include <memory>
 #include <sstream>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -136,15 +135,15 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::shared_storage storage_{};
     }
     {
-        const auto                        p_input_stream = create_input_stream();
-        tetengo::trie::value_deserializer deserializer{
+        const auto                              p_input_stream = create_input_stream();
+        const tetengo::trie::value_deserializer deserializer{
             [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
             },
             0
         };
-        const tetengo::trie::shared_storage storage_{ *p_input_stream, std::move(deserializer) };
+        const tetengo::trie::shared_storage storage_{ *p_input_stream, deserializer };
 
         BOOST_TEST(storage_.base_check_array() == base_check_array);
         BOOST_REQUIRE(storage_.value_at(4));
@@ -157,7 +156,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const auto p_input_stream = create_broken_input_stream();
 
-        tetengo::trie::value_deserializer deserializer{
+        const tetengo::trie::value_deserializer deserializer{
             [](const std::vector<char>& serialized) {
                 static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
                 return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
@@ -165,8 +164,7 @@ BOOST_AUTO_TEST_CASE(construction)
             0
         };
         BOOST_CHECK_THROW(
-            const tetengo::trie::shared_storage storage_(*p_input_stream, std::move(deserializer)),
-            std::ios_base::failure);
+            const tetengo::trie::shared_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
     }
     {
         const auto file_path = temporary_file_path(serialized_c_if);
@@ -351,12 +349,16 @@ BOOST_AUTO_TEST_CASE(serialize)
     storage_.add_value_at(2, std::make_any<std::string>("fuga"));
     storage_.add_value_at(1, std::make_any<std::string>("piyo"));
 
-    std::ostringstream output_stream{};
-    storage_.serialize(output_stream, [](const std::any& object) {
-        static const tetengo::trie::default_serializer<std::string> string_serializer{};
-        const auto serialized = string_serializer(std::any_cast<std::string>(object));
-        return std::vector<char>{ std::begin(serialized), std::end(serialized) };
-    });
+    std::ostringstream                    output_stream{};
+    const tetengo::trie::value_serializer serializer{
+        [](const std::any& object) {
+            static const tetengo::trie::default_serializer<std::string> string_serializer{};
+            const auto serialized = string_serializer(std::any_cast<std::string>(object));
+            return std::vector<char>{ std::begin(serialized), std::end(serialized) };
+        },
+        0
+    };
+    storage_.serialize(output_stream, serializer);
 
     static const std::string expected{
         // clang-format off
