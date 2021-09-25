@@ -146,19 +146,31 @@ namespace tetengo::trie
         {
             assert(std::size(value_array) < std::numeric_limits<std::uint32_t>::max());
             write_uint32(output_stream, static_cast<std::uint32_t>(std::size(value_array)));
-            for (const auto& v: value_array)
+
+            assert(value_serializer_.fixed_value_size() < std::numeric_limits<std::uint32_t>::max());
+            const auto fixed_value_size = static_cast<std::uint32_t>(value_serializer_.fixed_value_size());
+            write_uint32(output_stream, fixed_value_size);
+
+            if (fixed_value_size == 0)
             {
-                if (v)
+                for (const auto& v: value_array)
                 {
-                    const auto serialized = value_serializer_(*v);
-                    assert(std::size(serialized) < std::numeric_limits<std::uint32_t>::max());
-                    write_uint32(output_stream, static_cast<std::uint32_t>(std::size(serialized)));
-                    output_stream.write(std::data(serialized), std::size(serialized));
+                    if (v)
+                    {
+                        const auto serialized = value_serializer_(*v);
+                        assert(std::size(serialized) < std::numeric_limits<std::uint32_t>::max());
+                        write_uint32(output_stream, static_cast<std::uint32_t>(std::size(serialized)));
+                        output_stream.write(std::data(serialized), std::size(serialized));
+                    }
+                    else
+                    {
+                        write_uint32(output_stream, 0);
+                    }
                 }
-                else
-                {
-                    write_uint32(output_stream, 0);
-                }
+            }
+            else
+            {
+                assert("Impelment it.");
             }
         }
 
@@ -198,23 +210,33 @@ namespace tetengo::trie
         {
             const auto size = read_uint32(input_stream);
             value_array.reserve(size);
-            for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+
+            const auto fixed_value_size = read_uint32(input_stream);
+
+            if (fixed_value_size == 0)
             {
-                const auto element_size = read_uint32(input_stream);
-                if (element_size > 0)
+                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
                 {
-                    std::vector<char> to_deserialize(element_size, 0);
-                    input_stream.read(std::data(to_deserialize), element_size);
-                    if (input_stream.gcount() < static_cast<std::streamsize>(element_size))
+                    const auto element_size = read_uint32(input_stream);
+                    if (element_size > 0)
                     {
-                        throw std::ios_base::failure("Can't read value.");
+                        std::vector<char> to_deserialize(element_size, 0);
+                        input_stream.read(std::data(to_deserialize), element_size);
+                        if (input_stream.gcount() < static_cast<std::streamsize>(element_size))
+                        {
+                            throw std::ios_base::failure("Can't read value.");
+                        }
+                        value_array.push_back(value_deserializer_(to_deserialize));
                     }
-                    value_array.push_back(value_deserializer_(to_deserialize));
+                    else
+                    {
+                        value_array.push_back(std::nullopt);
+                    }
                 }
-                else
-                {
-                    value_array.push_back(std::nullopt);
-                }
+            }
+            else
+            {
+                assert("Implement it.");
             }
         }
 

@@ -83,6 +83,7 @@ namespace
 
         // value array
         nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
         nul_byte(), nul_byte(), nul_byte(), 0x06_c,
         0xE7_c,     0x86_c,     0x8A_c,     0x06_c,     0x9C_c, 0xAC_c,
         nul_byte(), nul_byte(), nul_byte(), 0x06_c,
@@ -128,6 +129,7 @@ namespace
         nul_byte(), nul_byte(), 0x10_c,     0x61_c,
         nul_byte(), nul_byte(), 0x01_c,     0xFE_c,
         nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
         nul_byte(), nul_byte(), nul_byte(), 0x04_c,
         0x2A_c,     0x00_c,     0x00_c,     0x00_c,
         nul_byte(), nul_byte(), nul_byte(), 0x04_c,
