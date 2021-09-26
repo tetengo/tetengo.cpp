@@ -91,19 +91,17 @@ namespace
         0xFF_c,     0xFF_c,     0x93_c,     0x6F_c,
         0xFF_c,     0xFF_c,     0x99_c,     0x74_c,
         nul_byte(), nul_byte(), 0x09_c,     0x6F_c,
-        nul_byte(), nul_byte(), nul_byte(), 0xFE_c,
+        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
         0xFF_c,     0xFF_c,     0xAA_c,     0x54_c,
         0xFF_c,     0xFF_c,     0x9F_c,     0x61_c,
         0xFF_c,     0xFF_c,     0xAC_c,     0x6D_c,
         0xFF_c,     0xFF_c,     0xA0_c,     0x61_c,
         0xFF_c,     0xFF_c,     0xAE_c,     0x6E_c,
         nul_byte(), nul_byte(), 0x10_c,     0x61_c,
-        nul_byte(), nul_byte(), 0x01_c,     0xFE_c,
+        nul_byte(), nul_byte(), 0x01_c,     nul_byte(),
         nul_byte(), nul_byte(), nul_byte(), 0x02_c,
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
         nul_byte(), nul_byte(), nul_byte(), 0x04_c,
         0x2A_c,     0x00_c,     0x00_c,     0x00_c,
-        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
         0x18_c,     0x00_c,     0x00_c,     0x00_c,
         // clang-format on
     };
@@ -162,6 +160,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_CHECK_THROW(
             const tetengo::trie::shared_storage storage_(*p_input_stream, deserializer), std::ios_base::failure);
     }
+
     {
         const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)

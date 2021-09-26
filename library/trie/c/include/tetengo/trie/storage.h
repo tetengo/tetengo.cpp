@@ -93,10 +93,14 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* p_storage)
 /*!
     \brief Serializes the storage.
 
-    \param p_storage A pointer to a storage.
-    \param path      A file path.
+    \param p_storage        A pointer to a storage.
+    \param path             A file path.
+    \param fixed_value_size The value size if it is fixed. Or 0 if the size is variable.
 */
-void tetengo_trie_storage_serialize(const tetengo_trie_storage_t* p_storage, const path_character_type* path);
+void tetengo_trie_storage_serialize(
+    const tetengo_trie_storage_t* p_storage,
+    const path_character_type*    path,
+    size_t                        fixed_value_size);
 
 /*!
     \brief Clones a storage.

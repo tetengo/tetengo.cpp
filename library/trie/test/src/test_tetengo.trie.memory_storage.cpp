@@ -125,10 +125,8 @@ namespace
         nul_byte(), nul_byte(), 0x10_c,     0x61_c,
         nul_byte(), nul_byte(), 0x01_c,     nul_byte(),
         nul_byte(), nul_byte(), nul_byte(), 0x02_c,
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
         nul_byte(), nul_byte(), nul_byte(), 0x04_c,
         0x2A_c,     0x00_c,     0x00_c,     0x00_c,
-        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
         0x18_c,     0x00_c,     0x00_c,     0x00_c,
         // clang-format on
     };
@@ -597,7 +595,7 @@ BOOST_AUTO_TEST_CASE(serialize)
             }
             BOOST_SCOPE_EXIT_END;
 
-            tetengo_trie_storage_serialize(p_storage, file_path.c_str());
+            tetengo_trie_storage_serialize(p_storage, file_path.c_str(), sizeof(int));
 
             static const std::string expected{
                 // clang-format off
@@ -620,10 +618,8 @@ BOOST_AUTO_TEST_CASE(serialize)
                 nul_byte(), nul_byte(), 0x10_c,     0x61_c,
                 nul_byte(), nul_byte(), 0x01_c,     nul_byte(),
                 nul_byte(), nul_byte(), nul_byte(), 0x02_c,
-                nul_byte(), nul_byte(), nul_byte(), nul_byte(),
                 nul_byte(), nul_byte(), nul_byte(), 0x04_c,
                 0x2A_c,     0x00_c,     0x00_c,     0x00_c,
-                nul_byte(), nul_byte(), nul_byte(), 0x04_c,
                 0x18_c,     0x00_c,     0x00_c,     0x00_c,
                 // clang-format on
             };
@@ -640,7 +636,7 @@ BOOST_AUTO_TEST_CASE(serialize)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo_trie_storage_serialize(nullptr, file_path.c_str());
+        tetengo_trie_storage_serialize(nullptr, file_path.c_str(), sizeof(int));
 
         const auto serialized = file_content(file_path);
         BOOST_TEST(std::empty(serialized));
@@ -668,7 +664,7 @@ BOOST_AUTO_TEST_CASE(serialize)
 
         const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
 
-        tetengo_trie_storage_serialize(p_storage, nullptr);
+        tetengo_trie_storage_serialize(p_storage, nullptr, sizeof(int));
     }
 }
 

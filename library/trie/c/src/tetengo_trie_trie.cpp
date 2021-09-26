@@ -89,7 +89,7 @@ tetengo_trie_trie_t* tetengo_trie_trie_create(
             observer_set,
             double_array_density_factor);
 
-        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_cpp_trie), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_cpp_trie));
         return p_instance.release();
     }
     catch (...)
@@ -112,11 +112,10 @@ tetengo_trie_trie_t* tetengo_trie_trie_createWithStorage(tetengo_trie_storage_t*
             return nullptr;
         }
 
-        auto       p_cpp_trie = std::make_unique<cpp_trie_type>(std::move(p_storage->p_cpp_storage_owned));
-        const auto element_value_size = p_storage->element_value_size;
+        auto p_cpp_trie = std::make_unique<cpp_trie_type>(std::move(p_storage->p_cpp_storage_owned));
         tetengo_trie_storage_destroy(p_storage);
 
-        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_cpp_trie), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_cpp_trie));
         return p_instance.release();
     }
     catch (...)
@@ -265,7 +264,7 @@ tetengo_trie_trie_subtrie(const tetengo_trie_trie_t* const p_trie, const char* c
         {
             return nullptr;
         }
-        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_subtrie), p_trie->element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_trie_t>(std::move(p_subtrie));
         return p_instance.release();
     }
     catch (...)

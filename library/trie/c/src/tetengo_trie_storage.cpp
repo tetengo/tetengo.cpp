@@ -35,8 +35,7 @@ tetengo_trie_storage_t* tetengo_trie_storage_createStorage(const tetengo_trie_tr
             throw std::invalid_argument{ "p_trie is NULL." };
         }
 
-        auto p_instance =
-            std::make_unique<tetengo_trie_storage_t>(&p_trie->p_cpp_trie->get_storage(), p_trie->element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(&p_trie->p_cpp_trie->get_storage());
         return p_instance.release();
     }
     catch (...)
@@ -55,17 +54,11 @@ tetengo_trie_storage_t* tetengo_trie_storage_createMemoryStorage(const path_char
         }
 
         std::ifstream                           stream{ path, std::ios_base::binary };
-        std::size_t                             element_value_size = std::numeric_limits<std::size_t>::max();
-        const tetengo::trie::value_deserializer deserializer{ [&element_value_size](
-                                                                  const std::vector<char>& serialized) {
-            if (element_value_size == std::numeric_limits<std::size_t>::max())
-            {
-                element_value_size = std::size(serialized);
-            }
+        const tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
             return serialized;
         } };
         auto p_storage = std::make_unique<tetengo::trie::memory_storage>(stream, deserializer);
-        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage));
         return p_instance.release();
     }
     catch (...)
@@ -84,17 +77,11 @@ tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_char
         }
 
         std::ifstream                           stream{ path, std::ios_base::binary };
-        std::size_t                             element_value_size = std::numeric_limits<std::size_t>::max();
-        const tetengo::trie::value_deserializer deserializer{ [&element_value_size](
-                                                                  const std::vector<char>& serialized) {
-            if (element_value_size == std::numeric_limits<std::size_t>::max())
-            {
-                element_value_size = std::size(serialized);
-            }
+        const tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
             return serialized;
         } };
         auto p_storage = std::make_unique<tetengo::trie::shared_storage>(stream, deserializer);
-        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage), element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage));
         return p_instance.release();
     }
     catch (...)
@@ -149,7 +136,8 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* const p_st
 
 void tetengo_trie_storage_serialize(
     const tetengo_trie_storage_t* const p_storage,
-    const path_character_type* const    path)
+    const path_character_type* const    path,
+    const size_t                        fixed_value_size)
 {
     try
     {
@@ -164,7 +152,7 @@ void tetengo_trie_storage_serialize(
 
         std::ofstream                         stream{ path, std::ios_base::binary };
         const tetengo::trie::value_serializer serializer{
-            [](const std::any& value) { return *std::any_cast<std::vector<char>>(&value); }, 0
+            [](const std::any& value) { return *std::any_cast<std::vector<char>>(&value); }, fixed_value_size
         };
         p_storage->p_cpp_storage()->serialize(stream, serializer);
     }
@@ -182,7 +170,7 @@ tetengo_trie_storage_t* tetengo_trie_storage_clone(const tetengo_trie_storage_t*
         }
         auto p_clone = p_storage->p_cpp_storage()->clone();
 
-        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_clone), p_storage->element_value_size);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_clone));
         return p_instance.release();
     }
     catch (...)
