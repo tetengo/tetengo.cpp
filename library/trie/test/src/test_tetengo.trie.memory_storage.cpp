@@ -62,12 +62,33 @@ namespace
         // clang-format on
     };
 
-    const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
-
     std::unique_ptr<std::istream> create_input_stream()
     {
         return std::make_unique<std::stringstream>(std::string{ std::begin(serialized), std::end(serialized) });
     }
+
+    const std::vector<char> serialized_fixed_value_size{
+        // clang-format off
+        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+        nul_byte(), nul_byte(), 0x2A_c,     0xFF_c,
+        nul_byte(), nul_byte(), 0xFD_c,     0xFE_c, 0x18_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x05_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+        0xFF_c,     0xFF_c,     0xFF_c,     0xFF_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x9F_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x0E_c,
+        0xFF_c,     0xFF_c,     0xFF_c,     0xFF_c,
+        nul_byte(), nul_byte(), nul_byte(), 0x03_c,
+        // clang-format on
+    };
+
+    std::unique_ptr<std::istream> create_input_stream_fixed_value_size()
+    {
+        return std::make_unique<std::stringstream>(
+            std::string{ std::begin(serialized_fixed_value_size), std::end(serialized_fixed_value_size) });
+    }
+
+    const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
 
     const std::vector<char> serialized_broken{
         // clang-format off
@@ -168,6 +189,25 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(2)) == "fuga");
         BOOST_REQUIRE(storage_.value_at(1));
         BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(1)) == "piyo");
+    }
+    {
+        const auto                              p_input_stream = create_input_stream_fixed_value_size();
+        const tetengo::trie::value_deserializer deserializer{
+            [](const std::vector<char>& serialized) {
+                static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{};
+                return uint32_deserializer(serialized);
+            },
+            0
+        };
+        const tetengo::trie::memory_storage storage_{ *p_input_stream, deserializer };
+
+        BOOST_TEST(storage_.base_check_array() == base_check_array);
+        BOOST_REQUIRE(storage_.value_at(4));
+        BOOST_TEST(std::any_cast<std::uint32_t>(*storage_.value_at(4)) == 3U);
+        BOOST_REQUIRE(storage_.value_at(2));
+        BOOST_TEST(std::any_cast<std::uint32_t>(*storage_.value_at(2)) == 14U);
+        BOOST_REQUIRE(storage_.value_at(1));
+        BOOST_TEST(std::any_cast<std::uint32_t>(*storage_.value_at(1)) == 159U);
     }
     {
         const auto p_input_stream = create_broken_input_stream();
@@ -488,6 +528,46 @@ BOOST_AUTO_TEST_CASE(serialize)
             nul_byte(), nul_byte(), nul_byte(), nul_byte(),
             nul_byte(), nul_byte(), nul_byte(), 0x04_c,
             0x68_c,     0x6F_c,     0x67_c,     0x65_c,
+            // clang-format on
+        };
+        const std::string serialized = output_stream.str();
+        BOOST_CHECK_EQUAL_COLLECTIONS(
+            std::begin(serialized), std::end(serialized), std::begin(expected), std::end(expected));
+    }
+    {
+        tetengo::trie::memory_storage storage_{};
+
+        storage_.set_base_at(0, 42);
+        storage_.set_base_at(1, 0xFE);
+        storage_.set_check_at(1, 24);
+
+        storage_.add_value_at(4, std::make_any<std::uint32_t>(3));
+        storage_.add_value_at(2, std::make_any<std::uint32_t>(14));
+        storage_.add_value_at(1, std::make_any<std::uint32_t>(159));
+
+        std::ostringstream                    output_stream{};
+        const tetengo::trie::value_serializer serializer{
+            [](const std::any& object) {
+                static const tetengo::trie::default_serializer<std::uint32_t> uint32_serializer{};
+                const auto serialized = uint32_serializer(std::any_cast<std::uint32_t>(object));
+                return std::vector<char>{ std::begin(serialized), std::end(serialized) };
+            },
+            sizeof(std::uint32_t)
+        };
+        storage_.serialize(output_stream, serializer);
+
+        static const std::string expected{
+            // clang-format off
+            nul_byte(), nul_byte(), nul_byte(), 0x02_c,
+            nul_byte(), nul_byte(), 0x2A_c,     0xFF_c,
+            nul_byte(), nul_byte(), 0xFD_c,     0xFE_c, 0x18_c,
+            nul_byte(), nul_byte(), nul_byte(), 0x05_c,
+            nul_byte(), nul_byte(), nul_byte(), 0x04_c,
+            0xFF_c,     0xFF_c,     0xFF_c,     0xFF_c,
+            nul_byte(), nul_byte(), nul_byte(), 0x9F_c,
+            nul_byte(), nul_byte(), nul_byte(), 0x0E_c,
+            0xFF_c,     0xFF_c,     0xFF_c,     0xFF_c,
+            nul_byte(), nul_byte(), nul_byte(), 0x03_c,
             // clang-format on
         };
         const std::string serialized = output_stream.str();

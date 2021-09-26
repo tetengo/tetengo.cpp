@@ -170,7 +170,20 @@ namespace tetengo::trie
             }
             else
             {
-                assert("Impelment it.");
+                for (const auto& v: value_array)
+                {
+                    if (v)
+                    {
+                        const auto serialized = value_serializer_(*v);
+                        assert(std::size(serialized) == fixed_value_size);
+                        output_stream.write(std::data(serialized), fixed_value_size);
+                    }
+                    else
+                    {
+                        std::vector<char> uninitialized(fixed_value_size, uninitialized_byte());
+                        output_stream.write(std::data(uninitialized), fixed_value_size);
+                    }
+                }
             }
         }
 
@@ -236,7 +249,25 @@ namespace tetengo::trie
             }
             else
             {
-                assert("Implement it.");
+                for (auto i = static_cast<std::uint32_t>(0); i < size; ++i)
+                {
+                    std::vector<char> to_deserialize(fixed_value_size, 0);
+                    input_stream.read(std::data(to_deserialize), fixed_value_size);
+                    if (input_stream.gcount() < static_cast<std::streamsize>(fixed_value_size))
+                    {
+                        throw std::ios_base::failure("Can't read value.");
+                    }
+                    if (std::all_of(std::begin(to_deserialize), std::end(to_deserialize), [](const auto e) {
+                            return e == uninitialized_byte();
+                        }))
+                    {
+                        value_array.push_back(std::nullopt);
+                    }
+                    else
+                    {
+                        value_array.push_back(value_deserializer_(to_deserialize));
+                    }
+                }
             }
         }
 
@@ -268,6 +299,11 @@ namespace tetengo::trie
                 }
             }
             return uint32_deserializer(to_deserialize);
+        }
+
+        static constexpr char uninitialized_byte()
+        {
+            return static_cast<char>(0xFF);
         }
 
 
