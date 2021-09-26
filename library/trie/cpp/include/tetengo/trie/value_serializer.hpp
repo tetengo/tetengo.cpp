@@ -72,10 +72,9 @@ namespace tetengo::trie
         /*!
             \brief Creates a value deserializer.
 
-            \param deserialize      A deserializing function.
-            \param fixed_value_size The value size if it is fixed. Or 0 if the size is variable.
+            \param deserialize A deserializing function.
         */
-        value_deserializer(std::function<std::any(const std::vector<char>&)> deserialize, std::size_t fixed_value_size);
+        explicit value_deserializer(std::function<std::any(const std::vector<char>&)> deserialize);
 
 
         // functions
@@ -89,21 +88,11 @@ namespace tetengo::trie
         */
         std::any operator()(const std::vector<char>& serialized) const;
 
-        /*!
-            \brief Returns the fixed value size.
-
-            \retval >0 The value size if it is fixed.
-            \return 0  If the value size is variable.
-        */
-        std::size_t fixed_value_size() const;
-
 
     private:
         // variables
 
         std::function<std::any(const std::vector<char>&)> m_deserialize;
-
-        std::size_t m_fixed_value_size;
     };
 
 

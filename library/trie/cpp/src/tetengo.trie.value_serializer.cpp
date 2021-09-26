@@ -33,21 +33,13 @@ namespace tetengo::trie
     }
 
 
-    value_deserializer::value_deserializer(
-        std::function<std::any(const std::vector<char>&)> deserialize,
-        const std::size_t                                 fixed_value_size) :
-    m_deserialize{ std::move(deserialize) },
-    m_fixed_value_size{ fixed_value_size }
+    value_deserializer::value_deserializer(std::function<std::any(const std::vector<char>&)> deserialize) :
+    m_deserialize{ std::move(deserialize) }
     {}
 
     std::any value_deserializer::operator()(const std::vector<char>& serialized) const
     {
         return m_deserialize(serialized);
-    }
-
-    std::size_t value_deserializer::fixed_value_size() const
-    {
-        return m_fixed_value_size;
     }
 
 
