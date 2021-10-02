@@ -17,7 +17,9 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/file_mapping.hpp>
+#include <boost/interprocess/mapped_region.hpp>
 
+#include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/mmap_storage.hpp>
 #include <tetengo/trie/value_serializer.hpp> // IWYU pragma: keep
 
@@ -32,17 +34,18 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        impl(const std::filesystem::path& path_, const std::size_t /*offset*/) :
-        m_file_mapping{ make_file_mapping(path_) }
+        impl(const std::filesystem::path& path_, const std::size_t offset) :
+        m_file_mapping{ make_file_mapping(path_) },
+        m_content_offset{ offset }
         {}
 
 
         // functions
 
-        std::int32_t base_at_impl(const std::size_t /*base_check_index*/) const
+        std::int32_t base_at_impl(const std::size_t base_check_index) const
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            const auto base_check = read_uint32(sizeof(std::uint32_t) * (1 + base_check_index));
+            return static_cast<std::int32_t>(base_check) >> 8;
         }
 
         void set_base_at_impl(const std::size_t /*base_check_index*/, const std::int32_t /*base*/)
@@ -125,6 +128,39 @@ namespace tetengo::trie
         // variables
 
         const boost::interprocess::file_mapping m_file_mapping;
+
+        const std::size_t m_content_offset;
+
+
+        // functions
+
+        std::uint32_t read_uint32(const std::size_t offset) const
+        {
+            static const default_deserializer<std::uint32_t> uint32_deserializer{};
+
+            const boost::interprocess::mapped_region region{ m_file_mapping,
+                                                             boost::interprocess::read_only,
+                                                             static_cast<boost::interprocess::offset_t>(
+                                                                 m_content_offset + offset),
+                                                             sizeof(std::uint32_t) };
+            auto                                     region_offset = static_cast<std::size_t>(0);
+            std::vector<char>                        to_deserialize{};
+            to_deserialize.reserve(sizeof(std::uint32_t));
+            for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
+            {
+                const auto byte_ = reinterpret_cast<char*>(region.get_address())[region_offset];
+                ++region_offset;
+                to_deserialize.push_back(byte_);
+
+                if (byte_ == static_cast<char>(0xFD))
+                {
+                    const auto trailing_byte = reinterpret_cast<char*>(region.get_address())[region_offset];
+                    ++region_offset;
+                    to_deserialize.push_back(trailing_byte);
+                }
+            }
+            return uint32_deserializer(to_deserialize);
+        }
     };
 
 
