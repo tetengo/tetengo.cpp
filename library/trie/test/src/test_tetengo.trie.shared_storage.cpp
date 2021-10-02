@@ -108,7 +108,7 @@ namespace
 
     std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
     {
-        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.memory_storage";
+        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.shared_storage";
 
         {
             std::ofstream stream{ path, std::ios_base::binary };
