@@ -9,6 +9,7 @@
 
 #include <any>
 #include <cstdint>
+#include <filesystem>
 #include <istream>
 #include <memory>
 #include <vector>
@@ -31,8 +32,13 @@ namespace tetengo::trie
 
         /*!
             \brief Creates a mmap storage.
+
+            \param path_   A path.
+            \param offset  An content offset in the file of the path.
+
+            \throw std::ios_base::failure When path_ cannot be opened.
         */
-        mmap_storage();
+        mmap_storage(const std::filesystem::path& path_, std::size_t offset);
 
         /*!
             \brief Destroys the mmap storage.

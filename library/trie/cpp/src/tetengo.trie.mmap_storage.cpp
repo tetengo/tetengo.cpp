@@ -7,13 +7,16 @@
 #include <any>
 #include <cassert>
 #include <cstdint>
-#include <istream>
+#include <filesystem>
+#include <ios>
 #include <memory>
 #include <stdexcept>
 #include <utility>
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
+#include <boost/interprocess/exceptions.hpp>
+#include <boost/interprocess/file_mapping.hpp>
 
 #include <tetengo/trie/mmap_storage.hpp>
 #include <tetengo/trie/value_serializer.hpp> // IWYU pragma: keep
@@ -29,7 +32,9 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        impl(){};
+        impl(const std::filesystem::path& path_, const std::size_t /*offset*/) :
+        m_file_mapping{ make_file_mapping(path_) }
+        {}
 
 
         // functions
@@ -102,13 +107,30 @@ namespace tetengo::trie
 
 
     private:
+        // static functions
+
+        static boost::interprocess::file_mapping make_file_mapping(const std::filesystem::path& path_)
+        {
+            try
+            {
+                return boost::interprocess::file_mapping{ path_.c_str(), boost::interprocess::read_only };
+            }
+            catch (const boost::interprocess::interprocess_exception& e)
+            {
+                throw std::ios_base::failure{ e.what() };
+            }
+        }
+
+
         // variables
 
-        std::shared_ptr<storage> m_p_entity;
+        const boost::interprocess::file_mapping m_file_mapping;
     };
 
 
-    mmap_storage::mmap_storage() : m_p_impl{ std::make_unique<impl>() } {}
+    mmap_storage::mmap_storage(const std::filesystem::path& path_, const std::size_t offset) :
+    m_p_impl{ std::make_unique<impl>(path_, offset) }
+    {}
 
     mmap_storage::~mmap_storage() = default;
 
