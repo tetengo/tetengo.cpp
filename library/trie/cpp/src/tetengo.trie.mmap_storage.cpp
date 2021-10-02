@@ -50,8 +50,7 @@ namespace tetengo::trie
 
         void set_base_at_impl(const std::size_t /*base_check_index*/, const std::int32_t /*base*/)
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            throw std::logic_error{ "Unsupported operation." };
         }
 
         std::uint8_t check_at_impl(const std::size_t /*base_check_index*/) const
