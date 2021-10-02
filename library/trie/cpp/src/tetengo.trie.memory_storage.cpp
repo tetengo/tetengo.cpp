@@ -189,7 +189,7 @@ namespace tetengo::trie
 
         static void write_uint32(std::ostream& output_stream, const std::uint32_t value)
         {
-            static const default_serializer<std::uint32_t> uint32_serializer{};
+            static const default_serializer<std::uint32_t> uint32_serializer{ true };
 
             const auto serialized = uint32_serializer(value);
             output_stream.write(std::data(serialized), std::size(serialized));
@@ -273,7 +273,7 @@ namespace tetengo::trie
 
         static std::uint32_t read_uint32(std::istream& input_stream)
         {
-            static const default_deserializer<std::uint32_t> uint32_deserializer{};
+            static const default_deserializer<std::uint32_t> uint32_deserializer{ true };
 
             std::vector<char> to_deserialize{};
             to_deserialize.reserve(sizeof(std::uint32_t));

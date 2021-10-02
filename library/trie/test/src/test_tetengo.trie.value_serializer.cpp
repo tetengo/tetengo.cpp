@@ -26,10 +26,11 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::value_serializer serializer{
-            [](const std::any& value) { return tetengo::trie::default_serializer<int>{}(std::any_cast<int>(value)); },
-            sizeof(int)
-        };
+        const tetengo::trie::value_serializer serializer{ [](const std::any& value) {
+                                                             return tetengo::trie::default_serializer<int>{ true }(
+                                                                 std::any_cast<int>(value));
+                                                         },
+                                                          sizeof(int) };
     }
     {
         const tetengo::trie::value_serializer serializer{ [](const std::any&) {
@@ -44,12 +45,13 @@ BOOST_AUTO_TEST_CASE(operator_paren)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::value_serializer serializer{
-            [](const std::any& value) { return tetengo::trie::default_serializer<int>{}(std::any_cast<int>(value)); },
-            sizeof(int)
-        };
+        const tetengo::trie::value_serializer serializer{ [](const std::any& value) {
+                                                             return tetengo::trie::default_serializer<int>{ true }(
+                                                                 std::any_cast<int>(value));
+                                                         },
+                                                          sizeof(int) };
 
-        const auto expected = tetengo::trie::default_serializer<int>{}(42);
+        const auto expected = tetengo::trie::default_serializer<int>{ true }(42);
         const auto serialized = serializer(42);
         BOOST_TEST(serialized == expected);
     }
@@ -70,10 +72,11 @@ BOOST_AUTO_TEST_CASE(fixed_value_size)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::value_serializer serializer{
-            [](const std::any& value) { return tetengo::trie::default_serializer<int>{}(std::any_cast<int>(value)); },
-            sizeof(int)
-        };
+        const tetengo::trie::value_serializer serializer{ [](const std::any& value) {
+                                                             return tetengo::trie::default_serializer<int>{ true }(
+                                                                 std::any_cast<int>(value));
+                                                         },
+                                                          sizeof(int) };
 
         BOOST_TEST(serializer.fixed_value_size() == sizeof(int));
     }
@@ -98,7 +101,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            return tetengo::trie::default_deserializer<int>{}(serialized);
+            return tetengo::trie::default_deserializer<int>{ true }(serialized);
         } };
     }
     {
@@ -114,11 +117,11 @@ BOOST_AUTO_TEST_CASE(operator_paren)
 
     {
         const tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            return tetengo::trie::default_deserializer<int>{}(serialized);
+            return tetengo::trie::default_deserializer<int>{ true }(serialized);
         } };
 
         const auto expected = 42;
-        const auto serialized = tetengo::trie::default_serializer<int>{}(expected);
+        const auto serialized = tetengo::trie::default_serializer<int>{ true }(expected);
         const auto deserialized = std::any_cast<int>(deserializer(serialized));
         BOOST_TEST(deserialized == expected);
     }
