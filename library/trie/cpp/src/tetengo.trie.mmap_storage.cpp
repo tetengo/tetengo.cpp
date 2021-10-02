@@ -53,16 +53,15 @@ namespace tetengo::trie
             throw std::logic_error{ "Unsupported operation." };
         }
 
-        std::uint8_t check_at_impl(const std::size_t /*base_check_index*/) const
+        std::uint8_t check_at_impl(const std::size_t base_check_index) const
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            const auto base_check = read_uint32(sizeof(std::uint32_t) * (1 + base_check_index));
+            return base_check & 0xFF;
         }
 
         void set_check_at_impl(const std::size_t /*base_check_index*/, const std::uint8_t /*check*/)
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            throw std::logic_error{ "Unsupported operation." };
         }
 
         std::size_t size_impl() const

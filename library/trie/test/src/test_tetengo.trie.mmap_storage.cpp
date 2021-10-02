@@ -8,12 +8,14 @@
 #include <fstream>
 #include <ios>
 #include <iterator>
+#include <stdexcept>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/mmap_storage.hpp>
 
 
@@ -176,14 +178,48 @@ BOOST_AUTO_TEST_CASE(check_at)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+
+        BOOST_TEST(storage.check_at(0) == tetengo::trie::double_array::vacant_check_value());
+        BOOST_TEST(storage.check_at(1) == 24);
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+
+        BOOST_TEST(storage.check_at(0) == tetengo::trie::double_array::vacant_check_value());
+        BOOST_TEST(storage.check_at(1) == 24);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(set_check_at)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    const auto file_path = temporary_file_path(serialized_fixed_value_size);
+    BOOST_SCOPE_EXIT(&file_path)
+    {
+        std::filesystem::remove(file_path);
+    }
+    BOOST_SCOPE_EXIT_END;
+
+    tetengo::trie::mmap_storage storage{ file_path, 0 };
+
+    BOOST_CHECK_THROW(storage.set_base_at(24, 124), std::logic_error);
 }
 
 BOOST_AUTO_TEST_CASE(size)
