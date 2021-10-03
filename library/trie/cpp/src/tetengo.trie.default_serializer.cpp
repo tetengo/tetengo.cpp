@@ -138,14 +138,15 @@ namespace tetengo::trie
 
 
     template <typename Char>
-    default_serializer<std::basic_string_view<Char>>::default_serializer(const bool escape) : m_escape{ escape }
+    default_serializer<std::basic_string_view<Char>>::default_serializer(const bool fe_escape) :
+    m_fe_escape{ fe_escape }
     {}
 
-    template default_serializer<std::basic_string_view<wchar_t>>::default_serializer(const bool escape);
+    template default_serializer<std::basic_string_view<wchar_t>>::default_serializer(const bool fe_escape);
 
-    template default_serializer<std::basic_string_view<char16_t>>::default_serializer(const bool escape);
+    template default_serializer<std::basic_string_view<char16_t>>::default_serializer(const bool fe_escape);
 
-    template default_serializer<std::basic_string_view<char32_t>>::default_serializer(const bool escape);
+    template default_serializer<std::basic_string_view<char32_t>>::default_serializer(const bool fe_escape);
 
     template <typename Char>
     std::vector<char>
@@ -172,14 +173,14 @@ namespace tetengo::trie
 
 
     template <typename Char>
-    default_serializer<std::basic_string<Char>>::default_serializer(const bool escape) : m_escape{ escape }
+    default_serializer<std::basic_string<Char>>::default_serializer(const bool fe_escape) : m_fe_escape{ fe_escape }
     {}
 
-    template default_serializer<std::basic_string<wchar_t>>::default_serializer(const bool escape);
+    template default_serializer<std::basic_string<wchar_t>>::default_serializer(const bool fe_escape);
 
-    template default_serializer<std::basic_string<char16_t>>::default_serializer(const bool escape);
+    template default_serializer<std::basic_string<char16_t>>::default_serializer(const bool fe_escape);
 
-    template default_serializer<std::basic_string<char32_t>>::default_serializer(const bool escape);
+    template default_serializer<std::basic_string<char32_t>>::default_serializer(const bool fe_escape);
 
     template <typename Char>
     std::vector<char>
@@ -206,53 +207,55 @@ namespace tetengo::trie
 
 
     template <typename Integer>
-    default_serializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::default_serializer(const bool escape) :
-    m_escape{ escape }
+    default_serializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::default_serializer(
+        const bool fe_escape) :
+    m_fe_escape{ fe_escape }
     {}
 
     template default_serializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<char, std::enable_if_t<std::is_integral_v<char>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<signed char, std::enable_if_t<std::is_integral_v<signed char>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<unsigned char, std::enable_if_t<std::is_integral_v<unsigned char>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<wchar_t, std::enable_if_t<std::is_integral_v<wchar_t>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<char16_t, std::enable_if_t<std::is_integral_v<char16_t>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<char32_t, std::enable_if_t<std::is_integral_v<char32_t>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
-    template default_serializer<int, std::enable_if_t<std::is_integral_v<int>>>::default_serializer(const bool escape);
+    template default_serializer<int, std::enable_if_t<std::is_integral_v<int>>>::default_serializer(
+        const bool fe_escape);
 
     template default_serializer<unsigned int, std::enable_if_t<std::is_integral_v<unsigned int>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<short, std::enable_if_t<std::is_integral_v<short>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<unsigned short, std::enable_if_t<std::is_integral_v<unsigned short>>>::
-        default_serializer(const bool escape);
+        default_serializer(const bool fe_escape);
 
     template default_serializer<long, std::enable_if_t<std::is_integral_v<long>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<unsigned long, std::enable_if_t<std::is_integral_v<unsigned long>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<long long, std::enable_if_t<std::is_integral_v<long long>>>::default_serializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_serializer<unsigned long long, std::enable_if_t<std::is_integral_v<unsigned long long>>>::
-        default_serializer(const bool escape);
+        default_serializer(const bool fe_escape);
 
     template <typename Integer>
     std::vector<char>
@@ -322,14 +325,14 @@ namespace tetengo::trie
 
 
     template <typename Char>
-    default_deserializer<std::basic_string<Char>>::default_deserializer(const bool escape) : m_escape{ escape }
+    default_deserializer<std::basic_string<Char>>::default_deserializer(const bool fe_escape) : m_fe_escape{ fe_escape }
     {}
 
-    template default_deserializer<std::basic_string<wchar_t>>::default_deserializer(const bool escape);
+    template default_deserializer<std::basic_string<wchar_t>>::default_deserializer(const bool fe_escape);
 
-    template default_deserializer<std::basic_string<char16_t>>::default_deserializer(const bool escape);
+    template default_deserializer<std::basic_string<char16_t>>::default_deserializer(const bool fe_escape);
 
-    template default_deserializer<std::basic_string<char32_t>>::default_deserializer(const bool escape);
+    template default_deserializer<std::basic_string<char32_t>>::default_deserializer(const bool fe_escape);
 
     template <typename Char>
     std::basic_string<Char>
@@ -356,54 +359,54 @@ namespace tetengo::trie
 
     template <typename Integer>
     default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::default_deserializer(
-        const bool escape) :
-    m_escape{ escape }
+        const bool fe_escape) :
+    m_fe_escape{ fe_escape }
     {}
 
     template default_deserializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<char, std::enable_if_t<std::is_integral_v<char>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<signed char, std::enable_if_t<std::is_integral_v<signed char>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<unsigned char, std::enable_if_t<std::is_integral_v<unsigned char>>>::
-        default_deserializer(const bool escape);
+        default_deserializer(const bool fe_escape);
 
     template default_deserializer<wchar_t, std::enable_if_t<std::is_integral_v<wchar_t>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<char16_t, std::enable_if_t<std::is_integral_v<char16_t>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<char32_t, std::enable_if_t<std::is_integral_v<char32_t>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<int, std::enable_if_t<std::is_integral_v<int>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<unsigned int, std::enable_if_t<std::is_integral_v<unsigned int>>>::
-        default_deserializer(const bool escape);
+        default_deserializer(const bool fe_escape);
 
     template default_deserializer<short, std::enable_if_t<std::is_integral_v<short>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<unsigned short, std::enable_if_t<std::is_integral_v<unsigned short>>>::
-        default_deserializer(const bool escape);
+        default_deserializer(const bool fe_escape);
 
     template default_deserializer<long, std::enable_if_t<std::is_integral_v<long>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<unsigned long, std::enable_if_t<std::is_integral_v<unsigned long>>>::
-        default_deserializer(const bool escape);
+        default_deserializer(const bool fe_escape);
 
     template default_deserializer<long long, std::enable_if_t<std::is_integral_v<long long>>>::default_deserializer(
-        const bool escape);
+        const bool fe_escape);
 
     template default_deserializer<unsigned long long, std::enable_if_t<std::is_integral_v<unsigned long long>>>::
-        default_deserializer(const bool escape);
+        default_deserializer(const bool fe_escape);
 
     template <typename Integer>
     Integer default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::operator()(

@@ -18,7 +18,7 @@ namespace tetengo::trie
     /*!
         \brief A default serializer.
 
-        When the argument escape of the constructor is true, binary bytes are
+        When the argument fe_escape of the constructor is true, binary bytes are
         serialized as following:
 
         <table>
@@ -71,7 +71,7 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        explicit default_serializer(bool escape);
+        explicit default_serializer(bool fe_escape);
 
 
         // functions
@@ -82,7 +82,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        bool m_escape;
+        bool m_fe_escape;
     };
 
     template <typename Char>
@@ -91,7 +91,7 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        explicit default_serializer(bool escape);
+        explicit default_serializer(bool fe_escape);
 
 
         // functions
@@ -102,7 +102,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        bool m_escape;
+        bool m_fe_escape;
     };
 
     template <typename Integer>
@@ -111,7 +111,7 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        explicit default_serializer(bool escape);
+        explicit default_serializer(bool fe_escape);
 
 
         // functions
@@ -122,7 +122,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        bool m_escape;
+        bool m_fe_escape;
     };
 
 #endif
@@ -131,7 +131,7 @@ namespace tetengo::trie
     /*!
         \brief A default deserializer.
 
-        When the argument escape of the constructor is true, binary bytes are
+        When the argument fe_escape of the constructor is true, binary bytes are
         deserialized as following:
 
         <table>
@@ -181,7 +181,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        bool m_escape;
+        bool m_fe_escape;
     };
 
     template <typename Integer>
@@ -201,7 +201,7 @@ namespace tetengo::trie
     private:
         // variables
 
-        bool m_escape;
+        bool m_fe_escape;
     };
 
 #endif
