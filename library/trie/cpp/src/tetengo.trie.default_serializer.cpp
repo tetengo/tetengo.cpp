@@ -21,12 +21,6 @@ namespace tetengo::trie
     namespace
     {
         template <typename T>
-        std::vector<char> to_bytes(const T value, const bool fe_escape)
-        {
-            return fe_escape ? to_bytes_with_escape(value) : to_bytes_without_escape(value);
-        }
-
-        template <typename T>
         std::vector<char> to_bytes_with_escape(const T value)
         {
             std::vector<char> bytes{};
@@ -67,7 +61,13 @@ namespace tetengo::trie
         }
 
         template <typename T>
-        T from_bytes(const char* const p_head, const std::size_t size)
+        std::vector<char> to_bytes(const T value, const bool fe_escape)
+        {
+            return fe_escape ? to_bytes_with_escape(value) : to_bytes_without_escape(value);
+        }
+
+        template <typename T>
+        T from_bytes_with_escape(const char* const p_head, const std::size_t size)
         {
             assert(sizeof(T) <= size && size <= 2 * sizeof(T));
             auto object = static_cast<T>(0);
@@ -137,6 +137,34 @@ namespace tetengo::trie
             }
             return object;
         }
+
+        template <typename T>
+        T from_bytes_without_escape(const char* const p_head, const std::size_t size)
+        {
+            assert(sizeof(T) <= size && size <= 2 * sizeof(T));
+            auto object = static_cast<T>(0);
+            if constexpr (sizeof(T) > 1)
+            {
+                for (auto i = static_cast<std::size_t>(0); i < size; ++i)
+                {
+                    object <<= 8;
+                    const auto byte_ = p_head[i];
+                    object |= static_cast<unsigned char>(byte_);
+                }
+            }
+            else
+            {
+                object = *p_head;
+            }
+            return object;
+        }
+
+        template <typename T>
+        T from_bytes(const char* const p_head, const std::size_t size, const bool fe_escape)
+        {
+            return fe_escape ? from_bytes_with_escape<T>(p_head, size) : from_bytes_without_escape<T>(p_head, size);
+        }
+
 
     }
 
@@ -362,7 +390,7 @@ namespace tetengo::trie
         std::basic_string<Char> object{};
         for (auto i = std::begin(bytes); i != std::end(bytes); i += sizeof(Char))
         {
-            object.push_back(from_bytes<Char>(&*i, sizeof(Char)));
+            object.push_back(from_bytes<Char>(&*i, sizeof(Char), m_fe_escape));
         }
         return object;
     }
@@ -432,7 +460,7 @@ namespace tetengo::trie
     Integer default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::operator()(
         const std::vector<char>& bytes) const
     {
-        return from_bytes<Integer>(std::data(bytes), std::size(bytes));
+        return from_bytes<Integer>(std::data(bytes), std::size(bytes), m_fe_escape);
     }
 
     template bool default_deserializer<bool, std::enable_if_t<std::is_integral_v<bool>>>::operator()(
