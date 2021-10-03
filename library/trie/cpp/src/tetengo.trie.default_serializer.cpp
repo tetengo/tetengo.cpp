@@ -21,7 +21,13 @@ namespace tetengo::trie
     namespace
     {
         template <typename T>
-        std::vector<char> to_bytes(const T value)
+        std::vector<char> to_bytes(const T value, const bool fe_escape)
+        {
+            return fe_escape ? to_bytes_with_escape(value) : to_bytes_without_escape(value);
+        }
+
+        template <typename T>
+        std::vector<char> to_bytes_with_escape(const T value)
         {
             std::vector<char> bytes{};
             bytes.reserve(sizeof(T));
@@ -42,6 +48,20 @@ namespace tetengo::trie
                 {
                     bytes.push_back(byte_);
                 }
+            }
+            return bytes;
+        }
+
+        template <typename T>
+        std::vector<char> to_bytes_without_escape(const T value)
+        {
+            std::vector<char> bytes{};
+            bytes.reserve(sizeof(T));
+            for (auto i = static_cast<std::size_t>(0); i < sizeof(T); ++i)
+            {
+                const auto byte_ =
+                    static_cast<char>(static_cast<unsigned char>(value >> (sizeof(T) - i - 1) * 8) & 0xFF);
+                bytes.push_back(byte_);
             }
             return bytes;
         }
@@ -156,7 +176,7 @@ namespace tetengo::trie
         serialized.reserve(object.length() * sizeof(Char) / sizeof(char));
         for (const auto c: object)
         {
-            const auto bytes = to_bytes(c);
+            const auto bytes = to_bytes(c, m_fe_escape);
             serialized.insert(std::end(serialized), std::begin(bytes), std::end(bytes));
         }
         return serialized;
@@ -190,7 +210,7 @@ namespace tetengo::trie
         serialized.reserve(object.length() * sizeof(Char) / sizeof(char));
         for (const auto c: object)
         {
-            const auto bytes = to_bytes(c);
+            const auto bytes = to_bytes(c, m_fe_escape);
             serialized.insert(std::end(serialized), std::begin(bytes), std::end(bytes));
         }
         return serialized;
@@ -261,7 +281,7 @@ namespace tetengo::trie
     std::vector<char>
     default_serializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>::operator()(const Integer object) const
     {
-        return to_bytes(object);
+        return to_bytes(object, m_fe_escape);
     }
 
     template std::vector<char>
