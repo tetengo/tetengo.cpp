@@ -170,7 +170,7 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        explicit default_deserializer(bool ignored);
+        explicit default_deserializer(bool fe_escape);
 
 
         // functions
@@ -190,7 +190,7 @@ namespace tetengo::trie
     public:
         // constructors and destructor
 
-        explicit default_deserializer(bool ignored);
+        explicit default_deserializer(bool fe_escape);
 
 
         // functions
