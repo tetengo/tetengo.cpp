@@ -38,6 +38,7 @@
 #include <fstream>
 #include <functional>
 #include <initializer_list>
+#include <ios>
 #include <iostream>
 #include <istream>
 #include <iterator>
@@ -75,6 +76,9 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/core/pointer_traits.hpp>
 #include <boost/format.hpp>
+#include <boost/interprocess/exceptions.hpp>
+#include <boost/interprocess/file_mapping.hpp>
+#include <boost/interprocess/mapped_region.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
