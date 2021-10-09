@@ -134,7 +134,7 @@ namespace tetengo::trie
 
         std::uint32_t read_uint32(const std::size_t offset) const
         {
-            static const default_deserializer<std::uint32_t> uint32_deserializer{ true };
+            static const default_deserializer<std::uint32_t> uint32_deserializer{ false };
 
             const boost::interprocess::mapped_region region{ m_file_mapping,
                                                              boost::interprocess::read_only,
