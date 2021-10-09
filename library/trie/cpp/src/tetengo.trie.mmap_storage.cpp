@@ -92,12 +92,6 @@ namespace tetengo::trie
             return static_cast<double>(empty_count) / base_check_count;
         }
 
-        const std::vector<std::uint32_t>& base_check_array_impl() const
-        {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
-        }
-
         const std::any* value_at_impl(const std::size_t /*value_index*/) const
         {
             assert(false);
@@ -217,11 +211,6 @@ namespace tetengo::trie
     double mmap_storage::filling_rate_impl() const
     {
         return m_p_impl->filling_rate_impl();
-    }
-
-    const std::vector<std::uint32_t>& mmap_storage::base_check_array_impl() const
-    {
-        return m_p_impl->base_check_array_impl();
     }
 
     const std::any* mmap_storage::value_at_impl(const std::size_t value_index) const

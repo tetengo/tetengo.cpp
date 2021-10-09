@@ -11,7 +11,6 @@
 #include <cstdint>
 #include <istream>
 #include <memory>
-#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -98,13 +97,6 @@ namespace tetengo::trie
         [[nodiscard]] double filling_rate() const;
 
         /*!
-            \brief Returns the base-check array.
-
-            \return The base-check array.
-        */
-        [[nodiscard]] const std::vector<std::uint32_t>& base_check_array() const;
-
-        /*!
             \brief Returns the value object.
 
             \param value_index A value index.
@@ -153,8 +145,6 @@ namespace tetengo::trie
         virtual std::size_t size_impl() const = 0;
 
         virtual double filling_rate_impl() const = 0;
-
-        virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
 
         virtual const std::any* value_at_impl(std::size_t value_index) const = 0;
 

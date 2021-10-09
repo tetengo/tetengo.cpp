@@ -9,7 +9,6 @@
 #include <istream>
 #include <memory>
 #include <utility>
-#include <vector>
 
 #include <tetengo/trie/storage.hpp>
 
@@ -56,11 +55,6 @@ namespace tetengo::trie
     double storage::filling_rate() const
     {
         return filling_rate_impl();
-    }
-
-    const std::vector<std::uint32_t>& storage::base_check_array() const
-    {
-        return base_check_array_impl();
     }
 
     const std::any* storage::value_at(const std::size_t value_index) const

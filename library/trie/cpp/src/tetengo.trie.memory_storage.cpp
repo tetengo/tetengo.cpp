@@ -87,11 +87,6 @@ namespace tetengo::trie
             return 1.0 - static_cast<double>(empty_count) / std::size(m_base_check_array);
         }
 
-        const std::vector<std::uint32_t>& base_check_array_impl() const
-        {
-            return m_base_check_array;
-        }
-
         const std::any* value_at_impl(const std::size_t value_index) const
         {
             if (value_index >= std::size(m_value_array) || !m_value_array[value_index])
@@ -361,11 +356,6 @@ namespace tetengo::trie
     double memory_storage::filling_rate_impl() const
     {
         return m_p_impl->filling_rate_impl();
-    }
-
-    const std::vector<std::uint32_t>& memory_storage::base_check_array_impl() const
-    {
-        return m_p_impl->base_check_array_impl();
     }
 
     const std::any* memory_storage::value_at_impl(const std::size_t value_index) const

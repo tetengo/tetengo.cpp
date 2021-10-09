@@ -12,7 +12,6 @@
 #include <filesystem>
 #include <istream>
 #include <memory>
-#include <vector>
 
 #include <tetengo/trie/storage.hpp>
 
@@ -72,8 +71,6 @@ namespace tetengo::trie
         virtual std::size_t size_impl() const override;
 
         virtual double filling_rate_impl() const override;
-
-        virtual const std::vector<std::uint32_t>& base_check_array_impl() const override;
 
         virtual const std::any* value_at_impl(std::size_t value_index) const override;
 

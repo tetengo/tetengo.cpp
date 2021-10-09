@@ -10,7 +10,6 @@
 #include <iterator>
 #include <memory>
 #include <utility>
-#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -68,11 +67,6 @@ namespace tetengo::trie
         double filling_rate_impl() const
         {
             return m_p_entity->filling_rate();
-        }
-
-        const std::vector<std::uint32_t>& base_check_array_impl() const
-        {
-            return m_p_entity->base_check_array();
         }
 
         const std::any* value_at_impl(const std::size_t value_index) const
@@ -146,11 +140,6 @@ namespace tetengo::trie
     double shared_storage::filling_rate_impl() const
     {
         return m_p_impl->filling_rate_impl();
-    }
-
-    const std::vector<std::uint32_t>& shared_storage::base_check_array_impl() const
-    {
-        return m_p_impl->base_check_array_impl();
     }
 
     const std::any* shared_storage::value_at_impl(const std::size_t value_index) const

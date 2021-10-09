@@ -56,12 +56,6 @@ namespace
             return 0.9;
         }
 
-        virtual const std::vector<std::uint32_t>& base_check_array_impl() const override
-        {
-            static const std::vector<std::uint32_t> singleton(3, 4242);
-            return singleton;
-        }
-
         virtual const std::any* value_at_impl(const std::size_t /*value_index*/) const override
         {
             return nullptr;
@@ -157,18 +151,6 @@ BOOST_AUTO_TEST_CASE(filling_rate)
     concrete_storage storage_{};
 
     BOOST_CHECK_CLOSE(storage_.filling_rate(), 0.9, 0.01);
-}
-
-BOOST_AUTO_TEST_CASE(base_check_array)
-{
-    BOOST_TEST_PASSPOINT();
-
-    const concrete_storage storage_{};
-
-    const auto base_check_array = storage_.base_check_array();
-
-    static const std::vector<std::uint32_t> expected(3, 4242);
-    BOOST_TEST(base_check_array == expected);
 }
 
 BOOST_AUTO_TEST_CASE(value_at)

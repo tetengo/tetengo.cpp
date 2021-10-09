@@ -85,6 +85,18 @@ namespace
 
     const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
 
+    std::vector<uint32_t> base_check_array_of(const tetengo::trie::storage& storage_)
+    {
+        const auto            size = storage_.base_check_size();
+        std::vector<uint32_t> array_{};
+        array_.reserve(size);
+        for (auto i = static_cast<std::size_t>(0); i < size; ++i)
+        {
+            array_.push_back((storage_.base_at(i) << 8) | storage_.check_at(i));
+        }
+        return array_;
+    }
+
     const std::vector<char> serialized_broken{
         // clang-format off
         0x00_c, 0x00_c, 0x00_c, 0x02_c,
@@ -172,7 +184,7 @@ BOOST_AUTO_TEST_CASE(construction)
         } };
         const tetengo::trie::memory_storage storage_{ *p_input_stream, deserializer };
 
-        BOOST_TEST(storage_.base_check_array() == base_check_array);
+        BOOST_TEST(base_check_array_of(storage_) == base_check_array);
         BOOST_REQUIRE(storage_.value_at(4));
         BOOST_TEST(std::any_cast<std::string>(*storage_.value_at(4)) == "hoge");
         BOOST_REQUIRE(storage_.value_at(2));
@@ -188,7 +200,7 @@ BOOST_AUTO_TEST_CASE(construction)
         } };
         const tetengo::trie::memory_storage storage_{ *p_input_stream, deserializer };
 
-        BOOST_TEST(storage_.base_check_array() == base_check_array);
+        BOOST_TEST(base_check_array_of(storage_) == base_check_array);
         BOOST_REQUIRE(storage_.value_at(4));
         BOOST_TEST(std::any_cast<std::uint32_t>(*storage_.value_at(4)) == 3U);
         BOOST_REQUIRE(storage_.value_at(2));
@@ -436,22 +448,6 @@ BOOST_AUTO_TEST_CASE(filling_rate)
     }
 }
 
-BOOST_AUTO_TEST_CASE(base_check_array)
-{
-    BOOST_TEST_PASSPOINT();
-
-    tetengo::trie::memory_storage storage_{};
-
-    storage_.set_base_at(0, 42);
-    storage_.set_base_at(1, 0xFE);
-    storage_.set_check_at(1, 24);
-
-    const auto base_check_array = storage_.base_check_array();
-
-    static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x0000FE18 };
-    BOOST_TEST(base_check_array == expected);
-}
-
 BOOST_AUTO_TEST_CASE(value_at)
 {
     BOOST_TEST_PASSPOINT();
@@ -693,7 +689,7 @@ BOOST_AUTO_TEST_CASE(clone)
 
         const auto p_clone = storage_.clone();
 
-        const auto base_check_array = p_clone->base_check_array();
+        const auto base_check_array = base_check_array_of(*p_clone);
 
         static const std::vector<std::uint32_t> expected{ 0x00002AFF, 0x0000FE18 };
         BOOST_TEST(base_check_array == expected);

@@ -143,7 +143,7 @@ namespace tetengo::trie
             {
                 const auto next_base_check_index =
                     static_cast<std::size_t>(m_p_storage->base_at(base_check_index)) + static_cast<std::uint8_t>(c);
-                if (next_base_check_index >= std::size(m_p_storage->base_check_array()) ||
+                if (next_base_check_index >= m_p_storage->base_check_size() ||
                     m_p_storage->check_at(next_base_check_index) != static_cast<std::uint8_t>(c))
                 {
                     return std::nullopt;
