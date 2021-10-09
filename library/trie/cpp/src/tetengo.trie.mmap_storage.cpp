@@ -66,8 +66,9 @@ namespace tetengo::trie
 
         std::size_t size_impl() const
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            const auto base_check_count = read_uint32(0);
+            const auto size = read_uint32(sizeof(std::uint32_t) * (1 + base_check_count));
+            return size;
         }
 
         double filling_rate_impl() const

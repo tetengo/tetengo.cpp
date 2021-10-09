@@ -221,7 +221,30 @@ BOOST_AUTO_TEST_CASE(size)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+
+        BOOST_TEST(std::size(storage) == 5U);
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+
+        BOOST_TEST(std::size(storage) == 5U);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(filling_rate)
