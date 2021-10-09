@@ -43,6 +43,13 @@ namespace tetengo::trie
         // functions
 
         /*!
+            \brief Returns the base-check size.
+
+            \return The base-check size.
+        */
+        [[nodiscard]] std::size_t base_check_size() const;
+
+        /*!
             \brief Returns the base value.
 
             \param base_check_index A base-check index.
@@ -132,6 +139,8 @@ namespace tetengo::trie
 
     private:
         // virtual functions
+
+        virtual std::size_t base_check_size_impl() const = 0;
 
         virtual std::int32_t base_at_impl(std::size_t base_check_index) const = 0;
 

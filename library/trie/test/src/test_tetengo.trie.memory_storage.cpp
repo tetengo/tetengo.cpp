@@ -276,6 +276,23 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(base_check_size)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::trie::memory_storage storage_{};
+
+        BOOST_TEST(storage_.base_check_size() >= 1U);
+    }
+    {
+        tetengo::trie::memory_storage storage_{};
+        [[maybe_unused]] const auto   base = storage_.base_at(42);
+
+        BOOST_TEST(storage_.base_check_size() >= 43U);
+    }
+}
+
 BOOST_AUTO_TEST_CASE(base_at)
 {
     BOOST_TEST_PASSPOINT();

@@ -27,6 +27,11 @@ namespace
     private:
         // virtual functions
 
+        virtual std::size_t base_check_size_impl() const override
+        {
+            return 4;
+        }
+
         virtual std::int32_t base_at_impl(const std::size_t /*base_check_index*/) const override
         {
             return 42;
@@ -89,6 +94,15 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     const concrete_storage storage_{};
+}
+
+BOOST_AUTO_TEST_CASE(base_check_size)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_storage storage_{};
+
+    BOOST_TEST(storage_.base_check_size() == 4U);
 }
 
 BOOST_AUTO_TEST_CASE(base_at)

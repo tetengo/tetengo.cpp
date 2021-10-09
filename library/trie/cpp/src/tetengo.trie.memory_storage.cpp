@@ -44,28 +44,33 @@ namespace tetengo::trie
 
         // functions
 
+        std::size_t base_check_size_impl() const
+        {
+            return std::size(m_base_check_array);
+        }
+
         std::int32_t base_at_impl(const std::size_t base_check_index) const
         {
-            ensure_size(base_check_index + 1);
+            ensure_base_check_size(base_check_index + 1);
             return static_cast<std::int32_t>(m_base_check_array[base_check_index]) >> 8;
         }
 
         void set_base_at_impl(const std::size_t base_check_index, const std::int32_t base)
         {
-            ensure_size(base_check_index + 1);
+            ensure_base_check_size(base_check_index + 1);
             m_base_check_array[base_check_index] &= 0x000000FF;
             m_base_check_array[base_check_index] |= static_cast<std::uint32_t>(base << 8);
         }
 
         std::uint8_t check_at_impl(const std::size_t base_check_index) const
         {
-            ensure_size(base_check_index + 1);
+            ensure_base_check_size(base_check_index + 1);
             return m_base_check_array[base_check_index] & 0xFF;
         }
 
         void set_check_at_impl(const std::size_t base_check_index, const std::uint8_t check)
         {
-            ensure_size(base_check_index + 1);
+            ensure_base_check_size(base_check_index + 1);
             m_base_check_array[base_check_index] &= 0xFFFFFF00;
             m_base_check_array[base_check_index] |= check;
         }
@@ -305,7 +310,7 @@ namespace tetengo::trie
 
         // functions
 
-        void ensure_size(const std::size_t size) const
+        void ensure_base_check_size(const std::size_t size) const
         {
             if (size > std::size(m_base_check_array))
             {
@@ -322,6 +327,11 @@ namespace tetengo::trie
     {}
 
     memory_storage::~memory_storage() = default;
+
+    std::size_t memory_storage::base_check_size_impl() const
+    {
+        return m_p_impl->base_check_size_impl();
+    }
 
     std::int32_t memory_storage::base_at_impl(const std::size_t base_check_index) const
     {

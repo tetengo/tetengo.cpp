@@ -23,6 +23,11 @@ namespace tetengo::trie
 
     storage::~storage() = default;
 
+    std::size_t storage::base_check_size() const
+    {
+        return base_check_size_impl();
+    }
+
     std::int32_t storage::base_at(const std::size_t base_check_index) const
     {
         return base_at_impl(base_check_index);

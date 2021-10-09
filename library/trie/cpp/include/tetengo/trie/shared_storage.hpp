@@ -62,6 +62,8 @@ namespace tetengo::trie
 
         // virtual functions
 
+        virtual std::size_t base_check_size_impl() const override;
+
         virtual std::int32_t base_at_impl(std::size_t base_check_index) const override;
 
         virtual void set_base_at_impl(std::size_t base_check_index, std::int32_t base) override;

@@ -35,6 +35,11 @@ namespace tetengo::trie
 
         // functions
 
+        std::size_t base_check_size_impl() const
+        {
+            return m_p_entity->base_check_size();
+        }
+
         std::int32_t base_at_impl(const std::size_t base_check_index) const
         {
             return m_p_entity->base_at(base_check_index);
@@ -107,6 +112,11 @@ namespace tetengo::trie
     {}
 
     shared_storage::~shared_storage() = default;
+
+    std::size_t shared_storage::base_check_size_impl() const
+    {
+        return m_p_impl->base_check_size_impl();
+    }
 
     std::int32_t shared_storage::base_at_impl(const std::size_t base_check_index) const
     {

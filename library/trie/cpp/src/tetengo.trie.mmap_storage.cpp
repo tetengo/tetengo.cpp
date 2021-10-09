@@ -42,6 +42,12 @@ namespace tetengo::trie
 
         // functions
 
+        std::size_t base_check_size_impl() const
+        {
+            const auto base_check_count = read_uint32(0);
+            return base_check_count;
+        }
+
         std::int32_t base_at_impl(const std::size_t base_check_index) const
         {
             const auto base_check = read_uint32(sizeof(std::uint32_t) * (1 + base_check_index));
@@ -66,16 +72,16 @@ namespace tetengo::trie
 
         std::size_t size_impl() const
         {
-            const auto base_check_count = read_uint32(0);
+            const auto base_check_count = base_check_size_impl();
             const auto size = read_uint32(sizeof(std::uint32_t) * (1 + base_check_count));
             return size;
         }
 
         double filling_rate_impl() const
         {
-            const auto base_check_count = read_uint32(0);
+            const auto base_check_count = base_check_size_impl();
             auto       empty_count = static_cast<std::uint32_t>(0);
-            for (auto i = static_cast<std::uint32_t>(0); i < base_check_count; ++i)
+            for (auto i = static_cast<std::size_t>(0); i < base_check_count; ++i)
             {
                 const auto base_check = read_uint32(sizeof(std::uint32_t) * (1 + i));
                 if (base_check == 0x000000FF)
@@ -177,6 +183,11 @@ namespace tetengo::trie
     {}
 
     mmap_storage::~mmap_storage() = default;
+
+    std::size_t mmap_storage::base_check_size_impl() const
+    {
+        return m_p_impl->base_check_size_impl();
+    }
 
     std::int32_t mmap_storage::base_at_impl(const std::size_t base_check_index) const
     {

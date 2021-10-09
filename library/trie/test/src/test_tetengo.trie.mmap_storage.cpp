@@ -130,6 +130,36 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 }
 
+BOOST_AUTO_TEST_CASE(base_check_size)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+
+        BOOST_TEST(storage.base_check_size() == 2U);
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+
+        BOOST_TEST(storage.base_check_size() == 2U);
+    }
+}
+
 BOOST_AUTO_TEST_CASE(base_at)
 {
     BOOST_TEST_PASSPOINT();
