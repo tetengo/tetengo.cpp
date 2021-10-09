@@ -73,8 +73,17 @@ namespace tetengo::trie
 
         double filling_rate_impl() const
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            const auto base_check_count = read_uint32(0);
+            auto       empty_count = static_cast<std::uint32_t>(0);
+            for (auto i = static_cast<std::uint32_t>(0); i < base_check_count; ++i)
+            {
+                const auto base_check = read_uint32(sizeof(std::uint32_t) * (1 + i));
+                if (base_check == 0x000000FF)
+                {
+                    ++empty_count;
+                }
+            }
+            return static_cast<double>(empty_count) / base_check_count;
         }
 
         const std::vector<std::uint32_t>& base_check_array_impl() const

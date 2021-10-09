@@ -61,6 +61,15 @@ namespace
         // clang-format on
     };
 
+    const std::vector<char> serialized_fixed_value_size_for_calculating_filling_rate{
+        // clang-format off
+        0x00_c, 0x00_c, 0x00_c, 0x02_c,
+        0x00_c, 0x00_c, 0x00_c, 0xFF_c,
+        0x00_c, 0x00_c, 0xFE_c, 0x18_c,
+        0x00_c, 0x00_c, 0x00_c, 0x00_c,
+        // clang-format on
+    };
+
     // const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
 
     // const std::vector<char> serialized_broken{
@@ -251,7 +260,18 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_for_calculating_filling_rate);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+
+        BOOST_CHECK_CLOSE(storage.filling_rate(), 1.0 / 2.0, 0.1);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(base_check_array)
