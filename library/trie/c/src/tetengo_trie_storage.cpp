@@ -120,6 +120,23 @@ void tetengo_trie_storage_destroy(const tetengo_trie_storage_t* const p_storage)
     {}
 }
 
+size_t tetengo_trie_storage_baseCheckSize(const tetengo_trie_storage_t* const p_storage)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        return p_storage->p_cpp_storage()->base_check_size();
+    }
+    catch (...)
+    {
+        return static_cast<size_t>(-1);
+    }
+}
+
 size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* const p_storage)
 {
     try

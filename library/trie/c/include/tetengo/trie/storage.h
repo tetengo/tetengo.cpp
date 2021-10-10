@@ -83,6 +83,15 @@ tetengo_trie_storage_t* tetengo_trie_storage_createMmapStorage(const path_charac
 void tetengo_trie_storage_destroy(const tetengo_trie_storage_t* p_storage);
 
 /*!
+    \brief Returns the base-check size.
+
+    \param p_storage A pointer to a storage.
+
+    \return The base-check size. Or (size_t)-1 on error.
+*/
+size_t tetengo_trie_storage_baseCheckSize(const tetengo_trie_storage_t* p_storage);
+
+/*!
     \brief Returns the value size.
 
     \param p_storage A pointer to a storage.
