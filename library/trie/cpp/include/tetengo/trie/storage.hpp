@@ -83,18 +83,11 @@ namespace tetengo::trie
         void set_check_at(std::size_t base_check_index, std::uint8_t check);
 
         /*!
-            \brief Returns the size.
+            \brief Returns the value size.
 
-            \return The size.
+            \return The value size.
         */
-        [[nodiscard]] std::size_t size() const;
-
-        /*!
-            \brief Returns the filling rate.
-
-            \return The filling rate.
-        */
-        [[nodiscard]] double filling_rate() const;
+        [[nodiscard]] std::size_t value_size() const;
 
         /*!
             \brief Returns the value object.
@@ -106,12 +99,19 @@ namespace tetengo::trie
         [[nodiscard]] const std::any* value_at(std::size_t value_index) const;
 
         /*!
-            \brief Adds a value storage index mapping.
+            \brief Adds a value object.
 
             \param value_index A value index.
             \param value       A value object.
         */
         void add_value_at(std::size_t value_index, std::any value);
+
+        /*!
+            \brief Returns the filling rate.
+
+            \return The filling rate.
+        */
+        [[nodiscard]] double filling_rate() const;
 
         /*!
             \brief Serializes this storage.
@@ -142,13 +142,13 @@ namespace tetengo::trie
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t check) = 0;
 
-        virtual std::size_t size_impl() const = 0;
-
-        virtual double filling_rate_impl() const = 0;
+        virtual std::size_t value_size_impl() const = 0;
 
         virtual const std::any* value_at_impl(std::size_t value_index) const = 0;
 
         virtual void add_value_at_impl(std::size_t value_index, std::any value) = 0;
+
+        virtual double filling_rate_impl() const = 0;
 
         virtual void serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const = 0;
 

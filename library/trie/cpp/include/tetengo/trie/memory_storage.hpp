@@ -71,13 +71,13 @@ namespace tetengo::trie
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t check) override;
 
-        virtual std::size_t size_impl() const override;
-
-        virtual double filling_rate_impl() const override;
+        virtual std::size_t value_size_impl() const override;
 
         virtual const std::any* value_at_impl(std::size_t value_index) const override;
 
         virtual void add_value_at_impl(std::size_t value_index, std::any value) override;
+
+        virtual double filling_rate_impl() const override;
 
         virtual void
         serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const override;

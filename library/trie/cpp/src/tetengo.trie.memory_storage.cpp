@@ -75,16 +75,9 @@ namespace tetengo::trie
             m_base_check_array[base_check_index] |= check;
         }
 
-        std::size_t size_impl() const
+        std::size_t value_size_impl() const
         {
             return std::size(m_value_array);
-        }
-
-        double filling_rate_impl() const
-        {
-            const auto empty_count =
-                std::count(std::begin(m_base_check_array), std::end(m_base_check_array), 0x000000FFU);
-            return 1.0 - static_cast<double>(empty_count) / std::size(m_base_check_array);
         }
 
         const std::any* value_at_impl(const std::size_t value_index) const
@@ -103,6 +96,13 @@ namespace tetengo::trie
                 m_value_array.resize(value_index + 1, std::nullopt);
             }
             m_value_array[value_index] = std::move(value);
+        }
+
+        double filling_rate_impl() const
+        {
+            const auto empty_count =
+                std::count(std::begin(m_base_check_array), std::end(m_base_check_array), 0x000000FFU);
+            return 1.0 - static_cast<double>(empty_count) / std::size(m_base_check_array);
         }
 
         void serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
@@ -348,14 +348,9 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, check);
     }
 
-    std::size_t memory_storage::size_impl() const
+    std::size_t memory_storage::value_size_impl() const
     {
-        return m_p_impl->size_impl();
-    }
-
-    double memory_storage::filling_rate_impl() const
-    {
-        return m_p_impl->filling_rate_impl();
+        return m_p_impl->value_size_impl();
     }
 
     const std::any* memory_storage::value_at_impl(const std::size_t value_index) const
@@ -366,6 +361,11 @@ namespace tetengo::trie
     void memory_storage::add_value_at_impl(const std::size_t value_index, std::any value)
     {
         return m_p_impl->add_value_at_impl(value_index, std::move(value));
+    }
+
+    double memory_storage::filling_rate_impl() const
+    {
+        return m_p_impl->filling_rate_impl();
     }
 
     void memory_storage::serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const

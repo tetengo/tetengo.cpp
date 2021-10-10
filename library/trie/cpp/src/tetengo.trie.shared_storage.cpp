@@ -7,7 +7,6 @@
 #include <any>
 #include <cstdint>
 #include <istream>
-#include <iterator>
 #include <memory>
 #include <utility>
 
@@ -59,14 +58,9 @@ namespace tetengo::trie
             m_p_entity->set_check_at(base_check_index, check);
         }
 
-        std::size_t size_impl() const
+        std::size_t value_size_impl() const
         {
-            return std::size(*m_p_entity);
-        }
-
-        double filling_rate_impl() const
-        {
-            return m_p_entity->filling_rate();
+            return m_p_entity->value_size();
         }
 
         const std::any* value_at_impl(const std::size_t value_index) const
@@ -77,6 +71,11 @@ namespace tetengo::trie
         void add_value_at_impl(const std::size_t value_index, std::any value)
         {
             m_p_entity->add_value_at(value_index, std::move(value));
+        }
+
+        double filling_rate_impl() const
+        {
+            return m_p_entity->filling_rate();
         }
 
         void serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
@@ -132,14 +131,9 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, check);
     }
 
-    std::size_t shared_storage::size_impl() const
+    std::size_t shared_storage::value_size_impl() const
     {
-        return m_p_impl->size_impl();
-    }
-
-    double shared_storage::filling_rate_impl() const
-    {
-        return m_p_impl->filling_rate_impl();
+        return m_p_impl->value_size_impl();
     }
 
     const std::any* shared_storage::value_at_impl(const std::size_t value_index) const
@@ -150,6 +144,11 @@ namespace tetengo::trie
     void shared_storage::add_value_at_impl(const std::size_t value_index, std::any value)
     {
         return m_p_impl->add_value_at_impl(value_index, std::move(value));
+    }
+
+    double shared_storage::filling_rate_impl() const
+    {
+        return m_p_impl->filling_rate_impl();
     }
 
     void shared_storage::serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const

@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <fstream>
 #include <functional>
-#include <iterator>
 #include <limits>
 #include <memory>
 #include <stdexcept>
@@ -100,7 +99,7 @@ void tetengo_trie_storage_destroy(const tetengo_trie_storage_t* const p_storage)
     {}
 }
 
-size_t tetengo_trie_storage_size(const tetengo_trie_storage_t* const p_storage)
+size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* const p_storage)
 {
     try
     {
@@ -109,7 +108,7 @@ size_t tetengo_trie_storage_size(const tetengo_trie_storage_t* const p_storage)
             throw std::invalid_argument{ "p_storage is NULL." };
         }
 
-        return std::size(*p_storage->p_cpp_storage());
+        return p_storage->p_cpp_storage()->value_size();
     }
     catch (...)
     {

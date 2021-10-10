@@ -73,13 +73,13 @@ tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_char
 void tetengo_trie_storage_destroy(const tetengo_trie_storage_t* p_storage);
 
 /*!
-    \brief Returns the size.
+    \brief Returns the value size.
 
     \param p_storage A pointer to a storage.
 
-    \return The size. Or (size_t)-1 on error.
+    \return The value size. Or (size_t)-1 on error.
 */
-size_t tetengo_trie_storage_size(const tetengo_trie_storage_t* p_storage);
+size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* p_storage);
 
 /*!
     \brief Returns the filling rate.

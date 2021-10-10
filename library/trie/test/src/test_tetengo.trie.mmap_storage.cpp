@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     BOOST_CHECK_THROW(storage.set_base_at(24, 124), std::logic_error);
 }
 
-BOOST_AUTO_TEST_CASE(size)
+BOOST_AUTO_TEST_CASE(value_size)
 {
     BOOST_TEST_PASSPOINT();
 
@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(size)
 
         const tetengo::trie::mmap_storage storage{ file_path, 0 };
 
-        BOOST_TEST(std::size(storage) == 5U);
+        BOOST_TEST(storage.value_size() == 5U);
     }
     {
         const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
@@ -282,8 +282,22 @@ BOOST_AUTO_TEST_CASE(size)
 
         const tetengo::trie::mmap_storage storage{ file_path, 5 };
 
-        BOOST_TEST(std::size(storage) == 5U);
+        BOOST_TEST(storage.value_size() == 5U);
     }
+}
+
+BOOST_AUTO_TEST_CASE(value_at)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
+}
+
+BOOST_AUTO_TEST_CASE(add_value_at)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_WARN_MESSAGE(false, "Implement it.");
 }
 
 BOOST_AUTO_TEST_CASE(filling_rate)
@@ -302,27 +316,6 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 
         BOOST_CHECK_CLOSE(storage.filling_rate(), 1.0 / 2.0, 0.1);
     }
-}
-
-BOOST_AUTO_TEST_CASE(base_check_array)
-{
-    BOOST_TEST_PASSPOINT();
-
-    BOOST_WARN_MESSAGE(false, "Implement it.");
-}
-
-BOOST_AUTO_TEST_CASE(value_at)
-{
-    BOOST_TEST_PASSPOINT();
-
-    BOOST_WARN_MESSAGE(false, "Implement it.");
-}
-
-BOOST_AUTO_TEST_CASE(add_value_at)
-{
-    BOOST_TEST_PASSPOINT();
-
-    BOOST_WARN_MESSAGE(false, "Implement it.");
 }
 
 BOOST_AUTO_TEST_CASE(serialize)

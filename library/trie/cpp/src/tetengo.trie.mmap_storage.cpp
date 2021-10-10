@@ -70,11 +70,23 @@ namespace tetengo::trie
             throw std::logic_error{ "Unsupported operation." };
         }
 
-        std::size_t size_impl() const
+        std::size_t value_size_impl() const
         {
             const auto base_check_count = base_check_size_impl();
             const auto size = read_uint32(sizeof(std::uint32_t) * (1 + base_check_count));
             return size;
+        }
+
+        const std::any* value_at_impl(const std::size_t /*value_index*/) const
+        {
+            assert(false);
+            throw std::logic_error{ "Impelment it." };
+        }
+
+        void add_value_at_impl(const std::size_t /*value_index*/, std::any /*value*/)
+        {
+            assert(false);
+            throw std::logic_error{ "Impelment it." };
         }
 
         double filling_rate_impl() const
@@ -90,18 +102,6 @@ namespace tetengo::trie
                 }
             }
             return static_cast<double>(empty_count) / base_check_count;
-        }
-
-        const std::any* value_at_impl(const std::size_t /*value_index*/) const
-        {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
-        }
-
-        void add_value_at_impl(const std::size_t /*value_index*/, std::any /*value*/)
-        {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
         }
 
         void serialize_impl(std::ostream& /*output_stream*/, const value_serializer& /*value_serializer_*/) const
@@ -203,14 +203,9 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, check);
     }
 
-    std::size_t mmap_storage::size_impl() const
+    std::size_t mmap_storage::value_size_impl() const
     {
-        return m_p_impl->size_impl();
-    }
-
-    double mmap_storage::filling_rate_impl() const
-    {
-        return m_p_impl->filling_rate_impl();
+        return m_p_impl->value_size_impl();
     }
 
     const std::any* mmap_storage::value_at_impl(const std::size_t value_index) const
@@ -221,6 +216,11 @@ namespace tetengo::trie
     void mmap_storage::add_value_at_impl(const std::size_t value_index, std::any value)
     {
         return m_p_impl->add_value_at_impl(value_index, std::move(value));
+    }
+
+    double mmap_storage::filling_rate_impl() const
+    {
+        return m_p_impl->filling_rate_impl();
     }
 
     void mmap_storage::serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const

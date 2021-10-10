@@ -7,7 +7,6 @@
 #include <any>
 #include <cstdint>
 #include <functional>
-#include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -46,14 +45,9 @@ namespace
 
         virtual void set_check_at_impl(const std::size_t /*base_check_index*/, const std::uint8_t /*value*/) override {}
 
-        virtual std::size_t size_impl() const override
+        virtual std::size_t value_size_impl() const override
         {
             return 3;
-        }
-
-        virtual double filling_rate_impl() const override
-        {
-            return 0.9;
         }
 
         virtual const std::any* value_at_impl(const std::size_t /*value_index*/) const override
@@ -62,6 +56,11 @@ namespace
         }
 
         virtual void add_value_at_impl(const std::size_t /*index*/, std::any /*value*/) override {}
+
+        virtual double filling_rate_impl() const override
+        {
+            return 0.9;
+        }
 
         virtual void serialize_impl(
             std::ostream& /*output_stream*/,
@@ -135,22 +134,13 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     storage_.set_check_at(24, 124);
 }
 
-BOOST_AUTO_TEST_CASE(size)
+BOOST_AUTO_TEST_CASE(value_size)
 {
     BOOST_TEST_PASSPOINT();
 
     concrete_storage storage_{};
 
-    BOOST_TEST(std::size(storage_) == 3U);
-}
-
-BOOST_AUTO_TEST_CASE(filling_rate)
-{
-    BOOST_TEST_PASSPOINT();
-
-    concrete_storage storage_{};
-
-    BOOST_CHECK_CLOSE(storage_.filling_rate(), 0.9, 0.01);
+    BOOST_TEST(storage_.value_size() == 3U);
 }
 
 BOOST_AUTO_TEST_CASE(value_at)
@@ -169,6 +159,15 @@ BOOST_AUTO_TEST_CASE(add_value_at)
     concrete_storage storage_{};
 
     storage_.add_value_at(42, std::make_any<std::string>("hoge"));
+}
+
+BOOST_AUTO_TEST_CASE(filling_rate)
+{
+    BOOST_TEST_PASSPOINT();
+
+    concrete_storage storage_{};
+
+    BOOST_CHECK_CLOSE(storage_.filling_rate(), 0.9, 0.01);
 }
 
 BOOST_AUTO_TEST_CASE(serialize)

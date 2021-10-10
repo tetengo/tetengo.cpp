@@ -47,14 +47,9 @@ namespace tetengo::trie
         set_check_at_impl(base_check_index, base);
     }
 
-    std::size_t storage::size() const
+    std::size_t storage::value_size() const
     {
-        return size_impl();
-    }
-
-    double storage::filling_rate() const
-    {
-        return filling_rate_impl();
+        return value_size_impl();
     }
 
     const std::any* storage::value_at(const std::size_t value_index) const
@@ -65,6 +60,11 @@ namespace tetengo::trie
     void storage::add_value_at(const std::size_t value_index, std::any value)
     {
         add_value_at_impl(value_index, std::move(value));
+    }
+
+    double storage::filling_rate() const
+    {
+        return filling_rate_impl();
     }
 
     void storage::serialize(std::ostream& output_stream, const value_serializer& value_serializer_) const
