@@ -183,6 +183,23 @@ int tetengo_trie_storage_setBaseAt(
     }
 }
 
+unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        return p_storage->p_cpp_storage()->check_at(base_check_index);
+    }
+    catch (...)
+    {
+        return UCHAR_MAX;
+    }
+}
+
 size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* const p_storage)
 {
     try
