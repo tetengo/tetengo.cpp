@@ -4,12 +4,16 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <any>
 #include <climits>
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <functional>
 #include <ios>
 #include <iterator>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 #include <stddef.h>
@@ -18,9 +22,11 @@
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/mmap_storage.hpp>
 #include <tetengo/trie/storage.h>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace
@@ -105,6 +111,13 @@ BOOST_AUTO_TEST_SUITE(trie)
 BOOST_AUTO_TEST_SUITE(mmap_storage)
 
 
+BOOST_AUTO_TEST_CASE(default_value_cache_capacity)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_TEST(tetengo::trie::mmap_storage::default_value_cache_capacity() > 0U);
+}
+
 BOOST_AUTO_TEST_CASE(vacantCheckValue)
 {
     BOOST_TEST_PASSPOINT();
@@ -124,7 +137,11 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
     }
     {
         const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
@@ -134,10 +151,20 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 5, std::move(deserializer) };
     }
     {
-        BOOST_CHECK_THROW(const tetengo::trie::mmap_storage storage("NONEXISTENT_FILE", 0), std::ios_base::failure);
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        BOOST_CHECK_THROW(
+            const tetengo::trie::mmap_storage storage("NONEXISTENT_FILE", 0, std::move(deserializer)),
+            std::ios_base::failure);
     }
 
     {
@@ -195,7 +222,11 @@ BOOST_AUTO_TEST_CASE(base_check_size)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
 
         BOOST_TEST(storage.base_check_size() == 2U);
     }
@@ -207,7 +238,11 @@ BOOST_AUTO_TEST_CASE(base_check_size)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 5, std::move(deserializer) };
 
         BOOST_TEST(storage.base_check_size() == 2U);
     }
@@ -265,7 +300,11 @@ BOOST_AUTO_TEST_CASE(base_at)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
 
         BOOST_TEST(storage.base_at(0) == 42);
         BOOST_TEST(storage.base_at(1) == 0xFE);
@@ -278,7 +317,11 @@ BOOST_AUTO_TEST_CASE(base_at)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 5, std::move(deserializer) };
 
         BOOST_TEST(storage.base_at(0) == 42);
         BOOST_TEST(storage.base_at(1) == 0xFE);
@@ -339,7 +382,11 @@ BOOST_AUTO_TEST_CASE(set_base_at)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
 
         BOOST_CHECK_THROW(storage.set_base_at(42, 4242), std::logic_error);
     }
@@ -379,7 +426,11 @@ BOOST_AUTO_TEST_CASE(check_at)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
 
         BOOST_TEST(storage.check_at(0) == tetengo::trie::double_array::vacant_check_value());
         BOOST_TEST(storage.check_at(1) == 24);
@@ -392,7 +443,11 @@ BOOST_AUTO_TEST_CASE(check_at)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 5, std::move(deserializer) };
 
         BOOST_TEST(storage.check_at(0) == tetengo::trie::double_array::vacant_check_value());
         BOOST_TEST(storage.check_at(1) == 24);
@@ -453,7 +508,11 @@ BOOST_AUTO_TEST_CASE(set_check_at)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
 
         BOOST_CHECK_THROW(storage.set_check_at(24, 124), std::logic_error);
     }
@@ -493,7 +552,11 @@ BOOST_AUTO_TEST_CASE(value_size)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
 
         BOOST_TEST(storage.value_size() == 5U);
     }
@@ -505,7 +568,11 @@ BOOST_AUTO_TEST_CASE(value_size)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 5 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 5, std::move(deserializer) };
 
         BOOST_TEST(storage.value_size() == 5U);
     }
@@ -555,7 +622,52 @@ BOOST_AUTO_TEST_CASE(value_at)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
+
+        BOOST_TEST(!storage.value_at(0));
+        BOOST_TEST_REQUIRE(storage.value_at(1));
+        BOOST_TEST(*std::any_cast<std::uint32_t>(storage.value_at(1)) == 159U);
+        BOOST_TEST_REQUIRE(storage.value_at(2));
+        BOOST_TEST(*std::any_cast<std::uint32_t>(storage.value_at(2)) == 14U);
+        BOOST_TEST(!storage.value_at(3));
+        BOOST_TEST_REQUIRE(storage.value_at(4));
+        BOOST_TEST(*std::any_cast<std::uint32_t>(storage.value_at(4)) == 3U);
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 5, std::move(deserializer) };
+
+        BOOST_TEST(!storage.value_at(0));
+        BOOST_TEST_REQUIRE(storage.value_at(1));
+        BOOST_TEST(*std::any_cast<std::uint32_t>(storage.value_at(1)) == 159U);
+        BOOST_TEST_REQUIRE(storage.value_at(2));
+        BOOST_TEST(*std::any_cast<std::uint32_t>(storage.value_at(2)) == 14U);
+        BOOST_TEST(!storage.value_at(3));
+        BOOST_TEST_REQUIRE(storage.value_at(4));
+        BOOST_TEST(*std::any_cast<std::uint32_t>(storage.value_at(4)) == 3U);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(add_value_at)
@@ -577,7 +689,11 @@ BOOST_AUTO_TEST_CASE(filling_rate)
         }
         BOOST_SCOPE_EXIT_END;
 
-        const tetengo::trie::mmap_storage storage{ file_path, 0 };
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
 
         BOOST_CHECK_CLOSE(storage.filling_rate(), 1.0 / 2.0, 0.1);
     }

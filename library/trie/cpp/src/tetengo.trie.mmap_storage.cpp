@@ -9,8 +9,13 @@
 #include <cstdint>
 #include <filesystem>
 #include <ios>
+#include <iterator>
+#include <list>
 #include <memory>
+#include <optional>
 #include <stdexcept>
+#include <type_traits>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -24,6 +29,88 @@
 #include <tetengo/trie/value_serializer.hpp> // IWYU pragma: keep
 
 
+namespace
+{
+    class value_cache : private boost::noncopyable
+    {
+    public:
+        // constructors and destructor
+
+        explicit value_cache(const std::size_t cache_capacity) :
+        m_cache_capacity{ cache_capacity },
+        m_access_orders{},
+        m_map{}
+        {}
+
+
+        // functions
+
+        bool has(const std::size_t index) const
+        {
+            return m_map.find(index) != std::end(m_map);
+        }
+
+        const std::any* at(const std::size_t index) const
+        {
+            auto& value = at_impl(index);
+
+            m_access_orders.erase(value.first);
+            m_access_orders.push_front(index);
+            value.first = std::begin(m_access_orders);
+
+            return value.second ? &*value.second : nullptr;
+        }
+
+        void insert(const std::size_t index, std::optional<std::any> o_value)
+        {
+            assert(!has(index));
+
+            while (std::size(m_access_orders) >= m_cache_capacity)
+            {
+                const auto oldest_index = m_access_orders.back();
+                m_access_orders.pop_back();
+                m_map.erase(oldest_index);
+            }
+
+            m_access_orders.push_front(index);
+            m_map.insert(std::make_pair(index, std::make_pair(std::begin(m_access_orders), std::move(o_value))));
+            assert(std::size(m_access_orders) == std::size(m_map));
+        }
+
+
+    private:
+        // types
+
+        using access_order_list_type = std::list<std::size_t>;
+
+        using map_value_type = std::pair<access_order_list_type::const_iterator, std::optional<std::any>>;
+
+        using map_type = std::unordered_map<std::size_t, map_value_type>;
+
+
+        // variables
+
+        const std::size_t m_cache_capacity;
+
+        mutable access_order_list_type m_access_orders;
+
+        mutable map_type m_map;
+
+
+        // functions
+
+        map_value_type& at_impl(const std::size_t index) const
+        {
+            const auto found = m_map.find(index);
+            assert(found != std::end(m_map));
+            return found->second;
+        }
+    };
+
+
+}
+
+
 namespace tetengo::trie
 {
     class storage;
@@ -32,11 +119,25 @@ namespace tetengo::trie
     class mmap_storage::impl : private boost::noncopyable
     {
     public:
+        // static functions
+
+        static std::size_t default_value_cache_capacity()
+        {
+            return 10000;
+        }
+
+
         // constructors and destructor
 
-        impl(const std::filesystem::path& path_, const std::size_t offset) :
+        impl(
+            const std::filesystem::path& path_,
+            const std::size_t            offset,
+            value_deserializer           value_deserializer_,
+            const std::size_t            value_cache_capacity) :
         m_file_mapping{ make_file_mapping(path_) },
-        m_content_offset{ offset }
+        m_content_offset{ offset },
+        m_value_deserializer{ std::move(value_deserializer_) },
+        m_value_cache{ value_cache_capacity }
         {}
 
 
@@ -77,10 +178,25 @@ namespace tetengo::trie
             return size;
         }
 
-        const std::any* value_at_impl(const std::size_t /*value_index*/) const
+        const std::any* value_at_impl(const std::size_t value_index) const
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            if (!m_value_cache.has(value_index))
+            {
+                const auto base_check_count = base_check_size_impl();
+                const auto fixed_value_size = read_uint32(sizeof(std::uint32_t) * (1 + base_check_count + 1));
+                const auto offset = sizeof(std::uint32_t) * (1 + base_check_count + 2) + fixed_value_size * value_index;
+                const auto serialized = read_bytes(offset, fixed_value_size);
+                if (serialized == std::vector<char>(fixed_value_size, uninitialized_byte()))
+                {
+                    m_value_cache.insert(value_index, std::nullopt);
+                }
+                else
+                {
+                    auto value = m_value_deserializer(serialized);
+                    m_value_cache.insert(value_index, std::move(value));
+                }
+            }
+            return m_value_cache.at(value_index);
         }
 
         void add_value_at_impl(const std::size_t /*value_index*/, std::any /*value*/)
@@ -132,6 +248,11 @@ namespace tetengo::trie
             }
         }
 
+        static constexpr char uninitialized_byte()
+        {
+            return static_cast<char>(0xFF);
+        }
+
 
         // variables
 
@@ -139,41 +260,43 @@ namespace tetengo::trie
 
         const std::size_t m_content_offset;
 
+        const value_deserializer m_value_deserializer;
+
+        mutable value_cache m_value_cache;
+
 
         // functions
 
-        std::uint32_t read_uint32(const std::size_t offset) const
+        std::vector<char> read_bytes(const std::size_t offset, const std::size_t size) const
         {
-            static const default_deserializer<std::uint32_t> uint32_deserializer{ false };
-
             const boost::interprocess::mapped_region region{ m_file_mapping,
                                                              boost::interprocess::read_only,
                                                              static_cast<boost::interprocess::offset_t>(
                                                                  m_content_offset + offset),
-                                                             sizeof(std::uint32_t) };
-            auto                                     region_offset = static_cast<std::size_t>(0);
-            std::vector<char>                        to_deserialize{};
-            to_deserialize.reserve(sizeof(std::uint32_t));
-            for (auto i = static_cast<std::size_t>(0); i < sizeof(std::uint32_t); ++i)
-            {
-                const auto byte_ = reinterpret_cast<char*>(region.get_address())[region_offset];
-                ++region_offset;
-                to_deserialize.push_back(byte_);
+                                                             size };
+            return std::vector<char>{ reinterpret_cast<const char*>(region.get_address()),
+                                      reinterpret_cast<const char*>(region.get_address()) + region.get_size() };
+        }
 
-                if (byte_ == static_cast<char>(0xFD))
-                {
-                    const auto trailing_byte = reinterpret_cast<char*>(region.get_address())[region_offset];
-                    ++region_offset;
-                    to_deserialize.push_back(trailing_byte);
-                }
-            }
-            return uint32_deserializer(to_deserialize);
+        std::uint32_t read_uint32(const std::size_t offset) const
+        {
+            static const default_deserializer<std::uint32_t> uint32_deserializer{ false };
+            return uint32_deserializer(read_bytes(offset, sizeof(std::uint32_t)));
         }
     };
 
 
-    mmap_storage::mmap_storage(const std::filesystem::path& path_, const std::size_t offset) :
-    m_p_impl{ std::make_unique<impl>(path_, offset) }
+    std::size_t mmap_storage::default_value_cache_capacity()
+    {
+        return impl::default_value_cache_capacity();
+    }
+
+    mmap_storage::mmap_storage(
+        const std::filesystem::path& path_,
+        const std::size_t            offset,
+        value_deserializer           value_deserializer_,
+        const std::size_t            value_cache_capacity /*= default_value_cache_capacity()*/) :
+    m_p_impl{ std::make_unique<impl>(path_, offset, std::move(value_deserializer_), value_cache_capacity) }
     {}
 
     mmap_storage::~mmap_storage() = default;
@@ -232,6 +355,4 @@ namespace tetengo::trie
     {
         return m_p_impl->clone_impl();
     }
-
-
 }

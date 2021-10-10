@@ -107,7 +107,10 @@ tetengo_trie_storage_createMmapStorage(const path_character_type* const path, co
             throw std::invalid_argument{ "path is NULL." };
         }
 
-        auto p_storage = std::make_unique<tetengo::trie::mmap_storage>(path, offset);
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            return serialized;
+        } };
+        auto p_storage = std::make_unique<tetengo::trie::mmap_storage>(path, offset, std::move(deserializer));
         auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage));
         return p_instance.release();
     }

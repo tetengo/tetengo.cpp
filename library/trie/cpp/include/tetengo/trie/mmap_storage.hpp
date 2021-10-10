@@ -14,30 +14,44 @@
 #include <memory>
 
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/value_serializer.hpp> // IWYU pragma: keep
 
 
 namespace tetengo::trie
 {
-    class value_serializer;
-
-
     /*!
         \brief An mmap storage.
     */
     class mmap_storage : public storage
     {
     public:
+        // functions
+
+        /*!
+            \brief Returns the default value cache capacity.
+
+            \return The default value cache capacity.
+        */
+        static std::size_t default_value_cache_capacity();
+
+
         // constructors and destructor
 
         /*!
             \brief Creates an mmap storage.
 
-            \param path_   A path.
-            \param offset  A content offset in the file of the path.
+            \param path_                A path.
+            \param offset               A content offset in the file of the path.
+            \param value_deserializer_  A deserializer for value objects.
+            \param value_cache_capacity A value cache capacity.
 
             \throw std::ios_base::failure When path_ cannot be opened.
         */
-        mmap_storage(const std::filesystem::path& path_, std::size_t offset);
+        mmap_storage(
+            const std::filesystem::path& path_,
+            std::size_t                  offset,
+            value_deserializer           value_deserializer_,
+            std::size_t                  value_cache_capacity = default_value_cache_capacity());
 
         /*!
             \brief Destroys the mmap storage.
