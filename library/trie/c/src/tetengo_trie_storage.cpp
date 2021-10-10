@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/mmap_storage.hpp>
 #include <tetengo/trie/shared_storage.hpp>
@@ -26,6 +27,11 @@
 #include "tetengo_trie_storage.hpp"
 #include "tetengo_trie_trie.hpp"
 
+
+unsigned char tetengo_trie_storage_vacantCheckValue()
+{
+    return tetengo::trie::double_array::vacant_check_value();
+}
 
 tetengo_trie_storage_t* tetengo_trie_storage_createStorage(const tetengo_trie_trie_t* const p_trie)
 {

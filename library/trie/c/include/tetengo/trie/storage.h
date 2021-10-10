@@ -39,6 +39,13 @@ typedef char path_character_type;
 #endif
 
 /*!
+    \brief Returns the check value for a vacant element.
+
+    \return The check value for a vacant element.
+*/
+unsigned char tetengo_trie_storage_vacantCheckValue();
+
+/*!
     \brief Creates a storage.
 
     \param p_trie A pointer to a trie.

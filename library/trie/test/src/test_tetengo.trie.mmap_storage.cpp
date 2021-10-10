@@ -105,6 +105,13 @@ BOOST_AUTO_TEST_SUITE(trie)
 BOOST_AUTO_TEST_SUITE(mmap_storage)
 
 
+BOOST_AUTO_TEST_CASE(vacantCheckValue)
+{
+    BOOST_TEST_PASSPOINT();
+
+    BOOST_TEST(tetengo_trie_storage_vacantCheckValue() == tetengo::trie::double_array::vacant_check_value());
+}
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
