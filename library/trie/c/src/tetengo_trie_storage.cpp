@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <climits>
 #include <cstddef>
 #include <fstream>
 #include <functional>
@@ -134,6 +135,23 @@ size_t tetengo_trie_storage_baseCheckSize(const tetengo_trie_storage_t* const p_
     catch (...)
     {
         return static_cast<size_t>(-1);
+    }
+}
+
+int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        return p_storage->p_cpp_storage()->base_at(base_check_index);
+    }
+    catch (...)
+    {
+        return INT_MAX;
     }
 }
 

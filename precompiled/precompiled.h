@@ -27,6 +27,7 @@
 #include <any>
 #include <cassert>
 #include <cctype>
+#include <climits>
 #include <clocale>
 #include <cmath>
 #include <condition_variable>
