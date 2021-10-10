@@ -324,16 +324,40 @@ BOOST_AUTO_TEST_CASE(set_base_at)
 {
     BOOST_TEST_PASSPOINT();
 
-    const auto file_path = temporary_file_path(serialized_fixed_value_size);
-    BOOST_SCOPE_EXIT(&file_path)
     {
-        std::filesystem::remove(file_path);
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo::trie::mmap_storage storage{ file_path, 0 };
+
+        BOOST_CHECK_THROW(storage.set_base_at(42, 4242), std::logic_error);
     }
-    BOOST_SCOPE_EXIT_END;
 
-    tetengo::trie::mmap_storage storage{ file_path, 0 };
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
 
-    BOOST_CHECK_THROW(storage.set_base_at(42, 4242), std::logic_error);
+        auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        BOOST_TEST(!tetengo_trie_storage_setBaseAt(p_storage, 42, 4242));
+    }
+    {
+        BOOST_TEST(!tetengo_trie_storage_setBaseAt(nullptr, 42, 4242));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(check_at)

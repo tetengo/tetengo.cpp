@@ -155,6 +155,28 @@ int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, c
     }
 }
 
+int tetengo_trie_storage_setBaseAt(
+    tetengo_trie_storage_t* const p_storage,
+    const size_t                  base_check_index,
+    const int                     base)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        p_storage->p_cpp_storage()->set_base_at(base_check_index, base);
+
+        return 1;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
 size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* const p_storage)
 {
     try

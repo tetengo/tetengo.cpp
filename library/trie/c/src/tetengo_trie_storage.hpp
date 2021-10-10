@@ -37,6 +37,12 @@ public:
         assert(!p_cpp_storage_referred || !p_cpp_storage_owned);
         return p_cpp_storage_referred ? p_cpp_storage_referred : p_cpp_storage_owned.get();
     }
+
+    tetengo::trie::storage* p_cpp_storage()
+    {
+        assert(!p_cpp_storage_referred);
+        return p_cpp_storage_owned.get();
+    }
 };
 
 
