@@ -509,6 +509,46 @@ BOOST_AUTO_TEST_CASE(value_size)
 
         BOOST_TEST(storage.value_size() == 5U);
     }
+
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        BOOST_TEST(tetengo_trie_storage_valueSize(p_storage) == 5U);
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 5);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        BOOST_TEST(tetengo_trie_storage_valueSize(p_storage) == 5U);
+    }
+    {
+        BOOST_TEST(tetengo_trie_storage_valueSize(nullptr) == static_cast<size_t>(-1));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(value_at)
