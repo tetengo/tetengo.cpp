@@ -1,5 +1,5 @@
 /*! \file
-    \brief A mmap storage.
+    \brief An mmap storage.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */

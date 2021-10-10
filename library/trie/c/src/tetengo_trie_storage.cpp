@@ -15,6 +15,7 @@
 #include <vector>
 
 #include <tetengo/trie/memory_storage.hpp>
+#include <tetengo/trie/mmap_storage.hpp>
 #include <tetengo/trie/shared_storage.hpp>
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/storage.hpp>
@@ -80,6 +81,26 @@ tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_char
             return serialized;
         } };
         auto p_storage = std::make_unique<tetengo::trie::shared_storage>(stream, deserializer);
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+tetengo_trie_storage_t*
+tetengo_trie_storage_createMmapStorage(const path_character_type* const path, const size_t offset)
+{
+    try
+    {
+        if (!path)
+        {
+            throw std::invalid_argument{ "path is NULL." };
+        }
+
+        auto p_storage = std::make_unique<tetengo::trie::mmap_storage>(path, offset);
         auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage));
         return p_instance.release();
     }

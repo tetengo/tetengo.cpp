@@ -22,6 +22,7 @@ EXPORTS
     tetengo_trie_storage_createStorage
     tetengo_trie_storage_createMemoryStorage
     tetengo_trie_storage_createSharedStorage
+    tetengo_trie_storage_createMmapStorage
     tetengo_trie_storage_destroy
     tetengo_trie_storage_valueSize
     tetengo_trie_storage_fillingRate

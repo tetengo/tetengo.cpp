@@ -1,5 +1,5 @@
 /*! \file
-    \brief A mmap storage.
+    \brief An mmap storage.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -17,6 +17,7 @@
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/mmap_storage.hpp>
+#include <tetengo/trie/storage.h>
 
 
 namespace
@@ -127,6 +128,48 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         BOOST_CHECK_THROW(const tetengo::trie::mmap_storage storage("NONEXISTENT_FILE", 0), std::ios_base::failure);
+    }
+
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_storage);
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 5);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_storage);
+    }
+    {
+        const auto* const p_storage =
+            tetengo_trie_storage_createMmapStorage(std::filesystem::path{ "NONEXISTENT_FILE" }.c_str(), 0);
+        BOOST_TEST(!p_storage);
+    }
+    {
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(nullptr, 0);
+        BOOST_TEST(!p_storage);
     }
 }
 

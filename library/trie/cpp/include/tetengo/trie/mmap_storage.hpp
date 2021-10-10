@@ -1,5 +1,5 @@
 /*! \file
-    \brief A mmap storage.
+    \brief An mmap storage.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -22,7 +22,7 @@ namespace tetengo::trie
 
 
     /*!
-        \brief A mmap storage.
+        \brief An mmap storage.
     */
     class mmap_storage : public storage
     {
@@ -30,10 +30,10 @@ namespace tetengo::trie
         // constructors and destructor
 
         /*!
-            \brief Creates a mmap storage.
+            \brief Creates an mmap storage.
 
             \param path_   A path.
-            \param offset  An content offset in the file of the path.
+            \param offset  A content offset in the file of the path.
 
             \throw std::ios_base::failure When path_ cannot be opened.
         */
