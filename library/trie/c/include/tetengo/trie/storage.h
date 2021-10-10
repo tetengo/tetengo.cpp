@@ -131,6 +131,18 @@ int tetengo_trie_storage_setBaseAt(tetengo_trie_storage_t* p_storage, size_t bas
 unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_storage, size_t base_check_index);
 
 /*!
+    \brief Sets a check value.
+
+    \param p_storage        A pointer to a storage.
+    \param base_check_index A base-check index.
+    \param check            A check value.
+
+    \retval non-zero On no error.
+    \retval 0        Otherwise.
+*/
+int tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, unsigned char check);
+
+/*!
     \brief Returns the value size.
 
     \param p_storage A pointer to a storage.
