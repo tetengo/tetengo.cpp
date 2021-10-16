@@ -80,6 +80,33 @@ namespace
         // clang-format on
     };
 
+    const std::vector<char> serialized_c_if{
+        // clang-format off
+        0x00_c, 0x00_c, 0x00_c, 0x11_c,
+        0xFF_c, 0xFF_c, 0xB6_c, 0xFF_c,
+        0xFF_c, 0xFF_c, 0x8D_c, 0x4B_c,
+        0xFF_c, 0xFF_c, 0x96_c, 0x75_c,
+        0xFF_c, 0xFF_c, 0xA3_c, 0x6D_c,
+        0xFF_c, 0xFF_c, 0x98_c, 0x61_c,
+        0xFF_c, 0xFF_c, 0x97_c, 0x6D_c,
+        0xFF_c, 0xFF_c, 0x93_c, 0x6F_c,
+        0xFF_c, 0xFF_c, 0x99_c, 0x74_c,
+        0x00_c, 0x00_c, 0x09_c, 0x6F_c,
+        0x00_c, 0x00_c, 0x00_c, 0x00_c,
+        0xFF_c, 0xFF_c, 0xAA_c, 0x54_c,
+        0xFF_c, 0xFF_c, 0x9F_c, 0x61_c,
+        0xFF_c, 0xFF_c, 0xAC_c, 0x6D_c,
+        0xFF_c, 0xFF_c, 0xA0_c, 0x61_c,
+        0xFF_c, 0xFF_c, 0xAE_c, 0x6E_c,
+        0x00_c, 0x00_c, 0x10_c, 0x61_c,
+        0x00_c, 0x00_c, 0x01_c, 0x00_c,
+        0x00_c, 0x00_c, 0x00_c, 0x02_c,
+        0x00_c, 0x00_c, 0x00_c, 0x04_c,
+        0x2A_c, 0x00_c, 0x00_c, 0x00_c,
+        0x18_c, 0x00_c, 0x00_c, 0x00_c,
+        // clang-format on
+    };
+
     // const std::vector<uint32_t> base_check_array{ 0x00002AFF, 0x0000FE18 };
 
     // const std::vector<char> serialized_broken{
@@ -168,7 +195,7 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
@@ -176,22 +203,6 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
 
         const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
-        BOOST_SCOPE_EXIT(p_storage)
-        {
-            tetengo_trie_storage_destroy(p_storage);
-        }
-        BOOST_SCOPE_EXIT_END;
-        BOOST_TEST(p_storage);
-    }
-    {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
-        BOOST_SCOPE_EXIT(&file_path)
-        {
-            std::filesystem::remove(file_path);
-        }
-        BOOST_SCOPE_EXIT_END;
-
-        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 5);
         BOOST_SCOPE_EXIT(p_storage)
         {
             tetengo_trie_storage_destroy(p_storage);
@@ -248,7 +259,7 @@ BOOST_AUTO_TEST_CASE(base_check_size)
     }
 
     {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
@@ -263,25 +274,7 @@ BOOST_AUTO_TEST_CASE(base_check_size)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        BOOST_TEST(tetengo_trie_storage_baseCheckSize(p_storage) == 2U);
-    }
-    {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
-        BOOST_SCOPE_EXIT(&file_path)
-        {
-            std::filesystem::remove(file_path);
-        }
-        BOOST_SCOPE_EXIT_END;
-
-        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 5);
-        BOOST_SCOPE_EXIT(p_storage)
-        {
-            tetengo_trie_storage_destroy(p_storage);
-        }
-        BOOST_SCOPE_EXIT_END;
-        BOOST_TEST_REQUIRE(p_storage);
-
-        BOOST_TEST(tetengo_trie_storage_baseCheckSize(p_storage) == 2U);
+        BOOST_TEST(tetengo_trie_storage_baseCheckSize(p_storage) == 17U);
     }
     {
         BOOST_TEST(tetengo_trie_storage_baseCheckSize(nullptr) == static_cast<size_t>(-1));
@@ -328,7 +321,7 @@ BOOST_AUTO_TEST_CASE(base_at)
     }
 
     {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
@@ -343,8 +336,23 @@ BOOST_AUTO_TEST_CASE(base_at)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 0) == 42);
-        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 1) == 0xFE);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 0) == -74);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 1) == -115);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 2) == -106);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 3) == -93);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 4) == -104);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 5) == -105);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 6) == -109);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 7) == -103);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 8) == 9);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 9) == 0);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 10) == -86);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 11) == -97);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 12) == -84);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 13) == -96);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 14) == -82);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 15) == 16);
+        BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 16) == 1);
     }
     {
         const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
@@ -392,7 +400,7 @@ BOOST_AUTO_TEST_CASE(set_base_at)
     }
 
     {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
@@ -454,7 +462,7 @@ BOOST_AUTO_TEST_CASE(check_at)
     }
 
     {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
@@ -470,26 +478,22 @@ BOOST_AUTO_TEST_CASE(check_at)
         BOOST_TEST_REQUIRE(p_storage);
 
         BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 0) == tetengo_trie_storage_vacantCheckValue());
-        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 1) == 24);
-    }
-    {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
-        BOOST_SCOPE_EXIT(&file_path)
-        {
-            std::filesystem::remove(file_path);
-        }
-        BOOST_SCOPE_EXIT_END;
-
-        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 5);
-        BOOST_SCOPE_EXIT(p_storage)
-        {
-            tetengo_trie_storage_destroy(p_storage);
-        }
-        BOOST_SCOPE_EXIT_END;
-        BOOST_TEST_REQUIRE(p_storage);
-
-        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 0) == tetengo_trie_storage_vacantCheckValue());
-        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 1) == 24);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 1) == 0x4B);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 2) == 0x75);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 3) == 0x6D);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 4) == 0x61);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 5) == 0x6D);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 6) == 0x6F);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 7) == 0x74);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 8) == 0x6F);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 9) == 0x00);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 10) == 0x54);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 11) == 0x61);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 12) == 0x6D);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 13) == 0x61);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 14) == 0x6E);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 15) == 0x61);
+        BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 16) == 0x00);
     }
     {
         BOOST_TEST(tetengo_trie_storage_checkAt(nullptr, 0) == UCHAR_MAX);
@@ -518,7 +522,7 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     }
 
     {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
@@ -578,7 +582,7 @@ BOOST_AUTO_TEST_CASE(value_size)
     }
 
     {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        const auto file_path = temporary_file_path(serialized_c_if);
         BOOST_SCOPE_EXIT(&file_path)
         {
             std::filesystem::remove(file_path);
@@ -593,25 +597,7 @@ BOOST_AUTO_TEST_CASE(value_size)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        BOOST_TEST(tetengo_trie_storage_valueSize(p_storage) == 5U);
-    }
-    {
-        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
-        BOOST_SCOPE_EXIT(&file_path)
-        {
-            std::filesystem::remove(file_path);
-        }
-        BOOST_SCOPE_EXIT_END;
-
-        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 5);
-        BOOST_SCOPE_EXIT(p_storage)
-        {
-            tetengo_trie_storage_destroy(p_storage);
-        }
-        BOOST_SCOPE_EXIT_END;
-        BOOST_TEST_REQUIRE(p_storage);
-
-        BOOST_TEST(tetengo_trie_storage_valueSize(p_storage) == 5U);
+        BOOST_TEST(tetengo_trie_storage_valueSize(p_storage) == 2U);
     }
     {
         BOOST_TEST(tetengo_trie_storage_valueSize(nullptr) == static_cast<size_t>(-1));
@@ -667,6 +653,41 @@ BOOST_AUTO_TEST_CASE(value_at)
         BOOST_TEST(!storage.value_at(3));
         BOOST_TEST_REQUIRE(storage.value_at(4));
         BOOST_TEST(*std::any_cast<std::uint32_t>(storage.value_at(4)) == 3U);
+    }
+
+    {
+        const auto file_path = temporary_file_path(serialized_c_if);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        {
+            const auto* const p_value =
+                static_cast<const std::vector<char>*>(tetengo_trie_storage_valueAt(p_storage, 0));
+            BOOST_TEST_REQUIRE(p_value);
+            const auto int_value = *reinterpret_cast<const int*>(std::data(*p_value));
+            BOOST_TEST(int_value == 42);
+        }
+        {
+            const auto* const p_value =
+                static_cast<const std::vector<char>*>(tetengo_trie_storage_valueAt(p_storage, 1));
+            BOOST_TEST_REQUIRE(p_value);
+            const auto int_value = *reinterpret_cast<const int*>(std::data(*p_value));
+            BOOST_TEST(int_value == 24);
+        }
+    }
+    {
+        BOOST_TEST(!tetengo_trie_storage_valueAt(nullptr, 0));
     }
 }
 

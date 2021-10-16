@@ -242,6 +242,28 @@ size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* const p_stor
     }
 }
 
+const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage, size_t value_index)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+
+        const auto* const cpp_value = p_storage->p_cpp_storage()->value_at(value_index);
+        if (!cpp_value)
+        {
+            return NULL;
+        }
+        return std::any_cast<std::vector<char>>(cpp_value);
+    }
+    catch (...)
+    {
+        return NULL;
+    }
+}
+
 double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* const p_storage)
 {
     try

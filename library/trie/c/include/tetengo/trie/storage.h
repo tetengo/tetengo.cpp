@@ -143,6 +143,16 @@ unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_stora
 int tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, unsigned char check);
 
 /*!
+    \brief Returns the value object.
+
+    \param p_storage   A pointer to a storage.
+    \param value_index A value index.
+
+    \return A pointer to the value object. Or NULL when there is no corresponding value object.
+*/
+const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage, size_t value_index);
+
+/*!
     \brief Returns the value size.
 
     \param p_storage A pointer to a storage.
