@@ -58,9 +58,9 @@ namespace tetengo::trie
             m_p_entity->set_check_at(base_check_index, check);
         }
 
-        std::size_t value_size_impl() const
+        std::size_t value_count_impl() const
         {
-            return m_p_entity->value_size();
+            return m_p_entity->value_count();
         }
 
         const std::any* value_at_impl(const std::size_t value_index) const
@@ -131,9 +131,9 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, check);
     }
 
-    std::size_t shared_storage::value_size_impl() const
+    std::size_t shared_storage::value_count_impl() const
     {
-        return m_p_impl->value_size_impl();
+        return m_p_impl->value_count_impl();
     }
 
     const std::any* shared_storage::value_at_impl(const std::size_t value_index) const

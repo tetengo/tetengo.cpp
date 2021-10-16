@@ -83,11 +83,11 @@ namespace tetengo::trie
         void set_check_at(std::size_t base_check_index, std::uint8_t check);
 
         /*!
-            \brief Returns the value size.
+            \brief Returns the value count.
 
-            \return The value size.
+            \return The value count.
         */
-        [[nodiscard]] std::size_t value_size() const;
+        [[nodiscard]] std::size_t value_count() const;
 
         /*!
             \brief Returns the value object.
@@ -142,7 +142,7 @@ namespace tetengo::trie
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t check) = 0;
 
-        virtual std::size_t value_size_impl() const = 0;
+        virtual std::size_t value_count_impl() const = 0;
 
         virtual const std::any* value_at_impl(std::size_t value_index) const = 0;
 

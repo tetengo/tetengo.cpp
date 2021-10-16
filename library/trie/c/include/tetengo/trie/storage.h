@@ -153,13 +153,13 @@ int tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t ba
 const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage, size_t value_index);
 
 /*!
-    \brief Returns the value size.
+    \brief Returns the value count.
 
     \param p_storage A pointer to a storage.
 
-    \return The value size. Or (size_t)-1 on error.
+    \return The value count. Or (size_t)-1 on error.
 */
-size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* p_storage);
+size_t tetengo_trie_storage_valueCount(const tetengo_trie_storage_t* p_storage);
 
 /*!
     \brief Returns the filling rate.

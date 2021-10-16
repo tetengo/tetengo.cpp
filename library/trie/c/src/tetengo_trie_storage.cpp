@@ -225,7 +225,7 @@ int tetengo_trie_storage_setCheckAt(
     }
 }
 
-size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* const p_storage)
+size_t tetengo_trie_storage_valueCount(const tetengo_trie_storage_t* const p_storage)
 {
     try
     {
@@ -234,7 +234,7 @@ size_t tetengo_trie_storage_valueSize(const tetengo_trie_storage_t* const p_stor
             throw std::invalid_argument{ "p_storage is NULL." };
         }
 
-        return p_storage->p_cpp_storage()->value_size();
+        return p_storage->p_cpp_storage()->value_count();
     }
     catch (...)
     {

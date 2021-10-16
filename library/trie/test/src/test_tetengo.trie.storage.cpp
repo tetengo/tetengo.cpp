@@ -45,7 +45,7 @@ namespace
 
         virtual void set_check_at_impl(const std::size_t /*base_check_index*/, const std::uint8_t /*value*/) override {}
 
-        virtual std::size_t value_size_impl() const override
+        virtual std::size_t value_count_impl() const override
         {
             return 3;
         }
@@ -134,13 +134,13 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     storage_.set_check_at(24, 124);
 }
 
-BOOST_AUTO_TEST_CASE(value_size)
+BOOST_AUTO_TEST_CASE(value_count)
 {
     BOOST_TEST_PASSPOINT();
 
     concrete_storage storage_{};
 
-    BOOST_TEST(storage_.value_size() == 3U);
+    BOOST_TEST(storage_.value_count() == 3U);
 }
 
 BOOST_AUTO_TEST_CASE(value_at)

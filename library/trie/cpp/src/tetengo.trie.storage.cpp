@@ -47,9 +47,9 @@ namespace tetengo::trie
         set_check_at_impl(base_check_index, base);
     }
 
-    std::size_t storage::value_size() const
+    std::size_t storage::value_count() const
     {
-        return value_size_impl();
+        return value_count_impl();
     }
 
     const std::any* storage::value_at(const std::size_t value_index) const

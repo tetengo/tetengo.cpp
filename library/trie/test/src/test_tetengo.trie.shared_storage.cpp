@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
 
         auto* const p_storage = tetengo_trie_storage_createSharedStorage(file_path.c_str());
-        BOOST_TEST(tetengo_trie_storage_valueSize(p_storage) == 2U);
+        BOOST_TEST(tetengo_trie_storage_valueCount(p_storage) == 2U);
 
         const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
         BOOST_SCOPE_EXIT(&p_trie)
@@ -263,21 +263,21 @@ BOOST_AUTO_TEST_CASE(set_check_at)
     BOOST_TEST(storage_.check_at(24) == 124);
 }
 
-BOOST_AUTO_TEST_CASE(value_size)
+BOOST_AUTO_TEST_CASE(value_count)
 {
     BOOST_TEST_PASSPOINT();
 
     tetengo::trie::shared_storage storage_{};
-    BOOST_TEST(storage_.value_size() == 0U);
+    BOOST_TEST(storage_.value_count() == 0U);
 
     storage_.add_value_at(24, std::make_any<std::string>("hoge"));
-    BOOST_TEST(storage_.value_size() == 25U);
+    BOOST_TEST(storage_.value_count() == 25U);
 
     storage_.add_value_at(42, std::make_any<std::string>("fuga"));
-    BOOST_TEST(storage_.value_size() == 43U);
+    BOOST_TEST(storage_.value_count() == 43U);
 
     storage_.add_value_at(0, std::make_any<std::string>("piyo"));
-    BOOST_TEST(storage_.value_size() == 43U);
+    BOOST_TEST(storage_.value_count() == 43U);
 }
 
 BOOST_AUTO_TEST_CASE(value_at)

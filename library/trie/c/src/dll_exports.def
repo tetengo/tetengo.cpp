@@ -30,7 +30,7 @@ EXPORTS
     tetengo_trie_storage_setBaseAt
     tetengo_trie_storage_checkAt
     tetengo_trie_storage_setCheckAt
-    tetengo_trie_storage_valueSize
+    tetengo_trie_storage_valueCount
     tetengo_trie_storage_valueAt
     tetengo_trie_storage_fillingRate
     tetengo_trie_storage_serialize
