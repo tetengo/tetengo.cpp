@@ -201,8 +201,7 @@ namespace tetengo::trie
 
         void add_value_at_impl(const std::size_t /*value_index*/, std::any /*value*/)
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            throw std::logic_error{ "Unsupported operation." };
         }
 
         double filling_rate_impl() const
