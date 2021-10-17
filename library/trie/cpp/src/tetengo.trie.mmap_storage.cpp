@@ -221,8 +221,7 @@ namespace tetengo::trie
 
         void serialize_impl(std::ostream& /*output_stream*/, const value_serializer& /*value_serializer_*/) const
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            throw std::logic_error{ "Unsupported operation." };
         }
 
         std::unique_ptr<storage> clone_impl() const

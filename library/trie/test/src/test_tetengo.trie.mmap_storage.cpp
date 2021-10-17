@@ -162,6 +162,17 @@ namespace
         return path;
     }
 
+    std::filesystem::path output_temporary_file_path()
+    {
+        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.mmap_storage.output";
+
+        {
+            std::ofstream stream{ path, std::ios_base::binary };
+        }
+
+        return path;
+    }
+
 
 }
 
@@ -1005,7 +1016,69 @@ BOOST_AUTO_TEST_CASE(serialize)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
+
+        std::ostringstream                    output_stream{};
+        const tetengo::trie::value_serializer serializer{
+            [](const std::any& object) {
+                static const tetengo::trie::default_serializer<std::uint32_t> uint32_serializer{ false };
+                const auto serialized = uint32_serializer(std::any_cast<std::uint32_t>(object));
+                return std::vector<char>{ std::begin(serialized), std::end(serialized) };
+            },
+            sizeof(std::uint32_t)
+        };
+        BOOST_CHECK_THROW(storage.serialize(output_stream, serializer), std::logic_error);
+    }
+
+    {
+        const auto file_path = temporary_file_path(serialized_c_if);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto output_file_path = output_temporary_file_path();
+        BOOST_SCOPE_EXIT(&output_file_path)
+        {
+            std::filesystem::remove(output_file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto result = tetengo_trie_storage_serialize(p_storage, output_file_path.c_str(), sizeof(int));
+        BOOST_TEST(!result);
+    }
+    {
+        const auto output_file_path = output_temporary_file_path();
+        BOOST_SCOPE_EXIT(&output_file_path)
+        {
+            std::filesystem::remove(output_file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto result = tetengo_trie_storage_serialize(nullptr, output_file_path.c_str(), sizeof(int));
+        BOOST_TEST(!result);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(clone)
