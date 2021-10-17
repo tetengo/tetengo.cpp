@@ -310,7 +310,7 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* const p_st
     }
 }
 
-void tetengo_trie_storage_serialize(
+int tetengo_trie_storage_serialize(
     const tetengo_trie_storage_t* const p_storage,
     const path_character_type* const    path,
     const size_t                        fixed_value_size)
@@ -331,9 +331,13 @@ void tetengo_trie_storage_serialize(
             [](const std::any& value) { return *std::any_cast<std::vector<char>>(&value); }, fixed_value_size
         };
         p_storage->p_cpp_storage()->serialize(stream, serializer);
+
+        return 1;
     }
     catch (...)
-    {}
+    {
+        return 0;
+    }
 }
 
 tetengo_trie_storage_t* tetengo_trie_storage_clone(const tetengo_trie_storage_t* const p_storage)

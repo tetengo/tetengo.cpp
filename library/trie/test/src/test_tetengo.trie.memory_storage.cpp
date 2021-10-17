@@ -603,7 +603,8 @@ BOOST_AUTO_TEST_CASE(serialize)
             }
             BOOST_SCOPE_EXIT_END;
 
-            tetengo_trie_storage_serialize(p_storage, file_path.c_str(), sizeof(int));
+            const auto result = tetengo_trie_storage_serialize(p_storage, file_path.c_str(), sizeof(int));
+            BOOST_TEST_REQUIRE(result);
 
             static const std::string expected{
                 // clang-format off
@@ -644,7 +645,8 @@ BOOST_AUTO_TEST_CASE(serialize)
         }
         BOOST_SCOPE_EXIT_END;
 
-        tetengo_trie_storage_serialize(nullptr, file_path.c_str(), sizeof(int));
+        const auto result = tetengo_trie_storage_serialize(nullptr, file_path.c_str(), sizeof(int));
+        BOOST_TEST(!result);
 
         const auto serialized = file_content(file_path);
         BOOST_TEST(std::empty(serialized));
@@ -672,7 +674,8 @@ BOOST_AUTO_TEST_CASE(serialize)
 
         const auto* const p_storage = tetengo_trie_trie_getStorage(p_trie);
 
-        tetengo_trie_storage_serialize(p_storage, nullptr, sizeof(int));
+        const auto result = tetengo_trie_storage_serialize(p_storage, nullptr, sizeof(int));
+        BOOST_TEST(!result);
     }
 }
 
