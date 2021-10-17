@@ -1137,6 +1137,62 @@ BOOST_AUTO_TEST_CASE(clone)
         BOOST_TEST(base_check_array_of(*p_clone) == base_check_array_of(storage));
         BOOST_TEST(p_clone->value_count() == storage.value_count());
     }
+
+    {
+        const auto file_path = temporary_file_path(serialized_c_if);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto* const p_clone = tetengo_trie_storage_clone(p_storage);
+        BOOST_SCOPE_EXIT(p_clone)
+        {
+            tetengo_trie_storage_destroy(p_clone);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_clone);
+        BOOST_TEST(tetengo_trie_storage_baseCheckSize(p_clone) == tetengo_trie_storage_baseCheckSize(p_storage));
+        BOOST_TEST(tetengo_trie_storage_valueCount(p_clone) == tetengo_trie_storage_valueCount(p_storage));
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_c_if_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        const auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 7);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        const auto* const p_clone = tetengo_trie_storage_clone(p_storage);
+        BOOST_SCOPE_EXIT(p_clone)
+        {
+            tetengo_trie_storage_destroy(p_clone);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_clone);
+        BOOST_TEST(tetengo_trie_storage_baseCheckSize(p_clone) == tetengo_trie_storage_baseCheckSize(p_storage));
+        BOOST_TEST(tetengo_trie_storage_valueCount(p_clone) == tetengo_trie_storage_valueCount(p_storage));
+    }
+    {
+        BOOST_TEST(!tetengo_trie_storage_clone(nullptr));
+    }
 }
 
 
