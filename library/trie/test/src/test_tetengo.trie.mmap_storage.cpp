@@ -976,6 +976,25 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 
         BOOST_CHECK_CLOSE(storage.filling_rate(), 1.0 / 2.0, 0.1);
     }
+
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_for_calculating_filling_rate);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        auto* const p_storage = tetengo_trie_storage_createMmapStorage(file_path.c_str(), 0);
+        BOOST_SCOPE_EXIT(p_storage)
+        {
+            tetengo_trie_storage_destroy(p_storage);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_storage);
+
+        BOOST_CHECK_CLOSE(tetengo_trie_storage_fillingRate(p_storage), 1.0 / 2.0, 0.1);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(serialize)

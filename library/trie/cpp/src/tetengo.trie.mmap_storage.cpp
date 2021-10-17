@@ -216,7 +216,7 @@ namespace tetengo::trie
                     ++empty_count;
                 }
             }
-            return static_cast<double>(empty_count) / base_check_count;
+            return 1.0 - static_cast<double>(empty_count) / base_check_count;
         }
 
         void serialize_impl(std::ostream& /*output_stream*/, const value_serializer& /*value_serializer_*/) const
