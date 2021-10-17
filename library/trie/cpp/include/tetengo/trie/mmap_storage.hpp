@@ -67,7 +67,12 @@ namespace tetengo::trie
 
         // variables
 
-        const std::unique_ptr<impl> m_p_impl;
+        const std::shared_ptr<impl> m_p_impl;
+
+
+        // constructors
+
+        mmap_storage(const mmap_storage& another);
 
 
         // virtual functions

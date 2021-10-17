@@ -13,6 +13,7 @@
 #include <functional>
 #include <ios>
 #include <iterator>
+#include <memory>
 #include <stdexcept>
 #include <utility>
 #include <vector>
@@ -27,6 +28,7 @@
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/mmap_storage.hpp>
 #include <tetengo/trie/storage.h>
+#include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/value_serializer.hpp>
 
 
@@ -149,6 +151,18 @@ namespace
     //    0x89_c,
     //    // clang-format on
     //};
+
+    std::vector<uint32_t> base_check_array_of(const tetengo::trie::storage& storage_)
+    {
+        const auto            size = storage_.base_check_size();
+        std::vector<uint32_t> array_{};
+        array_.reserve(size);
+        for (auto i = static_cast<std::size_t>(0); i < size; ++i)
+        {
+            array_.push_back((storage_.base_at(i) << 8) | storage_.check_at(i));
+        }
+        return array_;
+    }
 
     std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
     {
@@ -1085,7 +1099,44 @@ BOOST_AUTO_TEST_CASE(clone)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implement it.");
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 0, std::move(deserializer) };
+
+        const auto p_clone = storage.clone();
+        BOOST_REQUIRE(p_clone);
+        BOOST_TEST(base_check_array_of(*p_clone) == base_check_array_of(storage));
+        BOOST_TEST(p_clone->value_count() == storage.value_count());
+    }
+    {
+        const auto file_path = temporary_file_path(serialized_fixed_value_size_with_header);
+        BOOST_SCOPE_EXIT(&file_path)
+        {
+            std::filesystem::remove(file_path);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            return uint32_deserializer(serialized);
+        } };
+        const tetengo::trie::mmap_storage storage{ file_path, 5, std::move(deserializer) };
+
+        const auto p_clone = storage.clone();
+        BOOST_REQUIRE(p_clone);
+        BOOST_TEST(base_check_array_of(*p_clone) == base_check_array_of(storage));
+        BOOST_TEST(p_clone->value_count() == storage.value_count());
+    }
 }
 
 

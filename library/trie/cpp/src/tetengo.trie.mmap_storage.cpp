@@ -26,6 +26,7 @@
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/mmap_storage.hpp>
+#include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/value_serializer.hpp> // IWYU pragma: keep
 
 
@@ -113,9 +114,6 @@ namespace
 
 namespace tetengo::trie
 {
-    class storage;
-
-
     class mmap_storage::impl : private boost::noncopyable
     {
     public:
@@ -224,10 +222,9 @@ namespace tetengo::trie
             throw std::logic_error{ "Unsupported operation." };
         }
 
-        std::unique_ptr<storage> clone_impl() const
+        std::unique_ptr<storage> clone_impl(const mmap_storage& self) const
         {
-            assert(false);
-            throw std::logic_error{ "Impelment it." };
+            return std::unique_ptr<storage>(new mmap_storage{ self });
         }
 
 
@@ -294,7 +291,7 @@ namespace tetengo::trie
         const std::size_t            offset,
         value_deserializer           value_deserializer_,
         const std::size_t            value_cache_capacity /*= default_value_cache_capacity()*/) :
-    m_p_impl{ std::make_unique<impl>(path_, offset, std::move(value_deserializer_), value_cache_capacity) }
+    m_p_impl{ std::make_shared<impl>(path_, offset, std::move(value_deserializer_), value_cache_capacity) }
     {}
 
     mmap_storage::~mmap_storage() = default;
@@ -351,6 +348,10 @@ namespace tetengo::trie
 
     std::unique_ptr<storage> mmap_storage::clone_impl() const
     {
-        return m_p_impl->clone_impl();
+        return m_p_impl->clone_impl(*this);
     }
+
+    mmap_storage::mmap_storage(const mmap_storage& another) : m_p_impl{ another.m_p_impl } {}
+
+
 }
