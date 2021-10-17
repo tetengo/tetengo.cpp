@@ -143,6 +143,15 @@ unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_stora
 int tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, unsigned char check);
 
 /*!
+    \brief Returns the value count.
+
+    \param p_storage A pointer to a storage.
+
+    \return The value count. Or (size_t)-1 on error.
+*/
+size_t tetengo_trie_storage_valueCount(const tetengo_trie_storage_t* p_storage);
+
+/*!
     \brief Returns the value object.
 
     \param p_storage   A pointer to a storage.
@@ -153,13 +162,21 @@ int tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t ba
 const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage, size_t value_index);
 
 /*!
-    \brief Returns the value count.
+    \brief Adds a value object.
 
-    \param p_storage A pointer to a storage.
+    \param p_storage   A pointer to a storage.
+    \param value_index A value index.
+    \param p_value     A pointer to a value object. Must not be NULL.
+    \param value_size  A value size.
 
-    \return The value count. Or (size_t)-1 on error.
+    \retval non-zero On no error.
+    \retval 0        Otherwise.
 */
-size_t tetengo_trie_storage_valueCount(const tetengo_trie_storage_t* p_storage);
+int tetengo_trie_storage_addValueAt(
+    tetengo_trie_storage_t* p_storage,
+    size_t                  value_index,
+    const void*             p_value,
+    size_t                  value_size);
 
 /*!
     \brief Returns the filling rate.

@@ -242,7 +242,7 @@ size_t tetengo_trie_storage_valueCount(const tetengo_trie_storage_t* const p_sto
     }
 }
 
-const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage, size_t value_index)
+const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* const p_storage, const size_t value_index)
 {
     try
     {
@@ -261,6 +261,35 @@ const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage
     catch (...)
     {
         return NULL;
+    }
+}
+
+int tetengo_trie_storage_addValueAt(
+    tetengo_trie_storage_t* const p_storage,
+    const size_t                  value_index,
+    const void* const             p_value,
+    const size_t                  value_size)
+{
+    try
+    {
+        if (!p_storage)
+        {
+            throw std::invalid_argument{ "p_storage is NULL." };
+        }
+        if (!p_value)
+        {
+            throw std::invalid_argument{ "p_value is NULL." };
+        }
+
+        auto value_bytes = std::make_any<std::vector<char>>(
+            static_cast<const char*>(p_value), static_cast<const char*>(p_value) + value_size);
+        p_storage->p_cpp_storage()->add_value_at(value_index, std::move(value_bytes));
+
+        return 1;
+    }
+    catch (...)
+    {
+        return 0;
     }
 }
 
