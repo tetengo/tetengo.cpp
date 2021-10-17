@@ -6,6 +6,7 @@
 
 #include <any>
 #include <climits>
+#include <cmath>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
