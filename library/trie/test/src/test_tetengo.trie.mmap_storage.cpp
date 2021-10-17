@@ -995,6 +995,9 @@ BOOST_AUTO_TEST_CASE(filling_rate)
 
         BOOST_CHECK_CLOSE(tetengo_trie_storage_fillingRate(p_storage), 1.0 / 2.0, 0.1);
     }
+    {
+        BOOST_TEST(std::isnan(tetengo_trie_storage_fillingRate(nullptr)));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(serialize)
