@@ -46,7 +46,7 @@ namespace tetengo::trie
             \param value_cache_capacity A value cache capacity.
 
             \throw std::ios_base::failure When path_ cannot be opened.
-            \throw std::invalid_argument  When the value size if not fixed.
+            \throw std::invalid_argument  When the value size is not fixed.
         */
         mmap_storage(
             const std::filesystem::path& path_,
