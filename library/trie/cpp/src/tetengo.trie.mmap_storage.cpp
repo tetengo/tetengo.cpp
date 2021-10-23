@@ -137,7 +137,14 @@ namespace tetengo::trie
         m_value_deserializer{ std::move(value_deserializer_) },
         m_value_cache{ value_cache_capacity },
         m_file_size{ std::filesystem::file_size(path_) }
-        {}
+        {
+            const auto base_check_count = base_check_size_impl();
+            const auto fixed_value_size = read_uint32(sizeof(std::uint32_t) * (1 + base_check_count + 1));
+            if (fixed_value_size == 0)
+            {
+                throw std::invalid_argument{ "The value size in mmap storage must be fixed." };
+            }
+        }
 
 
         // functions
