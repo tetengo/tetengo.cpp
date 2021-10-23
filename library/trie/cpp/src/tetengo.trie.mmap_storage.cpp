@@ -135,7 +135,8 @@ namespace tetengo::trie
         m_file_mapping{ make_file_mapping(path_) },
         m_content_offset{ offset },
         m_value_deserializer{ std::move(value_deserializer_) },
-        m_value_cache{ value_cache_capacity }
+        m_value_cache{ value_cache_capacity },
+        m_file_size{ std::filesystem::file_size(path_) }
         {}
 
 
@@ -259,11 +260,18 @@ namespace tetengo::trie
 
         mutable value_cache m_value_cache;
 
+        const std::size_t m_file_size;
+
 
         // functions
 
         std::vector<char> read_bytes(const std::size_t offset, const std::size_t size) const
         {
+            if (offset + size > m_file_size)
+            {
+                throw std::ios_base::failure{ "The mmap region is out of the file size." };
+            }
+
             const boost::interprocess::mapped_region region{ m_file_mapping,
                                                              boost::interprocess::read_only,
                                                              static_cast<boost::interprocess::offset_t>(
