@@ -79,7 +79,7 @@ static const tetengo_trie_trie_t* load_trie(const char* const trie_path)
     path_character_type native_path[256] = { 0 };
     to_native_path(trie_path, native_path, sizeof(native_path) / sizeof(path_character_type));
     {
-        tetengo_trie_storage_t* const p_storage = tetengo_trie_storage_createMemoryStorage(native_path);
+        tetengo_trie_storage_t* const p_storage = tetengo_trie_storage_createMmapStorage(native_path, 0);
         if (!p_storage)
         {
             return NULL;
