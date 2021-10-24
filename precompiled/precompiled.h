@@ -76,6 +76,7 @@
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/noncopyable.hpp>
 #include <boost/core/pointer_traits.hpp>
+#include <boost/cstdint.hpp>
 #include <boost/format.hpp>
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/file_mapping.hpp>
