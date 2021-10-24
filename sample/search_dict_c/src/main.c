@@ -16,6 +16,8 @@
 #include <tetengo/trie/trie.h>
 
 
+static size_t value_capacity = 4;
+
 static const char* load_lex_csv(const char* const lex_csv_path)
 {
     char* lex_csv = NULL;
@@ -172,7 +174,15 @@ static void to_array_of_lex_span(
         size_t i = 0;
         for (i = 0; i < lex_span_count; ++i)
         {
-            to_lex_span(p_bytes, p_byte_offset, &p_lex_spans[i]);
+            if (i < value_capacity)
+            {
+                to_lex_span(p_bytes, p_byte_offset, &p_lex_spans[i]);
+            }
+            else
+            {
+                p_lex_spans[i].offset = 0;
+                p_lex_spans[i].length = 0;
+            }
         }
     }
 }
@@ -292,17 +302,24 @@ int main(const int argc, char** const argv)
                             to_array_of_lex_span((const char*)p_found, &byte_offset, p_lex_spans, lex_span_count_);
                             for (i = 0; i < lex_span_count_; ++i)
                             {
-                                char* const lex = malloc((p_lex_spans[i].length + 1) * sizeof(char));
-                                if (lex)
+                                if (p_lex_spans[i].offset == 0 && p_lex_spans[i].length == 0)
                                 {
-                                    strncpy(lex, &lex_csv[p_lex_spans[i].offset], p_lex_spans[i].length);
-                                    lex[p_lex_spans[i].length] = '\0';
+                                    printf("(truncated)\n");
+                                }
+                                else
+                                {
+                                    char* const lex = malloc((p_lex_spans[i].length + 1) * sizeof(char));
+                                    if (lex)
                                     {
-                                        const char* const encoded = create_encoded_for_print(lex);
-                                        printf("%s", encoded);
-                                        free((void*)encoded);
+                                        strncpy(lex, &lex_csv[p_lex_spans[i].offset], p_lex_spans[i].length);
+                                        lex[p_lex_spans[i].length] = '\0';
+                                        {
+                                            const char* const encoded = create_encoded_for_print(lex);
+                                            printf("%s", encoded);
+                                            free((void*)encoded);
+                                        }
+                                        free(lex);
                                     }
-                                    free(lex);
                                 }
                             }
                             free(p_lex_spans);
