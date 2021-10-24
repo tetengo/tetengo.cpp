@@ -33,6 +33,7 @@
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace
@@ -41,12 +42,6 @@ namespace
     {
         return static_cast<char>(uc);
     }
-
-    constexpr char nul_byte()
-    {
-        return 0xFE_c;
-    }
-
 
     static const std::string kumamoto1{ 0xE7_c, 0x86_c, 0x8A_c, 0x6_c, 0x9C_c, 0xAC_c }; // Kumamoto in Kanji in UTF-8
 
@@ -67,25 +62,26 @@ namespace
     const std::vector<char> serialized{
         // clang-format off
         // base check array
-        nul_byte(), nul_byte(), nul_byte(), 0x0B_c,
-        0xFF_c,     0xFF_c,     0x90_c,     0xFF_c,
-        0xFF_c,     0xFF_c,     0x78_c,     0x71_c,
-        0xFF_c,     0xFF_c,     0x9D_c,     0x8A_c,
-        0xFF_c,     0xFF_c,     0x7E_c,     0x73_c,
-        0xFF_c,     0xFF_c,     0xD9_c,     0x67_c,
-        nul_byte(), nul_byte(), 0x06_c,     0x2C_c,
-        nul_byte(), nul_byte(), nul_byte(), nul_byte(),
-        0xFF_c,     0xFF_c,     0xB4_c,     0x89_c,
-        0xFF_c,     0xFF_c,     0xFC_c,     0x54_c,
-        nul_byte(), nul_byte(), 0x0A_c,     0x0D_c,
-        nul_byte(), nul_byte(), 0x01_c,     nul_byte(),
+        0x00_c, 0x00_c, 0x00_c, 0x0B_c, 
+        0xFF_c, 0xFF_c, 0x90_c, 0xFF_c, 
+        0xFF_c, 0xFF_c, 0x78_c, 0x71_c, 
+        0xFF_c, 0xFF_c, 0x9D_c, 0x8A_c, 
+        0xFF_c, 0xFF_c, 0x7E_c, 0x73_c, 
+        0xFF_c, 0xFF_c, 0xD9_c, 0x67_c, 
+        0x00_c, 0x00_c, 0x06_c, 0x2C_c, 
+        0x00_c, 0x00_c, 0x00_c, 0x00_c, 
+        0xFF_c, 0xFF_c, 0xB4_c, 0x89_c, 
+        0xFF_c, 0xFF_c, 0xFC_c, 0x54_c, 
+        0x00_c, 0x00_c, 0x0A_c, 0x0D_c, 
+        0x00_c, 0x00_c, 0x01_c, 0x00_c, 
 
         // value array
-        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
-        nul_byte(), nul_byte(), nul_byte(), 0x06_c,
-        0xE7_c,     0x86_c,     0x8A_c,     0x06_c,     0x9C_c, 0xAC_c,
-        nul_byte(), nul_byte(), nul_byte(), 0x06_c,
-        0xE7_c,     0x8E_c,     0x89_c,     0xE5_c,     0x90_c, 0x8D_c,
+        0x00_c, 0x00_c, 0x00_c, 0x02_c, 
+        0x00_c, 0x00_c, 0x00_c, 0x00_c, 
+        0x00_c, 0x00_c, 0x00_c, 0x06_c, 
+        0xE7_c, 0x86_c, 0x8A_c, 0x06_c, 0x9C_c, 0xAC_c,
+        0x00_c, 0x00_c, 0x00_c, 0x06_c,
+        0xE7_c, 0x8E_c, 0x89_c, 0xE5_c, 0x90_c, 0x8D_c,
         // clang-format on
     };
 
@@ -108,35 +104,34 @@ namespace
 
     const std::vector<char> serialized_c_if{
         // clang-format off
-        nul_byte(), nul_byte(), nul_byte(), 0x11_c,
-        0xFF_c,     0xFF_c,     0xB6_c,     0xFF_c,
-        0xFF_c,     0xFF_c,     0x8D_c,     0x4B_c,
-        0xFF_c,     0xFF_c,     0x96_c,     0x75_c,
-        0xFF_c,     0xFF_c,     0xA3_c,     0x6D_c,
-        0xFF_c,     0xFF_c,     0x98_c,     0x61_c,
-        0xFF_c,     0xFF_c,     0x97_c,     0x6D_c,
-        0xFF_c,     0xFF_c,     0x93_c,     0x6F_c,
-        0xFF_c,     0xFF_c,     0x99_c,     0x74_c,
-        nul_byte(), nul_byte(), 0x09_c,     0x6F_c,
-        nul_byte(), nul_byte(), nul_byte(), 0xFE_c,
-        0xFF_c,     0xFF_c,     0xAA_c,     0x54_c,
-        0xFF_c,     0xFF_c,     0x9F_c,     0x61_c,
-        0xFF_c,     0xFF_c,     0xAC_c,     0x6D_c,
-        0xFF_c,     0xFF_c,     0xA0_c,     0x61_c,
-        0xFF_c,     0xFF_c,     0xAE_c,     0x6E_c,
-        nul_byte(), nul_byte(), 0x10_c,     0x61_c,
-        nul_byte(), nul_byte(), 0x01_c,     0xFE_c,
-        nul_byte(), nul_byte(), nul_byte(), 0x02_c,
-        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
-        0x2A_c,     0x00_c,     0x00_c,     0x00_c,
-        nul_byte(), nul_byte(), nul_byte(), 0x04_c,
-        0x18_c,     0x00_c,     0x00_c,     0x00_c,
+        0x00_c, 0x00_c, 0x00_c, 0x11_c,
+        0xFF_c, 0xFF_c, 0xB6_c, 0xFF_c,
+        0xFF_c, 0xFF_c, 0x8D_c, 0x4B_c,
+        0xFF_c, 0xFF_c, 0x96_c, 0x75_c,
+        0xFF_c, 0xFF_c, 0xA3_c, 0x6D_c,
+        0xFF_c, 0xFF_c, 0x98_c, 0x61_c,
+        0xFF_c, 0xFF_c, 0x97_c, 0x6D_c,
+        0xFF_c, 0xFF_c, 0x93_c, 0x6F_c,
+        0xFF_c, 0xFF_c, 0x99_c, 0x74_c,
+        0x00_c, 0x00_c, 0x09_c, 0x6F_c,
+        0x00_c, 0x00_c, 0x00_c, 0x00_c,
+        0xFF_c, 0xFF_c, 0xAA_c, 0x54_c,
+        0xFF_c, 0xFF_c, 0x9F_c, 0x61_c,
+        0xFF_c, 0xFF_c, 0xAC_c, 0x6D_c,
+        0xFF_c, 0xFF_c, 0xA0_c, 0x61_c,
+        0xFF_c, 0xFF_c, 0xAE_c, 0x6E_c,
+        0x00_c, 0x00_c, 0x10_c, 0x61_c,
+        0x00_c, 0x00_c, 0x01_c, 0x00_c,
+        0x00_c, 0x00_c, 0x00_c, 0x02_c,
+        0x00_c, 0x00_c, 0x00_c, 0x04_c,
+        0x2A_c, 0x00_c, 0x00_c, 0x00_c,
+        0x18_c, 0x00_c, 0x00_c, 0x00_c,
         // clang-format on
     };
 
     std::filesystem::path temporary_file_path(const std::vector<char>& initial_content = std::vector<char>{})
     {
-        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.memory_storage";
+        const auto path = std::filesystem::temp_directory_path() / "test_tetengo.trie.trie";
 
         {
             std::ofstream stream{ path, std::ios_base::binary };
@@ -237,7 +232,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::trie<std::string, int> trie_{};
     }
     {
-        const tetengo::trie::trie<std::string, int> trie_{ tetengo::trie::default_serializer<std::string>{} };
+        const tetengo::trie::trie<std::string, int> trie_{ tetengo::trie::default_serializer<std::string>{ true } };
     }
     {
         const tetengo::trie::trie<std::string_view, int> trie_{ { "Kumamoto", 42 }, { "Tamana", 24 } };
@@ -262,12 +257,12 @@ BOOST_AUTO_TEST_CASE(construction)
         };
         const tetengo::trie::trie<std::string, int> trie_{
             { { "Kumamoto", 42 }, { "Tamana", 24 } },
-            tetengo::trie::default_serializer<std::string>{},
+            tetengo::trie::default_serializer<std::string>{ true },
             observer,
             tetengo::trie::trie<std::string, int>::default_double_array_density_factor()
         };
 
-        static const tetengo::trie::default_deserializer<std::string> key_deserializer{};
+        static const tetengo::trie::default_deserializer<std::string> key_deserializer{ true };
         BOOST_TEST_REQUIRE(std::size(added_serialized_keys) == 2U);
         BOOST_TEST(key_deserializer(added_serialized_keys[0]) == "Kumamoto");
         BOOST_TEST(key_deserializer(added_serialized_keys[1]) == "Tamana");
@@ -287,27 +282,28 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         std::unordered_map<std::string_view, std::string> content{ { "Kumamoto", kumamoto1 }, { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{
-            std::begin(content), std::end(content), tetengo::trie::default_serializer<std::string_view>{}
+            std::begin(content), std::end(content), tetengo::trie::default_serializer<std::string_view>{ true }
         };
     }
     {
-        auto p_input_stream = create_input_stream();
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::vector<char>& serialized) {
-                static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
-                return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
-            });
+        auto                                    p_input_stream = create_input_stream();
+        const tetengo::trie::value_deserializer value_deserializer_{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
+        } };
+        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
     }
     {
-        auto p_input_stream = create_input_stream();
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::vector<char>& serialized) {
-                static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
-                return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
-            });
-        const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage),
-                                                                   tetengo::trie::default_serializer<std::string>{} };
+        auto                                    p_input_stream = create_input_stream();
+        const tetengo::trie::value_deserializer value_deserializer_{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
+        } };
+        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
+        const tetengo::trie::trie<std::string, std::string> trie_{
+            std::move(p_storage), tetengo::trie::default_serializer<std::string>{ true }
+        };
     }
 
     {
@@ -347,7 +343,7 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_SCOPE_EXIT_END;
 
         auto* const p_storage = tetengo_trie_storage_createMemoryStorage(file_path.c_str());
-        BOOST_TEST(tetengo_trie_storage_size(p_storage) == 2U);
+        BOOST_TEST(tetengo_trie_storage_valueCount(p_storage) == 2U);
 
         const auto* const p_trie = tetengo_trie_trie_createWithStorage(p_storage);
         BOOST_SCOPE_EXIT(&p_trie)
@@ -1251,22 +1247,26 @@ BOOST_AUTO_TEST_CASE(get_storage)
         [[maybe_unused]] const auto& storage = trie_.get_storage();
     }
     {
-        auto p_input_stream = create_input_stream();
-        auto p_storage =
-            std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, [](const std::vector<char>& serialized) {
-                static const tetengo::trie::default_deserializer<std::string> string_deserializer{};
-                return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
-            });
+        auto                                    p_input_stream = create_input_stream();
+        const tetengo::trie::value_deserializer value_deserializer_{ [](const std::vector<char>& serialized) {
+            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
+        } };
+        auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
         const tetengo::trie::trie<std::string, std::string> trie_{ std::move(p_storage) };
 
         const auto& storage = trie_.get_storage();
 
-        std::stringstream stream{};
-        storage.serialize(stream, [](const std::any& value) {
-            static const tetengo::trie::default_serializer<std::string> serializer{};
-            const auto serialized = serializer(std::any_cast<std::string>(value));
-            return std::vector<char>{ std::begin(serialized), std::end(serialized) };
-        });
+        std::stringstream                     stream{};
+        const tetengo::trie::value_serializer serializer{
+            [](const std::any& value) {
+                static const tetengo::trie::default_serializer<std::string> serializer{ false };
+                const auto serialized = serializer(std::any_cast<std::string>(value));
+                return std::vector<char>{ std::begin(serialized), std::end(serialized) };
+            },
+            0
+        };
+        storage.serialize(stream, serializer);
         const auto storage_serialized = stream.str();
 
         BOOST_CHECK_EQUAL_COLLECTIONS(

@@ -101,12 +101,12 @@ namespace tetengo::trie
 
         bool empty() const
         {
-            return std::size(m_p_double_array->get_storage()) == 0;
+            return m_p_double_array->get_storage().value_count() == 0;
         }
 
         std::size_t size() const
         {
-            return std::size(m_p_double_array->get_storage());
+            return m_p_double_array->get_storage().value_count();
         }
 
         bool contains(const std::string_view& key) const

@@ -10,10 +10,12 @@ sources = \
     tetengo.trie.double_array_builder.hpp \
     tetengo.trie.double_array_iterator.cpp \
     tetengo.trie.memory_storage.cpp \
+    tetengo.trie.mmap_storage.cpp \
     tetengo.trie.shared_storage.cpp \
     tetengo.trie.storage.cpp \
     tetengo.trie.trie.cpp\
-    tetengo.trie.trie_iterator.cpp
+    tetengo.trie.trie_iterator.cpp \
+    tetengo.trie.value_serializer.cpp
 
 lib_LIBRARIES = libtetengo.trie.cpp.a
 

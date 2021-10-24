@@ -9,16 +9,18 @@
 
 #include <any>
 #include <cstdint>
-#include <functional>
 #include <istream>
 #include <memory>
-#include <vector>
 
 #include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
+    class value_deserializer;
+    class value_serializer;
+
+
     /*!
         \brief A shared storage.
     */
@@ -35,12 +37,10 @@ namespace tetengo::trie
         /*!
             \brief Creates a shared storage.
 
-            \param input_stream       An input stream.
-            \param value_deserializer A deserializer for value objects.
+            \param input_stream        An input stream.
+            \param value_deserializer_ A deserializer for value objects.
         */
-        explicit shared_storage(
-            std::istream&                                            input_stream,
-            const std::function<std::any(const std::vector<char>&)>& value_deserializer);
+        shared_storage(std::istream& input_stream, const value_deserializer& value_deserializer_);
 
         /*!
             \brief Destroys the shared storage.
@@ -61,6 +61,8 @@ namespace tetengo::trie
 
         // virtual functions
 
+        virtual std::size_t base_check_size_impl() const override;
+
         virtual std::int32_t base_at_impl(std::size_t base_check_index) const override;
 
         virtual void set_base_at_impl(std::size_t base_check_index, std::int32_t base) override;
@@ -69,19 +71,16 @@ namespace tetengo::trie
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t check) override;
 
-        virtual std::size_t size_impl() const override;
-
-        virtual double filling_rate_impl() const override;
-
-        virtual const std::vector<std::uint32_t>& base_check_array_impl() const override;
+        virtual std::size_t value_count_impl() const override;
 
         virtual const std::any* value_at_impl(std::size_t value_index) const override;
 
         virtual void add_value_at_impl(std::size_t value_index, std::any value) override;
 
-        virtual void serialize_impl(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer) const override;
+        virtual double filling_rate_impl() const override;
+
+        virtual void
+        serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const override;
 
         virtual std::unique_ptr<storage> clone_impl() const override;
     };

@@ -9,16 +9,17 @@
 
 #include <any>
 #include <cstdint>
-#include <functional>
 #include <istream>
 #include <memory>
-#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
 
 namespace tetengo::trie
 {
+    class value_serializer;
+
+
     /*!
         \brief A storage.
     */
@@ -39,6 +40,13 @@ namespace tetengo::trie
 
 
         // functions
+
+        /*!
+            \brief Returns the base-check size.
+
+            \return The base-check size.
+        */
+        [[nodiscard]] std::size_t base_check_size() const;
 
         /*!
             \brief Returns the base value.
@@ -75,25 +83,11 @@ namespace tetengo::trie
         void set_check_at(std::size_t base_check_index, std::uint8_t check);
 
         /*!
-            \brief Returns the size.
+            \brief Returns the value count.
 
-            \return The size.
+            \return The value count.
         */
-        [[nodiscard]] std::size_t size() const;
-
-        /*!
-            \brief Returns the filling rate.
-
-            \return The filling rate.
-        */
-        [[nodiscard]] double filling_rate() const;
-
-        /*!
-            \brief Returns the base-check array.
-
-            \return The base-check array.
-        */
-        [[nodiscard]] const std::vector<std::uint32_t>& base_check_array() const;
+        [[nodiscard]] std::size_t value_count() const;
 
         /*!
             \brief Returns the value object.
@@ -105,7 +99,7 @@ namespace tetengo::trie
         [[nodiscard]] const std::any* value_at(std::size_t value_index) const;
 
         /*!
-            \brief Adds a value storage index mapping.
+            \brief Adds a value object.
 
             \param value_index A value index.
             \param value       A value object.
@@ -113,14 +107,19 @@ namespace tetengo::trie
         void add_value_at(std::size_t value_index, std::any value);
 
         /*!
+            \brief Returns the filling rate.
+
+            \return The filling rate.
+        */
+        [[nodiscard]] double filling_rate() const;
+
+        /*!
             \brief Serializes this storage.
 
-            \param output_stream    An output stream.
-            \param value_serializer A serializer for value objects.
+            \param output_stream     An output stream.
+            \param value_serializer_ A serializer for value objects.
         */
-        void serialize(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer) const;
+        void serialize(std::ostream& output_stream, const value_serializer& value_serializer_) const;
 
         /*!
             \brief Clones this storage.
@@ -133,6 +132,8 @@ namespace tetengo::trie
     private:
         // virtual functions
 
+        virtual std::size_t base_check_size_impl() const = 0;
+
         virtual std::int32_t base_at_impl(std::size_t base_check_index) const = 0;
 
         virtual void set_base_at_impl(std::size_t base_check_index, std::int32_t base) = 0;
@@ -141,19 +142,15 @@ namespace tetengo::trie
 
         virtual void set_check_at_impl(std::size_t base_check_index, std::uint8_t check) = 0;
 
-        virtual std::size_t size_impl() const = 0;
-
-        virtual double filling_rate_impl() const = 0;
-
-        virtual const std::vector<std::uint32_t>& base_check_array_impl() const = 0;
+        virtual std::size_t value_count_impl() const = 0;
 
         virtual const std::any* value_at_impl(std::size_t value_index) const = 0;
 
         virtual void add_value_at_impl(std::size_t value_index, std::any value) = 0;
 
-        virtual void serialize_impl(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer) const = 0;
+        virtual double filling_rate_impl() const = 0;
+
+        virtual void serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const = 0;
 
         virtual std::unique_ptr<storage> clone_impl() const = 0;
     };

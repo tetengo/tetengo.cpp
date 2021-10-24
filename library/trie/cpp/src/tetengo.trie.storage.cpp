@@ -6,20 +6,26 @@
 
 #include <any>
 #include <cstdint>
-#include <functional>
 #include <istream>
 #include <memory>
 #include <utility>
-#include <vector>
 
 #include <tetengo/trie/storage.hpp>
 
 
 namespace tetengo::trie
 {
+    class value_serializer;
+
+
     storage::storage() = default;
 
     storage::~storage() = default;
+
+    std::size_t storage::base_check_size() const
+    {
+        return base_check_size_impl();
+    }
 
     std::int32_t storage::base_at(const std::size_t base_check_index) const
     {
@@ -41,19 +47,9 @@ namespace tetengo::trie
         set_check_at_impl(base_check_index, base);
     }
 
-    std::size_t storage::size() const
+    std::size_t storage::value_count() const
     {
-        return size_impl();
-    }
-
-    double storage::filling_rate() const
-    {
-        return filling_rate_impl();
-    }
-
-    const std::vector<std::uint32_t>& storage::base_check_array() const
-    {
-        return base_check_array_impl();
+        return value_count_impl();
     }
 
     const std::any* storage::value_at(const std::size_t value_index) const
@@ -66,11 +62,14 @@ namespace tetengo::trie
         add_value_at_impl(value_index, std::move(value));
     }
 
-    void storage::serialize(
-        std::ostream&                                            output_stream,
-        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+    double storage::filling_rate() const
     {
-        serialize_impl(output_stream, value_serializer);
+        return filling_rate_impl();
+    }
+
+    void storage::serialize(std::ostream& output_stream, const value_serializer& value_serializer_) const
+    {
+        serialize_impl(output_stream, value_serializer_);
     }
 
     std::unique_ptr<storage> storage::clone() const

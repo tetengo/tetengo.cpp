@@ -14,6 +14,7 @@
 #include <assert.h>
 #include <locale.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,6 +27,7 @@
 #include <any>
 #include <cassert>
 #include <cctype>
+#include <climits>
 #include <clocale>
 #include <cmath>
 #include <condition_variable>
@@ -37,6 +39,7 @@
 #include <fstream>
 #include <functional>
 #include <initializer_list>
+#include <ios>
 #include <iostream>
 #include <istream>
 #include <iterator>
@@ -72,8 +75,12 @@
 #include <boost/circular_buffer.hpp>
 #include <boost/container_hash/hash.hpp>
 #include <boost/core/noncopyable.hpp>
+#include <boost/core/pointer_traits.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/format.hpp>
+#include <boost/interprocess/exceptions.hpp>
+#include <boost/interprocess/file_mapping.hpp>
+#include <boost/interprocess/mapped_region.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>

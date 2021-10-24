@@ -39,6 +39,13 @@ typedef char path_character_type;
 #endif
 
 /*!
+    \brief Returns the check value for a vacant element.
+
+    \return The check value for a vacant element.
+*/
+unsigned char tetengo_trie_storage_vacantCheckValue();
+
+/*!
     \brief Creates a storage.
 
     \param p_trie A pointer to a trie.
@@ -66,6 +73,17 @@ tetengo_trie_storage_t* tetengo_trie_storage_createMemoryStorage(const path_char
 tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_character_type* path);
 
 /*!
+    \brief Creates an mmap storage.
+
+    \param path   A file path in which content is stored.
+    \param offset A content offset in the file of the path.
+
+    \return A pointer to an mmap storage.
+            Or NULL when content cannot be loaded from the path or the value size is not fixed.
+*/
+tetengo_trie_storage_t* tetengo_trie_storage_createMmapStorage(const path_character_type* path, size_t offset);
+
+/*!
     \brief Destroys a storage.
 
     \param p_storage A pointer to a storage.
@@ -73,13 +91,93 @@ tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_char
 void tetengo_trie_storage_destroy(const tetengo_trie_storage_t* p_storage);
 
 /*!
-    \brief Returns the size.
+    \brief Returns the base-check size.
 
     \param p_storage A pointer to a storage.
 
-    \return The size. Or (size_t)-1 on error.
+    \return The base-check size. Or (size_t)-1 on error.
 */
-size_t tetengo_trie_storage_size(const tetengo_trie_storage_t* p_storage);
+size_t tetengo_trie_storage_baseCheckSize(const tetengo_trie_storage_t* p_storage);
+
+/*!
+    \brief Returns the base value.
+
+    \param p_storage        A pointer to a storage.
+    \param base_check_index A base-check index.
+
+    \return The base value. Or INT_MAX on error.
+*/
+int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* p_storage, size_t base_check_index);
+
+/*!
+    \brief Sets a base value.
+
+    \param p_storage        A pointer to a storage.
+    \param base_check_index A base-check index.
+    \param base             A base value.
+
+    \retval non-zero On no error.
+    \retval 0        Otherwise.
+*/
+int tetengo_trie_storage_setBaseAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, int base);
+
+/*!
+    \brief Returns the check value.
+
+    \param p_storage        A pointer to a storage.
+    \param base_check_index A base-check index.
+
+    \return The check value. Or UCHAR_MAX on error.
+*/
+unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_storage, size_t base_check_index);
+
+/*!
+    \brief Sets a check value.
+
+    \param p_storage        A pointer to a storage.
+    \param base_check_index A base-check index.
+    \param check            A check value.
+
+    \retval non-zero On no error.
+    \retval 0        Otherwise.
+*/
+int tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, unsigned char check);
+
+/*!
+    \brief Returns the value count.
+
+    \param p_storage A pointer to a storage.
+
+    \return The value count. Or (size_t)-1 on error.
+*/
+size_t tetengo_trie_storage_valueCount(const tetengo_trie_storage_t* p_storage);
+
+/*!
+    \brief Returns the value object.
+
+    \param p_storage   A pointer to a storage.
+    \param value_index A value index.
+
+    \return A pointer to the value object. Or NULL when there is no corresponding value object.
+*/
+const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage, size_t value_index);
+
+/*!
+    \brief Adds a value object.
+
+    \param p_storage   A pointer to a storage.
+    \param value_index A value index.
+    \param p_value     A pointer to a value object. Must not be NULL.
+    \param value_size  A value size.
+
+    \retval non-zero On no error.
+    \retval 0        Otherwise.
+*/
+int tetengo_trie_storage_addValueAt(
+    tetengo_trie_storage_t* p_storage,
+    size_t                  value_index,
+    const void*             p_value,
+    size_t                  value_size);
 
 /*!
     \brief Returns the filling rate.
@@ -93,10 +191,17 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* p_storage)
 /*!
     \brief Serializes the storage.
 
-    \param p_storage A pointer to a storage.
-    \param path      A file path.
+    \param p_storage        A pointer to a storage.
+    \param path             A file path.
+    \param fixed_value_size The value size if it is fixed. Or 0 if the size is variable.
+
+    \retval non-zero On no error.
+    \retval 0        Otherwise.
 */
-void tetengo_trie_storage_serialize(const tetengo_trie_storage_t* p_storage, const path_character_type* path);
+int tetengo_trie_storage_serialize(
+    const tetengo_trie_storage_t* p_storage,
+    const path_character_type*    path,
+    size_t                        fixed_value_size);
 
 /*!
     \brief Clones a storage.

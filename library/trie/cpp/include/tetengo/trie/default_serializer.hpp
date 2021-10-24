@@ -18,7 +18,8 @@ namespace tetengo::trie
     /*!
         \brief A default serializer.
 
-        Binary bytes except std::string are serialized as following:
+        When the argument fe_escape of the constructor is true, binary bytes are
+        serialized as following:
 
         <table>
           <tr><th>original byte</th><th>serialized byte</th></tr>
@@ -40,6 +41,11 @@ namespace tetengo::trie
     class default_serializer<std::string_view>
     {
     public:
+        // constructors and destructor
+
+        explicit default_serializer(bool ignored);
+
+
         // functions
 
         const std::string_view& operator()(const std::string_view& object) const;
@@ -49,6 +55,11 @@ namespace tetengo::trie
     class default_serializer<std::string>
     {
     public:
+        // constructors and destructor
+
+        explicit default_serializer(bool ignored);
+
+
         // functions
 
         const std::string& operator()(const std::string& object) const;
@@ -58,27 +69,60 @@ namespace tetengo::trie
     class default_serializer<std::basic_string_view<Char>>
     {
     public:
+        // constructors and destructor
+
+        explicit default_serializer(bool fe_escape);
+
+
         // functions
 
         std::vector<char> operator()(const std::basic_string_view<Char>& object) const;
+
+
+    private:
+        // variables
+
+        bool m_fe_escape;
     };
 
     template <typename Char>
     class default_serializer<std::basic_string<Char>>
     {
     public:
+        // constructors and destructor
+
+        explicit default_serializer(bool fe_escape);
+
+
         // functions
 
         std::vector<char> operator()(const std::basic_string<Char>& object) const;
+
+
+    private:
+        // variables
+
+        bool m_fe_escape;
     };
 
     template <typename Integer>
     class default_serializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>
     {
     public:
+        // constructors and destructor
+
+        explicit default_serializer(bool fe_escape);
+
+
         // functions
 
         std::vector<char> operator()(Integer object) const;
+
+
+    private:
+        // variables
+
+        bool m_fe_escape;
     };
 
 #endif
@@ -87,7 +131,8 @@ namespace tetengo::trie
     /*!
         \brief A default deserializer.
 
-        Binary bytes except std::string are deserialized as following:
+        When the argument fe_escape of the constructor is true, binary bytes are
+        deserialized as following:
 
         <table>
           <tr><th>original byte</th><th>serialized byte</th></tr>
@@ -109,6 +154,11 @@ namespace tetengo::trie
     class default_deserializer<std::string>
     {
     public:
+        // constructors and destructor
+
+        explicit default_deserializer(bool ignored);
+
+
         // functions
 
         const std::string& operator()(const std::string& bytes) const;
@@ -118,18 +168,40 @@ namespace tetengo::trie
     class default_deserializer<std::basic_string<Char>>
     {
     public:
+        // constructors and destructor
+
+        explicit default_deserializer(bool fe_escape);
+
+
         // functions
 
         std::basic_string<Char> operator()(const std::vector<char>& bytes) const;
+
+
+    private:
+        // variables
+
+        bool m_fe_escape;
     };
 
     template <typename Integer>
     class default_deserializer<Integer, std::enable_if_t<std::is_integral_v<Integer>>>
     {
     public:
+        // constructors and destructor
+
+        explicit default_deserializer(bool fe_escape);
+
+
         // functions
 
         Integer operator()(const std::vector<char>& bytes) const;
+
+
+    private:
+        // variables
+
+        bool m_fe_escape;
     };
 
 #endif

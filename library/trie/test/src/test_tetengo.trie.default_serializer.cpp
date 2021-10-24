@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::default_serializer<std::string_view> serialize{};
+        const tetengo::trie::default_serializer<std::string_view> serialize{ true };
 
         const std::string_view object{ "Sakuramachi" };
         const std::string_view expected_serialized{ "Sakuramachi" };
@@ -92,7 +92,16 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
     }
     {
-        const tetengo::trie::default_serializer<std::string> serialize{};
+        const tetengo::trie::default_serializer<std::string_view> serialize{ false };
+
+        const std::string_view object{ "Sakuramachi" };
+        const std::string_view expected_serialized{ "Sakuramachi" };
+        const auto             serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
+        BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
+    }
+    {
+        const tetengo::trie::default_serializer<std::string> serialize{ true };
 
         const std::string object{ "Sakuramachi" };
         const std::string expected_serialized{ "Sakuramachi" };
@@ -101,7 +110,16 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
     }
     {
-        const tetengo::trie::default_serializer<std::wstring_view> serialize{};
+        const tetengo::trie::default_serializer<std::string> serialize{ false };
+
+        const std::string object{ "Sakuramachi" };
+        const std::string expected_serialized{ "Sakuramachi" };
+        const auto        serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
+        BOOST_TEST(serialized.find(tetengo::trie::double_array::key_terminator()) == std::string::npos);
+    }
+    {
+        const tetengo::trie::default_serializer<std::wstring_view> serialize{ true };
 
         const std::wstring      object_value{ 0x685C, 0x753A };
         const std::wstring_view object{ object_value };
@@ -121,7 +139,24 @@ BOOST_AUTO_TEST_CASE(operator_paren)
             std::end(serialized));
     }
     {
-        const tetengo::trie::default_serializer<std::wstring> serialize{};
+        const tetengo::trie::default_serializer<std::wstring_view> serialize{ false };
+
+        const std::wstring      object_value{ 0x685C, 0x753A };
+        const std::wstring_view object{ object_value };
+        const auto              expected_serialized = []() {
+            static_assert(sizeof(wchar_t) >= 2);
+            std::vector<char> expected(sizeof(wchar_t) * 2, 0x00_c);
+            expected[sizeof(wchar_t) - 2] = 0x68_c;
+            expected[sizeof(wchar_t) - 1] = 0x5C_c;
+            expected[sizeof(wchar_t) * 2 - 2] = 0x75_c;
+            expected[sizeof(wchar_t) * 2 - 1] = 0x3A_c;
+            return expected;
+        }();
+        const auto serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
+    }
+    {
+        const tetengo::trie::default_serializer<std::wstring> serialize{ true };
 
         const std::wstring object{ 0x685C, 0x753A };
         const auto         expected_serialized = []() {
@@ -140,7 +175,23 @@ BOOST_AUTO_TEST_CASE(operator_paren)
             std::end(serialized));
     }
     {
-        const tetengo::trie::default_serializer<std::int32_t> serialize{};
+        const tetengo::trie::default_serializer<std::wstring> serialize{ false };
+
+        const std::wstring object{ 0x685C, 0x753A };
+        const auto         expected_serialized = []() {
+            static_assert(sizeof(wchar_t) >= 2);
+            std::vector<char> expected(sizeof(wchar_t) * 2, 0x00_c);
+            expected[sizeof(wchar_t) - 2] = 0x68_c;
+            expected[sizeof(wchar_t) - 1] = 0x5C_c;
+            expected[sizeof(wchar_t) * 2 - 2] = 0x75_c;
+            expected[sizeof(wchar_t) * 2 - 1] = 0x3A_c;
+            return expected;
+        }();
+        const auto serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
+    }
+    {
+        const tetengo::trie::default_serializer<std::int32_t> serialize{ true };
 
         const auto              object = static_cast<std::int32_t>(0x001234AB);
         const std::vector<char> expected_serialized{ nul_byte(), 0x12_c, 0x34_c, 0xAB_c };
@@ -151,7 +202,15 @@ BOOST_AUTO_TEST_CASE(operator_paren)
             std::end(serialized));
     }
     {
-        const tetengo::trie::default_serializer<std::int32_t> serialize{};
+        const tetengo::trie::default_serializer<std::int32_t> serialize{ false };
+
+        const auto              object = static_cast<std::int32_t>(0x001234AB);
+        const std::vector<char> expected_serialized{ 0x00_c, 0x12_c, 0x34_c, 0xAB_c };
+        const auto              serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
+    }
+    {
+        const tetengo::trie::default_serializer<std::int32_t> serialize{ true };
 
         const auto              object = static_cast<std::int32_t>(0xFCFDFEFF);
         const std::vector<char> expected_serialized{ 0xFC_c, 0xFD_c, 0xFD_c, 0xFD_c, 0xFE_c, 0xFF_c };
@@ -160,6 +219,14 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_CHECK(
             std::find(std::begin(serialized), std::end(serialized), tetengo::trie::double_array::key_terminator()) ==
             std::end(serialized));
+    }
+    {
+        const tetengo::trie::default_serializer<std::int32_t> serialize{ false };
+
+        const auto              object = static_cast<std::int32_t>(0xFCFDFEFF);
+        const std::vector<char> expected_serialized{ 0xFC_c, 0xFD_c, 0xFE_c, 0xFF_c };
+        const auto              serialized = serialize(object);
+        BOOST_TEST(serialized == expected_serialized);
     }
     {
         const tetengo::trie::default_serializer<my_class> serialize{};
@@ -184,7 +251,7 @@ BOOST_AUTO_TEST_CASE(operator_paren)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::trie::default_deserializer<std::string> deserialize{};
+        const tetengo::trie::default_deserializer<std::string> deserialize{ true };
 
         const std::string serialized{ "Sakuramachi" };
         const std::string expected_object{ "Sakuramachi" };
@@ -192,7 +259,15 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_TEST(object == expected_object);
     }
     {
-        const tetengo::trie::default_deserializer<std::wstring> deserialize{};
+        const tetengo::trie::default_deserializer<std::string> deserialize{ false };
+
+        const std::string serialized{ "Sakuramachi" };
+        const std::string expected_object{ "Sakuramachi" };
+        const auto        object = deserialize(serialized);
+        BOOST_TEST(object == expected_object);
+    }
+    {
+        const tetengo::trie::default_deserializer<std::wstring> deserialize{ true };
 
         const auto serialized = []() {
             static_assert(sizeof(wchar_t) >= 2);
@@ -208,7 +283,23 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_CHECK(object == expected_object);
     }
     {
-        const tetengo::trie::default_deserializer<std::int32_t> deserialize{};
+        const tetengo::trie::default_deserializer<std::wstring> deserialize{ false };
+
+        const auto serialized = []() {
+            static_assert(sizeof(wchar_t) >= 2);
+            std::vector<char> expected(sizeof(wchar_t) * 2, 0x00_c);
+            expected[sizeof(wchar_t) - 2] = 0x68_c;
+            expected[sizeof(wchar_t) - 1] = 0x5C_c;
+            expected[sizeof(wchar_t) * 2 - 2] = 0x75_c;
+            expected[sizeof(wchar_t) * 2 - 1] = 0x3A_c;
+            return expected;
+        }();
+        const std::wstring expected_object{ 0x685C, 0x753A };
+        const auto         object = deserialize(serialized);
+        BOOST_CHECK(object == expected_object);
+    }
+    {
+        const tetengo::trie::default_deserializer<std::int32_t> deserialize{ true };
 
         const std::vector<char> serialized{ nul_byte(), 0x12_c, 0x34_c, 0xAB_c };
         const auto              expected_object = static_cast<std::int32_t>(0x001234AB);
@@ -216,9 +307,25 @@ BOOST_AUTO_TEST_CASE(operator_paren)
         BOOST_TEST(object == expected_object);
     }
     {
-        const tetengo::trie::default_deserializer<std::int32_t> deserialize{};
+        const tetengo::trie::default_deserializer<std::int32_t> deserialize{ false };
+
+        const std::vector<char> serialized{ 0x00_c, 0x12_c, 0x34_c, 0xAB_c };
+        const auto              expected_object = static_cast<std::int32_t>(0x001234AB);
+        const auto              object = deserialize(serialized);
+        BOOST_TEST(object == expected_object);
+    }
+    {
+        const tetengo::trie::default_deserializer<std::int32_t> deserialize{ true };
 
         const std::vector<char> serialized{ 0xFC_c, 0xFD_c, 0xFD_c, 0xFD_c, 0xFE_c, 0xFF_c };
+        const auto              expected_object = static_cast<std::int32_t>(0xFCFDFEFF);
+        const auto              object = deserialize(serialized);
+        BOOST_TEST(object == expected_object);
+    }
+    {
+        const tetengo::trie::default_deserializer<std::int32_t> deserialize{ false };
+
+        const std::vector<char> serialized{ 0xFC_c, 0xFD_c, 0xFE_c, 0xFF_c };
         const auto              expected_object = static_cast<std::int32_t>(0xFCFDFEFF);
         const auto              object = deserialize(serialized);
         BOOST_TEST(object == expected_object);

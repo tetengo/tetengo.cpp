@@ -12,6 +12,7 @@
 #include <exception>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <limits>
@@ -33,6 +34,7 @@
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>
+#include <tetengo/trie/value_serializer.hpp>
 
 
 namespace
@@ -191,7 +193,7 @@ namespace
             std::make_unique<tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>>(
                 std::make_move_iterator(std::begin(word_offset_map)),
                 std::make_move_iterator(std::end(word_offset_map)),
-                tetengo::trie::default_serializer<std::string_view>{},
+                tetengo::trie::default_serializer<std::string_view>{ true },
                 tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>::
                     building_observer_set_type{ trie_building_observer{}, []() {} });
         std::cerr << "Done.        " << std::endl;
@@ -258,7 +260,8 @@ namespace
         {
             throw std::ios_base::failure{ "Can't open the output file." };
         }
-        trie_.get_storage().serialize(output_stream, serialize_value);
+        const tetengo::trie::value_serializer serializer{ serialize_value, 0 };
+        trie_.get_storage().serialize(output_stream, serializer);
         std::cerr << "Done.        " << std::endl;
     }
 

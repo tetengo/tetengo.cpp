@@ -19,11 +19,20 @@ EXPORTS
     tetengo_trie_trieIterator_get
     tetengo_trie_trieIterator_hasNext
     tetengo_trie_trieIterator_next
+    tetengo_trie_storage_vacantCheckValue
     tetengo_trie_storage_createStorage
     tetengo_trie_storage_createMemoryStorage
     tetengo_trie_storage_createSharedStorage
+    tetengo_trie_storage_createMmapStorage
     tetengo_trie_storage_destroy
-    tetengo_trie_storage_size
+    tetengo_trie_storage_baseCheckSize
+    tetengo_trie_storage_baseAt
+    tetengo_trie_storage_setBaseAt
+    tetengo_trie_storage_checkAt
+    tetengo_trie_storage_setCheckAt
+    tetengo_trie_storage_valueCount
+    tetengo_trie_storage_valueAt
+    tetengo_trie_storage_addValueAt
     tetengo_trie_storage_fillingRate
     tetengo_trie_storage_serialize
     tetengo_trie_storage_clone

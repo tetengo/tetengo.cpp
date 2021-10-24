@@ -48,7 +48,7 @@ namespace usage_tetengo::trie
                                                                { "keitokukoumae", 18 },
                                                                { "karashimachou", 22 },
                                                            },
-                                                           tetengo::trie::default_serializer<std::string>{},
+                                                           tetengo::trie::default_serializer<std::string>{ true },
                                                            building_observer_set };
         assert(
             (building_observer_reports == std::vector<std::string>{

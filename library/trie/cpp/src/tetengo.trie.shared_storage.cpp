@@ -6,18 +6,16 @@
 
 #include <any>
 #include <cstdint>
-#include <functional>
 #include <istream>
-#include <iterator>
 #include <memory>
 #include <utility>
-#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/shared_storage.hpp>
 #include <tetengo/trie/storage.hpp>
+#include <tetengo/trie/value_serializer.hpp> // IWYU pragma: keep
 
 
 namespace tetengo::trie
@@ -29,13 +27,16 @@ namespace tetengo::trie
 
         impl() : m_p_entity{ std::make_shared<memory_storage>() } {};
 
-        explicit impl(
-            std::istream&                                            input_stream,
-            const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
-        m_p_entity{ std::make_shared<memory_storage>(input_stream, value_deserializer) } {};
+        impl(std::istream& input_stream, const value_deserializer& value_deserializer_) :
+        m_p_entity{ std::make_shared<memory_storage>(input_stream, value_deserializer_) } {};
 
 
         // functions
+
+        std::size_t base_check_size_impl() const
+        {
+            return m_p_entity->base_check_size();
+        }
 
         std::int32_t base_at_impl(const std::size_t base_check_index) const
         {
@@ -57,19 +58,9 @@ namespace tetengo::trie
             m_p_entity->set_check_at(base_check_index, check);
         }
 
-        std::size_t size_impl() const
+        std::size_t value_count_impl() const
         {
-            return std::size(*m_p_entity);
-        }
-
-        double filling_rate_impl() const
-        {
-            return m_p_entity->filling_rate();
-        }
-
-        const std::vector<std::uint32_t>& base_check_array_impl() const
-        {
-            return m_p_entity->base_check_array();
+            return m_p_entity->value_count();
         }
 
         const std::any* value_at_impl(const std::size_t value_index) const
@@ -82,11 +73,14 @@ namespace tetengo::trie
             m_p_entity->add_value_at(value_index, std::move(value));
         }
 
-        void serialize_impl(
-            std::ostream&                                            output_stream,
-            const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+        double filling_rate_impl() const
         {
-            m_p_entity->serialize(output_stream, value_serializer);
+            return m_p_entity->filling_rate();
+        }
+
+        void serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
+        {
+            m_p_entity->serialize(output_stream, value_serializer_);
         }
 
         std::unique_ptr<storage> clone_impl() const
@@ -106,13 +100,16 @@ namespace tetengo::trie
 
     shared_storage::shared_storage() : m_p_impl{ std::make_unique<impl>() } {}
 
-    shared_storage::shared_storage(
-        std::istream&                                            input_stream,
-        const std::function<std::any(const std::vector<char>&)>& value_deserializer) :
-    m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer) }
+    shared_storage::shared_storage(std::istream& input_stream, const value_deserializer& value_deserializer_) :
+    m_p_impl{ std::make_unique<impl>(input_stream, value_deserializer_) }
     {}
 
     shared_storage::~shared_storage() = default;
+
+    std::size_t shared_storage::base_check_size_impl() const
+    {
+        return m_p_impl->base_check_size_impl();
+    }
 
     std::int32_t shared_storage::base_at_impl(const std::size_t base_check_index) const
     {
@@ -134,19 +131,9 @@ namespace tetengo::trie
         m_p_impl->set_check_at_impl(base_check_index, check);
     }
 
-    std::size_t shared_storage::size_impl() const
+    std::size_t shared_storage::value_count_impl() const
     {
-        return m_p_impl->size_impl();
-    }
-
-    double shared_storage::filling_rate_impl() const
-    {
-        return m_p_impl->filling_rate_impl();
-    }
-
-    const std::vector<std::uint32_t>& shared_storage::base_check_array_impl() const
-    {
-        return m_p_impl->base_check_array_impl();
+        return m_p_impl->value_count_impl();
     }
 
     const std::any* shared_storage::value_at_impl(const std::size_t value_index) const
@@ -159,11 +146,14 @@ namespace tetengo::trie
         return m_p_impl->add_value_at_impl(value_index, std::move(value));
     }
 
-    void shared_storage::serialize_impl(
-        std::ostream&                                            output_stream,
-        const std::function<std::vector<char>(const std::any&)>& value_serializer) const
+    double shared_storage::filling_rate_impl() const
     {
-        m_p_impl->serialize_impl(output_stream, value_serializer);
+        return m_p_impl->filling_rate_impl();
+    }
+
+    void shared_storage::serialize_impl(std::ostream& output_stream, const value_serializer& value_serializer_) const
+    {
+        m_p_impl->serialize_impl(output_stream, value_serializer_);
     }
 
     std::unique_ptr<storage> shared_storage::clone_impl() const

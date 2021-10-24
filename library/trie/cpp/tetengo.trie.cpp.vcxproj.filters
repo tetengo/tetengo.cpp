@@ -44,6 +44,12 @@
     <ClCompile Include="src\tetengo.trie.trie_iterator.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\tetengo.trie.value_serializer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo.trie.mmap_storage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\precompiled\precompiled.h">
@@ -74,6 +80,12 @@
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
     <ClInclude Include="include\tetengo\trie\trie_iterator.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\trie\value_serializer.hpp">
+      <Filter>header\tetengo::trie</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tetengo\trie\mmap_storage.hpp">
       <Filter>header\tetengo::trie</Filter>
     </ClInclude>
   </ItemGroup>

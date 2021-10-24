@@ -4,6 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef>
 #include <cstdint>
 #include <iterator>
 #include <list>
@@ -147,6 +148,18 @@ namespace
         0x00001800, // [11]   24,    10,         0
     };
 
+    std::vector<uint32_t> base_check_array_of(const tetengo::trie::storage& storage_)
+    {
+        const auto            size = storage_.base_check_size();
+        std::vector<uint32_t> array_{};
+        array_.reserve(size);
+        for (auto i = static_cast<std::size_t>(0); i < size; ++i)
+        {
+            array_.push_back((storage_.base_at(i) << 8) | storage_.check_at(i));
+        }
+        return array_;
+    }
+
 }
 
 
@@ -190,17 +203,17 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::double_array double_array_{};
 
-        BOOST_TEST(double_array_.get_storage().base_check_array() == expected_empty_base_check_array_empty);
+        BOOST_TEST(base_check_array_of(double_array_.get_storage()) == expected_empty_base_check_array_empty);
     }
     {
         const tetengo::trie::double_array double_array_{ expected_values0 };
 
-        BOOST_TEST(double_array_.get_storage().base_check_array() == expected_base_check_array0);
+        BOOST_TEST(base_check_array_of(double_array_.get_storage()) == expected_base_check_array0);
     }
     {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
-        BOOST_TEST(double_array_.get_storage().base_check_array() == expected_base_check_array3);
+        BOOST_TEST(base_check_array_of(double_array_.get_storage()) == expected_base_check_array3);
     }
     {
         std::list<std::pair<std::string, std::int32_t>> expected_values3_as_list{ std::begin(expected_values3),
@@ -209,7 +222,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::trie::double_array double_array_{ std::begin(expected_values3_as_list),
                                                          std::end(expected_values3_as_list) };
 
-        BOOST_TEST(double_array_.get_storage().base_check_array() == expected_base_check_array3);
+        BOOST_TEST(base_check_array_of(double_array_.get_storage()) == expected_base_check_array3);
     }
     {
         const tetengo::trie::double_array double_array0{ expected_values3 };
@@ -217,7 +230,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         const tetengo::trie::double_array double_array1{ storage.clone(), 0 };
 
-        BOOST_TEST(double_array1.get_storage().base_check_array() == expected_base_check_array3);
+        BOOST_TEST(base_check_array_of(double_array1.get_storage()) == expected_base_check_array3);
     }
     {
         const tetengo::trie::double_array double_array0{ expected_values3 };
@@ -225,7 +238,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
         const tetengo::trie::double_array double_array1{ storage.clone(), 8 };
 
-        BOOST_TEST(double_array1.get_storage().base_check_array() == expected_base_check_array3);
+        BOOST_TEST(base_check_array_of(double_array1.get_storage()) == expected_base_check_array3);
 
         const auto o_found = double_array1.find("GOSI");
         BOOST_REQUIRE(o_found);
@@ -234,7 +247,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const tetengo::trie::double_array double_array_{ expected_values4 };
 
-        BOOST_TEST(double_array_.get_storage().base_check_array() == expected_base_check_array4);
+        BOOST_TEST(base_check_array_of(double_array_.get_storage()) == expected_base_check_array4);
     }
     {
         BOOST_CHECK_THROW(
@@ -397,14 +410,14 @@ BOOST_AUTO_TEST_CASE(storage)
     {
         const tetengo::trie::double_array double_array_{ expected_values3 };
 
-        const auto& base_check_array = double_array_.get_storage().base_check_array();
+        const auto base_check_array = base_check_array_of(double_array_.get_storage());
 
         BOOST_TEST(base_check_array == expected_base_check_array3);
     }
     {
         tetengo::trie::double_array double_array_{ expected_values3 };
 
-        const auto& base_check_array = double_array_.get_storage().base_check_array();
+        const auto base_check_array = base_check_array_of(double_array_.get_storage());
 
         BOOST_TEST(base_check_array == expected_base_check_array3);
     }
