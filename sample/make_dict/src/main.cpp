@@ -39,6 +39,10 @@
 
 namespace
 {
+    constexpr auto value_capacity = static_cast<std::size_t>(4);
+
+    constexpr auto serialized_value_size = sizeof(std::uint32_t) * (1 + 4 * 2);
+
     std::string encode_for_print(const std::string_view& string_)
     {
         const char* const locale_name = std::setlocale(LC_CTYPE, nullptr);
@@ -104,7 +108,14 @@ namespace
         {
             return;
         }
-        i_value->second.emplace_back(offset, length);
+        if (std::size(i_value->second) < value_capacity)
+        {
+            i_value->second.emplace_back(offset, length);
+        }
+        else
+        {
+            i_value->second.emplace_back(0, 0);
+        }
     }
 
     constexpr char operator""_c(const unsigned long long int uc)
@@ -230,14 +241,24 @@ namespace
     std::vector<char> serialize_vector_of_pair_of_size_t(const std::vector<std::pair<std::size_t, std::size_t>>& vps)
     {
         std::vector<char> serialized{};
-        serialized.reserve(sizeof(std::uint32_t) * (1 + 2 * std::size(vps)));
+        serialized.reserve(serialized_value_size);
 
         const auto serialized_size = serialize_size_t(std::size(vps));
         serialized.insert(std::end(serialized), std::begin(serialized_size), std::end(serialized_size));
-        for (const auto& ps: vps)
+        for (auto i = static_cast<std::size_t>(0); i < value_capacity; ++i)
         {
-            const auto serialized_element = serialize_pair_of_size_t(ps);
-            serialized.insert(std::end(serialized), std::begin(serialized_element), std::end(serialized_element));
+            if (i < std::size(vps))
+            {
+                const auto& ps = vps[i];
+                const auto  serialized_element = serialize_pair_of_size_t(ps);
+                serialized.insert(std::end(serialized), std::begin(serialized_element), std::end(serialized_element));
+            }
+            else
+            {
+                const auto serialized_element =
+                    serialize_pair_of_size_t(std::make_pair<std::size_t, std::size_t>(0, 0));
+                serialized.insert(std::end(serialized), std::begin(serialized_element), std::end(serialized_element));
+            }
         }
 
         return serialized;
@@ -260,7 +281,7 @@ namespace
         {
             throw std::ios_base::failure{ "Can't open the output file." };
         }
-        const tetengo::trie::value_serializer serializer{ serialize_value, 0 };
+        const tetengo::trie::value_serializer serializer{ serialize_value, serialized_value_size };
         trie_.get_storage().serialize(output_stream, serializer);
         std::cerr << "Done.        " << std::endl;
     }

@@ -30,6 +30,8 @@
 
 namespace
 {
+    constexpr auto value_capacity = static_cast<std::size_t>(4);
+
     std::string decode_from_input(const std::string_view& encoded)
     {
         const char* const locale_name = std::setlocale(LC_CTYPE, nullptr);
@@ -103,9 +105,13 @@ namespace
 
         const auto size = deserialize_size_t(bytes, byte_offset);
         vps.reserve(size);
-        for (auto i = static_cast<std::size_t>(0); i < size; ++i)
+        for (auto i = static_cast<std::size_t>(0); i < std::min(size, value_capacity); ++i)
         {
             vps.push_back(deserialize_pair_of_size_t(bytes, byte_offset));
+        }
+        for (auto i = value_capacity; i < size; ++i)
+        {
+            vps.emplace_back(0, 0);
         }
 
         return vps;
@@ -136,6 +142,10 @@ namespace
 
     std::string_view substring_view(const std::string_view& sv, const std::size_t offset, const std::size_t length)
     {
+        if (offset == 0 && length == 0)
+        {
+            return std::string_view{ "(truncated)\n" };
+        }
         return sv.substr(offset, length);
     }
 
