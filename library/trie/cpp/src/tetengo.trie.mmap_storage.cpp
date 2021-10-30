@@ -136,7 +136,7 @@ namespace tetengo::trie
         m_content_offset{ offset },
         m_value_deserializer{ std::move(value_deserializer_) },
         m_value_cache{ value_cache_capacity },
-        m_file_size{ std::filesystem::file_size(path_) }
+        m_file_size{ static_cast<std::size_t>(std::filesystem::file_size(path_)) }
         {
             const auto base_check_count = base_check_size_impl();
             const auto fixed_value_size = read_uint32(sizeof(std::uint32_t) * (1 + base_check_count + 1));
