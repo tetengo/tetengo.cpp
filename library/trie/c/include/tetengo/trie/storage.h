@@ -75,13 +75,14 @@ tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_char
 /*!
     \brief Creates an mmap storage.
 
-    \param path   A file path in which content is stored.
-    \param offset A content offset in the file of the path.
+    \param path           A file path in which content is stored.
+    \param content_offset A content offset in the file of the path.
 
     \return A pointer to an mmap storage.
-            Or NULL when content cannot be loaded from the path or the value size is not fixed.
+            Or NULL when content cannot be loaded from the path, content_offset is greater than the file size, or the
+            value size is not fixed.
 */
-tetengo_trie_storage_t* tetengo_trie_storage_createMmapStorage(const path_character_type* path, size_t offset);
+tetengo_trie_storage_t* tetengo_trie_storage_createMmapStorage(const path_character_type* path, size_t content_offset);
 
 /*!
     \brief Destroys a storage.

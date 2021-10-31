@@ -7,7 +7,6 @@
 #include <any>
 #include <cassert>
 #include <cstdint>
-#include <filesystem>
 #include <ios>
 #include <iterator>
 #include <list>
@@ -20,7 +19,6 @@
 #include <vector>
 
 #include <boost/core/noncopyable.hpp>
-#include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 
@@ -128,16 +126,26 @@ namespace tetengo::trie
         // constructors and destructor
 
         impl(
-            const std::filesystem::path& path_,
-            const std::size_t            offset,
-            value_deserializer           value_deserializer_,
-            const std::size_t            value_cache_capacity) :
-        m_file_mapping{ make_file_mapping(path_) },
-        m_content_offset{ offset },
+            std::unique_ptr<boost::interprocess::file_mapping>&& p_file_mapping,
+            const std::size_t                                    content_offset,
+            const std::size_t                                    file_size,
+            value_deserializer                                   value_deserializer_,
+            const std::size_t                                    value_cache_capacity) :
+        m_p_file_mapping{ std::move(p_file_mapping) },
+        m_content_offset{ content_offset },
+        m_file_size{ file_size },
         m_value_deserializer{ std::move(value_deserializer_) },
-        m_value_cache{ value_cache_capacity },
-        m_file_size{ static_cast<std::size_t>(std::filesystem::file_size(path_)) }
+        m_value_cache{ value_cache_capacity }
         {
+            if (!m_p_file_mapping)
+            {
+                throw std::invalid_argument{ "p_file_mapping is nullptr." };
+            }
+            if (content_offset > file_size)
+            {
+                throw std::invalid_argument{ "content_offset is greater than file_size." };
+            }
+
             const auto base_check_count = base_check_size_impl();
             const auto fixed_value_size = read_uint32(sizeof(std::uint32_t) * (1 + base_check_count + 1));
             if (fixed_value_size == 0)
@@ -239,18 +247,6 @@ namespace tetengo::trie
     private:
         // static functions
 
-        static boost::interprocess::file_mapping make_file_mapping(const std::filesystem::path& path_)
-        {
-            try
-            {
-                return boost::interprocess::file_mapping{ path_.c_str(), boost::interprocess::read_only };
-            }
-            catch (const boost::interprocess::interprocess_exception& e)
-            {
-                throw std::ios_base::failure{ e.what() };
-            }
-        }
-
         static constexpr char uninitialized_byte()
         {
             return static_cast<char>(0xFF);
@@ -259,15 +255,15 @@ namespace tetengo::trie
 
         // variables
 
-        const boost::interprocess::file_mapping m_file_mapping;
+        const std::unique_ptr<boost::interprocess::file_mapping> m_p_file_mapping;
 
         const std::size_t m_content_offset;
+
+        const std::size_t m_file_size;
 
         const value_deserializer m_value_deserializer;
 
         mutable value_cache m_value_cache;
-
-        const std::size_t m_file_size;
 
 
         // functions
@@ -279,7 +275,7 @@ namespace tetengo::trie
                 throw std::ios_base::failure{ "The mmap region is out of the file size." };
             }
 
-            const boost::interprocess::mapped_region region{ m_file_mapping,
+            const boost::interprocess::mapped_region region{ *m_p_file_mapping,
                                                              boost::interprocess::read_only,
                                                              static_cast<boost::interprocess::offset_t>(
                                                                  m_content_offset + offset),
@@ -302,11 +298,17 @@ namespace tetengo::trie
     }
 
     mmap_storage::mmap_storage(
-        const std::filesystem::path& path_,
-        const std::size_t            offset,
-        value_deserializer           value_deserializer_,
-        const std::size_t            value_cache_capacity /*= default_value_cache_capacity()*/) :
-    m_p_impl{ std::make_shared<impl>(path_, offset, std::move(value_deserializer_), value_cache_capacity) }
+        std::unique_ptr<boost::interprocess::file_mapping>&& p_file_mapping,
+        const std::size_t                                    content_offset,
+        const std::size_t                                    file_size,
+        value_deserializer                                   value_deserializer_,
+        const std::size_t value_cache_capacity /*= default_value_cache_capacity()*/) :
+    m_p_impl{ std::make_shared<impl>(
+        std::move(p_file_mapping),
+        content_offset,
+        file_size,
+        std::move(value_deserializer_),
+        value_cache_capacity) }
     {}
 
     mmap_storage::~mmap_storage() = default;

@@ -7,6 +7,7 @@
 #include <any>
 #include <climits>
 #include <cstddef>
+#include <filesystem>
 #include <fstream>
 #include <functional>
 #include <limits>
@@ -14,6 +15,9 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+
+#include <boost/interprocess/exceptions.hpp>
+#include <boost/interprocess/file_mapping.hpp>
 
 #include <tetengo/trie/double_array.hpp>
 #include <tetengo/trie/memory_storage.hpp>
@@ -97,8 +101,24 @@ tetengo_trie_storage_t* tetengo_trie_storage_createSharedStorage(const path_char
     }
 }
 
+namespace
+{
+    std::unique_ptr<boost::interprocess::file_mapping> create_file_mapping(const path_character_type* const path)
+    {
+        try
+        {
+            return std::make_unique<boost::interprocess::file_mapping>(path, boost::interprocess::read_only);
+        }
+        catch (const boost::interprocess::interprocess_exception&)
+        {
+            return std::unique_ptr<boost::interprocess::file_mapping>{};
+        }
+    }
+
+}
+
 tetengo_trie_storage_t*
-tetengo_trie_storage_createMmapStorage(const path_character_type* const path, const size_t offset)
+tetengo_trie_storage_createMmapStorage(const path_character_type* const path, const size_t content_offset)
 {
     try
     {
@@ -107,10 +127,13 @@ tetengo_trie_storage_createMmapStorage(const path_character_type* const path, co
             throw std::invalid_argument{ "path is NULL." };
         }
 
+        auto                              p_file_mapping = create_file_mapping(path);
+        const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
             return serialized;
         } };
-        auto p_storage = std::make_unique<tetengo::trie::mmap_storage>(path, offset, std::move(deserializer));
+        auto p_storage = std::make_unique<tetengo::trie::mmap_storage>(
+            std::move(p_file_mapping), content_offset, file_size, std::move(deserializer));
         auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage));
         return p_instance.release();
     }
