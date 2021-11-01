@@ -133,8 +133,8 @@ tetengo_trie_storage_createMmapStorage(const path_character_type* const path, co
             return serialized;
         } };
         auto p_storage = std::make_unique<tetengo::trie::mmap_storage>(
-            std::move(p_file_mapping), content_offset, file_size, std::move(deserializer));
-        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_storage));
+            *p_file_mapping, content_offset, file_size, std::move(deserializer));
+        auto p_instance = std::make_unique<tetengo_trie_storage_t>(std::move(p_file_mapping), std::move(p_storage));
         return p_instance.release();
     }
     catch (...)
