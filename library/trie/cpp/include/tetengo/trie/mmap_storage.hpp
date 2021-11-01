@@ -41,21 +41,20 @@ namespace tetengo::trie
         /*!
             \brief Creates an mmap storage.
 
-            \param p_file_mapping       A unique pointer to a file mapping.
+            \param file_mapping_        A file mapping.
             \param content_offset       A content offset in the file.
             \param file_size            The file size.
             \param value_deserializer_  A deserializer for value objects.
             \param value_cache_capacity A value cache capacity.
 
-            \throw std::invalid_argument When p_file_mapping is nullptr, content_offset is greater than file_size, or
-                                         the value size is not fixed.
+            \throw std::invalid_argument When content_offset is greater than file_size, or the value size is not fixed.
         */
         mmap_storage(
-            std::unique_ptr<boost::interprocess::file_mapping>&& p_file_mapping,
-            std::size_t                                          content_offset,
-            std::size_t                                          file_size,
-            value_deserializer                                   value_deserializer_,
-            std::size_t                                          value_cache_capacity = default_value_cache_capacity());
+            const boost::interprocess::file_mapping& file_mapping_,
+            std::size_t                              content_offset,
+            std::size_t                              file_size,
+            value_deserializer                       value_deserializer_,
+            std::size_t                              value_cache_capacity = default_value_cache_capacity());
 
         /*!
             \brief Destroys the mmap storage.

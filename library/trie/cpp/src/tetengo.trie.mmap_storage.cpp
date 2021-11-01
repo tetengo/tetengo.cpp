@@ -126,21 +126,17 @@ namespace tetengo::trie
         // constructors and destructor
 
         impl(
-            std::unique_ptr<boost::interprocess::file_mapping>&& p_file_mapping,
-            const std::size_t                                    content_offset,
-            const std::size_t                                    file_size,
-            value_deserializer                                   value_deserializer_,
-            const std::size_t                                    value_cache_capacity) :
-        m_p_file_mapping{ std::move(p_file_mapping) },
+            const boost::interprocess::file_mapping& file_mapping_,
+            const std::size_t                        content_offset,
+            const std::size_t                        file_size,
+            value_deserializer                       value_deserializer_,
+            const std::size_t                        value_cache_capacity) :
+        m_file_mapping{ file_mapping_ },
         m_content_offset{ content_offset },
         m_file_size{ file_size },
         m_value_deserializer{ std::move(value_deserializer_) },
         m_value_cache{ value_cache_capacity }
         {
-            if (!m_p_file_mapping)
-            {
-                throw std::invalid_argument{ "p_file_mapping is nullptr." };
-            }
             if (content_offset > file_size)
             {
                 throw std::invalid_argument{ "content_offset is greater than file_size." };
@@ -255,7 +251,7 @@ namespace tetengo::trie
 
         // variables
 
-        const std::unique_ptr<boost::interprocess::file_mapping> m_p_file_mapping;
+        const boost::interprocess::file_mapping& m_file_mapping;
 
         const std::size_t m_content_offset;
 
@@ -275,7 +271,7 @@ namespace tetengo::trie
                 throw std::ios_base::failure{ "The mmap region is out of the file size." };
             }
 
-            const boost::interprocess::mapped_region region{ *m_p_file_mapping,
+            const boost::interprocess::mapped_region region{ m_file_mapping,
                                                              boost::interprocess::read_only,
                                                              static_cast<boost::interprocess::offset_t>(
                                                                  m_content_offset + offset),
@@ -298,13 +294,13 @@ namespace tetengo::trie
     }
 
     mmap_storage::mmap_storage(
-        std::unique_ptr<boost::interprocess::file_mapping>&& p_file_mapping,
-        const std::size_t                                    content_offset,
-        const std::size_t                                    file_size,
-        value_deserializer                                   value_deserializer_,
-        const std::size_t value_cache_capacity /*= default_value_cache_capacity()*/) :
+        const boost::interprocess::file_mapping& file_mapping_,
+        const std::size_t                        content_offset,
+        const std::size_t                        file_size,
+        value_deserializer                       value_deserializer_,
+        const std::size_t                        value_cache_capacity /*= default_value_cache_capacity()*/) :
     m_p_impl{ std::make_shared<impl>(
-        std::move(p_file_mapping),
+        file_mapping_,
         content_offset,
         file_size,
         std::move(value_deserializer_),
