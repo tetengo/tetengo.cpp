@@ -54,10 +54,12 @@ include.cpp\tetengo\trie\default_serializer.hpp FD93DBEC-15A1-436C-A3B3-0B145B45
 include.cpp\tetengo\trie\double_array.hpp 3BE6F96C-B49A-4194-A823-B2B8512042C6
 include.cpp\tetengo\trie\double_array_iterator.hpp 0B8DC911-73B4-47F7-B73E-5C8D9B1B1393
 include.cpp\tetengo\trie\memory_storage.hpp 21913AD4-B123-4886-B209-2DD09E6164BD
+include.cpp\tetengo\trie\mmap_storage.hpp 577C7A28-339F-4618-870D-954D91C39298
 include.cpp\tetengo\trie\shared_storage.hpp 2EEB7012-27AE-479E-AB72-3E01FE5A5AD7
 include.cpp\tetengo\trie\storage.hpp 51F792DB-173B-457C-B35F-EDDE635620BA
 include.cpp\tetengo\trie\trie.hpp B1E8D3D4-B3F9-489A-9FE6-AE093ADD7A1D
 include.cpp\tetengo\trie\trie_iterator.hpp 50F956B7-6730-456F-95A5-A621AF382464
+include.cpp\tetengo\trie\value_serializer.hpp B3F3DE46-E3C6-4F04-802A-EF955EDD139C
 include\tetengo\json\element.h 1188F44F-DEB1-4C0E-BAA3-01BA2E3722BF
 include\tetengo\json\jsonParser.h 9F4ED5B4-E606-4034-BB97-E4E44F06DFF9
 include\tetengo\json\reader.h B91A1218-26BF-4A15-8CAB-E70D77C1588C
