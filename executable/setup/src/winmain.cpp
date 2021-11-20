@@ -30,8 +30,7 @@ namespace
     std::filesystem::path base_directory()
     {
         std::vector<wchar_t> path_string(MAX_PATH, 0);
-        const auto           length =
-            ::GetModuleFileNameW(nullptr, std::data(path_string), static_cast<::DWORD>(std::size(path_string)));
+        ::GetModuleFileNameW(nullptr, std::data(path_string), static_cast<::DWORD>(std::size(path_string)));
         return std::filesystem::path(std::data(path_string)).parent_path();
     }
 
