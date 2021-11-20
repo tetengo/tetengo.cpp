@@ -42,10 +42,10 @@ jobs:
         tar -xf boost_%BOOST_VER%.tar.gz
         cd boost_%BOOST_VER%
         call bootstrap.bat
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=32 variant=debug   link=static --stagedir="stage\Win32" stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=debug   link=static --stagedir="stage\x64"   stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug   link=static --stagedir="stage\Win32" stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug   link=static --stagedir="stage\x64"   stage
         rd /s /q bin.v2
     
     - name: Setup EmbedTransform
