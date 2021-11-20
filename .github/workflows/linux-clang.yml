@@ -39,7 +39,7 @@ jobs:
           iwyu
     
     - name: Cache Doxygen build
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ../doxygen_build
         key: ${{ env.CACHE_REV }}-Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}
@@ -58,7 +58,7 @@ jobs:
         sudo make -j ${{ env.CONCURRENT_BUILD }} install
     
     - name: Cache Boost build
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ../boost_build
         key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
@@ -125,7 +125,7 @@ jobs:
         mv build/doc artifacts
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: artifacts-linux
         path: artifacts

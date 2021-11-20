@@ -22,13 +22,13 @@ env:
 jobs:
   build:
     name:    Build
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.1.0
     
     - name: Cache Boost build
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ..\boost_build
         key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-${{ env.BOOST_VER }}
@@ -121,7 +121,7 @@ jobs:
         move bin.libimage\tetengo-windows-libimage-x64-%TETENGO_VER%.zip artifacts
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: artifacts-windows
         path: artifacts
