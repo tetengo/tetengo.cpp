@@ -22,10 +22,10 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
-#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
@@ -158,8 +158,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
             throw std::invalid_argument{ "key is NULL." };
         }
 
-        const auto found =
-            p_vocabulary->p_cpp_vocabulary->find_entries(tetengo::lattice::input<std::string_view>{ key });
+        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(tetengo::lattice::string_input{ key });
 
         if (p_entries)
         {

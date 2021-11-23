@@ -21,9 +21,9 @@
 
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.hpp>
-#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
 
@@ -113,9 +113,9 @@ namespace tetengo::lattice
             {
                 const auto& step = m_graph[i];
 
-                const input<std::string_view> node_key{ std::string_view{
-                    std::next(std::data(m_input), step.input_tail()), m_input.length() - step.input_tail() } };
-                const auto                    found = m_vocabulary.find_entries(node_key);
+                const string_input node_key{ std::string{ std::next(std::data(m_input), step.input_tail()),
+                                                          m_input.length() - step.input_tail() } };
+                const auto         found = m_vocabulary.find_entries(node_key);
 
                 std::vector<std::size_t> preceding_edge_cost_indexes{};
                 preceding_edge_cost_indexes.reserve(std::size(found));

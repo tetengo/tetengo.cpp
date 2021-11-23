@@ -20,12 +20,13 @@
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
 
 namespace
 {
-    using key_type = tetengo::lattice::input<std::string_view>;
+    using key_type = tetengo::lattice::string_input;
 
     constexpr char operator""_c(const unsigned long long int uc)
     {

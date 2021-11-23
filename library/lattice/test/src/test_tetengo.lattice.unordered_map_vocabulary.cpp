@@ -24,17 +24,17 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
-#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 
 
 namespace
 {
-    using key_type = tetengo::lattice::input<std::string_view>;
+    using key_type = tetengo::lattice::string_input;
 
     constexpr char operator""_c(const unsigned long long int uc)
     {

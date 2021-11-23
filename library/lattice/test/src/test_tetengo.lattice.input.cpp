@@ -79,33 +79,5 @@ BOOST_AUTO_TEST_CASE(as)
 
 
 BOOST_AUTO_TEST_SUITE_END()
-BOOST_AUTO_TEST_SUITE(input)
-
-
-BOOST_AUTO_TEST_CASE(construction)
-{
-    BOOST_TEST_PASSPOINT();
-
-    const tetengo::lattice::input<int> key{ 42 };
-}
-
-BOOST_AUTO_TEST_CASE(value)
-{
-    BOOST_TEST_PASSPOINT();
-
-    {
-        const tetengo::lattice::input<int> key{ 42 };
-
-        BOOST_TEST(key.value() == 42);
-    }
-    {
-        tetengo::lattice::input<int> key{ 42 };
-
-        BOOST_TEST(key.value() == 42);
-    }
-}
-
-
-BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
