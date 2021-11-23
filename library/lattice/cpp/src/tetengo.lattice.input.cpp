@@ -1,5 +1,5 @@
 /*! \file
-    \brief A vocabulary key.
+    \brief An input.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -9,7 +9,7 @@
 
 namespace tetengo::lattice
 {
-    vocabulary_key_base::~vocabulary_key_base() = default;
+    input_base::~input_base() = default;
 
 
 }

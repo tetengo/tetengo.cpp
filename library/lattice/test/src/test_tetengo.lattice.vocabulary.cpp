@@ -25,7 +25,7 @@
 
 namespace
 {
-    using key_type = tetengo::lattice::vocabulary_key<std::string_view>;
+    using key_type = tetengo::lattice::input<std::string_view>;
 
     constexpr char operator""_c(const unsigned long long int uc)
     {
@@ -60,7 +60,7 @@ namespace
         // virtual functions
 
         virtual std::vector<tetengo::lattice::entry_view>
-        find_entries_impl(const tetengo::lattice::vocabulary_key_base& key) const override
+        find_entries_impl(const tetengo::lattice::input_base& key) const override
         {
             if (key.as<key_type>().value() == key_mizuho)
             {

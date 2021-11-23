@@ -34,7 +34,7 @@
 
 namespace
 {
-    using key_type = tetengo::lattice::vocabulary_key<std::string_view>;
+    using key_type = tetengo::lattice::input<std::string_view>;
 
     constexpr char operator""_c(const unsigned long long int uc)
     {

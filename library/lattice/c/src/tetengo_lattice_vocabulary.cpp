@@ -159,7 +159,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
         }
 
         const auto found =
-            p_vocabulary->p_cpp_vocabulary->find_entries(tetengo::lattice::vocabulary_key<std::string_view>{ key });
+            p_vocabulary->p_cpp_vocabulary->find_entries(tetengo::lattice::input<std::string_view>{ key });
 
         if (p_entries)
         {

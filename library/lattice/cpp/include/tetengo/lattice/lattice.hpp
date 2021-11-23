@@ -66,9 +66,9 @@ namespace tetengo::lattice
         /*!
             \brief Pushes back an input.
 
-            \param input An input.
+            \param input_ An input.
         */
-        void push_back(const std::string_view& input);
+        void push_back(const std::string_view& input_);
 
         /*!
             \brief Settles this lattice.

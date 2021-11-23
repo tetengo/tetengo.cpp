@@ -1,5 +1,5 @@
 /*! \file
-    \brief A vocabulary key.
+    \brief An input.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -12,10 +12,10 @@
 
 namespace
 {
-    class concrete_vocabulary_key : public tetengo::lattice::vocabulary_key_base
+    class concrete_input : public tetengo::lattice::input_base
     {};
 
-    class concrete_vocabulary_key2 : public tetengo::lattice::vocabulary_key_base
+    class concrete_input2 : public tetengo::lattice::input_base
     {};
 
 
@@ -24,24 +24,24 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(lattice)
-BOOST_AUTO_TEST_SUITE(vocabulary_key_base)
+BOOST_AUTO_TEST_SUITE(input_base)
 
 
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const concrete_vocabulary_key key{};
+    const concrete_input key{};
 }
 
 BOOST_AUTO_TEST_CASE(is)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::lattice::vocabulary_key_base& key = concrete_vocabulary_key{};
+    const tetengo::lattice::input_base& key = concrete_input{};
 
-    BOOST_TEST(key.is<concrete_vocabulary_key>());
-    BOOST_TEST(!key.is<concrete_vocabulary_key2>());
+    BOOST_TEST(key.is<concrete_input>());
+    BOOST_TEST(!key.is<concrete_input2>());
 }
 
 BOOST_AUTO_TEST_CASE(as)
@@ -49,30 +49,30 @@ BOOST_AUTO_TEST_CASE(as)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::lattice::vocabulary_key_base& key = concrete_vocabulary_key{};
+        const tetengo::lattice::input_base& key = concrete_input{};
 
-        const auto& casted = key.as<concrete_vocabulary_key>();
+        const auto& casted = key.as<concrete_input>();
         BOOST_TEST(&casted == &key);
     }
     {
-        concrete_vocabulary_key                key{};
-        tetengo::lattice::vocabulary_key_base& key_ref = key;
+        concrete_input                key{};
+        tetengo::lattice::input_base& key_ref = key;
 
-        const auto& casted = key_ref.as<concrete_vocabulary_key>();
+        const auto& casted = key_ref.as<concrete_input>();
         BOOST_TEST(&casted == &key);
     }
 }
 
 
 BOOST_AUTO_TEST_SUITE_END()
-BOOST_AUTO_TEST_SUITE(vocabulary_key)
+BOOST_AUTO_TEST_SUITE(input)
 
 
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::lattice::vocabulary_key<int> key{ 42 };
+    const tetengo::lattice::input<int> key{ 42 };
 }
 
 BOOST_AUTO_TEST_CASE(value)
@@ -80,12 +80,12 @@ BOOST_AUTO_TEST_CASE(value)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::lattice::vocabulary_key<int> key{ 42 };
+        const tetengo::lattice::input<int> key{ 42 };
 
         BOOST_TEST(key.value() == 42);
     }
     {
-        tetengo::lattice::vocabulary_key<int> key{ 42 };
+        tetengo::lattice::input<int> key{ 42 };
 
         BOOST_TEST(key.value() == 42);
     }

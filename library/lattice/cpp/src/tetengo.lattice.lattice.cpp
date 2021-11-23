@@ -103,9 +103,9 @@ namespace tetengo::lattice
             return m_graph[step].nodes();
         }
 
-        void push_back(const std::string_view& input)
+        void push_back(const std::string_view& input_)
         {
-            m_input += input;
+            m_input += input_;
 
             std::vector<node> nodes{};
             auto              p_node_preceding_edge_costs = std::vector<std::unique_ptr<std::vector<int>>>{};
@@ -113,9 +113,9 @@ namespace tetengo::lattice
             {
                 const auto& step = m_graph[i];
 
-                const vocabulary_key<std::string_view> node_key{ std::string_view{
+                const input<std::string_view> node_key{ std::string_view{
                     std::next(std::data(m_input), step.input_tail()), m_input.length() - step.input_tail() } };
-                const auto                             found = m_vocabulary.find_entries(node_key);
+                const auto                    found = m_vocabulary.find_entries(node_key);
 
                 std::vector<std::size_t> preceding_edge_cost_indexes{};
                 preceding_edge_cost_indexes.reserve(std::size(found));
