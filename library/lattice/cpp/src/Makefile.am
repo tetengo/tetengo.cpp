@@ -14,6 +14,7 @@ sources = \
     tetengo.lattice.path.cpp \
     tetengo.lattice.unordered_map_vocabulary.cpp \
     tetengo.lattice.vocabulary.cpp \
+    tetengo.lattice.vocabulary_key.cpp \
     tetengo.lattice.wildcard_constraint_element.cpp
 
 lib_LIBRARIES = libtetengo.lattice.cpp.a

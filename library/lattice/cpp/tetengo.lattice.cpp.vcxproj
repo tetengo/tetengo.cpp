@@ -107,6 +107,7 @@
     <ClInclude Include="include\tetengo\lattice\path.hpp" />
     <ClInclude Include="include\tetengo\lattice\unordered_map_vocabulary.hpp" />
     <ClInclude Include="include\tetengo\lattice\vocabulary.hpp" />
+    <ClInclude Include="include\tetengo\lattice\vocabulary_key.hpp" />
     <ClInclude Include="include\tetengo\lattice\wildcard_constraint_element.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +125,7 @@
     <ClCompile Include="src\tetengo.lattice.path.cpp" />
     <ClCompile Include="src\tetengo.lattice.unordered_map_vocabulary.cpp" />
     <ClCompile Include="src\tetengo.lattice.vocabulary.cpp" />
+    <ClCompile Include="src\tetengo.lattice.vocabulary_key.cpp" />
     <ClCompile Include="src\tetengo.lattice.wildcard_constraint_element.cpp" />
   </ItemGroup>
   <ItemGroup>

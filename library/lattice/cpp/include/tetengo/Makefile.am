@@ -13,6 +13,7 @@ pkg_headers = \
     lattice/path.hpp \
     lattice/unordered_map_vocabulary.hpp \
     lattice/vocabulary.hpp \
+    lattice/vocabulary_key.hpp \
     lattice/wildcard_constraint_element.hpp
 
 extra_headers = \
