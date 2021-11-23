@@ -8,6 +8,7 @@
 #define TETENGO_LATTICE_INPUT_HPP
 
 #include <cassert>
+#include <cstddef>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>
@@ -26,10 +27,17 @@ namespace tetengo::lattice
         /*!
             \brief Destroys the input base.
         */
-        virtual ~input_base() = 0;
+        virtual ~input_base();
 
 
         // functions
+
+        /*!
+            \brief Returns the length.
+
+            \return The length.
+        */
+        [[nodiscard]] std::size_t length() const;
 
         /*!
             \brief Returns true when this object can be casted to the specified concrete input.
@@ -40,7 +48,7 @@ namespace tetengo::lattice
             \retval false Otherwise.
         */
         template <typename C>
-        bool is() const
+        [[nodiscard]] bool is() const
         {
             return dynamic_cast<const C*>(this);
         }
@@ -53,7 +61,7 @@ namespace tetengo::lattice
             \return The casted concrete vocabulary.
         */
         template <typename C>
-        const C& as() const
+        [[nodiscard]] const C& as() const
         {
             assert(is<C>());
             return static_cast<const C&>(*this);
@@ -67,11 +75,17 @@ namespace tetengo::lattice
             \return The casted concrete vocabulary.
         */
         template <typename C>
-        C& as()
+        [[nodiscard]] C& as()
         {
             assert(is<C>());
             return static_cast<C&>(*this);
         }
+
+
+    private:
+        // virtual functions
+
+        virtual std::size_t length_impl() const = 0;
     };
 
 
@@ -132,6 +146,14 @@ namespace tetengo::lattice
         // variables
 
         value_type m_value;
+
+
+        // virtual functions
+
+        virtual std::size_t length_impl() const override
+        {
+            return 0;
+        }
     };
 
 

@@ -4,6 +4,8 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef>
+
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -13,10 +15,22 @@
 namespace
 {
     class concrete_input : public tetengo::lattice::input_base
-    {};
+    {
+    private:
+        virtual std::size_t length_impl() const
+        {
+            return 0;
+        }
+    };
 
     class concrete_input2 : public tetengo::lattice::input_base
-    {};
+    {
+    private:
+        virtual std::size_t length_impl() const
+        {
+            return 0;
+        }
+    };
 
 
 }
