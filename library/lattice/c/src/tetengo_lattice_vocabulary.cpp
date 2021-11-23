@@ -28,6 +28,7 @@
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
+#include <tetengo/lattice/vocabulary_key.hpp>
 
 #include "tetengo_lattice_vocabulary.hpp"
 
@@ -157,7 +158,8 @@ size_t tetengo_lattice_vocabulary_findEntries(
             throw std::invalid_argument{ "key is NULL." };
         }
 
-        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(key);
+        const auto found =
+            p_vocabulary->p_cpp_vocabulary->find_entries(tetengo::lattice::vocabulary_key<std::string_view>{ key });
 
         if (p_entries)
         {

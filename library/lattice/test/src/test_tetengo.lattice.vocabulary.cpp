@@ -20,10 +20,13 @@
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
+#include <tetengo/lattice/vocabulary_key.hpp>
 
 
 namespace
 {
+    using key_type = tetengo::lattice::vocabulary_key<std::string_view>;
+
     constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
@@ -56,14 +59,15 @@ namespace
     private:
         // virtual functions
 
-        virtual std::vector<tetengo::lattice::entry_view> find_entries_impl(const std::string_view& key) const override
+        virtual std::vector<tetengo::lattice::entry_view>
+        find_entries_impl(const tetengo::lattice::vocabulary_key_base& key) const override
         {
-            if (key == key_mizuho)
+            if (key.as<key_type>().value() == key_mizuho)
             {
                 return std::vector<tetengo::lattice::entry_view>{ tetengo::lattice::entry_view{
                     key_mizuho, &value_mizuho, 42 } };
             }
-            else if (key == key_tsubame)
+            else if (key.as<key_type>().value() == key_tsubame)
             {
                 return std::vector<tetengo::lattice::entry_view>{ tetengo::lattice::entry_view{
                     key_tsubame, &value_tsubame, 24 } };
@@ -124,7 +128,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
         const concrete_vocabulary vocabulary{};
 
         {
-            const auto entries = vocabulary.find_entries(key_mizuho);
+            const auto entries = vocabulary.find_entries(key_type{ key_mizuho });
 
             BOOST_TEST_REQUIRE(!std::empty(entries));
             BOOST_TEST(entries[0].key() == key_mizuho);
@@ -132,7 +136,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
             BOOST_TEST(entries[0].cost() == 42);
         }
         {
-            const auto entries = vocabulary.find_entries(key_sakura);
+            const auto entries = vocabulary.find_entries(key_type{ key_sakura });
 
             BOOST_TEST(std::empty(entries));
         }
@@ -147,7 +151,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         const concrete_vocabulary vocabulary{};
 
         {
-            const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
+            const auto entries_mizuho = vocabulary.find_entries(key_type{ key_mizuho });
             BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
 
             const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_mizuho[0]);
@@ -155,9 +159,9 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(connection.cost() == 42);
         }
         {
-            const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
+            const auto entries_mizuho = vocabulary.find_entries(key_type{ key_mizuho });
             BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
-            const auto entries_tsubame = vocabulary.find_entries(key_tsubame);
+            const auto entries_tsubame = vocabulary.find_entries(key_type{ key_tsubame });
             BOOST_TEST_REQUIRE(std::size(entries_tsubame) == 1U);
 
             const auto connection = vocabulary.find_connection(make_node(entries_mizuho[0]), entries_tsubame[0]);

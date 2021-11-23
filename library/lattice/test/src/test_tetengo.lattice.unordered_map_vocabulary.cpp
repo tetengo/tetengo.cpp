@@ -29,10 +29,13 @@
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
+#include <tetengo/lattice/vocabulary_key.hpp>
 
 
 namespace
 {
+    using key_type = tetengo::lattice::vocabulary_key<std::string_view>;
+
     constexpr char operator""_c(const unsigned long long int uc)
     {
         return static_cast<char>(uc);
@@ -261,11 +264,11 @@ BOOST_AUTO_TEST_CASE(find_entries)
         };
 
         {
-            const auto found = vocabulary.find_entries(key_mizuho);
+            const auto found = vocabulary.find_entries(key_type{ key_mizuho });
             BOOST_TEST(std::empty(found));
         }
         {
-            const auto found = vocabulary.find_entries(key_sakura);
+            const auto found = vocabulary.find_entries(key_type{ key_sakura });
             BOOST_TEST(std::empty(found));
         }
     }
@@ -285,14 +288,14 @@ BOOST_AUTO_TEST_CASE(find_entries)
         };
 
         {
-            const auto found = vocabulary.find_entries(key_mizuho);
+            const auto found = vocabulary.find_entries(key_type{ key_mizuho });
             BOOST_TEST_REQUIRE(std::size(found) == 1U);
             BOOST_TEST(found[0].key() == key_mizuho);
             BOOST_TEST(*std::any_cast<std::string>(found[0].value()) == surface_mizuho);
             BOOST_TEST(found[0].cost() == 42);
         }
         {
-            const auto found = vocabulary.find_entries(key_sakura);
+            const auto found = vocabulary.find_entries(key_type{ key_sakura });
             BOOST_TEST_REQUIRE(std::size(found) == 2U);
             BOOST_TEST(found[0].key() == key_sakura);
             BOOST_TEST(*std::any_cast<std::string>(found[0].value()) == surface_sakura1);
@@ -405,9 +408,9 @@ BOOST_AUTO_TEST_CASE(find_connection)
             std::move(entries), std::move(connections), cpp_entry_hash, cpp_entry_equal_to
         };
 
-        const auto entries_mizuho = vocabulary.find_entries(key_mizuho);
+        const auto entries_mizuho = vocabulary.find_entries(key_type{ key_mizuho });
         BOOST_TEST_REQUIRE(std::size(entries_mizuho) == 1U);
-        const auto entries_sakura = vocabulary.find_entries(key_sakura);
+        const auto entries_sakura = vocabulary.find_entries(key_type{ key_sakura });
         BOOST_TEST_REQUIRE(std::size(entries_sakura) == 2U);
 
         {

@@ -11,7 +11,6 @@
 #include <functional>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -23,6 +22,7 @@ namespace tetengo::lattice
 {
     class connection;
     class node;
+    class vocabulary_key_base;
 
 
     /*!
@@ -66,7 +66,7 @@ namespace tetengo::lattice
 
         // virtual functions
 
-        virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const override;
+        virtual std::vector<entry_view> find_entries_impl(const vocabulary_key_base& key) const override;
 
         virtual connection find_connection_impl(const node& from, const entry_view& to) const override;
     };
