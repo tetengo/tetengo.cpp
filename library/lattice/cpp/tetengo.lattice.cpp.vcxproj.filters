@@ -58,7 +58,7 @@
     <ClInclude Include="include\tetengo\lattice\path.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
-    <ClInclude Include="include\tetengo\lattice\vocabulary_key.hpp">
+    <ClInclude Include="include\tetengo\lattice\input.hpp">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
   </ItemGroup>
@@ -99,7 +99,7 @@
     <ClCompile Include="src\tetengo.lattice.path.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\tetengo.lattice.vocabulary_key.cpp">
+    <ClCompile Include="src\tetengo.lattice.input.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

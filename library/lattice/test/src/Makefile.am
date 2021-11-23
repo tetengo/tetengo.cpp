@@ -11,6 +11,7 @@ sources = \
     test_tetengo.lattice.constraint.cpp \
     test_tetengo.lattice.constraint_element.cpp \
     test_tetengo.lattice.entry.cpp \
+    test_tetengo.lattice.input.cpp \
     test_tetengo.lattice.lattice.cpp \
     test_tetengo.lattice.n_best_iterator.cpp \
     test_tetengo.lattice.node.cpp \
@@ -19,7 +20,6 @@ sources = \
     test_tetengo.lattice.string_view.cpp \
     test_tetengo.lattice.unordered_map_vocabulary.cpp \
     test_tetengo.lattice.vocabulary.cpp \
-    test_tetengo.lattice.vocabulary_key.cpp \
     test_tetengo.lattice.wildcard_constraint_element.cpp \
     usage_tetengo.lattice.cpp \
     usage_tetengo.lattice.viterbi_c.c \

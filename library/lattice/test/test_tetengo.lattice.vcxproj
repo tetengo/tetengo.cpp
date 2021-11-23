@@ -122,6 +122,7 @@
     <ClCompile Include="src\test_tetengo.lattice.constraint.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.constraint_element.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.entry.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.input.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.lattice.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.node.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.node_constraint_element.cpp" />
@@ -130,7 +131,6 @@
     <ClCompile Include="src\test_tetengo.lattice.string_view.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.unordered_map_vocabulary.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.vocabulary.cpp" />
-    <ClCompile Include="src\test_tetengo.lattice.vocabulary_key.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.wildcard_constraint_element.cpp" />
     <ClCompile Include="src\usage_tetengo.lattice.cpp" />
     <ClCompile Include="src\usage_tetengo.lattice.viterbi_c.c">

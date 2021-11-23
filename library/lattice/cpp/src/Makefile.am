@@ -7,6 +7,7 @@ sources = \
     tetengo.lattice.constraint.cpp \
     tetengo.lattice.constraint_element.cpp \
     tetengo.lattice.entry.cpp \
+    tetengo.lattice.input.cpp \
     tetengo.lattice.lattice.cpp \
     tetengo.lattice.n_best_iterator.cpp \
     tetengo.lattice.node.cpp \
@@ -14,7 +15,6 @@ sources = \
     tetengo.lattice.path.cpp \
     tetengo.lattice.unordered_map_vocabulary.cpp \
     tetengo.lattice.vocabulary.cpp \
-    tetengo.lattice.vocabulary_key.cpp \
     tetengo.lattice.wildcard_constraint_element.cpp
 
 lib_LIBRARIES = libtetengo.lattice.cpp.a

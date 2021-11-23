@@ -21,9 +21,9 @@
 
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
-#include <tetengo/lattice/vocabulary_key.hpp>
 
 
 namespace tetengo::lattice

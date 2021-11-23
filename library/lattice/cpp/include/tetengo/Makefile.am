@@ -6,6 +6,7 @@ pkg_headers = \
     lattice/constraint.hpp \
     lattice/constraint_element.hpp \
     lattice/entry.hpp \
+    lattice/input.hpp \
     lattice/lattice.hpp \
     lattice/n_best_iterator.hpp \
     lattice/node.hpp \
@@ -13,7 +14,6 @@ pkg_headers = \
     lattice/path.hpp \
     lattice/unordered_map_vocabulary.hpp \
     lattice/vocabulary.hpp \
-    lattice/vocabulary_key.hpp \
     lattice/wildcard_constraint_element.hpp
 
 extra_headers = \

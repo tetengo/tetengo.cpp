@@ -22,13 +22,13 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
-#include <tetengo/lattice/vocabulary_key.hpp>
 
 #include "tetengo_lattice_vocabulary.hpp"
 

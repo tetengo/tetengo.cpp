@@ -4,7 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
-#include <tetengo/lattice/vocabulary_key.hpp>
+#include <tetengo/lattice/input.hpp>
 
 
 namespace tetengo::lattice

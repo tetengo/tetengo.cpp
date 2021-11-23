@@ -7,7 +7,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <tetengo/lattice/vocabulary_key.hpp>
+#include <tetengo/lattice/input.hpp>
 
 
 namespace

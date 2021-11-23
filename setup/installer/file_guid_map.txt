@@ -18,6 +18,7 @@ include.cpp\tetengo\lattice\connection.hpp CB44C329-C57C-4D2D-8E5B-4C27A316449C
 include.cpp\tetengo\lattice\constraint.hpp E7F06419-0592-409E-BB4B-36F2976F7AE9
 include.cpp\tetengo\lattice\constraint_element.hpp 133E89B9-FBF0-48C2-AACB-00AC7AFA55C2
 include.cpp\tetengo\lattice\entry.hpp 2527A6C8-B58C-4F46-97E5-576E71E4FB12
+include.cpp\tetengo\lattice\input.hpp 7EA295F4-8F44-4D3E-85D2-CAAB230E9908
 include.cpp\tetengo\lattice\lattice.hpp 65A48482-B8DA-4E89-8815-E64B8974BB3E
 include.cpp\tetengo\lattice\n_best_iterator.hpp 9D64AD63-CD7C-462A-B00C-727DDB38A529
 include.cpp\tetengo\lattice\node.hpp 91AA6E32-C472-4CC0-BDCA-F5EFBF527858
@@ -25,7 +26,6 @@ include.cpp\tetengo\lattice\node_constraint_element.hpp 03484F91-429D-449C-A788-
 include.cpp\tetengo\lattice\path.hpp 577F55AE-E362-4D7B-B118-148C789B1A18
 include.cpp\tetengo\lattice\unordered_map_vocabulary.hpp 8E69110E-B34F-4909-BE58-D44EC74462EF
 include.cpp\tetengo\lattice\vocabulary.hpp BB921E2D-9C35-4A3B-AD35-460392047378
-include.cpp\tetengo\lattice\vocabulary_key.hpp BDDBC807-37A6-4859-9B0F-B3892787A804
 include.cpp\tetengo\lattice\wildcard_constraint_element.hpp 6AD8A079-A44C-48B1-8DF0-5A336356EB1D
 include.cpp\tetengo\platform_dependent\0namespace.dox 5075D18D-063B-4A41-A789-1E244BA152C7
 include.cpp\tetengo\platform_dependent\propertyX.hpp BE09F9A8-7D62-4D0E-958A-83FB1CDC49DF
