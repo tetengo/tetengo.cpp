@@ -24,6 +24,7 @@ include.cpp\tetengo\lattice\n_best_iterator.hpp 9D64AD63-CD7C-462A-B00C-727DDB38
 include.cpp\tetengo\lattice\node.hpp 91AA6E32-C472-4CC0-BDCA-F5EFBF527858
 include.cpp\tetengo\lattice\node_constraint_element.hpp 03484F91-429D-449C-A788-0385C773485C
 include.cpp\tetengo\lattice\path.hpp 577F55AE-E362-4D7B-B118-148C789B1A18
+include.cpp\tetengo\lattice\string_input.hpp 1AD311EA-535B-4C69-858A-C5C6C43FAA2D
 include.cpp\tetengo\lattice\unordered_map_vocabulary.hpp 8E69110E-B34F-4909-BE58-D44EC74462EF
 include.cpp\tetengo\lattice\vocabulary.hpp BB921E2D-9C35-4A3B-AD35-460392047378
 include.cpp\tetengo\lattice\wildcard_constraint_element.hpp 6AD8A079-A44C-48B1-8DF0-5A336356EB1D
