@@ -17,7 +17,7 @@
 namespace tetengo::lattice
 {
     class connection;
-    class input_base;
+    class input;
     class node;
 
 
@@ -49,7 +49,7 @@ namespace tetengo::lattice
 
             \return Entry views.
         */
-        [[nodiscard]] std::vector<entry_view> find_entries(const input_base& key) const;
+        [[nodiscard]] std::vector<entry_view> find_entries(const input& key) const;
 
         /*!
             \brief Finds a connection between an origin node and a destination entry.
@@ -65,7 +65,7 @@ namespace tetengo::lattice
     private:
         // virtual functions
 
-        virtual std::vector<entry_view> find_entries_impl(const input_base& key) const = 0;
+        virtual std::vector<entry_view> find_entries_impl(const input& key) const = 0;
 
         virtual connection find_connection_impl(const node& from, const entry_view& to) const = 0;
     };

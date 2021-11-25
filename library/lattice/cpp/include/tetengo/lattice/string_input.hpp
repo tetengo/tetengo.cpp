@@ -20,7 +20,7 @@ namespace tetengo::lattice
 
         \tparam T A type.
     */
-    class string_input : public input_base
+    class string_input : public input
     {
     public:
         // constructors and destructor

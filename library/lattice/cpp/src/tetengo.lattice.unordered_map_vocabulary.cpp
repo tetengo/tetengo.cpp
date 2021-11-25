@@ -53,7 +53,7 @@ namespace tetengo::lattice
 
         // functions
 
-        std::vector<entry_view> find_entries_impl(const input_base& key) const
+        std::vector<entry_view> find_entries_impl(const input& key) const
         {
             const auto found = m_entry_map.find(std::string{ key.as<string_input>().value() });
             if (found == std::end(m_entry_map))
@@ -188,7 +188,7 @@ namespace tetengo::lattice
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;
 
-    std::vector<entry_view> unordered_map_vocabulary::find_entries_impl(const input_base& key) const
+    std::vector<entry_view> unordered_map_vocabulary::find_entries_impl(const input& key) const
     {
         return m_p_impl->find_entries_impl(key);
     }

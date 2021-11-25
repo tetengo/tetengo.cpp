@@ -61,7 +61,7 @@ namespace
         // virtual functions
 
         virtual std::vector<tetengo::lattice::entry_view>
-        find_entries_impl(const tetengo::lattice::input_base& key) const override
+        find_entries_impl(const tetengo::lattice::input& key) const override
         {
             if (key.as<key_type>().value() == key_mizuho)
             {

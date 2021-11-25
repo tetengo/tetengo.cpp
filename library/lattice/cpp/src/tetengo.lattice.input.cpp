@@ -11,9 +11,9 @@
 
 namespace tetengo::lattice
 {
-    input_base::~input_base() = default;
+    input::~input() = default;
 
-    std::size_t input_base::length() const
+    std::size_t input::length() const
     {
         return length_impl();
     }

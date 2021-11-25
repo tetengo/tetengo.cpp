@@ -16,17 +16,17 @@
 namespace tetengo::lattice
 {
     /*!
-        \brief An input base.
+        \brief An input.
     */
-    class input_base : private boost::noncopyable
+    class input : private boost::noncopyable
     {
     public:
         // constructors
 
         /*!
-            \brief Destroys the input base.
+            \brief Destroys the input.
         */
-        virtual ~input_base();
+        virtual ~input();
 
 
         // functions

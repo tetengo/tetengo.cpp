@@ -13,7 +13,7 @@
 
 namespace tetengo::lattice
 {
-    class input_base;
+    class input;
     class node;
 
 
@@ -21,7 +21,7 @@ namespace tetengo::lattice
 
     vocabulary::~vocabulary() = default;
 
-    std::vector<entry_view> vocabulary::find_entries(const input_base& key) const
+    std::vector<entry_view> vocabulary::find_entries(const input& key) const
     {
         return find_entries_impl(key);
     }

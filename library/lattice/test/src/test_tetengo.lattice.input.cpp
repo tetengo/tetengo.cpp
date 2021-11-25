@@ -14,16 +14,16 @@
 
 namespace
 {
-    class concrete_input : public tetengo::lattice::input_base
+    class concrete_input : public tetengo::lattice::input
     {
     private:
         virtual std::size_t length_impl() const
         {
-            return 0;
+            return 42;
         }
     };
 
-    class concrete_input2 : public tetengo::lattice::input_base
+    class concrete_input2 : public tetengo::lattice::input
     {
     private:
         virtual std::size_t length_impl() const
@@ -38,24 +38,33 @@ namespace
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
 BOOST_AUTO_TEST_SUITE(lattice)
-BOOST_AUTO_TEST_SUITE(input_base)
+BOOST_AUTO_TEST_SUITE(input)
 
 
 BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const concrete_input key{};
+    const concrete_input input_{};
+}
+
+BOOST_AUTO_TEST_CASE(length)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const tetengo::lattice::input& input_ = concrete_input{};
+
+    BOOST_TEST(input_.length() == 42U);
 }
 
 BOOST_AUTO_TEST_CASE(is)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::lattice::input_base& key = concrete_input{};
+    const tetengo::lattice::input& input_ = concrete_input{};
 
-    BOOST_TEST(key.is<concrete_input>());
-    BOOST_TEST(!key.is<concrete_input2>());
+    BOOST_TEST(input_.is<concrete_input>());
+    BOOST_TEST(!input_.is<concrete_input2>());
 }
 
 BOOST_AUTO_TEST_CASE(as)
@@ -63,17 +72,17 @@ BOOST_AUTO_TEST_CASE(as)
     BOOST_TEST_PASSPOINT();
 
     {
-        const tetengo::lattice::input_base& key = concrete_input{};
+        const tetengo::lattice::input& input_ = concrete_input{};
 
-        const auto& casted = key.as<concrete_input>();
-        BOOST_TEST(&casted == &key);
+        const auto& casted = input_.as<concrete_input>();
+        BOOST_TEST(&casted == &input_);
     }
     {
-        concrete_input                key{};
-        tetengo::lattice::input_base& key_ref = key;
+        concrete_input           input_{};
+        tetengo::lattice::input& input_ref = input_;
 
-        const auto& casted = key_ref.as<concrete_input>();
-        BOOST_TEST(&casted == &key);
+        const auto& casted = input_ref.as<concrete_input>();
+        BOOST_TEST(&casted == &input_);
     }
 }
 
