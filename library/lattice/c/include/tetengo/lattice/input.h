@@ -40,7 +40,7 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
 
     \param p_input A pointer to an input.
 
-    \return The length.
+    \return The length. Or (size_t)-1 when p_input is NULL.
 */
 size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* p_input);
 

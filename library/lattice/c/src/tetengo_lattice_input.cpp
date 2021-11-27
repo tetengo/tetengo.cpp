@@ -5,17 +5,29 @@
 */
 
 #include "tetengo_lattice_input.hpp"
+#include <memory>
+#include <stdexcept>
+#include <utility>
 
 #include <stddef.h>
 
 #include <tetengo/lattice/input.h>
+#include <tetengo/lattice/string_input.hpp>
 
 
-tetengo_lattice_input_t* tetengo_lattice_input_createStringInput(const char* const /*value*/)
+tetengo_lattice_input_t* tetengo_lattice_input_createStringInput(const char* const value)
 {
     try
     {
-        return nullptr;
+        if (!value)
+        {
+            throw std::invalid_argument{ "value is NULL." };
+        }
+
+        auto p_cpp_input = std::make_unique<tetengo::lattice::string_input>(value);
+
+        auto p_instance = std::make_unique<tetengo_lattice_input_t>(std::move(p_cpp_input));
+        return p_instance.release();
     }
     catch (...)
     {

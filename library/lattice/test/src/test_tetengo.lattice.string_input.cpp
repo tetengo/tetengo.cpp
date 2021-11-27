@@ -10,8 +10,10 @@
 #include <string>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/string_input.hpp>
 
@@ -48,7 +50,23 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::lattice::string_input input{ "hoge" };
+    {
+        const tetengo::lattice::string_input input{ "hoge" };
+    }
+
+    {
+        const auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST(p_input);
+    }
+    {
+        const auto* const p_input = tetengo_lattice_input_createStringInput(nullptr);
+        BOOST_TEST(!p_input);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(value)
