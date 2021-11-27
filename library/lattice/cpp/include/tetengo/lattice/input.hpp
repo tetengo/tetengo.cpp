@@ -40,6 +40,18 @@ namespace tetengo::lattice
         [[nodiscard]] std::size_t length() const;
 
         /*!
+            \brief Creates a subrange.
+
+            \param offset An offset.
+            \param length A length.
+
+            \return A unique pointer to a subrange.
+
+            \throw std::out_of_range When offset and/or length are out of the range of the input.
+        */
+        [[nodiscard]] std::unique_ptr<input> create_subrange(std::size_t offset, std::size_t length) const;
+
+        /*!
             \brief Appends another input.
 
             \param p_another A unique pointer to another input.
@@ -95,6 +107,8 @@ namespace tetengo::lattice
         // virtual functions
 
         virtual std::size_t length_impl() const = 0;
+
+        virtual std::unique_ptr<input> create_subrange_impl(std::size_t offset, std::size_t length) const = 0;
 
         virtual void append_impl(std::unique_ptr<input>&& p_another) = 0;
     };
