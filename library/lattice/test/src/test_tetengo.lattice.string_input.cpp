@@ -4,12 +4,33 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef>
+#include <memory>
+#include <stdexcept>
 #include <string>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/string_input.hpp>
+
+
+namespace
+{
+    class another_input : public tetengo::lattice::input
+    {
+    private:
+        virtual std::size_t length_impl() const override
+        {
+            return 0;
+        }
+
+        virtual void append_impl(std::unique_ptr<input>&& /*p_another*/) override {}
+    };
+
+
+}
 
 
 BOOST_AUTO_TEST_SUITE(test_tetengo)
@@ -42,6 +63,25 @@ BOOST_AUTO_TEST_CASE(length)
     const tetengo::lattice::string_input input{ "hoge" };
 
     BOOST_TEST(input.length() == 4U);
+}
+
+BOOST_AUTO_TEST_CASE(append)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        tetengo::lattice::string_input input{ "hoge" };
+
+        input.append(std::make_unique<tetengo::lattice::string_input>("fuga"));
+
+        BOOST_TEST(input.value() == "hogefuga");
+    }
+    {
+        tetengo::lattice::string_input input{ "hoge" };
+
+        BOOST_CHECK_THROW(input.append(std::unique_ptr<tetengo::lattice::string_input>{}), std::invalid_argument);
+        BOOST_CHECK_THROW(input.append(std::make_unique<another_input>()), std::invalid_argument);
+    }
 }
 
 

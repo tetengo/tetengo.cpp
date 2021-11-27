@@ -69,6 +69,8 @@ namespace tetengo::lattice
         // virtual functions
 
         virtual std::size_t length_impl() const override;
+
+        virtual void append_impl(std::unique_ptr<input>&& p_another) override;
     };
 
 

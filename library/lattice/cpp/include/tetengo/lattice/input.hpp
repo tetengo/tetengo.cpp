@@ -9,6 +9,7 @@
 
 #include <cassert>
 #include <cstddef>
+#include <memory>
 
 #include <boost/core/noncopyable.hpp>
 
@@ -37,6 +38,15 @@ namespace tetengo::lattice
             \return The length.
         */
         [[nodiscard]] std::size_t length() const;
+
+        /*!
+            \brief Appends another input.
+
+            \param p_another A unique pointer to another input.
+
+            \throw std::invalid_argument When p_another is nullptr or its type does not match.
+        */
+        void append(std::unique_ptr<input>&& p_another);
 
         /*!
             \brief Returns true when this object can be casted to the specified concrete input.
@@ -85,6 +95,8 @@ namespace tetengo::lattice
         // virtual functions
 
         virtual std::size_t length_impl() const = 0;
+
+        virtual void append_impl(std::unique_ptr<input>&& p_another) = 0;
     };
 
 
