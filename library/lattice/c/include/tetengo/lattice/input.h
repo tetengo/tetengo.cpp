@@ -45,6 +45,19 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
 size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* p_input);
 
 /*!
+    \brief Creates a subrange.
+
+    \param p_input A pointer to an input.
+    \param offset  An offset.
+    \param length  A length.
+
+    \return A pointer to a subrange.
+            Or NULL when p_input is NULL, or offset and/or length are out of the range of the input.
+*/
+tetengo_lattice_input_t*
+tetengo_lattice_input_createSubrange(const tetengo_lattice_input_t* p_input, size_t offset, size_t length);
+
+/*!
     \brief Returns the value of a string input.
 
     \param p_string_input A pointer to a string input.
