@@ -18,11 +18,13 @@
 #include <stddef.h>
 
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/vocabulary.h>
 
 #include "tetengo_lattice_lattice.hpp"
@@ -129,7 +131,8 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice,
             throw std::invalid_argument{ "input is NULL." };
         }
 
-        p_lattice->p_cpp_lattice->push_back(input);
+        auto p_input = std::make_unique<tetengo::lattice::string_input>(input);
+        p_lattice->p_cpp_lattice->push_back(std::move(p_input));
 
         return 1;
     }

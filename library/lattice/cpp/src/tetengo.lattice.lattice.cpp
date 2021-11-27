@@ -11,9 +11,6 @@
 #include <limits>
 #include <memory>
 #include <stdexcept>
-#include <string>
-#include <string_view>
-#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 
@@ -21,9 +18,9 @@
 
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
 
@@ -80,7 +77,7 @@ namespace tetengo::lattice
     public:
         // constructors and destructor
 
-        explicit impl(const vocabulary& vocabulary_) : m_vocabulary{ vocabulary_ }, m_input{}, m_graph{}
+        explicit impl(const vocabulary& vocabulary_) : m_vocabulary{ vocabulary_ }, m_p_input{}, m_graph{}
         {
             m_graph.push_back(bos_step());
         }
@@ -103,9 +100,16 @@ namespace tetengo::lattice
             return m_graph[step].nodes();
         }
 
-        void push_back(const std::string_view& input_)
+        void push_back(std::unique_ptr<input>&& p_input)
         {
-            m_input += input_;
+            if (m_p_input)
+            {
+                m_p_input->append(std::move(p_input));
+            }
+            else
+            {
+                m_p_input = std::move(p_input);
+            }
 
             std::vector<node> nodes{};
             auto              p_node_preceding_edge_costs = std::vector<std::unique_ptr<std::vector<int>>>{};
@@ -113,9 +117,9 @@ namespace tetengo::lattice
             {
                 const auto& step = m_graph[i];
 
-                const string_input node_key{ std::string{ std::next(std::data(m_input), step.input_tail()),
-                                                          m_input.length() - step.input_tail() } };
-                const auto         found = m_vocabulary.find_entries(node_key);
+                const auto p_node_key =
+                    m_p_input->create_subrange(step.input_tail(), m_p_input->length() - step.input_tail());
+                const auto found = m_vocabulary.find_entries(*p_node_key);
 
                 std::vector<std::size_t> preceding_edge_cost_indexes{};
                 preceding_edge_cost_indexes.reserve(std::size(found));
@@ -149,7 +153,7 @@ namespace tetengo::lattice
                 throw std::invalid_argument{ "No node is found for the input." };
             }
 
-            m_graph.emplace_back(m_input.length(), std::move(nodes), std::move(p_node_preceding_edge_costs));
+            m_graph.emplace_back(m_p_input->length(), std::move(nodes), std::move(p_node_preceding_edge_costs));
         }
 
         std::pair<node, std::unique_ptr<std::vector<int>>> settle()
@@ -212,7 +216,7 @@ namespace tetengo::lattice
 
         const vocabulary& m_vocabulary;
 
-        std::string m_input;
+        std::unique_ptr<input> m_p_input;
 
         std::vector<graph_step> m_graph;
 
@@ -251,9 +255,9 @@ namespace tetengo::lattice
         return m_p_impl->nodes_at(step);
     }
 
-    void lattice::push_back(const std::string_view& input)
+    void lattice::push_back(std::unique_ptr<input>&& p_input)
     {
-        m_p_impl->push_back(input);
+        m_p_impl->push_back(std::move(p_input));
     }
 
     std::pair<node, std::unique_ptr<std::vector<int>>> lattice::settle()
