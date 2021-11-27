@@ -78,15 +78,84 @@ BOOST_AUTO_TEST_CASE(value)
 
         BOOST_TEST(input.value() == "hoge");
     }
+    {
+        tetengo::lattice::string_input input{ "hoge" };
+
+        input.value() = "fuga";
+        BOOST_TEST(input.value() == "fuga");
+    }
+
+    {
+        const auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        const auto* const value = tetengo_lattice_stringInput_value(p_input);
+        BOOST_TEST(std::string{ value } == "hoge");
+    }
+    {
+        BOOST_TEST(!tetengo_lattice_stringInput_value(nullptr));
+    }
+    {
+        auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        const auto result = tetengo_lattice_stringInput_setValue(p_input, "fuga");
+        BOOST_TEST_REQUIRE(result);
+        const auto* const value = tetengo_lattice_stringInput_value(p_input);
+        BOOST_TEST(std::string{ value } == "fuga");
+    }
+    {
+        const auto result = tetengo_lattice_stringInput_setValue(nullptr, "fuga");
+        BOOST_TEST(!result);
+    }
+    {
+        auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        const auto result = tetengo_lattice_stringInput_setValue(p_input, nullptr);
+        BOOST_TEST(!result);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(length)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::lattice::string_input input{ "hoge" };
+    {
+        const tetengo::lattice::string_input input{ "hoge" };
 
-    BOOST_TEST(input.length() == 4U);
+        BOOST_TEST(input.length() == 4U);
+    }
+
+    {
+        const auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        BOOST_TEST(tetengo_lattice_input_length(p_input) == 4U);
+    }
+    {
+        BOOST_TEST(tetengo_lattice_input_length(nullptr) == static_cast<size_t>(-1));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(create_subrange)

@@ -7,11 +7,13 @@
 #include "tetengo_lattice_input.hpp"
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include <stddef.h>
 
 #include <tetengo/lattice/input.h>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/string_input.hpp>
 
 
@@ -45,11 +47,64 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* const p_input)
     {}
 }
 
-size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* const /*p_input*/)
+size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* const p_input)
 {
     try
     {
-        return 0;
+        if (!p_input)
+        {
+            throw std::invalid_argument{ "p_input is NULL." };
+        }
+
+        return p_input->p_cpp_input->length();
+    }
+    catch (...)
+    {
+        return static_cast<size_t>(-1);
+    }
+}
+
+const char* tetengo_lattice_stringInput_value(const tetengo_lattice_input_t* const p_string_input)
+{
+    try
+    {
+        if (!p_string_input)
+        {
+            throw std::invalid_argument{ "p_string_input is NULL." };
+        }
+        if (!p_string_input->p_cpp_input->is<tetengo::lattice::string_input>())
+        {
+            throw std::invalid_argument{ "p_string_input is not a string input." };
+        }
+
+        return p_string_input->p_cpp_input->as<tetengo::lattice::string_input>().value().c_str();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* const p_string_input, const char* const value)
+{
+    try
+    {
+        if (!p_string_input)
+        {
+            throw std::invalid_argument{ "p_string_input is NULL." };
+        }
+        if (!p_string_input->p_cpp_input->is<tetengo::lattice::string_input>())
+        {
+            throw std::invalid_argument{ "p_string_input is not a string input." };
+        }
+        if (!value)
+        {
+            throw std::invalid_argument{ "value is NULL." };
+        }
+
+        p_string_input->p_cpp_input->as<tetengo::lattice::string_input>().value() = value;
+
+        return 1;
     }
     catch (...)
     {

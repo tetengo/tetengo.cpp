@@ -44,6 +44,26 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
 */
 size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* p_input);
 
+/*!
+    \brief Returns the value of a string input.
+
+    \param p_string_input A pointer to a string input.
+
+    \return The value. Or NULL when p_string_input is NULL or is not a string input.
+*/
+const char* tetengo_lattice_stringInput_value(const tetengo_lattice_input_t* p_string_input);
+
+/*!
+    \brief Sets a value of a string input.
+
+    \param p_string_input A pointer to a string input.
+    \param value          A value.
+
+    \retval non-zero When the value is set.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* p_string_input, const char* value);
+
 
 #if defined(__cplusplus)
 }
