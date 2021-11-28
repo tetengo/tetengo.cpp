@@ -28,10 +28,12 @@
 #include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/lattice/constraint.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.hpp>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/vocabulary.hpp> // IWYU pragma: keep
 #include <tetengo/text/encoder.hpp>
 #include <tetengo/text/encoding/cp932.hpp>
@@ -151,9 +153,10 @@ namespace
     {
         for (auto i = departure_and_arrival.first.first; i < departure_and_arrival.second; ++i)
         {
-            const auto key =
+            auto key =
                 timetable_.stations()[i].telegram_code() + "-" + timetable_.stations()[i + 1].telegram_code() + "/";
-            lattice_.push_back(key);
+            auto p_input = std::make_unique<tetengo::lattice::string_input>(std::move(key));
+            lattice_.push_back(std::move(p_input));
         }
     }
 

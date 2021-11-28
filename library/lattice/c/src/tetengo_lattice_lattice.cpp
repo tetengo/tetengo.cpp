@@ -17,7 +17,11 @@
 
 #include <stddef.h>
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h>
@@ -25,6 +29,7 @@
 #include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
+#include "tetengo_lattice_input.hpp"
 #include "tetengo_lattice_lattice.hpp"
 #include "tetengo_lattice_vocabulary.hpp"
 
@@ -116,20 +121,26 @@ size_t tetengo_lattice_lattice_nodesAt(
     }
 }
 
-int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice, const char* const input)
+int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice, tetengo_lattice_input_t* const p_input)
 {
     try
     {
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+
         if (!p_lattice)
         {
             throw std::invalid_argument{ "p_lattice is NULL." };
         }
-        if (!input)
+        if (!p_input)
         {
-            throw std::invalid_argument{ "input is NULL." };
+            throw std::invalid_argument{ "p_input is NULL." };
         }
 
-        p_lattice->p_cpp_lattice->push_back(input);
+        p_lattice->p_cpp_lattice->push_back(std::move(p_input->p_cpp_input));
 
         return 1;
     }

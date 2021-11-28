@@ -15,6 +15,7 @@
 #include <tetengo/lattice/connection.h>
 #include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/node.h>
@@ -56,8 +57,10 @@ void usage_tetengo_lattice_viterbi()
     tetengo_lattice_lattice_t* const p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
 
     /* Enters key characters to construct the lattice. */
-    tetengo_lattice_lattice_pushBack(p_lattice, "a");
-    tetengo_lattice_lattice_pushBack(p_lattice, "b");
+    tetengo_lattice_input_t* const p_input_a = tetengo_lattice_input_createStringInput("a");
+    tetengo_lattice_input_t* const p_input_b = tetengo_lattice_input_createStringInput("b");
+    tetengo_lattice_lattice_pushBack(p_lattice, p_input_a);
+    tetengo_lattice_lattice_pushBack(p_lattice, p_input_b);
     {
         /* Finishes the lattice construction. */
         const size_t eos_preceding_count = tetengo_lattice_lattice_settle(p_lattice, NULL, NULL);

@@ -11,7 +11,6 @@
 #include <limits>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
@@ -21,7 +20,9 @@
 
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 
 
@@ -52,9 +53,9 @@ namespace tetengo::lattice
 
         // functions
 
-        std::vector<entry_view> find_entries_impl(const std::string_view& key) const
+        std::vector<entry_view> find_entries_impl(const input& key) const
         {
-            const auto found = m_entry_map.find(std::string{ key });
+            const auto found = m_entry_map.find(std::string{ key.as<string_input>().value() });
             if (found == std::end(m_entry_map))
             {
                 return std::vector<entry_view>{};
@@ -187,7 +188,7 @@ namespace tetengo::lattice
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;
 
-    std::vector<entry_view> unordered_map_vocabulary::find_entries_impl(const std::string_view& key) const
+    std::vector<entry_view> unordered_map_vocabulary::find_entries_impl(const input& key) const
     {
         return m_p_impl->find_entries_impl(key);
     }

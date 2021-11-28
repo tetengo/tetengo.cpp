@@ -21,10 +21,12 @@
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.hpp>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
@@ -64,8 +66,8 @@ namespace usage_tetengo::lattice
         tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
         // Enters key characters to construct the lattice.
-        lattice_.push_back("a");
-        lattice_.push_back("b");
+        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("a"));
+        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("b"));
 
         // Finishes the lattice construction.
         const auto eos_and_preceding_costs = lattice_.settle();

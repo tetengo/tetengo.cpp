@@ -6,6 +6,13 @@ EXPORTS
 	tetengo_lattice_lattice_nodesAt
 	tetengo_lattice_lattice_pushBack
 	tetengo_lattice_lattice_settle
+	tetengo_lattice_input_createStringInput
+	tetengo_lattice_input_destroy
+	tetengo_lattice_input_length
+	tetengo_lattice_input_createSubrange
+	tetengo_lattice_input_append
+	tetengo_lattice_stringInput_value
+	tetengo_lattice_stringInput_setValue
 	tetengo_lattice_node_bos
 	tetengo_lattice_node_eos
 	tetengo_lattice_node_toNode

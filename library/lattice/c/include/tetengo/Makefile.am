@@ -6,6 +6,7 @@ pkg_headers = \
     lattice/constraint.h \
     lattice/constraintElement.h \
     lattice/entry.h \
+    lattice/input.h \
     lattice/lattice.h \
     lattice/nBestIterator.h \
     lattice/node.h \
