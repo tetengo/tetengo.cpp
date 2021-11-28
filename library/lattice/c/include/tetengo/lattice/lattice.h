@@ -9,6 +9,7 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/vocabulary.h>
 
@@ -64,13 +65,16 @@ size_t tetengo_lattice_lattice_nodesAt(
 /*!
     \brief Pushes back an input.
 
+    The ownership of the input pointed by p_input is transferred into the lattice.
+    There is no need to destroy the input after calling this function.
+
     \param p_lattice A pointer to a lattice.
-    \param input     An input.
+    \param p_input   A pointer to an input.
 
     \retval non-zero When the input is pushed back.
     \retval 0        Otherwise.
 */
-int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, const char* input);
+int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, tetengo_lattice_input_t* p_input);
 
 /*!
     \brief Settles this lattice.

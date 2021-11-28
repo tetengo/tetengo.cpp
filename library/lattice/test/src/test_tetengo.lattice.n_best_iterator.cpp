@@ -27,6 +27,7 @@
 #include <tetengo/lattice/constraint_element.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
@@ -363,9 +364,12 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
-        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+        auto* const p_input_hakata_tosu = tetengo_lattice_input_createStringInput("[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_hakata_tosu);
+        auto* const p_input_tosu_omuta = tetengo_lattice_input_createStringInput("[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_tosu_omuta);
+        auto* const p_input_omuta_kumamoto = tetengo_lattice_input_createStringInput("[OmutaKumamoto]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_omuta_kumamoto);
 
         const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
         tetengo_lattice_node_t eos_node{};
@@ -396,9 +400,12 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
-        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+        auto* const p_input_hakata_tosu = tetengo_lattice_input_createStringInput("[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_hakata_tosu);
+        auto* const p_input_tosu_omuta = tetengo_lattice_input_createStringInput("[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_tosu_omuta);
+        auto* const p_input_omuta_kumamoto = tetengo_lattice_input_createStringInput("[OmutaKumamoto]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_omuta_kumamoto);
 
         const auto* const p_iterator =
             tetengo_lattice_nBestIterator_create(p_lattice, nullptr, tetengo_lattice_constraint_createEmpty());
@@ -414,9 +421,12 @@ BOOST_AUTO_TEST_CASE(construction)
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
-        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+        auto* const p_input_hakata_tosu = tetengo_lattice_input_createStringInput("[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_hakata_tosu);
+        auto* const p_input_tosu_omuta = tetengo_lattice_input_createStringInput("[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_tosu_omuta);
+        auto* const p_input_omuta_kumamoto = tetengo_lattice_input_createStringInput("[OmutaKumamoto]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_omuta_kumamoto);
 
         const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
         tetengo_lattice_node_t eos_node{};
@@ -465,9 +475,12 @@ BOOST_AUTO_TEST_CASE(operator_dereference)
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
-        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+        auto* const p_input_hakata_tosu = tetengo_lattice_input_createStringInput("[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_hakata_tosu);
+        auto* const p_input_tosu_omuta = tetengo_lattice_input_createStringInput("[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_tosu_omuta);
+        auto* const p_input_omuta_kumamoto = tetengo_lattice_input_createStringInput("[OmutaKumamoto]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_omuta_kumamoto);
 
         const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
         tetengo_lattice_node_t eos_node{};
@@ -580,9 +593,12 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
-        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+        auto* const p_input_hakata_tosu = tetengo_lattice_input_createStringInput("[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_hakata_tosu);
+        auto* const p_input_tosu_omuta = tetengo_lattice_input_createStringInput("[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_tosu_omuta);
+        auto* const p_input_omuta_kumamoto = tetengo_lattice_input_createStringInput("[OmutaKumamoto]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_omuta_kumamoto);
 
         const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
         tetengo_lattice_node_t eos_node{};
@@ -902,9 +918,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
-        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+        auto* const p_input_hakata_tosu = tetengo_lattice_input_createStringInput("[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_hakata_tosu);
+        auto* const p_input_tosu_omuta = tetengo_lattice_input_createStringInput("[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_tosu_omuta);
+        auto* const p_input_omuta_kumamoto = tetengo_lattice_input_createStringInput("[OmutaKumamoto]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_omuta_kumamoto);
 
         const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
         tetengo_lattice_node_t eos_node{};
@@ -1157,9 +1176,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
         }
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_lattice);
-        tetengo_lattice_lattice_pushBack(p_lattice, "[HakataTosu]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[TosuOmuta]");
-        tetengo_lattice_lattice_pushBack(p_lattice, "[OmutaKumamoto]");
+        auto* const p_input_hakata_tosu = tetengo_lattice_input_createStringInput("[HakataTosu]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_hakata_tosu);
+        auto* const p_input_tosu_omuta = tetengo_lattice_input_createStringInput("[TosuOmuta]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_tosu_omuta);
+        auto* const p_input_omuta_kumamoto = tetengo_lattice_input_createStringInput("[OmutaKumamoto]");
+        tetengo_lattice_lattice_pushBack(p_lattice, p_input_omuta_kumamoto);
 
         const auto             preceding_edge_cost_count = tetengo_lattice_lattice_settle(p_lattice, nullptr, nullptr);
         tetengo_lattice_node_t eos_node{};
