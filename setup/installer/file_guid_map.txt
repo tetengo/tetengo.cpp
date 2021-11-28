@@ -69,6 +69,7 @@ include\tetengo\lattice\connection.h AB1BEEF7-609E-49DD-BB4D-502C3390141F
 include\tetengo\lattice\constraint.h B3A769AF-E49F-4766-9D43-5927BF83F7A5
 include\tetengo\lattice\constraintElement.h 8B760E3D-8626-48E4-81E3-E3F1A7E0F6AA
 include\tetengo\lattice\entry.h 4390EB62-4F3A-4C4A-8ADC-E7AF0F3AD6BA
+include\tetengo\lattice\input.h 8BD6081B-8886-456D-B997-EAA82D782849
 include\tetengo\lattice\lattice.h 5FF49145-556A-46B3-8B0D-1E818C49688A
 include\tetengo\lattice\nBestIterator.h E7FBC3FD-E237-4627-84AD-1199E42A6F7F
 include\tetengo\lattice\node.h 1270D414-4ECF-4EE1-9EB1-E3AD5F2A0811
