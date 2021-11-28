@@ -11,6 +11,7 @@
 
 #include <tetengo/lattice/connection.h>
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
 
 
@@ -56,14 +57,14 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* p_vo
     \brief Finds entries.
 
     \param p_vocabulary A pointer to a vocabulary.
-    \param key          A key.
+    \param p_key        A pointer to a key.
     \param p_entries    The storage for output entries. Can be NULL.
 
     \return An entry count.
 */
 size_t tetengo_lattice_vocabulary_findEntries(
     const tetengo_lattice_vocabulary_t* p_vocabulary,
-    const char*                         key,
+    const tetengo_lattice_input_t*      p_key,
     tetengo_lattice_entryView_t*        p_entries);
 
 /*!

@@ -24,6 +24,7 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
@@ -344,12 +345,18 @@ BOOST_AUTO_TEST_CASE(find_entries)
         BOOST_TEST_REQUIRE(p_vocabulary);
 
         {
-            const auto entry_count = tetengo_lattice_vocabulary_findEntries(p_vocabulary, key_mizuho.c_str(), nullptr);
+            const auto* const p_key = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+            BOOST_SCOPE_EXIT(p_key)
+            {
+                tetengo_lattice_input_destroy(p_key);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_count = tetengo_lattice_vocabulary_findEntries(p_vocabulary, p_key, nullptr);
             BOOST_TEST(entry_count == 1U);
 
             std::vector<tetengo_lattice_entryView_t> entry_values{ entry_count };
             const auto                               entry_count_again =
-                tetengo_lattice_vocabulary_findEntries(p_vocabulary, key_mizuho.c_str(), std::data(entry_values));
+                tetengo_lattice_vocabulary_findEntries(p_vocabulary, p_key, std::data(entry_values));
             BOOST_TEST_REQUIRE(entry_count_again == 1U);
 
             BOOST_TEST((std::string{ entry_values[0].key.p_head, entry_values[0].key.length } == key_mizuho));
@@ -359,12 +366,18 @@ BOOST_AUTO_TEST_CASE(find_entries)
             BOOST_TEST(entry_values[0].cost == 42);
         }
         {
-            const auto entry_count = tetengo_lattice_vocabulary_findEntries(p_vocabulary, key_sakura.c_str(), nullptr);
+            const auto* const p_key = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+            BOOST_SCOPE_EXIT(p_key)
+            {
+                tetengo_lattice_input_destroy(p_key);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_count = tetengo_lattice_vocabulary_findEntries(p_vocabulary, p_key, nullptr);
             BOOST_TEST(entry_count == 2U);
 
             std::vector<tetengo_lattice_entryView_t> entry_values{ entry_count };
             const auto                               entry_count_again =
-                tetengo_lattice_vocabulary_findEntries(p_vocabulary, key_sakura.c_str(), std::data(entry_values));
+                tetengo_lattice_vocabulary_findEntries(p_vocabulary, p_key, std::data(entry_values));
             BOOST_TEST_REQUIRE(entry_count_again == 2U);
 
             BOOST_TEST((std::string{ entry_values[0].key.p_head, entry_values[0].key.length } == key_sakura));
@@ -379,7 +392,13 @@ BOOST_AUTO_TEST_CASE(find_entries)
             BOOST_TEST(entry_values[1].cost == 2424);
         }
         {
-            const auto entry_count = tetengo_lattice_vocabulary_findEntries(nullptr, key_sakura.c_str(), nullptr);
+            const auto* const p_key = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+            BOOST_SCOPE_EXIT(p_key)
+            {
+                tetengo_lattice_input_destroy(p_key);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_count = tetengo_lattice_vocabulary_findEntries(nullptr, p_key, nullptr);
             BOOST_TEST(entry_count == 0U);
         }
         {

@@ -22,14 +22,15 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
-#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>
 
+#include "tetengo_lattice_input.hpp"
 #include "tetengo_lattice_vocabulary.hpp"
 
 
@@ -144,7 +145,7 @@ void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* cons
 
 size_t tetengo_lattice_vocabulary_findEntries(
     const tetengo_lattice_vocabulary_t* const p_vocabulary,
-    const char* const                         key,
+    const tetengo_lattice_input_t* const      p_key,
     tetengo_lattice_entryView_t* const        p_entries)
 {
     try
@@ -153,12 +154,12 @@ size_t tetengo_lattice_vocabulary_findEntries(
         {
             throw std::invalid_argument{ "p_vocabulary is NULL." };
         }
-        if (!key)
+        if (!p_key)
         {
-            throw std::invalid_argument{ "key is NULL." };
+            throw std::invalid_argument{ "p_key is NULL." };
         }
 
-        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(tetengo::lattice::string_input{ key });
+        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(*p_key->p_cpp_input);
 
         if (p_entries)
         {
