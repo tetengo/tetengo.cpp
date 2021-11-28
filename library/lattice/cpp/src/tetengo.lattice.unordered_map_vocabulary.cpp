@@ -1,5 +1,5 @@
 /*! \file
-    \brief An unordered_map vocabulary.
+    \brief An unordered map vocabulary.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */

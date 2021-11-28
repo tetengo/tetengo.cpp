@@ -1,5 +1,5 @@
 /*! \file
-    \brief An unordered_map vocabulary.
+    \brief An unordered map vocabulary.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -26,7 +26,7 @@ namespace tetengo::lattice
 
 
     /*!
-        \brief An unordered_map vocabulary.
+        \brief An unordered map vocabulary.
     */
     class unordered_map_vocabulary : public vocabulary
     {
@@ -34,7 +34,7 @@ namespace tetengo::lattice
         // constructors and destructor
 
         /*!
-            \brief Creates an unordered_map vocabulary.
+            \brief Creates an unordered map vocabulary.
 
             \param entries        Entries.
             \param connections    Connections.
@@ -48,7 +48,7 @@ namespace tetengo::lattice
             std::function<bool(const entry_view&, const entry_view&)> entry_equal_to);
 
         /*!
-            \brief Destroys the unordered_map vocabulary.
+            \brief Destroys the unordered map vocabulary.
         */
         virtual ~unordered_map_vocabulary();
 

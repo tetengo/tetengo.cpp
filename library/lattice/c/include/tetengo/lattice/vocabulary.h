@@ -25,7 +25,7 @@ typedef struct tetengo_lattice_vocabulary_tag tetengo_lattice_vocabulary_t;
 
 
 /*!
-    \brief Creates an unordered_map vocabulary.
+    \brief Creates an unordered map vocabulary.
 
     \param p_entries        A pointer to entries.
     \param entry_count      An entry count.
@@ -34,7 +34,7 @@ typedef struct tetengo_lattice_vocabulary_tag tetengo_lattice_vocabulary_t;
     \param p_entry_hash     A pointer to a hash function for an entry.
     \param p_entry_equal_to A pointer to an eqaul_to function for an entry.
 
-    \return A pointer to an unordered_map vocabulary.
+    \return A pointer to an unordered map vocabulary.
             Or NULL when p_entries and/or p_connections are NULL, and entry_count and/or connection_count are greater
             than 0.
 */
