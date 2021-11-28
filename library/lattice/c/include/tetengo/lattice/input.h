@@ -58,6 +58,20 @@ tetengo_lattice_input_t*
 tetengo_lattice_input_createSubrange(const tetengo_lattice_input_t* p_input, size_t offset, size_t length);
 
 /*!
+    \brief Appends another input.
+
+    The ownership of the input pointed by p_another is transferred into this input.
+    There is no need to destroy the input p_another after calling this function.
+
+    \param p_input   A pointer to an input.
+    \param p_another A pointer to another input.
+
+    \retval non-zero When p_another is appended to this input.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_input_append(tetengo_lattice_input_t* p_input, tetengo_lattice_input_t* p_another);
+
+/*!
     \brief Returns the value of a string input.
 
     \param p_string_input A pointer to a string input.

@@ -290,6 +290,41 @@ BOOST_AUTO_TEST_CASE(append)
         BOOST_CHECK_THROW(input.append(std::unique_ptr<tetengo::lattice::string_input>{}), std::invalid_argument);
         BOOST_CHECK_THROW(input.append(std::make_unique<another_input>()), std::invalid_argument);
     }
+
+    {
+        auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        auto* const p_another = tetengo_lattice_input_createStringInput("fuga");
+        BOOST_TEST_REQUIRE(p_another);
+        const auto result = tetengo_lattice_input_append(p_input, p_another);
+        BOOST_TEST_REQUIRE(result);
+
+        BOOST_TEST(std::string{ tetengo_lattice_stringInput_value(p_input) } == "hogefuga");
+    }
+    {
+        auto* const p_another = tetengo_lattice_input_createStringInput("fuga");
+        BOOST_TEST_REQUIRE(p_another);
+        const auto result = tetengo_lattice_input_append(nullptr, p_another);
+        BOOST_TEST(!result);
+    }
+    {
+        auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        const auto result = tetengo_lattice_input_append(p_input, nullptr);
+        BOOST_TEST(!result);
+    }
 }
 
 

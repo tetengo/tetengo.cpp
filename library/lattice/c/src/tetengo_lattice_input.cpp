@@ -12,6 +12,9 @@
 
 #include <stddef.h>
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
 #include <tetengo/lattice/input.h>
 #include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/string_input.hpp>
@@ -84,6 +87,35 @@ tetengo_lattice_input_t* tetengo_lattice_input_createSubrange(
     catch (...)
     {
         return nullptr;
+    }
+}
+
+int tetengo_lattice_input_append(tetengo_lattice_input_t* const p_input, tetengo_lattice_input_t* const p_another)
+{
+    try
+    {
+        BOOST_SCOPE_EXIT(p_another)
+        {
+            tetengo_lattice_input_destroy(p_another);
+        }
+        BOOST_SCOPE_EXIT_END;
+
+        if (!p_input)
+        {
+            throw std::invalid_argument{ "p_input is NULL." };
+        }
+        if (!p_another)
+        {
+            throw std::invalid_argument{ "p_another is NULL." };
+        }
+
+        p_input->p_cpp_input->append(std::move(p_another->p_cpp_input));
+
+        return 1;
+    }
+    catch (...)
+    {
+        return 0;
     }
 }
 
