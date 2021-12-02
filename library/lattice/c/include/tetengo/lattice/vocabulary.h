@@ -47,6 +47,64 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
     int (*p_entry_equal_to)(const tetengo_lattice_entryView_t*, const tetengo_lattice_entryView_t*));
 
 /*!
+    \brief A custom vocabulary definition.
+*/
+typedef struct tetengo_lattice_customVocabularyDefinition_tag
+{
+    //! The id.
+    int id;
+
+    //! The pointer to the context.
+    void* p_context;
+
+    /*!
+        \brief The procedure for findEntries.
+
+        \param p_context    A pointer to the context.
+        \param p_vocabulary A pointer to a vocabulary.
+        \param p_key        A pointer to a key.
+        \param p_entries    The storage for output entries. Can be NULL.
+
+        \return An entry count.
+    */
+    size_t (*find_entries_proc)(
+        void*                               p_context,
+        const tetengo_lattice_vocabulary_t* p_vocabulary,
+        const tetengo_lattice_input_t*      p_key,
+        tetengo_lattice_entryView_t*        p_entries);
+
+    /*!
+        \brief The procedure for findConnection.
+
+        \param p_context    A pointer to the context.
+        \param p_vocabulary A pointer to a vocabulary.
+        \param p_from       A pointer to an origin node.
+        \param p_to         A pointer to a destination entry.
+        \param p_connection The storage for an output connection.
+
+        \retval non-zero When an output connection is stored.
+        \retval 0        Otherwise.
+    */
+    int (*find_connection_proc)(
+        void*                               p_context,
+        const tetengo_lattice_vocabulary_t* p_vocabulary,
+        const tetengo_lattice_node_t*       p_from,
+        const tetengo_lattice_entryView_t*  p_to,
+        tetengo_lattice_connection_t*       p_connection);
+
+} tetengo_lattice_customVocabularyDefinition_t;
+
+/*!
+    \brief Creates a custom vocabulary.
+
+    \param p_definition A pointer to a definition.
+
+    \return A pointer to a custom vocabulary. Or NULL when p_definition NULL
+*/
+tetengo_lattice_vocabulary_t*
+tetengo_lattice_vocabulary_createCustomVocabulary(const tetengo_lattice_customVocabularyDefinition_t* p_definition);
+
+/*!
     \brief Destroys a vocabulary.
 
     \param p_vocabulary A pointer to a vocabulary.
