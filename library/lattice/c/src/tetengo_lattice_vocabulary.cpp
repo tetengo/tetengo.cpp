@@ -33,6 +33,11 @@
 #include "tetengo_lattice_input.hpp"
 #include "tetengo_lattice_vocabulary.hpp"
 
+namespace tetengo::lattice
+{
+    class input;
+}
+
 
 tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
     const tetengo_lattice_keyEntriesPair_t* const            p_entries,
@@ -159,13 +164,33 @@ namespace
         // virtual functions
 
         virtual std::vector<tetengo::lattice::entry_view>
-        find_entries_impl(const tetengo::lattice::input& /*key*/) const override
+        find_entries_impl(const tetengo::lattice::input& key) const override
         {
+            const tetengo_lattice_input_t c_key{ key };
+            const auto                    entry_count = m_p_definition->find_entries_proc(m_p_context, &c_key, nullptr);
+            if (entry_count == 0)
+            {
+                return std::vector<tetengo::lattice::entry_view>{};
+            }
+
+            std::vector<tetengo_lattice_entryView_t> c_entry_views(entry_count);
+            const auto                               entry_count_again =
+                m_p_definition->find_entries_proc(m_p_context, &c_key, std::data(c_entry_views));
+            if (entry_count_again != entry_count)
+            {
+                return std::vector<tetengo::lattice::entry_view>{};
+            }
+
             std::vector<tetengo::lattice::entry_view> entries{};
-
-            // tetengo_lattice_input_t c_key{ key.create_subrange(0, key.length()) };
-            // const auto              entry_count = m_p_definition->find_entries_proc(m_p_context, &c_key, nullptr);
-
+            entries.reserve(entry_count);
+            for (auto i = static_cast<std::size_t>(0); i < entry_count; ++i)
+            {
+                const auto& c_entry_view = c_entry_views[i];
+                entries.emplace_back(
+                    std::string_view{ c_entry_view.key.p_head, c_entry_view.key.length },
+                    reinterpret_cast<const std::any*>(c_entry_view.value_handle),
+                    c_entry_view.cost);
+            }
             return entries;
         }
 
@@ -222,7 +247,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
             throw std::invalid_argument{ "p_key is NULL." };
         }
 
-        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(*p_key->p_cpp_input);
+        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(p_key->cpp_input());
 
         if (p_entries)
         {

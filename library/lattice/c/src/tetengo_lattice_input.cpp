@@ -59,7 +59,7 @@ size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* const p_input
             throw std::invalid_argument{ "p_input is NULL." };
         }
 
-        return p_input->p_cpp_input->length();
+        return p_input->cpp_input().length();
     }
     catch (...)
     {
@@ -79,7 +79,7 @@ tetengo_lattice_input_t* tetengo_lattice_input_createSubrange(
             throw std::invalid_argument{ "p_input is NULL." };
         }
 
-        auto p_cpp_subrange = p_input->p_cpp_input->create_subrange(offset, length);
+        auto p_cpp_subrange = p_input->cpp_input().create_subrange(offset, length);
 
         auto p_instance = std::make_unique<tetengo_lattice_input_t>(std::move(p_cpp_subrange));
         return p_instance.release();
@@ -109,7 +109,7 @@ int tetengo_lattice_input_append(tetengo_lattice_input_t* const p_input, tetengo
             throw std::invalid_argument{ "p_another is NULL." };
         }
 
-        p_input->p_cpp_input->append(std::move(p_another->p_cpp_input));
+        p_input->p_cpp_input()->append(std::move(p_another->p_cpp_input()));
 
         return 1;
     }
@@ -127,12 +127,12 @@ const char* tetengo_lattice_stringInput_value(const tetengo_lattice_input_t* con
         {
             throw std::invalid_argument{ "p_string_input is NULL." };
         }
-        if (!p_string_input->p_cpp_input->is<tetengo::lattice::string_input>())
+        if (!p_string_input->cpp_input().is<tetengo::lattice::string_input>())
         {
             throw std::invalid_argument{ "p_string_input is not a string input." };
         }
 
-        return p_string_input->p_cpp_input->as<tetengo::lattice::string_input>().value().c_str();
+        return p_string_input->cpp_input().as<tetengo::lattice::string_input>().value().c_str();
     }
     catch (...)
     {
@@ -148,7 +148,7 @@ int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* const p_string
         {
             throw std::invalid_argument{ "p_string_input is NULL." };
         }
-        if (!p_string_input->p_cpp_input->is<tetengo::lattice::string_input>())
+        if (!p_string_input->cpp_input().is<tetengo::lattice::string_input>())
         {
             throw std::invalid_argument{ "p_string_input is not a string input." };
         }
@@ -157,7 +157,7 @@ int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* const p_string
             throw std::invalid_argument{ "value is NULL." };
         }
 
-        p_string_input->p_cpp_input->as<tetengo::lattice::string_input>().value() = value;
+        p_string_input->p_cpp_input()->as<tetengo::lattice::string_input>().value() = value;
 
         return 1;
     }
