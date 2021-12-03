@@ -133,6 +133,69 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
     }
 }
 
+namespace
+{
+    class custom_vocabulary : public tetengo::lattice::vocabulary
+    {
+    public:
+        // constructors and destructor
+
+        custom_vocabulary(
+            const tetengo_lattice_customVocabularyDefinition_t* const p_definition,
+            void* const                                               p_context) :
+        m_p_definition{ p_definition },
+        m_p_context{ p_context }
+        {}
+
+
+    private:
+        // variables
+
+        const tetengo_lattice_customVocabularyDefinition_t* const m_p_definition;
+
+        void* const m_p_context;
+
+
+        // virtual functions
+
+        virtual std::vector<tetengo::lattice::entry_view>
+        find_entries_impl(const tetengo::lattice::input& /*key*/) const override
+        {
+            std::vector<tetengo::lattice::entry_view> entries{};
+
+            // tetengo_lattice_input_t c_key{ key.create_subrange(0, key.length()) };
+            // const auto              entry_count = m_p_definition->find_entries_proc(m_p_context, &c_key, nullptr);
+
+            return entries;
+        }
+
+        virtual tetengo::lattice::connection find_connection_impl(
+            const tetengo::lattice::node& /*from*/,
+            const tetengo::lattice::entry_view& /*to*/) const override
+        {
+            return tetengo::lattice::connection{ 0 };
+        }
+    };
+
+}
+
+tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createCustomVocabulary(
+    const tetengo_lattice_customVocabularyDefinition_t* const p_definition,
+    void* const                                               p_context)
+{
+    try
+    {
+        auto p_cpp_vocabulary = std::make_unique<custom_vocabulary>(p_definition, p_context);
+
+        auto p_instance = std::make_unique<tetengo_lattice_vocabulary_t>(std::move(p_cpp_vocabulary));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
 void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* const p_vocabulary)
 {
     try
