@@ -140,7 +140,7 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice,
             throw std::invalid_argument{ "p_input is NULL." };
         }
 
-        p_lattice->p_cpp_lattice->push_back(std::move(p_input->p_cpp_input));
+        p_lattice->p_cpp_lattice->push_back(std::move(p_input->p_cpp_input()));
 
         return 1;
     }

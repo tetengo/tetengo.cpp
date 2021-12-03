@@ -33,6 +33,11 @@
 #include "tetengo_lattice_input.hpp"
 #include "tetengo_lattice_vocabulary.hpp"
 
+namespace tetengo::lattice
+{
+    class input;
+}
+
 
 tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
     const tetengo_lattice_keyEntriesPair_t* const            p_entries,
@@ -133,6 +138,113 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
     }
 }
 
+namespace
+{
+    class custom_vocabulary : public tetengo::lattice::vocabulary
+    {
+    public:
+        // constructors and destructor
+
+        custom_vocabulary(
+            const tetengo_lattice_customVocabularyDefinition_t* const p_definition,
+            void* const                                               p_context) :
+        m_p_definition{ p_definition },
+        m_p_context{ p_context }
+        {}
+
+
+    private:
+        // variables
+
+        const tetengo_lattice_customVocabularyDefinition_t* const m_p_definition;
+
+        void* const m_p_context;
+
+
+        // virtual functions
+
+        virtual std::vector<tetengo::lattice::entry_view>
+        find_entries_impl(const tetengo::lattice::input& key) const override
+        {
+            const tetengo_lattice_input_t c_key{ key };
+            const auto                    entry_count = m_p_definition->find_entries_proc(m_p_context, &c_key, nullptr);
+            if (entry_count == 0)
+            {
+                return std::vector<tetengo::lattice::entry_view>{};
+            }
+
+            std::vector<tetengo_lattice_entryView_t> c_entry_views(entry_count);
+            const auto                               entry_count_again =
+                m_p_definition->find_entries_proc(m_p_context, &c_key, std::data(c_entry_views));
+            if (entry_count_again != entry_count)
+            {
+                throw std::logic_error{ "Inconsistent entry count." };
+            }
+
+            std::vector<tetengo::lattice::entry_view> entries{};
+            entries.reserve(entry_count);
+            for (auto i = static_cast<std::size_t>(0); i < entry_count; ++i)
+            {
+                const auto& c_entry_view = c_entry_views[i];
+                entries.emplace_back(
+                    std::string_view{ c_entry_view.key.p_head, c_entry_view.key.length },
+                    reinterpret_cast<const std::any*>(c_entry_view.value_handle),
+                    c_entry_view.cost);
+            }
+            return entries;
+        }
+
+        virtual tetengo::lattice::connection
+        find_connection_impl(const tetengo::lattice::node& from, const tetengo::lattice::entry_view& to) const override
+        {
+            if (from.value().type() != typeid(const void*))
+            {
+                throw std::invalid_argument{ "Unexcepted the value type of from." };
+            }
+            if (to.value()->type() != typeid(const void*))
+            {
+                throw std::invalid_argument{ "Unexcepted the value type of to." };
+            }
+
+            const tetengo_lattice_node_t      c_from{ { from.key().data(), from.key().length() },
+                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&from.value()),
+                                                 from.preceding_step(),
+                                                 std::data(from.preceding_edge_costs()),
+                                                 std::size(from.preceding_edge_costs()),
+                                                 from.best_preceding_node(),
+                                                 from.node_cost(),
+                                                 from.path_cost() };
+            const tetengo_lattice_entryView_t c_to{ { to.key().data(), to.key().length() },
+                                                    reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(to.value()),
+                                                    to.cost() };
+            tetengo_lattice_connection_t      c_connection{};
+            const auto result = m_p_definition->find_connection_proc(m_p_context, &c_from, &c_to, &c_connection);
+            if (!result)
+            {
+                throw std::runtime_error{ "Cannot obtain the connection." };
+            }
+            return tetengo::lattice::connection{ c_connection.cost };
+        }
+    };
+}
+
+tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createCustomVocabulary(
+    const tetengo_lattice_customVocabularyDefinition_t* const p_definition,
+    void* const                                               p_context)
+{
+    try
+    {
+        auto p_cpp_vocabulary = std::make_unique<custom_vocabulary>(p_definition, p_context);
+
+        auto p_instance = std::make_unique<tetengo_lattice_vocabulary_t>(std::move(p_cpp_vocabulary));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
 void tetengo_lattice_vocabulary_destroy(const tetengo_lattice_vocabulary_t* const p_vocabulary)
 {
     try
@@ -159,7 +271,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
             throw std::invalid_argument{ "p_key is NULL." };
         }
 
-        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(*p_key->p_cpp_input);
+        const auto found = p_vocabulary->p_cpp_vocabulary->find_entries(p_key->cpp_input());
 
         if (p_entries)
         {

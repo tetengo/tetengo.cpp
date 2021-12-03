@@ -19,6 +19,7 @@ EXPORTS
 	tetengo_lattice_node_equal
 	tetengo_lattice_node_isBos
 	tetengo_lattice_vocabulary_createUnorderedMapVocabulary
+	tetengo_lattice_vocabulary_createCustomVocabulary
 	tetengo_lattice_vocabulary_destroy
 	tetengo_lattice_vocabulary_findEntries
 	tetengo_lattice_vocabulary_findConnection
