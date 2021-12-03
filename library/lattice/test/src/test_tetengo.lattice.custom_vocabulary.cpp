@@ -59,9 +59,17 @@ namespace
         void* const /*p_context*/,
         const tetengo_lattice_node_t* const /*p_from*/,
         const tetengo_lattice_entryView_t* const /*p_to*/,
-        tetengo_lattice_connection_t* const /*p_connection*/)
+        tetengo_lattice_connection_t* const p_connection)
     {
-        return 0;
+        if (p_connection)
+        {
+            p_connection->cost = 42;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 
@@ -77,11 +85,11 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_customVocabularyDefinition_t definition{
-        42, nullptr, find_entries_procedure, find_connection_procedure
-    };
-    std::vector<std::string> context{ "hoge", "fuga" };
-    const auto* const        p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    const tetengo_lattice_customVocabularyDefinition_t definition{ nullptr,
+                                                                   find_entries_procedure,
+                                                                   find_connection_procedure };
+    std::vector<std::string>                           context{ "hoge", "fuga" };
+    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
     BOOST_SCOPE_EXIT(p_vocabulary)
     {
         tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -94,11 +102,11 @@ BOOST_AUTO_TEST_CASE(find_entries)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_customVocabularyDefinition_t definition{
-        42, nullptr, find_entries_procedure, find_connection_procedure
-    };
-    std::vector<std::string> context{ "hoge", "fuga" };
-    const auto* const        p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    const tetengo_lattice_customVocabularyDefinition_t definition{ nullptr,
+                                                                   find_entries_procedure,
+                                                                   find_connection_procedure };
+    std::vector<std::string>                           context{ "hoge", "fuga" };
+    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
     BOOST_SCOPE_EXIT(p_vocabulary)
     {
         tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -135,7 +143,43 @@ BOOST_AUTO_TEST_CASE(find_connection)
 {
     BOOST_TEST_PASSPOINT();
 
-    BOOST_WARN_MESSAGE(false, "Implemtn it.");
+    const tetengo_lattice_customVocabularyDefinition_t definition{ nullptr,
+                                                                   find_entries_procedure,
+                                                                   find_connection_procedure };
+    std::vector<std::string>                           context{ "hoge", "fuga" };
+    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    BOOST_SCOPE_EXIT(p_vocabulary)
+    {
+        tetengo_lattice_vocabulary_destroy(p_vocabulary);
+    }
+    BOOST_SCOPE_EXIT_END;
+    BOOST_TEST_REQUIRE(p_vocabulary);
+
+    const std::string_view            key_from{ "key_from" };
+    const std::any                    value_from{ reinterpret_cast<const void*>("value_from") };
+    const tetengo_lattice_node_t      from{ { key_from.data(), key_from.length() },
+                                       reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value_from),
+                                       0,
+                                       nullptr,
+                                       0,
+                                       0,
+                                       0,
+                                       0 };
+    const std::string_view            key_to{ "key_to" };
+    const std::any                    value_to{ reinterpret_cast<const void*>("value_to") };
+    const tetengo_lattice_entryView_t to{ { key_to.data(), key_to.length() },
+                                          reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value_to),
+                                          0 };
+    {
+        tetengo_lattice_connection_t connection{};
+        const auto result = tetengo_lattice_vocabulary_findConnection(p_vocabulary, &from, &to, &connection);
+        BOOST_TEST_REQUIRE(result);
+        BOOST_TEST(connection.cost == 42);
+    }
+    {
+        const auto result = tetengo_lattice_vocabulary_findConnection(p_vocabulary, &from, &to, nullptr);
+        BOOST_TEST(!result);
+    }
 }
 
 

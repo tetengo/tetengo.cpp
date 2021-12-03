@@ -51,9 +51,6 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
 */
 typedef struct tetengo_lattice_customVocabularyDefinition_tag
 {
-    /*! The id. */
-    int id;
-
     /*! The pointer to the context. */
     void* p_context;
 
