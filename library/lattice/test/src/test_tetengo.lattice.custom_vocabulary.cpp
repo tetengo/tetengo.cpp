@@ -5,6 +5,8 @@
 */
 
 #include <any>
+#include <cassert>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -27,23 +29,25 @@
 namespace
 {
     size_t find_entries_procedure(
-        void* const /*p_context*/,
+        void* const p_context,
         const tetengo_lattice_input_t* const /*p_key*/,
         tetengo_lattice_entryView_t* const p_entries)
     {
         if (p_entries)
         {
+            const auto* const p_values = reinterpret_cast<std::vector<std::string>*>(p_context);
+            assert(std::size(*p_values) == 2U);
             static const std::string_view             cpp_key0{ "key0" };
             static const tetengo_lattice_stringView_t key0{ cpp_key0.data(), cpp_key0.length() };
             p_entries[0].key = key0;
-            static const std::any value0{ reinterpret_cast<const void*>("value0") };
+            static const std::any value0{ reinterpret_cast<const void*>((*p_values)[0].c_str()) };
             p_entries[0].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value0);
             p_entries[0].cost = 0;
 
             static const std::string_view             cpp_key1{ "key1" };
             static const tetengo_lattice_stringView_t key1{ cpp_key1.data(), cpp_key1.length() };
             p_entries[1].key = key1;
-            static const std::any value1{ reinterpret_cast<const void*>("value1") };
+            static const std::any value1{ reinterpret_cast<const void*>((*p_values)[1].c_str()) };
             p_entries[1].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value1);
             p_entries[1].cost = 1;
         }
@@ -76,8 +80,8 @@ BOOST_AUTO_TEST_CASE(construction)
     const tetengo_lattice_customVocabularyDefinition_t definition{
         42, nullptr, find_entries_procedure, find_connection_procedure
     };
-    std::string       context{ "hoge" };
-    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    std::vector<std::string> context{ "hoge", "fuga" };
+    const auto* const        p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
     BOOST_SCOPE_EXIT(p_vocabulary)
     {
         tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -93,8 +97,8 @@ BOOST_AUTO_TEST_CASE(find_entries)
     const tetengo_lattice_customVocabularyDefinition_t definition{
         42, nullptr, find_entries_procedure, find_connection_procedure
     };
-    std::string       context{ "hoge" };
-    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    std::vector<std::string> context{ "hoge", "fuga" };
+    const auto* const        p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
     BOOST_SCOPE_EXIT(p_vocabulary)
     {
         tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -118,12 +122,12 @@ BOOST_AUTO_TEST_CASE(find_entries)
     BOOST_TEST((std::string_view{ entries[0].key.p_head, entries[0].key.length } == "key0"));
     const auto* const entry_value0 = reinterpret_cast<const char*>(
         *std::any_cast<const void*>(reinterpret_cast<const std::any*>(entries[0].value_handle)));
-    BOOST_TEST((std::string_view{ entry_value0 } == "value0"));
+    BOOST_TEST((std::string_view{ entry_value0 } == "hoge"));
     BOOST_TEST(entries[0].cost == 0);
     BOOST_TEST((std::string_view{ entries[1].key.p_head, entries[1].key.length } == "key1"));
     const auto* const entry_value1 = reinterpret_cast<const char*>(
         *std::any_cast<const void*>(reinterpret_cast<const std::any*>(entries[1].value_handle)));
-    BOOST_TEST((std::string_view{ entry_value1 } == "value1"));
+    BOOST_TEST((std::string_view{ entry_value1 } == "fuga"));
     BOOST_TEST(entries[1].cost == 1);
 }
 
