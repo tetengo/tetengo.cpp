@@ -7,6 +7,7 @@ EXPORTS
 	tetengo_lattice_lattice_pushBack
 	tetengo_lattice_lattice_settle
 	tetengo_lattice_input_createStringInput
+	tetengo_lattice_input_createCustomInput
 	tetengo_lattice_input_destroy
 	tetengo_lattice_input_length
 	tetengo_lattice_input_createSubrange

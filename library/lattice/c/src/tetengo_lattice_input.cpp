@@ -40,6 +40,68 @@ tetengo_lattice_input_t* tetengo_lattice_input_createStringInput(const char* con
     }
 }
 
+namespace
+{
+    class custom_input : public tetengo::lattice::input
+    {
+    public:
+        // constructors and destructor
+
+        explicit custom_input(const tetengo_lattice_customInputDefinition_t* const p_definition) :
+        m_p_definition{ p_definition }
+        {}
+
+        virtual ~custom_input() = default;
+
+
+    private:
+        // variables
+
+        const tetengo_lattice_customInputDefinition_t* const m_p_definition;
+
+
+        // virtual functions
+
+        virtual std::size_t length_impl() const override
+        {
+            throw std::logic_error{ "Implement it." };
+        }
+
+        virtual std::unique_ptr<input>
+        create_subrange_impl(const std::size_t /*offset*/, const std::size_t /*length*/) const override
+        {
+            throw std::logic_error{ "Implement it." };
+        }
+
+        virtual void append_impl(std::unique_ptr<input>&& /*p_another*/) override
+        {
+            throw std::logic_error{ "Implement it." };
+        }
+    };
+
+}
+
+tetengo_lattice_input_t*
+tetengo_lattice_input_createCustomInput(const tetengo_lattice_customInputDefinition_t* const p_definition)
+{
+    try
+    {
+        if (!p_definition)
+        {
+            throw std::invalid_argument{ "p_definition is NULL." };
+        }
+
+        auto p_cpp_input = std::make_unique<custom_input>(p_definition);
+
+        auto p_instance = std::make_unique<tetengo_lattice_input_t>(std::move(p_cpp_input));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
 void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* const p_input)
 {
     try
