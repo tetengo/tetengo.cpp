@@ -10,6 +10,7 @@ sources = \
     test_tetengo.lattice.connection.cpp \
     test_tetengo.lattice.constraint.cpp \
     test_tetengo.lattice.constraint_element.cpp \
+    test_tetengo.lattice.custom_input.cpp \
     test_tetengo.lattice.custom_vocabulary.cpp \
     test_tetengo.lattice.entry.cpp \
     test_tetengo.lattice.input.cpp \
