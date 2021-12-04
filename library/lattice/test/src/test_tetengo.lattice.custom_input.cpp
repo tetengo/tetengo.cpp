@@ -6,6 +6,8 @@
 
 #include <vector>
 
+#include <stddef.h>
+
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>

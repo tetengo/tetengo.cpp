@@ -5,12 +5,11 @@
 */
 
 #include "tetengo_lattice_input.hpp"
+#include <cstddef>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <utility>
-
-#include <stddef.h>
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
@@ -64,6 +63,7 @@ namespace
 
         virtual std::size_t length_impl() const override
         {
+            [[maybe_unused]] const auto length = m_p_definition->length_proc(m_p_definition->p_context);
             throw std::logic_error{ "Implement it." };
         }
 
