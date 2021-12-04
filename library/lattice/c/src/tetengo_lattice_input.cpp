@@ -63,8 +63,7 @@ namespace
 
         virtual std::size_t length_impl() const override
         {
-            [[maybe_unused]] const auto length = m_p_definition->length_proc(m_p_definition->p_context);
-            throw std::logic_error{ "Implement it." };
+            return m_p_definition->length_proc(m_p_definition->p_context);
         }
 
         virtual std::unique_ptr<input>
