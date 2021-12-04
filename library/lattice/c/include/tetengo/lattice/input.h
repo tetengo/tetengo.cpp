@@ -46,16 +46,22 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     size_t (*length_proc)(void* p_context);
 
     /*!
-        \brief The procedure for createSubrange.
+        \brief The procedure for creating a subrange context.
 
-        \param p_context A pointer to the context.
+        \param p_context A pointer to a superrange context.
         \param offset    An offset.
         \param length    A length.
 
-        \return A pointer to a subrange.
-                Or NULL when p_input is NULL, or offset and/or length are out of the range of the input.
+        \return A pointer to a subrange context. Or offset and/or length are out of the range of the input.
     */
-    tetengo_lattice_input_t* (*create_subrange_proc)(void* p_context, size_t offset, size_t length);
+    void* (*create_subrange_context_proc)(void* p_context, size_t offset, size_t length);
+
+    /*!
+        \brief The procedure for destroying a subrange context.
+
+        \param p_context A pointer to a subrange context.
+    */
+    void (*destroy_subraneg_context_proc)(void* p_context);
 
     /*!
         \brief The procedure for append.

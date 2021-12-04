@@ -46,30 +46,47 @@ namespace
     public:
         // constructors and destructor
 
-        explicit custom_input(const tetengo_lattice_customInputDefinition_t* const p_definition) :
-        m_p_definition{ p_definition }
+        custom_input(const tetengo_lattice_customInputDefinition_t& definition, const bool is_subrange) :
+        m_definition{ definition },
+        m_is_subrange{ is_subrange }
         {}
 
-        virtual ~custom_input() = default;
+        virtual ~custom_input()
+        {
+            if (m_is_subrange)
+            {
+                m_definition.destroy_subraneg_context_proc(m_definition.p_context);
+            }
+        }
 
 
     private:
         // variables
 
-        const tetengo_lattice_customInputDefinition_t* const m_p_definition;
+        const tetengo_lattice_customInputDefinition_t m_definition;
+
+        const bool m_is_subrange;
 
 
         // virtual functions
 
         virtual std::size_t length_impl() const override
         {
-            return m_p_definition->length_proc(m_p_definition->p_context);
+            return m_definition.length_proc(m_definition.p_context);
         }
 
         virtual std::unique_ptr<input>
-        create_subrange_impl(const std::size_t /*offset*/, const std::size_t /*length*/) const override
+        create_subrange_impl(const std::size_t offset, const std::size_t length) const override
         {
-            throw std::logic_error{ "Implement it." };
+            if (offset + length > this->length())
+            {
+                throw std::out_of_range{ "offset and/or length are out of the range." };
+            }
+
+            tetengo_lattice_customInputDefinition_t subrange_definition = m_definition;
+            subrange_definition.p_context =
+                m_definition.create_subrange_context_proc(m_definition.p_context, offset, length);
+            return std::make_unique<custom_input>(subrange_definition, true);
         }
 
         virtual void append_impl(std::unique_ptr<input>&& /*p_another*/) override
@@ -90,7 +107,7 @@ tetengo_lattice_input_createCustomInput(const tetengo_lattice_customInputDefinit
             throw std::invalid_argument{ "p_definition is NULL." };
         }
 
-        auto p_cpp_input = std::make_unique<custom_input>(p_definition);
+        auto p_cpp_input = std::make_unique<custom_input>(*p_definition, false);
 
         auto p_instance = std::make_unique<tetengo_lattice_input_t>(std::move(p_cpp_input));
         return p_instance.release();
