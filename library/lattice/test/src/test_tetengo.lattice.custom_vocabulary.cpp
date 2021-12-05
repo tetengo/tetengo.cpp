@@ -85,11 +85,11 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_customVocabularyDefinition_t definition{ nullptr,
+    std::vector<std::string>                           context{ "hoge", "fuga" };
+    const tetengo_lattice_customVocabularyDefinition_t definition{ &context,
                                                                    find_entries_procedure,
                                                                    find_connection_procedure };
-    std::vector<std::string>                           context{ "hoge", "fuga" };
-    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition);
     BOOST_SCOPE_EXIT(p_vocabulary)
     {
         tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -102,11 +102,11 @@ BOOST_AUTO_TEST_CASE(find_entries)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_customVocabularyDefinition_t definition{ nullptr,
+    std::vector<std::string>                           context{ "hoge", "fuga" };
+    const tetengo_lattice_customVocabularyDefinition_t definition{ &context,
                                                                    find_entries_procedure,
                                                                    find_connection_procedure };
-    std::vector<std::string>                           context{ "hoge", "fuga" };
-    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition);
     BOOST_SCOPE_EXIT(p_vocabulary)
     {
         tetengo_lattice_vocabulary_destroy(p_vocabulary);
@@ -143,11 +143,11 @@ BOOST_AUTO_TEST_CASE(find_connection)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo_lattice_customVocabularyDefinition_t definition{ nullptr,
+    std::vector<std::string>                           context{ "hoge", "fuga" };
+    const tetengo_lattice_customVocabularyDefinition_t definition{ &context,
                                                                    find_entries_procedure,
                                                                    find_connection_procedure };
-    std::vector<std::string>                           context{ "hoge", "fuga" };
-    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition, &context);
+    const auto* const p_vocabulary = tetengo_lattice_vocabulary_createCustomVocabulary(&definition);
     BOOST_SCOPE_EXIT(p_vocabulary)
     {
         tetengo_lattice_vocabulary_destroy(p_vocabulary);

@@ -29,6 +29,66 @@ typedef struct tetengo_lattice_input_tag tetengo_lattice_input_t;
 tetengo_lattice_input_t* tetengo_lattice_input_createStringInput(const char* value);
 
 /*!
+    \brief A custom input definition.
+*/
+typedef struct tetengo_lattice_customInputDefinition_tag
+{
+    /*! The pointer to the context. */
+    void* p_context;
+
+    /*!
+        \brief The procedure for length.
+
+        \param p_context A pointer to the context.
+
+        \return The length. Or (size_t)-1 when p_input is NULL.
+    */
+    size_t (*length_proc)(void* p_context);
+
+    /*!
+        \brief The procedure for creating a subrange context.
+
+        \param p_context A pointer to a superrange context.
+        \param offset    An offset.
+        \param length    A length.
+
+        \return A pointer to a subrange context. Or offset and/or length are out of the range of the input.
+    */
+    void* (*create_subrange_context_proc)(void* p_context, size_t offset, size_t length);
+
+    /*!
+        \brief The procedure for destroying a subrange context.
+
+        \param p_context A pointer to a subrange context.
+    */
+    void (*destroy_subraneg_context_proc)(void* p_context);
+
+    /*!
+        \brief The procedure for append.
+
+        The content in the context pointed by p_another_context may be moved into p_context.
+
+        \param p_context         A pointer to the context.
+        \param p_another_context A pointer to another input context.
+
+        \retval non-zero When p_another is appended to this input.
+        \retval 0        Otherwise.
+    */
+    int (*append_proc)(void* p_context, void* p_another_context);
+
+} tetengo_lattice_customInputDefinition_t;
+
+/*!
+    \brief Creates a custom input.
+
+    \param p_definition A pointer to a definition.
+
+    \return A pointer to a custom input. Or NULL when p_definition NULL
+*/
+tetengo_lattice_input_t*
+tetengo_lattice_input_createCustomInput(const tetengo_lattice_customInputDefinition_t* p_definition);
+
+/*!
     \brief Destroys an input.
 
     \param p_input A pointer to an input.
@@ -90,6 +150,26 @@ const char* tetengo_lattice_stringInput_value(const tetengo_lattice_input_t* p_s
     \retval 0        Otherwise.
 */
 int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* p_string_input, const char* value);
+
+/*!
+    \brief Returns the context of a custom input.
+
+    \param p_custom_input A pointer to a custom input.
+
+    \return A pointer to the context. Or NULL when p_custom_input is NULL or is not a custom input.
+*/
+const void* tetengo_lattice_customInput_context(const tetengo_lattice_input_t* p_custom_input);
+
+/*!
+    \brief Sets a context of a custom input.
+
+    \param p_custom_input A pointer to a custom input.
+    \param p_context      A pointer to a context.
+
+    \retval non-zero When the context is set.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* p_custom_input, void* p_context);
 
 
 #if defined(__cplusplus)

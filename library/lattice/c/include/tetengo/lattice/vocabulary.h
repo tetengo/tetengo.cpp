@@ -91,13 +91,11 @@ typedef struct tetengo_lattice_customVocabularyDefinition_tag
     \brief Creates a custom vocabulary.
 
     \param p_definition A pointer to a definition.
-    \param p_context    A pointer to a context.
 
     \return A pointer to a custom vocabulary. Or NULL when p_definition NULL
 */
-tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createCustomVocabulary(
-    const tetengo_lattice_customVocabularyDefinition_t* p_definition,
-    void*                                               p_context);
+tetengo_lattice_vocabulary_t*
+tetengo_lattice_vocabulary_createCustomVocabulary(const tetengo_lattice_customVocabularyDefinition_t* p_definition);
 
 /*!
     \brief Destroys a vocabulary.

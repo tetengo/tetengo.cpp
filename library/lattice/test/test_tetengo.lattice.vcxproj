@@ -121,6 +121,7 @@
     <ClCompile Include="src\test_tetengo.lattice.connection.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.constraint.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.constraint_element.cpp" />
+    <ClCompile Include="src\test_tetengo.lattice.custom_input.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.custom_vocabulary.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.entry.cpp" />
     <ClCompile Include="src\test_tetengo.lattice.input.cpp" />
