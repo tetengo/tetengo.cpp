@@ -66,16 +66,15 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     /*!
         \brief The procedure for append.
 
-        The ownership of the input pointed by p_another is transferred into this input.
-        There is no need to destroy the input p_another after calling this function.
+        The content in the context pointed by p_another_context may be moved into p_context.
 
-        \param p_context A pointer to the context.
-        \param p_another A pointer to another input.
+        \param p_context         A pointer to the context.
+        \param p_another_context A pointer to another input context.
 
         \retval non-zero When p_another is appended to this input.
         \retval 0        Otherwise.
     */
-    int (*append_proc)(void* p_context, tetengo_lattice_input_t* p_another);
+    int (*append_proc)(void* p_context, void* p_another_context);
 
 } tetengo_lattice_customInputDefinition_t;
 

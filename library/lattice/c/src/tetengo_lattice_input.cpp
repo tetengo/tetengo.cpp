@@ -102,9 +102,19 @@ namespace
             return std::make_unique<custom_input>(subrange_definition, true);
         }
 
-        virtual void append_impl(std::unique_ptr<input>&& /*p_another*/) override
+        virtual void append_impl(std::unique_ptr<input>&& p_another) override
         {
-            throw std::logic_error{ "Implement it." };
+            if (!p_another->is<custom_input>())
+            {
+                throw std::invalid_argument{ "p_another is not a custom input." };
+            }
+
+            const auto result =
+                m_definition.append_proc(m_definition.p_context, p_another->as<custom_input>().m_definition.p_context);
+            if (!result)
+            {
+                throw std::runtime_error{ "The input appending failed." };
+            }
         }
     };
 
