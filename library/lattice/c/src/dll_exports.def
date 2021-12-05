@@ -14,6 +14,8 @@ EXPORTS
 	tetengo_lattice_input_append
 	tetengo_lattice_stringInput_value
 	tetengo_lattice_stringInput_setValue
+	tetengo_lattice_customInput_context
+	tetengo_lattice_customInput_setContext
 	tetengo_lattice_node_bos
 	tetengo_lattice_node_eos
 	tetengo_lattice_node_toNode

@@ -152,7 +152,7 @@ namespace
     private:
         // variables
 
-        const tetengo_lattice_customVocabularyDefinition_t m_definition;
+        tetengo_lattice_customVocabularyDefinition_t m_definition;
 
 
         // virtual functions

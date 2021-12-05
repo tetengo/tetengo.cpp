@@ -152,6 +152,26 @@ const char* tetengo_lattice_stringInput_value(const tetengo_lattice_input_t* p_s
 */
 int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* p_string_input, const char* value);
 
+/*!
+    \brief Returns the context of a custom input.
+
+    \param p_custom_input A pointer to a custom input.
+
+    \return A pointer to the context. Or NULL when p_custom_input is NULL or is not a custom input.
+*/
+const void* tetengo_lattice_customInput_context(const tetengo_lattice_input_t* p_custom_input);
+
+/*!
+    \brief Sets a context of a custom input.
+
+    \param p_custom_input A pointer to a custom input.
+    \param p_context      A pointer to a context.
+
+    \retval non-zero When the context is set.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* p_custom_input, void* p_context);
+
 
 #if defined(__cplusplus)
 }

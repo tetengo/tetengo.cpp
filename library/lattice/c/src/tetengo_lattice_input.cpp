@@ -60,10 +60,23 @@ namespace
         }
 
 
+        // functions
+
+        [[nodiscard]] const void* p_context() const
+        {
+            return m_definition.p_context;
+        }
+
+        void set_context(void* const p_context)
+        {
+            m_definition.p_context = p_context;
+        }
+
+
     private:
         // variables
 
-        const tetengo_lattice_customInputDefinition_t m_definition;
+        tetengo_lattice_customInputDefinition_t m_definition;
 
         const bool m_is_subrange;
 
@@ -236,6 +249,51 @@ int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* const p_string
         }
 
         p_string_input->p_cpp_input()->as<tetengo::lattice::string_input>().value() = value;
+
+        return 1;
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+const void* tetengo_lattice_customInput_context(const tetengo_lattice_input_t* const p_custom_input)
+{
+    try
+    {
+        if (!p_custom_input)
+        {
+            throw std::invalid_argument{ "p_custom_input is NULL." };
+        }
+        if (!p_custom_input->cpp_input().is<custom_input>())
+        {
+            throw std::invalid_argument{ "p_custom_input is not a custom input." };
+        }
+
+        return p_custom_input->cpp_input().as<custom_input>().p_context();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+
+int tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* const p_custom_input, void* const p_context)
+{
+    try
+    {
+        if (!p_custom_input)
+        {
+            throw std::invalid_argument{ "p_custom_input is NULL." };
+        }
+        if (!p_custom_input->cpp_input().is<custom_input>())
+        {
+            throw std::invalid_argument{ "p_custom_input is not a custom input." };
+        }
+
+        p_custom_input->p_cpp_input()->as<custom_input>().set_context(p_context);
 
         return 1;
     }
