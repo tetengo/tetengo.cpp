@@ -88,6 +88,14 @@ namespace
             return m_definition.length_proc(m_definition.p_context);
         }
 
+        virtual std::unique_ptr<input> clone_impl() const override
+        {
+            tetengo_lattice_customInputDefinition_t subrange_definition = m_definition;
+            subrange_definition.p_context = m_definition.create_subrange_context_proc(
+                m_definition.p_context, 0, m_definition.length_proc(m_definition.p_context));
+            return std::make_unique<custom_input>(subrange_definition, true);
+        }
+
         virtual std::unique_ptr<input>
         create_subrange_impl(const std::size_t offset, const std::size_t length) const override
         {

@@ -20,6 +20,11 @@ namespace tetengo::lattice
         return length_impl();
     }
 
+    std::unique_ptr<input> input::clone() const
+    {
+        return clone_impl();
+    }
+
     std::unique_ptr<input> input::create_subrange(const std::size_t offset, const std::size_t length) const
     {
         return create_subrange_impl(offset, length);

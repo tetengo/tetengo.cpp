@@ -43,6 +43,11 @@ namespace tetengo::lattice
             return m_value.length();
         }
 
+        std::unique_ptr<input> clone_impl() const
+        {
+            return std::make_unique<string_input>(m_value);
+        }
+
         std::unique_ptr<input> create_subrange_impl(const std::size_t offset, const std::size_t length) const
         {
             if (offset + length > m_value.length())
@@ -92,6 +97,11 @@ namespace tetengo::lattice
     std::size_t string_input::length_impl() const
     {
         return m_p_impl->length_impl();
+    }
+
+    std::unique_ptr<input> string_input::clone_impl() const
+    {
+        return m_p_impl->clone_impl();
     }
 
     std::unique_ptr<input> string_input::create_subrange_impl(const std::size_t offset, const std::size_t length) const

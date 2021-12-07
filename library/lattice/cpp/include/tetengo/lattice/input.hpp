@@ -40,6 +40,13 @@ namespace tetengo::lattice
         [[nodiscard]] std::size_t length() const;
 
         /*!
+            \brief Clone this input.
+
+            \return A unique pointer to a clone.
+        */
+        [[nodiscard]] std::unique_ptr<input> clone() const;
+
+        /*!
             \brief Creates a subrange.
 
             \param offset An offset.
@@ -107,6 +114,8 @@ namespace tetengo::lattice
         // virtual functions
 
         virtual std::size_t length_impl() const = 0;
+
+        virtual std::unique_ptr<input> clone_impl() const = 0;
 
         virtual std::unique_ptr<input> create_subrange_impl(std::size_t offset, std::size_t length) const = 0;
 

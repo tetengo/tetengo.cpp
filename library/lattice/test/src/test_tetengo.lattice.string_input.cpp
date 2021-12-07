@@ -28,6 +28,11 @@ namespace
             return 0;
         }
 
+        virtual std::unique_ptr<input> clone_impl() const override
+        {
+            return std::make_unique<another_input>();
+        }
+
         virtual std::unique_ptr<input>
         create_subrange_impl(const std::size_t /*offset*/, const std::size_t /*length*/) const override
         {
@@ -158,34 +163,56 @@ BOOST_AUTO_TEST_CASE(length)
     }
 }
 
+BOOST_AUTO_TEST_CASE(clone)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::string_input input{ "hoge" };
+
+        const auto p_clone = input.clone();
+        BOOST_REQUIRE(p_clone);
+        BOOST_TEST_REQUIRE(p_clone->is<tetengo::lattice::string_input>());
+        BOOST_TEST(p_clone->as<tetengo::lattice::string_input>().value() == "hoge");
+    }
+}
+
 BOOST_AUTO_TEST_CASE(create_subrange)
 {
     BOOST_TEST_PASSPOINT();
 
-    const tetengo::lattice::string_input input{ "hoge" };
-
     {
+        const tetengo::lattice::string_input input{ "hoge" };
+
         const auto p_subrange = input.create_subrange(0, 4);
         BOOST_REQUIRE(p_subrange);
         BOOST_TEST_REQUIRE(p_subrange->is<tetengo::lattice::string_input>());
         BOOST_TEST(p_subrange->as<tetengo::lattice::string_input>().value() == "hoge");
     }
     {
+        const tetengo::lattice::string_input input{ "hoge" };
+
         const auto p_subrange = input.create_subrange(1, 2);
         BOOST_REQUIRE(p_subrange);
         BOOST_TEST_REQUIRE(p_subrange->is<tetengo::lattice::string_input>());
         BOOST_TEST(p_subrange->as<tetengo::lattice::string_input>().value() == "og");
     }
     {
+        const tetengo::lattice::string_input input{ "hoge" };
+
         const auto p_subrange = input.create_subrange(4, 0);
         BOOST_REQUIRE(p_subrange);
         BOOST_TEST_REQUIRE(p_subrange->is<tetengo::lattice::string_input>());
         BOOST_TEST(p_subrange->as<tetengo::lattice::string_input>().value() == "");
     }
     {
+        const tetengo::lattice::string_input input{ "hoge" };
+
         BOOST_CHECK_THROW(const auto p_subrange = input.create_subrange(0, 5), std::out_of_range);
     }
     {
+        const tetengo::lattice::string_input input{ "hoge" };
+
         BOOST_CHECK_THROW(const auto p_subrange = input.create_subrange(5, 0), std::out_of_range);
     }
 

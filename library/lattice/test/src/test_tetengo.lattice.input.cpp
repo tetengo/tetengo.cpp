@@ -24,6 +24,11 @@ namespace
             return 42;
         }
 
+        virtual std::unique_ptr<input> clone_impl() const override
+        {
+            return std::make_unique<concrete_input>();
+        }
+
         virtual std::unique_ptr<input>
         create_subrange_impl(const std::size_t offset, const std::size_t length) const override
         {
@@ -49,6 +54,11 @@ namespace
         virtual std::size_t length_impl() const override
         {
             return 0;
+        }
+
+        virtual std::unique_ptr<input> clone_impl() const override
+        {
+            return std::make_unique<concrete_input2>();
         }
 
         virtual std::unique_ptr<input>
@@ -83,6 +93,15 @@ BOOST_AUTO_TEST_CASE(length)
     const concrete_input input_{};
 
     BOOST_TEST(input_.length() == 42U);
+}
+
+BOOST_AUTO_TEST_CASE(clone)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_input input_{};
+
+    const auto p_clone = input_.clone();
 }
 
 BOOST_AUTO_TEST_CASE(create_subrange)

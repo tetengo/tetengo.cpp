@@ -70,6 +70,8 @@ namespace tetengo::lattice
 
         virtual std::size_t length_impl() const override;
 
+        virtual std::unique_ptr<input> clone_impl() const override;
+
         virtual std::unique_ptr<input> create_subrange_impl(std::size_t offset, std::size_t length) const override;
 
         virtual void append_impl(std::unique_ptr<input>&& p_another) override;
