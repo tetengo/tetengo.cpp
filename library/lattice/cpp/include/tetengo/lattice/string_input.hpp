@@ -68,6 +68,8 @@ namespace tetengo::lattice
 
         // virtual functions
 
+        virtual bool equal_to_impl(const input& another) const override;
+
         virtual std::size_t length_impl() const override;
 
         virtual std::unique_ptr<input> clone_impl() const override;

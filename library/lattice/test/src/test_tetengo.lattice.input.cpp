@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -18,7 +19,17 @@ namespace
 {
     class concrete_input : public tetengo::lattice::input
     {
+    public:
+        explicit concrete_input(const int value = 42) : m_value{ value } {}
+
     private:
+        const int m_value;
+
+        virtual bool equal_to_impl(const input& another) const override
+        {
+            return another.as<concrete_input>().m_value == m_value;
+        }
+
         virtual std::size_t length_impl() const override
         {
             return 42;
@@ -51,6 +62,11 @@ namespace
     class concrete_input2 : public tetengo::lattice::input
     {
     private:
+        virtual bool equal_to_impl(const input& /*another*/) const override
+        {
+            return true;
+        }
+
         virtual std::size_t length_impl() const override
         {
             return 0;
@@ -84,6 +100,33 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST_PASSPOINT();
 
     const concrete_input input_{};
+}
+
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const concrete_input input1{ 42 };
+        const concrete_input input2{ 42 };
+
+        BOOST_CHECK(input1 == input2);
+        BOOST_CHECK(input2 == input1);
+    }
+    {
+        const concrete_input input1{ 42 };
+        const concrete_input input2{ 24 };
+
+        BOOST_CHECK(input1 != input2);
+        BOOST_CHECK(input2 != input1);
+    }
+    {
+        const concrete_input  input1{ 42 };
+        const concrete_input2 input2{};
+
+        BOOST_CHECK(input1 != input2);
+        BOOST_CHECK(input2 != input1);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(length)

@@ -83,6 +83,12 @@ namespace
 
         // virtual functions
 
+        virtual bool equal_to_impl(const input& another) const override
+        {
+            return m_definition.equal_to_proc(
+                m_definition.p_context, another.as<custom_input>().m_definition.p_context);
+        }
+
         virtual std::size_t length_impl() const override
         {
             return m_definition.length_proc(m_definition.p_context);

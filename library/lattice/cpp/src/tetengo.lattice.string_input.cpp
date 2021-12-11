@@ -38,6 +38,11 @@ namespace tetengo::lattice
             return m_value;
         }
 
+        bool equal_to_impl(const input& another) const
+        {
+            return another.as<string_input>().value() == m_value;
+        }
+
         std::size_t length_impl() const
         {
             return m_value.length();
@@ -92,6 +97,11 @@ namespace tetengo::lattice
     std::string& string_input::value()
     {
         return m_p_impl->value();
+    }
+
+    bool string_input::equal_to_impl(const input& another) const
+    {
+        return m_p_impl->equal_to_impl(another);
     }
 
     std::size_t string_input::length_impl() const

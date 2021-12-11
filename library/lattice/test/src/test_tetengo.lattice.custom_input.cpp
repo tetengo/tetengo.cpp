@@ -19,6 +19,14 @@
 
 namespace
 {
+    int equal_to_procedure(void* const p_context, void* const p_another_context)
+    {
+        const auto* const p_vector = reinterpret_cast<std::vector<int>*>(p_context);
+        const auto* const p_another_vector = reinterpret_cast<std::vector<int>*>(p_another_context);
+
+        return *p_vector == *p_another_vector;
+    }
+
     size_t length_procedure(void* const p_context)
     {
         const auto* const p_vector = reinterpret_cast<std::vector<int>*>(p_context);
@@ -65,6 +73,7 @@ BOOST_AUTO_TEST_CASE(construction)
 
     std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -85,6 +94,7 @@ BOOST_AUTO_TEST_CASE(context)
     {
         std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
         const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                                  equal_to_procedure,
                                                                   length_procedure,
                                                                   create_subrange_context_procedure,
                                                                   destroy_subraneg_context_procedure,
@@ -127,6 +137,7 @@ BOOST_AUTO_TEST_CASE(set_context)
     {
         std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
         const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                                  equal_to_procedure,
                                                                   length_procedure,
                                                                   create_subrange_context_procedure,
                                                                   destroy_subraneg_context_procedure,
@@ -151,6 +162,7 @@ BOOST_AUTO_TEST_CASE(set_context)
     {
         std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
         const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                                  equal_to_procedure,
                                                                   length_procedure,
                                                                   create_subrange_context_procedure,
                                                                   destroy_subraneg_context_procedure,
@@ -189,12 +201,37 @@ BOOST_AUTO_TEST_CASE(set_context)
     }
 }
 
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                                  equal_to_procedure,
+                                                                  length_procedure,
+                                                                  create_subrange_context_procedure,
+                                                                  destroy_subraneg_context_procedure,
+                                                                  append_procedure };
+        const auto* const                             p_input = tetengo_lattice_input_createCustomInput(&definition);
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        BOOST_WARN_MESSAGE(false, "Implement it.");
+    }
+}
+
 BOOST_AUTO_TEST_CASE(length)
 {
     BOOST_TEST_PASSPOINT();
 
     std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -216,6 +253,7 @@ BOOST_AUTO_TEST_CASE(create_subrange)
         3, 1, 4, 1, 5, 9,
     };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -247,6 +285,7 @@ BOOST_AUTO_TEST_CASE(append)
 
     std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -261,6 +300,7 @@ BOOST_AUTO_TEST_CASE(append)
 
     std::vector<int>                              context2{ 2, 6 };
     const tetengo_lattice_customInputDefinition_t definition2{ &context2,
+                                                               equal_to_procedure,
                                                                length_procedure,
                                                                create_subrange_context_procedure,
                                                                destroy_subraneg_context_procedure,

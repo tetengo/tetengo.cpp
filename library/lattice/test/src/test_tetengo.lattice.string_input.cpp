@@ -9,6 +9,7 @@
 #include <stdexcept>
 #include <string>
 
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
@@ -23,6 +24,11 @@ namespace
     class another_input : public tetengo::lattice::input
     {
     private:
+        virtual bool equal_to_impl(const input& /*another*/) const override
+        {
+            return true;
+        }
+
         virtual std::size_t length_impl() const override
         {
             return 0;
@@ -134,6 +140,33 @@ BOOST_AUTO_TEST_CASE(value)
 
         const auto result = tetengo_lattice_stringInput_setValue(p_input, nullptr);
         BOOST_TEST(!result);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::string_input input1{ "hoge" };
+        const tetengo::lattice::string_input input2{ "hoge" };
+
+        BOOST_CHECK(input1 == input2);
+        BOOST_CHECK(input2 == input1);
+    }
+    {
+        const tetengo::lattice::string_input input1{ "hoge" };
+        const tetengo::lattice::string_input input2{ "fuga" };
+
+        BOOST_CHECK(input1 != input2);
+        BOOST_CHECK(input2 != input1);
+    }
+    {
+        const tetengo::lattice::string_input input1{ "hoge" };
+        const another_input                  input2{};
+
+        BOOST_CHECK(input1 != input2);
+        BOOST_CHECK(input2 != input1);
     }
 }
 

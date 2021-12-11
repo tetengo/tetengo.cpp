@@ -37,6 +37,17 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     void* p_context;
 
     /*!
+        \brief The procedure for equality comparation.
+
+        \param p_context         A pointer to the context.
+        \param p_another_context A pointer to another input context.
+
+        \retval non-zero When p_context is equal to p_another_context.
+        \retval 0        Otherwise.
+    */
+    int (*equal_to_proc)(void* p_context, void* p_another_context);
+
+    /*!
         \brief The procedure for length.
 
         \param p_context A pointer to the context.

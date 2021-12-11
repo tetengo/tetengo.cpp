@@ -4,8 +4,10 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <cassert>
 #include <cstddef>
 #include <memory>
+#include <typeinfo>
 #include <utility>
 
 #include <tetengo/lattice/input.hpp>
@@ -14,6 +16,16 @@
 namespace tetengo::lattice
 {
     input::~input() = default;
+
+    bool operator==(const input& one, const input& another)
+    {
+        if (typeid(one) != typeid(another))
+        {
+            return false;
+        }
+        assert(one.equal_to_impl(another) == another.equal_to_impl(one));
+        return one.equal_to_impl(another);
+    }
 
     std::size_t input::length() const
     {

@@ -12,6 +12,7 @@
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
+#include <boost/operators.hpp>
 
 
 namespace tetengo::lattice
@@ -19,7 +20,7 @@ namespace tetengo::lattice
     /*!
         \brief An input.
     */
-    class input : private boost::noncopyable
+    class input : public boost::equality_comparable<input>, private boost::noncopyable
     {
     public:
         // constructors
@@ -31,6 +32,17 @@ namespace tetengo::lattice
 
 
         // functions
+
+        /*!
+            \brief Returns true if one input is equal to another.
+
+            \param one     One input.
+            \param another Another input.
+
+            \retval true  When one input is equal to another.
+            \retval valse Otherwise.
+        */
+        friend bool operator==(const input& one, const input& another);
 
         /*!
             \brief Returns the length.
@@ -112,6 +124,8 @@ namespace tetengo::lattice
 
     private:
         // virtual functions
+
+        virtual bool equal_to_impl(const input& another) const = 0;
 
         virtual std::size_t length_impl() const = 0;
 
