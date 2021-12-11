@@ -45,6 +45,13 @@ namespace tetengo::lattice
         friend bool operator==(const input& one, const input& another);
 
         /*!
+            \brief Returns the hash value.
+
+            \return The hash value.
+        */
+        [[nodiscard]] std::size_t hash_value() const;
+
+        /*!
             \brief Returns the length.
 
             \return The length.
@@ -126,6 +133,8 @@ namespace tetengo::lattice
         // virtual functions
 
         virtual bool equal_to_impl(const input& another) const = 0;
+
+        virtual std::size_t hash_value_impl() const = 0;
 
         virtual std::size_t length_impl() const = 0;
 

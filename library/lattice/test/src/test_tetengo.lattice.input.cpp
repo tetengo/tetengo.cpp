@@ -30,6 +30,11 @@ namespace
             return another.as<concrete_input>().m_value == m_value;
         }
 
+        virtual std::size_t hash_value_impl() const override
+        {
+            return 314159;
+        }
+
         virtual std::size_t length_impl() const override
         {
             return 42;
@@ -65,6 +70,11 @@ namespace
         virtual bool equal_to_impl(const input& /*another*/) const override
         {
             return true;
+        }
+
+        virtual std::size_t hash_value_impl() const override
+        {
+            return 271828;
         }
 
         virtual std::size_t length_impl() const override
@@ -127,6 +137,15 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         BOOST_CHECK(input1 != input2);
         BOOST_CHECK(input2 != input1);
     }
+}
+
+BOOST_AUTO_TEST_CASE(hash_value)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_input input_{};
+
+    [[maybe_unused]] const auto hash_value_ = input_.hash_value();
 }
 
 BOOST_AUTO_TEST_CASE(length)

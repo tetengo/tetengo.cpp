@@ -27,6 +27,11 @@ namespace tetengo::lattice
         return one.equal_to_impl(another);
     }
 
+    std::size_t input::hash_value() const
+    {
+        return hash_value_impl();
+    }
+
     std::size_t input::length() const
     {
         return length_impl();

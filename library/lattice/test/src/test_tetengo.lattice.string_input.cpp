@@ -29,6 +29,11 @@ namespace
             return true;
         }
 
+        virtual std::size_t hash_value_impl() const override
+        {
+            return 314159;
+        }
+
         virtual std::size_t length_impl() const override
         {
             return 0;
@@ -231,6 +236,30 @@ BOOST_AUTO_TEST_CASE(operator_equal)
     }
     {
         BOOST_TEST(!tetengo_lattice_input_equal(nullptr, nullptr));
+    }
+}
+
+BOOST_AUTO_TEST_CASE(hash_value)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::string_input input1{ "hoge" };
+        const tetengo::lattice::string_input input2{ "hoge" };
+
+        BOOST_TEST(input1.hash_value() == input2.hash_value());
+    }
+    {
+        const tetengo::lattice::string_input input1{ "hoge" };
+        const tetengo::lattice::string_input input2{ "fuga" };
+
+        BOOST_TEST(input1.hash_value() != input2.hash_value());
+    }
+    {
+        const tetengo::lattice::string_input input1{ "hoge" };
+        const another_input                  input2{};
+
+        BOOST_TEST(input1.hash_value() != input2.hash_value());
     }
 }
 

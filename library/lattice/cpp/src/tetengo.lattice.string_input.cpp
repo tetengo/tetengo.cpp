@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include <boost/container_hash/hash.hpp>
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/lattice/input.hpp>
@@ -41,6 +42,11 @@ namespace tetengo::lattice
         bool equal_to_impl(const input& another) const
         {
             return another.as<string_input>().value() == m_value;
+        }
+
+        std::size_t hash_value_impl() const
+        {
+            return boost::hash_value(m_value);
         }
 
         std::size_t length_impl() const
@@ -102,6 +108,11 @@ namespace tetengo::lattice
     bool string_input::equal_to_impl(const input& another) const
     {
         return m_p_impl->equal_to_impl(another);
+    }
+
+    std::size_t string_input::hash_value_impl() const
+    {
+        return m_p_impl->hash_value_impl();
     }
 
     std::size_t string_input::length_impl() const
