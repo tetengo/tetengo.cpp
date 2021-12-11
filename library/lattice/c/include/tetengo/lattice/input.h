@@ -48,11 +48,20 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     int (*equal_to_proc)(void* p_context, void* p_another_context);
 
     /*!
+        \brief The procedure for hash value.
+
+        \param p_context A pointer to the context.
+
+        \return The hash value. Or (size_t)-1 when p_context is NULL.
+    */
+    size_t (*hash_value_proc)(void* p_context);
+
+    /*!
         \brief The procedure for length.
 
         \param p_context A pointer to the context.
 
-        \return The length. Or (size_t)-1 when p_input is NULL.
+        \return The length. Or (size_t)-1 when p_context is NULL.
     */
     size_t (*length_proc)(void* p_context);
 
@@ -116,6 +125,15 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
     \retval 0        Otherwise.
 */
 int tetengo_lattice_input_equal(const tetengo_lattice_input_t* p_one, const tetengo_lattice_input_t* p_another);
+
+/*!
+    \brief Returns the hash value.
+
+    \param p_input A pointer to an input.
+
+    \return The hash value. Or (size_t)-1 when p_input is NULL.
+*/
+size_t tetengo_lattice_input_hashValue(const tetengo_lattice_input_t* p_input);
 
 /*!
     \brief Returns the length.

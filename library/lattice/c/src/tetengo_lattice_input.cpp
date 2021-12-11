@@ -91,7 +91,7 @@ namespace
 
         virtual std::size_t hash_value_impl() const override
         {
-            throw std::logic_error{ "Implement it." };
+            return m_definition.hash_value_proc(m_definition.p_context);
         }
 
         virtual std::size_t length_impl() const override
@@ -190,6 +190,23 @@ int tetengo_lattice_input_equal(
     catch (...)
     {
         return 0;
+    }
+}
+
+size_t tetengo_lattice_input_hashValue(const tetengo_lattice_input_t* p_input)
+{
+    try
+    {
+        if (!p_input)
+        {
+            throw std::invalid_argument{ "p_input is NULL." };
+        }
+
+        return p_input->cpp_input().hash_value();
+    }
+    catch (...)
+    {
+        return static_cast<size_t>(-1);
     }
 }
 

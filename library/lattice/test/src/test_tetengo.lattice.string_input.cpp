@@ -261,6 +261,56 @@ BOOST_AUTO_TEST_CASE(hash_value)
 
         BOOST_TEST(input1.hash_value() != input2.hash_value());
     }
+
+    {
+        const auto* const p_input1 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        const auto* const p_input2 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(tetengo_lattice_input_hashValue(p_input1) == tetengo_lattice_input_hashValue(p_input2));
+    }
+    {
+        const auto* const p_input1 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        const auto* const p_input2 = tetengo_lattice_input_createStringInput("fuga");
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(tetengo_lattice_input_hashValue(p_input1) != tetengo_lattice_input_hashValue(p_input2));
+    }
+    {
+        const auto* const p_input2 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(tetengo_lattice_input_hashValue(nullptr) == static_cast<size_t>(-1));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(length)
