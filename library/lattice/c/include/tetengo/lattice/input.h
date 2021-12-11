@@ -107,6 +107,17 @@ tetengo_lattice_input_createCustomInput(const tetengo_lattice_customInputDefinit
 void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
 
 /*!
+    \brief Returns true if one input is equal to another.
+
+    \param p_one     A pointer to one input.
+    \param p_another A pointer to another input.
+
+    \retval non-zero When one input is equal to another.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_input_equal(const tetengo_lattice_input_t* p_one, const tetengo_lattice_input_t* p_another);
+
+/*!
     \brief Returns the length.
 
     \param p_input A pointer to an input.

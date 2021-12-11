@@ -9,6 +9,7 @@ EXPORTS
 	tetengo_lattice_input_createStringInput
 	tetengo_lattice_input_createCustomInput
 	tetengo_lattice_input_destroy
+	tetengo_lattice_input_equal
 	tetengo_lattice_input_length
 	tetengo_lattice_input_clone
 	tetengo_lattice_input_createSubrange

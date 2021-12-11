@@ -165,6 +165,29 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* const p_input)
     {}
 }
 
+int tetengo_lattice_input_equal(
+    const tetengo_lattice_input_t* const p_one,
+    const tetengo_lattice_input_t* const p_another)
+{
+    try
+    {
+        if (!p_one)
+        {
+            throw std::invalid_argument{ "p_one is NULL." };
+        }
+        if (!p_another)
+        {
+            throw std::invalid_argument{ "p_another is NULL." };
+        }
+
+        return p_one->cpp_input() == p_another->cpp_input();
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
 size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* const p_input)
 {
     try

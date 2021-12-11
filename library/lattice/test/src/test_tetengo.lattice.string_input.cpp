@@ -168,6 +168,70 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         BOOST_CHECK(input1 != input2);
         BOOST_CHECK(input2 != input1);
     }
+
+    {
+        const auto* const p_input1 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        const auto* const p_input2 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(tetengo_lattice_input_equal(p_input1, p_input2));
+    }
+    {
+        const auto* const p_input1 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        const auto* const p_input2 = tetengo_lattice_input_createStringInput("fuga");
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(!tetengo_lattice_input_equal(p_input1, p_input2));
+    }
+    {
+        const auto* const p_input2 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(!tetengo_lattice_input_equal(nullptr, p_input2));
+    }
+    {
+        const auto* const p_input1 = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        BOOST_TEST(!tetengo_lattice_input_equal(p_input1, nullptr));
+    }
+    {
+        BOOST_TEST(!tetengo_lattice_input_equal(nullptr, nullptr));
+    }
 }
 
 BOOST_AUTO_TEST_CASE(length)
