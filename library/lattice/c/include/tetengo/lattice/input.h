@@ -105,6 +105,15 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
 size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* p_input);
 
 /*!
+    \brief Clone the input.
+
+    \param p_input A pointer to an input.
+
+    \return A unique pointer to a clone. Or NULL when p_input is NULL.
+*/
+tetengo_lattice_input_t* tetengo_lattice_input_clone(const tetengo_lattice_input_t* p_input);
+
+/*!
     \brief Creates a subrange.
 
     \param p_input A pointer to an input.

@@ -175,6 +175,29 @@ BOOST_AUTO_TEST_CASE(clone)
         BOOST_TEST_REQUIRE(p_clone->is<tetengo::lattice::string_input>());
         BOOST_TEST(p_clone->as<tetengo::lattice::string_input>().value() == "hoge");
     }
+
+    {
+        const auto* const p_input = tetengo_lattice_input_createStringInput("hoge");
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input);
+
+        const auto* const p_clone = tetengo_lattice_input_clone(p_input);
+        BOOST_SCOPE_EXIT(p_clone)
+        {
+            tetengo_lattice_input_destroy(p_clone);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_clone);
+        BOOST_TEST(std::string{ tetengo_lattice_stringInput_value(p_clone) } == "hoge");
+    }
+    {
+        const auto* const p_clone = tetengo_lattice_input_clone(nullptr);
+        BOOST_TEST(!p_clone);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(create_subrange)

@@ -176,6 +176,26 @@ size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* const p_input
     }
 }
 
+tetengo_lattice_input_t* tetengo_lattice_input_clone(const tetengo_lattice_input_t* const p_input)
+{
+    try
+    {
+        if (!p_input)
+        {
+            throw std::invalid_argument{ "p_input is NULL." };
+        }
+
+        auto p_cpp_clone = p_input->cpp_input().clone();
+
+        auto p_instance = std::make_unique<tetengo_lattice_input_t>(std::move(p_cpp_clone));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
 tetengo_lattice_input_t* tetengo_lattice_input_createSubrange(
     const tetengo_lattice_input_t* const p_input,
     const size_t                         offset,
