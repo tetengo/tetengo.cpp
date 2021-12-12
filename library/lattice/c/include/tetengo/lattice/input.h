@@ -103,7 +103,7 @@ typedef struct tetengo_lattice_customInputDefinition_tag
 
     \param p_definition A pointer to a definition.
 
-    \return A pointer to a custom input. Or NULL when p_definition NULL
+    \return A pointer to a custom input. Or NULL when p_definition NULL.
 */
 tetengo_lattice_input_t*
 tetengo_lattice_input_createCustomInput(const tetengo_lattice_customInputDefinition_t* p_definition);

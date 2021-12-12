@@ -9,6 +9,7 @@
 #include <string>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/lattice/entry.h>
@@ -69,9 +70,13 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        [[maybe_unused]] const tetengo_lattice_entry_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                              &surface_mizuho,
-                                                              42 };
+        const tetengo_lattice_stringView_t key{ key_mizuho.c_str(), key_mizuho.length() };
+        const auto* const                  p_entry = tetengo_lattice_entry_create(&key, &surface_mizuho, 42);
+        BOOST_SCOPE_EXIT(p_entry)
+        {
+            tetengo_lattice_entry_destroy(p_entry);
+        }
+        BOOST_SCOPE_EXIT_END;
     }
     {
         const std::any                                     value{ reinterpret_cast<const void*>(&surface_mizuho) };
@@ -93,19 +98,30 @@ BOOST_AUTO_TEST_CASE(key)
     }
 
     {
-        const tetengo_lattice_entry_t entry{ { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 };
+        const tetengo_lattice_stringView_t key{ key_mizuho.c_str(), key_mizuho.length() };
+        const auto* const                  p_entry = tetengo_lattice_entry_create(&key, &surface_mizuho, 42);
+        BOOST_SCOPE_EXIT(p_entry)
+        {
+            tetengo_lattice_entry_destroy(p_entry);
+        }
+        BOOST_SCOPE_EXIT_END;
 
-        BOOST_TEST(entry.key.p_head == key_mizuho.c_str());
-        BOOST_TEST(entry.key.length == key_mizuho.length());
+        BOOST_TEST(p_entry->key.p_head == key_mizuho.c_str());
+        BOOST_TEST(p_entry->key.length == key_mizuho.length());
     }
     {
-        const std::any                    value{ reinterpret_cast<const void*>(&surface_mizuho) };
-        const tetengo_lattice_entryView_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
-                                                 42 };
+        const tetengo_lattice_stringView_t key{ key_mizuho.c_str(), key_mizuho.length() };
+        const std::any                     value{ reinterpret_cast<const void*>(&surface_mizuho) };
+        const auto* const                  p_entry =
+            tetengo_lattice_entry_create(&key, reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value), 42);
+        BOOST_SCOPE_EXIT(p_entry)
+        {
+            tetengo_lattice_entry_destroy(p_entry);
+        }
+        BOOST_SCOPE_EXIT_END;
 
-        BOOST_TEST(entry.key.p_head == key_mizuho.c_str());
-        BOOST_TEST(entry.key.length == key_mizuho.length());
+        BOOST_TEST(p_entry->key.p_head == key_mizuho.c_str());
+        BOOST_TEST(p_entry->key.length == key_mizuho.length());
     }
 }
 
