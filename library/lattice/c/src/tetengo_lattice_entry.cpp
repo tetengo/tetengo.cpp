@@ -10,10 +10,27 @@
 #include <memory>
 #include <stdexcept>
 #include <string_view>
+#include <utility>
 
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/stringView.h>
+
+
+struct tetengo_lattice_entry_tag
+{
+    tetengo_lattice_stringView_t key;
+
+    const void* p_value;
+
+    int cost;
+
+    tetengo_lattice_entry_tag(tetengo_lattice_stringView_t key, const void* const p_value, const int cost) :
+    key{ std::move(key) },
+    p_value{ p_value },
+    cost{ cost }
+    {}
+};
 
 
 const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos()
@@ -43,12 +60,7 @@ tetengo_lattice_entry_create(const tetengo_lattice_stringView_t* const p_key, co
             throw std::invalid_argument{ "p_key is NULL." };
         }
 
-        // auto p_cpp_input = std::make_unique<tetengo::lattice::entry>(*p_key, p_value, cost);
-
-        auto p_instance = std::make_unique<tetengo_lattice_entry_t>(/*std::move(p_cpp_input)*/);
-        p_instance->key = *p_key;
-        p_instance->p_value = p_value;
-        p_instance->cost = cost;
+        auto p_instance = std::make_unique<tetengo_lattice_entry_t>(*p_key, p_value, cost);
         return p_instance.release();
     }
     catch (...)

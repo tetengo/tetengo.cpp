@@ -72,9 +72,12 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             {
                 const auto* const p_entry = map_element.p_entries[j];
 
-                std::any cpp_entry_value{ p_entry->p_value };
+                const auto* const p_key = tetengo_lattice_entry_key(p_entry);
+                std::any          cpp_entry_value{ tetengo_lattice_entry_value(p_entry) };
                 cpp_entry_values.emplace_back(
-                    std::string{ p_entry->key.p_head, p_entry->key.length }, std::move(cpp_entry_value), p_entry->cost);
+                    std::string{ p_key->p_head, p_key->length },
+                    std::move(cpp_entry_value),
+                    tetengo_lattice_entry_cost(p_entry));
             }
 
             cpp_entries.emplace_back(std::move(cpp_key), std::move(cpp_entry_values));
@@ -86,17 +89,17 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
         {
             const auto& connection_element = p_connections[i];
 
-            std::any cpp_from_value{ connection_element.p_from->p_value };
-            std::any cpp_to_value{ connection_element.p_to->p_value };
-            auto     cpp_key = std::make_pair(
-                tetengo::lattice::entry{
-                    std::string{ connection_element.p_from->key.p_head, connection_element.p_from->key.length },
-                    std::move(cpp_from_value),
-                    connection_element.p_from->cost },
-                tetengo::lattice::entry{
-                    std::string{ connection_element.p_to->key.p_head, connection_element.p_to->key.length },
-                    std::move(cpp_to_value),
-                    connection_element.p_to->cost });
+            const auto* const p_from_key = tetengo_lattice_entry_key(connection_element.p_from);
+            const auto* const p_to_key = tetengo_lattice_entry_key(connection_element.p_to);
+            std::any          cpp_from_value{ tetengo_lattice_entry_value(connection_element.p_from) };
+            std::any          cpp_to_value{ tetengo_lattice_entry_value(connection_element.p_to) };
+            auto              cpp_key = std::make_pair(
+                tetengo::lattice::entry{ std::string{ p_from_key->p_head, p_from_key->length },
+                                         std::move(cpp_from_value),
+                                         tetengo_lattice_entry_cost(connection_element.p_from) },
+                tetengo::lattice::entry{ std::string{ p_to_key->p_head, p_to_key->length },
+                                         std::move(cpp_to_value),
+                                         tetengo_lattice_entry_cost(connection_element.p_to) });
 
             cpp_connections.emplace_back(std::move(cpp_key), connection_element.cost);
         }

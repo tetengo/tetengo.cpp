@@ -16,28 +16,15 @@
 extern "C" {
 #endif
 
+#if !defined(DOCUMENTATION)
+typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry_t;
+#endif
+
+
 /*!
     \brief An entry value handle.
 */
 typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entry_valueHandle_t;
-
-
-/*!
-    \brief An entry.
-*/
-typedef struct tetengo_lattice_entry_tag
-{
-    /*! A key. */
-    tetengo_lattice_stringView_t key;
-
-    /*! A pointer to a value. */
-    const void* p_value;
-
-    /*! A cost. */
-    int cost;
-
-
-} tetengo_lattice_entry_t;
 
 /*!
     \brief An entry view.
