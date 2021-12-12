@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <climits>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
@@ -64,6 +65,57 @@ void tetengo_lattice_entry_destroy(const tetengo_lattice_entry_t* const p_entry)
     }
     catch (...)
     {}
+}
+
+const tetengo_lattice_stringView_t* tetengo_lattice_entry_key(const tetengo_lattice_entry_t* const p_entry)
+{
+    try
+    {
+        if (!p_entry)
+        {
+            throw std::invalid_argument{ "p_entry is NULL." };
+        }
+
+        return &p_entry->key;
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+const void* tetengo_lattice_entry_value(const tetengo_lattice_entry_t* const p_entry)
+{
+    try
+    {
+        if (!p_entry)
+        {
+            throw std::invalid_argument{ "p_entry is NULL." };
+        }
+
+        return p_entry->p_value;
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+int tetengo_lattice_entry_cost(const tetengo_lattice_entry_t* const p_entry)
+{
+    try
+    {
+        if (!p_entry)
+        {
+            throw std::invalid_argument{ "p_entry is NULL." };
+        }
+
+        return p_entry->cost;
+    }
+    catch (...)
+    {
+        return INT_MAX;
+    }
 }
 
 const void* tetengo_lattice_entry_valueOf(const tetengo_lattice_entry_valueHandle_t handle)
