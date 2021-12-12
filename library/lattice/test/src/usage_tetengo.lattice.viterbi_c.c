@@ -151,65 +151,73 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
         { { "ab", 2 }, "AwaBizan", 9 },
         /* clang-format on */
     };
-    tetengo_lattice_entry_t bosEos;
-    bosEos.key = tetengo_lattice_entry_bosEos()->key;
-    bosEos.p_value = tetengo_lattice_entry_valueOf(tetengo_lattice_entry_bosEos()->value_handle);
-    bosEos.cost = tetengo_lattice_entry_bosEos()->cost;
+    const tetengo_lattice_entry_t* p_entries[5] = { NULL };
+    p_entries[0] = &entries[0];
+    p_entries[1] = &entries[1];
+    p_entries[2] = &entries[2];
+    p_entries[3] = &entries[3];
+    p_entries[4] = &entries[4];
     {
-        tetengo_lattice_keyEntriesPair_t entry_mappings[3];
-        entry_mappings[0].key.p_head = "a";
-        entry_mappings[0].key.length = 1;
-        entry_mappings[0].p_entries = &entries[0];
-        entry_mappings[0].entry_count = 2;
-        entry_mappings[1].key.p_head = "b";
-        entry_mappings[1].key.length = 1;
-        entry_mappings[1].p_entries = &entries[2];
-        entry_mappings[1].entry_count = 2;
-        entry_mappings[2].key.p_head = "ab";
-        entry_mappings[2].key.length = 2;
-        entry_mappings[2].p_entries = &entries[4];
-        entry_mappings[2].entry_count = 1;
+        tetengo_lattice_entry_t bosEos;
+        bosEos.key = tetengo_lattice_entry_bosEos()->key;
+        bosEos.p_value = tetengo_lattice_entry_valueOf(tetengo_lattice_entry_bosEos()->value_handle);
+        bosEos.cost = tetengo_lattice_entry_bosEos()->cost;
         {
-            tetengo_lattice_entriesConnectionCostPair_t connections[10];
-            connections[0].p_from = &bosEos;
-            connections[0].p_to = &entries[0];
-            connections[0].cost = 3;
-            connections[1].p_from = &bosEos;
-            connections[1].p_to = &entries[1];
-            connections[1].cost = 1;
-            connections[2].p_from = &entries[0];
-            connections[2].p_to = &entries[2];
-            connections[2].cost = 4;
-            connections[3].p_from = &entries[1];
-            connections[3].p_to = &entries[2];
-            connections[3].cost = 1;
-            connections[4].p_from = &entries[0];
-            connections[4].p_to = &entries[3];
-            connections[4].cost = 5;
-            connections[5].p_from = &entries[1];
-            connections[5].p_to = &entries[3];
-            connections[5].cost = 9;
-            connections[6].p_from = &entries[2];
-            connections[6].p_to = &bosEos;
-            connections[6].cost = 2;
-            connections[7].p_from = &entries[3];
-            connections[7].p_to = &bosEos;
-            connections[7].cost = 6;
-            connections[8].p_from = &bosEos;
-            connections[8].p_to = &entries[4];
-            connections[8].cost = 7;
-            connections[9].p_from = &entries[4];
-            connections[9].p_to = &bosEos;
-            connections[9].cost = 1;
+            tetengo_lattice_keyEntriesPair_t entry_mappings[3];
+            entry_mappings[0].key.p_head = "a";
+            entry_mappings[0].key.length = 1;
+            entry_mappings[0].p_entries = &p_entries[0];
+            entry_mappings[0].entry_count = 2;
+            entry_mappings[1].key.p_head = "b";
+            entry_mappings[1].key.length = 1;
+            entry_mappings[1].p_entries = &p_entries[2];
+            entry_mappings[1].entry_count = 2;
+            entry_mappings[2].key.p_head = "ab";
+            entry_mappings[2].key.length = 2;
+            entry_mappings[2].p_entries = &p_entries[4];
+            entry_mappings[2].entry_count = 1;
+            {
+                tetengo_lattice_entriesConnectionCostPair_t connections[10];
+                connections[0].p_from = &bosEos;
+                connections[0].p_to = &entries[0];
+                connections[0].cost = 3;
+                connections[1].p_from = &bosEos;
+                connections[1].p_to = &entries[1];
+                connections[1].cost = 1;
+                connections[2].p_from = &entries[0];
+                connections[2].p_to = &entries[2];
+                connections[2].cost = 4;
+                connections[3].p_from = &entries[1];
+                connections[3].p_to = &entries[2];
+                connections[3].cost = 1;
+                connections[4].p_from = &entries[0];
+                connections[4].p_to = &entries[3];
+                connections[4].cost = 5;
+                connections[5].p_from = &entries[1];
+                connections[5].p_to = &entries[3];
+                connections[5].cost = 9;
+                connections[6].p_from = &entries[2];
+                connections[6].p_to = &bosEos;
+                connections[6].cost = 2;
+                connections[7].p_from = &entries[3];
+                connections[7].p_to = &bosEos;
+                connections[7].cost = 6;
+                connections[8].p_from = &bosEos;
+                connections[8].p_to = &entries[4];
+                connections[8].cost = 7;
+                connections[9].p_from = &entries[4];
+                connections[9].p_to = &bosEos;
+                connections[9].cost = 1;
 
-            /* Returns a vocabulary implemented with hash tables. */
-            return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-                entry_mappings,
-                sizeof(entry_mappings) / sizeof(tetengo_lattice_keyEntriesPair_t),
-                connections,
-                sizeof(connections) / sizeof(tetengo_lattice_entriesConnectionCostPair_t),
-                entry_hash,
-                entry_equal_to);
+                /* Returns a vocabulary implemented with hash tables. */
+                return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+                    entry_mappings,
+                    sizeof(entry_mappings) / sizeof(tetengo_lattice_keyEntriesPair_t),
+                    connections,
+                    sizeof(connections) / sizeof(tetengo_lattice_entriesConnectionCostPair_t),
+                    entry_hash,
+                    entry_equal_to);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
 #include <any>
 #include <cassert>
 #include <cstddef>
@@ -174,21 +175,28 @@ namespace
 
     tetengo_lattice_vocabulary_t* create_c_vocabulary()
     {
-        std::vector<tetengo_lattice_entry_t> entry_values{};
-        std::vector<std::size_t>             entry_value_offsets{};
+        std::vector<const tetengo_lattice_entry_t*> p_entry_values{};
+        std::vector<std::size_t>                    entry_value_offsets{};
         entry_value_offsets.reserve(std::size(entries) + 1);
         for (const auto& e: entries)
         {
-            entry_values.reserve(std::size(entry_values) + std::size(e.second));
-            entry_value_offsets.push_back(std::size(entry_values));
+            p_entry_values.reserve(std::size(p_entry_values) + std::size(e.second));
+            entry_value_offsets.push_back(std::size(p_entry_values));
 
             for (const auto& ev: e.second)
             {
-                entry_values.push_back(
-                    { { ev.key().c_str(), ev.key().length() }, std::any_cast<std::string>(&ev.value()), ev.cost() });
+                p_entry_values.push_back(new tetengo_lattice_entry_t(
+                    { { ev.key().c_str(), ev.key().length() }, std::any_cast<std::string>(&ev.value()), ev.cost() }));
             }
         }
-        entry_value_offsets.push_back(std::size(entry_values));
+        BOOST_SCOPE_EXIT(p_entry_values)
+        {
+            std::for_each(std::begin(p_entry_values), std::end(p_entry_values), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
+        entry_value_offsets.push_back(std::size(p_entry_values));
 
         std::vector<tetengo_lattice_keyEntriesPair_t> key_entries_pairs{};
         key_entries_pairs.reserve(std::size(entries));
@@ -196,7 +204,7 @@ namespace
         {
             const auto& entry = entries[i];
             key_entries_pairs.push_back({ { entry.first.c_str(), entry.first.length() },
-                                          &entry_values[entry_value_offsets[i]],
+                                          &p_entry_values[entry_value_offsets[i]],
                                           entry_value_offsets[i + 1] - entry_value_offsets[i] });
         }
 

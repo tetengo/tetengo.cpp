@@ -4,6 +4,7 @@
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
 #include <any>
 #include <cassert>
 #include <cstddef>
@@ -141,16 +142,29 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const std::vector<tetengo_lattice_entry_t> entries_mizuho{
-            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
+        std::vector<const tetengo_lattice_entry_t*> p_entries_mizuho{ new tetengo_lattice_entry_t{
+            { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 } };
+        BOOST_SCOPE_EXIT(p_entries_mizuho)
+        {
+            std::for_each(std::begin(p_entries_mizuho), std::end(p_entries_mizuho), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
+        std::vector<const tetengo_lattice_entry_t*> p_entries_sakura{
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_t> entries_sakura{
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
-        };
+        BOOST_SCOPE_EXIT(p_entries_sakura)
+        {
+            std::for_each(std::begin(p_entries_sakura), std::end(p_entries_sakura), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(entries_mizuho), std::size(entries_mizuho) },
-            { { key_sakura.c_str(), key_sakura.length() }, std::data(entries_sakura), std::size(entries_sakura) }
+            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(p_entries_mizuho), std::size(p_entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, std::data(p_entries_sakura), std::size(p_entries_sakura) }
         };
 
         const tetengo_lattice_entry_t connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
@@ -211,16 +225,29 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(!p_vocabulary);
     }
     {
-        const std::vector<tetengo_lattice_entry_t> entries_mizuho{
-            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
+        std::vector<const tetengo_lattice_entry_t*> p_entries_mizuho{ new tetengo_lattice_entry_t{
+            { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 } };
+        BOOST_SCOPE_EXIT(p_entries_mizuho)
+        {
+            std::for_each(std::begin(p_entries_mizuho), std::end(p_entries_mizuho), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
+        std::vector<const tetengo_lattice_entry_t*> p_entries_sakura{
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_t> entries_sakura{
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
-        };
+        BOOST_SCOPE_EXIT(p_entries_sakura)
+        {
+            std::for_each(std::begin(p_entries_sakura), std::end(p_entries_sakura), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(entries_mizuho), std::size(entries_mizuho) },
-            { { key_sakura.c_str(), key_sakura.length() }, std::data(entries_sakura), std::size(entries_sakura) }
+            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(p_entries_mizuho), std::size(p_entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, std::data(p_entries_sakura), std::size(p_entries_sakura) }
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
@@ -234,16 +261,29 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_vocabulary);
     }
     {
-        const std::vector<tetengo_lattice_entry_t> entries_mizuho{
-            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
+        std::vector<const tetengo_lattice_entry_t*> p_entries_mizuho{ new tetengo_lattice_entry_t{
+            { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 } };
+        BOOST_SCOPE_EXIT(p_entries_mizuho)
+        {
+            std::for_each(std::begin(p_entries_mizuho), std::end(p_entries_mizuho), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
+        std::vector<const tetengo_lattice_entry_t*> p_entries_sakura{
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_t> entries_sakura{
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
-        };
+        BOOST_SCOPE_EXIT(p_entries_sakura)
+        {
+            std::for_each(std::begin(p_entries_sakura), std::end(p_entries_sakura), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(entries_mizuho), std::size(entries_mizuho) },
-            { { key_sakura.c_str(), key_sakura.length() }, std::data(entries_sakura), std::size(entries_sakura) }
+            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(p_entries_mizuho), std::size(p_entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, std::data(p_entries_sakura), std::size(p_entries_sakura) }
         };
 
         const auto* const p_vocabulary = tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
@@ -308,16 +348,29 @@ BOOST_AUTO_TEST_CASE(find_entries)
     }
 
     {
-        const std::vector<tetengo_lattice_entry_t> entries_mizuho{
-            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
+        std::vector<const tetengo_lattice_entry_t*> p_entries_mizuho{ new tetengo_lattice_entry_t{
+            { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 } };
+        BOOST_SCOPE_EXIT(p_entries_mizuho)
+        {
+            std::for_each(std::begin(p_entries_mizuho), std::end(p_entries_mizuho), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
+        std::vector<const tetengo_lattice_entry_t*> p_entries_sakura{
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_t> entries_sakura{
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
-        };
+        BOOST_SCOPE_EXIT(p_entries_sakura)
+        {
+            std::for_each(std::begin(p_entries_sakura), std::end(p_entries_sakura), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(entries_mizuho), std::size(entries_mizuho) },
-            { { key_sakura.c_str(), key_sakura.length() }, std::data(entries_sakura), std::size(entries_sakura) }
+            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(p_entries_mizuho), std::size(p_entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, std::data(p_entries_sakura), std::size(p_entries_sakura) }
         };
 
         const tetengo_lattice_entry_t connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
@@ -445,16 +498,29 @@ BOOST_AUTO_TEST_CASE(find_connection)
     }
 
     {
-        const std::vector<tetengo_lattice_entry_t> entries_mizuho{
-            { { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 }
+        std::vector<const tetengo_lattice_entry_t*> p_entries_mizuho{ new tetengo_lattice_entry_t{
+            { key_mizuho.c_str(), key_mizuho.length() }, &surface_mizuho, 42 } };
+        BOOST_SCOPE_EXIT(p_entries_mizuho)
+        {
+            std::for_each(std::begin(p_entries_mizuho), std::end(p_entries_mizuho), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
+        std::vector<const tetengo_lattice_entry_t*> p_entries_sakura{
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
+            new tetengo_lattice_entry_t{ { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
         };
-        const std::vector<tetengo_lattice_entry_t> entries_sakura{
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura1, 24 },
-            { { key_sakura.c_str(), key_sakura.length() }, &surface_sakura2, 2424 }
-        };
+        BOOST_SCOPE_EXIT(p_entries_sakura)
+        {
+            std::for_each(std::begin(p_entries_sakura), std::end(p_entries_sakura), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
+        }
+        BOOST_SCOPE_EXIT_END;
         const std::vector<tetengo_lattice_keyEntriesPair_t> entries{
-            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(entries_mizuho), std::size(entries_mizuho) },
-            { { key_sakura.c_str(), key_sakura.length() }, std::data(entries_sakura), std::size(entries_sakura) }
+            { { key_mizuho.c_str(), key_mizuho.length() }, std::data(p_entries_mizuho), std::size(p_entries_mizuho) },
+            { { key_sakura.c_str(), key_sakura.length() }, std::data(p_entries_sakura), std::size(p_entries_sakura) }
         };
 
         const tetengo_lattice_entry_t connection_key_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },

@@ -70,11 +70,11 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             cpp_entry_values.reserve(map_element.entry_count);
             for (auto j = static_cast<size_t>(0); j < map_element.entry_count; ++j)
             {
-                const auto& entry = map_element.p_entries[j];
+                const auto* const p_entry = map_element.p_entries[j];
 
-                std::any cpp_entry_value{ entry.p_value };
+                std::any cpp_entry_value{ p_entry->p_value };
                 cpp_entry_values.emplace_back(
-                    std::string{ entry.key.p_head, entry.key.length }, std::move(cpp_entry_value), entry.cost);
+                    std::string{ p_entry->key.p_head, p_entry->key.length }, std::move(cpp_entry_value), p_entry->cost);
             }
 
             cpp_entries.emplace_back(std::move(cpp_key), std::move(cpp_entry_values));
