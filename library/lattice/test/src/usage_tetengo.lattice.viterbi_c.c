@@ -124,7 +124,7 @@ static size_t hash(const char* const string, const size_t length)
 static size_t entry_hash(const tetengo_lattice_entryView_t* const p_entry)
 {
     const size_t      key_hash = hash(p_entry->key.p_head, p_entry->key.length);
-    const char* const value = (const char*)tetengo_lattice_entry_valueOf(p_entry->value_handle);
+    const char* const value = (const char*)tetengo_lattice_entryView_valueOf(p_entry->value_handle);
     const size_t      value_hash = value ? hash(value, strlen(value)) : 0;
     return key_hash ^ value_hash;
 }
@@ -132,8 +132,8 @@ static size_t entry_hash(const tetengo_lattice_entryView_t* const p_entry)
 static int
 entry_equal_to(const tetengo_lattice_entryView_t* const p_entry1, const tetengo_lattice_entryView_t* const p_entry2)
 {
-    const char* const value1 = (const char*)tetengo_lattice_entry_valueOf(p_entry1->value_handle);
-    const char* const value2 = (const char*)tetengo_lattice_entry_valueOf(p_entry2->value_handle);
+    const char* const value1 = (const char*)tetengo_lattice_entryView_valueOf(p_entry1->value_handle);
+    const char* const value2 = (const char*)tetengo_lattice_entryView_valueOf(p_entry2->value_handle);
     return p_entry1->key.length == p_entry2->key.length &&
            strncmp(p_entry1->key.p_head, p_entry2->key.p_head, p_entry1->key.length) == 0 &&
            ((!value1 && !value2) || (value1 && value2 && strcmp(value1, value2) == 0));
@@ -154,7 +154,7 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
     {
         const tetengo_lattice_entry_t* const p_bos_eos = tetengo_lattice_entry_create(
             &tetengo_lattice_entry_bosEos()->key,
-            tetengo_lattice_entry_valueOf(tetengo_lattice_entry_bosEos()->value_handle),
+            tetengo_lattice_entryView_valueOf(tetengo_lattice_entry_bosEos()->value_handle),
             tetengo_lattice_entry_bosEos()->cost);
         {
             tetengo_lattice_keyEntriesPair_t entry_mappings[3];
@@ -227,7 +227,7 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
 static const char* value_of(const tetengo_lattice_node_t* const p_node, const int first)
 {
     /* The value is accessible by the handle. */
-    const char* const value = (const char*)tetengo_lattice_entry_valueOf(p_node->value_handle);
+    const char* const value = (const char*)tetengo_lattice_entryView_valueOf(p_node->value_handle);
     if (value)
     {
         return value;

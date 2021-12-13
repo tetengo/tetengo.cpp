@@ -22,9 +22,9 @@ typedef struct tetengo_lattice_entry_tag tetengo_lattice_entry_t;
 
 
 /*!
-    \brief An entry value handle.
+    \brief An entry view value handle.
 */
-typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entry_valueHandle_t;
+typedef const struct tetengo_lattice_entryView_valueHandle_tag* tetengo_lattice_entryView_valueHandle_t;
 
 /*!
     \brief An entry view.
@@ -35,7 +35,7 @@ typedef struct tetengo_lattice_entryView_tag
     tetengo_lattice_stringView_t key;
 
     /*! A value handle. */
-    tetengo_lattice_entry_valueHandle_t value_handle;
+    tetengo_lattice_entryView_valueHandle_t value_handle;
 
     /*! A cost. */
     int cost;
@@ -123,13 +123,13 @@ const void* tetengo_lattice_entry_value(const tetengo_lattice_entry_t* p_entry);
 int tetengo_lattice_entry_cost(const tetengo_lattice_entry_t* p_entry);
 
 /*!
-    \brief Return the entry value by a handle.
+    \brief Return the entry view value by a handle.
 
     \param handle A handle.
 
     \return The value.
 */
-const void* tetengo_lattice_entry_valueOf(tetengo_lattice_entry_valueHandle_t handle);
+const void* tetengo_lattice_entryView_valueOf(tetengo_lattice_entryView_valueHandle_t handle);
 
 
 #if defined(__cplusplus)

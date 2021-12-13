@@ -61,7 +61,7 @@ namespace
 
         c_node.key.p_head = std::data(cpp_node.key());
         c_node.key.length = cpp_node.key().length();
-        c_node.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value());
+        c_node.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
         c_node.preceding_step = cpp_node.preceding_step();
         c_node.p_preceding_edge_costs = std::data(cpp_node.preceding_edge_costs());
         c_node.preceding_edge_cost_count = std::size(cpp_node.preceding_edge_costs());

@@ -125,7 +125,7 @@ tetengo_lattice_nBestIterator_createPath(const tetengo_lattice_nBestIterator_t* 
         for (const auto& cpp_node: cpp_path.nodes())
         {
             nodes.push_back({ { std::data(cpp_node.key()), cpp_node.key().length() },
-                              reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value()),
+                              reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value()),
                               cpp_node.preceding_step(),
                               std::data(cpp_node.preceding_edge_costs()),
                               std::size(cpp_node.preceding_edge_costs()),
