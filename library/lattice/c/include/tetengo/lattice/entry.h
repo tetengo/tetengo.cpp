@@ -80,6 +80,15 @@ tetengo_lattice_entry_t*
 tetengo_lattice_entry_create(const tetengo_lattice_stringView_t* p_key, const void* p_value, int cost);
 
 /*!
+    \brief Creates an entry.
+
+    \param p_view A pointer to an entry view.
+
+    \return A pointer to an entry. Or NULL when p_view is NULL.
+*/
+tetengo_lattice_entry_t* tetengo_lattice_entry_createWithView(const tetengo_lattice_entryView_t* p_view);
+
+/*!
     \brief Destroys an entry.
 
     \param p_entry A pointer to an entry.
