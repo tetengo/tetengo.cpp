@@ -65,7 +65,7 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
     tetengo_lattice_stringView_t key;
 
     /*! Entries */
-    const tetengo_lattice_entry_t** p_entries;
+    const tetengo_lattice_entry_t* p_entries;
 
     /*! An entry count. */
     size_t entry_count;
