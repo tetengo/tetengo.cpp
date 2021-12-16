@@ -42,7 +42,7 @@ int tetengo_lattice_node_bos(
 
         p_bos->key.p_head = std::data(cpp_bos.key());
         p_bos->key.length = cpp_bos.key().length();
-        p_bos->value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_bos.value());
+        p_bos->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_bos.value());
         p_bos->preceding_step = cpp_bos.preceding_step();
         p_bos->p_preceding_edge_costs = p_preceding_edge_costs;
         p_bos->preceding_edge_cost_count = preceding_edge_count;
@@ -85,7 +85,7 @@ int tetengo_lattice_node_eos(
 
         p_eos->key.p_head = std::data(cpp_eos.key());
         p_eos->key.length = cpp_eos.key().length();
-        p_eos->value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_eos.value());
+        p_eos->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_eos.value());
         p_eos->preceding_step = cpp_eos.preceding_step();
         p_eos->p_preceding_edge_costs = p_preceding_edge_costs;
         p_eos->preceding_edge_cost_count = preceding_edge_count;
@@ -137,7 +137,7 @@ int tetengo_lattice_node_toNode(
 
         p_node->key.p_head = std::data(cpp_node.key());
         p_node->key.length = cpp_node.key().length();
-        p_node->value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
+        p_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value());
         p_node->preceding_step = cpp_node.preceding_step();
         p_node->p_preceding_edge_costs = p_preceding_edge_costs;
         p_node->preceding_edge_cost_count = preceding_edge_count;

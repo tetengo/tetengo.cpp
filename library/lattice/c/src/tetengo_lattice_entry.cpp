@@ -39,7 +39,7 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos()
     {
         static const tetengo_lattice_entryView_t singleton{ { std::data(tetengo::lattice::entry_view::bos_eos().key()),
                                                               tetengo::lattice::entry_view::bos_eos().key().length() },
-                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 tetengo::lattice::entry_view::bos_eos().value()),
                                                             tetengo::lattice::entry_view::bos_eos().cost() };
         return &singleton;
@@ -79,7 +79,7 @@ tetengo_lattice_entry_t* tetengo_lattice_entry_createWithView(const tetengo_latt
         }
 
         auto p_instance = std::make_unique<tetengo_lattice_entry_t>(
-            p_view->key, tetengo_lattice_entryView_valueOf(p_view->value_handle), p_view->cost);
+            p_view->key, tetengo_lattice_entry_valueOf(p_view->value_handle), p_view->cost);
         return p_instance.release();
     }
     catch (...)
@@ -149,7 +149,7 @@ int tetengo_lattice_entry_cost(const tetengo_lattice_entry_t* const p_entry)
     }
 }
 
-const void* tetengo_lattice_entryView_valueOf(const tetengo_lattice_entryView_valueHandle_t handle)
+const void* tetengo_lattice_entry_valueOf(const tetengo_lattice_entry_valueHandle_t handle)
 {
     try
     {

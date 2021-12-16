@@ -41,14 +41,14 @@ namespace
             static const tetengo_lattice_stringView_t key0{ cpp_key0.data(), cpp_key0.length() };
             p_entries[0].key = key0;
             static const std::any value0{ reinterpret_cast<const void*>((*p_values)[0].c_str()) };
-            p_entries[0].value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value0);
+            p_entries[0].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value0);
             p_entries[0].cost = 0;
 
             static const std::string_view             cpp_key1{ "key1" };
             static const tetengo_lattice_stringView_t key1{ cpp_key1.data(), cpp_key1.length() };
             p_entries[1].key = key1;
             static const std::any value1{ reinterpret_cast<const void*>((*p_values)[1].c_str()) };
-            p_entries[1].value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value1);
+            p_entries[1].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value1);
             p_entries[1].cost = 1;
         }
 
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
     const std::string_view            key_from{ "key_from" };
     const std::any                    value_from{ reinterpret_cast<const void*>("value_from") };
     const tetengo_lattice_node_t      from{ { key_from.data(), key_from.length() },
-                                       reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value_from),
+                                       reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value_from),
                                        0,
                                        nullptr,
                                        0,
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
     const std::string_view            key_to{ "key_to" };
     const std::any                    value_to{ reinterpret_cast<const void*>("value_to") };
     const tetengo_lattice_entryView_t to{ { key_to.data(), key_to.length() },
-                                          reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value_to),
+                                          reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value_to),
                                           0 };
     {
         tetengo_lattice_connection_t connection{};

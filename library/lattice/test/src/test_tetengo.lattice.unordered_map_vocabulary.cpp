@@ -438,7 +438,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
 
             BOOST_TEST((std::string{ entry_values[0].key.p_head, entry_values[0].key.length } == key_mizuho));
             BOOST_TEST(
-                reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(entry_values[0].value_handle)) ==
+                reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(entry_values[0].value_handle)) ==
                 &surface_mizuho);
             BOOST_TEST(entry_values[0].cost == 42);
         }
@@ -459,12 +459,12 @@ BOOST_AUTO_TEST_CASE(find_entries)
 
             BOOST_TEST((std::string{ entry_values[0].key.p_head, entry_values[0].key.length } == key_sakura));
             BOOST_TEST(
-                reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(entry_values[0].value_handle)) ==
+                reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(entry_values[0].value_handle)) ==
                 &surface_sakura1);
             BOOST_TEST(entry_values[0].cost == 24);
             BOOST_TEST((std::string{ entry_values[1].key.p_head, entry_values[1].key.length } == key_sakura));
             BOOST_TEST(
-                reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(entry_values[1].value_handle)) ==
+                reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(entry_values[1].value_handle)) ==
                 &surface_sakura2);
             BOOST_TEST(entry_values[1].cost == 2424);
         }
@@ -579,7 +579,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         {
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
             const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
@@ -594,7 +594,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
                 &node_mizuho));
             const std::any                    value_sakura1{ reinterpret_cast<const void*>(&surface_sakura1) };
             const tetengo_lattice_entryView_t entry_sakura1{ { key_sakura.c_str(), key_sakura.length() },
-                                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                  &value_sakura1),
                                                              24 };
             tetengo_lattice_connection_t      connection{};
@@ -607,7 +607,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         {
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
             const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
@@ -630,7 +630,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         {
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
             const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
@@ -646,7 +646,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_connection_t      connection{};
             const std::any                    value_sakura2{ reinterpret_cast<const void*>(&surface_sakura2) };
             const tetengo_lattice_entryView_t entry_sakura2{ { key_sakura.c_str(), key_sakura.length() },
-                                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                  &value_sakura2),
                                                              2424 };
             const auto                        found =
@@ -656,7 +656,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         {
             const std::any                    value_sakura2{ reinterpret_cast<const void*>(&surface_sakura2) };
             const tetengo_lattice_entryView_t entry_sakura2{ { key_sakura.c_str(), key_sakura.length() },
-                                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                  &value_sakura2),
                                                              2424 };
             tetengo_lattice_connection_t      connection{};
@@ -667,7 +667,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         {
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
             const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
@@ -688,7 +688,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
         {
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                 &value_mizuho),
                                                             42 };
             const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
@@ -703,7 +703,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
                 &node_mizuho));
             const std::any                    value_sakura2{ reinterpret_cast<const void*>(&surface_sakura2) };
             const tetengo_lattice_entryView_t entry_sakura2{ { key_sakura.c_str(), key_sakura.length() },
-                                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                             reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
                                                                  &value_sakura2),
                                                              2424 };
             const auto                        found =
