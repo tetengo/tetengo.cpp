@@ -81,25 +81,6 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
 const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos();
 
 /*!
-    \brief Creates an entry.
-
-    \param p_key   A pointer to a key.
-    \param p_value A pointer to a value.
-    \param cost    A cost.
-
-    \return A pointer to an entry. Or NULL when p_key is NULL.
-*/
-tetengo_lattice_entry_t*
-tetengo_lattice_entry_create(const tetengo_lattice_stringView_t* p_key, const void* p_value, int cost);
-
-/*!
-    \brief Destroys an entry.
-
-    \param p_entry A pointer to an entry.
-*/
-void tetengo_lattice_entry_destroy(const tetengo_lattice_entry_t* p_entry);
-
-/*!
     \brief Return the entry value by a handle.
 
     \param handle A handle.

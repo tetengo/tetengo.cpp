@@ -187,15 +187,15 @@ namespace
 
             for (const auto& ev: e.second)
             {
-                const tetengo_lattice_stringView_t key{ ev.key().c_str(), ev.key().length() };
-                const auto* const                  p_entry =
-                    tetengo_lattice_entry_create(&key, std::any_cast<std::string>(&ev.value()), ev.cost());
-                p_entry_values.push_back(p_entry);
+                p_entry_values.push_back(new tetengo_lattice_entry_t(
+                    { { ev.key().c_str(), ev.key().length() }, std::any_cast<std::string>(&ev.value()), ev.cost() }));
             }
         }
         BOOST_SCOPE_EXIT(p_entry_values)
         {
-            std::for_each(std::begin(p_entry_values), std::end(p_entry_values), tetengo_lattice_entry_destroy);
+            std::for_each(std::begin(p_entry_values), std::end(p_entry_values), [](auto* p_entry_value) {
+                delete p_entry_value;
+            });
         }
         BOOST_SCOPE_EXIT_END;
         entry_value_offsets.push_back(std::size(p_entry_values));
