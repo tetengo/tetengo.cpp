@@ -78,28 +78,13 @@ BOOST_AUTO_TEST_CASE(construction)
             tetengo_lattice_entry_destroy(p_entry);
         }
         BOOST_SCOPE_EXIT_END;
-        BOOST_TEST(p_entry);
     }
     {
-        const auto* const p_entry = tetengo_lattice_entry_create(nullptr, &surface_mizuho, 42);
-        BOOST_TEST(!p_entry);
-    }
-    {
-        const std::any                    value{ reinterpret_cast<const void*>(&surface_mizuho) };
-        const tetengo_lattice_entryView_t view{ { key_mizuho.c_str(), key_mizuho.length() },
-                                                reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&value),
-                                                42 };
-        const auto* const                 p_entry = tetengo_lattice_entry_createWithView(&view);
-        BOOST_SCOPE_EXIT(p_entry)
-        {
-            tetengo_lattice_entry_destroy(p_entry);
-        }
-        BOOST_SCOPE_EXIT_END;
-        BOOST_TEST(p_entry);
-    }
-    {
-        const auto* const p_entry = tetengo_lattice_entry_createWithView(nullptr);
-        BOOST_TEST(!p_entry);
+        const std::any                                     value{ reinterpret_cast<const void*>(&surface_mizuho) };
+        [[maybe_unused]] const tetengo_lattice_entryView_t entry{ { key_mizuho.c_str(), key_mizuho.length() },
+                                                                  reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
+                                                                      &value),
+                                                                  42 };
     }
 }
 

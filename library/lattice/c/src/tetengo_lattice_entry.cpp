@@ -69,25 +69,6 @@ tetengo_lattice_entry_create(const tetengo_lattice_stringView_t* const p_key, co
     }
 }
 
-tetengo_lattice_entry_t* tetengo_lattice_entry_createWithView(const tetengo_lattice_entryView_t* const p_view)
-{
-    try
-    {
-        if (!p_view)
-        {
-            throw std::invalid_argument{ "p_view is NULL." };
-        }
-
-        auto p_instance = std::make_unique<tetengo_lattice_entry_t>(
-            p_view->key, tetengo_lattice_entry_valueOf(p_view->value_handle), p_view->cost);
-        return p_instance.release();
-    }
-    catch (...)
-    {
-        return nullptr;
-    }
-}
-
 void tetengo_lattice_entry_destroy(const tetengo_lattice_entry_t* const p_entry)
 {
     try
