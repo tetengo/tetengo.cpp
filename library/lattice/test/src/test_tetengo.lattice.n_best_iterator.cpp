@@ -210,32 +210,28 @@ namespace
                                           entry_value_offsets[i + 1] - entry_value_offsets[i] });
         }
 
-        std::vector<tetengo_lattice_entry_t*> p_connection_froms{};
-        p_connection_froms.reserve(std::size(connections));
-        std::vector<tetengo_lattice_entry_t*> p_connection_tos{};
-        p_connection_tos.reserve(std::size(connections));
+        std::vector<tetengo_lattice_entry_t> connection_froms{};
+        connection_froms.reserve(std::size(connections));
+        std::vector<tetengo_lattice_entry_t> connection_tos{};
+        connection_tos.reserve(std::size(connections));
         for (const auto& c: connections)
         {
-            const tetengo_lattice_stringView_t from_key{ c.first.first.key().c_str(), c.first.first.key().length() };
-            p_connection_froms.push_back(tetengo_lattice_entry_create(
-                &from_key, std::any_cast<std::string>(&c.first.first.value()), c.first.first.cost()));
-            const tetengo_lattice_stringView_t to_key{ c.first.second.key().c_str(), c.first.second.key().length() };
-            p_connection_tos.push_back(tetengo_lattice_entry_create(
-                &to_key, std::any_cast<std::string>(&c.first.second.value()), c.first.second.cost()));
+            connection_froms.push_back({ { c.first.first.key().c_str(), c.first.first.key().length() },
+                                         std::any_cast<std::string>(&c.first.first.value()),
+                                         c.first.first.cost() });
+            connection_tos.push_back({ { c.first.second.key().c_str(), c.first.second.key().length() },
+                                       std::any_cast<std::string>(&c.first.second.value()),
+                                       c.first.second.cost() });
         }
-        BOOST_SCOPE_EXIT(p_connection_tos, p_connection_froms)
-        {
-            std::for_each(std::begin(p_connection_tos), std::end(p_connection_tos), tetengo_lattice_entry_destroy);
-            std::for_each(std::begin(p_connection_froms), std::end(p_connection_froms), tetengo_lattice_entry_destroy);
-        }
-        BOOST_SCOPE_EXIT_END;
 
         std::vector<tetengo_lattice_entriesConnectionCostPair_t> entries_connection_cost_pairs{};
         entries_connection_cost_pairs.reserve(std::size(connections));
         for (auto i = static_cast<std::size_t>(0); i < std::size(connections); ++i)
         {
             const auto& connection = connections[i];
-            entries_connection_cost_pairs.push_back({ p_connection_froms[i], p_connection_tos[i], connection.second });
+            const auto& from = connection_froms[i];
+            const auto& to = connection_tos[i];
+            entries_connection_cost_pairs.push_back({ &from, &to, connection.second });
         }
 
         return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
