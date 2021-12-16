@@ -100,33 +100,6 @@ tetengo_lattice_entry_create(const tetengo_lattice_stringView_t* p_key, const vo
 void tetengo_lattice_entry_destroy(const tetengo_lattice_entry_t* p_entry);
 
 /*!
-    \brief Returns the key.
-
-    \param p_entry A pointer to an entry.
-
-    \return The key. Or NULL when p_entry is NULL.
-*/
-const tetengo_lattice_stringView_t* tetengo_lattice_entry_key(const tetengo_lattice_entry_t* p_entry);
-
-/*!
-    \brief Returns the value.
-
-    \param p_entry A pointer to an entry.
-
-    \return The value. Or NULL when p_entry is NULL.
-*/
-const void* tetengo_lattice_entry_value(const tetengo_lattice_entry_t* p_entry);
-
-/*!
-    \brief Returns the cost.
-
-    \param p_entry A pointer to an entry.
-
-    \return The cost. Or INT_MAX when p_entry is NULL.
-*/
-int tetengo_lattice_entry_cost(const tetengo_lattice_entry_t* p_entry);
-
-/*!
     \brief Return the entry value by a handle.
 
     \param handle A handle.
