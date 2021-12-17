@@ -84,13 +84,6 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
 } tetengo_lattice_keyEntriesPair_t;
 
 /*!
-    \brief Returns the pointer to the BOS/EOS (Beginning/End of Sequence) entry.
-
-    \return The pointer to the BOS/EOS entry.
-*/
-const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
-
-/*!
     \brief Return the entry key by a handle.
 
     \param handle A handle.
@@ -98,6 +91,29 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
     \return The key.
 */
 tetengo_lattice_stringView_t tetengo_lattice_entry_keyOf(tetengo_lattice_entry_keyHandle_t handle);
+
+/*!
+    \brief Create an entry key.
+
+    \param p_content A pointer to a content.
+
+    \return The key handle. Or NULL when p_content is NULL.
+*/
+tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKey(const tetengo_lattice_stringView_t* p_content);
+
+/*!
+    \brief Destroy an entry key.
+
+    \param handle A handle.
+*/
+void tetengo_lattice_entry_destroyKey(tetengo_lattice_entry_keyHandle_t handle);
+
+/*!
+    \brief Returns the pointer to the BOS/EOS (Beginning/End of Sequence) entry.
+
+    \return The pointer to the BOS/EOS entry.
+*/
+const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
 
 /*!
     \brief Return the entry view key by a handle.
