@@ -17,6 +17,16 @@ extern "C" {
 #endif
 
 /*!
+    \brief An entry key handle.
+*/
+typedef const struct tetengo_lattice_entry_keyHandle_tag* tetengo_lattice_entry_keyHandle_t;
+
+/*!
+    \brief An entry view key handle.
+*/
+typedef const struct tetengo_lattice_entryView_keyHandle_tag* tetengo_lattice_entryView_keyHandle_t;
+
+/*!
     \brief An entry view value handle.
 */
 typedef const struct tetengo_lattice_entryView_valueHandle_tag* tetengo_lattice_entryView_valueHandle_t;
@@ -79,6 +89,24 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
     \return The pointer to the BOS/EOS entry.
 */
 const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
+
+/*!
+    \brief Return the entry key by a handle.
+
+    \param handle A handle.
+
+    \return The key.
+*/
+tetengo_lattice_stringView_t tetengo_lattice_entry_keyOf(tetengo_lattice_entryView_keyHandle_t handle);
+
+/*!
+    \brief Return the entry view key by a handle.
+
+    \param handle A handle.
+
+    \return The key.
+*/
+tetengo_lattice_stringView_t tetengo_lattice_entryView_keyOf(tetengo_lattice_entryView_keyHandle_t handle);
 
 /*!
     \brief Return the entry view value by a handle.
