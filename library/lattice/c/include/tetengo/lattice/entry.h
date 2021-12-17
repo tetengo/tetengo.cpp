@@ -78,16 +78,16 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
 
     \return The pointer to the BOS/EOS entry.
 */
-const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos();
+const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
 
 /*!
-    \brief Return the entry value by a handle.
+    \brief Return the entry view value by a handle.
 
     \param handle A handle.
 
     \return The value.
 */
-const void* tetengo_lattice_entry_valueOf(tetengo_lattice_entryView_valueHandle_t handle);
+const void* tetengo_lattice_entryView_valueOf(tetengo_lattice_entryView_valueHandle_t handle);
 
 
 #if defined(__cplusplus)

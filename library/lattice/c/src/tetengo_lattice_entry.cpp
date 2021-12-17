@@ -12,7 +12,7 @@
 #include <tetengo/lattice/entry.hpp>
 
 
-const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos()
+const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos()
 {
     try
     {
@@ -29,7 +29,7 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos()
     }
 }
 
-const void* tetengo_lattice_entry_valueOf(const tetengo_lattice_entryView_valueHandle_t handle)
+const void* tetengo_lattice_entryView_valueOf(const tetengo_lattice_entryView_valueHandle_t handle)
 {
     try
     {

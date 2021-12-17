@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
 
             BOOST_TEST((std::string{ entry_values[0].key.p_head, entry_values[0].key.length } == key_mizuho));
             BOOST_TEST(
-                reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(entry_values[0].value_handle)) ==
+                reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(entry_values[0].value_handle)) ==
                 &surface_mizuho);
             BOOST_TEST(entry_values[0].cost == 42);
         }
@@ -382,12 +382,12 @@ BOOST_AUTO_TEST_CASE(find_entries)
 
             BOOST_TEST((std::string{ entry_values[0].key.p_head, entry_values[0].key.length } == key_sakura));
             BOOST_TEST(
-                reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(entry_values[0].value_handle)) ==
+                reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(entry_values[0].value_handle)) ==
                 &surface_sakura1);
             BOOST_TEST(entry_values[0].cost == 24);
             BOOST_TEST((std::string{ entry_values[1].key.p_head, entry_values[1].key.length } == key_sakura));
             BOOST_TEST(
-                reinterpret_cast<const std::string*>(tetengo_lattice_entry_valueOf(entry_values[1].value_handle)) ==
+                reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(entry_values[1].value_handle)) ==
                 &surface_sakura2);
             BOOST_TEST(entry_values[1].cost == 2424);
         }
