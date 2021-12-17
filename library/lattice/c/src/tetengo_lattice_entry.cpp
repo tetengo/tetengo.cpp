@@ -31,7 +31,7 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos()
     }
 }
 
-tetengo_lattice_stringView_t tetengo_lattice_entry_keyOf(tetengo_lattice_entryView_keyHandle_t handle)
+tetengo_lattice_stringView_t tetengo_lattice_entry_keyOf(tetengo_lattice_entry_keyHandle_t handle)
 {
     try
     {
