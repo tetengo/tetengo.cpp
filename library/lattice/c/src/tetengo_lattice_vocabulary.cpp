@@ -108,7 +108,7 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
                 tetengo_lattice_entryView_t entry{};
                 entry.key.p_head = std::data(cpp_entry.key());
                 entry.key.length = cpp_entry.key().length();
-                entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
+                entry.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry.value());
                 entry.cost = cpp_entry.cost();
                 return p_entry_hash(&entry);
             },
@@ -117,13 +117,13 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
                 tetengo_lattice_entryView_t entry1{};
                 entry1.key.p_head = std::data(cpp_entry1.key());
                 entry1.key.length = cpp_entry1.key().length();
-                entry1.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry1.value());
+                entry1.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry1.value());
                 entry1.cost = cpp_entry1.cost();
 
                 tetengo_lattice_entryView_t entry2{};
                 entry2.key.p_head = std::data(cpp_entry2.key());
                 entry2.key.length = cpp_entry2.key().length();
-                entry2.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry2.value());
+                entry2.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry2.value());
                 entry2.cost = cpp_entry2.cost();
 
                 return p_entry_equal_to(&entry1, &entry2);
@@ -201,7 +201,8 @@ namespace
             }
 
             const tetengo_lattice_node_t      c_from{ { from.key().data(), from.key().length() },
-                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&from.value()),
+                                                 reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                     &from.value()),
                                                  from.preceding_step(),
                                                  std::data(from.preceding_edge_costs()),
                                                  std::size(from.preceding_edge_costs()),
@@ -209,7 +210,8 @@ namespace
                                                  from.node_cost(),
                                                  from.path_cost() };
             const tetengo_lattice_entryView_t c_to{ { to.key().data(), to.key().length() },
-                                                    reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(to.value()),
+                                                    reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                        to.value()),
                                                     to.cost() };
             tetengo_lattice_connection_t      c_connection{};
             const auto                        result =
@@ -282,7 +284,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
                 entry.key.p_head = std::data(cpp_entry.key());
                 entry.key.length = cpp_entry.key().length();
                 assert(cpp_entry.value()->type() == typeid(const void*));
-                entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
+                entry.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry.value());
                 entry.cost = cpp_entry.cost();
             }
         }

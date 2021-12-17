@@ -18,7 +18,7 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos()
     {
         static const tetengo_lattice_entryView_t singleton{ { std::data(tetengo::lattice::entry_view::bos_eos().key()),
                                                               tetengo::lattice::entry_view::bos_eos().key().length() },
-                                                            reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
+                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
                                                                 tetengo::lattice::entry_view::bos_eos().value()),
                                                             tetengo::lattice::entry_view::bos_eos().cost() };
         return &singleton;
@@ -29,7 +29,7 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos()
     }
 }
 
-const void* tetengo_lattice_entry_valueOf(const tetengo_lattice_entry_valueHandle_t handle)
+const void* tetengo_lattice_entry_valueOf(const tetengo_lattice_entryView_valueHandle_t handle)
 {
     try
     {

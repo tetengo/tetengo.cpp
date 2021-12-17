@@ -27,7 +27,7 @@ typedef struct tetengo_lattice_node_tag
     tetengo_lattice_stringView_t key;
 
     /*! A value handle. */
-    tetengo_lattice_entry_valueHandle_t value_handle;
+    tetengo_lattice_entryView_valueHandle_t value_handle;
 
     /*! An index of a preceding step. */
     size_t preceding_step;
