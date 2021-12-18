@@ -26,7 +26,6 @@
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/node_constraint_element.hpp>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/wildcard_constraint_element.hpp>
 
 
@@ -110,8 +109,7 @@ namespace
     {
         tetengo_lattice_node_t c_node{};
 
-        c_node.key.p_head = std::data(cpp_node.key());
-        c_node.key.length = cpp_node.key().length();
+        c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_node.key());
         c_node.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
         c_node.preceding_step = cpp_node.preceding_step();
         c_node.p_preceding_edge_costs = std::data(cpp_node.preceding_edge_costs());
@@ -893,107 +891,128 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
@@ -1009,32 +1028,38 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
@@ -1050,72 +1075,86 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
@@ -1131,82 +1170,98 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
@@ -1222,87 +1277,104 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
@@ -1318,87 +1390,104 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
@@ -1414,102 +1503,122 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
@@ -1525,113 +1634,135 @@ BOOST_AUTO_TEST_CASE(matches_tail_c)
         BOOST_TEST_REQUIRE(p_constraint);
 
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_s_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_s_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_m_a_t_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_m_a_t_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_h_t_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_h_t_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 1));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 1);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 2));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 2);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 3));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 3);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 4));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 4);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
         {
-            const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_k_s_k_e(), 5));
+            const auto cpp_tail_path = make_tail(path_b_k_s_k_e(), 5);
+            const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
             BOOST_TEST(tetengo_lattice_constraint_matchesTail(
                 p_constraint, std::data(reverse_tail_path), std::size(reverse_tail_path)));
         }
     }
     {
-        const auto reverse_tail_path = to_c_reverse_path(make_tail(path_b_e(), 1));
+        const auto cpp_tail_path = make_tail(path_b_e(), 1);
+        const auto reverse_tail_path = to_c_reverse_path(cpp_tail_path);
         BOOST_TEST(!tetengo_lattice_constraint_matchesTail(
             nullptr, std::data(reverse_tail_path), std::size(reverse_tail_path)));
     }

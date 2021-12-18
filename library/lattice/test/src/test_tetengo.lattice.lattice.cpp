@@ -148,7 +148,8 @@ namespace
     {
         if (p_entry)
         {
-            return std::hash<std::string_view>{}(std::string_view{ p_entry->key.p_head, p_entry->key.length });
+            const auto entry_key = tetengo_lattice_entryView_keyOf(p_entry->key_handle);
+            return std::hash<std::string_view>{}(std::string_view{ entry_key.p_head, entry_key.length });
         }
         else
         {
@@ -162,8 +163,10 @@ namespace
     {
         if (p_one && p_another)
         {
-            return std::string_view{ p_one->key.p_head, p_one->key.length } ==
-                   std::string_view{ p_another->key.p_head, p_another->key.length };
+            const auto one_key = tetengo_lattice_entryView_keyOf(p_one->key_handle);
+            const auto another_key = tetengo_lattice_entryView_keyOf(p_another->key_handle);
+            return std::string_view{ one_key.p_head, one_key.length } ==
+                   std::string_view{ another_key.p_head, another_key.length };
         }
         else
         {
@@ -184,8 +187,9 @@ namespace
 
             for (const auto& ev: e.second)
             {
-                entry_values.push_back(
-                    { { ev.key().c_str(), ev.key().length() }, std::any_cast<std::string>(&ev.value()), ev.cost() });
+                entry_values.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&ev.key()),
+                                         std::any_cast<std::string>(&ev.value()),
+                                         ev.cost() });
             }
         }
         entry_value_offsets.push_back(std::size(entry_values));
@@ -206,10 +210,10 @@ namespace
         connection_tos.reserve(std::size(connections));
         for (const auto& c: connections)
         {
-            connection_froms.push_back({ { c.first.first.key().c_str(), c.first.first.key().length() },
+            connection_froms.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&c.first.first.key()),
                                          std::any_cast<std::string>(&c.first.first.value()),
                                          c.first.first.cost() });
-            connection_tos.push_back({ { c.first.second.key().c_str(), c.first.second.key().length() },
+            connection_tos.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&c.first.second.key()),
                                        std::any_cast<std::string>(&c.first.second.value()),
                                        c.first.second.cost() });
         }

@@ -84,9 +84,10 @@ tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const s
         for (auto i = static_cast<std::size_t>(0); i < node_count; ++i)
         {
             const auto& node = p_nodes[i];
+            const auto  cpp_node_key = tetengo_lattice_entryView_keyOf(node.key_handle);
             const auto& cpp_preceding_edge_cost_list = cpp_preceding_edge_cost_lists[i];
             cpp_nodes.emplace_back(
-                std::string_view{ node.key.p_head, node.key.length },
+                std::string_view{ cpp_node_key.p_head, cpp_node_key.length },
                 reinterpret_cast<const std::any*>(node.value_handle),
                 node.preceding_step,
                 &cpp_preceding_edge_cost_list,
@@ -151,8 +152,7 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* const p_path, t
                 p_nodes,
                 [](const auto& cpp_node) {
                     tetengo_lattice_node_t c_node{};
-                    c_node.key.p_head = std::data(cpp_node.key());
-                    c_node.key.length = cpp_node.key().length();
+                    c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_node.key());
                     c_node.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
                     c_node.preceding_step = cpp_node.preceding_step();
                     c_node.p_preceding_edge_costs = std::data(cpp_node.preceding_edge_costs());

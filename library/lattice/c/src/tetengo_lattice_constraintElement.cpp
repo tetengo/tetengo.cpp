@@ -15,6 +15,7 @@
 
 #include <tetengo/lattice/constraintElement.h>
 #include <tetengo/lattice/constraint_element.hpp>
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/node_constraint_element.hpp>
@@ -37,7 +38,8 @@ tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_latt
         const std::vector<int> cpp_preceding_edge_costs{
             p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count
         };
-        tetengo::lattice::node cpp_node{ std::string_view{ p_node->key.p_head, p_node->key.length },
+        const auto             node_key = tetengo_lattice_entryView_keyOf(p_node->key_handle);
+        tetengo::lattice::node cpp_node{ std::string_view{ node_key.p_head, node_key.length },
                                          reinterpret_cast<const std::any*>(p_node->value_handle),
                                          p_node->preceding_step,
                                          &cpp_preceding_edge_costs,
@@ -101,7 +103,8 @@ int tetengo_lattice_constraintElement_matches(
         const std::vector<int> cpp_preceding_edge_costs{
             p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count
         };
-        const tetengo::lattice::node cpp_node{ std::string_view{ p_node->key.p_head, p_node->key.length },
+        const auto                   node_key = tetengo_lattice_entryView_keyOf(p_node->key_handle);
+        const tetengo::lattice::node cpp_node{ std::string_view{ node_key.p_head, node_key.length },
                                                reinterpret_cast<const std::any*>(p_node->value_handle),
                                                p_node->preceding_step,
                                                &cpp_preceding_edge_costs,

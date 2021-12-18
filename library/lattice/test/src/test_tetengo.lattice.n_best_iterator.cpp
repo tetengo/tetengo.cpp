@@ -150,7 +150,8 @@ namespace
     {
         if (p_entry)
         {
-            return std::hash<std::string_view>{}(std::string_view{ p_entry->key.p_head, p_entry->key.length });
+            const auto entry_key = tetengo_lattice_entryView_keyOf(p_entry->key_handle);
+            return std::hash<std::string_view>{}(std::string_view{ entry_key.p_head, entry_key.length });
         }
         else
         {
@@ -164,8 +165,10 @@ namespace
     {
         if (p_one && p_another)
         {
-            return std::string_view{ p_one->key.p_head, p_one->key.length } ==
-                   std::string_view{ p_another->key.p_head, p_another->key.length };
+            const auto one_key = tetengo_lattice_entryView_keyOf(p_one->key_handle);
+            const auto another_key = tetengo_lattice_entryView_keyOf(p_another->key_handle);
+            return std::string_view{ one_key.p_head, one_key.length } ==
+                   std::string_view{ another_key.p_head, another_key.length };
         }
         else
         {
@@ -186,8 +189,9 @@ namespace
 
             for (const auto& ev: e.second)
             {
-                entry_values.push_back(
-                    { { ev.key().c_str(), ev.key().length() }, std::any_cast<std::string>(&ev.value()), ev.cost() });
+                entry_values.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&ev.key()),
+                                         std::any_cast<std::string>(&ev.value()),
+                                         ev.cost() });
             }
         }
         entry_value_offsets.push_back(std::size(entry_values));
@@ -208,10 +212,10 @@ namespace
         connection_tos.reserve(std::size(connections));
         for (const auto& c: connections)
         {
-            connection_froms.push_back({ { c.first.first.key().c_str(), c.first.first.key().length() },
+            connection_froms.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&c.first.first.key()),
                                          std::any_cast<std::string>(&c.first.first.value()),
                                          c.first.first.cost() });
-            connection_tos.push_back({ { c.first.second.key().c_str(), c.first.second.key().length() },
+            connection_tos.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&c.first.second.key()),
                                        std::any_cast<std::string>(&c.first.second.value()),
                                        c.first.second.cost() });
         }
@@ -1409,11 +1413,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
                 BOOST_TEST(
                     tetengo_lattice_entryView_valueOf(constrained_nodes[1].value_handle) ==
                     tetengo_lattice_entryView_valueOf(nodes[1].value_handle));
+                const auto constrained_node_key2 = tetengo_lattice_entryView_keyOf(constrained_nodes[2].key_handle);
                 BOOST_TEST(
-                    std::string_view(constrained_nodes[2].key.p_head, constrained_nodes[2].key.length) == "Tosu-Omuta");
+                    std::string_view(constrained_node_key2.p_head, constrained_node_key2.length) == "Tosu-Omuta");
+                const auto constrained_node_key3 = tetengo_lattice_entryView_keyOf(constrained_nodes[3].key_handle);
                 BOOST_TEST(
-                    std::string_view(constrained_nodes[3].key.p_head, constrained_nodes[3].key.length) ==
-                    "Omuta-Kumamoto");
+                    std::string_view(constrained_node_key3.p_head, constrained_node_key3.length) == "Omuta-Kumamoto");
                 BOOST_TEST(
                     tetengo_lattice_entryView_valueOf(constrained_nodes[4].value_handle) ==
                     tetengo_lattice_entryView_valueOf(nodes[3].value_handle));

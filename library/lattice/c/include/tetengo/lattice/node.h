@@ -10,7 +10,6 @@
 #include <stddef.h>
 
 #include <tetengo/lattice/entry.h>
-#include <tetengo/lattice/stringView.h>
 
 
 #if defined(__cplusplus)
@@ -23,8 +22,8 @@ extern "C" {
 */
 typedef struct tetengo_lattice_node_tag
 {
-    /*! A key. */
-    tetengo_lattice_stringView_t key;
+    /*! A key handle. */
+    tetengo_lattice_entryView_keyHandle_t key_handle;
 
     /*! A value handle. */
     tetengo_lattice_entryView_valueHandle_t value_handle;

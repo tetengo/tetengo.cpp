@@ -37,8 +37,8 @@ typedef const struct tetengo_lattice_entryView_valueHandle_tag* tetengo_lattice_
 */
 typedef struct tetengo_lattice_entry_tag
 {
-    /*! A key. */
-    tetengo_lattice_stringView_t key;
+    /*! A key handle. */
+    tetengo_lattice_entry_keyHandle_t key_handle;
 
     /*! A pointer to a value. */
     const void* p_value;
@@ -54,8 +54,8 @@ typedef struct tetengo_lattice_entry_tag
 */
 typedef struct tetengo_lattice_entryView_tag
 {
-    /*! A key. */
-    tetengo_lattice_stringView_t key;
+    /*! A key handle. */
+    tetengo_lattice_entryView_keyHandle_t key_handle;
 
     /*! A value handle. */
     tetengo_lattice_entryView_valueHandle_t value_handle;

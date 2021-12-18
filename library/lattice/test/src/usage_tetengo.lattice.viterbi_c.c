@@ -123,38 +123,56 @@ static size_t hash(const char* const string, const size_t length)
 
 static size_t entry_hash(const tetengo_lattice_entryView_t* const p_entry)
 {
-    const size_t      key_hash = hash(p_entry->key.p_head, p_entry->key.length);
-    const char* const value = (const char*)tetengo_lattice_entryView_valueOf(p_entry->value_handle);
-    const size_t      value_hash = value ? hash(value, strlen(value)) : 0;
+    const tetengo_lattice_stringView_t entry_key = tetengo_lattice_entryView_keyOf(p_entry->key_handle);
+    const size_t                       key_hash = hash(entry_key.p_head, entry_key.length);
+    const char* const                  value = (const char*)tetengo_lattice_entryView_valueOf(p_entry->value_handle);
+    const size_t                       value_hash = value ? hash(value, strlen(value)) : 0;
     return key_hash ^ value_hash;
 }
 
 static int
 entry_equal_to(const tetengo_lattice_entryView_t* const p_entry1, const tetengo_lattice_entryView_t* const p_entry2)
 {
-    const char* const value1 = (const char*)tetengo_lattice_entryView_valueOf(p_entry1->value_handle);
-    const char* const value2 = (const char*)tetengo_lattice_entryView_valueOf(p_entry2->value_handle);
-    return p_entry1->key.length == p_entry2->key.length &&
-           strncmp(p_entry1->key.p_head, p_entry2->key.p_head, p_entry1->key.length) == 0 &&
+    const tetengo_lattice_stringView_t entry_key1 = tetengo_lattice_entryView_keyOf(p_entry1->key_handle);
+    const tetengo_lattice_stringView_t entry_key2 = tetengo_lattice_entryView_keyOf(p_entry2->key_handle);
+    const char* const                  value1 = (const char*)tetengo_lattice_entryView_valueOf(p_entry1->value_handle);
+    const char* const                  value2 = (const char*)tetengo_lattice_entryView_valueOf(p_entry2->value_handle);
+    return entry_key1.length == entry_key2.length &&
+           strncmp(entry_key1.p_head, entry_key2.p_head, entry_key1.length) == 0 &&
            ((!value1 && !value2) || (value1 && value2 && strcmp(value1, value2) == 0));
 }
 
 tetengo_lattice_vocabulary_t* build_vocabulary()
 {
     /* The contents of the vocabulary. */
-    const tetengo_lattice_entry_t entries[] = {
-        /* clang-format off */
-        { { "a", 1 }, "Alpha", 2 },
-        { { "a", 1 }, "Alice", 1 },
-        { { "b", 1 }, "Bravo", 7 },
-        { { "b", 1 }, "Bob", 8 },
-        { { "ab", 2 }, "AwaBizan", 9 },
-        /* clang-format on */
-    };
-    tetengo_lattice_entry_t bosEos;
-    bosEos.key = tetengo_lattice_entryView_bosEos()->key;
-    bosEos.p_value = tetengo_lattice_entryView_valueOf(tetengo_lattice_entryView_bosEos()->value_handle);
-    bosEos.cost = tetengo_lattice_entryView_bosEos()->cost;
+    const tetengo_lattice_stringView_t      entry_key_a = { "a", 1 };
+    const tetengo_lattice_stringView_t      entry_key_b = { "b", 1 };
+    const tetengo_lattice_stringView_t      entry_key_ab = { "ab", 2 };
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_a = tetengo_lattice_entry_createKey(&entry_key_a);
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_b = tetengo_lattice_entry_createKey(&entry_key_b);
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_ab = tetengo_lattice_entry_createKey(&entry_key_ab);
+    tetengo_lattice_entry_t                 entries[5] = { { 0, 0, 0 } };
+    tetengo_lattice_entry_t                 bos_eos;
+    const tetengo_lattice_stringView_t      bos_eos_key =
+        tetengo_lattice_entryView_keyOf(tetengo_lattice_entryView_bosEos()->key_handle);
+    entries[0].key_handle = entry_key_handle_a;
+    entries[0].p_value = "Alpha";
+    entries[0].cost = 2;
+    entries[1].key_handle = entry_key_handle_a;
+    entries[1].p_value = "Alice";
+    entries[1].cost = 1;
+    entries[2].key_handle = entry_key_handle_b;
+    entries[2].p_value = "Bravo";
+    entries[2].cost = 7;
+    entries[3].key_handle = entry_key_handle_b;
+    entries[3].p_value = "Bob";
+    entries[3].cost = 8;
+    entries[4].key_handle = entry_key_handle_ab;
+    entries[4].p_value = "AwaBizan";
+    entries[4].cost = 9;
+    bos_eos.key_handle = tetengo_lattice_entry_createKey(&bos_eos_key);
+    bos_eos.p_value = tetengo_lattice_entryView_valueOf(tetengo_lattice_entryView_bosEos()->value_handle);
+    bos_eos.cost = tetengo_lattice_entryView_bosEos()->cost;
     {
         tetengo_lattice_keyEntriesPair_t entry_mappings[3];
         entry_mappings[0].key.p_head = "a";
@@ -171,10 +189,10 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
         entry_mappings[2].entry_count = 1;
         {
             tetengo_lattice_entriesConnectionCostPair_t connections[10];
-            connections[0].p_from = &bosEos;
+            connections[0].p_from = &bos_eos;
             connections[0].p_to = &entries[0];
             connections[0].cost = 3;
-            connections[1].p_from = &bosEos;
+            connections[1].p_from = &bos_eos;
             connections[1].p_to = &entries[1];
             connections[1].cost = 1;
             connections[2].p_from = &entries[0];
@@ -190,26 +208,37 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
             connections[5].p_to = &entries[3];
             connections[5].cost = 9;
             connections[6].p_from = &entries[2];
-            connections[6].p_to = &bosEos;
+            connections[6].p_to = &bos_eos;
             connections[6].cost = 2;
             connections[7].p_from = &entries[3];
-            connections[7].p_to = &bosEos;
+            connections[7].p_to = &bos_eos;
             connections[7].cost = 6;
-            connections[8].p_from = &bosEos;
+            connections[8].p_from = &bos_eos;
             connections[8].p_to = &entries[4];
             connections[8].cost = 7;
             connections[9].p_from = &entries[4];
-            connections[9].p_to = &bosEos;
+            connections[9].p_to = &bos_eos;
             connections[9].cost = 1;
 
-            /* Returns a vocabulary implemented with hash tables. */
-            return tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
-                entry_mappings,
-                sizeof(entry_mappings) / sizeof(tetengo_lattice_keyEntriesPair_t),
-                connections,
-                sizeof(connections) / sizeof(tetengo_lattice_entriesConnectionCostPair_t),
-                entry_hash,
-                entry_equal_to);
+            {
+                tetengo_lattice_vocabulary_t* const p_vocabulary =
+                    tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
+                        entry_mappings,
+                        sizeof(entry_mappings) / sizeof(tetengo_lattice_keyEntriesPair_t),
+                        connections,
+                        sizeof(connections) / sizeof(tetengo_lattice_entriesConnectionCostPair_t),
+                        entry_hash,
+                        entry_equal_to);
+
+                tetengo_lattice_entry_destroyKey(bos_eos.key_handle);
+
+                tetengo_lattice_entry_destroyKey(entry_key_handle_ab);
+                tetengo_lattice_entry_destroyKey(entry_key_handle_b);
+                tetengo_lattice_entry_destroyKey(entry_key_handle_a);
+
+                /* Returns a vocabulary implemented with hash tables. */
+                return p_vocabulary;
+            }
         }
     }
 }

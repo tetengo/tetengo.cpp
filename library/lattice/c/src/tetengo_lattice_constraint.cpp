@@ -21,6 +21,7 @@
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/constraintElement.h>
 #include <tetengo/lattice/constraint_element.hpp>
+#include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 
@@ -39,10 +40,11 @@ namespace
         cpp_preceding_edge_cost_lists.reserve(path_length);
         cpp_path.reserve(path_length);
         std::for_each(p_path, p_path + path_length, [&cpp_preceding_edge_cost_lists, &cpp_path](const auto& node) {
+            const auto node_key = tetengo_lattice_entryView_keyOf(node.key_handle);
             cpp_preceding_edge_cost_lists.emplace_back(
                 node.p_preceding_edge_costs, node.p_preceding_edge_costs + node.preceding_edge_cost_count);
             cpp_path.emplace_back(
-                std::string_view{ node.key.p_head, node.key.length },
+                std::string_view{ node_key.p_head, node_key.length },
                 reinterpret_cast<const std::any*>(node.value_handle),
                 node.preceding_step,
                 &cpp_preceding_edge_cost_lists.back(),

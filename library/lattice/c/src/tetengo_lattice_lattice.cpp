@@ -11,7 +11,6 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -26,7 +25,6 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
 #include "tetengo_lattice_input.hpp"
@@ -102,8 +100,7 @@ size_t tetengo_lattice_lattice_nodesAt(
         {
             for (auto i = static_cast<std::size_t>(0); i < std::size(cpp_nodes); ++i)
             {
-                p_nodes[i].key.p_head = std::data(cpp_nodes[i].key());
-                p_nodes[i].key.length = cpp_nodes[i].key().length();
+                p_nodes[i].key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_nodes[i].key());
                 p_nodes[i].value_handle =
                     reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_nodes[i].value());
                 p_nodes[i].preceding_step = cpp_nodes[i].preceding_step();
@@ -180,8 +177,7 @@ size_t tetengo_lattice_lattice_settle(
         if (p_eos_node)
         {
             assert(!cpp_eos_node_and_preceding_edge_costs.first.value().has_value());
-            p_eos_node->key.p_head = std::data(cpp_eos_node_and_preceding_edge_costs.first.key());
-            p_eos_node->key.length = cpp_eos_node_and_preceding_edge_costs.first.key().length();
+            p_eos_node->key_handle = tetengo_lattice_entryView_bosEos()->key_handle;
             p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
                 &cpp_eos_node_and_preceding_edge_costs.first.value());
             p_eos_node->preceding_step = cpp_eos_node_and_preceding_edge_costs.first.preceding_step();

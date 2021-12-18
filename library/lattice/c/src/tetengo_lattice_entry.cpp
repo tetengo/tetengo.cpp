@@ -21,7 +21,7 @@ tetengo_lattice_stringView_t tetengo_lattice_entry_keyOf(tetengo_lattice_entry_k
     try
     {
         const auto* const p_cpp_key = reinterpret_cast<const std::string*>(handle);
-        return p_cpp_key ? tetengo_lattice_stringView_t{ p_cpp_key->c_str(), p_cpp_key->length() } :
+        return p_cpp_key ? tetengo_lattice_stringView_t{ std::data(*p_cpp_key), p_cpp_key->length() } :
                            tetengo_lattice_stringView_t{ nullptr, 0 };
     }
     catch (...)
@@ -62,11 +62,11 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos()
 {
     try
     {
-        static const tetengo_lattice_entryView_t singleton{ { std::data(tetengo::lattice::entry_view::bos_eos().key()),
-                                                              tetengo::lattice::entry_view::bos_eos().key().length() },
-                                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
-                                                                tetengo::lattice::entry_view::bos_eos().value()),
-                                                            tetengo::lattice::entry_view::bos_eos().cost() };
+        static const tetengo_lattice_entryView_t singleton{
+            reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&tetengo::lattice::entry_view::bos_eos().key()),
+            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(tetengo::lattice::entry_view::bos_eos().value()),
+            tetengo::lattice::entry_view::bos_eos().cost()
+        };
         return &singleton;
     }
     catch (...)
