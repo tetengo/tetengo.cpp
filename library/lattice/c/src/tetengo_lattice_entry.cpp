@@ -30,7 +30,7 @@ tetengo_lattice_stringView_t tetengo_lattice_entry_keyOf(tetengo_lattice_entry_k
     }
 }
 
-tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKey(const tetengo_lattice_stringView_t* p_content)
+tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const tetengo_lattice_stringView_t* p_content)
 {
     try
     {
@@ -48,7 +48,7 @@ tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKey(const tetengo_
     }
 }
 
-void tetengo_lattice_entry_destroyKey(tetengo_lattice_entry_keyHandle_t handle)
+void tetengo_lattice_entry_destroyKeyHandle(tetengo_lattice_entry_keyHandle_t handle)
 {
     try
     {

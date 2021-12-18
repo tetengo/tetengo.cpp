@@ -148,9 +148,9 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
     const tetengo_lattice_stringView_t      entry_key_a = { "a", 1 };
     const tetengo_lattice_stringView_t      entry_key_b = { "b", 1 };
     const tetengo_lattice_stringView_t      entry_key_ab = { "ab", 2 };
-    const tetengo_lattice_entry_keyHandle_t entry_key_handle_a = tetengo_lattice_entry_createKey(&entry_key_a);
-    const tetengo_lattice_entry_keyHandle_t entry_key_handle_b = tetengo_lattice_entry_createKey(&entry_key_b);
-    const tetengo_lattice_entry_keyHandle_t entry_key_handle_ab = tetengo_lattice_entry_createKey(&entry_key_ab);
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_a = tetengo_lattice_entry_createKeyHandle(&entry_key_a);
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_b = tetengo_lattice_entry_createKeyHandle(&entry_key_b);
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_ab = tetengo_lattice_entry_createKeyHandle(&entry_key_ab);
     tetengo_lattice_entry_t                 entries[5] = { { 0, 0, 0 } };
     tetengo_lattice_entry_t                 bos_eos;
     const tetengo_lattice_stringView_t      bos_eos_key =
@@ -170,7 +170,7 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
     entries[4].key_handle = entry_key_handle_ab;
     entries[4].p_value = "AwaBizan";
     entries[4].cost = 9;
-    bos_eos.key_handle = tetengo_lattice_entry_createKey(&bos_eos_key);
+    bos_eos.key_handle = tetengo_lattice_entry_createKeyHandle(&bos_eos_key);
     bos_eos.p_value = tetengo_lattice_entryView_valueOf(tetengo_lattice_entryView_bosEos()->value_handle);
     bos_eos.cost = tetengo_lattice_entryView_bosEos()->cost;
     {
@@ -230,11 +230,11 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
                         entry_hash,
                         entry_equal_to);
 
-                tetengo_lattice_entry_destroyKey(bos_eos.key_handle);
+                tetengo_lattice_entry_destroyKeyHandle(bos_eos.key_handle);
 
-                tetengo_lattice_entry_destroyKey(entry_key_handle_ab);
-                tetengo_lattice_entry_destroyKey(entry_key_handle_b);
-                tetengo_lattice_entry_destroyKey(entry_key_handle_a);
+                tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_ab);
+                tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_b);
+                tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_a);
 
                 /* Returns a vocabulary implemented with hash tables. */
                 return p_vocabulary;
