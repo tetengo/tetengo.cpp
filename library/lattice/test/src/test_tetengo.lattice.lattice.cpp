@@ -148,8 +148,14 @@ namespace
     {
         if (p_entry)
         {
-            const auto entry_key = tetengo_lattice_entryView_keyOf(p_entry->key_handle);
-            return std::hash<std::string_view>{}(std::string_view{ entry_key.p_head, entry_key.length });
+            const auto* const p_entry_key = tetengo_lattice_entryView_createKeyOf(p_entry->key_handle);
+            BOOST_SCOPE_EXIT(p_entry_key)
+            {
+                tetengo_lattice_temp_freeStringView(p_entry_key);
+            }
+            BOOST_SCOPE_EXIT_END;
+            return std::hash<std::string_view>{}(
+                p_entry_key ? std::string_view{ p_entry_key->p_head, p_entry_key->length } : std::string_view{});
         }
         else
         {
@@ -163,10 +169,23 @@ namespace
     {
         if (p_one && p_another)
         {
-            const auto one_key = tetengo_lattice_entryView_keyOf(p_one->key_handle);
-            const auto another_key = tetengo_lattice_entryView_keyOf(p_another->key_handle);
-            return std::string_view{ one_key.p_head, one_key.length } ==
-                   std::string_view{ another_key.p_head, another_key.length };
+            const auto* const p_one_key = tetengo_lattice_entryView_createKeyOf(p_one->key_handle);
+            BOOST_SCOPE_EXIT(p_one_key)
+            {
+                tetengo_lattice_temp_freeStringView(p_one_key);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto* const p_another_key = tetengo_lattice_entryView_createKeyOf(p_another->key_handle);
+            BOOST_SCOPE_EXIT(p_another_key)
+            {
+                tetengo_lattice_temp_freeStringView(p_another_key);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto one_key =
+                p_one_key ? std::string_view{ p_one_key->p_head, p_one_key->length } : std::string_view{};
+            const auto another_key =
+                p_another_key ? std::string_view{ p_another_key->p_head, p_another_key->length } : std::string_view{};
+            return one_key == another_key;
         }
         else
         {

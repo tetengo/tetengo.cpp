@@ -13,6 +13,7 @@
 
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/lattice/entry.h>
@@ -372,9 +373,15 @@ BOOST_AUTO_TEST_CASE(key)
                                             24,
                                             2424 };
 
-        const auto node_key = tetengo_lattice_entryView_keyOf(node_.key_handle);
-        BOOST_TEST(node_key.p_head == std::data(key));
-        BOOST_TEST(node_key.length == key.length());
+        const auto* const p_node_key = tetengo_lattice_entryView_createKeyOf(node_.key_handle);
+        BOOST_SCOPE_EXIT(p_node_key)
+        {
+            tetengo_lattice_temp_freeStringView(p_node_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_node_key);
+        BOOST_TEST(p_node_key->p_head == std::data(key));
+        BOOST_TEST(p_node_key->length == key.length());
     }
 }
 

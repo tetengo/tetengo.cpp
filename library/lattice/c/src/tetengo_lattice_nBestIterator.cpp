@@ -73,11 +73,18 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
             throw std::invalid_argument{ "p_constraint is NULL." };
         }
 
-        const auto cpp_node_key = tetengo_lattice_entryView_keyOf(p_eos_node->key_handle);
-        auto       p_cpp_preceding_edge_costs = std::make_unique<std::vector<int>>(
+        const auto* const p_cpp_node_key = tetengo_lattice_entryView_createKeyOf(p_eos_node->key_handle);
+        BOOST_SCOPE_EXIT(p_cpp_node_key)
+        {
+            tetengo_lattice_temp_freeStringView(p_cpp_node_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        auto p_cpp_preceding_edge_costs = std::make_unique<std::vector<int>>(
             p_eos_node->p_preceding_edge_costs,
             p_eos_node->p_preceding_edge_costs + p_eos_node->preceding_edge_cost_count);
-        tetengo::lattice::node cpp_eos_node{ std::string_view{ cpp_node_key.p_head, cpp_node_key.length },
+        tetengo::lattice::node cpp_eos_node{ p_cpp_node_key ?
+                                                 std::string_view{ p_cpp_node_key->p_head, p_cpp_node_key->length } :
+                                                 std::string_view{},
                                              reinterpret_cast<const std::any*>(p_eos_node->value_handle),
                                              p_eos_node->preceding_step,
                                              p_cpp_preceding_edge_costs.get(),

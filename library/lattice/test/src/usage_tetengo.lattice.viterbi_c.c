@@ -123,23 +123,32 @@ static size_t hash(const char* const string, const size_t length)
 
 static size_t entry_hash(const tetengo_lattice_entryView_t* const p_entry)
 {
-    const tetengo_lattice_stringView_t entry_key = tetengo_lattice_entryView_keyOf(p_entry->key_handle);
-    const size_t                       key_hash = hash(entry_key.p_head, entry_key.length);
-    const char* const                  value = (const char*)tetengo_lattice_entryView_valueOf(p_entry->value_handle);
-    const size_t                       value_hash = value ? hash(value, strlen(value)) : 0;
+    const tetengo_lattice_stringView_t* const p_entry_key = tetengo_lattice_entryView_createKeyOf(p_entry->key_handle);
+    const size_t      key_hash = p_entry_key ? hash(p_entry_key->p_head, p_entry_key->length) : hash("", 0);
+    const char* const value = (const char*)tetengo_lattice_entryView_valueOf(p_entry->value_handle);
+    const size_t      value_hash = value ? hash(value, strlen(value)) : 0;
+    tetengo_lattice_temp_freeStringView(p_entry_key);
     return key_hash ^ value_hash;
 }
 
 static int
 entry_equal_to(const tetengo_lattice_entryView_t* const p_entry1, const tetengo_lattice_entryView_t* const p_entry2)
 {
-    const tetengo_lattice_stringView_t entry_key1 = tetengo_lattice_entryView_keyOf(p_entry1->key_handle);
-    const tetengo_lattice_stringView_t entry_key2 = tetengo_lattice_entryView_keyOf(p_entry2->key_handle);
-    const char* const                  value1 = (const char*)tetengo_lattice_entryView_valueOf(p_entry1->value_handle);
-    const char* const                  value2 = (const char*)tetengo_lattice_entryView_valueOf(p_entry2->value_handle);
-    return entry_key1.length == entry_key2.length &&
-           strncmp(entry_key1.p_head, entry_key2.p_head, entry_key1.length) == 0 &&
-           ((!value1 && !value2) || (value1 && value2 && strcmp(value1, value2) == 0));
+    const tetengo_lattice_stringView_t* const p_entry_key1 =
+        tetengo_lattice_entryView_createKeyOf(p_entry1->key_handle);
+    const tetengo_lattice_stringView_t* const p_entry_key2 =
+        tetengo_lattice_entryView_createKeyOf(p_entry2->key_handle);
+    const char* const value1 = (const char*)tetengo_lattice_entryView_valueOf(p_entry1->value_handle);
+    const char* const value2 = (const char*)tetengo_lattice_entryView_valueOf(p_entry2->value_handle);
+    int               equality = 1;
+    equality = equality && ((!p_entry_key1 && !p_entry_key2) ||
+                            (p_entry_key1 && p_entry_key2 && p_entry_key1->length == p_entry_key2->length &&
+                             strncmp(p_entry_key1->p_head, p_entry_key2->p_head, p_entry_key1->length) == 0));
+    equality = equality && ((!value1 && !value2) || (value1 && value2 && strcmp(value1, value2) == 0));
+
+    tetengo_lattice_temp_freeStringView(p_entry_key2);
+    tetengo_lattice_temp_freeStringView(p_entry_key1);
+    return equality;
 }
 
 tetengo_lattice_vocabulary_t* build_vocabulary()
@@ -153,8 +162,8 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
     const tetengo_lattice_entry_keyHandle_t entry_key_handle_ab = tetengo_lattice_entry_createKeyHandle(&entry_key_ab);
     tetengo_lattice_entry_t                 entries[5] = { { 0, 0, 0 } };
     tetengo_lattice_entry_t                 bos_eos;
-    const tetengo_lattice_stringView_t      bos_eos_key =
-        tetengo_lattice_entryView_keyOf(tetengo_lattice_entryView_bosEos()->key_handle);
+    const tetengo_lattice_stringView_t* const p_bos_eos_key =
+        tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_bosEos()->key_handle);
     entries[0].key_handle = entry_key_handle_a;
     entries[0].p_value = "Alpha";
     entries[0].cost = 2;
@@ -170,7 +179,7 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
     entries[4].key_handle = entry_key_handle_ab;
     entries[4].p_value = "AwaBizan";
     entries[4].cost = 9;
-    bos_eos.key_handle = tetengo_lattice_entry_createKeyHandle(&bos_eos_key);
+    bos_eos.key_handle = tetengo_lattice_entry_createKeyHandle(p_bos_eos_key);
     bos_eos.p_value = tetengo_lattice_entryView_valueOf(tetengo_lattice_entryView_bosEos()->value_handle);
     bos_eos.cost = tetengo_lattice_entryView_bosEos()->cost;
     {
@@ -235,6 +244,8 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
                 tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_ab);
                 tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_b);
                 tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_a);
+
+                tetengo_lattice_temp_freeStringView(p_bos_eos_key);
 
                 /* Returns a vocabulary implemented with hash tables. */
                 return p_vocabulary;

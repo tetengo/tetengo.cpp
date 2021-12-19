@@ -13,6 +13,9 @@
 
 #include <stddef.h>
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
 #include <tetengo/lattice/constraintElement.h>
 #include <tetengo/lattice/constraint_element.hpp>
 #include <tetengo/lattice/entry.h>
@@ -38,8 +41,14 @@ tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_latt
         const std::vector<int> cpp_preceding_edge_costs{
             p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count
         };
-        const auto             node_key = tetengo_lattice_entryView_keyOf(p_node->key_handle);
-        tetengo::lattice::node cpp_node{ std::string_view{ node_key.p_head, node_key.length },
+        const auto* const p_node_key = tetengo_lattice_entryView_createKeyOf(p_node->key_handle);
+        BOOST_SCOPE_EXIT(p_node_key)
+        {
+            tetengo_lattice_temp_freeStringView(p_node_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        tetengo::lattice::node cpp_node{ p_node_key ? std::string_view{ p_node_key->p_head, p_node_key->length } :
+                                                      std::string_view{},
                                          reinterpret_cast<const std::any*>(p_node->value_handle),
                                          p_node->preceding_step,
                                          &cpp_preceding_edge_costs,
@@ -103,8 +112,14 @@ int tetengo_lattice_constraintElement_matches(
         const std::vector<int> cpp_preceding_edge_costs{
             p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count
         };
-        const auto                   node_key = tetengo_lattice_entryView_keyOf(p_node->key_handle);
-        const tetengo::lattice::node cpp_node{ std::string_view{ node_key.p_head, node_key.length },
+        const auto* const p_node_key = tetengo_lattice_entryView_createKeyOf(p_node->key_handle);
+        BOOST_SCOPE_EXIT(p_node_key)
+        {
+            tetengo_lattice_temp_freeStringView(p_node_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const tetengo::lattice::node cpp_node{ p_node_key ? std::string_view{ p_node_key->p_head, p_node_key->length } :
+                                                            std::string_view{},
                                                reinterpret_cast<const std::any*>(p_node->value_handle),
                                                p_node->preceding_step,
                                                &cpp_preceding_edge_costs,

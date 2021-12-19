@@ -24,6 +24,7 @@
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/stringView.h>
 
 #include "tetengo_lattice_constraint.hpp"
 #include "tetengo_lattice_constraintElement.hpp"
@@ -39,19 +40,25 @@ namespace
     {
         cpp_preceding_edge_cost_lists.reserve(path_length);
         cpp_path.reserve(path_length);
-        std::for_each(p_path, p_path + path_length, [&cpp_preceding_edge_cost_lists, &cpp_path](const auto& node) {
-            const auto node_key = tetengo_lattice_entryView_keyOf(node.key_handle);
+        for (const auto* p_node = p_path; p_node != p_path + path_length; ++p_node)
+        {
+            const auto* const p_node_key = tetengo_lattice_entryView_createKeyOf(p_node->key_handle);
+            BOOST_SCOPE_EXIT(p_node_key)
+            {
+                tetengo_lattice_temp_freeStringView(p_node_key);
+            }
+            BOOST_SCOPE_EXIT_END;
             cpp_preceding_edge_cost_lists.emplace_back(
-                node.p_preceding_edge_costs, node.p_preceding_edge_costs + node.preceding_edge_cost_count);
+                p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count);
             cpp_path.emplace_back(
-                std::string_view{ node_key.p_head, node_key.length },
-                reinterpret_cast<const std::any*>(node.value_handle),
-                node.preceding_step,
+                p_node_key ? std::string_view{ p_node_key->p_head, p_node_key->length } : std::string_view{},
+                reinterpret_cast<const std::any*>(p_node->value_handle),
+                p_node->preceding_step,
                 &cpp_preceding_edge_cost_lists.back(),
-                node.best_preceding_node,
-                node.node_cost,
-                node.path_cost);
-        });
+                p_node->best_preceding_node,
+                p_node->node_cost,
+                p_node->path_cost);
+        };
     }
 
 

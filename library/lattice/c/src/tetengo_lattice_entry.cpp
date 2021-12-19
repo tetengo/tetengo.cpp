@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <cstdlib>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
@@ -16,18 +17,34 @@
 #include <tetengo/lattice/stringView.h>
 
 
-tetengo_lattice_stringView_t tetengo_lattice_entry_keyOf(tetengo_lattice_entry_keyHandle_t handle)
+const tetengo_lattice_stringView_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice_entry_keyHandle_t handle)
 {
     try
     {
         const auto* const p_cpp_key = reinterpret_cast<const std::string*>(handle);
-        return p_cpp_key ? tetengo_lattice_stringView_t{ std::data(*p_cpp_key), p_cpp_key->length() } :
-                           tetengo_lattice_stringView_t{ nullptr, 0 };
+        if (!p_cpp_key)
+        {
+            return nullptr;
+        }
+        auto* const p_key =
+            static_cast<tetengo_lattice_stringView_t*>(std::malloc(sizeof(tetengo_lattice_stringView_t)));
+        if (!p_key)
+        {
+            return nullptr;
+        }
+        p_key->p_head = std::data(*p_cpp_key);
+        p_key->length = p_cpp_key->length();
+        return p_key;
     }
     catch (...)
     {
-        return tetengo_lattice_stringView_t{ nullptr, 0 };
+        return nullptr;
     }
+}
+
+void tetengo_lattice_temp_freeStringView(const tetengo_lattice_stringView_t* p_string_view)
+{
+    std::free(const_cast<tetengo_lattice_stringView_t*>(p_string_view));
 }
 
 tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const tetengo_lattice_stringView_t* p_content)
@@ -75,17 +92,28 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos()
     }
 }
 
-tetengo_lattice_stringView_t tetengo_lattice_entryView_keyOf(tetengo_lattice_entryView_keyHandle_t handle)
+const tetengo_lattice_stringView_t* tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_keyHandle_t handle)
 {
     try
     {
         const auto* const p_cpp_key = reinterpret_cast<const std::string_view*>(handle);
-        return p_cpp_key ? tetengo_lattice_stringView_t{ std::data(*p_cpp_key), p_cpp_key->length() } :
-                           tetengo_lattice_stringView_t{ nullptr, 0 };
+        if (!p_cpp_key)
+        {
+            return nullptr;
+        }
+        auto* const p_key =
+            static_cast<tetengo_lattice_stringView_t*>(std::malloc(sizeof(tetengo_lattice_stringView_t)));
+        if (!p_key)
+        {
+            return nullptr;
+        }
+        p_key->p_head = std::data(*p_cpp_key);
+        p_key->length = p_cpp_key->length();
+        return p_key;
     }
     catch (...)
     {
-        return tetengo_lattice_stringView_t{ nullptr, 0 };
+        return nullptr;
     }
 }
 

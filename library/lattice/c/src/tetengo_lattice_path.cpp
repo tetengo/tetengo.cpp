@@ -16,6 +16,9 @@
 
 #include <stddef.h>
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
@@ -83,11 +86,17 @@ tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const s
         cpp_nodes.reserve(node_count);
         for (auto i = static_cast<std::size_t>(0); i < node_count; ++i)
         {
-            const auto& node = p_nodes[i];
-            const auto  cpp_node_key = tetengo_lattice_entryView_keyOf(node.key_handle);
+            const auto&       node = p_nodes[i];
+            const auto* const p_cpp_node_key = tetengo_lattice_entryView_createKeyOf(node.key_handle);
+            BOOST_SCOPE_EXIT(p_cpp_node_key)
+            {
+                tetengo_lattice_temp_freeStringView(p_cpp_node_key);
+            }
+            BOOST_SCOPE_EXIT_END;
             const auto& cpp_preceding_edge_cost_list = cpp_preceding_edge_cost_lists[i];
             cpp_nodes.emplace_back(
-                std::string_view{ cpp_node_key.p_head, cpp_node_key.length },
+                p_cpp_node_key ? std::string_view{ p_cpp_node_key->p_head, p_cpp_node_key->length } :
+                                 std::string_view{},
                 reinterpret_cast<const std::any*>(node.value_handle),
                 node.preceding_step,
                 &cpp_preceding_edge_cost_list,

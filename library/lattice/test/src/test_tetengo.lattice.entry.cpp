@@ -10,6 +10,7 @@
 #include <string_view>
 
 #include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/lattice/entry.h>
@@ -53,8 +54,14 @@ BOOST_AUTO_TEST_CASE(bos_eos)
         static auto* const p_bos_eos = tetengo_lattice_entryView_bosEos();
 
         BOOST_TEST_REQUIRE(p_bos_eos->key_handle);
-        const auto key = tetengo_lattice_entryView_keyOf(p_bos_eos->key_handle);
-        BOOST_TEST(key.length == 0U);
+        const auto* const p_key = tetengo_lattice_entryView_createKeyOf(p_bos_eos->key_handle);
+        BOOST_SCOPE_EXIT(p_key)
+        {
+            tetengo_lattice_temp_freeStringView(p_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_key);
+        BOOST_TEST(p_key->length == 0U);
         BOOST_TEST(!tetengo_lattice_entryView_valueOf(p_bos_eos->value_handle));
         BOOST_TEST(p_bos_eos->cost == 0);
     }
@@ -101,9 +108,15 @@ BOOST_AUTO_TEST_CASE(key)
                                              &surface_mizuho,
                                              42 };
 
-        const auto entry_key = tetengo_lattice_entry_keyOf(entry.key_handle);
-        BOOST_TEST(entry_key.p_head == key_mizuho.c_str());
-        BOOST_TEST(entry_key.length == key_mizuho.length());
+        const auto* const p_entry_key = tetengo_lattice_entry_createKeyOf(entry.key_handle);
+        BOOST_SCOPE_EXIT(p_entry_key)
+        {
+            tetengo_lattice_temp_freeStringView(p_entry_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_entry_key);
+        BOOST_TEST(p_entry_key->p_head == key_mizuho.c_str());
+        BOOST_TEST(p_entry_key->length == key_mizuho.length());
     }
     {
         const std::string_view            key_view{ key_mizuho };
@@ -112,9 +125,15 @@ BOOST_AUTO_TEST_CASE(key)
                                                  reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
                                                  42 };
 
-        const auto entry_key = tetengo_lattice_entryView_keyOf(entry.key_handle);
-        BOOST_TEST(entry_key.p_head == key_mizuho.c_str());
-        BOOST_TEST(entry_key.length == key_mizuho.length());
+        const auto* const p_entry_key = tetengo_lattice_entryView_createKeyOf(entry.key_handle);
+        BOOST_SCOPE_EXIT(p_entry_key)
+        {
+            tetengo_lattice_temp_freeStringView(p_entry_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_entry_key);
+        BOOST_TEST(p_entry_key->p_head == key_mizuho.c_str());
+        BOOST_TEST(p_entry_key->length == key_mizuho.length());
     }
 }
 
