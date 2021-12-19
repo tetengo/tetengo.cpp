@@ -9,6 +9,7 @@
 #include <iterator>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <stddef.h>
@@ -95,7 +96,6 @@ BOOST_AUTO_TEST_CASE(construction)
     BOOST_TEST(p_vocabulary);
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(find_entries)
 {
     BOOST_TEST_PASSPOINT();
@@ -125,20 +125,31 @@ BOOST_AUTO_TEST_CASE(find_entries)
     std::vector<tetengo_lattice_entryView_t> entries(entry_count);
     const auto entry_count_again = tetengo_lattice_vocabulary_findEntries(p_vocabulary, p_input, entries.data());
     BOOST_TEST(entry_count_again == entry_count);
-    const auto entry_key0 = tetengo_lattice_entryView_keyOf(entries[0].key_handle);
-    BOOST_TEST((std::string_view{ entry_key0.p_head, entry_key0.length } == "key0"));
+    const auto* const p_entry_key0 = tetengo_lattice_entryView_createKeyOf(entries[0].key_handle);
+    BOOST_SCOPE_EXIT(p_entry_key0)
+    {
+        tetengo_lattice_input_destroy(p_entry_key0);
+    }
+    BOOST_SCOPE_EXIT_END;
+    BOOST_TEST_REQUIRE(p_entry_key0);
+    BOOST_TEST((std::string_view{ tetengo_lattice_stringInput_value(p_entry_key0) } == "key0"));
     const auto* const entry_value0 = reinterpret_cast<const char*>(
         *std::any_cast<const void*>(reinterpret_cast<const std::any*>(entries[0].value_handle)));
     BOOST_TEST((std::string_view{ entry_value0 } == "hoge"));
     BOOST_TEST(entries[0].cost == 0);
-    const auto entry_key1 = tetengo_lattice_entryView_keyOf(entries[1].key_handle);
-    BOOST_TEST((std::string_view{ entry_key1.p_head, entry_key1.length } == "key1"));
+    const auto* const p_entry_key1 = tetengo_lattice_entryView_createKeyOf(entries[1].key_handle);
+    BOOST_SCOPE_EXIT(p_entry_key1)
+    {
+        tetengo_lattice_input_destroy(p_entry_key1);
+    }
+    BOOST_SCOPE_EXIT_END;
+    BOOST_TEST_REQUIRE(p_entry_key1);
+    BOOST_TEST((std::string_view{ tetengo_lattice_stringInput_value(p_entry_key1) } == "key1"));
     const auto* const entry_value1 = reinterpret_cast<const char*>(
         *std::any_cast<const void*>(reinterpret_cast<const std::any*>(entries[1].value_handle)));
     BOOST_TEST((std::string_view{ entry_value1 } == "fuga"));
     BOOST_TEST(entries[1].cost == 1);
 }
-#endif
 
 BOOST_AUTO_TEST_CASE(find_connection)
 {
