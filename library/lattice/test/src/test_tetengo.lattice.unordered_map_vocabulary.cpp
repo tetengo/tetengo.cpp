@@ -10,8 +10,8 @@
 #include <functional>
 #include <iterator>
 #include <limits>
+#include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -23,9 +23,10 @@
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.h>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
@@ -66,12 +67,13 @@ namespace
 
     std::size_t cpp_entry_hash(const tetengo::lattice::entry_view& entry)
     {
-        return std::hash<std::string_view>{}(entry.key());
+        return entry.p_key() ? entry.p_key()->hash_value() : 0;
     }
 
     bool cpp_entry_equal_to(const tetengo::lattice::entry_view& one, const tetengo::lattice::entry_view& another)
     {
-        return one.key() == another.key();
+        return (!one.p_key() && !another.p_key()) ||
+               (one.p_key() && another.p_key() && *one.p_key() == *another.p_key());
     }
 
     size_t c_entry_hash(const tetengo_lattice_entryView_t* const p_entry)
@@ -81,11 +83,10 @@ namespace
             const auto* const p_entry_key = tetengo_lattice_entryView_createKeyOf(p_entry->key_handle);
             BOOST_SCOPE_EXIT(p_entry_key)
             {
-                tetengo_lattice_temp_freeStringView(p_entry_key);
+                tetengo_lattice_input_destroy(p_entry_key);
             }
             BOOST_SCOPE_EXIT_END;
-            return std::hash<std::string_view>{}(
-                p_entry_key ? std::string_view{ p_entry_key->p_head, p_entry_key->length } : std::string_view{});
+            return p_entry_key ? tetengo_lattice_input_hashValue(p_entry_key) : 0;
         }
         else
         {
@@ -102,18 +103,17 @@ namespace
             const auto* const p_one_key = tetengo_lattice_entryView_createKeyOf(p_one->key_handle);
             BOOST_SCOPE_EXIT(p_one_key)
             {
-                tetengo_lattice_temp_freeStringView(p_one_key);
+                tetengo_lattice_input_destroy(p_one_key);
             }
             BOOST_SCOPE_EXIT_END;
             const auto* const p_another_key = tetengo_lattice_entryView_createKeyOf(p_another->key_handle);
             BOOST_SCOPE_EXIT(p_another_key)
             {
-                tetengo_lattice_temp_freeStringView(p_another_key);
+                tetengo_lattice_input_destroy(p_another_key);
             }
             BOOST_SCOPE_EXIT_END;
-            return (p_one_key ? std::string_view{ p_one_key->p_head, p_one_key->length } : std::string_view{}) ==
-                   (p_another_key ? std::string_view{ p_another_key->p_head, p_another_key->length } :
-                                    std::string_view{});
+            return (!p_one_key && !p_another_key) ||
+                   (p_one_key && p_another_key && tetengo_lattice_input_equal(p_one_key, p_another_key));
         }
         else
         {
@@ -144,13 +144,17 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
-            { key_mizuho, { { key_mizuho, surface_mizuho, 42 } } },
-            { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
+            { key_mizuho, { { std::make_unique<tetengo::lattice::string_input>(key_mizuho), surface_mizuho, 42 } } },
+            { key_sakura,
+              { { std::make_unique<tetengo::lattice::string_input>(key_sakura), surface_sakura1, 24 },
+                { std::make_unique<tetengo::lattice::string_input>(key_sakura), surface_sakura2, 2424 } } }
         };
         std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{
             { std::make_pair(
-                  tetengo::lattice::entry{ key_mizuho, surface_mizuho, 42 },
-                  tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
+                  tetengo::lattice::entry{
+                      std::make_unique<tetengo::lattice::string_input>(key_mizuho), surface_mizuho, 42 },
+                  tetengo::lattice::entry{
+                      std::make_unique<tetengo::lattice::string_input>(key_sakura), surface_sakura1, 24 }),
               4242 }
         };
         const tetengo::lattice::unordered_map_vocabulary vocabulary{
@@ -159,8 +163,20 @@ BOOST_AUTO_TEST_CASE(construction)
     }
 
     {
-        const auto entry_key_handle_mizuho = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_mizuho);
-        const auto entry_key_handle_sakura = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_sakura);
+        const auto* const p_input_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+        BOOST_SCOPE_EXIT(p_input_mizuho)
+        {
+            tetengo_lattice_input_destroy(p_input_mizuho);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto* const p_input_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+        BOOST_SCOPE_EXIT(p_input_sakura)
+        {
+            tetengo_lattice_input_destroy(p_input_sakura);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto entry_key_handle_mizuho = tetengo_lattice_entry_createKeyHandle(p_input_mizuho);
+        const auto entry_key_handle_sakura = tetengo_lattice_entry_createKeyHandle(p_input_sakura);
 
         const std::vector<tetengo_lattice_entry_t> entries_mizuho{ { entry_key_handle_mizuho, &surface_mizuho, 42 } };
         const std::vector<tetengo_lattice_entry_t> entries_sakura{
@@ -188,8 +204,20 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_vocabulary);
     }
     {
-        const auto entry_key_handle_mizuho = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_mizuho);
-        const auto entry_key_handle_sakura = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_sakura);
+        const auto* const p_input_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+        BOOST_SCOPE_EXIT(p_input_mizuho)
+        {
+            tetengo_lattice_input_destroy(p_input_mizuho);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto* const p_input_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+        BOOST_SCOPE_EXIT(p_input_sakura)
+        {
+            tetengo_lattice_input_destroy(p_input_sakura);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto entry_key_handle_mizuho = tetengo_lattice_entry_createKeyHandle(p_input_mizuho);
+        const auto entry_key_handle_sakura = tetengo_lattice_entry_createKeyHandle(p_input_sakura);
 
         const tetengo_lattice_entry_t connection_key_mizuho{ entry_key_handle_mizuho, &surface_mizuho, 42 };
         const tetengo_lattice_entry_t connection_key_sakura{ entry_key_handle_sakura, &surface_sakura1, 24 };
@@ -208,8 +236,20 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_vocabulary);
     }
     {
-        const auto entry_key_handle_mizuho = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_mizuho);
-        const auto entry_key_handle_sakura = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_sakura);
+        const auto* const p_input_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+        BOOST_SCOPE_EXIT(p_input_mizuho)
+        {
+            tetengo_lattice_input_destroy(p_input_mizuho);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto* const p_input_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+        BOOST_SCOPE_EXIT(p_input_sakura)
+        {
+            tetengo_lattice_input_destroy(p_input_sakura);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto entry_key_handle_mizuho = tetengo_lattice_entry_createKeyHandle(p_input_mizuho);
+        const auto entry_key_handle_sakura = tetengo_lattice_entry_createKeyHandle(p_input_sakura);
 
         const tetengo_lattice_entry_t connection_key_mizuho{ entry_key_handle_mizuho, &surface_mizuho, 42 };
         const tetengo_lattice_entry_t connection_key_sakura{ entry_key_handle_sakura, &surface_sakura1, 24 };
@@ -223,8 +263,20 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(!p_vocabulary);
     }
     {
-        const auto entry_key_handle_mizuho = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_mizuho);
-        const auto entry_key_handle_sakura = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_sakura);
+        const auto* const p_input_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+        BOOST_SCOPE_EXIT(p_input_mizuho)
+        {
+            tetengo_lattice_input_destroy(p_input_mizuho);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto* const p_input_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+        BOOST_SCOPE_EXIT(p_input_sakura)
+        {
+            tetengo_lattice_input_destroy(p_input_sakura);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto entry_key_handle_mizuho = tetengo_lattice_entry_createKeyHandle(p_input_mizuho);
+        const auto entry_key_handle_sakura = tetengo_lattice_entry_createKeyHandle(p_input_sakura);
 
         const std::vector<tetengo_lattice_entry_t> entries_mizuho{ { entry_key_handle_mizuho, &surface_mizuho, 42 } };
         const std::vector<tetengo_lattice_entry_t> entries_sakura{
@@ -246,8 +298,20 @@ BOOST_AUTO_TEST_CASE(construction)
         BOOST_TEST(p_vocabulary);
     }
     {
-        const auto entry_key_handle_mizuho = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_mizuho);
-        const auto entry_key_handle_sakura = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_sakura);
+        const auto* const p_input_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+        BOOST_SCOPE_EXIT(p_input_mizuho)
+        {
+            tetengo_lattice_input_destroy(p_input_mizuho);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto* const p_input_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+        BOOST_SCOPE_EXIT(p_input_sakura)
+        {
+            tetengo_lattice_input_destroy(p_input_sakura);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto entry_key_handle_mizuho = tetengo_lattice_entry_createKeyHandle(p_input_mizuho);
+        const auto entry_key_handle_sakura = tetengo_lattice_entry_createKeyHandle(p_input_sakura);
 
         const std::vector<tetengo_lattice_entry_t> entries_mizuho{ { entry_key_handle_mizuho, &surface_mizuho, 42 } };
         const std::vector<tetengo_lattice_entry_t> entries_sakura{
@@ -427,13 +491,17 @@ BOOST_AUTO_TEST_CASE(find_connection)
 
     {
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
-            { key_mizuho, { { key_mizuho, surface_mizuho, 42 } } },
-            { key_sakura, { { key_sakura, surface_sakura1, 24 }, { key_sakura, surface_sakura2, 2424 } } }
+            { key_mizuho, { { std::make_unique<tetengo::lattice::string_input>(key_mizuho), surface_mizuho, 42 } } },
+            { key_sakura,
+              { { std::make_unique<tetengo::lattice::string_input>(key_sakura), surface_sakura1, 24 },
+                { std::make_unique<tetengo::lattice::string_input>(key_sakura), surface_sakura2, 2424 } } }
         };
         std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{
             { std::make_pair(
-                  tetengo::lattice::entry{ key_mizuho, surface_mizuho, 42 },
-                  tetengo::lattice::entry{ key_sakura, surface_sakura1, 24 }),
+                  tetengo::lattice::entry{
+                      std::make_unique<tetengo::lattice::string_input>(key_mizuho), surface_mizuho, 42 },
+                  tetengo::lattice::entry{
+                      std::make_unique<tetengo::lattice::string_input>(key_sakura), surface_sakura1, 24 }),
               4242 }
         };
         const tetengo::lattice::unordered_map_vocabulary vocabulary{
@@ -458,8 +526,20 @@ BOOST_AUTO_TEST_CASE(find_connection)
     }
 
     {
-        const auto entry_key_handle_mizuho = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_mizuho);
-        const auto entry_key_handle_sakura = reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&key_sakura);
+        const auto* const p_input_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+        BOOST_SCOPE_EXIT(p_input_mizuho)
+        {
+            tetengo_lattice_input_destroy(p_input_mizuho);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto* const p_input_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+        BOOST_SCOPE_EXIT(p_input_sakura)
+        {
+            tetengo_lattice_input_destroy(p_input_sakura);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const auto entry_key_handle_mizuho = tetengo_lattice_entry_createKeyHandle(p_input_mizuho);
+        const auto entry_key_handle_sakura = tetengo_lattice_entry_createKeyHandle(p_input_sakura);
 
         const std::vector<tetengo_lattice_entry_t> entries_mizuho{ { entry_key_handle_mizuho, &surface_mizuho, 42 } };
         const std::vector<tetengo_lattice_entry_t> entries_sakura{
@@ -491,12 +571,20 @@ BOOST_AUTO_TEST_CASE(find_connection)
         BOOST_TEST_REQUIRE(p_vocabulary);
 
         {
-            const std::string_view key_view_mizuho{ key_mizuho };
-            const std::string_view key_view_sakura{ key_sakura };
-            const auto             entry_view_key_handle_mizuho =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_mizuho);
-            const auto entry_view_key_handle_sakura =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_sakura);
+            const auto* const p_input_view_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_mizuho)
+            {
+                tetengo_lattice_input_destroy(p_input_view_mizuho);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto* const p_input_view_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_sakura)
+            {
+                tetengo_lattice_input_destroy(p_input_view_sakura);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_view_key_handle_mizuho = tetengo_lattice_entryView_toKeyHandle(p_input_view_mizuho);
+            const auto entry_view_key_handle_sakura = tetengo_lattice_entryView_toKeyHandle(p_input_view_sakura);
 
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ entry_view_key_handle_mizuho,
@@ -526,9 +614,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(connection.cost == 4242);
         }
         {
-            const std::string_view key_view_mizuho{ key_mizuho };
-            const auto             entry_view_key_handle_mizuho =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_mizuho);
+            const auto* const p_input_view_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_mizuho)
+            {
+                tetengo_lattice_input_destroy(p_input_view_mizuho);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_view_key_handle_mizuho = tetengo_lattice_entryView_toKeyHandle(p_input_view_mizuho);
 
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ entry_view_key_handle_mizuho,
@@ -553,12 +645,20 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(connection.cost == std::numeric_limits<int>::max());
         }
         {
-            const std::string_view key_view_mizuho{ key_mizuho };
-            const std::string_view key_view_sakura{ key_sakura };
-            const auto             entry_view_key_handle_mizuho =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_mizuho);
-            const auto entry_view_key_handle_sakura =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_sakura);
+            const auto* const p_input_view_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_mizuho)
+            {
+                tetengo_lattice_input_destroy(p_input_view_mizuho);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto* const p_input_view_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_sakura)
+            {
+                tetengo_lattice_input_destroy(p_input_view_sakura);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_view_key_handle_mizuho = tetengo_lattice_entryView_toKeyHandle(p_input_view_mizuho);
+            const auto entry_view_key_handle_sakura = tetengo_lattice_entryView_toKeyHandle(p_input_view_sakura);
 
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ entry_view_key_handle_mizuho,
@@ -586,9 +686,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(!found);
         }
         {
-            const std::string_view key_view_sakura{ key_sakura };
-            const auto             entry_view_key_handle_sakura =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_sakura);
+            const auto* const p_input_view_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_sakura)
+            {
+                tetengo_lattice_input_destroy(p_input_view_sakura);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_view_key_handle_sakura = tetengo_lattice_entryView_toKeyHandle(p_input_view_sakura);
 
             const std::any                    value_sakura2{ reinterpret_cast<const void*>(&surface_sakura2) };
             const tetengo_lattice_entryView_t entry_sakura2{ entry_view_key_handle_sakura,
@@ -601,9 +705,13 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(!found);
         }
         {
-            const std::string_view key_view_mizuho{ key_mizuho };
-            const auto             entry_view_key_handle_mizuho =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_mizuho);
+            const auto* const p_input_view_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_mizuho)
+            {
+                tetengo_lattice_input_destroy(p_input_view_mizuho);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_view_key_handle_mizuho = tetengo_lattice_entryView_toKeyHandle(p_input_view_mizuho);
 
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ entry_view_key_handle_mizuho,
@@ -626,12 +734,20 @@ BOOST_AUTO_TEST_CASE(find_connection)
             BOOST_TEST(!found);
         }
         {
-            const std::string_view key_view_mizuho{ key_mizuho };
-            const std::string_view key_view_sakura{ key_sakura };
-            const auto             entry_view_key_handle_mizuho =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_mizuho);
-            const auto entry_view_key_handle_sakura =
-                reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_view_sakura);
+            const auto* const p_input_view_mizuho = tetengo_lattice_input_createStringInput(key_mizuho.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_mizuho)
+            {
+                tetengo_lattice_input_destroy(p_input_view_mizuho);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto* const p_input_view_sakura = tetengo_lattice_input_createStringInput(key_sakura.c_str());
+            BOOST_SCOPE_EXIT(p_input_view_sakura)
+            {
+                tetengo_lattice_input_destroy(p_input_view_sakura);
+            }
+            BOOST_SCOPE_EXIT_END;
+            const auto entry_view_key_handle_mizuho = tetengo_lattice_entryView_toKeyHandle(p_input_view_mizuho);
+            const auto entry_view_key_handle_sakura = tetengo_lattice_entryView_toKeyHandle(p_input_view_sakura);
 
             const std::any                    value_mizuho{ reinterpret_cast<const void*>(&surface_mizuho) };
             const tetengo_lattice_entryView_t entry_mizuho{ entry_view_key_handle_mizuho,

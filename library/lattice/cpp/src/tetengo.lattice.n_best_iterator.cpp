@@ -19,6 +19,7 @@
 #include <boost/operators.hpp>
 
 #include <tetengo/lattice/constraint.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/n_best_iterator.hpp>
 #include <tetengo/lattice/node.hpp>
@@ -59,7 +60,7 @@ namespace tetengo::lattice
         std::size_t calc_node_hash(const node& node_)
         {
             auto seed = static_cast<std::size_t>(0);
-            boost::hash_combine(seed, boost::hash_value(node_.key()));
+            boost::hash_combine(seed, node_.p_key() ? node_.p_key()->hash_value() : 0);
             boost::hash_combine(seed, boost::hash_value(node_.preceding_step()));
             boost::hash_combine(seed, boost::hash_value(node_.preceding_edge_costs()));
             boost::hash_combine(seed, boost::hash_value(node_.best_preceding_node()));

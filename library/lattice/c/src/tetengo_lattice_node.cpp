@@ -6,7 +6,6 @@
 
 #include <any>
 #include <stdexcept>
-#include <string_view>
 #include <vector>
 
 #include <stddef.h>
@@ -16,9 +15,11 @@
 
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/stringView.h>
+
+#include "tetengo_lattice_input.hpp"
 
 
 int tetengo_lattice_node_bos(
@@ -130,12 +131,10 @@ int tetengo_lattice_node_toNode(
         const auto* const p_entry_key = tetengo_lattice_entryView_createKeyOf(p_entry->key_handle);
         BOOST_SCOPE_EXIT(p_entry_key)
         {
-            tetengo_lattice_temp_freeStringView(p_entry_key);
+            tetengo_lattice_input_destroy(p_entry_key);
         }
         BOOST_SCOPE_EXIT_END;
-        const tetengo::lattice::entry_view cpp_entry{ p_entry_key ?
-                                                          std::string_view{ p_entry_key->p_head, p_entry_key->length } :
-                                                          std::string_view{},
+        const tetengo::lattice::entry_view cpp_entry{ p_entry_key ? &p_entry_key->cpp_input() : nullptr,
                                                       reinterpret_cast<const std::any*>(p_entry->value_handle),
                                                       p_entry->cost };
         const std::vector<int>       cpp_preceding_edge_costs{};
@@ -143,7 +142,7 @@ int tetengo_lattice_node_toNode(
             cpp_entry, preceding_step, &cpp_preceding_edge_costs, best_preceding_node, path_cost
         };
 
-        p_node->key_handle = p_entry->key_handle;
+        p_node->key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_node.p_key());
         p_node->value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
         p_node->preceding_step = cpp_node.preceding_step();
         p_node->p_preceding_edge_costs = p_preceding_edge_costs;
@@ -179,11 +178,10 @@ int tetengo_lattice_node_equal(const tetengo_lattice_node_t* const p_one, const 
         const auto* const p_one_key = tetengo_lattice_entryView_createKeyOf(p_one->key_handle);
         BOOST_SCOPE_EXIT(p_one_key)
         {
-            tetengo_lattice_temp_freeStringView(p_one_key);
+            tetengo_lattice_input_destroy(p_one_key);
         }
         BOOST_SCOPE_EXIT_END;
-        const tetengo::lattice::node cpp_one{ p_one_key ? std::string_view{ p_one_key->p_head, p_one_key->length } :
-                                                          std::string_view{},
+        const tetengo::lattice::node cpp_one{ p_one_key ? &p_one_key->cpp_input() : nullptr,
                                               reinterpret_cast<const std::any*>(p_one->value_handle),
                                               p_one->preceding_step,
                                               &cpp_preceding_edge_costs_one,
@@ -196,12 +194,10 @@ int tetengo_lattice_node_equal(const tetengo_lattice_node_t* const p_one, const 
         const auto* const p_another_key = tetengo_lattice_entryView_createKeyOf(p_another->key_handle);
         BOOST_SCOPE_EXIT(p_another_key)
         {
-            tetengo_lattice_temp_freeStringView(p_another_key);
+            tetengo_lattice_input_destroy(p_another_key);
         }
         BOOST_SCOPE_EXIT_END;
-        const tetengo::lattice::node cpp_another{ p_another_key ?
-                                                      std::string_view{ p_another_key->p_head, p_another_key->length } :
-                                                      std::string_view{},
+        const tetengo::lattice::node cpp_another{ p_another_key ? &p_another_key->cpp_input() : nullptr,
                                                   reinterpret_cast<const std::any*>(p_another->value_handle),
                                                   p_another->preceding_step,
                                                   &cpp_preceding_edge_costs_another,
@@ -232,11 +228,10 @@ int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
         const auto* const p_node_key = tetengo_lattice_entryView_createKeyOf(p_node->key_handle);
         BOOST_SCOPE_EXIT(p_node_key)
         {
-            tetengo_lattice_temp_freeStringView(p_node_key);
+            tetengo_lattice_input_destroy(p_node_key);
         }
         BOOST_SCOPE_EXIT_END;
-        const tetengo::lattice::node cpp_node{ p_node_key ? std::string_view{ p_node_key->p_head, p_node_key->length } :
-                                                            std::string_view{},
+        const tetengo::lattice::node cpp_node{ p_node_key ? &p_node_key->cpp_input() : nullptr,
                                                reinterpret_cast<const std::any*>(p_node->value_handle),
                                                p_node->preceding_step,
                                                &cpp_preceding_edge_costs,

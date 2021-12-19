@@ -100,7 +100,7 @@ size_t tetengo_lattice_lattice_nodesAt(
         {
             for (auto i = static_cast<std::size_t>(0); i < std::size(cpp_nodes); ++i)
             {
-                p_nodes[i].key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_nodes[i].key());
+                p_nodes[i].key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_nodes[i].p_key());
                 p_nodes[i].value_handle =
                     reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_nodes[i].value());
                 p_nodes[i].preceding_step = cpp_nodes[i].preceding_step();

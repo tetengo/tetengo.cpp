@@ -10,7 +10,6 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -20,11 +19,13 @@
 #include <boost/scope_exit.hpp>
 
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.h>
 #include <tetengo/lattice/path.hpp>
-#include <tetengo/lattice/stringView.h>
+
+#include "tetengo_lattice_input.hpp"
 
 
 struct tetengo_lattice_path_tag
@@ -90,13 +91,12 @@ tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const s
             const auto* const p_cpp_node_key = tetengo_lattice_entryView_createKeyOf(node.key_handle);
             BOOST_SCOPE_EXIT(p_cpp_node_key)
             {
-                tetengo_lattice_temp_freeStringView(p_cpp_node_key);
+                tetengo_lattice_input_destroy(p_cpp_node_key);
             }
             BOOST_SCOPE_EXIT_END;
             const auto& cpp_preceding_edge_cost_list = cpp_preceding_edge_cost_lists[i];
             cpp_nodes.emplace_back(
-                p_cpp_node_key ? std::string_view{ p_cpp_node_key->p_head, p_cpp_node_key->length } :
-                                 std::string_view{},
+                p_cpp_node_key ? &p_cpp_node_key->cpp_input() : nullptr,
                 reinterpret_cast<const std::any*>(node.value_handle),
                 node.preceding_step,
                 &cpp_preceding_edge_cost_list,
@@ -161,7 +161,7 @@ size_t tetengo_lattice_path_pNodes(const tetengo_lattice_path_t* const p_path, t
                 p_nodes,
                 [](const auto& cpp_node) {
                     tetengo_lattice_node_t c_node{};
-                    c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_node.key());
+                    c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_node.p_key());
                     c_node.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
                     c_node.preceding_step = cpp_node.preceding_step();
                     c_node.p_preceding_edge_costs = std::data(cpp_node.preceding_edge_costs());

@@ -9,7 +9,6 @@
 #include <iterator>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <stddef.h>
@@ -22,6 +21,7 @@
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/vocabulary.h>
 
 
@@ -36,13 +36,13 @@ namespace
         {
             const auto* const p_values = reinterpret_cast<std::vector<std::string>*>(p_context);
             assert(std::size(*p_values) == 2U);
-            static const std::string_view cpp_key0{ "key0" };
+            static const tetengo::lattice::string_input cpp_key0{ "key0" };
             p_entries[0].key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_key0);
             static const std::any value0{ reinterpret_cast<const void*>((*p_values)[0].c_str()) };
             p_entries[0].value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value0);
             p_entries[0].cost = 0;
 
-            static const std::string_view cpp_key1{ "key1" };
+            static const tetengo::lattice::string_input cpp_key1{ "key1" };
             p_entries[1].key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_key1);
             static const std::any value1{ reinterpret_cast<const void*>((*p_values)[1].c_str()) };
             p_entries[1].value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value1);
@@ -156,9 +156,14 @@ BOOST_AUTO_TEST_CASE(find_connection)
     BOOST_SCOPE_EXIT_END;
     BOOST_TEST_REQUIRE(p_vocabulary);
 
-    const std::string_view            key_from{ "key_from" };
-    const std::any                    value_from{ reinterpret_cast<const void*>("value_from") };
-    const tetengo_lattice_node_t      from{ reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_from),
+    const auto* const p_key_from = tetengo_lattice_input_createStringInput("key_from");
+    BOOST_SCOPE_EXIT(p_key_from)
+    {
+        tetengo_lattice_input_destroy(p_key_from);
+    }
+    BOOST_SCOPE_EXIT_END;
+    const std::any               value_from{ reinterpret_cast<const void*>("value_from") };
+    const tetengo_lattice_node_t from{ tetengo_lattice_entryView_toKeyHandle(p_key_from),
                                        reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value_from),
                                        0,
                                        nullptr,
@@ -166,9 +171,14 @@ BOOST_AUTO_TEST_CASE(find_connection)
                                        0,
                                        0,
                                        0 };
-    const std::string_view            key_to{ "key_to" };
+    const auto* const            p_key_to = tetengo_lattice_input_createStringInput("key_to");
+    BOOST_SCOPE_EXIT(p_key_to)
+    {
+        tetengo_lattice_input_destroy(p_key_to);
+    }
+    BOOST_SCOPE_EXIT_END;
     const std::any                    value_to{ reinterpret_cast<const void*>("value_to") };
-    const tetengo_lattice_entryView_t to{ reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&key_to),
+    const tetengo_lattice_entryView_t to{ tetengo_lattice_entryView_toKeyHandle(p_key_to),
                                           reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value_to),
                                           0 };
     {

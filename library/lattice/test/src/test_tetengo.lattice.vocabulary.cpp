@@ -10,7 +10,6 @@
 #include <limits>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -65,13 +64,15 @@ namespace
         {
             if (key.as<key_type>().value() == key_mizuho)
             {
+                static const tetengo::lattice::string_input key_input{ key_mizuho };
                 return std::vector<tetengo::lattice::entry_view>{ tetengo::lattice::entry_view{
-                    key_mizuho, &value_mizuho, 42 } };
+                    &key_input, &value_mizuho, 42 } };
             }
             else if (key.as<key_type>().value() == key_tsubame)
             {
+                static const tetengo::lattice::string_input key_input{ key_tsubame };
                 return std::vector<tetengo::lattice::entry_view>{ tetengo::lattice::entry_view{
-                    key_tsubame, &value_tsubame, 24 } };
+                    &key_input, &value_tsubame, 24 } };
             }
             else
             {
@@ -82,7 +83,10 @@ namespace
         virtual tetengo::lattice::connection
         find_connection_impl(const tetengo::lattice::node& from, const tetengo::lattice::entry_view& to) const override
         {
-            if (from.key() == key_mizuho && to.key() == key_mizuho)
+            if (from.p_key() && from.p_key()->is<tetengo::lattice::string_input>() &&
+                from.p_key()->as<tetengo::lattice::string_input>().value() == key_mizuho && to.p_key() &&
+                to.p_key()->is<tetengo::lattice::string_input>() &&
+                to.p_key()->as<tetengo::lattice::string_input>().value() == key_mizuho)
             {
                 return tetengo::lattice::connection{ 42 };
             }
@@ -132,7 +136,9 @@ BOOST_AUTO_TEST_CASE(find_entries)
             const auto entries = vocabulary.find_entries(key_type{ key_mizuho });
 
             BOOST_TEST_REQUIRE(!std::empty(entries));
-            BOOST_TEST(entries[0].key() == key_mizuho);
+            BOOST_TEST_REQUIRE(entries[0].p_key());
+            BOOST_TEST_REQUIRE(entries[0].p_key()->is<tetengo::lattice::string_input>());
+            BOOST_TEST(entries[0].p_key()->as<tetengo::lattice::string_input>().value() == key_mizuho);
             BOOST_TEST(*std::any_cast<std::string>(entries[0].value()) == surface_mizuho);
             BOOST_TEST(entries[0].cost() == 42);
         }

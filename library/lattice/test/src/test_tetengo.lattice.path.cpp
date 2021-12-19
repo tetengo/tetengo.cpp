@@ -8,7 +8,7 @@
 #include <any>
 #include <cstddef>
 #include <iterator>
-#include <string_view>
+#include <string>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -20,6 +20,7 @@
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.h>
 #include <tetengo/lattice/path.hpp>
+#include <tetengo/lattice/string_input.hpp>
 
 
 namespace
@@ -44,11 +45,14 @@ namespace
 
     const std::vector<tetengo::lattice::node>& cpp_nodes()
     {
+        static const tetengo::lattice::string_input      key_mizuho{ "mizuho" };
+        static const tetengo::lattice::string_input      key_sakura{ "sakura" };
+        static const tetengo::lattice::string_input      key_tsubame{ "tsubame" };
         static const std::vector<tetengo::lattice::node> singleton{
             tetengo::lattice::node::bos(&bos_preceding_edge_costs()),
-            tetengo::lattice::node{ "mizuho", &node_value(), 0, &preceding_edge_costs(), 0, 0, 0 },
-            tetengo::lattice::node{ "sakura", &node_value(), 1, &preceding_edge_costs(), 0, 0, 0 },
-            tetengo::lattice::node{ "tsubame", &node_value(), 2, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_mizuho, &node_value(), 0, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_sakura, &node_value(), 1, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_tsubame, &node_value(), 2, &preceding_edge_costs(), 0, 0, 0 },
             tetengo::lattice::node::eos(3, &preceding_edge_costs(), 0, 0)
         };
         return singleton;
@@ -58,7 +62,7 @@ namespace
     {
         tetengo_lattice_node_t c_node{};
 
-        c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&cpp_node.key());
+        c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_node.p_key());
         c_node.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
         c_node.preceding_step = cpp_node.preceding_step();
         c_node.p_preceding_edge_costs = std::data(cpp_node.preceding_edge_costs());

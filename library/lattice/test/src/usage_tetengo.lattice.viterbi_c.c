@@ -123,46 +123,42 @@ static size_t hash(const char* const string, const size_t length)
 
 static size_t entry_hash(const tetengo_lattice_entryView_t* const p_entry)
 {
-    const tetengo_lattice_stringView_t* const p_entry_key = tetengo_lattice_entryView_createKeyOf(p_entry->key_handle);
-    const size_t      key_hash = p_entry_key ? hash(p_entry_key->p_head, p_entry_key->length) : hash("", 0);
-    const char* const value = (const char*)tetengo_lattice_entryView_valueOf(p_entry->value_handle);
-    const size_t      value_hash = value ? hash(value, strlen(value)) : 0;
-    tetengo_lattice_temp_freeStringView(p_entry_key);
+    const tetengo_lattice_input_t* const p_entry_key = tetengo_lattice_entryView_createKeyOf(p_entry->key_handle);
+    const size_t                         key_hash = p_entry_key ? tetengo_lattice_input_hashValue(p_entry_key) : 0;
+    const char* const                    value = (const char*)tetengo_lattice_entryView_valueOf(p_entry->value_handle);
+    const size_t                         value_hash = value ? hash(value, strlen(value)) : 0;
+    tetengo_lattice_input_destroy(p_entry_key);
     return key_hash ^ value_hash;
 }
 
 static int
 entry_equal_to(const tetengo_lattice_entryView_t* const p_entry1, const tetengo_lattice_entryView_t* const p_entry2)
 {
-    const tetengo_lattice_stringView_t* const p_entry_key1 =
-        tetengo_lattice_entryView_createKeyOf(p_entry1->key_handle);
-    const tetengo_lattice_stringView_t* const p_entry_key2 =
-        tetengo_lattice_entryView_createKeyOf(p_entry2->key_handle);
+    const tetengo_lattice_input_t* const p_entry_key1 = tetengo_lattice_entryView_createKeyOf(p_entry1->key_handle);
+    const tetengo_lattice_input_t* const p_entry_key2 = tetengo_lattice_entryView_createKeyOf(p_entry2->key_handle);
     const char* const value1 = (const char*)tetengo_lattice_entryView_valueOf(p_entry1->value_handle);
     const char* const value2 = (const char*)tetengo_lattice_entryView_valueOf(p_entry2->value_handle);
     int               equality = 1;
     equality = equality && ((!p_entry_key1 && !p_entry_key2) ||
-                            (p_entry_key1 && p_entry_key2 && p_entry_key1->length == p_entry_key2->length &&
-                             strncmp(p_entry_key1->p_head, p_entry_key2->p_head, p_entry_key1->length) == 0));
+                            (p_entry_key1 && p_entry_key2 && tetengo_lattice_input_equal(p_entry_key1, p_entry_key2)));
     equality = equality && ((!value1 && !value2) || (value1 && value2 && strcmp(value1, value2) == 0));
-
-    tetengo_lattice_temp_freeStringView(p_entry_key2);
-    tetengo_lattice_temp_freeStringView(p_entry_key1);
+    tetengo_lattice_input_destroy(p_entry_key2);
+    tetengo_lattice_input_destroy(p_entry_key1);
     return equality;
 }
 
 tetengo_lattice_vocabulary_t* build_vocabulary()
 {
     /* The contents of the vocabulary. */
-    const tetengo_lattice_stringView_t      entry_key_a = { "a", 1 };
-    const tetengo_lattice_stringView_t      entry_key_b = { "b", 1 };
-    const tetengo_lattice_stringView_t      entry_key_ab = { "ab", 2 };
-    const tetengo_lattice_entry_keyHandle_t entry_key_handle_a = tetengo_lattice_entry_createKeyHandle(&entry_key_a);
-    const tetengo_lattice_entry_keyHandle_t entry_key_handle_b = tetengo_lattice_entry_createKeyHandle(&entry_key_b);
-    const tetengo_lattice_entry_keyHandle_t entry_key_handle_ab = tetengo_lattice_entry_createKeyHandle(&entry_key_ab);
+    const tetengo_lattice_input_t* const    p_entry_key_a = tetengo_lattice_input_createStringInput("a");
+    const tetengo_lattice_input_t* const    p_entry_key_b = tetengo_lattice_input_createStringInput("b");
+    const tetengo_lattice_input_t* const    p_entry_key_ab = tetengo_lattice_input_createStringInput("ab");
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_a = tetengo_lattice_entry_createKeyHandle(p_entry_key_a);
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_b = tetengo_lattice_entry_createKeyHandle(p_entry_key_b);
+    const tetengo_lattice_entry_keyHandle_t entry_key_handle_ab = tetengo_lattice_entry_createKeyHandle(p_entry_key_ab);
     tetengo_lattice_entry_t                 entries[5] = { { 0, 0, 0 } };
     tetengo_lattice_entry_t                 bos_eos;
-    const tetengo_lattice_stringView_t* const p_bos_eos_key =
+    const tetengo_lattice_input_t* const    p_bos_eos_key =
         tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_bosEos()->key_handle);
     entries[0].key_handle = entry_key_handle_a;
     entries[0].p_value = "Alpha";
@@ -241,11 +237,14 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
 
                 tetengo_lattice_entry_destroyKeyHandle(bos_eos.key_handle);
 
+                tetengo_lattice_input_destroy(p_bos_eos_key);
+
                 tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_ab);
                 tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_b);
                 tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_a);
-
-                tetengo_lattice_temp_freeStringView(p_bos_eos_key);
+                tetengo_lattice_input_destroy(p_entry_key_ab);
+                tetengo_lattice_input_destroy(p_entry_key_b);
+                tetengo_lattice_input_destroy(p_entry_key_a);
 
                 /* Returns a vocabulary implemented with hash tables. */
                 return p_vocabulary;

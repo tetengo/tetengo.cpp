@@ -9,6 +9,7 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/stringView.h>
 
 
@@ -90,11 +91,7 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
 
     \return A pointer to an entry key.
 */
-const tetengo_lattice_stringView_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice_entry_keyHandle_t handle);
-
-#if !defined(DOCUMENTATION)
-void tetengo_lattice_temp_freeStringView(const tetengo_lattice_stringView_t* p_string_view);
-#endif
+const tetengo_lattice_input_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice_entry_keyHandle_t handle);
 
 /*!
     \brief Creates an entry key handle.
@@ -103,7 +100,7 @@ void tetengo_lattice_temp_freeStringView(const tetengo_lattice_stringView_t* p_s
 
     \return The key handle. Or NULL when p_content is NULL.
 */
-tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const tetengo_lattice_stringView_t* p_content);
+tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const tetengo_lattice_input_t* p_content);
 
 /*!
     \brief Destroys an entry key handle.
@@ -126,7 +123,16 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
 
     \return A pointer to an entry view key.
 */
-const tetengo_lattice_stringView_t* tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_keyHandle_t handle);
+const tetengo_lattice_input_t* tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_keyHandle_t handle);
+
+/*!
+    \brief Returns the entry key handle.
+
+    \param p_content A pointer to a content.
+
+    \return The key handle. Or NULL when p_content is NULL.
+*/
+tetengo_lattice_entryView_keyHandle_t tetengo_lattice_entryView_toKeyHandle(const tetengo_lattice_input_t* p_content);
 
 /*!
     \brief Returns the entry view value by a handle.

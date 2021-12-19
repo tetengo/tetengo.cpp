@@ -5,36 +5,32 @@
 */
 
 #include <any>
-#include <cstdlib>
-#include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string>
-#include <string_view>
 
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
-#include <tetengo/lattice/stringView.h>
+#include <tetengo/lattice/input.h>
+
+#include "tetengo_lattice_input.hpp"
+
+namespace tetengo::lattice
+{
+    class input;
+}
 
 
-const tetengo_lattice_stringView_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice_entry_keyHandle_t handle)
+const tetengo_lattice_input_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice_entry_keyHandle_t handle)
 {
     try
     {
-        const auto* const p_cpp_key = reinterpret_cast<const std::string*>(handle);
+        const auto* const p_cpp_key = reinterpret_cast<const tetengo::lattice::input*>(handle);
         if (!p_cpp_key)
         {
             return nullptr;
         }
-        auto* const p_key =
-            static_cast<tetengo_lattice_stringView_t*>(std::malloc(sizeof(tetengo_lattice_stringView_t)));
-        if (!p_key)
-        {
-            return nullptr;
-        }
-        p_key->p_head = std::data(*p_cpp_key);
-        p_key->length = p_cpp_key->length();
-        return p_key;
+        auto p_key = std::make_unique<tetengo_lattice_input_t>(*p_cpp_key);
+        return p_key.release();
     }
     catch (...)
     {
@@ -42,12 +38,7 @@ const tetengo_lattice_stringView_t* tetengo_lattice_entry_createKeyOf(tetengo_la
     }
 }
 
-void tetengo_lattice_temp_freeStringView(const tetengo_lattice_stringView_t* p_string_view)
-{
-    std::free(const_cast<tetengo_lattice_stringView_t*>(p_string_view));
-}
-
-tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const tetengo_lattice_stringView_t* p_content)
+tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const tetengo_lattice_input_t* p_content)
 {
     try
     {
@@ -56,8 +47,7 @@ tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const te
             throw std::invalid_argument{ "p_content is NULL." };
         }
 
-        auto p_cpp_key = std::make_unique<std::string>(p_content->p_head, p_content->length);
-        return reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(p_cpp_key.release());
+        return reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&p_content->cpp_input());
     }
     catch (...)
     {
@@ -65,22 +55,14 @@ tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const te
     }
 }
 
-void tetengo_lattice_entry_destroyKeyHandle(tetengo_lattice_entry_keyHandle_t handle)
-{
-    try
-    {
-        const std::unique_ptr<const std::string> p_instance{ reinterpret_cast<const std::string*>(handle) };
-    }
-    catch (...)
-    {}
-}
+void tetengo_lattice_entry_destroyKeyHandle(tetengo_lattice_entry_keyHandle_t) {}
 
 const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos()
 {
     try
     {
         static const tetengo_lattice_entryView_t singleton{
-            reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&tetengo::lattice::entry_view::bos_eos().key()),
+            reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(tetengo::lattice::entry_view::bos_eos().p_key()),
             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(tetengo::lattice::entry_view::bos_eos().value()),
             tetengo::lattice::entry_view::bos_eos().cost()
         };
@@ -92,24 +74,34 @@ const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos()
     }
 }
 
-const tetengo_lattice_stringView_t* tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_keyHandle_t handle)
+const tetengo_lattice_input_t* tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_keyHandle_t handle)
 {
     try
     {
-        const auto* const p_cpp_key = reinterpret_cast<const std::string_view*>(handle);
+        const auto* const p_cpp_key = reinterpret_cast<const tetengo::lattice::input*>(handle);
         if (!p_cpp_key)
         {
             return nullptr;
         }
-        auto* const p_key =
-            static_cast<tetengo_lattice_stringView_t*>(std::malloc(sizeof(tetengo_lattice_stringView_t)));
-        if (!p_key)
+        auto p_key = std::make_unique<tetengo_lattice_input_t>(*p_cpp_key);
+        return p_key.release();
+    }
+    catch (...)
+    {
+        return nullptr;
+    }
+}
+
+tetengo_lattice_entryView_keyHandle_t tetengo_lattice_entryView_toKeyHandle(const tetengo_lattice_input_t* p_content)
+{
+    try
+    {
+        if (!p_content)
         {
-            return nullptr;
+            throw std::invalid_argument{ "p_content is NULL." };
         }
-        p_key->p_head = std::data(*p_cpp_key);
-        p_key->length = p_cpp_key->length();
-        return p_key;
+
+        return reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(&p_content->cpp_input());
     }
     catch (...)
     {

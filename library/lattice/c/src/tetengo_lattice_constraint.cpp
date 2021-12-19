@@ -8,7 +8,6 @@
 #include <any>
 #include <memory>
 #include <stdexcept>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -22,12 +21,13 @@
 #include <tetengo/lattice/constraintElement.h>
 #include <tetengo/lattice/constraint_element.hpp>
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/stringView.h>
 
 #include "tetengo_lattice_constraint.hpp"
 #include "tetengo_lattice_constraintElement.hpp"
+#include "tetengo_lattice_input.hpp"
 
 
 namespace
@@ -45,13 +45,13 @@ namespace
             const auto* const p_node_key = tetengo_lattice_entryView_createKeyOf(p_node->key_handle);
             BOOST_SCOPE_EXIT(p_node_key)
             {
-                tetengo_lattice_temp_freeStringView(p_node_key);
+                tetengo_lattice_input_destroy(p_node_key);
             }
             BOOST_SCOPE_EXIT_END;
             cpp_preceding_edge_cost_lists.emplace_back(
                 p_node->p_preceding_edge_costs, p_node->p_preceding_edge_costs + p_node->preceding_edge_cost_count);
             cpp_path.emplace_back(
-                p_node_key ? std::string_view{ p_node_key->p_head, p_node_key->length } : std::string_view{},
+                p_node_key ? &p_node_key->cpp_input() : nullptr,
                 reinterpret_cast<const std::any*>(p_node->value_handle),
                 p_node->preceding_step,
                 &cpp_preceding_edge_cost_lists.back(),

@@ -13,7 +13,6 @@
 #include <iterator>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -107,11 +106,11 @@ namespace usage_tetengo::lattice
         // The contents of the vocabulary.
         static const std::vector<tetengo::lattice::entry> entries{
             // clang-format off
-            { "a", std::string{ "Alpha" }, 2 },
-            { "b", std::string{ "Bravo" }, 7 },
-            { "a", std::string{ "Alice" }, 1 },
-            { "b", std::string{ "Bob" }, 8 }, 
-            { "ab", std::string{ "AwaBizan" }, 9 },
+            { std::make_unique<tetengo::lattice::string_input>("a"), std::string{ "Alpha" }, 2 },
+            { std::make_unique<tetengo::lattice::string_input>("b"), std::string{ "Bravo" }, 7 },
+            { std::make_unique<tetengo::lattice::string_input>("a"), std::string{ "Alice" }, 1 },
+            { std::make_unique<tetengo::lattice::string_input>("b"), std::string{ "Bob" }, 8 }, 
+            { std::make_unique<tetengo::lattice::string_input>("ab"), std::string{ "AwaBizan" }, 9 },
             // clang-format on
         };
         std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entry_mappings{
@@ -141,10 +140,12 @@ namespace usage_tetengo::lattice
             std::move(entry_mappings),
             std::move(connections),
             [](const tetengo::lattice::entry_view& entry) {
-                return std::hash<std::string_view>{}(entry.key()) ^ std::hash<std::string>{}(value_of(entry));
+                return (entry.p_key() ? entry.p_key()->hash_value() : 0) ^ std::hash<std::string>{}(value_of(entry));
             },
             [](const tetengo::lattice::entry_view& entry1, const tetengo::lattice::entry_view& entry2) {
-                return entry1.key() == entry2.key() && value_of(entry1) == value_of(entry2);
+                return ((!entry1.p_key() && !entry2.p_key()) ||
+                        (entry1.p_key() && entry2.p_key() && *entry1.p_key() == *entry2.p_key())) &&
+                       (value_of(entry1) == value_of(entry2));
             });
     }
 

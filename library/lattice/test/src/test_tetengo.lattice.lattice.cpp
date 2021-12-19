@@ -11,7 +11,6 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -28,7 +27,6 @@
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
@@ -37,6 +35,11 @@
 
 namespace
 {
+    std::unique_ptr<tetengo::lattice::input> to_input(const char* const string)
+    {
+        return std::make_unique<tetengo::lattice::string_input>(string);
+    }
+
     /*
                    +------------------mizuho/sakura/tsubame-------------------+
                    |                path cost: 4270/3220/2990                 |
@@ -74,59 +77,60 @@ namespace
     const std::vector<std::pair<std::string, std::vector<tetengo::lattice::entry>>> entries{
         { "[HakataTosu][TosuOmuta][OmutaKumamoto]",
           {
-              { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "mizuho" }, 3670 },
-              { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "sakura" }, 2620 },
-              { "Hakata-Tosu-Omuta-Kumamoto", std::string{ "tsubame" }, 2390 },
+              { to_input("Hakata-Tosu-Omuta-Kumamoto"), std::string{ "mizuho" }, 3670 },
+              { to_input("Hakata-Tosu-Omuta-Kumamoto"), std::string{ "sakura" }, 2620 },
+              { to_input("Hakata-Tosu-Omuta-Kumamoto"), std::string{ "tsubame" }, 2390 },
           } },
         { "[HakataTosu][TosuOmuta]",
           {
-              { "Hakata-Tosu-Omuta", std::string{ "ariake" }, 2150 },
-              { "Hakata-Tosu-Omuta", std::string{ "rapid811" }, 1310 },
+              { to_input("Hakata-Tosu-Omuta"), std::string{ "ariake" }, 2150 },
+              { to_input("Hakata-Tosu-Omuta"), std::string{ "rapid811" }, 1310 },
           } },
         { "[HakataTosu]",
           {
-              { "Hakata-Tosu", std::string{ "kamome" }, 840 },
-              { "Hakata-Tosu", std::string{ "local415" }, 570 },
+              { to_input("Hakata-Tosu"), std::string{ "kamome" }, 840 },
+              { to_input("Hakata-Tosu"), std::string{ "local415" }, 570 },
           } },
         { "[TosuOmuta]",
           {
-              { "Tosu-Omuta", std::string{ "local813" }, 860 },
+              { to_input("Tosu-Omuta"), std::string{ "local813" }, 860 },
           } },
         { "[TosuOmuta][OmutaKumamoto]",
           {
-              { "Tosu-Omuta-Kumamoto", std::string{ "local815" }, 1680 },
+              { to_input("Tosu-Omuta-Kumamoto"), std::string{ "local815" }, 1680 },
           } },
         { "[OmutaKumamoto]",
           {
-              { "Omuta-Kumamoto", std::string{ "local817" }, 950 },
+              { to_input("Omuta-Kumamoto"), std::string{ "local817" }, 950 },
           } },
     };
 
     const std::vector<std::pair<std::pair<tetengo::lattice::entry, tetengo::lattice::entry>, int>> connections{
-        { { tetengo::lattice::entry::bos_eos(), { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 } }, 600 },
-        { { tetengo::lattice::entry::bos_eos(), { "Hakata-Tosu-Omuta", {}, 0 } }, 700 },
-        { { tetengo::lattice::entry::bos_eos(), { "Hakata-Tosu", {}, 0 } }, 800 },
+        { { tetengo::lattice::entry::bos_eos(), { to_input("Hakata-Tosu-Omuta-Kumamoto"), {}, 0 } }, 600 },
+        { { tetengo::lattice::entry::bos_eos(), { to_input("Hakata-Tosu-Omuta"), {}, 0 } }, 700 },
+        { { tetengo::lattice::entry::bos_eos(), { to_input("Hakata-Tosu"), {}, 0 } }, 800 },
         { { tetengo::lattice::entry::bos_eos(), tetengo::lattice::entry::bos_eos() }, 8000 },
-        { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta-Kumamoto", {}, 0 } }, 500 },
-        { { { "Hakata-Tosu", {}, 0 }, { "Tosu-Omuta", {}, 0 } }, 600 },
-        { { { "Hakata-Tosu", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 6000 },
-        { { { "Hakata-Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 200 },
-        { { { "Hakata-Tosu-Omuta", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 2000 },
-        { { { "Tosu-Omuta", {}, 0 }, { "Omuta-Kumamoto", {}, 0 } }, 300 },
-        { { { "Tosu-Omuta", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 3000 },
-        { { { "Hakata-Tosu-Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 400 },
-        { { { "Tosu-Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 500 },
-        { { { "Omuta-Kumamoto", {}, 0 }, tetengo::lattice::entry::bos_eos() }, 600 },
+        { { { to_input("Hakata-Tosu"), {}, 0 }, { to_input("Tosu-Omuta-Kumamoto"), {}, 0 } }, 500 },
+        { { { to_input("Hakata-Tosu"), {}, 0 }, { to_input("Tosu-Omuta"), {}, 0 } }, 600 },
+        { { { to_input("Hakata-Tosu"), {}, 0 }, tetengo::lattice::entry::bos_eos() }, 6000 },
+        { { { to_input("Hakata-Tosu-Omuta"), {}, 0 }, { to_input("Omuta-Kumamoto"), {}, 0 } }, 200 },
+        { { { to_input("Hakata-Tosu-Omuta"), {}, 0 }, tetengo::lattice::entry::bos_eos() }, 2000 },
+        { { { to_input("Tosu-Omuta"), {}, 0 }, { to_input("Omuta-Kumamoto"), {}, 0 } }, 300 },
+        { { { to_input("Tosu-Omuta"), {}, 0 }, tetengo::lattice::entry::bos_eos() }, 3000 },
+        { { { to_input("Hakata-Tosu-Omuta-Kumamoto"), {}, 0 }, tetengo::lattice::entry::bos_eos() }, 400 },
+        { { { to_input("Tosu-Omuta-Kumamoto"), {}, 0 }, tetengo::lattice::entry::bos_eos() }, 500 },
+        { { { to_input("Omuta-Kumamoto"), {}, 0 }, tetengo::lattice::entry::bos_eos() }, 600 },
     };
 
     std::size_t cpp_entry_hash(const tetengo::lattice::entry_view& entry)
     {
-        return std::hash<std::string_view>{}(entry.key());
+        return entry.p_key() ? entry.p_key()->hash_value() : 0;
     }
 
     bool cpp_entry_equal_to(const tetengo::lattice::entry_view& one, const tetengo::lattice::entry_view& another)
     {
-        return one.key() == another.key();
+        return (!one.p_key() && !another.p_key()) ||
+               (one.p_key() && another.p_key() && *one.p_key() == *another.p_key());
     }
 
     std::unique_ptr<tetengo::lattice::vocabulary> create_cpp_vocabulary()
@@ -151,11 +155,10 @@ namespace
             const auto* const p_entry_key = tetengo_lattice_entryView_createKeyOf(p_entry->key_handle);
             BOOST_SCOPE_EXIT(p_entry_key)
             {
-                tetengo_lattice_temp_freeStringView(p_entry_key);
+                tetengo_lattice_input_destroy(p_entry_key);
             }
             BOOST_SCOPE_EXIT_END;
-            return std::hash<std::string_view>{}(
-                p_entry_key ? std::string_view{ p_entry_key->p_head, p_entry_key->length } : std::string_view{});
+            return p_entry_key ? tetengo_lattice_input_hashValue(p_entry_key) : 0;
         }
         else
         {
@@ -172,20 +175,17 @@ namespace
             const auto* const p_one_key = tetengo_lattice_entryView_createKeyOf(p_one->key_handle);
             BOOST_SCOPE_EXIT(p_one_key)
             {
-                tetengo_lattice_temp_freeStringView(p_one_key);
+                tetengo_lattice_input_destroy(p_one_key);
             }
             BOOST_SCOPE_EXIT_END;
             const auto* const p_another_key = tetengo_lattice_entryView_createKeyOf(p_another->key_handle);
             BOOST_SCOPE_EXIT(p_another_key)
             {
-                tetengo_lattice_temp_freeStringView(p_another_key);
+                tetengo_lattice_input_destroy(p_another_key);
             }
             BOOST_SCOPE_EXIT_END;
-            const auto one_key =
-                p_one_key ? std::string_view{ p_one_key->p_head, p_one_key->length } : std::string_view{};
-            const auto another_key =
-                p_another_key ? std::string_view{ p_another_key->p_head, p_another_key->length } : std::string_view{};
-            return one_key == another_key;
+            return (!p_one_key && !p_another_key) ||
+                   (p_one_key && p_another_key && tetengo_lattice_input_equal(p_one_key, p_another_key));
         }
         else
         {
@@ -206,7 +206,7 @@ namespace
 
             for (const auto& ev: e.second)
             {
-                entry_values.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&ev.key()),
+                entry_values.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(ev.p_key()),
                                          std::any_cast<std::string>(&ev.value()),
                                          ev.cost() });
             }
@@ -229,10 +229,10 @@ namespace
         connection_tos.reserve(std::size(connections));
         for (const auto& c: connections)
         {
-            connection_froms.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&c.first.first.key()),
+            connection_froms.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(c.first.first.p_key()),
                                          std::any_cast<std::string>(&c.first.first.value()),
                                          c.first.first.cost() });
-            connection_tos.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(&c.first.second.key()),
+            connection_tos.push_back({ reinterpret_cast<tetengo_lattice_entry_keyHandle_t>(c.first.second.p_key()),
                                        std::any_cast<std::string>(&c.first.second.value()),
                                        c.first.second.cost() });
         }
@@ -316,15 +316,15 @@ BOOST_AUTO_TEST_CASE(step_count)
 
         BOOST_TEST(lattice_.step_count() == 1U);
 
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[HakataTosu]"));
+        lattice_.push_back(to_input("[HakataTosu]"));
 
         BOOST_TEST(lattice_.step_count() == 2U);
 
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[TosuOmuta]"));
+        lattice_.push_back(to_input("[TosuOmuta]"));
 
         BOOST_TEST(lattice_.step_count() == 3U);
 
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[OmutaKumamoto]"));
+        lattice_.push_back(to_input("[OmutaKumamoto]"));
         BOOST_TEST(lattice_.step_count() == 4U);
     }
 
@@ -368,9 +368,9 @@ BOOST_AUTO_TEST_CASE(nodes_at)
     {
         const auto                p_vocabulary = create_cpp_vocabulary();
         tetengo::lattice::lattice lattice_{ *p_vocabulary };
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[HakataTosu]"));
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[TosuOmuta]"));
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[OmutaKumamoto]"));
+        lattice_.push_back(to_input("[HakataTosu]"));
+        lattice_.push_back(to_input("[TosuOmuta]"));
+        lattice_.push_back(to_input("[OmutaKumamoto]"));
 
         {
             const auto& nodes = lattice_.nodes_at(0);
@@ -516,17 +516,15 @@ BOOST_AUTO_TEST_CASE(push_back)
         const auto                p_vocabulary = create_cpp_vocabulary();
         tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[HakataTosu]"));
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[TosuOmuta]"));
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[OmutaKumamoto]"));
+        lattice_.push_back(to_input("[HakataTosu]"));
+        lattice_.push_back(to_input("[TosuOmuta]"));
+        lattice_.push_back(to_input("[OmutaKumamoto]"));
     }
     {
         const auto                p_vocabulary = create_cpp_empty_vocabulary();
         tetengo::lattice::lattice lattice_{ *p_vocabulary };
 
-        BOOST_CHECK_THROW(
-            lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[HakataTosu]")),
-            std::invalid_argument);
+        BOOST_CHECK_THROW(lattice_.push_back(to_input("[HakataTosu]")), std::invalid_argument);
     }
 
     {
@@ -601,7 +599,7 @@ BOOST_AUTO_TEST_CASE(settle)
                 std::end(expected_preceding_edge_costs));
         }
 
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[HakataTosu]"));
+        lattice_.push_back(to_input("[HakataTosu]"));
         {
             const auto eos_node_and_preceding_edge_costs = lattice_.settle();
 
@@ -617,7 +615,7 @@ BOOST_AUTO_TEST_CASE(settle)
                 std::end(expected_preceding_edge_costs));
         }
 
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[TosuOmuta]"));
+        lattice_.push_back(to_input("[TosuOmuta]"));
         {
             const auto eos_node_and_preceding_edge_costs = lattice_.settle();
 
@@ -633,7 +631,7 @@ BOOST_AUTO_TEST_CASE(settle)
                 std::end(expected_preceding_edge_costs));
         }
 
-        lattice_.push_back(std::make_unique<tetengo::lattice::string_input>("[OmutaKumamoto]"));
+        lattice_.push_back(to_input("[OmutaKumamoto]"));
         {
             const auto eos_node_and_preceding_edge_costs = lattice_.settle();
 
