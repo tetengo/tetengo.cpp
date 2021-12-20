@@ -235,13 +235,8 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
                         entry_hash,
                         entry_equal_to);
 
-                tetengo_lattice_entry_destroyKeyHandle(bos_eos.key_handle);
-
                 tetengo_lattice_input_destroy(p_bos_eos_key);
 
-                tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_ab);
-                tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_b);
-                tetengo_lattice_entry_destroyKeyHandle(entry_key_handle_a);
                 tetengo_lattice_input_destroy(p_entry_key_ab);
                 tetengo_lattice_input_destroy(p_entry_key_b);
                 tetengo_lattice_input_destroy(p_entry_key_a);

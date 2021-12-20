@@ -103,13 +103,6 @@ const tetengo_lattice_input_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice
 tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_toKeyHandle(const tetengo_lattice_input_t* p_content);
 
 /*!
-    \brief Destroys an entry key handle.
-
-    \param handle A handle.
-*/
-void tetengo_lattice_entry_destroyKeyHandle(tetengo_lattice_entry_keyHandle_t handle);
-
-/*!
     \brief Returns the pointer to the BOS/EOS (Beginning/End of Sequence) entry.
 
     \return The pointer to the BOS/EOS entry.
