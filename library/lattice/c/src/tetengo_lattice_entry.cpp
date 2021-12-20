@@ -38,7 +38,7 @@ const tetengo_lattice_input_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice
     }
 }
 
-tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_createKeyHandle(const tetengo_lattice_input_t* p_content)
+tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_toKeyHandle(const tetengo_lattice_input_t* p_content)
 {
     try
     {
