@@ -36,8 +36,8 @@
 #include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/vocabulary.hpp> // IWYU pragma: keep
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp>
-#include <tetengo/text/encoding/utf8.hpp>
+#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
 #include <tetengo/text/grapheme_splitter.hpp>
 
 #include "timetable.hpp"

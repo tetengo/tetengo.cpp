@@ -8,7 +8,7 @@
 #include <fstream> // IWYU pragma: keep
 #include <iterator>
 #include <memory>
-#include <sstream>
+#include <sstream> // IWYU pragma: keep
 #include <stdexcept>
 #include <string>
 #include <utility>
