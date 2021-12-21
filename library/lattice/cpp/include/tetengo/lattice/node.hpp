@@ -10,13 +10,12 @@
 #include <any>
 #include <cassert>
 #include <cstddef>
-#include <string_view>
-#include <utility>
 #include <vector>
 
 #include <boost/operators.hpp>
 
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
 
 
 namespace tetengo::lattice
@@ -64,7 +63,7 @@ namespace tetengo::lattice
         /*!
             \brief Creates a node.
 
-            \param key                    A key.
+            \param p_key                  A pointer to a key.
             \param p_value                A pointer to a value.
             \param preceding_step         An index of a preceding step.
             \param p_preceding_edge_costs A pointer to preceding edge costs.
@@ -73,14 +72,14 @@ namespace tetengo::lattice
             \param path_cost              A path cost.
         */
         constexpr node(
-            std::string_view        key,
+            const input*            p_key,
             const std::any*         p_value,
             std::size_t             preceding_step,
             const std::vector<int>* p_preceding_edge_costs,
             std::size_t             best_preceding_node,
             int                     node_cost,
             int                     path_cost) :
-        m_key{ std::move(key) },
+        m_p_key{ p_key },
         m_p_value{ p_value },
         m_preceding_step{ preceding_step },
         m_p_preceding_edge_costs{ p_preceding_edge_costs },
@@ -106,7 +105,7 @@ namespace tetengo::lattice
             const std::vector<int>* p_preceding_edge_costs,
             std::size_t             best_preceding_node,
             int                     path_cost) :
-        node{ entry.key(),         entry.value(), preceding_step, p_preceding_edge_costs,
+        node{ entry.p_key(),       entry.value(), preceding_step, p_preceding_edge_costs,
               best_preceding_node, entry.cost(),  path_cost }
         {}
 
@@ -124,7 +123,9 @@ namespace tetengo::lattice
         */
         friend constexpr bool operator==(const node& one, const node& another)
         {
-            return one.key() == another.key() && one.preceding_step() == another.preceding_step() &&
+            return ((!one.p_key() && !another.p_key()) ||
+                    (one.p_key() && another.p_key() && *one.p_key() == *another.p_key())) &&
+                   one.preceding_step() == another.preceding_step() &&
                    one.best_preceding_node() == another.best_preceding_node() &&
                    one.node_cost() == another.node_cost() && one.path_cost() == another.path_cost();
         }
@@ -134,9 +135,9 @@ namespace tetengo::lattice
 
             \return The key.
         */
-        [[nodiscard]] constexpr const std::string_view& key() const
+        [[nodiscard]] constexpr const input* p_key() const
         {
-            return m_key;
+            return m_p_key;
         }
 
         /*!
@@ -213,7 +214,7 @@ namespace tetengo::lattice
     private:
         // variables
 
-        std::string_view m_key;
+        const input* m_p_key;
 
         const std::any* m_p_value;
 

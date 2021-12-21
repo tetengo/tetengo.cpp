@@ -21,7 +21,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <type_traits>
+#include <type_traits> // IWYU pragma: keep
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -29,8 +29,8 @@
 #include <boost/format.hpp>
 
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp>
-#include <tetengo/text/encoding/utf8.hpp>
+#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.hpp>
 #include <tetengo/trie/trie.hpp>

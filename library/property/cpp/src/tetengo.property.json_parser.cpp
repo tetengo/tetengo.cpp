@@ -23,7 +23,7 @@
 #include <tetengo/json/element.hpp>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/utf16.hpp>
+#include <tetengo/text/encoding/utf16.hpp> // IWYU pragma: keep
 
 #include "tetengo.property.json_parser.hpp"
 

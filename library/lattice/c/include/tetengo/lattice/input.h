@@ -37,11 +37,31 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     void* p_context;
 
     /*!
+        \brief The procedure for equality comparation.
+
+        \param p_context         A pointer to the context.
+        \param p_another_context A pointer to another input context.
+
+        \retval non-zero When p_context is equal to p_another_context.
+        \retval 0        Otherwise.
+    */
+    int (*equal_to_proc)(void* p_context, void* p_another_context);
+
+    /*!
+        \brief The procedure for hash value.
+
+        \param p_context A pointer to the context.
+
+        \return The hash value. Or (size_t)-1 when p_context is NULL.
+    */
+    size_t (*hash_value_proc)(void* p_context);
+
+    /*!
         \brief The procedure for length.
 
         \param p_context A pointer to the context.
 
-        \return The length. Or (size_t)-1 when p_input is NULL.
+        \return The length. Or (size_t)-1 when p_context is NULL.
     */
     size_t (*length_proc)(void* p_context);
 
@@ -96,6 +116,26 @@ tetengo_lattice_input_createCustomInput(const tetengo_lattice_customInputDefinit
 void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
 
 /*!
+    \brief Returns true if one input is equal to another.
+
+    \param p_one     A pointer to one input.
+    \param p_another A pointer to another input.
+
+    \retval non-zero When one input is equal to another.
+    \retval 0        Otherwise.
+*/
+int tetengo_lattice_input_equal(const tetengo_lattice_input_t* p_one, const tetengo_lattice_input_t* p_another);
+
+/*!
+    \brief Returns the hash value.
+
+    \param p_input A pointer to an input.
+
+    \return The hash value. Or (size_t)-1 when p_input is NULL.
+*/
+size_t tetengo_lattice_input_hashValue(const tetengo_lattice_input_t* p_input);
+
+/*!
     \brief Returns the length.
 
     \param p_input A pointer to an input.
@@ -103,6 +143,15 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
     \return The length. Or (size_t)-1 when p_input is NULL.
 */
 size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* p_input);
+
+/*!
+    \brief Clone the input.
+
+    \param p_input A pointer to an input.
+
+    \return A unique pointer to a clone. Or NULL when p_input is NULL.
+*/
+tetengo_lattice_input_t* tetengo_lattice_input_clone(const tetengo_lattice_input_t* p_input);
 
 /*!
     \brief Creates a subrange.

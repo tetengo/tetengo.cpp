@@ -83,9 +83,28 @@ namespace
 
         // virtual functions
 
+        virtual bool equal_to_impl(const input& another) const override
+        {
+            return m_definition.equal_to_proc(
+                m_definition.p_context, another.as<custom_input>().m_definition.p_context);
+        }
+
+        virtual std::size_t hash_value_impl() const override
+        {
+            return m_definition.hash_value_proc(m_definition.p_context);
+        }
+
         virtual std::size_t length_impl() const override
         {
             return m_definition.length_proc(m_definition.p_context);
+        }
+
+        virtual std::unique_ptr<input> clone_impl() const override
+        {
+            tetengo_lattice_customInputDefinition_t subrange_definition = m_definition;
+            subrange_definition.p_context = m_definition.create_subrange_context_proc(
+                m_definition.p_context, 0, m_definition.length_proc(m_definition.p_context));
+            return std::make_unique<custom_input>(subrange_definition, true);
         }
 
         virtual std::unique_ptr<input>
@@ -151,6 +170,46 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* const p_input)
     {}
 }
 
+int tetengo_lattice_input_equal(
+    const tetengo_lattice_input_t* const p_one,
+    const tetengo_lattice_input_t* const p_another)
+{
+    try
+    {
+        if (!p_one)
+        {
+            throw std::invalid_argument{ "p_one is NULL." };
+        }
+        if (!p_another)
+        {
+            throw std::invalid_argument{ "p_another is NULL." };
+        }
+
+        return p_one->cpp_input() == p_another->cpp_input();
+    }
+    catch (...)
+    {
+        return 0;
+    }
+}
+
+size_t tetengo_lattice_input_hashValue(const tetengo_lattice_input_t* p_input)
+{
+    try
+    {
+        if (!p_input)
+        {
+            throw std::invalid_argument{ "p_input is NULL." };
+        }
+
+        return p_input->cpp_input().hash_value();
+    }
+    catch (...)
+    {
+        return static_cast<size_t>(-1);
+    }
+}
+
 size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* const p_input)
 {
     try
@@ -165,6 +224,26 @@ size_t tetengo_lattice_input_length(const tetengo_lattice_input_t* const p_input
     catch (...)
     {
         return static_cast<size_t>(-1);
+    }
+}
+
+tetengo_lattice_input_t* tetengo_lattice_input_clone(const tetengo_lattice_input_t* const p_input)
+{
+    try
+    {
+        if (!p_input)
+        {
+            throw std::invalid_argument{ "p_input is NULL." };
+        }
+
+        auto p_cpp_clone = p_input->cpp_input().clone();
+
+        auto p_instance = std::make_unique<tetengo_lattice_input_t>(std::move(p_cpp_clone));
+        return p_instance.release();
+    }
+    catch (...)
+    {
+        return nullptr;
     }
 }
 

@@ -10,6 +10,7 @@
 #include <string>
 #include <utility>
 
+#include <boost/container_hash/hash.hpp>
 #include <boost/core/noncopyable.hpp>
 
 #include <tetengo/lattice/input.hpp>
@@ -38,9 +39,24 @@ namespace tetengo::lattice
             return m_value;
         }
 
+        bool equal_to_impl(const input& another) const
+        {
+            return another.as<string_input>().value() == m_value;
+        }
+
+        std::size_t hash_value_impl() const
+        {
+            return boost::hash_value(m_value);
+        }
+
         std::size_t length_impl() const
         {
             return m_value.length();
+        }
+
+        std::unique_ptr<input> clone_impl() const
+        {
+            return std::make_unique<string_input>(m_value);
         }
 
         std::unique_ptr<input> create_subrange_impl(const std::size_t offset, const std::size_t length) const
@@ -89,9 +105,24 @@ namespace tetengo::lattice
         return m_p_impl->value();
     }
 
+    bool string_input::equal_to_impl(const input& another) const
+    {
+        return m_p_impl->equal_to_impl(another);
+    }
+
+    std::size_t string_input::hash_value_impl() const
+    {
+        return m_p_impl->hash_value_impl();
+    }
+
     std::size_t string_input::length_impl() const
     {
         return m_p_impl->length_impl();
+    }
+
+    std::unique_ptr<input> string_input::clone_impl() const
+    {
+        return m_p_impl->clone_impl();
     }
 
     std::unique_ptr<input> string_input::create_subrange_impl(const std::size_t offset, const std::size_t length) const

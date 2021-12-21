@@ -13,6 +13,7 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 

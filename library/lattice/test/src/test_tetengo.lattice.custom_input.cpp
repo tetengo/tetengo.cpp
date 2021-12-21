@@ -6,6 +6,7 @@
 
 #include <iterator>
 #include <memory>
+#include <numeric>
 #include <vector>
 
 #include <stddef.h>
@@ -19,6 +20,20 @@
 
 namespace
 {
+    int equal_to_procedure(void* const p_context, void* const p_another_context)
+    {
+        const auto* const p_vector = reinterpret_cast<std::vector<int>*>(p_context);
+        const auto* const p_another_vector = reinterpret_cast<std::vector<int>*>(p_another_context);
+
+        return *p_vector == *p_another_vector;
+    }
+
+    size_t hash_value_procedure(void* const p_context)
+    {
+        const auto* const p_vector = reinterpret_cast<std::vector<int>*>(p_context);
+        return std::accumulate(std::begin(*p_vector), std::end(*p_vector), 0);
+    }
+
     size_t length_procedure(void* const p_context)
     {
         const auto* const p_vector = reinterpret_cast<std::vector<int>*>(p_context);
@@ -65,6 +80,8 @@ BOOST_AUTO_TEST_CASE(construction)
 
     std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
+                                                              hash_value_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -85,6 +102,8 @@ BOOST_AUTO_TEST_CASE(context)
     {
         std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
         const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                                  equal_to_procedure,
+                                                                  hash_value_procedure,
                                                                   length_procedure,
                                                                   create_subrange_context_procedure,
                                                                   destroy_subraneg_context_procedure,
@@ -127,6 +146,8 @@ BOOST_AUTO_TEST_CASE(set_context)
     {
         std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
         const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                                  equal_to_procedure,
+                                                                  hash_value_procedure,
                                                                   length_procedure,
                                                                   create_subrange_context_procedure,
                                                                   destroy_subraneg_context_procedure,
@@ -151,6 +172,8 @@ BOOST_AUTO_TEST_CASE(set_context)
     {
         std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
         const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                                  equal_to_procedure,
+                                                                  hash_value_procedure,
                                                                   length_procedure,
                                                                   create_subrange_context_procedure,
                                                                   destroy_subraneg_context_procedure,
@@ -189,12 +212,210 @@ BOOST_AUTO_TEST_CASE(set_context)
     }
 }
 
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        std::vector<int>                              context1{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition1{ &context1,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input1 = tetengo_lattice_input_createCustomInput(&definition1);
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        std::vector<int>                              context2{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition2{ &context2,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input2 = tetengo_lattice_input_createCustomInput(&definition2);
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(tetengo_lattice_input_equal(p_input1, p_input2));
+    }
+    {
+        std::vector<int>                              context1{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition1{ &context1,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input1 = tetengo_lattice_input_createCustomInput(&definition1);
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        std::vector<int>                              context2{ 2, 7, 1, 8, 2, 8 };
+        const tetengo_lattice_customInputDefinition_t definition2{ &context2,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input2 = tetengo_lattice_input_createCustomInput(&definition2);
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(!tetengo_lattice_input_equal(p_input1, p_input2));
+    }
+    {
+        std::vector<int>                              context2{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition2{ &context2,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input2 = tetengo_lattice_input_createCustomInput(&definition2);
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(!tetengo_lattice_input_equal(nullptr, p_input2));
+    }
+    {
+        std::vector<int>                              context1{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition1{ &context1,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input1 = tetengo_lattice_input_createCustomInput(&definition1);
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        BOOST_TEST(!tetengo_lattice_input_equal(p_input1, nullptr));
+    }
+    {
+        BOOST_TEST(!tetengo_lattice_input_equal(nullptr, nullptr));
+    }
+}
+
+BOOST_AUTO_TEST_CASE(hash_value)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        std::vector<int>                              context1{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition1{ &context1,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input1 = tetengo_lattice_input_createCustomInput(&definition1);
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        std::vector<int>                              context2{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition2{ &context2,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input2 = tetengo_lattice_input_createCustomInput(&definition2);
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(tetengo_lattice_input_hashValue(p_input1) == tetengo_lattice_input_hashValue(p_input2));
+    }
+    {
+        std::vector<int>                              context1{ 3, 1, 4, 1, 5, 9 };
+        const tetengo_lattice_customInputDefinition_t definition1{ &context1,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input1 = tetengo_lattice_input_createCustomInput(&definition1);
+        BOOST_SCOPE_EXIT(p_input1)
+        {
+            tetengo_lattice_input_destroy(p_input1);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input1);
+
+        std::vector<int>                              context2{ 2, 7, 1, 8, 2, 8 };
+        const tetengo_lattice_customInputDefinition_t definition2{ &context2,
+                                                                   equal_to_procedure,
+                                                                   hash_value_procedure,
+                                                                   length_procedure,
+                                                                   create_subrange_context_procedure,
+                                                                   destroy_subraneg_context_procedure,
+                                                                   append_procedure };
+        const auto* const                             p_input2 = tetengo_lattice_input_createCustomInput(&definition2);
+        BOOST_SCOPE_EXIT(p_input2)
+        {
+            tetengo_lattice_input_destroy(p_input2);
+        }
+        BOOST_SCOPE_EXIT_END;
+        BOOST_TEST_REQUIRE(p_input2);
+
+        BOOST_TEST(tetengo_lattice_input_hashValue(p_input1) != tetengo_lattice_input_hashValue(p_input2));
+    }
+    {
+        BOOST_TEST(tetengo_lattice_input_hashValue(nullptr) == static_cast<size_t>(-1));
+    }
+}
+
 BOOST_AUTO_TEST_CASE(length)
 {
     BOOST_TEST_PASSPOINT();
 
     std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
+                                                              hash_value_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -216,6 +437,8 @@ BOOST_AUTO_TEST_CASE(create_subrange)
         3, 1, 4, 1, 5, 9,
     };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
+                                                              hash_value_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -247,6 +470,8 @@ BOOST_AUTO_TEST_CASE(append)
 
     std::vector<int>                              context{ 3, 1, 4, 1, 5, 9 };
     const tetengo_lattice_customInputDefinition_t definition{ &context,
+                                                              equal_to_procedure,
+                                                              hash_value_procedure,
                                                               length_procedure,
                                                               create_subrange_context_procedure,
                                                               destroy_subraneg_context_procedure,
@@ -261,6 +486,8 @@ BOOST_AUTO_TEST_CASE(append)
 
     std::vector<int>                              context2{ 2, 6 };
     const tetengo_lattice_customInputDefinition_t definition2{ &context2,
+                                                               equal_to_procedure,
+                                                               hash_value_procedure,
                                                                length_procedure,
                                                                create_subrange_context_procedure,
                                                                destroy_subraneg_context_procedure,

@@ -11,6 +11,7 @@
 #include <limits>
 #include <memory>
 #include <stdexcept>
+#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 

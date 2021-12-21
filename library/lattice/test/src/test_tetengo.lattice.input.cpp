@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>
 
@@ -18,10 +19,30 @@ namespace
 {
     class concrete_input : public tetengo::lattice::input
     {
+    public:
+        explicit concrete_input(const int value = 42) : m_value{ value } {}
+
     private:
+        const int m_value;
+
+        virtual bool equal_to_impl(const input& another) const override
+        {
+            return another.as<concrete_input>().m_value == m_value;
+        }
+
+        virtual std::size_t hash_value_impl() const override
+        {
+            return 314159;
+        }
+
         virtual std::size_t length_impl() const override
         {
             return 42;
+        }
+
+        virtual std::unique_ptr<input> clone_impl() const override
+        {
+            return std::make_unique<concrete_input>();
         }
 
         virtual std::unique_ptr<input>
@@ -46,9 +67,24 @@ namespace
     class concrete_input2 : public tetengo::lattice::input
     {
     private:
+        virtual bool equal_to_impl(const input& /*another*/) const override
+        {
+            return true;
+        }
+
+        virtual std::size_t hash_value_impl() const override
+        {
+            return 271828;
+        }
+
         virtual std::size_t length_impl() const override
         {
             return 0;
+        }
+
+        virtual std::unique_ptr<input> clone_impl() const override
+        {
+            return std::make_unique<concrete_input2>();
         }
 
         virtual std::unique_ptr<input>
@@ -76,6 +112,42 @@ BOOST_AUTO_TEST_CASE(construction)
     const concrete_input input_{};
 }
 
+BOOST_AUTO_TEST_CASE(operator_equal)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const concrete_input input1{ 42 };
+        const concrete_input input2{ 42 };
+
+        BOOST_CHECK(input1 == input2);
+        BOOST_CHECK(input2 == input1);
+    }
+    {
+        const concrete_input input1{ 42 };
+        const concrete_input input2{ 24 };
+
+        BOOST_CHECK(input1 != input2);
+        BOOST_CHECK(input2 != input1);
+    }
+    {
+        const concrete_input  input1{ 42 };
+        const concrete_input2 input2{};
+
+        BOOST_CHECK(input1 != input2);
+        BOOST_CHECK(input2 != input1);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(hash_value)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_input input_{};
+
+    [[maybe_unused]] const auto hash_value_ = input_.hash_value();
+}
+
 BOOST_AUTO_TEST_CASE(length)
 {
     BOOST_TEST_PASSPOINT();
@@ -83,6 +155,15 @@ BOOST_AUTO_TEST_CASE(length)
     const concrete_input input_{};
 
     BOOST_TEST(input_.length() == 42U);
+}
+
+BOOST_AUTO_TEST_CASE(clone)
+{
+    BOOST_TEST_PASSPOINT();
+
+    const concrete_input input_{};
+
+    const auto p_clone = input_.clone();
 }
 
 BOOST_AUTO_TEST_CASE(create_subrange)

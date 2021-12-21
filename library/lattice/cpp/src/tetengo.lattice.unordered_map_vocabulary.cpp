@@ -69,7 +69,7 @@ namespace tetengo::lattice
 
         connection find_connection_impl(const node& from, const entry_view& to) const
         {
-            const entry_view from_entry_view{ from.key(), &from.value(), from.node_cost() };
+            const entry_view from_entry_view{ from.p_key(), &from.value(), from.node_cost() };
             const auto       found = m_p_connection_map->find(std::make_pair(from_entry_view, to));
             if (found == std::end(*m_p_connection_map))
             {
@@ -151,10 +151,10 @@ namespace tetengo::lattice
             for (auto i = static_cast<std::size_t>(0); i < std::size(connections); ++i)
             {
                 const auto&      connection_key = connection_keys[i];
-                const entry_view from{ connection_key.first.key(),
+                const entry_view from{ connection_key.first.p_key(),
                                        &connection_key.first.value(),
                                        connection_key.first.cost() };
-                const entry_view to{ connection_key.second.key(),
+                const entry_view to{ connection_key.second.p_key(),
                                      &connection_key.second.value(),
                                      connection_key.second.cost() };
                 p_map->insert(std::make_pair(std::make_pair(from, to), connections[i].second));

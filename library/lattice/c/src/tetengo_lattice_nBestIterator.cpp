@@ -8,7 +8,6 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -18,6 +17,7 @@
 
 #include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/n_best_iterator.hpp>
@@ -25,9 +25,9 @@
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/path.h>
 #include <tetengo/lattice/path.hpp>
-#include <tetengo/lattice/stringView.h>
 
 #include "tetengo_lattice_constraint.hpp"
+#include "tetengo_lattice_input.hpp"
 #include "tetengo_lattice_lattice.hpp"
 
 
@@ -73,10 +73,16 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
             throw std::invalid_argument{ "p_constraint is NULL." };
         }
 
+        const auto* const p_cpp_node_key = tetengo_lattice_entryView_createKeyOf(p_eos_node->key_handle);
+        BOOST_SCOPE_EXIT(p_cpp_node_key)
+        {
+            tetengo_lattice_input_destroy(p_cpp_node_key);
+        }
+        BOOST_SCOPE_EXIT_END;
         auto p_cpp_preceding_edge_costs = std::make_unique<std::vector<int>>(
             p_eos_node->p_preceding_edge_costs,
             p_eos_node->p_preceding_edge_costs + p_eos_node->preceding_edge_cost_count);
-        tetengo::lattice::node cpp_eos_node{ std::string_view{ p_eos_node->key.p_head, p_eos_node->key.length },
+        tetengo::lattice::node cpp_eos_node{ p_cpp_node_key ? &p_cpp_node_key->cpp_input() : nullptr,
                                              reinterpret_cast<const std::any*>(p_eos_node->value_handle),
                                              p_eos_node->preceding_step,
                                              p_cpp_preceding_edge_costs.get(),
@@ -124,8 +130,8 @@ tetengo_lattice_nBestIterator_createPath(const tetengo_lattice_nBestIterator_t* 
         nodes.reserve(std::size(cpp_path.nodes()));
         for (const auto& cpp_node: cpp_path.nodes())
         {
-            nodes.push_back({ { std::data(cpp_node.key()), cpp_node.key().length() },
-                              reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_node.value()),
+            nodes.push_back({ reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_node.p_key()),
+                              reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value()),
                               cpp_node.preceding_step(),
                               std::data(cpp_node.preceding_edge_costs()),
                               std::size(cpp_node.preceding_edge_costs()),

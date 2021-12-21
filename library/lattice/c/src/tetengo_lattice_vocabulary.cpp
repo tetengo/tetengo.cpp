@@ -11,18 +11,21 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 #include <typeinfo>
 #include <utility>
 #include <vector>
 
 #include <stddef.h>
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
 #include <tetengo/lattice/connection.h>
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.h>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/input.h>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
 #include <tetengo/lattice/stringView.h>
@@ -32,11 +35,6 @@
 
 #include "tetengo_lattice_input.hpp"
 #include "tetengo_lattice_vocabulary.hpp"
-
-namespace tetengo::lattice
-{
-    class input;
-}
 
 
 tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocabulary(
@@ -72,9 +70,17 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             {
                 const auto& entry = map_element.p_entries[j];
 
+                const auto* const p_cpp_entry_key = tetengo_lattice_entry_createKeyOf(entry.key_handle);
+                BOOST_SCOPE_EXIT(p_cpp_entry_key)
+                {
+                    tetengo_lattice_input_destroy(p_cpp_entry_key);
+                }
+                BOOST_SCOPE_EXIT_END;
                 std::any cpp_entry_value{ entry.p_value };
                 cpp_entry_values.emplace_back(
-                    std::string{ entry.key.p_head, entry.key.length }, std::move(cpp_entry_value), entry.cost);
+                    p_cpp_entry_key ? p_cpp_entry_key->cpp_input().clone() : std::unique_ptr<tetengo::lattice::input>{},
+                    std::move(cpp_entry_value),
+                    entry.cost);
             }
 
             cpp_entries.emplace_back(std::move(cpp_key), std::move(cpp_entry_values));
@@ -86,17 +92,29 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
         {
             const auto& connection_element = p_connections[i];
 
-            std::any cpp_from_value{ connection_element.p_from->p_value };
+            const auto* const p_cpp_from_key = tetengo_lattice_entry_createKeyOf(connection_element.p_from->key_handle);
+            BOOST_SCOPE_EXIT(p_cpp_from_key)
+            {
+                tetengo_lattice_input_destroy(p_cpp_from_key);
+            }
+            BOOST_SCOPE_EXIT_END;
+            std::any          cpp_from_value{ connection_element.p_from->p_value };
+            const auto* const p_cpp_to_key = tetengo_lattice_entry_createKeyOf(connection_element.p_to->key_handle);
+            BOOST_SCOPE_EXIT(p_cpp_to_key)
+            {
+                tetengo_lattice_input_destroy(p_cpp_to_key);
+            }
+            BOOST_SCOPE_EXIT_END;
             std::any cpp_to_value{ connection_element.p_to->p_value };
             auto     cpp_key = std::make_pair(
-                tetengo::lattice::entry{
-                    std::string{ connection_element.p_from->key.p_head, connection_element.p_from->key.length },
-                    std::move(cpp_from_value),
-                    connection_element.p_from->cost },
-                tetengo::lattice::entry{
-                    std::string{ connection_element.p_to->key.p_head, connection_element.p_to->key.length },
-                    std::move(cpp_to_value),
-                    connection_element.p_to->cost });
+                tetengo::lattice::entry{ p_cpp_from_key ? p_cpp_from_key->cpp_input().clone() :
+                                                              std::unique_ptr<tetengo::lattice::input>{},
+                                         std::move(cpp_from_value),
+                                         connection_element.p_from->cost },
+                tetengo::lattice::entry{ p_cpp_to_key ? p_cpp_to_key->cpp_input().clone() :
+                                                            std::unique_ptr<tetengo::lattice::input>{},
+                                         std::move(cpp_to_value),
+                                         connection_element.p_to->cost });
 
             cpp_connections.emplace_back(std::move(cpp_key), connection_element.cost);
         }
@@ -106,24 +124,21 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             std::move(cpp_connections),
             [p_entry_hash](const tetengo::lattice::entry_view& cpp_entry) {
                 tetengo_lattice_entryView_t entry{};
-                entry.key.p_head = std::data(cpp_entry.key());
-                entry.key.length = cpp_entry.key().length();
-                entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
+                entry.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_entry.p_key());
+                entry.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry.value());
                 entry.cost = cpp_entry.cost();
                 return p_entry_hash(&entry);
             },
             [p_entry_equal_to](
                 const tetengo::lattice::entry_view& cpp_entry1, const tetengo::lattice::entry_view& cpp_entry2) {
                 tetengo_lattice_entryView_t entry1{};
-                entry1.key.p_head = std::data(cpp_entry1.key());
-                entry1.key.length = cpp_entry1.key().length();
-                entry1.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry1.value());
+                entry1.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_entry1.p_key());
+                entry1.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry1.value());
                 entry1.cost = cpp_entry1.cost();
 
                 tetengo_lattice_entryView_t entry2{};
-                entry2.key.p_head = std::data(cpp_entry2.key());
-                entry2.key.length = cpp_entry2.key().length();
-                entry2.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry2.value());
+                entry2.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_entry2.p_key());
+                entry2.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry2.value());
                 entry2.cost = cpp_entry2.cost();
 
                 return p_entry_equal_to(&entry1, &entry2);
@@ -179,9 +194,15 @@ namespace
             entries.reserve(entry_count);
             for (auto i = static_cast<std::size_t>(0); i < entry_count; ++i)
             {
-                const auto& c_entry_view = c_entry_views[i];
+                const auto&       c_entry_view = c_entry_views[i];
+                const auto* const p_entry_key = tetengo_lattice_entryView_createKeyOf(c_entry_view.key_handle);
+                BOOST_SCOPE_EXIT(p_entry_key)
+                {
+                    tetengo_lattice_input_destroy(p_entry_key);
+                }
+                BOOST_SCOPE_EXIT_END;
                 entries.emplace_back(
-                    std::string_view{ c_entry_view.key.p_head, c_entry_view.key.length },
+                    p_entry_key ? &p_entry_key->cpp_input() : nullptr,
                     reinterpret_cast<const std::any*>(c_entry_view.value_handle),
                     c_entry_view.cost);
             }
@@ -200,16 +221,18 @@ namespace
                 throw std::invalid_argument{ "Unexcepted the value type of to." };
             }
 
-            const tetengo_lattice_node_t      c_from{ { from.key().data(), from.key().length() },
-                                                 reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&from.value()),
+            const tetengo_lattice_node_t c_from{ reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(from.p_key()),
+                                                 reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                     &from.value()),
                                                  from.preceding_step(),
                                                  std::data(from.preceding_edge_costs()),
                                                  std::size(from.preceding_edge_costs()),
                                                  from.best_preceding_node(),
                                                  from.node_cost(),
                                                  from.path_cost() };
-            const tetengo_lattice_entryView_t c_to{ { to.key().data(), to.key().length() },
-                                                    reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(to.value()),
+            const tetengo_lattice_entryView_t c_to{ reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(to.p_key()),
+                                                    reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
+                                                        to.value()),
                                                     to.cost() };
             tetengo_lattice_connection_t      c_connection{};
             const auto                        result =
@@ -279,10 +302,9 @@ size_t tetengo_lattice_vocabulary_findEntries(
                 const auto& cpp_entry = found[i];
                 auto&       entry = p_entries[i];
 
-                entry.key.p_head = std::data(cpp_entry.key());
-                entry.key.length = cpp_entry.key().length();
+                entry.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_entry.p_key());
                 assert(cpp_entry.value()->type() == typeid(const void*));
-                entry.value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(cpp_entry.value());
+                entry.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(cpp_entry.value());
                 entry.cost = cpp_entry.cost();
             }
         }
@@ -320,18 +342,30 @@ int tetengo_lattice_vocabulary_findConnection(
             throw std::invalid_argument{ "p_connection is NULL." };
         }
 
-        const std::vector<int>             cpp_preceding_edge_costs{};
-        const tetengo::lattice::node       cpp_from{ std::string_view{ p_from->key.p_head, p_from->key.length },
+        const std::vector<int> cpp_preceding_edge_costs{};
+        const auto* const      p_cpp_from_key = tetengo_lattice_entryView_createKeyOf(p_from->key_handle);
+        BOOST_SCOPE_EXIT(p_cpp_from_key)
+        {
+            tetengo_lattice_input_destroy(p_cpp_from_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const tetengo::lattice::node cpp_from{ p_cpp_from_key ? &p_cpp_from_key->cpp_input() : nullptr,
                                                reinterpret_cast<const std::any*>(p_from->value_handle),
                                                p_from->preceding_step,
                                                &cpp_preceding_edge_costs,
                                                p_from->best_preceding_node,
                                                p_from->node_cost,
                                                p_from->path_cost };
-        const tetengo::lattice::entry_view cpp_to{ std::string_view{ p_to->key.p_head, p_to->key.length },
+        const auto* const p_cpp_to_key = tetengo_lattice_entryView_createKeyOf(p_to->key_handle);
+        BOOST_SCOPE_EXIT(p_cpp_to_key)
+        {
+            tetengo_lattice_input_destroy(p_cpp_to_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const tetengo::lattice::entry_view cpp_to{ p_cpp_to_key ? &p_cpp_to_key->cpp_input() : nullptr,
                                                    reinterpret_cast<const std::any*>(p_to->value_handle),
                                                    p_to->cost };
-        const auto                         found = p_vocabulary->p_cpp_vocabulary->find_connection(cpp_from, cpp_to);
+        const auto found = p_vocabulary->p_cpp_vocabulary->find_connection(cpp_from, cpp_to);
 
         p_connection->cost = found.cost();
 
