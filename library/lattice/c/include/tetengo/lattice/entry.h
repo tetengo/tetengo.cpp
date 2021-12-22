@@ -9,6 +9,7 @@
 
 #include <stddef.h>
 
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/stringView.h>
 
 
@@ -17,9 +18,19 @@ extern "C" {
 #endif
 
 /*!
-    \brief An entry value handle.
+    \brief An entry key handle.
 */
-typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entry_valueHandle_t;
+typedef const struct tetengo_lattice_entry_keyHandle_tag* tetengo_lattice_entry_keyHandle_t;
+
+/*!
+    \brief An entry view key handle.
+*/
+typedef const struct tetengo_lattice_entryView_keyHandle_tag* tetengo_lattice_entryView_keyHandle_t;
+
+/*!
+    \brief An entry view value handle.
+*/
+typedef const struct tetengo_lattice_entryView_valueHandle_tag* tetengo_lattice_entryView_valueHandle_t;
 
 
 /*!
@@ -27,8 +38,8 @@ typedef const struct tetengo_lattice_entry_valueHandle_tag* tetengo_lattice_entr
 */
 typedef struct tetengo_lattice_entry_tag
 {
-    /*! A key. */
-    tetengo_lattice_stringView_t key;
+    /*! A key handle. */
+    tetengo_lattice_entry_keyHandle_t key_handle;
 
     /*! A pointer to a value. */
     const void* p_value;
@@ -44,11 +55,11 @@ typedef struct tetengo_lattice_entry_tag
 */
 typedef struct tetengo_lattice_entryView_tag
 {
-    /*! A key. */
-    tetengo_lattice_stringView_t key;
+    /*! A key handle. */
+    tetengo_lattice_entryView_keyHandle_t key_handle;
 
     /*! A value handle. */
-    tetengo_lattice_entry_valueHandle_t value_handle;
+    tetengo_lattice_entryView_valueHandle_t value_handle;
 
     /*! A cost. */
     int cost;
@@ -74,20 +85,56 @@ typedef struct tetengo_lattice_keyEntriesPair_tag
 } tetengo_lattice_keyEntriesPair_t;
 
 /*!
+    \brief Creates an entry key by a handle.
+
+    \param handle A handle.
+
+    \return A pointer to an entry key.
+*/
+const tetengo_lattice_input_t* tetengo_lattice_entry_createKeyOf(tetengo_lattice_entry_keyHandle_t handle);
+
+/*!
+    \brief Returns the entry key handle.
+
+    \param p_content A pointer to a content.
+
+    \return The key handle. Or NULL when p_content is NULL.
+*/
+tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_toKeyHandle(const tetengo_lattice_input_t* p_content);
+
+/*!
     \brief Returns the pointer to the BOS/EOS (Beginning/End of Sequence) entry.
 
     \return The pointer to the BOS/EOS entry.
 */
-const tetengo_lattice_entryView_t* tetengo_lattice_entry_bosEos();
+const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
 
 /*!
-    \brief Return the entry value by a handle.
+    \brief Creates an entry view key by a handle.
+
+    \param handle A handle.
+
+    \return A pointer to an entry view key.
+*/
+const tetengo_lattice_input_t* tetengo_lattice_entryView_createKeyOf(tetengo_lattice_entryView_keyHandle_t handle);
+
+/*!
+    \brief Returns the entry view key handle.
+
+    \param p_content A pointer to a content.
+
+    \return The key handle. Or NULL when p_content is NULL.
+*/
+tetengo_lattice_entryView_keyHandle_t tetengo_lattice_entryView_toKeyHandle(const tetengo_lattice_input_t* p_content);
+
+/*!
+    \brief Returns the entry view value by a handle.
 
     \param handle A handle.
 
     \return The value.
 */
-const void* tetengo_lattice_entry_valueOf(tetengo_lattice_entry_valueHandle_t handle);
+const void* tetengo_lattice_entryView_valueOf(tetengo_lattice_entryView_valueHandle_t handle);
 
 
 #if defined(__cplusplus)

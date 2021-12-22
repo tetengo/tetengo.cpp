@@ -18,11 +18,13 @@ include.cpp\tetengo\lattice\connection.hpp CB44C329-C57C-4D2D-8E5B-4C27A316449C
 include.cpp\tetengo\lattice\constraint.hpp E7F06419-0592-409E-BB4B-36F2976F7AE9
 include.cpp\tetengo\lattice\constraint_element.hpp 133E89B9-FBF0-48C2-AACB-00AC7AFA55C2
 include.cpp\tetengo\lattice\entry.hpp 2527A6C8-B58C-4F46-97E5-576E71E4FB12
+include.cpp\tetengo\lattice\input.hpp 7EA295F4-8F44-4D3E-85D2-CAAB230E9908
 include.cpp\tetengo\lattice\lattice.hpp 65A48482-B8DA-4E89-8815-E64B8974BB3E
 include.cpp\tetengo\lattice\n_best_iterator.hpp 9D64AD63-CD7C-462A-B00C-727DDB38A529
 include.cpp\tetengo\lattice\node.hpp 91AA6E32-C472-4CC0-BDCA-F5EFBF527858
 include.cpp\tetengo\lattice\node_constraint_element.hpp 03484F91-429D-449C-A788-0385C773485C
 include.cpp\tetengo\lattice\path.hpp 577F55AE-E362-4D7B-B118-148C789B1A18
+include.cpp\tetengo\lattice\string_input.hpp 1AD311EA-535B-4C69-858A-C5C6C43FAA2D
 include.cpp\tetengo\lattice\unordered_map_vocabulary.hpp 8E69110E-B34F-4909-BE58-D44EC74462EF
 include.cpp\tetengo\lattice\vocabulary.hpp BB921E2D-9C35-4A3B-AD35-460392047378
 include.cpp\tetengo\lattice\wildcard_constraint_element.hpp 6AD8A079-A44C-48B1-8DF0-5A336356EB1D
@@ -54,12 +56,12 @@ include.cpp\tetengo\trie\default_serializer.hpp FD93DBEC-15A1-436C-A3B3-0B145B45
 include.cpp\tetengo\trie\double_array.hpp 3BE6F96C-B49A-4194-A823-B2B8512042C6
 include.cpp\tetengo\trie\double_array_iterator.hpp 0B8DC911-73B4-47F7-B73E-5C8D9B1B1393
 include.cpp\tetengo\trie\memory_storage.hpp 21913AD4-B123-4886-B209-2DD09E6164BD
-include.cpp\tetengo\trie\mmap_storage.hpp 577C7A28-339F-4618-870D-954D91C39298
+include.cpp\tetengo\trie\mmap_storage.hpp ABF92E27-F66B-497F-BD7F-B4BBBD540CD6
 include.cpp\tetengo\trie\shared_storage.hpp 2EEB7012-27AE-479E-AB72-3E01FE5A5AD7
 include.cpp\tetengo\trie\storage.hpp 51F792DB-173B-457C-B35F-EDDE635620BA
 include.cpp\tetengo\trie\trie.hpp B1E8D3D4-B3F9-489A-9FE6-AE093ADD7A1D
 include.cpp\tetengo\trie\trie_iterator.hpp 50F956B7-6730-456F-95A5-A621AF382464
-include.cpp\tetengo\trie\value_serializer.hpp B3F3DE46-E3C6-4F04-802A-EF955EDD139C
+include.cpp\tetengo\trie\value_serializer.hpp 4E16366E-ED2D-4E14-9445-612175A120B3
 include\tetengo\json\element.h 1188F44F-DEB1-4C0E-BAA3-01BA2E3722BF
 include\tetengo\json\jsonParser.h 9F4ED5B4-E606-4034-BB97-E4E44F06DFF9
 include\tetengo\json\reader.h B91A1218-26BF-4A15-8CAB-E70D77C1588C
@@ -67,6 +69,7 @@ include\tetengo\lattice\connection.h AB1BEEF7-609E-49DD-BB4D-502C3390141F
 include\tetengo\lattice\constraint.h B3A769AF-E49F-4766-9D43-5927BF83F7A5
 include\tetengo\lattice\constraintElement.h 8B760E3D-8626-48E4-81E3-E3F1A7E0F6AA
 include\tetengo\lattice\entry.h 4390EB62-4F3A-4C4A-8ADC-E7AF0F3AD6BA
+include\tetengo\lattice\input.h 8BD6081B-8886-456D-B997-EAA82D782849
 include\tetengo\lattice\lattice.h 5FF49145-556A-46B3-8B0D-1E818C49688A
 include\tetengo\lattice\nBestIterator.h E7FBC3FD-E237-4627-84AD-1199E42A6F7F
 include\tetengo\lattice\node.h 1270D414-4ECF-4EE1-9EB1-E3AD5F2A0811

@@ -22,8 +22,8 @@
 #include <vector>
 
 #include <tetengo/text/encoder.hpp>
-#include <tetengo/text/encoding/cp932.hpp>
-#include <tetengo/text/encoding/utf8.hpp>
+#include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
+#include <tetengo/text/encoding/utf8.hpp> // IWYU pragma: keep
 #include <tetengo/trie/memory_storage.hpp>
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/value_serializer.hpp>

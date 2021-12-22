@@ -59,6 +59,12 @@
     <ClInclude Include="include\tetengo\lattice\path.h">
       <Filter>header\tetengo::lattice</Filter>
     </ClInclude>
+    <ClInclude Include="include\tetengo\lattice\input.h">
+      <Filter>header\tetengo::lattice</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tetengo_lattice_input.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tetengo_lattice_vocabulary.cpp">
@@ -86,6 +92,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\tetengo_lattice_path.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tetengo_lattice_input.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

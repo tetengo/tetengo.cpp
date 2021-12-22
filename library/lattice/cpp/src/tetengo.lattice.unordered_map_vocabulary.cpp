@@ -1,5 +1,5 @@
 /*! \file
-    \brief An unordered_map vocabulary.
+    \brief An unordered map vocabulary.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -11,7 +11,6 @@
 #include <limits>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
@@ -21,7 +20,9 @@
 
 #include <tetengo/lattice/connection.hpp>
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 
 
@@ -52,9 +53,9 @@ namespace tetengo::lattice
 
         // functions
 
-        std::vector<entry_view> find_entries_impl(const std::string_view& key) const
+        std::vector<entry_view> find_entries_impl(const input& key) const
         {
-            const auto found = m_entry_map.find(std::string{ key });
+            const auto found = m_entry_map.find(std::string{ key.as<string_input>().value() });
             if (found == std::end(m_entry_map))
             {
                 return std::vector<entry_view>{};
@@ -68,7 +69,7 @@ namespace tetengo::lattice
 
         connection find_connection_impl(const node& from, const entry_view& to) const
         {
-            const entry_view from_entry_view{ from.key(), &from.value(), from.node_cost() };
+            const entry_view from_entry_view{ from.p_key(), &from.value(), from.node_cost() };
             const auto       found = m_p_connection_map->find(std::make_pair(from_entry_view, to));
             if (found == std::end(*m_p_connection_map))
             {
@@ -150,10 +151,10 @@ namespace tetengo::lattice
             for (auto i = static_cast<std::size_t>(0); i < std::size(connections); ++i)
             {
                 const auto&      connection_key = connection_keys[i];
-                const entry_view from{ connection_key.first.key(),
+                const entry_view from{ connection_key.first.p_key(),
                                        &connection_key.first.value(),
                                        connection_key.first.cost() };
-                const entry_view to{ connection_key.second.key(),
+                const entry_view to{ connection_key.second.p_key(),
                                      &connection_key.second.value(),
                                      connection_key.second.cost() };
                 p_map->insert(std::make_pair(std::make_pair(from, to), connections[i].second));
@@ -187,7 +188,7 @@ namespace tetengo::lattice
 
     unordered_map_vocabulary::~unordered_map_vocabulary() = default;
 
-    std::vector<entry_view> unordered_map_vocabulary::find_entries_impl(const std::string_view& key) const
+    std::vector<entry_view> unordered_map_vocabulary::find_entries_impl(const input& key) const
     {
         return m_p_impl->find_entries_impl(key);
     }

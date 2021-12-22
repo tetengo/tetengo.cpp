@@ -1,5 +1,5 @@
 /*! \file
-    \brief An unordered_map vocabulary.
+    \brief An unordered map vocabulary.
 
     Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
 */
@@ -11,7 +11,6 @@
 #include <functional>
 #include <memory>
 #include <string>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -22,11 +21,12 @@
 namespace tetengo::lattice
 {
     class connection;
+    class input;
     class node;
 
 
     /*!
-        \brief An unordered_map vocabulary.
+        \brief An unordered map vocabulary.
     */
     class unordered_map_vocabulary : public vocabulary
     {
@@ -34,7 +34,7 @@ namespace tetengo::lattice
         // constructors and destructor
 
         /*!
-            \brief Creates an unordered_map vocabulary.
+            \brief Creates an unordered map vocabulary.
 
             \param entries        Entries.
             \param connections    Connections.
@@ -48,7 +48,7 @@ namespace tetengo::lattice
             std::function<bool(const entry_view&, const entry_view&)> entry_equal_to);
 
         /*!
-            \brief Destroys the unordered_map vocabulary.
+            \brief Destroys the unordered map vocabulary.
         */
         virtual ~unordered_map_vocabulary();
 
@@ -66,7 +66,7 @@ namespace tetengo::lattice
 
         // virtual functions
 
-        virtual std::vector<entry_view> find_entries_impl(const std::string_view& key) const override;
+        virtual std::vector<entry_view> find_entries_impl(const input& key) const override;
 
         virtual connection find_connection_impl(const node& from, const entry_view& to) const override;
     };

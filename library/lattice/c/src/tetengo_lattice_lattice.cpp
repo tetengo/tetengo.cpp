@@ -11,20 +11,23 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string_view>
 #include <utility>
 #include <vector>
 
 #include <stddef.h>
 
+#include <boost/preprocessor.hpp>
+#include <boost/scope_exit.hpp>
+
 #include <tetengo/lattice/entry.h>
+#include <tetengo/lattice/input.h>
 #include <tetengo/lattice/lattice.h>
 #include <tetengo/lattice/lattice.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
+#include "tetengo_lattice_input.hpp"
 #include "tetengo_lattice_lattice.hpp"
 #include "tetengo_lattice_vocabulary.hpp"
 
@@ -97,9 +100,9 @@ size_t tetengo_lattice_lattice_nodesAt(
         {
             for (auto i = static_cast<std::size_t>(0); i < std::size(cpp_nodes); ++i)
             {
-                p_nodes[i].key.p_head = std::data(cpp_nodes[i].key());
-                p_nodes[i].key.length = cpp_nodes[i].key().length();
-                p_nodes[i].value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(&cpp_nodes[i].value());
+                p_nodes[i].key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_nodes[i].p_key());
+                p_nodes[i].value_handle =
+                    reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_nodes[i].value());
                 p_nodes[i].preceding_step = cpp_nodes[i].preceding_step();
                 p_nodes[i].p_preceding_edge_costs = std::data(cpp_nodes[i].preceding_edge_costs());
                 p_nodes[i].preceding_edge_cost_count = std::size(cpp_nodes[i].preceding_edge_costs());
@@ -116,20 +119,26 @@ size_t tetengo_lattice_lattice_nodesAt(
     }
 }
 
-int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice, const char* const input)
+int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice, tetengo_lattice_input_t* const p_input)
 {
     try
     {
+        BOOST_SCOPE_EXIT(p_input)
+        {
+            tetengo_lattice_input_destroy(p_input);
+        }
+        BOOST_SCOPE_EXIT_END;
+
         if (!p_lattice)
         {
             throw std::invalid_argument{ "p_lattice is NULL." };
         }
-        if (!input)
+        if (!p_input)
         {
-            throw std::invalid_argument{ "input is NULL." };
+            throw std::invalid_argument{ "p_input is NULL." };
         }
 
-        p_lattice->p_cpp_lattice->push_back(input);
+        p_lattice->p_cpp_lattice->push_back(std::move(p_input->p_cpp_input()));
 
         return 1;
     }
@@ -168,9 +177,8 @@ size_t tetengo_lattice_lattice_settle(
         if (p_eos_node)
         {
             assert(!cpp_eos_node_and_preceding_edge_costs.first.value().has_value());
-            p_eos_node->key.p_head = std::data(cpp_eos_node_and_preceding_edge_costs.first.key());
-            p_eos_node->key.length = cpp_eos_node_and_preceding_edge_costs.first.key().length();
-            p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entry_valueHandle_t>(
+            p_eos_node->key_handle = tetengo_lattice_entryView_bosEos()->key_handle;
+            p_eos_node->value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
                 &cpp_eos_node_and_preceding_edge_costs.first.value());
             p_eos_node->preceding_step = cpp_eos_node_and_preceding_edge_costs.first.preceding_step();
             p_eos_node->p_preceding_edge_costs = p_preceding_edge_costs;

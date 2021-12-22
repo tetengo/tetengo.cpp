@@ -13,7 +13,7 @@
 
 #include <boost/circular_buffer.hpp>
 #include <boost/core/noncopyable.hpp>
-#include <boost/core/pointer_traits.hpp>
+#include <boost/core/pointer_traits.hpp> // IWYU pragma: keep
 
 #include <tetengo/json/stream_reader.hpp>
 

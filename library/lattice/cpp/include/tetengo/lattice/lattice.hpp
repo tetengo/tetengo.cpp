@@ -9,7 +9,6 @@
 
 #include <cstddef>
 #include <memory>
-#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -18,6 +17,7 @@
 
 namespace tetengo::lattice
 {
+    class input;
     class vocabulary;
     class node;
 
@@ -66,9 +66,9 @@ namespace tetengo::lattice
         /*!
             \brief Pushes back an input.
 
-            \param input An input.
+            \param p_input A unique pointer to an input.
         */
-        void push_back(const std::string_view& input);
+        void push_back(std::unique_ptr<input>&& p_input);
 
         /*!
             \brief Settles this lattice.

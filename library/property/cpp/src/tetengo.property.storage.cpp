@@ -10,7 +10,7 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <type_traits>
+#include <type_traits> // IWYU pragma: keep
 #include <unordered_map>
 #include <utility>
 #include <variant>

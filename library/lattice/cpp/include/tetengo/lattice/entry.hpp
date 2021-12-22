@@ -8,9 +8,10 @@
 #define TETENGO_LATTICE_ENTRY_HPP
 
 #include <any>
-#include <string>
-#include <string_view>
+#include <memory>
 #include <utility>
+
+#include <tetengo/lattice/input.hpp>
 
 
 namespace tetengo::lattice
@@ -39,11 +40,11 @@ namespace tetengo::lattice
         /*!
             \brief Creates an entry.
 
-            \param key   A key.
+            \param p_key A unique pointer to a key.
             \param value A value.
             \param cost  A cost.
         */
-        entry(std::string key, std::any value, int cost);
+        entry(std::unique_ptr<input>&& p_key, std::any value, int cost);
 
         /*!
             \brief Creates an entry.
@@ -52,15 +53,29 @@ namespace tetengo::lattice
         */
         entry(const entry_view& view);
 
+        /*!
+            \brief Copies an entry.
+
+            \param another Another entry.
+        */
+        entry(const entry& another);
+
+        /*!
+            \brief Moves an entry.
+
+            \param another Another entry.
+        */
+        entry(entry&& another);
+
 
         // functions
 
         /*!
-            \brief Returns the key.
+            \brief Returns the pointer to the key.
 
-            \return The key.
+            \return The pointer to the key.
         */
-        [[nodiscard]] const std::string& key() const;
+        [[nodiscard]] const input* p_key() const;
 
         /*!
             \brief Returns the value.
@@ -80,7 +95,7 @@ namespace tetengo::lattice
     private:
         // variables
 
-        std::string m_key;
+        std::unique_ptr<input> m_p_key;
 
         std::any m_value;
 
@@ -109,12 +124,12 @@ namespace tetengo::lattice
         /*!
             \brief Creates an entry view.
 
-            \param key   A key.
+            \param p_key A pointer to a key.
             \param value A value.
             \param cost  A cost.
         */
-        constexpr entry_view(std::string_view key, const std::any* value, int cost) :
-        m_key{ std::move(key) },
+        constexpr entry_view(const input* p_key, const std::any* value, int cost) :
+        m_p_key{ p_key },
         m_value{ std::move(value) },
         m_cost{ cost }
         {}
@@ -130,13 +145,13 @@ namespace tetengo::lattice
         // functions
 
         /*!
-            \brief Returns the key.
+            \brief Returns the pointer to the key.
 
-            \return The key.
+            \return The pointer to the key.
         */
-        [[nodiscard]] constexpr const std::string_view& key() const
+        [[nodiscard]] constexpr const input* p_key() const
         {
-            return m_key;
+            return m_p_key;
         }
 
         /*!
@@ -163,7 +178,7 @@ namespace tetengo::lattice
     private:
         // variables
 
-        std::string_view m_key;
+        const input* m_p_key;
 
         const std::any* m_value;
 

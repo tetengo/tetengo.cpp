@@ -25,6 +25,8 @@
 #include <boost/lexical_cast.hpp>
 
 #include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/input.hpp>
+#include <tetengo/lattice/string_input.hpp>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
@@ -47,7 +49,7 @@ namespace
 
     std::size_t entry_hash(const tetengo::lattice::entry_view& entry)
     {
-        const std::size_t key_hash = std::hash<std::string_view>{}(entry.key());
+        const std::size_t key_hash = entry.p_key() ? entry.p_key()->hash_value() : 0;
         std::size_t       entry_train_number_hash = std::hash<std::string_view>{}(std::string_view{});
         std::size_t       entry_train_name_hash = std::hash<std::string_view>{}(std::string_view{});
         std::size_t       entry_from_hash = std::hash<std::size_t>{}(0);
@@ -73,7 +75,8 @@ namespace
             const auto* const p_another_section = std::any_cast<section>(another.value());
             if (p_one_section && p_another_section)
             {
-                return one.key() == another.key() &&
+                return ((!one.p_key() && !another.p_key()) ||
+                        (one.p_key() && another.p_key() && *one.p_key() == *another.p_key())) &&
                        p_one_section->p_train()->number() == p_another_section->p_train()->number() &&
                        p_one_section->p_train()->name() == p_another_section->p_train()->name() &&
                        p_one_section->from() == p_another_section->from() &&
@@ -91,7 +94,8 @@ namespace
         }
         else
         {
-            return one.key() == another.key();
+            return (!one.p_key() && !another.p_key()) ||
+                   (one.p_key() && another.p_key() && *one.p_key() == *another.p_key());
         }
     }
 
@@ -421,7 +425,9 @@ private:
                     section    section_{ &train_, from, to };
                     const auto section_duration = make_section_duration(train_.stops(), from, to);
                     found->second.emplace_back(
-                        std::move(section_name), std::move(section_), static_cast<int>(section_duration));
+                        std::make_unique<tetengo::lattice::string_input>(std::move(section_name)),
+                        std::move(section_),
+                        static_cast<int>(section_duration));
                 }
             }
         }
