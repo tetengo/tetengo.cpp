@@ -16,8 +16,8 @@ env:
   CACHE_REV:        1
   CONCURRENT_BUILD: 4
   DOXYGEN_VER:      1.9.2
-  BOOST_VER:        1_77_0
-  BOOST_VER_DOT:    1.77.0
+  BOOST_VER:        1_78_0
+  BOOST_VER_DOT:    1.78.0
 
 jobs:
   build:
