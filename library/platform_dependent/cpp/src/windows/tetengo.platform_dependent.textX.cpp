@@ -61,8 +61,8 @@ namespace tetengo::platform_dependent
                 throw std::invalid_argument{ "Invalid multibyte string." };
             }
 
-            std::vector<wchar_t> wide(wide_length, 0);
-            const auto           wide_length_again = ::MultiByteToWideChar(
+            std::vector<wchar_t>        wide(wide_length, 0);
+            [[maybe_unused]] const auto wide_length_again = ::MultiByteToWideChar(
                 code_page, 0, std::data(multibyte), static_cast<int>(multibyte.length()), std::data(wide), wide_length);
             assert(wide_length_again == wide_length);
 
@@ -87,8 +87,8 @@ namespace tetengo::platform_dependent
                 throw std::invalid_argument{ "Invalid wide string." };
             }
 
-            std::vector<char> multibyte(multibyte_length, 0);
-            const auto        multibyte_length_again = ::WideCharToMultiByte(
+            std::vector<char>           multibyte(multibyte_length, 0);
+            [[maybe_unused]] const auto multibyte_length_again = ::WideCharToMultiByte(
                 code_page,
                 code_page == CP_UTF8 ? 0 : WC_NO_BEST_FIT_CHARS,
                 std::data(wide),

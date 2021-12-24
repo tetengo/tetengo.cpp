@@ -22,13 +22,13 @@ env:
 jobs:
   build:
     name:    Build
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v1.1.0
     
     - name: Cache Boost build
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ..\boost_build
         key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-${{ env.BOOST_VER }}
@@ -42,10 +42,10 @@ jobs:
         tar -xf boost_%BOOST_VER%.tar.gz
         cd boost_%BOOST_VER%
         call bootstrap.bat
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=32 variant=debug   link=static --stagedir="stage\Win32" stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.2 address-model=64 variant=debug   link=static --stagedir="stage\x64"   stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug   link=static --stagedir="stage\Win32" stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
+        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug   link=static --stagedir="stage\x64"   stage
         rd /s /q bin.v2
     
     - name: Setup EmbedTransform
@@ -121,7 +121,7 @@ jobs:
         move bin.libimage\tetengo-windows-libimage-x64-%TETENGO_VER%.zip artifacts
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: artifacts-windows
         path: artifacts

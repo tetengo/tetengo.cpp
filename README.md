@@ -81,7 +81,7 @@ How to Build and Install
 
 #### Requirements
 
-- [Visual Studio 2019](https://visualstudio.microsoft.com/)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/)
 - [Boost C++ libraries 1.78.0](https://www.boost.org/)
 - [Doxygen 1.9.2](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
