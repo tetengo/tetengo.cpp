@@ -70,6 +70,12 @@ jobs:
         path: .boost_build
         key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
     
+    - name: Install Boost
+      shell: bash
+      run: |
+        cd .boost_build/boost_${{ env.BOOST_VER }}
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
+    
     - name: Configure
       shell: bash
       run: |
