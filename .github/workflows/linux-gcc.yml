@@ -34,14 +34,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          /usr/local/include/boost
-          /usr/local/lib/libboost_*.a
+          ../boost_build
         key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
     
     - name: Build Boost
       shell: bash
       run: |
-        if [ ! -e /usr/local/include/boost/version.hpp ];
+        if [ ! -e ../boost_build/boost_${BOOST_VER}/.build_finished ];
         then
           mkdir -p ../boost_build
           cd ../boost_build
@@ -50,8 +49,11 @@ jobs:
           cd boost_${BOOST_VER}
           ./bootstrap.sh --with-toolset=gcc
           (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
-          (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
+          touch .build_finished
+        else
+          cd ../boost_build/boost_${BOOST_VER}
         fi
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
       uses: actions/checkout@v2
