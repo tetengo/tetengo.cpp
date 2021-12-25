@@ -42,10 +42,7 @@ jobs:
           ./bootstrap.sh --with-toolset=gcc
           (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
           touch .build_finished
-        else
-          cd .boost_build/boost_${{ env.BOOST_VER }}
         fi
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
   
   build:
     name:    Build
