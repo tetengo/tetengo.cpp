@@ -13,28 +13,17 @@ on:
     branches: [ master ]
 
 env:
+  RUNS_ON:         ubuntu-20.04
   CACHE_REV:        0
   CONCURRENT_BUILD: 4
   BOOST_VER:        1_78_0
   BOOST_VER_DOT:    1.78.0
 
 jobs:
-  build:
-    name:    Build
-    runs-on: ubuntu-20.04
+  boost_build:
+    name: Boost Build
+    runs-on: ${{ env.RUNS_ON }}
     steps:
-    - name: Install dependencies
-      shell: bash
-      run: |
-        sudo apt-get -y update
-        sudo apt-get -y install \
-          autoconf-archive
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
@@ -58,6 +47,29 @@ jobs:
           cd .boost_build/boost_${{ env.BOOST_VER }}
         fi
         (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
+  
+  build:
+    name:    Build
+    needs:   boost_build
+    runs-on: ${{ env.RUNS_ON }}
+    steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install \
+          autoconf-archive
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Cache Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build
+        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
     
     - name: Configure
       shell: bash
