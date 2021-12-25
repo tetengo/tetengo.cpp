@@ -30,11 +30,15 @@ jobs:
         sudo apt-get -y install \
           autoconf-archive
     
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
-        path: |
-          .boost_build
+        path: .boost_build
         key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
     
     - name: Build Boost
@@ -54,11 +58,6 @@ jobs:
           cd .boost_build/boost_${{ env.BOOST_VER }}
         fi
         (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
     
     - name: Configure
       shell: bash
