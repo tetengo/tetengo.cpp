@@ -33,20 +33,25 @@ jobs:
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
-        path: ../boost_build
+        path: |
+          /usr/local/include/boost
+          /usr/local/lib/libboost_*.a
         key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
     
     - name: Build Boost
       shell: bash
       run: |
-        mkdir -p ../boost_build
-        cd ../boost_build
-        curl -L -o boost_${BOOST_VER}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
-        tar xvf boost_${BOOST_VER}.tar.bz2
-        cd boost_${BOOST_VER}
-        ./bootstrap.sh --with-toolset=gcc
-        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
+        if [ ! -e /usr/local/include/boost/version.hpp ];
+        then
+          mkdir -p ../boost_build
+          cd ../boost_build
+          curl -L -o boost_${BOOST_VER}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
+          tar xvf boost_${BOOST_VER}.tar.bz2
+          cd boost_${BOOST_VER}
+          ./bootstrap.sh --with-toolset=gcc
+          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
+          (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
+        fi
     
     - name: Checkout
       uses: actions/checkout@v2
