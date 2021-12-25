@@ -13,7 +13,7 @@ on:
     branches: [ master ]
 
 env:
-  RUNS_ON:         ubuntu-20.04
+  PLATFORM          ubuntu-20.04
   CACHE_REV:        0
   CONCURRENT_BUILD: 4
   BOOST_VER:        1_78_0
@@ -21,8 +21,8 @@ env:
 
 jobs:
   boost_build:
-    name: Boost Build
-    runs-on: ${{ env.RUNS_ON }}
+    name:    Boost Build
+    runs-on: ${{ env.PLATFORM }}
     steps:
     - name: Cache Boost build
       uses: actions/cache@v2
@@ -51,7 +51,7 @@ jobs:
   build:
     name:    Build
     needs:   boost_build
-    runs-on: ${{ env.RUNS_ON }}
+    runs-on: ${{ env.PLATFORM }}
     steps:
     - name: Install dependencies
       shell: bash
