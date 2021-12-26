@@ -38,9 +38,9 @@ jobs:
       run: |
         mkdir ..\boost_build
         cd ..\boost_build
-        curl -L -o boost_%BOOST_VER%.tar.gz https://boostorg.jfrog.io/artifactory/main/release/%BOOST_VER_DOT%/source/boost_%BOOST_VER%.tar.gz
-        tar -xf boost_%BOOST_VER%.tar.gz
-        cd boost_%BOOST_VER%
+        curl -L -o boost_${{ env.BOOST_VER }}.tar.gz https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
+        tar -xf boost_${{ env.BOOST_VER }}.tar.gz
+        cd boost_${{ env.BOOST_VER }}
         call bootstrap.bat
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug   link=static --stagedir="stage\Win32" stage
@@ -64,8 +64,8 @@ jobs:
     - name: Build product 32bit
       shell: cmd
       run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
+        set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x86=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
@@ -78,8 +78,8 @@ jobs:
     - name: Build product 64bit
       shell: cmd
       run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
+        set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x64=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
         msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
@@ -92,17 +92,17 @@ jobs:
     - name: Build setup 32bit
       shell: cmd
       run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
-        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
+        set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x86=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
+        set EMBEDTRANSFORMDIR=${{ github.workspace }}\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
     
     - name: Build setup 64bit
       shell: cmd
       run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
-        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
+        set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x64=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+        set EMBEDTRANSFORMDIR=${{ github.workspace }}\..\EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
     
     - name: Make archive
@@ -116,9 +116,9 @@ jobs:
       shell: cmd
       run: |
         mkdir artifacts
-        move bin.setup\tetengo-windows-Win32-%TETENGO_VER%.zip           artifacts
-        move bin.setup\tetengo-windows-x64-%TETENGO_VER%.zip             artifacts
-        move bin.libimage\tetengo-windows-libimage-x64-%TETENGO_VER%.zip artifacts
+        move bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip           artifacts
+        move bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip             artifacts
+        move bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
