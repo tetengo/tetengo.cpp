@@ -13,7 +13,7 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        1
+  CACHE_REV:        0
   TETENGO_VER:      1.6.0
   CONCURRENT_BUILD: 4
   BOOST_VER:        1_78_0
@@ -33,10 +33,13 @@ jobs:
     - name: Download and expand Boost
       shell: cmd
       run: |
-        mkdir .boost_build
-        cd .boost_build
-        curl -L -o boost_${{ env.BOOST_VER }}.tar.gz https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
-        tar -xf boost_${{ env.BOOST_VER }}.tar.gz
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.expansion_finished (
+          mkdir .boost_build
+          cd .boost_build
+          curl -L -o boost_${{ env.BOOST_VER }}.tar.gz https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
+          tar -xf boost_${{ env.BOOST_VER }}.tar.gz
+          echo > boost_${{ env.BOOST_VER }}\.expansion_finished
+        )
   
   boost_build_for_release_win32:
     name:    Boost Buld for Release Win32
@@ -61,9 +64,12 @@ jobs:
     - name: Build Boost
       shell: cmd
       run: |
-        cd .boost_build\boost_${{ env.BOOST_VER }}
-        call bootstrap.bat
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+          echo > .build_finished
+        )
   
   boost_build_for_debug_win32:
     name:    Boost Buld for Debug Win32
@@ -88,9 +94,12 @@ jobs:
     - name: Build Boost
       shell: cmd
       run: |
-        cd .boost_build\boost_${{ env.BOOST_VER }}
-        call bootstrap.bat
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug link=static --stagedir="stage\Win32" stage
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug link=static --stagedir="stage\Win32" stage
+          echo > .build_finished
+        )
   
   boost_build_for_release_x64:
     name:    Boost Buld for Release x64
@@ -115,9 +124,12 @@ jobs:
     - name: Build Boost
       shell: cmd
       run: |
-        cd .boost_build\boost_${{ env.BOOST_VER }}
-        call bootstrap.bat
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64" stage
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64" stage
+          echo > .build_finished
+        )
   
   boost_build_for_debug_x64:
     name:    Boost Buld for Debug x64
@@ -142,9 +154,12 @@ jobs:
     - name: Build Boost
       shell: cmd
       run: |
-        cd .boost_build\boost_${{ env.BOOST_VER }}
-        call bootstrap.bat
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug link=static --stagedir="stage\x64" stage
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug link=static --stagedir="stage\x64" stage
+          echo > .build_finished
+        )
   
   build_for_release_win32:
     name:    Build for Release Win32
@@ -174,15 +189,18 @@ jobs:
     - name: Build product
       shell: cmd
       run: |
-        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
-        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
-        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
-        for /r %%f in (*.pch) do del /f /q %%f
-        for /r %%f in (*.sbr) do del /f /q %%f
-        for /r %%f in (*.bsc) do del /f /q %%f
-        for /r %%f in (*.obj) do del /f /q %%f
-        for /r %%f in (*.ipch) do del /f /q %%f
-        for /r %%f in (*.VC.db) do del /f /q %%f
+        if not exist bin\Release.Win32\.build_finished (
+          set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+          set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
+          msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
+          for /r %%f in (*.pch) do del /f /q %%f
+          for /r %%f in (*.sbr) do del /f /q %%f
+          for /r %%f in (*.bsc) do del /f /q %%f
+          for /r %%f in (*.obj) do del /f /q %%f
+          for /r %%f in (*.ipch) do del /f /q %%f
+          for /r %%f in (*.VC.db) do del /f /q %%f
+          echo > bin\Release.Win32\.build_finished
+        )
     
   build_for_debug_win32:
     name:    Build for Debug Win32
@@ -212,15 +230,18 @@ jobs:
     - name: Build product
       shell: cmd
       run: |
-        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
-        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
-        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
-        for /r %%f in (*.pch) do del /f /q %%f
-        for /r %%f in (*.sbr) do del /f /q %%f
-        for /r %%f in (*.bsc) do del /f /q %%f
-        for /r %%f in (*.obj) do del /f /q %%f
-        for /r %%f in (*.ipch) do del /f /q %%f
-        for /r %%f in (*.VC.db) do del /f /q %%f
+        if not exist bin\Debug.Win32\.build_finished (
+          set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+          set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
+          msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
+          for /r %%f in (*.pch) do del /f /q %%f
+          for /r %%f in (*.sbr) do del /f /q %%f
+          for /r %%f in (*.bsc) do del /f /q %%f
+          for /r %%f in (*.obj) do del /f /q %%f
+          for /r %%f in (*.ipch) do del /f /q %%f
+          for /r %%f in (*.VC.db) do del /f /q %%f
+          echo > bin\Debug.Win32\.build_finished
+        )
     
   build_for_release_x64:
     name:    Build for Release x64
@@ -250,15 +271,18 @@ jobs:
     - name: Build product
       shell: cmd
       run: |
-        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
-        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
-        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
-        for /r %%f in (*.pch) do del /f /q %%f
-        for /r %%f in (*.sbr) do del /f /q %%f
-        for /r %%f in (*.bsc) do del /f /q %%f
-        for /r %%f in (*.obj) do del /f /q %%f
-        for /r %%f in (*.ipch) do del /f /q %%f
-        for /r %%f in (*.VC.db) do del /f /q %%f
+        if not exist bin\Release.x64\.build_finished (
+          set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+          set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+          msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
+          for /r %%f in (*.pch) do del /f /q %%f
+          for /r %%f in (*.sbr) do del /f /q %%f
+          for /r %%f in (*.bsc) do del /f /q %%f
+          for /r %%f in (*.obj) do del /f /q %%f
+          for /r %%f in (*.ipch) do del /f /q %%f
+          for /r %%f in (*.VC.db) do del /f /q %%f
+          echo > bin\Release.x64\.build_finished
+        )
     
   build_for_debug_x64:
     name:    Build for Debug x64
@@ -288,15 +312,18 @@ jobs:
     - name: Build product
       shell: cmd
       run: |
-        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
-        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
-        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
-        for /r %%f in (*.pch) do del /f /q %%f
-        for /r %%f in (*.sbr) do del /f /q %%f
-        for /r %%f in (*.bsc) do del /f /q %%f
-        for /r %%f in (*.obj) do del /f /q %%f
-        for /r %%f in (*.ipch) do del /f /q %%f
-        for /r %%f in (*.VC.db) do del /f /q %%f
+        if not exist bin\Debug.x64\.build_finished (
+          set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+          set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+          msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
+          for /r %%f in (*.pch) do del /f /q %%f
+          for /r %%f in (*.sbr) do del /f /q %%f
+          for /r %%f in (*.bsc) do del /f /q %%f
+          for /r %%f in (*.obj) do del /f /q %%f
+          for /r %%f in (*.ipch) do del /f /q %%f
+          for /r %%f in (*.VC.db) do del /f /q %%f
+          echo > bin\Debug.x64\.build_finished
+        )
     
     
 #  build:
