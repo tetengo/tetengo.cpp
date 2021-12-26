@@ -131,7 +131,7 @@ jobs:
     - name: Cache documents
       uses: actions/cache@v2
       with:
-        path: .doxygen
+        path: .doxygen/doc
         key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
     
     - name: Make documents
@@ -239,7 +239,7 @@ jobs:
     - name: Cache archives
       uses: actions/cache@v2
       with:
-        path: .build
+        path: .build/tetengo-*
         key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
     
     - name: Build and make archives
@@ -263,13 +263,13 @@ jobs:
     - name: Restore documents
       uses: actions/cache@v2
       with:
-        path: .doxygen
+        path: .doxygen/doc
         key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
     
     - name: Restore archives
       uses: actions/cache@v2
       with:
-        path: .build
+        path: .build/tetengo-*
         key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
     
     - name: Move artifacts
