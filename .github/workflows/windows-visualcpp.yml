@@ -416,6 +416,7 @@ jobs:
         set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
         set BOOST_LIB_x64=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
         set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
+        dir ${{ github.workspace }}\.EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
     
     - name: Cache archive
