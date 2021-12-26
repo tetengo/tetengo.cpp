@@ -27,12 +27,15 @@ jobs:
     - name: Install dependencies
       shell: bash
       run: |
-        sudo apt-get -y update
-        sudo apt-get -y install \
-          bison \
-          cmake \
-          flex \
-          graphviz
+        if [ ! -e .doxygen_build/doxygen-${{ env.DOXYGEN_VER }}/build/.build_finished ];
+        then
+          sudo apt-get -y update
+          sudo apt-get -y install \
+            bison \
+            cmake \
+            flex \
+            graphviz
+         fi
     
     - name: Cache Doxygen build
       uses: actions/cache@v2
@@ -81,30 +84,11 @@ jobs:
           touch .build_finished
         fi
   
-  build:
+  doxygen:
     name:    Build
     runs-on: ubuntu-20.04
-    needs:   boost_build
+    needs:   doxygen_build
     steps:
-    - name: Install dependencies
-      shell: bash
-      run: |
-        sudo apt-get -y update
-        sudo apt-get -y install \
-          autoconf-archive \
-          bison \
-          clang-9 \
-          cmake \
-          dos2unix \
-          flex \
-          graphviz \
-          iwyu
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
-    
     - name: Cache Doxygen build
       uses: actions/cache@v2
       with:
@@ -116,6 +100,87 @@ jobs:
       run: |
         cd .doxygen_build/doxygen-${{ env.DOXYGEN_VER }}/build
         sudo make -j ${{ env.CONCURRENT_BUILD }} install
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Configure
+      shell: bash
+      run: |
+        export DISTCHECK_CONFIGURE_FLAGS=" \
+          CC=clang-11 \
+          CXX=clang++-11 \
+        "
+        ./bootstrap.sh
+        mkdir -p build
+        cd build
+        ../configure $DISTCHECK_CONFIGURE_FLAGS
+    
+    - name: Make documents
+      shell: bash
+      run: |
+        cd build
+        make doc
+  
+  lint:
+    name:    Build
+    runs-on: ubuntu-20.04
+    needs:   boost_build
+    steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install \
+          autoconf-archive \
+          clang-9 \
+          dos2unix \
+          iwyu
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Configure
+      shell: bash
+      run: |
+        export DISTCHECK_CONFIGURE_FLAGS=" \
+          CC=clang-11 \
+          CXX=clang++-11 \
+        "
+        ./bootstrap.sh
+        mkdir -p build
+        cd build
+        ../configure $DISTCHECK_CONFIGURE_FLAGS
+    
+    - name: Lint
+      shell: bash
+      run: |
+        cd build
+        make -j ${{ env.CONCURRENT_BUILD }} iwyu
+  
+  build:
+    name:    Build
+    runs-on: ubuntu-20.04
+    needs:   boost_build
+    steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install \
+          autoconf-archive \
+          clang-9 \
+          dos2unix \
+          iwyu
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
     
     - name: Cache Boost build
       uses: actions/cache@v2
@@ -141,12 +206,6 @@ jobs:
         cd build
         ../configure $DISTCHECK_CONFIGURE_FLAGS
     
-    - name: Lint
-      shell: bash
-      run: |
-        cd build
-        make -j ${{ env.CONCURRENT_BUILD }} iwyu
-    
     - name: Build and make archives
       shell: bash
       run: |
@@ -159,12 +218,6 @@ jobs:
         make -j ${{ env.CONCURRENT_BUILD }} distcheck
         make -j ${{ env.CONCURRENT_BUILD }} dist-bzip2
         make -j ${{ env.CONCURRENT_BUILD }} dist-zip
-    
-    - name: Make documents
-      shell: bash
-      run: |
-        cd build
-        make doc
     
     - name: Move artifacts
       shell: bash
