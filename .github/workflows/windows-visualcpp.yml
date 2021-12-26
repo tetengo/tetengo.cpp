@@ -343,13 +343,13 @@ jobs:
     - name: Restore product for Release
       uses: actions/cache@v2
       with:
-        path: bin\Release.x64
+        path: bin\Release.Win32
         key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32
     
     - name: Restore product for Debug
       uses: actions/cache@v2
       with:
-        path: bin\Debug.x64
+        path: bin\Debug.Win32
         key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32
     
     - name: Build setup 32bit
