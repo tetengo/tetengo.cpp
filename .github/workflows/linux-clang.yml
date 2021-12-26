@@ -256,7 +256,7 @@ jobs:
         make -j ${{ env.CONCURRENT_BUILD }} dist-zip
     
   artifact:
-    name:    Build
+    name:    Artifact Collection
     runs-on: ubuntu-20.04
     needs:   [ doxygen, build ]
     steps:
