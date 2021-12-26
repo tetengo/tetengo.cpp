@@ -85,10 +85,25 @@ jobs:
         fi
   
   doxygen:
-    name:    Build
+    name:    Doxygen
     runs-on: ubuntu-20.04
     needs:   doxygen_build
     steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install \
+          autoconf-archive \
+          clang-9 \
+          dos2unix \
+          iwyu
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
     - name: Cache Doxygen build
       uses: actions/cache@v2
       with:
@@ -100,11 +115,6 @@ jobs:
       run: |
         cd .doxygen_build/doxygen-${{ env.DOXYGEN_VER }}/build
         sudo make -j ${{ env.CONCURRENT_BUILD }} install
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
     
     - name: Configure
       shell: bash
@@ -125,7 +135,7 @@ jobs:
         make doc
   
   lint:
-    name:    Build
+    name:    Lint
     runs-on: ubuntu-20.04
     needs:   boost_build
     steps:
