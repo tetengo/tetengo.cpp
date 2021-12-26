@@ -20,54 +20,178 @@ env:
   BOOST_VER_DOT:    1.78.0
 
 jobs:
-  build:
-    name:    Build
+  boost_download:
+    name:    Boost Download and Expansion
     runs-on: windows-2022
+    steps:
+    - name: Cache Boost source
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+    
+    - name: Download and expand Boost
+      shell: cmd
+      run: |
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.expansion_finished (
+          mkdir .boost_build
+          cd .boost_build
+          curl -L -o boost_${{ env.BOOST_VER }}.tar.gz https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
+          tar -xf boost_${{ env.BOOST_VER }}.tar.gz
+          echo > boost_${{ env.BOOST_VER }}\.expansion_finished
+        )
+  
+  boost_build_for_release_win32:
+    name:    Boost Buld for Release Win32
+    runs-on: windows-2022
+    needs:   boost_download
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1.0
     
+    - name: Restore Boost source
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+    
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
-        path: ..\boost_build
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-${{ env.BOOST_VER }}
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
     
     - name: Build Boost
       shell: cmd
       run: |
-        mkdir ..\boost_build
-        cd ..\boost_build
-        curl -L -o boost_%BOOST_VER%.tar.gz https://boostorg.jfrog.io/artifactory/main/release/%BOOST_VER_DOT%/source/boost_%BOOST_VER%.tar.gz
-        tar -xf boost_%BOOST_VER%.tar.gz
-        cd boost_%BOOST_VER%
-        call bootstrap.bat
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug   link=static --stagedir="stage\Win32" stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64"   stage
-        b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug   link=static --stagedir="stage\x64"   stage
-        rd /s /q bin.v2
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+          echo > .build_finished
+        )
+  
+  boost_build_for_debug_win32:
+    name:    Boost Buld for Debug Win32
+    runs-on: windows-2022
+    needs:   boost_download
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
     
-    - name: Setup EmbedTransform
-      shell: powershell
+    - name: Restore Boost source
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+    
+    - name: Cache Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}
+    
+    - name: Build Boost
+      shell: cmd
       run: |
-        New-Item -Path .. -Name EmbedTransform -ItemType directory
-        Set-Location ..\EmbedTransform
-        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
-        Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug link=static --stagedir="stage\Win32" stage
+          echo > .build_finished
+        )
+  
+  boost_build_for_release_x64:
+    name:    Boost Buld for Release x64
+    runs-on: windows-2022
+    needs:   boost_download
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Restore Boost source
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+    
+    - name: Cache Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
+    
+    - name: Build Boost
+      shell: cmd
+      run: |
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64" stage
+          echo > .build_finished
+        )
+  
+  boost_build_for_debug_x64:
+    name:    Boost Buld for Debug x64
+    runs-on: windows-2022
+    needs:   boost_download
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Restore Boost source
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+    
+    - name: Cache Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}
+    
+    - name: Build Boost
+      shell: cmd
+      run: |
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
+          cd .boost_build\boost_${{ env.BOOST_VER }}
+          call bootstrap.bat
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug link=static --stagedir="stage\x64" stage
+          echo > .build_finished
+        )
+  
+  build_for_release_win32:
+    name:    Build for Release Win32
+    runs-on: windows-2022
+    needs:   boost_build_for_release_win32
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
     
     - name: Checkout
       uses: actions/checkout@v2
       with:
         submodules: recursive
     
-    - name: Build product 32bit
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
+    
+    - name: Cache product
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.Win32
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-win32
+    
+    - name: Build product
       shell: cmd
       run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
+        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
-        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86   tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
         for /r %%f in (*.sbr) do del /f /q %%f
         for /r %%f in (*.bsc) do del /f /q %%f
@@ -75,50 +199,307 @@ jobs:
         for /r %%f in (*.ipch) do del /f /q %%f
         for /r %%f in (*.VC.db) do del /f /q %%f
     
-    - name: Build product 64bit
+  build_for_debug_win32:
+    name:    Build for Debug Win32
+    runs-on: windows-2022
+    needs:   boost_build_for_debug_win32
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}
+    
+    - name: Cache product
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.Win32
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-win32
+    
+    - name: Build product
       shell: cmd
       run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
-        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
-        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64   tetengo.sln
+        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
+        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
         for /r %%f in (*.sbr) do del /f /q %%f
         for /r %%f in (*.bsc) do del /f /q %%f
         for /r %%f in (*.obj) do del /f /q %%f
         for /r %%f in (*.ipch) do del /f /q %%f
         for /r %%f in (*.VC.db) do del /f /q %%f
+    
+  build_for_release_x64:
+    name:    Build for Release x64
+    runs-on: windows-2022
+    needs:   boost_build_for_release_x64
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
+    
+    - name: Cache product
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
+    
+    - name: Build product
+      shell: cmd
+      run: |
+        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x64=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
+        for /r %%f in (*.pch) do del /f /q %%f
+        for /r %%f in (*.sbr) do del /f /q %%f
+        for /r %%f in (*.bsc) do del /f /q %%f
+        for /r %%f in (*.obj) do del /f /q %%f
+        for /r %%f in (*.ipch) do del /f /q %%f
+        for /r %%f in (*.VC.db) do del /f /q %%f
+    
+  build_for_debug_x64:
+    name:    Build for Debug x64
+    runs-on: windows-2022
+    needs:   boost_build_for_debug_x64
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}
+    
+    - name: Cache product
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
+    
+    - name: Build product
+      shell: cmd
+      run: |
+        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x64=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64 tetengo.sln
+        for /r %%f in (*.pch) do del /f /q %%f
+        for /r %%f in (*.sbr) do del /f /q %%f
+        for /r %%f in (*.bsc) do del /f /q %%f
+        for /r %%f in (*.obj) do del /f /q %%f
+        for /r %%f in (*.ipch) do del /f /q %%f
+        for /r %%f in (*.VC.db) do del /f /q %%f
+    
+  embedtransform_download:
+    name:    EmbedTransform Download
+    runs-on: windows-2022
+    steps:
+    - name: Cache embedtransform
+      uses: actions/cache@v2
+      with:
+        path: .EmbedTransform
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
+    
+    - name: Setup EmbedTransform
+      shell: powershell
+      run: |
+        If (-not(Test-Path .EmbedTransform\.download_finished))
+        {
+          New-Item -Path . -Name .EmbedTransform -ItemType directory
+          Set-Location .EmbedTransform
+          Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
+          Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
+          New-Item -Path . -Name .download_finished -ItemType file
+        }
+  
+  archive_for_win32:
+    name:    Setup and Archive Build for Win32
+    runs-on: windows-2022
+    needs:   [ boost_build_for_release_Win32, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
+    
+    - name: Restore embedtransform
+      uses: actions/cache@v2
+      with:
+        path: .EmbedTransform
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
+    
+    - name: Restore product for Release Win32
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.Win32
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32
+    
+    - name: Restore product for Debug Win32
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.Win32
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32
+    
+    - name: Restore product for Release x64
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
+    
+    - name: Restore product for Debug x64
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
     
     - name: Build setup 32bit
       shell: cmd
       run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x86=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\Win32\lib
-        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
+        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
+        set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
     
-    - name: Build setup 64bit
-      shell: cmd
-      run: |
-        set BOOST_INCLUDE=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%
-        set BOOST_LIB_x64=%GITHUB_WORKSPACE%\..\boost_build\boost_%BOOST_VER%\stage\x64\lib
-        set EMBEDTRANSFORMDIR=%GITHUB_WORKSPACE%\..\EmbedTransform\EmbedTransform\
-        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
+    - name: Cache archive
+      uses: actions/cache@v2
+      with:
+        path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-Win32
     
     - name: Make archive
       shell: powershell
       run: |
-        Compress-Archive -Path .\bin.setup\Release.Win32  -DestinationPath .\bin.setup\tetengo-windows-Win32-$env:TETENGO_VER.zip
-        Compress-Archive -Path .\bin.setup\Release.x64    -DestinationPath .\bin.setup\tetengo-windows-x64-$env:TETENGO_VER.zip
-        Compress-Archive -Path .\bin.libimage\Release.x64 -DestinationPath .\bin.libimage\tetengo-windows-libimage-x64-$env:TETENGO_VER.zip
+        Compress-Archive -Path .\bin.setup\Release.Win32 -DestinationPath .\bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
+    
+  archive_for_x64:
+    name:    Setup and Archive Build for x64
+    runs-on: windows-2022
+    needs:   [ boost_build_for_release_x64, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
+    
+    - name: Restore embedtransform
+      uses: actions/cache@v2
+      with:
+        path: .EmbedTransform
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
+    
+    - name: Restore product for Release Win32
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.Win32
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32
+    
+    - name: Restore product for Debug Win32
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.Win32
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32
+    
+    - name: Restore product for Release x64
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
+    
+    - name: Restore product for Debug x64
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
+    
+    - name: Build setup
+      shell: cmd
+      run: |
+        set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x64=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+        set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
+    
+    - name: Cache archive
+      uses: actions/cache@v2
+      with:
+        path: |
+          bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
+          bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-x64
+    
+    - name: Make archive
+      shell: powershell
+      run: |
+        Compress-Archive -Path .\bin.setup\Release.x64 -DestinationPath .\bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
+        Compress-Archive -Path .\bin.libimage\Release.x64 -DestinationPath .\bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
+    
+  artifact:
+    name:    Artifact Collection
+    runs-on: windows-2022
+    needs:   [ archive_for_win32, archive_for_x64 ]
+    steps:
+    - name: Restore archive for Win32
+      uses: actions/cache@v2
+      with:
+        path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-Win32
+    
+    - name: Restore archive for x64
+      uses: actions/cache@v2
+      with:
+        path: |
+          bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
+          bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-x64
     
     - name: Move artifacts
       shell: cmd
       run: |
         mkdir artifacts
-        move bin.setup\tetengo-windows-Win32-%TETENGO_VER%.zip           artifacts
-        move bin.setup\tetengo-windows-x64-%TETENGO_VER%.zip             artifacts
-        move bin.libimage\tetengo-windows-libimage-x64-%TETENGO_VER%.zip artifacts
+        move bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip           artifacts
+        move bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip             artifacts
+        move bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2

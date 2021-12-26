@@ -19,9 +19,35 @@ env:
   BOOST_VER_DOT:    1.78.0
 
 jobs:
+  boost_build:
+    name:    Boost Build
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Cache Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build
+        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
+    
+    - name: Build Boost
+      shell: bash
+      run: |
+        if [ ! -e .boost_build/boost_${{ env.BOOST_VER }}/.build_finished ];
+        then
+          mkdir -p .boost_build
+          cd .boost_build
+          curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
+          tar xvf boost_${{ env.BOOST_VER }}.tar.bz2
+          cd boost_${{ env.BOOST_VER }}
+          ./bootstrap.sh --with-toolset=gcc
+          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
+          touch .build_finished
+        fi
+  
   build:
     name:    Build
     runs-on: ubuntu-20.04
+    needs:   boost_build
     steps:
     - name: Install dependencies
       shell: bash
@@ -30,28 +56,22 @@ jobs:
         sudo apt-get -y install \
           autoconf-archive
     
-    - name: Cache Boost build
-      uses: actions/cache@v2
-      with:
-        path: ../boost_build
-        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
-    
-    - name: Build Boost
-      shell: bash
-      run: |
-        mkdir -p ../boost_build
-        cd ../boost_build
-        curl -L -o boost_${BOOST_VER}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
-        tar xvf boost_${BOOST_VER}.tar.bz2
-        cd boost_${BOOST_VER}
-        ./bootstrap.sh --with-toolset=gcc
-        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
-    
     - name: Checkout
       uses: actions/checkout@v2
       with:
         submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build
+        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
+    
+    - name: Install Boost
+      shell: bash
+      run: |
+        cd .boost_build/boost_${{ env.BOOST_VER }}
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
     
     - name: Configure
       shell: bash
@@ -61,8 +81,8 @@ jobs:
           CXX=g++-10 \
         "
         ./bootstrap.sh
-        mkdir -p build
-        cd build
+        mkdir -p .build
+        cd .build
         ../configure $DISTCHECK_CONFIGURE_FLAGS
     
     - name: Build
@@ -73,5 +93,5 @@ jobs:
           CXX=g++-10 \
         "
         export BOOST_TEST_LOG_LEVEL=warning
-        cd build
+        cd .build
         make -j ${{ env.CONCURRENT_BUILD }} check

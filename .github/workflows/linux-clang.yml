@@ -13,16 +13,80 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        1
+  CACHE_REV:        0
   CONCURRENT_BUILD: 4
   DOXYGEN_VER:      1.9.2
   BOOST_VER:        1_78_0
   BOOST_VER_DOT:    1.78.0
 
 jobs:
-  build:
-    name:    Build
+  doxygen_build:
+    name:    Doxygen Build
     runs-on: ubuntu-20.04
+    steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        if [ ! -e .doxygen_build/doxygen-${{ env.DOXYGEN_VER }}/build/.build_finished ];
+        then
+          sudo apt-get -y update
+          sudo apt-get -y install \
+            bison \
+            cmake \
+            flex
+         fi
+    
+    - name: Cache Doxygen build
+      uses: actions/cache@v2
+      with:
+        path: .doxygen_build
+        key: ${{ env.CACHE_REV }}-Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}
+    
+    - name: Build Doxygen
+      shell: bash
+      run: |
+        if [ ! -e .doxygen_build/doxygen-${{ env.DOXYGEN_VER }}/build/.build_finished ];
+        then
+          mkdir -p .doxygen_build
+          cd .doxygen_build
+          wget http://doxygen.nl/files/doxygen-${{ env.DOXYGEN_VER }}.src.tar.gz
+          tar -xf doxygen-${{ env.DOXYGEN_VER }}.src.tar.gz
+          mkdir -p doxygen-${{ env.DOXYGEN_VER }}/build
+          cd doxygen-${{ env.DOXYGEN_VER }}/build
+          cmake -G "Unix Makefiles" ..
+          make -j ${{ env.CONCURRENT_BUILD }}
+          touch .build_finished
+        fi
+  
+  boost_build:
+    name:    Boost Build
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Cache Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build
+        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
+    
+    - name: Build Boost
+      shell: bash
+      run: |
+        if [ ! -e .boost_build/boost_${{ env.BOOST_VER }}/.build_finished ];
+        then
+          mkdir -p .boost_build
+          cd .boost_build
+          curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
+          tar -xf boost_${{ env.BOOST_VER }}.tar.bz2
+          cd boost_${{ env.BOOST_VER }}
+          ./bootstrap.sh --with-toolset=clang
+          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
+          touch .build_finished
+        fi
+  
+  doxygen:
+    name:    Doxygen
+    runs-on: ubuntu-20.04
+    needs:   doxygen_build
     steps:
     - name: Install dependencies
       shell: bash
@@ -30,50 +94,22 @@ jobs:
         sudo apt-get -y update
         sudo apt-get -y install \
           autoconf-archive \
-          bison \
           clang-9 \
-          cmake \
           dos2unix \
-          flex \
-          graphviz \
-          iwyu
+          iwyu \
+          graphviz
     
-    - name: Cache Doxygen build
+    - name: Restore Doxygen build
       uses: actions/cache@v2
       with:
-        path: ../doxygen_build
+        path: .doxygen_build
         key: ${{ env.CACHE_REV }}-Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}
     
-    - name: Build Doxygen
+    - name: Install Doxygen
       shell: bash
       run: |
-        mkdir -p ../doxygen_build
-        cd ../doxygen_build
-        wget http://doxygen.nl/files/doxygen-${DOXYGEN_VER}.src.tar.gz
-        tar -xf doxygen-${DOXYGEN_VER}.src.tar.gz
-        mkdir -p doxygen-${DOXYGEN_VER}/build
-        cd doxygen-${DOXYGEN_VER}/build
-        cmake -G "Unix Makefiles" ..
-        make -j ${{ env.CONCURRENT_BUILD }}
+        cd .doxygen_build/doxygen-${{ env.DOXYGEN_VER }}/build
         sudo make -j ${{ env.CONCURRENT_BUILD }} install
-    
-    - name: Cache Boost build
-      uses: actions/cache@v2
-      with:
-        path: ../boost_build
-        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
-    
-    - name: Build Boost
-      shell: bash
-      run: |
-        mkdir -p ../boost_build
-        cd ../boost_build
-        curl -L -o boost_${BOOST_VER}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VER_DOT}/source/boost_${BOOST_VER}.tar.bz2
-        tar -xf boost_${BOOST_VER}.tar.bz2
-        cd boost_${BOOST_VER}
-        ./bootstrap.sh --with-toolset=clang
-        (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static cxxflags="-std=gnu++11" || :)
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static install --prefix=/usr/local || :)
     
     - name: Checkout
       uses: actions/checkout@v2
@@ -88,15 +124,123 @@ jobs:
           CXX=clang++-11 \
         "
         ./bootstrap.sh
-        mkdir -p build
-        cd build
+        mkdir -p .doxygen
+        cd .doxygen
+        ../configure $DISTCHECK_CONFIGURE_FLAGS
+    
+    - name: Cache documents
+      uses: actions/cache@v2
+      with:
+        path: .doxygen/doc
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
+    
+    - name: Make documents
+      shell: bash
+      run: |
+        cd .doxygen
+        make doc
+  
+  lint:
+    name:    Lint
+    runs-on: ubuntu-20.04
+    needs:   boost_build
+    steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install \
+          autoconf-archive \
+          clang-9 \
+          dos2unix \
+          iwyu \
+          graphviz
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build
+        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
+    
+    - name: Install Boost
+      shell: bash
+      run: |
+        cd .boost_build/boost_${{ env.BOOST_VER }}
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static install --prefix=/usr/local || :)
+    
+    - name: Configure
+      shell: bash
+      run: |
+        export DISTCHECK_CONFIGURE_FLAGS=" \
+          CC=clang-11 \
+          CXX=clang++-11 \
+        "
+        ./bootstrap.sh
+        mkdir -p .lint
+        cd .lint
         ../configure $DISTCHECK_CONFIGURE_FLAGS
     
     - name: Lint
       shell: bash
       run: |
-        cd build
+        cd .lint
         make -j ${{ env.CONCURRENT_BUILD }} iwyu
+  
+  build:
+    name:    Build
+    runs-on: ubuntu-20.04
+    needs:   boost_build
+    steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install \
+          autoconf-archive \
+          clang-9 \
+          dos2unix \
+          iwyu \
+          graphviz
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build
+        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
+    
+    - name: Install Boost
+      shell: bash
+      run: |
+        cd .boost_build/boost_${{ env.BOOST_VER }}
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=clang variant=release link=static install --prefix=/usr/local || :)
+    
+    - name: Configure
+      shell: bash
+      run: |
+        export DISTCHECK_CONFIGURE_FLAGS=" \
+          CC=clang-11 \
+          CXX=clang++-11 \
+        "
+        ./bootstrap.sh
+        mkdir -p .build
+        cd .build
+        ../configure $DISTCHECK_CONFIGURE_FLAGS
+    
+    - name: Cache archives
+      uses: actions/cache@v2
+      with:
+        path: .build/tetengo-*
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
     
     - name: Build and make archives
       shell: bash
@@ -106,26 +250,37 @@ jobs:
           CXX=clang++-11 \
         "
         export BOOST_TEST_LOG_LEVEL=warning
-        cd build
+        cd .build
         make -j ${{ env.CONCURRENT_BUILD }} distcheck
         make -j ${{ env.CONCURRENT_BUILD }} dist-bzip2
         make -j ${{ env.CONCURRENT_BUILD }} dist-zip
     
-    - name: Make documents
-      shell: bash
-      run: |
-        cd build
-        make doc
+  artifact:
+    name:    Artifact Collection
+    runs-on: ubuntu-20.04
+    needs:   [ doxygen, build ]
+    steps:
+    - name: Restore documents
+      uses: actions/cache@v2
+      with:
+        path: .doxygen/doc
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
+    
+    - name: Restore archives
+      uses: actions/cache@v2
+      with:
+        path: .build/tetengo-*
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
     
     - name: Move artifacts
       shell: bash
       run: |
-        mkdir artifacts
-        mv build/tetengo-* artifacts
-        mv build/doc artifacts
+        mkdir .artifacts
+        mv .doxygen/doc .artifacts
+        mv .build/tetengo-* .artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: artifacts-linux
-        path: artifacts
+        path: .artifacts
