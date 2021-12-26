@@ -321,6 +321,11 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1.0
     
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
     - name: Setup EmbedTransform
       shell: powershell
       run: |
@@ -328,11 +333,6 @@ jobs:
         Set-Location .EmbedTransform
         Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
         Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
     
     - name: Restore Boost build
       uses: actions/cache@v2
@@ -379,6 +379,11 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1.0
     
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
     - name: Setup EmbedTransform
       shell: powershell
       run: |
@@ -386,11 +391,6 @@ jobs:
         Set-Location .EmbedTransform
         Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
         Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
-    
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
     
     - name: Restore Boost build
       uses: actions/cache@v2
@@ -416,7 +416,6 @@ jobs:
         set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
         set BOOST_LIB_x64=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
         set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
-        dir ${{ github.workspace }}\.EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
     
     - name: Cache archive
