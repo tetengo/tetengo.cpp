@@ -316,7 +316,7 @@ jobs:
   setup_for_win32:
     name:    Setup Build for Win32
     runs-on: windows-2022
-    needs:   [ boost_build_for_release_Win32, boost_build_for_debug_Win32 ]
+    needs:   [ boost_build_for_release_Win32, build_for_release_Win32, build_for_debug_Win32 ]
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1.0
@@ -333,6 +333,12 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
     
     - name: Restore product for Release
       uses: actions/cache@v2
@@ -357,7 +363,7 @@ jobs:
   setup_for_x64:
     name:    Setup Build for x64
     runs-on: windows-2022
-    needs:   [ boost_build_for_release_x64, boost_build_for_debug_x64 ]
+    needs:   [ boost_build_for_release_x64, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1.0
@@ -374,6 +380,12 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: recursive
+    
+    - name: Restore Boost build
+      uses: actions/cache@v2
+      with:
+        path: .boost_build\boost_${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
     
     - name: Restore product for Release
       uses: actions/cache@v2
