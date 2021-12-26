@@ -13,7 +13,7 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        0
+  CACHE_REV:        1
   TETENGO_VER:      1.6.0
   CONCURRENT_BUILD: 4
   BOOST_VER:        1_78_0
@@ -147,7 +147,7 @@ jobs:
         b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug link=static --stagedir="stage\x64" stage
   
   build_for_release_win32:
-    name:    Build
+    name:    Build for Release Win32
     runs-on: windows-2022
     needs:   boost_build_for_release_win32
     steps:
@@ -185,7 +185,7 @@ jobs:
         for /r %%f in (*.VC.db) do del /f /q %%f
     
   build_for_debug_win32:
-    name:    Build
+    name:    Build for Debug Win32
     runs-on: windows-2022
     needs:   boost_build_for_debug_win32
     steps:
@@ -223,7 +223,7 @@ jobs:
         for /r %%f in (*.VC.db) do del /f /q %%f
     
   build_for_release_x64:
-    name:    Build
+    name:    Build for Release x64
     runs-on: windows-2022
     needs:   boost_build_for_release_x64
     steps:
@@ -261,7 +261,7 @@ jobs:
         for /r %%f in (*.VC.db) do del /f /q %%f
     
   build_for_debug_x64:
-    name:    Build
+    name:    Build for Debug x64
     runs-on: windows-2022
     needs:   boost_build_for_debug_x64
     steps:
