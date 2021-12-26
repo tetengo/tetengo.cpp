@@ -184,7 +184,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin\Release.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-win32-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-win32
     
     - name: Build product
       shell: cmd
@@ -222,7 +222,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin\Debug.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-win32-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-win32
     
     - name: Build product
       shell: cmd
@@ -260,7 +260,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin\Release.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
     
     - name: Build product
       shell: cmd
@@ -298,7 +298,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin\Debug.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
     
     - name: Build product
       shell: cmd
@@ -313,8 +313,8 @@ jobs:
         for /r %%f in (*.ipch) do del /f /q %%f
         for /r %%f in (*.VC.db) do del /f /q %%f
     
-  setup_for_win32:
-    name:    Setup Build for Win32
+  archive_for_win32:
+    name:    Setup and Archive Build for Win32
     runs-on: windows-2022
     needs:   [ boost_build_for_release_Win32, build_for_release_Win32, build_for_debug_Win32 ]
     steps:
@@ -344,13 +344,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin\Release.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32
     
     - name: Restore product for Debug
       uses: actions/cache@v2
       with:
         path: bin\Debug.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32
     
     - name: Build setup 32bit
       shell: cmd
@@ -360,8 +360,19 @@ jobs:
         set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
     
-  setup_for_x64:
-    name:    Setup Build for x64
+    - name: Cache archive
+      uses: actions/cache@v2
+      with:
+        path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-Win32
+    
+    - name: Make archive
+      shell: powershell
+      run: |
+        Compress-Archive -Path .\bin.setup\Release.Win32 -DestinationPath .\bin.setup\tetengo-windows-Win32-{{ env.TETENGO_VER }}.zip
+    
+  archive_for_x64:
+    name:    Setup and Archive Build for x64
     runs-on: windows-2022
     needs:   [ boost_build_for_release_x64, build_for_release_x64, build_for_debug_x64 ]
     steps:
@@ -391,13 +402,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin\Release.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
     
     - name: Restore product for Debug
       uses: actions/cache@v2
       with:
         path: bin\Debug.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64-${{ env.BOOST_VER }}
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
     
     - name: Build setup
       shell: cmd
@@ -407,7 +418,52 @@ jobs:
         set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
     
+    - name: Cache archive
+      uses: actions/cache@v2
+      with:
+        path: |
+          bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
+          bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-x64
     
+    - name: Make archive
+      shell: powershell
+      run: |
+        Compress-Archive -Path .\bin.setup\Release.x64 -DestinationPath .\bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
+        Compress-Archive -Path .\bin.libimage\Release.x64 -DestinationPath .\bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
+    
+  artifact:
+    name:    Artifact Collection
+    runs-on: windows-2022
+    needs:   [ archive_for_win32, archive_for_x64 ]
+    steps:
+    - name: Restore archive for Win32
+      uses: actions/cache@v2
+      with:
+        path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-Win32
+    
+    - name: Restore archive for x64
+      uses: actions/cache@v2
+      with:
+        path: |
+          bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
+          bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-x64
+    
+    - name: Move artifacts
+      shell: cmd
+      run: |
+        mkdir artifacts
+        move bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip           artifacts
+        move bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip             artifacts
+        move bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip artifacts
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts-windows
+        path: artifacts
     
 #  build:
 #    name:    Build
