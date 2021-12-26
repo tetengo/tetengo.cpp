@@ -348,17 +348,17 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Restore embedtransform
-      uses: actions/cache@v2
-      with:
-        path: .EmbedTransform
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-EmbedTransform
-    
     - name: Restore Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
+    
+    - name: Restore embedtransform
+      uses: actions/cache@v2
+      with:
+        path: .EmbedTransform
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
     
     - name: Restore product for Release Win32
       uses: actions/cache@v2
@@ -416,17 +416,17 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Restore embedtransform
-      uses: actions/cache@v2
-      with:
-        path: .EmbedTransform
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-EmbedTransform
-    
     - name: Restore Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
+    
+    - name: Restore embedtransform
+      uses: actions/cache@v2
+      with:
+        path: .EmbedTransform
+        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
     
     - name: Restore product for Release Win32
       uses: actions/cache@v2
