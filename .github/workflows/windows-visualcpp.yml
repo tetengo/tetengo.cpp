@@ -266,8 +266,8 @@ jobs:
       shell: cmd
       run: |
         set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
-        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
-        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.sln
+        set BOOST_LIB_x64=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
         for /r %%f in (*.sbr) do del /f /q %%f
         for /r %%f in (*.bsc) do del /f /q %%f
@@ -304,8 +304,8 @@ jobs:
       shell: cmd
       run: |
         set BOOST_INCLUDE=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}
-        set BOOST_LIB_x86=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
-        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x86 tetengo.sln
+        set BOOST_LIB_x64=${{ github.workspace }}\.boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+        msbuild /t:Rebuild /m:1 /p:Configuration=Debug;Platform=x64 tetengo.sln
         for /r %%f in (*.pch) do del /f /q %%f
         for /r %%f in (*.sbr) do del /f /q %%f
         for /r %%f in (*.bsc) do del /f /q %%f
