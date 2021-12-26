@@ -132,7 +132,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .doxygen
-        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-documents
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
     
     - name: Make documents
       shell: bash
@@ -240,7 +240,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .build
-        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-archives
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
     
     - name: Build and make archives
       shell: bash
@@ -264,13 +264,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .doxygen
-        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-documents
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
     
     - name: Restore archives
       uses: actions/cache@v2
       with:
         path: .build
-        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-archives
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
     
     - name: Move artifacts
       shell: bash
