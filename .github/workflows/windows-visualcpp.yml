@@ -313,6 +313,89 @@ jobs:
         for /r %%f in (*.ipch) do del /f /q %%f
         for /r %%f in (*.VC.db) do del /f /q %%f
     
+  setup_for_win32:
+    name:    Setup Build for Win32
+    runs-on: windows-2022
+    needs:   [ boost_build_for_release_Win32, boost_build_for_debug_Win32 ]
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Setup EmbedTransform
+      shell: powershell
+      run: |
+        New-Item -Path . -Name .EmbedTransform -ItemType directory
+        Set-Location .EmbedTransform
+        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
+        Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore product for Release
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32-${{ env.BOOST_VER }}
+    
+    - name: Restore product for Debug
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32-${{ env.BOOST_VER }}
+    
+    - name: Build setup 32bit
+      shell: cmd
+      run: |
+        set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x86=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\Win32\lib
+        set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
+    
+  setup_for_x64:
+    name:    Setup Build for x64
+    runs-on: windows-2022
+    needs:   [ boost_build_for_release_x64, boost_build_for_debug_x64 ]
+    steps:
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1.0
+    
+    - name: Setup EmbedTransform
+      shell: powershell
+      run: |
+        New-Item -Path . -Name .EmbedTransform -ItemType directory
+        Set-Location .EmbedTransform
+        Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
+        Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
+    - name: Restore product for Release
+      uses: actions/cache@v2
+      with:
+        path: bin\Release.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64-${{ env.BOOST_VER }}
+    
+    - name: Restore product for Debug
+      uses: actions/cache@v2
+      with:
+        path: bin\Debug.x64
+        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64-${{ env.BOOST_VER }}
+    
+    - name: Build setup
+      shell: cmd
+      run: |
+        set BOOST_INCLUDE=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}
+        set BOOST_LIB_x64=${{ github.workspace }}\..\boost_build\boost_${{ env.BOOST_VER }}\stage\x64\lib
+        set EMBEDTRANSFORMDIR=${{ github.workspace }}\.EmbedTransform\EmbedTransform\
+        msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
+    
+    
     
 #  build:
 #    name:    Build
