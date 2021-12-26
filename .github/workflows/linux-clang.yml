@@ -99,7 +99,7 @@ jobs:
           iwyu \
           graphviz
     
-    - name: Cache Doxygen build
+    - name: Restore Doxygen build
       uses: actions/cache@v2
       with:
         path: .doxygen_build
@@ -124,14 +124,20 @@ jobs:
           CXX=clang++-11 \
         "
         ./bootstrap.sh
-        mkdir -p build
-        cd build
+        mkdir -p .doxygen
+        cd .doxygen
         ../configure $DISTCHECK_CONFIGURE_FLAGS
+    
+    - name: Cache documents
+      uses: actions/cache@v2
+      with:
+        path: .doxygen
+        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-documents
     
     - name: Make documents
       shell: bash
       run: |
-        cd build
+        cd .doxygen
         make doc
   
   lint:
@@ -155,7 +161,7 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Cache Boost build
+    - name: Restore Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build
@@ -175,14 +181,14 @@ jobs:
           CXX=clang++-11 \
         "
         ./bootstrap.sh
-        mkdir -p build
-        cd build
+        mkdir -p .lint
+        cd .lint
         ../configure $DISTCHECK_CONFIGURE_FLAGS
     
     - name: Lint
       shell: bash
       run: |
-        cd build
+        cd .lint
         make -j ${{ env.CONCURRENT_BUILD }} iwyu
   
   build:
@@ -206,7 +212,7 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Cache Boost build
+    - name: Restore Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build
@@ -226,9 +232,15 @@ jobs:
           CXX=clang++-11 \
         "
         ./bootstrap.sh
-        mkdir -p build
-        cd build
+        mkdir -p .build
+        cd .build
         ../configure $DISTCHECK_CONFIGURE_FLAGS
+    
+    - name: Cache archives
+      uses: actions/cache@v2
+      with:
+        path: .build
+        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-archives
     
     - name: Build and make archives
       shell: bash
@@ -238,20 +250,37 @@ jobs:
           CXX=clang++-11 \
         "
         export BOOST_TEST_LOG_LEVEL=warning
-        cd build
+        cd .build
         make -j ${{ env.CONCURRENT_BUILD }} distcheck
         make -j ${{ env.CONCURRENT_BUILD }} dist-bzip2
         make -j ${{ env.CONCURRENT_BUILD }} dist-zip
     
+  artifact:
+    name:    Build
+    runs-on: ubuntu-20.04
+    needs:   [ doxygen, build ]
+    steps:
+    - name: Restore documents
+      uses: actions/cache@v2
+      with:
+        path: .doxygen
+        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-documents
+    
+    - name: Restore archives
+      uses: actions/cache@v2
+      with:
+        path: .build
+        key: ${{ env.CACHE_REV }}-${{ github.github.run_number }}-Linux-Clang-archives
+    
     - name: Move artifacts
       shell: bash
       run: |
-        mkdir artifacts
-        mv build/tetengo-* artifacts
-        mv build/doc artifacts
+        mkdir .artifacts
+        mv .doxygen/doc .artifacts
+        mv .build/tetengo-* .artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: artifacts-linux
-        path: artifacts
+        path: .artifacts

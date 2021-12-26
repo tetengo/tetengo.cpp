@@ -61,7 +61,7 @@ jobs:
       with:
         submodules: recursive
     
-    - name: Cache Boost build
+    - name: Restore Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build
@@ -81,8 +81,8 @@ jobs:
           CXX=g++-10 \
         "
         ./bootstrap.sh
-        mkdir -p build
-        cd build
+        mkdir -p .build
+        cd .build
         ../configure $DISTCHECK_CONFIGURE_FLAGS
     
     - name: Build
@@ -93,5 +93,5 @@ jobs:
           CXX=g++-10 \
         "
         export BOOST_TEST_LOG_LEVEL=warning
-        cd build
+        cd .build
         make -j ${{ env.CONCURRENT_BUILD }} check
