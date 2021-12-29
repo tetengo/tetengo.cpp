@@ -13,13 +13,13 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        1
   CONCURRENT_BUILD: 4
   GCC_COMMAND:      gcc-10
   GXX_COMMAND:      g++-10
   BOOST_VER:        1_78_0
   BOOST_VER_DOT:    1.78.0
   BOOST_TOOLSET:    gcc
+  BOOST_CACHE_REV:  0
 
 jobs:
   boost_build:
@@ -30,7 +30,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build
-        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
+        key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Build Boost
       shell: bash
@@ -68,7 +68,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build
-        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
+        key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Install Boost
       shell: bash

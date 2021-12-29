@@ -13,14 +13,15 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        1
-  CONCURRENT_BUILD: 4
-  CLANG_COMMAND:    clang-11
-  CLANGXX_COMMAND:  clang++-11
-  DOXYGEN_VER:      1.9.2
-  BOOST_VER:        1_78_0
-  BOOST_VER_DOT:    1.78.0
-  BOOST_TOOLSET:    clang
+  CONCURRENT_BUILD:  4
+  CLANG_COMMAND:     clang-11
+  CLANGXX_COMMAND:   clang++-11
+  DOXYGEN_VER:       1.9.2
+  DOXYGEN_CACHE_REV: 0
+  BOOST_VER:         1_78_0
+  BOOST_VER_DOT:     1.78.0
+  BOOST_TOOLSET:     clang
+  BOOST_CACHE_REV:   0
 
 jobs:
   doxygen_build:
@@ -43,7 +44,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .doxygen_build
-        key: ${{ env.CACHE_REV }}-Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}
+        key: Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}-${{ env.DOXYGEN_CACHE_REV }}
     
     - name: Build Doxygen
       shell: bash
@@ -69,7 +70,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build
-        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
+        key: Linux-Clang-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Build Boost
       shell: bash
@@ -106,7 +107,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .doxygen_build
-        key: ${{ env.CACHE_REV }}-Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}
+        key: Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}-${{ env.DOXYGEN_CACHE_REV }}
     
     - name: Install Doxygen
       shell: bash
@@ -135,7 +136,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .doxygen/doc
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
+        key: Linux-Clang-documents-${{ github.run_number }}
     
     - name: Make documents
       shell: bash
@@ -168,7 +169,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build
-        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
+        key: Linux-Clang-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Install Boost
       shell: bash
@@ -219,7 +220,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build
-        key: ${{ env.CACHE_REV }}-Linux-Clang-Boost-${{ env.BOOST_VER }}
+        key: Linux-Clang-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Install Boost
       shell: bash
@@ -243,7 +244,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .build/tetengo-*
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
+        key: Linux-Clang-archives-${{ github.run_number }}
     
     - name: Build and make archives
       shell: bash
@@ -267,13 +268,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .doxygen/doc
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-documents
+        key: Linux-Clang-documents-${{ github.run_number }}
     
     - name: Restore archives
       uses: actions/cache@v2
       with:
         path: .build/tetengo-*
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Linux-Clang-archives
+        key: Linux-Clang-archives-${{ github.run_number }}
     
     - name: Move artifacts
       shell: bash
