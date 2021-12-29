@@ -42,8 +42,8 @@ jobs:
           curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
           tar xvf boost_${{ env.BOOST_VER }}.tar.bz2
           cd boost_${{ env.BOOST_VER }}
-          ./bootstrap.sh --with-toolset=gcc
-          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static cxxflags="-std=gnu++11" || :)
+          ./bootstrap.sh --with-toolset=${{ env.BOOST_TOOLSET }}
+          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static || :)
           touch .build_finished
         fi
   
