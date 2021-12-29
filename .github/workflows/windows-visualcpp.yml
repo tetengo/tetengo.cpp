@@ -13,11 +13,12 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        0
+  CACHE_REV:        1
   TETENGO_VER:      1.6.0
   CONCURRENT_BUILD: 4
   BOOST_VER:        1_78_0
   BOOST_VER_DOT:    1.78.0
+  BOOST_TOOLSET:    msvc-14.3
 
 jobs:
   boost_download:
@@ -67,7 +68,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=32 variant=release link=static --stagedir="stage\Win32" stage
           echo > .build_finished
         )
   
@@ -97,7 +98,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug link=static --stagedir="stage\Win32" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=32 variant=debug link=static --stagedir="stage\Win32" stage
           echo > .build_finished
         )
   
@@ -127,7 +128,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=64 variant=release link=static --stagedir="stage\x64" stage
           echo > .build_finished
         )
   
@@ -157,7 +158,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug link=static --stagedir="stage\x64" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=64 variant=debug link=static --stagedir="stage\x64" stage
           echo > .build_finished
         )
   
