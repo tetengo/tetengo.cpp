@@ -124,7 +124,7 @@ jobs:
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
           CC=${{ env.CLANG_COMMAND }} \
-          CXX=${{ env.CLANG_COMMAND }} \
+          CXX=${{ env.CLANGXX_COMMAND }} \
         "
         ./bootstrap.sh
         mkdir -p .doxygen
@@ -181,7 +181,7 @@ jobs:
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
           CC=${{ env.CLANG_COMMAND }} \
-          CXX=${{ env.CLANG_COMMAND }} \
+          CXX=${{ env.CLANGXX_COMMAND }} \
         "
         ./bootstrap.sh
         mkdir -p .lint
@@ -232,7 +232,7 @@ jobs:
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
           CC=${{ env.CLANG_COMMAND }} \
-          CXX=${{ env.CLANG_COMMAND }} \
+          CXX=${{ env.CLANGXX_COMMAND }} \
         "
         ./bootstrap.sh
         mkdir -p .build
@@ -250,7 +250,7 @@ jobs:
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
           CC=${{ env.CLANG_COMMAND }} \
-          CXX=${{ env.CLANG_COMMAND }} \
+          CXX=${{ env.CLANGXX_COMMAND }} \
         "
         export BOOST_TEST_LOG_LEVEL=warning
         cd .build
