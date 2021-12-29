@@ -13,11 +13,13 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        0
-  TETENGO_VER:      1.6.0
-  CONCURRENT_BUILD: 4
-  BOOST_VER:        1_78_0
-  BOOST_VER_DOT:    1.78.0
+  TETENGO_VER:              1.6.0
+  CONCURRENT_BUILD:         4
+  BOOST_VER:                1_78_0
+  BOOST_VER_DOT:            1.78.0
+  BOOST_TOOLSET:            msvc-14.3
+  BOOST_CACHE_REV:          0
+  EMBEDTRANSFORM_CACHE_REV: 0
 
 jobs:
   boost_download:
@@ -28,7 +30,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Download and expand Boost
       shell: cmd
@@ -53,13 +55,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Build Boost
       shell: cmd
@@ -67,7 +69,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=release link=static --stagedir="stage\Win32" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=32 variant=release link=static --stagedir="stage\Win32" stage
           echo > .build_finished
         )
   
@@ -83,13 +85,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Build Boost
       shell: cmd
@@ -97,7 +99,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=32 variant=debug link=static --stagedir="stage\Win32" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=32 variant=debug link=static --stagedir="stage\Win32" stage
           echo > .build_finished
         )
   
@@ -113,13 +115,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Build Boost
       shell: cmd
@@ -127,7 +129,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=release link=static --stagedir="stage\x64" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=64 variant=release link=static --stagedir="stage\x64" stage
           echo > .build_finished
         )
   
@@ -143,13 +145,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Build Boost
       shell: cmd
@@ -157,7 +159,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}\.build_finished (
           cd .boost_build\boost_${{ env.BOOST_VER }}
           call bootstrap.bat
-          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=msvc-14.3 address-model=64 variant=debug link=static --stagedir="stage\x64" stage
+          b2.exe -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} address-model=64 variant=debug link=static --stagedir="stage\x64" stage
           echo > .build_finished
         )
   
@@ -178,13 +180,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
       uses: actions/cache@v2
       with:
         path: bin\Release.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-win32
+        key: Windows-VisualCpp-product-release-Win32-${{ github.run_number }}
     
     - name: Build product
       shell: cmd
@@ -216,13 +218,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
       uses: actions/cache@v2
       with:
         path: bin\Debug.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-win32
+        key: Windows-VisualCpp-product-debug-Win32-${{ github.run_number }}
     
     - name: Build product
       shell: cmd
@@ -254,13 +256,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
       uses: actions/cache@v2
       with:
         path: bin\Release.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
+        key: Windows-VisualCpp-product-release-x64-${{ github.run_number }}
     
     - name: Build product
       shell: cmd
@@ -292,13 +294,13 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
       uses: actions/cache@v2
       with:
         path: bin\Debug.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
+        key: Windows-VisualCpp-product-debug-x64-${{ github.run_number }}
     
     - name: Build product
       shell: cmd
@@ -321,7 +323,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .EmbedTransform
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
+        key: Windows-VisualCpp-EmbedTransform-${{ env.EMBEDTRANSFORM_CACHE_REV }}
     
     - name: Setup EmbedTransform
       shell: powershell
@@ -352,37 +354,37 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Restore embedtransform
       uses: actions/cache@v2
       with:
         path: .EmbedTransform
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
+        key: Windows-VisualCpp-EmbedTransform-${{ env.EMBEDTRANSFORM_CACHE_REV }}
     
     - name: Restore product for Release Win32
       uses: actions/cache@v2
       with:
         path: bin\Release.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32
+        key: Windows-VisualCpp-product-release-Win32-${{ github.run_number }}
     
     - name: Restore product for Debug Win32
       uses: actions/cache@v2
       with:
         path: bin\Debug.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32
+        key: Windows-VisualCpp-product-debug-Win32-${{ github.run_number }}
     
     - name: Restore product for Release x64
       uses: actions/cache@v2
       with:
         path: bin\Release.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
+        key: Windows-VisualCpp-product-release-x64-${{ github.run_number }}
     
     - name: Restore product for Debug x64
       uses: actions/cache@v2
       with:
         path: bin\Debug.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
+        key: Windows-VisualCpp-product-debug-x64-${{ github.run_number }}
     
     - name: Build setup 32bit
       shell: cmd
@@ -396,7 +398,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-Win32
+        key: Windows-VisualCpp-archive-Win32-${{ github.run_number }}
     
     - name: Make archive
       shell: powershell
@@ -420,37 +422,37 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}
+        key: Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Restore embedtransform
       uses: actions/cache@v2
       with:
         path: .EmbedTransform
-        key: ${{ env.CACHE_REV }}-Windows-VisualCpp-EmbedTransform
+        key: Windows-VisualCpp-EmbedTransform-${{ env.EMBEDTRANSFORM_CACHE_REV }}
     
     - name: Restore product for Release Win32
       uses: actions/cache@v2
       with:
         path: bin\Release.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-Win32
+        key: Windows-VisualCpp-product-release-Win32-${{ github.run_number }}
     
     - name: Restore product for Debug Win32
       uses: actions/cache@v2
       with:
         path: bin\Debug.Win32
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-Win32
+        key: Windows-VisualCpp-product-debug-Win32-${{ github.run_number }}
     
     - name: Restore product for Release x64
       uses: actions/cache@v2
       with:
         path: bin\Release.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-release-x64
+        key: Windows-VisualCpp-product-release-x64-${{ github.run_number }}
     
     - name: Restore product for Debug x64
       uses: actions/cache@v2
       with:
         path: bin\Debug.x64
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-product-debug-x64
+        key: Windows-VisualCpp-product-debug-x64-${{ github.run_number }}
     
     - name: Build setup
       shell: cmd
@@ -466,7 +468,7 @@ jobs:
         path: |
           bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
           bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-x64
+        key: Windows-VisualCpp-archive-x64-${{ github.run_number }}
     
     - name: Make archive
       shell: powershell
@@ -483,7 +485,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-Win32
+        key: Windows-VisualCpp-archive-Win32-${{ github.run_number }}
     
     - name: Restore archive for x64
       uses: actions/cache@v2
@@ -491,7 +493,7 @@ jobs:
         path: |
           bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
           bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip
-        key: ${{ env.CACHE_REV }}-${{ github.run_number }}-Windows-VisualCpp-archive-x64
+        key: Windows-VisualCpp-archive-x64-${{ github.run_number }}
     
     - name: Move artifacts
       shell: cmd

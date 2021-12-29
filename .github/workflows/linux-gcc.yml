@@ -13,10 +13,13 @@ on:
     branches: [ master ]
 
 env:
-  CACHE_REV:        0
   CONCURRENT_BUILD: 4
+  GCC_COMMAND:      gcc-10
+  GXX_COMMAND:      g++-10
   BOOST_VER:        1_78_0
   BOOST_VER_DOT:    1.78.0
+  BOOST_TOOLSET:    gcc
+  BOOST_CACHE_REV:  0
 
 jobs:
   boost_build:
@@ -27,7 +30,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build
-        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
+        key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Build Boost
       shell: bash
@@ -39,8 +42,8 @@ jobs:
           curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
           tar xvf boost_${{ env.BOOST_VER }}.tar.bz2
           cd boost_${{ env.BOOST_VER }}
-          ./bootstrap.sh --with-toolset=gcc
-          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static cxxflags="-std=gnu++11" || :)
+          ./bootstrap.sh --with-toolset=${{ env.BOOST_TOOLSET }}
+          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static || :)
           touch .build_finished
         fi
   
@@ -65,20 +68,20 @@ jobs:
       uses: actions/cache@v2
       with:
         path: .boost_build
-        key: ${{ env.CACHE_REV }}-Linux-GCC-Boost-${{ env.BOOST_VER }}
+        key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Install Boost
       shell: bash
       run: |
         cd .boost_build/boost_${{ env.BOOST_VER }}
-        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=gcc-10 variant=release link=static install --prefix=/usr/local || :)
+        (sudo ./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static install --prefix=/usr/local || :)
     
     - name: Configure
       shell: bash
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
-          CC=gcc-10 \
-          CXX=g++-10 \
+          CC=${{ env.GCC_COMMAND }} \
+          CXX=${{ env.GXX_COMMAND }} \
         "
         ./bootstrap.sh
         mkdir -p .build
@@ -89,8 +92,8 @@ jobs:
       shell: bash
       run: |
         export DISTCHECK_CONFIGURE_FLAGS=" \
-          CC=gcc-10 \
-          CXX=g++-10 \
+          CC=${{ env.GCC_COMMAND }} \
+          CXX=${{ env.GXX_COMMAND }} \
         "
         export BOOST_TEST_LOG_LEVEL=warning
         cd .build
