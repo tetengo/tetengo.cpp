@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 """Makes character_property_map.txt for tetengo::text
 
-    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 """
 
 import pathlib

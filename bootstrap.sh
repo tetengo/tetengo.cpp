@@ -1,6 +1,6 @@
 #! /bin/sh
 # Bootstrap Script
-# Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+# Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 
 aclocal -I m4 && \
 autoheader && \

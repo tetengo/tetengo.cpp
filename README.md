@@ -214,7 +214,7 @@ $ make doc
 
 ---
 
-Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 
 This product is released under the MIT license.
 See [the COPYING file](https://github.com/tetengo/tetengo/blob/master/COPYING)
