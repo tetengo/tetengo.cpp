@@ -96,8 +96,8 @@ jobs:
           autoconf-archive \
           clang-9 \
           dos2unix \
-          iwyu \
-          graphviz
+          graphviz \
+          iwyu
     
     - name: Restore Doxygen build
       uses: actions/cache@v2
@@ -153,8 +153,8 @@ jobs:
           autoconf-archive \
           clang-9 \
           dos2unix \
-          iwyu \
-          graphviz
+          graphviz \
+          iwyu
     
     - name: Checkout
       uses: actions/checkout@v2
@@ -204,8 +204,8 @@ jobs:
           autoconf-archive \
           clang-9 \
           dos2unix \
-          iwyu \
-          graphviz
+          graphviz \
+          iwyu
     
     - name: Checkout
       uses: actions/checkout@v2
