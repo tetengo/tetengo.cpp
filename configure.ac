@@ -1,5 +1,5 @@
 # Autoconf Settings
-# Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+# Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 
 #### General ####
 AC_PREREQ([2.69])

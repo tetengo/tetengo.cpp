@@ -71,7 +71,7 @@ BEGIN
             VALUE "FileDescription", "An install bootstrapper."
             VALUE "FileVersion", "1.6.0"
             VALUE "InternalName", "setup.exe"
-            VALUE "LegalCopyright", "Copyright (C) 2019-2021 kaoru"
+            VALUE "LegalCopyright", "Copyright (C) 2019-2022 kaoru"
             VALUE "OriginalFilename", "setup.exe"
             VALUE "ProductName", "tetengo"
             VALUE "ProductVersion", "1.6.0"

@@ -46,5 +46,5 @@ Returns a non-zero value when some error is happened.
 
 ---
 
-Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 

@@ -1,7 +1,7 @@
 /*! \file
     \brief A node constraint element.
 
-    Copyright (C) 2019-2021 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_LATTICE_NODECONSTRAINTELEMENT_HPP)
