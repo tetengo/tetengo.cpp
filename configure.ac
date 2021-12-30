@@ -107,7 +107,7 @@ AX_CXX_COMPILE_STDCXX_17([noext], [mandatory])
 
 #### Program Checks ####
 AC_PROG_CXX
-AC_PROG_CC
+AC_PROG_CC_C99
 AC_PROG_CPP
 AC_PROG_LIBTOOL
 LT_INIT
@@ -123,7 +123,7 @@ AC_CHECK_PROG(IWYU, include-what-you-use, include-what-you-use)
 test -z $IWYU && \
     AC_MSG_WARN([You cannot check the includes for lack of include-what-you-use.])
 AC_SUBST([IWYU_OPTS_CXX], "-Xiwyu --max_line_length=200 -x c++ -std=c++17 -DIWYU")
-AC_SUBST([IWYU_OPTS_C],   "-Xiwyu --max_line_length=200 -x c -std=c89 -DIWYU")
+AC_SUBST([IWYU_OPTS_C],   "-Xiwyu --max_line_length=200 -x c -std=c17 -DIWYU")
 AC_SUBST([IWYU_IMP_PATH], "kogyan/tool/iwyu_mappings.imp")
 
 AC_ARG_WITH(
@@ -199,7 +199,7 @@ AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS], "${CXXFLAGS} -Werror -Wall -Wextra -pedantic-errors")
-AC_SUBST([CFLAGS], "${CFLAGS} -std=c89 -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CFLAGS], "${CFLAGS} -std=c17 -Werror -Wall -Wextra -pedantic-errors")
 
 #### Output ####
 AC_OUTPUT
