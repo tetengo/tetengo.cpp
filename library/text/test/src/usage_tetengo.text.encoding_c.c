@@ -57,29 +57,24 @@ void usage_tetengo_text_encoding()
         tetengo_text_encoder_decode(p_utf8_encoder, utf8, internal_encoding, internal_encoding_length + 1);
     }
 
+    // Encodes the internal encoding to UTF-16.
+    const tetengo_text_encoder_t* const p_utf16_encoder =
+        tetengo_text_encoder_instance(tetengo_text_encoder_encoding_utf16);
+    const size_t encoded_utf16_length = tetengo_text_encoder_encode(p_utf16_encoder, internal_encoding, NULL, 0);
+    unsigned short* const encoded_utf16 = (unsigned short*)malloc((encoded_utf16_length + 1) * sizeof(unsigned short));
+    if (encoded_utf16)
     {
-        // Encodes the internal encoding to UTF-16.
-        const tetengo_text_encoder_t* const p_utf16_encoder =
-            tetengo_text_encoder_instance(tetengo_text_encoder_encoding_utf16);
-        const size_t encoded_utf16_length = tetengo_text_encoder_encode(p_utf16_encoder, internal_encoding, NULL, 0);
-        unsigned short* const encoded_utf16 =
-            (unsigned short*)malloc((encoded_utf16_length + 1) * sizeof(unsigned short));
-        if (encoded_utf16)
-        {
-            tetengo_text_encoder_encode(
-                p_utf16_encoder, internal_encoding, (char*)encoded_utf16, encoded_utf16_length + 1);
-        }
-        assert(equal(encoded_utf16, utf16));
-        free(encoded_utf16);
+        tetengo_text_encoder_encode(p_utf16_encoder, internal_encoding, (char*)encoded_utf16, encoded_utf16_length + 1);
     }
+    assert(equal(encoded_utf16, utf16));
+    free(encoded_utf16);
 
     free((void*)internal_encoding);
 }
 
 static int equal(const unsigned short* const string1, const unsigned short* const string2)
 {
-    size_t i = 0;
-    for (i = 0;; ++i)
+    for (size_t i = 0;; ++i)
     {
         const unsigned short c1 = string1[i];
         const unsigned short c2 = string2[i];

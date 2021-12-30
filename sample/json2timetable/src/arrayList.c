@@ -31,15 +31,13 @@ static void reserve(arrayList_t* p_array_list, const size_t new_capacity)
     }
     assert(new_capacity > p_array_list->size);
 
+    void** const pp_new_elements = realloc(p_array_list->pp_elements, new_capacity * sizeof(void**));
+    if (!pp_new_elements)
     {
-        void** const pp_new_elements = realloc(p_array_list->pp_elements, new_capacity * sizeof(void**));
-        if (!pp_new_elements)
-        {
-            return;
-        }
-        p_array_list->capacity = new_capacity;
-        p_array_list->pp_elements = pp_new_elements;
+        return;
     }
+    p_array_list->capacity = new_capacity;
+    p_array_list->pp_elements = pp_new_elements;
 }
 
 arrayList_t* arrayList_create(const destroy_element_t p_destroy_element)
@@ -66,15 +64,12 @@ void arrayList_destroy(const arrayList_t* const p_array_list)
         return;
     }
 
+    for (size_t i = 0; i < p_array_list->size; ++i)
     {
-        size_t i = 0;
-        for (i = 0; i < p_array_list->size; ++i)
-        {
-            p_array_list->p_destroy_element(p_array_list->pp_elements[i]);
-        }
-        free(p_array_list->pp_elements);
-        free((void*)p_array_list);
+        p_array_list->p_destroy_element(p_array_list->pp_elements[i]);
     }
+    free(p_array_list->pp_elements);
+    free((void*)p_array_list);
 }
 
 void arrayList_add(arrayList_t* const p_array_list, void* const p_element)
