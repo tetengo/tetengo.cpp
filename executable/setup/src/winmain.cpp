@@ -60,7 +60,7 @@ namespace
         const int                    show_command)
     {
         const auto msi_path = base_directory / msi_file_name;
-        auto       parameters = std::wstring{ L"/i " } + msi_path.native();
+        auto       parameters = std::wstring{ L"/i \"" } + msi_path.native() + std::wstring{ L"\"" };
         if (boost::algorithm::starts_with(locale_name, "Japanese"))
         {
             parameters += L" TRANSFORMS=\":ja.mst\"";
