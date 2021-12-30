@@ -8,7 +8,7 @@
 #define TETENGO_PROPERTY_PROPERTYSET_H
 
 #include <stddef.h>
-#include <stdint.h> /* IWYU pragma: keep */
+#include <stdint.h> // IWYU pragma: keep
 
 #include <tetengo/property/storage.h>
 

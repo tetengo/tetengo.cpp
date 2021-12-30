@@ -6,7 +6,7 @@
 
 #include "usage_tetengo.trie.search_c.h"
 
-/* [search] */
+// [search]
 #include <assert.h>
 #include <string.h>
 
@@ -27,12 +27,12 @@ static void done_observer(void* const p_context)
 
 void usage_tetengo_trie_search()
 {
-    /* Prepares initial elements. */
+    // Prepares initial elements.
     const int initial_values[] = {
         -5, -3, 0, 5, 10, 14, 18, 22,
     };
     tetengo_trie_trieElement_t initial_elements[] = {
-        /* clang-format off */
+        // clang-format off
         { "tasakibashi", NULL },
         { "nihongiguchi", NULL },
         { "kumamotoekimae", NULL },
@@ -41,7 +41,7 @@ void usage_tetengo_trie_search()
         { "kawaramachi", NULL },
         { "keitokukoumae", NULL },
         { "karashimachou", NULL },
-        /* clang-format on */
+        // clang-format on
     };
     {
         size_t i = 0;
@@ -52,7 +52,7 @@ void usage_tetengo_trie_search()
     }
 
     {
-        /* Builds a trie with the initial elements. */
+        // Builds a trie with the initial elements.
         char                             building_observer_reports[128] = { '\0' };
         const tetengo_trie_trie_t* const p_trie = tetengo_trie_trie_create(
             initial_elements,
@@ -76,26 +76,26 @@ void usage_tetengo_trie_search()
                 "tasakibashi\n"
                 "DONE") == 0);
 
-        /* Searches the trie. */
+        // Searches the trie.
         {
-            /* If a perfect-matching key is found, its value is returned. */
+            // If a perfect-matching key is found, its value is returned.
             const int* const p_found_for_gionbashi = (const int*)tetengo_trie_trie_find(p_trie, "gionbashi");
             (void)p_found_for_gionbashi;
             assert(p_found_for_gionbashi);
             assert(*p_found_for_gionbashi == 5);
         }
         {
-            /* If not found, NULL is returned. */
+            // If not found, NULL is returned.
             const int* const p_found_for_hanabatachou = (const int*)tetengo_trie_trie_find(p_trie, "hanabatachou");
             (void)p_found_for_hanabatachou;
             assert(!p_found_for_hanabatachou);
         }
 
         {
-            /* Creates a subtrie consisting of the elements with the common key prefix. */
+            // Creates a subtrie consisting of the elements with the common key prefix.
             const tetengo_trie_trie_t* const p_subtrie = tetengo_trie_trie_subtrie(p_trie, "ka");
 
-            /* Enumerates the values in the subtrie. */
+            // Enumerates the values in the subtrie.
             int    subtrie_values[sizeof(initial_elements) / sizeof(tetengo_trie_trieElement_t)] = { 0 };
             size_t subtrie_value_count = 0;
             tetengo_trie_trieIterator_t* const p_iterator = tetengo_trie_trie_createIterator(p_subtrie);
@@ -108,15 +108,15 @@ void usage_tetengo_trie_search()
             }
             tetengo_trie_trieIterator_destroy(p_iterator);
             assert(subtrie_value_count == 2U);
-            assert(subtrie_values[0] == 22); /* karashimachou */
-            assert(subtrie_values[1] == 14); /* kawaramachi */
+            assert(subtrie_values[0] == 22); // karashimachou
+            assert(subtrie_values[1] == 14); // kawaramachi
 
-            /* Destroys the subtrie. */
+            // Destroys the subtrie.
             tetengo_trie_trie_destroy(p_subtrie);
         }
 
-        /* Destroys the trie. */
+        // Destroys the trie.
         tetengo_trie_trie_destroy(p_trie);
     }
 }
-/* [search] */
+// [search]

@@ -6,7 +6,7 @@
 
 #include "usage_tetengo.property.saveLoad_c.h"
 
-/* [save_load] */
+// [save_load]
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,8 +26,8 @@ void usage_tetengo_property_saveLoad()
     assert(!file_exists(setting_file_path()));
 
     {
-        /* Creates separate property sets with the same path for illustration purpose. */
-        /* Uses the one for setting and the other for getting. */
+        // Creates separate property sets with the same path for illustration purpose.
+        // Uses the one for setting and the other for getting.
         tetengo_property_propertySet_t* const p_props_for_setting = tetengo_property_propertySet_create(
             tetengo_property_storageLoader_createFileStorageLoader(), "tetengo_property_sample");
         tetengo_property_propertySet_t* const p_props_for_getting = tetengo_property_propertySet_create(
@@ -44,32 +44,32 @@ void usage_tetengo_property_saveLoad()
             tetengo_property_storageLoader_createWindowsRegistoryStorageLoader(), "tetengo_property_sample");
         */
 
-        /* Sets a string value "bar" for the key "foo". */
+        // Sets a string value "bar" for the key "foo".
         tetengo_property_propertySet_setString(p_props_for_setting, "foo", "bar");
 
         {
-            /* The value cannot be yet obtained from the property set for getting. */
+            // The value cannot be yet obtained from the property set for getting.
             const size_t value_length1 = tetengo_property_propertySet_getString(p_props_for_getting, "foo", NULL, 0);
             (void)value_length1;
             assert(value_length1 == (size_t)-1);
         }
 
-        /* Saves the values of the property set for setting to the file. */
+        // Saves the values of the property set for setting to the file.
         tetengo_property_propertySet_commit(p_props_for_setting);
         assert(file_exists(setting_file_path()));
 
         {
-            /* The value cannot be yet obtained from the property set for getting. */
+            // The value cannot be yet obtained from the property set for getting.
             const size_t value_length2 = tetengo_property_propertySet_getString(p_props_for_getting, "foo", NULL, 0);
             (void)value_length2;
             assert(value_length2 == (size_t)-1);
         }
 
-        /* Loads the property set values from the file. */
+        // Loads the property set values from the file.
         tetengo_property_propertySet_update(p_props_for_getting);
 
         {
-            /* The value can now be obtained from the property set for getting. */
+            // The value can now be obtained from the property set for getting.
             const size_t value_length3 = tetengo_property_propertySet_getString(p_props_for_getting, "foo", NULL, 0);
             assert(value_length3 != (size_t)-1);
             {
@@ -130,4 +130,4 @@ static int file_exists(const char* const path)
     return stat(path, &buffer) == 0;
 #endif
 }
-/* [save_load] */
+// [save_load]

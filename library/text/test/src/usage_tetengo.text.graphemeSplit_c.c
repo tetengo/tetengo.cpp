@@ -6,7 +6,7 @@
 
 #include "usage_tetengo.text.graphemeSplit_c.h"
 
-/* [grapheme_split] */
+// [grapheme_split]
 #include <assert.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -24,27 +24,27 @@ static const char* english_locale_name();
 void usage_tetengo_text_graphemeSplit()
 {
     static const char string[] = {
-        /* clang-format off */
-        /* HIGH-SPEED TRAIN WITH BULLET NOSE (width: 2) */
-        (char)(unsigned char)0xF0, (char)(unsigned char)0x9F, (char)(unsigned char)0x9A, (char)(unsigned char)0x85, /* U+1F685 */
-        /* POLAR BEAR (width: 2) */
-        (char)(unsigned char)0xF0, (char)(unsigned char)0x9F, (char)(unsigned char)0x90, (char)(unsigned char)0xBB, /* U+1F43B */
-        (char)(unsigned char)0xE2, (char)(unsigned char)0x80, (char)(unsigned char)0x8D, /* U+200D */
-        (char)(unsigned char)0xE2, (char)(unsigned char)0x9D, (char)(unsigned char)0x84, /* U+2744 */
-        (char)(unsigned char)0xEF, (char)(unsigned char)0xB8, (char)(unsigned char)0x8F, /* U+FE0F */
-        /* SNOWFLAKE (width: neutral  2 in the East Asian locale and 1 in the other locale) */
-        (char)(unsigned char)0xE2, (char)(unsigned char)0x9D, (char)(unsigned char)0x84, /* U+2744 */
+        // clang-format off
+        // HIGH-SPEED TRAIN WITH BULLET NOSE (width: 2)
+        (char)(unsigned char)0xF0, (char)(unsigned char)0x9F, (char)(unsigned char)0x9A, (char)(unsigned char)0x85, // U+1F685
+        // POLAR BEAR (width: 2)
+        (char)(unsigned char)0xF0, (char)(unsigned char)0x9F, (char)(unsigned char)0x90, (char)(unsigned char)0xBB, // U+1F43B
+        (char)(unsigned char)0xE2, (char)(unsigned char)0x80, (char)(unsigned char)0x8D, // U+200D
+        (char)(unsigned char)0xE2, (char)(unsigned char)0x9D, (char)(unsigned char)0x84, // U+2744
+        (char)(unsigned char)0xEF, (char)(unsigned char)0xB8, (char)(unsigned char)0x8F, // U+FE0F
+        // SNOWFLAKE (width: neutral  2 in the East Asian locale and 1 in the other locale)
+        (char)(unsigned char)0xE2, (char)(unsigned char)0x9D, (char)(unsigned char)0x84, // U+2744
         0x00,
-        /* clang-format on */
+        // clang-format on
     };
 
     {
-        /* Switches the locale to Japanese. */
+        // Switches the locale to Japanese.
         char initial_locale[256] = { '\0' };
         save_current_locale(LC_CTYPE, initial_locale, 256);
         if (setlocale(LC_CTYPE, japanese_locale_name()))
         {
-            /* Creates a grapheme splitter for the Japanese locale. */
+            // Creates a grapheme splitter for the Japanese locale.
             const tetengo_text_graphemeSplitter_t* const p_gs = tetengo_text_graphemeSplitter_create();
 
             /*
@@ -68,20 +68,20 @@ void usage_tetengo_text_graphemeSplit()
                 }
             }
 
-            /* Destroys the grapheme splitter. */
+            // Destroys the grapheme splitter.
             tetengo_text_graphemeSplitter_destroy(p_gs);
 
-            /* Restores the locale. */
+            // Restores the locale.
             setlocale(LC_CTYPE, initial_locale);
         }
     }
     {
-        /* Switches the locale to English. */
+        // Switches the locale to English.
         char initial_locale[256] = { '\0' };
         save_current_locale(LC_CTYPE, initial_locale, 256);
         if (setlocale(LC_CTYPE, english_locale_name()))
         {
-            /* Creates a grapheme splitter for the Japanese locale. */
+            // Creates a grapheme splitter for the Japanese locale.
             const tetengo_text_graphemeSplitter_t* const p_gs = tetengo_text_graphemeSplitter_create();
 
             /*
@@ -105,10 +105,10 @@ void usage_tetengo_text_graphemeSplit()
                 }
             }
 
-            /* Destroys the grapheme splitter. */
+            // Destroys the grapheme splitter.
             tetengo_text_graphemeSplitter_destroy(p_gs);
 
-            /* Restores the locale. */
+            // Restores the locale.
             setlocale(LC_CTYPE, initial_locale);
         }
     }
@@ -144,4 +144,4 @@ static const char* english_locale_name()
     return "en_US.UTF-8";
 #endif
 }
-/* [grapheme_split] */
+// [grapheme_split]

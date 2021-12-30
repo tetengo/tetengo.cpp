@@ -6,7 +6,7 @@
 
 #include "usage_tetengo.json.parsing_c.h"
 
-/* [parsing] */
+// [parsing]
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,42 +22,42 @@ const char* to_string(const tetengo_json_element_t* p_element);
 
 void usage_tetengo_json_parsing()
 {
-    /* clang-format off */
+    // clang-format off
     static const char* const json_text =
             "{\n"
             "  \"hoge\": 42,\n"
             "  \"fuga\": [ \"foo\", \"bar\" ]\n"
             "}\n";
-    /* clang-format on */
+    // clang-format on
     static const char* const json_file_path = "jsonParser_sample.json";
     if (!make_json_file(json_text, json_file_path))
     {
         return;
     }
     {
-        /* Creates a reader from a file path. */
+        // Creates a reader from a file path.
         tetengo_json_reader_t* const p_reader = tetengo_json_reader_createStreamReader(
             json_file_path, tetengo_json_reader_streamReaderDefaultBufferCapacity());
 
-        /* Creates a JSON parser */
+        // Creates a JSON parser
         tetengo_json_jsonParser_t* const p_parser =
             tetengo_json_jsonParser_create(p_reader, tetengo_json_jsonParser_defaultBufferCapacity());
 
-        /* Iteration. */
+        // Iteration.
         char element_list_string[384] = { 0 };
         while (tetengo_json_jsonParser_hasNext(p_parser))
         {
-            /* Obtains the current element. */
+            // Obtains the current element.
             const tetengo_json_element_t* const p_element = tetengo_json_jsonParser_peek(p_parser);
 
             strcat(element_list_string, to_string(p_element));
 
-            /* Moves to the next element. */
+            // Moves to the next element.
             tetengo_json_jsonParser_next(p_parser);
         }
 
         {
-            /* clang-format off */
+            // clang-format off
             static const char* const expected =
                 "object:open:\n"
                 "member:open:name=hoge:\n"
@@ -70,11 +70,11 @@ void usage_tetengo_json_parsing()
                 "array:close:\n"
                 "member:close:\n"
                 "object:close:\n";
-            /* clang-format on */
+            // clang-format on
             assert(strcmp(element_list_string, expected) == 0);
         }
 
-        /* Destroys the JSON parser. The reader inside is also destroyed. */
+        // Destroys the JSON parser. The reader inside is also destroyed.
         tetengo_json_jsonParser_destroy(p_parser);
     }
     remove(json_file_path);
@@ -98,7 +98,7 @@ const char* to_string(const tetengo_json_element_t* const p_element)
     static char result[32] = { 0 };
     result[0] = '\0';
     {
-        /* Obtains the element type name. */
+        // Obtains the element type name.
         const tetengo_json_element_type_t* const p_type = tetengo_json_element_type(p_element);
         if (p_type->name == tetengo_json_element_typeName_string())
         {
@@ -130,7 +130,7 @@ const char* to_string(const tetengo_json_element_t* const p_element)
             strcat(result, "array:");
         }
 
-        /* Obtains the element type category. */
+        // Obtains the element type category.
         if (p_type->category == tetengo_json_element_typeCategory_primitive()) {}
         else if (p_type->category == tetengo_json_element_typeCategory_structureOpen())
         {
@@ -143,7 +143,7 @@ const char* to_string(const tetengo_json_element_t* const p_element)
         }
 
         {
-            /* Obtains the element attributes. */
+            // Obtains the element attributes.
             const size_t attribute_count = tetengo_json_element_attributeKeys(p_element, NULL);
             if (attribute_count > 0)
             {
@@ -168,10 +168,10 @@ const char* to_string(const tetengo_json_element_t* const p_element)
             }
         }
 
-        /* Obtains the element value. */
+        // Obtains the element value.
         strcat(result, tetengo_json_element_value(p_element));
     }
     strcat(result, "\n");
     return result;
 }
-/* [parsing] */
+// [parsing]

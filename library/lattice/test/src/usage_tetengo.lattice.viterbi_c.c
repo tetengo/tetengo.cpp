@@ -6,7 +6,7 @@
 
 #include "usage_tetengo.lattice.viterbi_c.h"
 
-/* [viterbi] */
+// [viterbi]
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,19 +50,19 @@ void usage_tetengo_lattice_viterbi()
         [BOS]-[Alice]-[Bob]---[EOS]  1+1+9+8+6=25
     */
 
-    /* Builds a vocabulary. */
+    // Builds a vocabulary.
     const tetengo_lattice_vocabulary_t* const p_vocabulary = build_vocabulary();
 
-    /* Creates an object for a lattice. */
+    // Creates an object for a lattice.
     tetengo_lattice_lattice_t* const p_lattice = tetengo_lattice_lattice_create(p_vocabulary);
 
-    /* Enters key characters to construct the lattice. */
+    // Enters key characters to construct the lattice.
     tetengo_lattice_input_t* const p_input_a = tetengo_lattice_input_createStringInput("a");
     tetengo_lattice_input_t* const p_input_b = tetengo_lattice_input_createStringInput("b");
     tetengo_lattice_lattice_pushBack(p_lattice, p_input_a);
     tetengo_lattice_lattice_pushBack(p_lattice, p_input_b);
     {
-        /* Finishes the lattice construction. */
+        // Finishes the lattice construction.
         const size_t eos_preceding_count = tetengo_lattice_lattice_settle(p_lattice, NULL, NULL);
         if (eos_preceding_count == 0)
         {
@@ -73,32 +73,32 @@ void usage_tetengo_lattice_viterbi()
             int* const             p_eos_preceding_costs = (int*)malloc(eos_preceding_count * sizeof(int));
             tetengo_lattice_lattice_settle(p_lattice, &eos_node, p_eos_preceding_costs);
             {
-                /* Creates an iterator to enumerate the paths in the lattice. */
+                // Creates an iterator to enumerate the paths in the lattice.
                 tetengo_lattice_nBestIterator_t* const p_iterator = tetengo_lattice_nBestIterator_create(
                     p_lattice, &eos_node, tetengo_lattice_constraint_createEmpty());
 
-                /* Enumerates the paths. */
+                // Enumerates the paths.
                 char paths[256] = { 0 };
                 while (tetengo_lattice_nBestIterator_hasNext(p_iterator))
                 {
-                    /* Obtains the current path. */
+                    // Obtains the current path.
                     tetengo_lattice_path_t* const p_path = tetengo_lattice_nBestIterator_createPath(p_iterator);
 
                     strcat(paths, to_string(p_path));
                     tetengo_lattice_path_destroy(p_path);
 
-                    /* Moves to the next path. */
+                    // Moves to the next path.
                     tetengo_lattice_nBestIterator_next(p_iterator);
                 }
                 {
-                    /* clang-format off */
+                    // clang-format off
                     static const char* const expected =
                         "[BOS]-[Alice]-[Bravo]-[EOS] (12)\n"
                         "[BOS]-[AwaBizan]-[EOS] (17)\n"
                         "[BOS]-[Alpha]-[Bravo]-[EOS] (18)\n"
                         "[BOS]-[Alpha]-[Bob]-[EOS] (24)\n"
                         "[BOS]-[Alice]-[Bob]-[EOS] (25)\n";
-                    /* clang-format on */
+                    // clang-format on
                     assert(strcmp(paths, expected) == 0);
                 }
                 tetengo_lattice_nBestIterator_destroy(p_iterator);
@@ -149,7 +149,7 @@ entry_equal_to(const tetengo_lattice_entryView_t* const p_entry1, const tetengo_
 
 tetengo_lattice_vocabulary_t* build_vocabulary()
 {
-    /* The contents of the vocabulary. */
+    // The contents of the vocabulary.
     const tetengo_lattice_input_t* const    p_entry_key_a = tetengo_lattice_input_createStringInput("a");
     const tetengo_lattice_input_t* const    p_entry_key_b = tetengo_lattice_input_createStringInput("b");
     const tetengo_lattice_input_t* const    p_entry_key_ab = tetengo_lattice_input_createStringInput("ab");
@@ -241,7 +241,7 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
                 tetengo_lattice_input_destroy(p_entry_key_b);
                 tetengo_lattice_input_destroy(p_entry_key_a);
 
-                /* Returns a vocabulary implemented with hash tables. */
+                // Returns a vocabulary implemented with hash tables.
                 return p_vocabulary;
             }
         }
@@ -250,7 +250,7 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
 
 static const char* value_of(const tetengo_lattice_node_t* const p_node, const int first)
 {
-    /* The value is accessible by the handle. */
+    // The value is accessible by the handle.
     const char* const value = (const char*)tetengo_lattice_entryView_valueOf(p_node->value_handle);
     if (value)
     {
@@ -271,7 +271,7 @@ const char* to_string(const tetengo_lattice_path_t* const p_path)
     static char result[48] = { 0 };
     result[0] = '\0';
     {
-        /* Each path object holds the nodes that make up itself, and the whole cost. */
+        // Each path object holds the nodes that make up itself, and the whole cost.
         const size_t                  node_count = tetengo_lattice_path_pNodes(p_path, NULL);
         tetengo_lattice_node_t* const p_nodes =
             (tetengo_lattice_node_t*)malloc(node_count * sizeof(tetengo_lattice_node_t));
@@ -301,4 +301,4 @@ const char* to_string(const tetengo_lattice_path_t* const p_path)
     strcat(result, "\n");
     return result;
 }
-/* [viterbi] */
+// [viterbi]
