@@ -7,6 +7,7 @@
 #if !defined(TETENGO_JSON_JSONPARSER_H)
 #define TETENGO_JSON_JSONPARSER_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include <tetengo/json/element.h>
@@ -51,14 +52,14 @@ tetengo_json_jsonParser_t* tetengo_json_jsonParser_create(tetengo_json_reader_t*
 void tetengo_json_jsonParser_destroy(const tetengo_json_jsonParser_t* p_parser);
 
 /*!
-    \brief Returns non-zero when the next element exists.
+    \brief Returns true when the next element exists.
 
     \param p_parser A pointer to a perser.
 
-    \retval non-zero When the next element exists.
-    \retval 0        Otherwise.
+    \retval true  When the next element exists.
+    \retval false Otherwise.
 */
-int tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* p_parser);
+bool tetengo_json_jsonParser_hasNext(const tetengo_json_jsonParser_t* p_parser);
 
 /*!
     \brief Returns the current element.
