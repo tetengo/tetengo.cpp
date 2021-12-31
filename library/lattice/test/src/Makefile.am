@@ -49,7 +49,19 @@ IWYU_OPTS_CXX += -Xiwyu --mapping_file=${top_srcdir}/${IWYU_IMP_PATH}
 
 iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 
-%.iwyuout: %
+%.c.iwyuout: %.c
+	${IWYU} ${IWYU_OPTS_C} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	mv -f ${addsuffix .tmp, $@} $@
+
+%.h.iwyuout: %.h
+	${IWYU} ${IWYU_OPTS_C} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	mv -f ${addsuffix .tmp, $@} $@
+
+%.cpp.iwyuout: %.cpp
+	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	mv -f ${addsuffix .tmp, $@} $@
+
+%.hpp.iwyuout: %.hpp
 	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
