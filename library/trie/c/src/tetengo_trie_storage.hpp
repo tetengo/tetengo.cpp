@@ -18,9 +18,10 @@
 
 struct tetengo_trie_storage_tag
 {
-private:
+public:
     std::unique_ptr<boost::interprocess::file_mapping> p_cpp_file_mapping;
 
+private:
     const tetengo::trie::storage* p_cpp_storage_referred;
 
 public:
