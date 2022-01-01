@@ -96,12 +96,12 @@ BOOST_AUTO_TEST_CASE(get_bool)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         BOOST_TEST(!tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
     }
     {
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         BOOST_TEST(!tetengo_property_storage_getBool(nullptr, key.string().c_str(), &value));
     }
     {
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(get_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        auto value = static_cast<int>(0);
+        auto value = false;
         BOOST_TEST(!tetengo_property_storage_getBool(p_storage, nullptr, &value));
     }
     {
@@ -186,8 +186,8 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        tetengo_property_storage_setBool(p_storage, key.string().c_str(), 0);
-        auto value = static_cast<int>(0);
+        tetengo_property_storage_setBool(p_storage, key.string().c_str(), false);
+        auto value = false;
         BOOST_TEST(tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
         BOOST_TEST(!value);
     }
@@ -208,8 +208,8 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        tetengo_property_storage_setBool(p_storage, key.string().c_str(), 1);
-        auto value = static_cast<int>(0);
+        tetengo_property_storage_setBool(p_storage, key.string().c_str(), true);
+        auto value = false;
         BOOST_TEST(tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
         BOOST_TEST(value);
     }
@@ -230,8 +230,8 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        tetengo_property_storage_setBool(nullptr, key.string().c_str(), 1);
-        auto value = static_cast<int>(0);
+        tetengo_property_storage_setBool(nullptr, key.string().c_str(), true);
+        auto value = false;
         BOOST_TEST(!tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
     }
     {
@@ -251,8 +251,8 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_TEST_REQUIRE(p_storage);
 
         const auto key = std::filesystem::path{ "hoge" } / "fuga";
-        tetengo_property_storage_setBool(p_storage, nullptr, 1);
-        auto value = static_cast<int>(0);
+        tetengo_property_storage_setBool(p_storage, nullptr, true);
+        auto value = false;
         BOOST_TEST(!tetengo_property_storage_getBool(p_storage, key.string().c_str(), &value));
     }
 }

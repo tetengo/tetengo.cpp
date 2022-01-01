@@ -8,6 +8,7 @@
 
 // [viterbi]
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -240,7 +241,7 @@ tetengo_lattice_vocabulary_t* build_vocabulary()
     return p_vocabulary;
 }
 
-static const char* value_of(const tetengo_lattice_node_t* const p_node, const int first)
+static const char* value_of(const tetengo_lattice_node_t* const p_node, const bool first)
 {
     // The value is accessible by the handle.
     const char* const value = (const char*)tetengo_lattice_entryView_valueOf(p_node->value_handle);

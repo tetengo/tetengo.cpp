@@ -57,7 +57,7 @@ void tetengo_property_propertySet_destroy(const tetengo_property_propertySet_t* 
 bool tetengo_property_propertySet_getBool(
     const tetengo_property_propertySet_t* p_property_set,
     const char*                           key,
-    int*                                  p_value);
+    bool*                                 p_value);
 
 /*!
     \brief Sets a value in a boolean.
@@ -66,7 +66,7 @@ bool tetengo_property_propertySet_getBool(
     \param key            A key.
     \param value          A value.
 */
-void tetengo_property_propertySet_setBool(tetengo_property_propertySet_t* p_property_set, const char* key, int value);
+void tetengo_property_propertySet_setBool(tetengo_property_propertySet_t* p_property_set, const char* key, bool value);
 
 /*!
     \brief Returns the value in an unsigned 32-bit integer.
