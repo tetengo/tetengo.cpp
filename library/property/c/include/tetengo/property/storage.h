@@ -9,7 +9,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdint.h> // IWYU pragma: keep
+#include <stdint.h>
 
 
 #if defined(__cplusplus)

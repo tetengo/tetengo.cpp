@@ -6,7 +6,6 @@
 
 #include <any>
 #include <cassert>
-#include <climits>
 #include <cmath>
 #include <cstdint>
 #include <filesystem>
@@ -372,7 +371,7 @@ BOOST_AUTO_TEST_CASE(base_at)
         BOOST_TEST(tetengo_trie_storage_baseAt(p_storage, 16) == 1);
     }
     {
-        BOOST_TEST(tetengo_trie_storage_baseAt(nullptr, 0) == INT_MAX);
+        BOOST_TEST(tetengo_trie_storage_baseAt(nullptr, 0) == INT32_MAX);
     }
 }
 
@@ -456,7 +455,7 @@ BOOST_AUTO_TEST_CASE(check_at)
         BOOST_TEST(tetengo_trie_storage_checkAt(p_storage, 16) == 0x00);
     }
     {
-        BOOST_TEST(tetengo_trie_storage_checkAt(nullptr, 0) == UCHAR_MAX);
+        BOOST_TEST(tetengo_trie_storage_checkAt(nullptr, 0) == UINT8_MAX);
     }
 }
 

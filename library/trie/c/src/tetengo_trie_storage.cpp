@@ -5,7 +5,6 @@
 */
 
 #include <any>
-#include <climits>
 #include <cstddef>
 #include <filesystem>
 #include <fstream>
@@ -15,6 +14,8 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+
+#include <stdint.h>
 
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/file_mapping.hpp>
@@ -32,7 +33,7 @@
 #include "tetengo_trie_trie.hpp"
 
 
-unsigned char tetengo_trie_storage_vacantCheckValue()
+uint8_t tetengo_trie_storage_vacantCheckValue()
 {
     return tetengo::trie::double_array::vacant_check_value();
 }
@@ -170,7 +171,7 @@ size_t tetengo_trie_storage_baseCheckSize(const tetengo_trie_storage_t* const p_
     }
 }
 
-int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
+int32_t tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
 {
     try
     {
@@ -183,14 +184,14 @@ int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, c
     }
     catch (...)
     {
-        return INT_MAX;
+        return INT32_MAX;
     }
 }
 
 bool tetengo_trie_storage_setBaseAt(
     tetengo_trie_storage_t* const p_storage,
     const size_t                  base_check_index,
-    const int                     base)
+    const int32_t                 base)
 {
     try
     {
@@ -209,7 +210,7 @@ bool tetengo_trie_storage_setBaseAt(
     }
 }
 
-unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
+uint8_t tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
 {
     try
     {
@@ -222,14 +223,14 @@ unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* const p
     }
     catch (...)
     {
-        return UCHAR_MAX;
+        return UINT8_MAX;
     }
 }
 
 bool tetengo_trie_storage_setCheckAt(
     tetengo_trie_storage_t* const p_storage,
     const size_t                  base_check_index,
-    const unsigned char           check)
+    const uint8_t                 check)
 {
     try
     {

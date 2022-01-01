@@ -9,6 +9,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #if defined(_WIN32)
 #include <wchar.h>
 #endif
@@ -44,7 +45,7 @@ typedef char path_character_type;
 
     \return The check value for a vacant element.
 */
-unsigned char tetengo_trie_storage_vacantCheckValue();
+uint8_t tetengo_trie_storage_vacantCheckValue();
 
 /*!
     \brief Creates a storage.
@@ -107,9 +108,9 @@ size_t tetengo_trie_storage_baseCheckSize(const tetengo_trie_storage_t* p_storag
     \param p_storage        A pointer to a storage.
     \param base_check_index A base-check index.
 
-    \return The base value. Or INT_MAX on error.
+    \return The base value. Or INT32_MAX on error.
 */
-int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* p_storage, size_t base_check_index);
+int32_t tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* p_storage, size_t base_check_index);
 
 /*!
     \brief Sets a base value.
@@ -121,7 +122,7 @@ int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* p_storage, size_t 
     \retval true  On no error.
     \retval false Otherwise.
 */
-bool tetengo_trie_storage_setBaseAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, int base);
+bool tetengo_trie_storage_setBaseAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, int32_t base);
 
 /*!
     \brief Returns the check value.
@@ -129,9 +130,9 @@ bool tetengo_trie_storage_setBaseAt(tetengo_trie_storage_t* p_storage, size_t ba
     \param p_storage        A pointer to a storage.
     \param base_check_index A base-check index.
 
-    \return The check value. Or UCHAR_MAX on error.
+    \return The check value. Or UINT8_MAX on error.
 */
-unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_storage, size_t base_check_index);
+uint8_t tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_storage, size_t base_check_index);
 
 /*!
     \brief Sets a check value.
@@ -143,7 +144,7 @@ unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_stora
     \retval true  On no error.
     \retval false Otherwise.
 */
-bool tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, unsigned char check);
+bool tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, uint8_t check);
 
 /*!
     \brief Returns the value count.
