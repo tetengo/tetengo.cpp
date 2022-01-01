@@ -50,7 +50,7 @@ void tetengo_property_storage_destroy(const tetengo_property_storage_t* const p_
     {}
 }
 
-int tetengo_property_storage_getBool(
+bool tetengo_property_storage_getBool(
     const tetengo_property_storage_t* const p_storage,
     const char* const                       key,
     int* const                              p_value)
@@ -79,7 +79,7 @@ int tetengo_property_storage_getBool(
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -105,7 +105,7 @@ void tetengo_property_storage_setBool(
     {}
 }
 
-int tetengo_property_storage_getUint32(
+bool tetengo_property_storage_getUint32(
     const tetengo_property_storage_t* const p_storage,
     const char* const                       key,
     uint32_t* const                         p_value)
@@ -134,7 +134,7 @@ int tetengo_property_storage_getUint32(
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 

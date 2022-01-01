@@ -77,7 +77,7 @@ void tetengo_property_propertySet_destroy(const tetengo_property_propertySet_t* 
     {}
 }
 
-int tetengo_property_propertySet_getBool(
+bool tetengo_property_propertySet_getBool(
     const tetengo_property_propertySet_t* const p_property_set,
     const char* const                           key,
     int* const                                  p_value)
@@ -106,7 +106,7 @@ int tetengo_property_propertySet_getBool(
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -132,7 +132,7 @@ void tetengo_property_propertySet_setBool(
     {}
 }
 
-int tetengo_property_propertySet_getUint32(
+bool tetengo_property_propertySet_getUint32(
     const tetengo_property_propertySet_t* const p_property_set,
     const char* const                           key,
     uint32_t* const                             p_value)
@@ -161,7 +161,7 @@ int tetengo_property_propertySet_getUint32(
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
