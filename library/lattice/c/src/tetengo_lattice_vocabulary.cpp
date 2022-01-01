@@ -317,7 +317,7 @@ size_t tetengo_lattice_vocabulary_findEntries(
     }
 }
 
-int tetengo_lattice_vocabulary_findConnection(
+bool tetengo_lattice_vocabulary_findConnection(
     const tetengo_lattice_vocabulary_t* const p_vocabulary,
     const tetengo_lattice_node_t* const       p_from,
     const tetengo_lattice_entryView_t* const  p_to,
@@ -369,10 +369,10 @@ int tetengo_lattice_vocabulary_findConnection(
 
         p_connection->cost = found.cost();
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }

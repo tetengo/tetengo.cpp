@@ -53,7 +53,7 @@ namespace
         return 2;
     }
 
-    int find_connection_procedure(
+    bool find_connection_procedure(
         void* const /*p_context*/,
         const tetengo_lattice_node_t* const /*p_from*/,
         const tetengo_lattice_entryView_t* const /*p_to*/,
@@ -62,11 +62,11 @@ namespace
         if (p_connection)
         {
             p_connection->cost = 42;
-            return 1;
+            return true;
         }
         else
         {
-            return 0;
+            return false;
         }
     }
 

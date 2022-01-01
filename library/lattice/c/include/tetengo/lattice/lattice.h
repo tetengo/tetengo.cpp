@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_LATTICE_H)
 #define TETENGO_LATTICE_LATTICE_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include <tetengo/lattice/input.h>
@@ -71,10 +72,10 @@ size_t tetengo_lattice_lattice_nodesAt(
     \param p_lattice A pointer to a lattice.
     \param p_input   A pointer to an input.
 
-    \retval non-zero When the input is pushed back.
-    \retval 0        Otherwise.
+    \retval true  When the input is pushed back.
+    \retval false Otherwise.
 */
-int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, tetengo_lattice_input_t* p_input);
+bool tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* p_lattice, tetengo_lattice_input_t* p_input);
 
 /*!
     \brief Settles this lattice.

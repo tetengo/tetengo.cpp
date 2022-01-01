@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_VOCABULARY_H)
 #define TETENGO_LATTICE_VOCABULARY_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include <tetengo/lattice/connection.h>
@@ -76,10 +77,10 @@ typedef struct tetengo_lattice_customVocabularyDefinition_tag
         \param p_to         A pointer to a destination entry.
         \param p_connection The storage for an output connection.
 
-        \retval non-zero When an output connection is stored.
-        \retval 0        Otherwise.
+        \retval true  When an output connection is stored.
+        \retval false Otherwise.
     */
-    int (*find_connection_proc)(
+    bool (*find_connection_proc)(
         void*                              p_context,
         const tetengo_lattice_node_t*      p_from,
         const tetengo_lattice_entryView_t* p_to,
@@ -126,10 +127,10 @@ size_t tetengo_lattice_vocabulary_findEntries(
     \param p_to         A pointer to a destination entry.
     \param p_connection The storage for an output connection.
 
-    \retval non-zero When an output connection is stored.
-    \retval 0        Otherwise.
+    \retval true  When an output connection is stored.
+    \retval false Otherwise.
 */
-int tetengo_lattice_vocabulary_findConnection(
+bool tetengo_lattice_vocabulary_findConnection(
     const tetengo_lattice_vocabulary_t* p_vocabulary,
     const tetengo_lattice_node_t*       p_from,
     const tetengo_lattice_entryView_t*  p_to,

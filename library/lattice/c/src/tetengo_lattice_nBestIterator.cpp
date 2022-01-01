@@ -148,7 +148,7 @@ tetengo_lattice_nBestIterator_createPath(const tetengo_lattice_nBestIterator_t* 
     }
 }
 
-int tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t* p_iterator)
+bool tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t* p_iterator)
 {
     try
     {
@@ -157,11 +157,11 @@ int tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t*
             throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
-        return p_iterator->p_cpp_iterator_pair->first != p_iterator->p_cpp_iterator_pair->second ? 1 : 0;
+        return p_iterator->p_cpp_iterator_pair->first != p_iterator->p_cpp_iterator_pair->second;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 

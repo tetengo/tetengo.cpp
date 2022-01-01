@@ -127,7 +127,7 @@ void tetengo_lattice_path_destroy(const tetengo_lattice_path_t* const p_path)
     {}
 }
 
-int tetengo_lattice_path_empty(const tetengo_lattice_path_t* const p_path)
+bool tetengo_lattice_path_empty(const tetengo_lattice_path_t* const p_path)
 {
     try
     {
@@ -140,7 +140,7 @@ int tetengo_lattice_path_empty(const tetengo_lattice_path_t* const p_path)
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 

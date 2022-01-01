@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_NODE_H)
 #define TETENGO_LATTICE_NODE_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include <tetengo/lattice/entry.h>
@@ -56,10 +57,10 @@ typedef struct tetengo_lattice_node_tag
     \param preceding_edge_count   A preceding edge count.
     \param p_bos                  The storage for an output BOS.
 
-    \retval non-zero When an BOS is stored.
-    \retval 0        Otherwise.
+    \retval true  When an BOS is stored.
+    \retval false Otherwise.
 */
-int tetengo_lattice_node_bos(
+bool tetengo_lattice_node_bos(
     const int*              p_preceding_edge_costs,
     size_t                  preceding_edge_count,
     tetengo_lattice_node_t* p_bos);
@@ -74,10 +75,10 @@ int tetengo_lattice_node_bos(
     \param path_cost              A path cost.
     \param p_eos                  The storage for an output EOS.
 
-    \retval non-zero When an EOS is stored.
-    \retval 0        Otherwise.
+    \retval true  When an EOS is stored.
+    \retval false Otherwise.
 */
-int tetengo_lattice_node_eos(
+bool tetengo_lattice_node_eos(
     size_t                  preceding_step,
     const int*              p_preceding_edge_costs,
     size_t                  preceding_edge_count,
@@ -96,10 +97,10 @@ int tetengo_lattice_node_eos(
     \param path_cost              A path cost.
     \param p_node                 The storage for an output node.
 
-    \retval non-zero When a node is stored.
-    \retval 0        Otherwise.
+    \retval true  When a node is stored.
+    \retval false Otherwise.
 */
-int tetengo_lattice_node_toNode(
+bool tetengo_lattice_node_toNode(
     const tetengo_lattice_entryView_t* p_entry,
     size_t                             preceding_step,
     const int*                         p_preceding_edge_costs,
@@ -114,20 +115,20 @@ int tetengo_lattice_node_toNode(
     \param p_one     A pointer to one node.
     \param p_another A pointer to another node.
 
-    \retval non-zero When one node is equal to another.
-    \retval 0        Otherwise.
+    \retval true  When one node is equal to another.
+    \retval false Otherwise.
 */
-int tetengo_lattice_node_equal(const tetengo_lattice_node_t* p_one, const tetengo_lattice_node_t* p_another);
+bool tetengo_lattice_node_equal(const tetengo_lattice_node_t* p_one, const tetengo_lattice_node_t* p_another);
 
 /*!
     \brief Returns true is this node is the BOS.
 
     \param p_node A pointer to node.
 
-    \retval non-zero When this node is the BOS.
-    \retval 0        Otherwise.
+    \retval true  When this node is the BOS.
+    \retval false Otherwise.
 */
-int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* p_node);
+bool tetengo_lattice_node_isBos(const tetengo_lattice_node_t* p_node);
 
 
 #if defined(__cplusplus)

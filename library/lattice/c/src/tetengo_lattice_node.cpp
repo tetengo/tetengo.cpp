@@ -22,7 +22,7 @@
 #include "tetengo_lattice_input.hpp"
 
 
-int tetengo_lattice_node_bos(
+bool tetengo_lattice_node_bos(
     const int* const              p_preceding_edge_costs,
     const size_t                  preceding_edge_count,
     tetengo_lattice_node_t* const p_bos)
@@ -52,15 +52,15 @@ int tetengo_lattice_node_bos(
         p_bos->node_cost = cpp_bos.node_cost();
         p_bos->path_cost = cpp_bos.path_cost();
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
-int tetengo_lattice_node_eos(
+bool tetengo_lattice_node_eos(
     const size_t                  preceding_step,
     const int* const              p_preceding_edge_costs,
     const size_t                  preceding_edge_count,
@@ -94,15 +94,15 @@ int tetengo_lattice_node_eos(
         p_eos->node_cost = cpp_eos.node_cost();
         p_eos->path_cost = cpp_eos.path_cost();
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
-int tetengo_lattice_node_toNode(
+bool tetengo_lattice_node_toNode(
     const tetengo_lattice_entryView_t* const p_entry,
     const size_t                             preceding_step,
     const int* const                         p_preceding_edge_costs,
@@ -151,15 +151,17 @@ int tetengo_lattice_node_toNode(
         p_node->node_cost = cpp_node.node_cost();
         p_node->path_cost = cpp_node.path_cost();
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
-int tetengo_lattice_node_equal(const tetengo_lattice_node_t* const p_one, const tetengo_lattice_node_t* const p_another)
+bool tetengo_lattice_node_equal(
+    const tetengo_lattice_node_t* const p_one,
+    const tetengo_lattice_node_t* const p_another)
 {
     try
     {
@@ -205,15 +207,15 @@ int tetengo_lattice_node_equal(const tetengo_lattice_node_t* const p_one, const 
                                                   p_another->node_cost,
                                                   p_another->path_cost };
 
-        return cpp_one == cpp_another ? 1 : 0;
+        return cpp_one == cpp_another;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
-int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
+bool tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
 {
     try
     {
@@ -238,10 +240,10 @@ int tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
                                                p_node->best_preceding_node,
                                                p_node->node_cost,
                                                p_node->path_cost };
-        return cpp_node.is_bos() ? 1 : 0;
+        return cpp_node.is_bos();
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
