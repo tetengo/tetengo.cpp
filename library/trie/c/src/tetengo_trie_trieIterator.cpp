@@ -9,6 +9,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include <boost/stl_interfaces/iterator_interface.hpp>
+
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/trie.h>
 #include <tetengo/trie/trie.hpp>
@@ -75,7 +77,7 @@ const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator_t* p_i
     }
 }
 
-int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator_t* p_iterator)
+bool tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator_t* p_iterator)
 {
     try
     {
@@ -84,11 +86,11 @@ int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator_t* p_itera
             throw std::invalid_argument{ "p_iterator is NULL." };
         }
 
-        return p_iterator->p_cpp_iterator_pair->first == p_iterator->p_cpp_iterator_pair->second ? 0 : 1;
+        return p_iterator->p_cpp_iterator_pair->first != p_iterator->p_cpp_iterator_pair->second;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 

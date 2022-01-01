@@ -7,6 +7,7 @@
 #if !defined(TETENGO_TRIE_TRIE_H)
 #define TETENGO_TRIE_TRIE_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 
@@ -118,14 +119,14 @@ tetengo_trie_trie_t* tetengo_trie_trie_createWithStorage(tetengo_trie_storage_t*
 void tetengo_trie_trie_destroy(const tetengo_trie_trie_t* p_trie);
 
 /*!
-    \brief Returns non-zero when the trie is empty.
+    \brief Returns true when the trie is empty.
 
     \param p_trie A pointer to a trie.
 
-    \retval non-zero When the trie is empty.
-    \retval 0        Otherwise.
+    \retval true  When the trie is empty.
+    \retval false Otherwise.
 */
-int tetengo_trie_trie_empty(const tetengo_trie_trie_t* p_trie);
+bool tetengo_trie_trie_empty(const tetengo_trie_trie_t* p_trie);
 
 /*!
     \brief Returns the size of the trie.
@@ -137,15 +138,15 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie_t* p_trie);
 size_t tetengo_trie_trie_size(const tetengo_trie_trie_t* p_trie);
 
 /*!
-    \brief Returns non-zero when the trie contains the given key.
+    \brief Returns true when the trie contains the given key.
 
     \param p_trie A pointer to a trie.
     \param key    A key.
 
-    \retval non-zero When the trie contains the given key.
-    \retval 0        Otherwise.
+    \retval true  When the trie contains the given key.
+    \retval false Otherwise.
 */
-int tetengo_trie_trie_contains(const tetengo_trie_trie_t* p_trie, const char* key);
+bool tetengo_trie_trie_contains(const tetengo_trie_trie_t* p_trie, const char* key);
 
 /*!
     \brief Finds the value object correspoinding the given key.

@@ -7,6 +7,7 @@
 #if !defined(TETENGO_TRIE_STORAGE_H)
 #define TETENGO_TRIE_STORAGE_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #if defined(_WIN32)
 #include <wchar.h>
@@ -117,10 +118,10 @@ int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* p_storage, size_t 
     \param base_check_index A base-check index.
     \param base             A base value.
 
-    \retval non-zero On no error.
-    \retval 0        Otherwise.
+    \retval true  On no error.
+    \retval false Otherwise.
 */
-int tetengo_trie_storage_setBaseAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, int base);
+bool tetengo_trie_storage_setBaseAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, int base);
 
 /*!
     \brief Returns the check value.
@@ -139,10 +140,10 @@ unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* p_stora
     \param base_check_index A base-check index.
     \param check            A check value.
 
-    \retval non-zero On no error.
-    \retval 0        Otherwise.
+    \retval true  On no error.
+    \retval false Otherwise.
 */
-int tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, unsigned char check);
+bool tetengo_trie_storage_setCheckAt(tetengo_trie_storage_t* p_storage, size_t base_check_index, unsigned char check);
 
 /*!
     \brief Returns the value count.
@@ -171,10 +172,10 @@ const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* p_storage
     \param p_value     A pointer to a value object. Must not be NULL.
     \param value_size  A value size.
 
-    \retval non-zero On no error.
-    \retval 0        Otherwise.
+    \retval true  On no error.
+    \retval false Otherwise.
 */
-int tetengo_trie_storage_addValueAt(
+bool tetengo_trie_storage_addValueAt(
     tetengo_trie_storage_t* p_storage,
     size_t                  value_index,
     const void*             p_value,
@@ -196,10 +197,10 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* p_storage)
     \param path             A file path.
     \param fixed_value_size The value size if it is fixed. Or 0 if the size is variable.
 
-    \retval non-zero On no error.
-    \retval 0        Otherwise.
+    \retval true  On no error.
+    \retval false Otherwise.
 */
-int tetengo_trie_storage_serialize(
+bool tetengo_trie_storage_serialize(
     const tetengo_trie_storage_t* p_storage,
     const path_character_type*    path,
     size_t                        fixed_value_size);
