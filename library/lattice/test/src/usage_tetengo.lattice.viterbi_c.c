@@ -277,18 +277,18 @@ const char* to_string(const tetengo_lattice_path_t* const p_path)
         {
             if (i > 0)
             {
-                strcat(result, "-");
+                strncat(result, "-", sizeof(result) - strlen(result) - 1);
             }
-            strcat(result, "[");
-            strcat(result, value_of(&p_nodes[i], i == 0));
-            strcat(result, "]");
+            strncat(result, "[", sizeof(result) - strlen(result) - 1);
+            strncat(result, value_of(&p_nodes[i], i == 0), sizeof(result) - strlen(result) - 1);
+            strncat(result, "]", sizeof(result) - strlen(result) - 1);
         }
-        strcat(result, " (");
-        sprintf(result + strlen(result), "%d", tetengo_lattice_path_cost(p_path));
-        strcat(result, ")");
+        strncat(result, " (", sizeof(result) - strlen(result) - 1);
+        snprintf(result + strlen(result), sizeof(result) - strlen(result), "%d", tetengo_lattice_path_cost(p_path));
+        strncat(result, ")", sizeof(result) - strlen(result) - 1);
         free(p_nodes);
     }
-    strcat(result, "\n");
+    strncat(result, "\n", sizeof(result) - strlen(result) - 1);
     return result;
 }
 // [viterbi]

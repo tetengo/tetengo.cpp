@@ -26,7 +26,7 @@ static const char* create_departure(const size_t minute, const char* const desti
     {
         return NULL;
     }
-    sprintf(p_departure, "%02u%s", (unsigned int)minute, encoded);
+    snprintf(p_departure, 2 + strlen(encoded) + 1, "%02u%s", (unsigned int)minute, encoded);
     free((void*)encoded);
     return p_departure;
 }
