@@ -7,8 +7,9 @@
 #if !defined(TETENGO_PROPERTY_PROPERTYSET_H)
 #define TETENGO_PROPERTY_PROPERTYSET_H
 
+#include <stdbool.h>
 #include <stddef.h>
-#include <stdint.h> /* IWYU pragma: keep */
+#include <stdint.h>
 
 #include <tetengo/property/storage.h>
 
@@ -50,13 +51,13 @@ void tetengo_property_propertySet_destroy(const tetengo_property_propertySet_t* 
     \param key            A key.
     \param p_value        The storage for a value.
 
-    \retval non-zero When the value is set to p_value.
-    \retval 0        Otherwise.
+    \retval true  When the value is set to p_value.
+    \retval false Otherwise.
 */
-int tetengo_property_propertySet_getBool(
+bool tetengo_property_propertySet_getBool(
     const tetengo_property_propertySet_t* p_property_set,
     const char*                           key,
-    int*                                  p_value);
+    bool*                                 p_value);
 
 /*!
     \brief Sets a value in a boolean.
@@ -65,7 +66,7 @@ int tetengo_property_propertySet_getBool(
     \param key            A key.
     \param value          A value.
 */
-void tetengo_property_propertySet_setBool(tetengo_property_propertySet_t* p_property_set, const char* key, int value);
+void tetengo_property_propertySet_setBool(tetengo_property_propertySet_t* p_property_set, const char* key, bool value);
 
 /*!
     \brief Returns the value in an unsigned 32-bit integer.
@@ -74,10 +75,10 @@ void tetengo_property_propertySet_setBool(tetengo_property_propertySet_t* p_prop
     \param key            A key.
     \param p_value        The storage for a value.
 
-    \retval non-zero When the value is set to p_value.
-    \retval 0        Otherwise.
+    \retval true  When the value is set to p_value.
+    \retval false Otherwise.
 */
-int tetengo_property_propertySet_getUint32(
+bool tetengo_property_propertySet_getUint32(
     const tetengo_property_propertySet_t* p_property_set,
     const char*                           key,
     uint32_t*                             p_value);

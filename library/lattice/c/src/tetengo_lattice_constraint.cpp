@@ -131,7 +131,7 @@ void tetengo_lattice_constraint_destroy(const tetengo_lattice_constraint_t* cons
     {}
 }
 
-int tetengo_lattice_constraint_matches(
+bool tetengo_lattice_constraint_matches(
     const tetengo_lattice_constraint_t* const p_constraint,
     const tetengo_lattice_node_t* const       p_reverse_path,
     const size_t                              path_length)
@@ -151,15 +151,15 @@ int tetengo_lattice_constraint_matches(
         std::vector<tetengo::lattice::node> cpp_reverse_path{};
         to_cpp_path(p_reverse_path, path_length, cpp_preceding_edge_cost_lists, cpp_reverse_path);
 
-        return p_constraint->p_cpp_constraint->matches(cpp_reverse_path) ? 1 : 0;
+        return p_constraint->p_cpp_constraint->matches(cpp_reverse_path);
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
-int tetengo_lattice_constraint_matchesTail(
+bool tetengo_lattice_constraint_matchesTail(
     const tetengo_lattice_constraint_t* const p_constraint,
     const tetengo_lattice_node_t* const       p_reverse_tail_path,
     const size_t                              tail_path_length)
@@ -179,10 +179,10 @@ int tetengo_lattice_constraint_matchesTail(
         std::vector<tetengo::lattice::node> cpp_reverse_tail_path{};
         to_cpp_path(p_reverse_tail_path, tail_path_length, cpp_preceding_edge_cost_lists, cpp_reverse_tail_path);
 
-        return p_constraint->p_cpp_constraint->matches_tail(cpp_reverse_tail_path) ? 1 : 0;
+        return p_constraint->p_cpp_constraint->matches_tail(cpp_reverse_tail_path);
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }

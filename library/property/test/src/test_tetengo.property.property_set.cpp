@@ -89,12 +89,12 @@ BOOST_AUTO_TEST_CASE(get_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_property_set);
 
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         const auto result = tetengo_property_propertySet_getBool(p_property_set, "alpha", &value);
         BOOST_TEST(!result);
     }
     {
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         const auto result = tetengo_property_propertySet_getBool(nullptr, "alpha", &value);
         BOOST_TEST(!result);
     }
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(get_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_property_set);
 
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         const auto result = tetengo_property_propertySet_getBool(p_property_set, nullptr, &value);
         BOOST_TEST(!result);
     }
@@ -163,8 +163,8 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_property_set);
 
-        tetengo_property_propertySet_setBool(p_property_set, "alpha", 0);
-        auto       value = static_cast<int>(0);
+        tetengo_property_propertySet_setBool(p_property_set, "alpha", false);
+        auto       value = false;
         const auto result = tetengo_property_propertySet_getBool(p_property_set, "alpha", &value);
         BOOST_TEST_REQUIRE(result);
         BOOST_TEST(!value);
@@ -180,14 +180,14 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_property_set);
 
-        tetengo_property_propertySet_setBool(p_property_set, "alpha", 1);
-        auto       value = static_cast<int>(0);
+        tetengo_property_propertySet_setBool(p_property_set, "alpha", true);
+        auto       value = false;
         const auto result = tetengo_property_propertySet_getBool(p_property_set, "alpha", &value);
         BOOST_TEST_REQUIRE(result);
         BOOST_TEST(value);
     }
     {
-        tetengo_property_propertySet_setBool(nullptr, "alpha", 0);
+        tetengo_property_propertySet_setBool(nullptr, "alpha", false);
     }
     {
         auto* const p_storage_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_property_set);
 
-        tetengo_property_propertySet_setBool(p_property_set, nullptr, 0);
+        tetengo_property_propertySet_setBool(p_property_set, nullptr, false);
     }
 }
 

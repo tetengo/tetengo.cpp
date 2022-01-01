@@ -135,7 +135,7 @@ void tetengo_trie_trie_destroy(const tetengo_trie_trie_t* const p_trie)
     {}
 }
 
-int tetengo_trie_trie_empty(const tetengo_trie_trie_t* const p_trie)
+bool tetengo_trie_trie_empty(const tetengo_trie_trie_t* const p_trie)
 {
     try
     {
@@ -144,11 +144,11 @@ int tetengo_trie_trie_empty(const tetengo_trie_trie_t* const p_trie)
             throw std::invalid_argument{ "p_trie is NULL." };
         }
 
-        return std::empty(*p_trie->p_cpp_trie) ? 1 : 0;
+        return std::empty(*p_trie->p_cpp_trie);
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -169,7 +169,7 @@ size_t tetengo_trie_trie_size(const tetengo_trie_trie_t* const p_trie)
     }
 }
 
-int tetengo_trie_trie_contains(const tetengo_trie_trie_t* const p_trie, const char* const key)
+bool tetengo_trie_trie_contains(const tetengo_trie_trie_t* const p_trie, const char* const key)
 {
     try
     {
@@ -186,7 +186,7 @@ int tetengo_trie_trie_contains(const tetengo_trie_trie_t* const p_trie, const ch
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 

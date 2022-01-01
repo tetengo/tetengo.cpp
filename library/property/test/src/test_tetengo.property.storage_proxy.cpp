@@ -62,12 +62,12 @@ BOOST_AUTO_TEST_CASE(get_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         const auto result = tetengo_property_storage_getBool(p_storage, "alpha", &value);
         BOOST_TEST(!result);
     }
     {
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         const auto result = tetengo_property_storage_getBool(nullptr, "alpha", &value);
         BOOST_TEST(!result);
     }
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(get_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        auto       value = static_cast<int>(0);
+        auto       value = false;
         const auto result = tetengo_property_storage_getBool(p_storage, nullptr, &value);
         BOOST_TEST(!result);
     }
@@ -158,8 +158,8 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        tetengo_property_storage_setBool(p_storage, "alpha", 0);
-        auto       value = static_cast<int>(0);
+        tetengo_property_storage_setBool(p_storage, "alpha", false);
+        auto       value = false;
         const auto result = tetengo_property_storage_getBool(p_storage, "alpha", &value);
         BOOST_TEST_REQUIRE(result);
         BOOST_TEST(!value);
@@ -181,14 +181,14 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        tetengo_property_storage_setBool(p_storage, "alpha", 1);
-        auto       value = static_cast<int>(0);
+        tetengo_property_storage_setBool(p_storage, "alpha", true);
+        auto       value = false;
         const auto result = tetengo_property_storage_getBool(p_storage, "alpha", &value);
         BOOST_TEST_REQUIRE(result);
         BOOST_TEST(value);
     }
     {
-        tetengo_property_storage_setBool(nullptr, "alpha", 0);
+        tetengo_property_storage_setBool(nullptr, "alpha", false);
     }
     {
         auto* const       p_real_loader = tetengo_property_storageLoader_createMemoryStorageLoader();
@@ -207,7 +207,7 @@ BOOST_AUTO_TEST_CASE(set_bool)
         BOOST_SCOPE_EXIT_END;
         BOOST_TEST_REQUIRE(p_storage);
 
-        tetengo_property_storage_setBool(p_storage, nullptr, 0);
+        tetengo_property_storage_setBool(p_storage, nullptr, false);
     }
 }
 

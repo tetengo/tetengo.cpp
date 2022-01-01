@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_INPUT_H)
 #define TETENGO_LATTICE_INPUT_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 
@@ -42,10 +43,10 @@ typedef struct tetengo_lattice_customInputDefinition_tag
         \param p_context         A pointer to the context.
         \param p_another_context A pointer to another input context.
 
-        \retval non-zero When p_context is equal to p_another_context.
-        \retval 0        Otherwise.
+        \retval true  When p_context is equal to p_another_context.
+        \retval false Otherwise.
     */
-    int (*equal_to_proc)(void* p_context, void* p_another_context);
+    bool (*equal_to_proc)(void* p_context, void* p_another_context);
 
     /*!
         \brief The procedure for hash value.
@@ -91,10 +92,10 @@ typedef struct tetengo_lattice_customInputDefinition_tag
         \param p_context         A pointer to the context.
         \param p_another_context A pointer to another input context.
 
-        \retval non-zero When p_another is appended to this input.
-        \retval 0        Otherwise.
+        \retval true  When p_another is appended to this input.
+        \retval false Otherwise.
     */
-    int (*append_proc)(void* p_context, void* p_another_context);
+    bool (*append_proc)(void* p_context, void* p_another_context);
 
 } tetengo_lattice_customInputDefinition_t;
 
@@ -121,10 +122,10 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* p_input);
     \param p_one     A pointer to one input.
     \param p_another A pointer to another input.
 
-    \retval non-zero When one input is equal to another.
-    \retval 0        Otherwise.
+    \retval true  When one input is equal to another.
+    \retval false Otherwise.
 */
-int tetengo_lattice_input_equal(const tetengo_lattice_input_t* p_one, const tetengo_lattice_input_t* p_another);
+bool tetengo_lattice_input_equal(const tetengo_lattice_input_t* p_one, const tetengo_lattice_input_t* p_another);
 
 /*!
     \brief Returns the hash value.
@@ -175,10 +176,10 @@ tetengo_lattice_input_createSubrange(const tetengo_lattice_input_t* p_input, siz
     \param p_input   A pointer to an input.
     \param p_another A pointer to another input.
 
-    \retval non-zero When p_another is appended to this input.
-    \retval 0        Otherwise.
+    \retval true  When p_another is appended to this input.
+    \retval false Otherwise.
 */
-int tetengo_lattice_input_append(tetengo_lattice_input_t* p_input, tetengo_lattice_input_t* p_another);
+bool tetengo_lattice_input_append(tetengo_lattice_input_t* p_input, tetengo_lattice_input_t* p_another);
 
 /*!
     \brief Returns the value of a string input.
@@ -195,10 +196,10 @@ const char* tetengo_lattice_stringInput_value(const tetengo_lattice_input_t* p_s
     \param p_string_input A pointer to a string input.
     \param value          A value.
 
-    \retval non-zero When the value is set.
-    \retval 0        Otherwise.
+    \retval true  When the value is set.
+    \retval false Otherwise.
 */
-int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* p_string_input, const char* value);
+bool tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* p_string_input, const char* value);
 
 /*!
     \brief Returns the context of a custom input.
@@ -215,10 +216,10 @@ const void* tetengo_lattice_customInput_context(const tetengo_lattice_input_t* p
     \param p_custom_input A pointer to a custom input.
     \param p_context      A pointer to a context.
 
-    \retval non-zero When the context is set.
-    \retval 0        Otherwise.
+    \retval true  When the context is set.
+    \retval false Otherwise.
 */
-int tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* p_custom_input, void* p_context);
+bool tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* p_custom_input, void* p_context);
 
 
 #if defined(__cplusplus)

@@ -170,7 +170,7 @@ void tetengo_lattice_input_destroy(const tetengo_lattice_input_t* const p_input)
     {}
 }
 
-int tetengo_lattice_input_equal(
+bool tetengo_lattice_input_equal(
     const tetengo_lattice_input_t* const p_one,
     const tetengo_lattice_input_t* const p_another)
 {
@@ -189,7 +189,7 @@ int tetengo_lattice_input_equal(
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -270,7 +270,7 @@ tetengo_lattice_input_t* tetengo_lattice_input_createSubrange(
     }
 }
 
-int tetengo_lattice_input_append(tetengo_lattice_input_t* const p_input, tetengo_lattice_input_t* const p_another)
+bool tetengo_lattice_input_append(tetengo_lattice_input_t* const p_input, tetengo_lattice_input_t* const p_another)
 {
     try
     {
@@ -291,11 +291,11 @@ int tetengo_lattice_input_append(tetengo_lattice_input_t* const p_input, tetengo
 
         p_input->p_cpp_input()->append(std::move(p_another->p_cpp_input()));
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -320,7 +320,7 @@ const char* tetengo_lattice_stringInput_value(const tetengo_lattice_input_t* con
     }
 }
 
-int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* const p_string_input, const char* const value)
+bool tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* const p_string_input, const char* const value)
 {
     try
     {
@@ -339,11 +339,11 @@ int tetengo_lattice_stringInput_setValue(tetengo_lattice_input_t* const p_string
 
         p_string_input->p_cpp_input()->as<tetengo::lattice::string_input>().value() = value;
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -369,7 +369,7 @@ const void* tetengo_lattice_customInput_context(const tetengo_lattice_input_t* c
 }
 
 
-int tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* const p_custom_input, void* const p_context)
+bool tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* const p_custom_input, void* const p_context)
 {
     try
     {
@@ -384,10 +384,10 @@ int tetengo_lattice_customInput_setContext(tetengo_lattice_input_t* const p_cust
 
         p_custom_input->p_cpp_input()->as<custom_input>().set_context(p_context);
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }

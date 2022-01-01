@@ -131,7 +131,7 @@ void tetengo_json_reader_destroy(const tetengo_json_reader_t* const p_reader)
     {}
 }
 
-int tetengo_json_reader_getLocation(
+bool tetengo_json_reader_getLocation(
     const tetengo_json_reader_t* const p_line_counting_reader,
     tetengo_json_location_t* const     p_location)
 {
@@ -159,15 +159,15 @@ int tetengo_json_reader_getLocation(
         p_location->line_index = cpp_location.line_index();
         p_location->column_index = cpp_location.column_index();
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
-int tetengo_json_reader_hasNext(const tetengo_json_reader_t* const p_reader)
+bool tetengo_json_reader_hasNext(const tetengo_json_reader_t* const p_reader)
 {
     try
     {
@@ -176,11 +176,11 @@ int tetengo_json_reader_hasNext(const tetengo_json_reader_t* const p_reader)
             throw std::invalid_argument{ "p_reader is NULL." };
         }
 
-        return p_reader->cpp_reader().has_next() ? 1 : 0;
+        return p_reader->cpp_reader().has_next();
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 

@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_NBESTITERATOR_H)
 #define TETENGO_LATTICE_NBESTITERATOR_H
 
+#include <stdbool.h>
 
 #include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/lattice.h>
@@ -57,14 +58,14 @@ void tetengo_lattice_nBestIterator_destroy(const tetengo_lattice_nBestIterator_t
 tetengo_lattice_path_t* tetengo_lattice_nBestIterator_createPath(const tetengo_lattice_nBestIterator_t* p_iterator);
 
 /*!
-    \brief Returns non-zero when the iterator will return more elements.
+    \brief Returns true when the iterator will return more elements.
 
     \param p_iterator A pointer to an iterator.
 
-    \retval non-zero When the iterator will return more elements.
-    \retval 0        Otherwise.
+    \retval true  When the iterator will return more elements.
+    \retval false Otherwise.
 */
-int tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t* p_iterator);
+bool tetengo_lattice_nBestIterator_hasNext(const tetengo_lattice_nBestIterator_t* p_iterator);
 
 /*!
     \brief Increments the iterator.

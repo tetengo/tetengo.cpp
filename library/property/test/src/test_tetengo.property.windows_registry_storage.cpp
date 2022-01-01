@@ -292,12 +292,12 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_TEST(p_storage);
 
         {
-            auto       value = static_cast<int>(0);
+            auto       value = false;
             const auto result = tetengo_property_storage_getBool(p_storage, "alpha", &value);
             BOOST_TEST(!result);
         }
         {
-            auto       value = static_cast<int>(0);
+            auto       value = false;
             const auto result = tetengo_property_storage_getBool(p_storage, "bravo", &value);
             BOOST_TEST(!result);
         }
@@ -330,13 +330,13 @@ BOOST_AUTO_TEST_CASE(load)
         BOOST_TEST(p_storage);
 
         {
-            auto       value = static_cast<int>(0);
+            auto       value = false;
             const auto result = tetengo_property_storage_getBool(p_storage, "alpha", &value);
             BOOST_TEST_REQUIRE(result);
             BOOST_TEST(!value);
         }
         {
-            auto       value = static_cast<int>(0);
+            auto       value = false;
             const auto result = tetengo_property_storage_getBool(p_storage, "bravo", &value);
             BOOST_TEST_REQUIRE(result);
             BOOST_TEST(value);

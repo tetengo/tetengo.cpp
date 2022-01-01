@@ -5,7 +5,6 @@
 */
 
 #include <any>
-#include <climits>
 #include <cstddef>
 #include <filesystem>
 #include <fstream>
@@ -15,6 +14,8 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+
+#include <stdint.h>
 
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/file_mapping.hpp>
@@ -32,7 +33,7 @@
 #include "tetengo_trie_trie.hpp"
 
 
-unsigned char tetengo_trie_storage_vacantCheckValue()
+uint8_t tetengo_trie_storage_vacantCheckValue()
 {
     return tetengo::trie::double_array::vacant_check_value();
 }
@@ -170,7 +171,7 @@ size_t tetengo_trie_storage_baseCheckSize(const tetengo_trie_storage_t* const p_
     }
 }
 
-int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
+int32_t tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
 {
     try
     {
@@ -183,14 +184,14 @@ int tetengo_trie_storage_baseAt(const tetengo_trie_storage_t* const p_storage, c
     }
     catch (...)
     {
-        return INT_MAX;
+        return INT32_MAX;
     }
 }
 
-int tetengo_trie_storage_setBaseAt(
+bool tetengo_trie_storage_setBaseAt(
     tetengo_trie_storage_t* const p_storage,
     const size_t                  base_check_index,
-    const int                     base)
+    const int32_t                 base)
 {
     try
     {
@@ -201,15 +202,15 @@ int tetengo_trie_storage_setBaseAt(
 
         p_storage->p_cpp_storage()->set_base_at(base_check_index, base);
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
-unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
+uint8_t tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* const p_storage, const size_t base_check_index)
 {
     try
     {
@@ -222,14 +223,14 @@ unsigned char tetengo_trie_storage_checkAt(const tetengo_trie_storage_t* const p
     }
     catch (...)
     {
-        return UCHAR_MAX;
+        return UINT8_MAX;
     }
 }
 
-int tetengo_trie_storage_setCheckAt(
+bool tetengo_trie_storage_setCheckAt(
     tetengo_trie_storage_t* const p_storage,
     const size_t                  base_check_index,
-    const unsigned char           check)
+    const uint8_t                 check)
 {
     try
     {
@@ -240,11 +241,11 @@ int tetengo_trie_storage_setCheckAt(
 
         p_storage->p_cpp_storage()->set_check_at(base_check_index, check);
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -287,7 +288,7 @@ const void* tetengo_trie_storage_valueAt(const tetengo_trie_storage_t* const p_s
     }
 }
 
-int tetengo_trie_storage_addValueAt(
+bool tetengo_trie_storage_addValueAt(
     tetengo_trie_storage_t* const p_storage,
     const size_t                  value_index,
     const void* const             p_value,
@@ -308,11 +309,11 @@ int tetengo_trie_storage_addValueAt(
             static_cast<const char*>(p_value), static_cast<const char*>(p_value) + value_size);
         p_storage->p_cpp_storage()->add_value_at(value_index, std::move(value_bytes));
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
@@ -333,7 +334,7 @@ double tetengo_trie_storage_fillingRate(const tetengo_trie_storage_t* const p_st
     }
 }
 
-int tetengo_trie_storage_serialize(
+bool tetengo_trie_storage_serialize(
     const tetengo_trie_storage_t* const p_storage,
     const path_character_type* const    path,
     const size_t                        fixed_value_size)
@@ -355,11 +356,11 @@ int tetengo_trie_storage_serialize(
         };
         p_storage->p_cpp_storage()->serialize(stream, serializer);
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 

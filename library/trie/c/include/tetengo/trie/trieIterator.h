@@ -7,6 +7,8 @@
 #if !defined(TETENGO_TRIE_TRIEITERATOR_H)
 #define TETENGO_TRIE_TRIEITERATOR_H
 
+#include <stdbool.h>
+
 
 #if defined(__cplusplus)
 extern "C" {
@@ -50,14 +52,14 @@ void tetengo_trie_trieIterator_destroy(const tetengo_trie_trieIterator_t* p_iter
 const void* tetengo_trie_trieIterator_get(const tetengo_trie_trieIterator_t* p_iterator);
 
 /*!
-    \brief Returns non-zero when the iterator will return more elements.
+    \brief Returns true when the iterator will return more elements.
 
     \param p_iterator A pointer to an iterator.
 
-    \retval non-zero When the iterator will return more elements.
-    \retval 0        Otherwise.
+    \retval true  When the iterator will return more elements.
+    \retval false Otherwise.
 */
-int tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator_t* p_iterator);
+bool tetengo_trie_trieIterator_hasNext(const tetengo_trie_trieIterator_t* p_iterator);
 
 /*!
     \brief Increments the iterator.

@@ -7,6 +7,7 @@
 #if !defined(TETENGO_JSON_READER_H)
 #define TETENGO_JSON_READER_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 
@@ -93,24 +94,24 @@ void tetengo_json_reader_destroy(const tetengo_json_reader_t* p_reader);
     \param p_line_counting_reader A pointer to a line counting reader.
     \param p_location             The storage for a location.
 
-    \retval non-zero When a location has been stored.
-    \retval 0        When p_line_counting_reader is NULL or not a line counting reader.
-                     And/or when p_location is NULL.
-                     And/or when current position is beyond the termination point.
+    \retval true  When a location has been stored.
+    \retval false When p_line_counting_reader is NULL or not a line counting reader.
+                  And/or when p_location is NULL.
+                  And/or when current position is beyond the termination point.
 */
-int tetengo_json_reader_getLocation(
+bool tetengo_json_reader_getLocation(
     const tetengo_json_reader_t* p_line_counting_reader,
     tetengo_json_location_t*     p_location);
 
 /*!
-    \brief Returns non-zero when the next character exists.
+    \brief Returns true when the next character exists.
 
     \param p_reader A pointer to a reader.
 
-    \retval non-zero When the next character exists.
-    \retval 0        Otherwise.
+    \retval true  When the next character exists.
+    \retval false    Otherwise.
 */
-int tetengo_json_reader_hasNext(const tetengo_json_reader_t* p_reader);
+bool tetengo_json_reader_hasNext(const tetengo_json_reader_t* p_reader);
 
 /*!
     \brief Returns the current character.

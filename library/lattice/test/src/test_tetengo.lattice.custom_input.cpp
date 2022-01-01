@@ -20,7 +20,7 @@
 
 namespace
 {
-    int equal_to_procedure(void* const p_context, void* const p_another_context)
+    bool equal_to_procedure(void* const p_context, void* const p_another_context)
     {
         const auto* const p_vector = reinterpret_cast<std::vector<int>*>(p_context);
         const auto* const p_another_vector = reinterpret_cast<std::vector<int>*>(p_another_context);
@@ -54,7 +54,7 @@ namespace
         const std::unique_ptr<std::vector<int>> p_instance{ reinterpret_cast<std::vector<int>*>(p_context) };
     }
 
-    int append_procedure(void* const p_context, void* const p_another_context)
+    bool append_procedure(void* const p_context, void* const p_another_context)
     {
         auto* const p_vector = reinterpret_cast<std::vector<int>*>(p_context);
         auto* const p_another_vector = reinterpret_cast<std::vector<int>*>(p_another_context);
@@ -62,7 +62,7 @@ namespace
             std::end(*p_vector),
             std::make_move_iterator(std::begin(*p_another_vector)),
             std::make_move_iterator(std::end(*p_another_vector)));
-        return 1;
+        return true;
     }
 
 

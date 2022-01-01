@@ -7,6 +7,7 @@
 #if !defined(TETENGO_LATTICE_PATH_H)
 #define TETENGO_LATTICE_PATH_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include <tetengo/lattice/node.h>
@@ -47,14 +48,14 @@ tetengo_lattice_path_t* tetengo_lattice_path_create(const tetengo_lattice_node_t
 void tetengo_lattice_path_destroy(const tetengo_lattice_path_t* p_path);
 
 /*!
-    \brief Returns non-zero when this path is empty.
+    \brief Returns true when this path is empty.
 
     \param p_path A pointer to a path.
 
-    \retval non-zero When this path is empty.
-    \retval 0        Otherwise.
+    \retval true  When this path is empty.
+    \retval false Otherwise.
 */
-int tetengo_lattice_path_empty(const tetengo_lattice_path_t* p_path);
+bool tetengo_lattice_path_empty(const tetengo_lattice_path_t* p_path);
 
 /*!
     \brief Returns the nodes.

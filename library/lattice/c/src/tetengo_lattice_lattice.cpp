@@ -119,7 +119,9 @@ size_t tetengo_lattice_lattice_nodesAt(
     }
 }
 
-int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice, tetengo_lattice_input_t* const p_input)
+bool tetengo_lattice_lattice_pushBack(
+    tetengo_lattice_lattice_t* const p_lattice,
+    tetengo_lattice_input_t* const   p_input)
 {
     try
     {
@@ -140,11 +142,11 @@ int tetengo_lattice_lattice_pushBack(tetengo_lattice_lattice_t* const p_lattice,
 
         p_lattice->p_cpp_lattice->push_back(std::move(p_input->p_cpp_input()));
 
-        return 1;
+        return true;
     }
     catch (...)
     {
-        return 0;
+        return false;
     }
 }
 
