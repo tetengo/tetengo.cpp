@@ -12,6 +12,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/interprocess/file_mapping.hpp>
+
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/trie.hpp>
 
