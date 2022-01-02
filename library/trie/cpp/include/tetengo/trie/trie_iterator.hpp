@@ -140,6 +140,26 @@ namespace tetengo::trie
         }
 
         /*!
+            \brief Returns the pointer to the value.
+
+            \return The pointer to the value.
+        */
+        [[nodiscard]] const value_type* operator->() const
+        {
+            return std::any_cast<value_type>(&*m_impl);
+        }
+
+        /*!
+            \brief Returns the pointer to the value.
+
+            \return The pointer to the value.
+        */
+        [[nodiscard]] value_type* operator->()
+        {
+            return std::any_cast<value_type>(&*m_impl);
+        }
+
+        /*!
             \brief Returns true when one iterator is equal to another.
 
             \param one   One iterator.
@@ -164,8 +184,17 @@ namespace tetengo::trie
             return *this;
         }
 
-        //! Makes operator++(int) visible.
-        using boost::stl_interfaces::iterator_interface<trie_iterator, std ::forward_iterator_tag, Value>::operator++;
+        /*!
+            \brief Postincrements the iterator.
+
+            \return The iterator before the incrementation.
+        */
+        trie_iterator operator++(int)
+        {
+            trie_iterator original{ *this };
+            ++(*this);
+            return original;
+        }
 
 
     private:

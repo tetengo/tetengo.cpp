@@ -53,6 +53,16 @@ namespace tetengo::trie
         return *m_current;
     }
 
+    const std::int32_t* double_array_iterator::operator->() const
+    {
+        return &operator*();
+    }
+
+    std::int32_t* double_array_iterator::operator->()
+    {
+        return &operator*();
+    }
+
     bool operator==(const double_array_iterator& one, const double_array_iterator& another)
     {
         if ((!one.m_p_storage || !another.m_p_storage) && std::empty(one.m_base_check_index_key_stack) &&
@@ -107,6 +117,13 @@ namespace tetengo::trie
         }
 
         return next();
+    }
+
+    double_array_iterator double_array_iterator::operator++(int)
+    {
+        double_array_iterator original{ *this };
+        ++(*this);
+        return original;
     }
 
 

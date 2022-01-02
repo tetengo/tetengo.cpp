@@ -136,6 +136,20 @@ namespace tetengo::lattice
         [[nodiscard]] path& operator*();
 
         /*!
+            \brief Returns the pointer to the value.
+
+            \return The pointer to the value.
+        */
+        [[nodiscard]] const path* operator->() const;
+
+        /*!
+            \brief Returns the pointer to the value.
+
+            \return The pointer to the value.
+        */
+        [[nodiscard]] path* operator->();
+
+        /*!
             \brief Returns true when one iterator is equal to another.
 
             \param one   One iterator.
@@ -153,8 +167,12 @@ namespace tetengo::lattice
         */
         n_best_iterator& operator++();
 
-        //! Makes operator++(int) visible.
-        using boost::stl_interfaces::iterator_interface<n_best_iterator, std::forward_iterator_tag, path>::operator++;
+        /*!
+            \brief Postincrements the iterator.
+
+            \return The iterator before the incrementation.
+        */
+        n_best_iterator operator++(int);
 
 
     private:

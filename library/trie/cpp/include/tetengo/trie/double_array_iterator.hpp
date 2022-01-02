@@ -66,6 +66,20 @@ namespace tetengo::trie
         [[nodiscard]] std::int32_t& operator*();
 
         /*!
+            \brief Returns the pointer to the value.
+
+            \return The pointer to the value.
+        */
+        [[nodiscard]] const std::int32_t* operator->() const;
+
+        /*!
+            \brief Returns the pointer to the value.
+
+            \return The pointer to the value.
+        */
+        [[nodiscard]] std::int32_t* operator->();
+
+        /*!
             \brief Returns true when one iterator is equal to another.
 
             \param one   One iterator.
@@ -83,9 +97,12 @@ namespace tetengo::trie
         */
         double_array_iterator& operator++();
 
-        //! Makes operator++(int) visible.
-        using boost::stl_interfaces::
-            iterator_interface<double_array_iterator, std ::forward_iterator_tag, std::int32_t>::operator++;
+        /*!
+            \brief Postincrements the iterator.
+
+            \return The iterator before the incrementation.
+        */
+        double_array_iterator operator++(int);
 
 
     private:

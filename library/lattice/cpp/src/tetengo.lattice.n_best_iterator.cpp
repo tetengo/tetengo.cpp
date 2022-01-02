@@ -208,6 +208,16 @@ namespace tetengo::lattice
         return m_path;
     }
 
+    const path* n_best_iterator::operator->() const
+    {
+        return &operator*();
+    }
+
+    path* n_best_iterator::operator->()
+    {
+        return &operator*();
+    }
+
     bool operator==(const n_best_iterator& one, const n_best_iterator& another)
     {
         if (std::empty(one.m_path) && std::empty(another.m_path))
@@ -237,6 +247,13 @@ namespace tetengo::lattice
         ++m_index;
 
         return *this;
+    }
+
+    n_best_iterator n_best_iterator::operator++(int)
+    {
+        n_best_iterator original{ *this };
+        ++(*this);
+        return original;
     }
 
 
