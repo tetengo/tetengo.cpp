@@ -17,6 +17,7 @@
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/lattice/connection.h>

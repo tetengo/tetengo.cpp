@@ -16,6 +16,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
+
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/input.hpp>

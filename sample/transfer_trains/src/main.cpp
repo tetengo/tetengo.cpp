@@ -18,15 +18,16 @@
 #include <optional>
 #include <string>
 #include <string_view>
-#include <type_traits>
+#include <type_traits> // IWYU pragma: keep
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
-#include <boost/iterator/iterator_traits.hpp>
+#include <boost/iterator/iterator_traits.hpp> // IWYU pragma: keep
 #include <boost/lexical_cast.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/input.hpp>
