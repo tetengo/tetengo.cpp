@@ -9,6 +9,7 @@
 #include <clocale>
 #include <exception>
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -24,7 +25,6 @@
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/format.hpp>
 #include <boost/iterator/iterator_traits.hpp> // IWYU pragma: keep
 #include <boost/lexical_cast.hpp>
 #include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
@@ -268,7 +268,7 @@ namespace
     std::string to_time_string(const int time_value)
     {
         assert(0 <= time_value && time_value < 1440);
-        return (boost::format{ "%02d:%02d" } % (time_value / 60) % (time_value % 60)).str();
+        return std::format("{:02d}:{:02d}", time_value / 60, time_value % 60);
     }
 
     void print_trips(const std::vector<trip>& trips, const timetable& timetable_)
@@ -277,17 +277,19 @@ namespace
         {
             const auto& trip_ = trips[i];
 
-            std::cout << boost::format("[%d] Cost: %d") % (i + 1) % trip_.cost << std::endl;
+            std::cout << std::format("[{:d}] Cost: {:d}", i + 1, trip_.cost) << std::endl;
 
             for (const auto& section: trip_.sections)
             {
-                const auto train = boost::format("    %5s %s %5s->%5s %s->%s") % section.train_number %
-                                   to_fixed_width_train_name(section.train_name, 40) %
-                                   to_time_string(static_cast<int>(section.departure_time)) %
-                                   to_time_string(static_cast<int>(section.arrival_time)) %
-                                   timetable_.stations()[section.departure_station].name() %
-                                   timetable_.stations()[section.arrival_station].name();
-                std::cout << encode_for_print(train.str()) << std::endl;
+                const auto train = std::format(
+                    "    {:5s} {:s} {:5s}->{:5s} {:s}->{:s}",
+                    section.train_number,
+                    to_fixed_width_train_name(section.train_name, 40),
+                    to_time_string(static_cast<int>(section.departure_time)),
+                    to_time_string(static_cast<int>(section.arrival_time)),
+                    timetable_.stations()[section.departure_station].name(),
+                    timetable_.stations()[section.arrival_station].name());
+                std::cout << encode_for_print(train) << std::endl;
             }
         }
 

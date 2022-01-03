@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <exception>
 #include <filesystem>
+#include <format>
 #include <fstream> // IWYU pragma: keep
 #include <functional>
 #include <iostream>
@@ -25,8 +26,6 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
-
-#include <boost/format.hpp>
 
 #include <tetengo/text/encoder.hpp>
 #include <tetengo/text/encoding/cp932.hpp> // IWYU pragma: keep
@@ -152,7 +151,7 @@ namespace
             const auto elements = split(line, ',');
             if (std::size(elements) != 33)
             {
-                std::cerr << boost::format{ "%8d: %s" } % i % encode_for_print(elements[0]) << "    \n" << std::flush;
+                std::cerr << std::format("{:8d}: {:s}    \n", i, encode_for_print(elements[0])) << std::flush;
                 throw std::runtime_error{ "Invalid UniDic lex.csv format." };
             }
 
@@ -168,7 +167,7 @@ namespace
 
             if (i % 10000 == 0)
             {
-                std::cerr << boost::format{ "%8d: %s" } % i % encode_for_print(elements[0]) << "    \r" << std::flush;
+                std::cerr << std::format("{:8d}: {:s}    \r", i, encode_for_print(elements[0])) << std::flush;
             }
 
             line_head += line.length() + 1;
@@ -187,7 +186,7 @@ namespace
         {
             if (m_index % 10000 == 0)
             {
-                std::cerr << boost::format{ "%8d: %s" } % m_index % encode_for_print(key) << "    \r" << std::flush;
+                std::cerr << std::format("{:8d}: {:s}    \r", m_index, encode_for_print(key)) << std::flush;
             }
             ++m_index;
         }
