@@ -13,6 +13,7 @@
 // C Standard Library
 #include <assert.h>
 #include <locale.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -27,9 +28,9 @@
 #include <any>
 #include <cassert>
 #include <cctype>
-#include <climits>
 #include <clocale>
 #include <cmath>
+#include <compare>
 #include <condition_variable>
 #include <cstddef>
 #include <cstdint>
@@ -81,6 +82,7 @@
 #include <boost/interprocess/exceptions.hpp>
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
+#include <boost/iterator/iterator_traits.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/operators.hpp>
 #include <boost/preprocessor.hpp>
