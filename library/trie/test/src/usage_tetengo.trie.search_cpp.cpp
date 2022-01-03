@@ -16,8 +16,6 @@
 #include <string_view>
 #include <vector>
 
-#include <boost/stl_interfaces/iterator_interface.hpp>
-
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trie_iterator.hpp>

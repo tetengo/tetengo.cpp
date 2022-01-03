@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <compare>
 #include <functional>
 #include <iterator>
 #include <stdexcept>

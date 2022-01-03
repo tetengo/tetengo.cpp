@@ -12,7 +12,6 @@
 #include <vector>
 
 #include <boost/preprocessor.hpp>
-#include <boost/stl_interfaces/iterator_interface.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/double_array.hpp>

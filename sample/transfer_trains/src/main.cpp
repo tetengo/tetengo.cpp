@@ -18,14 +18,15 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
+#include <boost/iterator/iterator_traits.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/stl_interfaces/iterator_interface.hpp>
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/input.hpp>
