@@ -30,10 +30,10 @@ namespace tetengo::text::encoding
         using string_view_type = std::string_view;
 
         //! The encoded string type.
-        using encoded_string_type = std::string_view;
+        using encoded_string_type = std::u8string_view;
 
         //! The encoded string view type.
-        using encoded_string_view_type = std::string_view;
+        using encoded_string_view_type = std::u8string_view;
 
 
         // static functions

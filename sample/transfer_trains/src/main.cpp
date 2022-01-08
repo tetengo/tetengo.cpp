@@ -56,7 +56,9 @@ namespace
         }
         else
         {
-            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().decode(encoded) };
+            const std::u8string_view utf8_encoded{ reinterpret_cast<const char8_t*>(encoded.data()), encoded.length() };
+            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().decode(
+                utf8_encoded) };
         }
     }
 
@@ -69,7 +71,8 @@ namespace
         }
         else
         {
-            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_) };
+            const auto encoded = tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_);
+            return std::string{ reinterpret_cast<const char*>(encoded.data()), encoded.length() };
         }
     }
 

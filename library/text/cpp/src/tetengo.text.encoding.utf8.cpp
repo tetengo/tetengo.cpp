@@ -40,12 +40,13 @@ namespace tetengo::text::encoding
 
         encoded_string_type encode(const string_view_type& utf8) const
         {
-            return utf8;
+            return encoded_string_type{ reinterpret_cast<const encoded_string_type::value_type*>(utf8.data()),
+                                        utf8.length() };
         }
 
         string_type decode(const encoded_string_view_type& string_) const
         {
-            return string_;
+            return string_type{ reinterpret_cast<const string_type::value_type*>(string_.data()), string_.length() };
         }
     };
 

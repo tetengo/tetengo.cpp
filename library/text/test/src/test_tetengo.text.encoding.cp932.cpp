@@ -25,7 +25,7 @@ namespace
     }
 
     // tokkyu rapi:t beta 25-go kansai-kuko yuki (rapi:t limited express No. 25 bound for Kansai Airport)
-    const std::string string1_utf8{
+    const std::string string1_internal{
         // clang-format off
         0xE7_c, 0x89_c, 0xB9_c, 0xE6_c, 0x80_c, 0xA5_c,
         0xE3_c, 0x83_c, 0xA9_c, 0xE3_c, 0x83_c, 0x94_c, 0xE3_c, 0x83_c, 0xBC_c, 0xE3_c, 0x83_c, 0x88_c,
@@ -49,7 +49,7 @@ namespace
     };
 
     // wave-dash and back-slash
-    const std::string string2_utf8{
+    const std::string string2_internal{
         // clang-format off
         0xEF_c, 0xBD_c, 0x9E_c,
         0x5C_c,
@@ -65,7 +65,7 @@ namespace
     };
 
     // shinkansen (emoji) kara romendensha (emoji) e (From Shinkansen to tram)
-    const std::string string3_utf8{
+    const std::string string3_internal{
         // clang-format off
         0xE6_c, 0x96_c, 0xB0_c, 0xE5_c, 0xB9_c, 0xB9_c, 0xE7_c, 0xB7_c, 0x9A_c,
         0xF0_c, 0x9F_c, 0x9A_c, 0x85_c,
@@ -89,7 +89,7 @@ namespace
     };
 
     // invalid UTF-8 sequence
-    const std::string string4_utf8{
+    const std::string string4_internal{
         // clang-format off
         0xC0_c, 0xAF_c,
         // clang-format on
@@ -125,20 +125,20 @@ BOOST_AUTO_TEST_CASE(encode)
 
     const auto& encoding = tetengo::text::encoding::cp932::instance();
     {
-        const auto encoded = encoding.encode(string1_utf8);
+        const auto encoded = encoding.encode(string1_internal);
         BOOST_TEST(encoded == string1_cp932);
     }
     {
-        const auto encoded = encoding.encode(string2_utf8);
+        const auto encoded = encoding.encode(string2_internal);
         BOOST_TEST(encoded == string2_cp932);
     }
     {
-        const auto       encoded = encoding.encode(string3_utf8);
+        const auto       encoded = encoding.encode(string3_internal);
         const std::regex regex_{ pattern3_cp932 };
         BOOST_TEST(std::regex_match(std::string{ encoded }, regex_));
     }
     {
-        const auto       encoded = encoding.encode(string4_utf8);
+        const auto       encoded = encoding.encode(string4_internal);
         const std::regex regex_{ pattern4_cp932 };
         BOOST_TEST(std::regex_match(std::string{ encoded }, regex_));
     }
@@ -155,11 +155,11 @@ BOOST_AUTO_TEST_CASE(decode)
     const auto& encoding = tetengo::text::encoding::cp932::instance();
     {
         const auto decoded = encoding.decode(string1_cp932);
-        BOOST_TEST(decoded == string1_utf8);
+        BOOST_TEST(decoded == string1_internal);
     }
     {
         const auto decoded = encoding.decode(string2_cp932);
-        BOOST_TEST(decoded == string2_utf8);
+        BOOST_TEST(decoded == string2_internal);
     }
     {
         const auto decoded = encoding.decode("");
