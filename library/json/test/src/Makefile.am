@@ -25,14 +25,18 @@ check_PROGRAMS = test_tetengo.json
 
 test_tetengo_json_CPPFLAGS = \
     -I${top_srcdir}/library/json/c/include \
-    -I${top_srcdir}/library/json/cpp/include
+    -I${top_srcdir}/library/json/cpp/include \
+    -I${top_srcdir}/library/text/cpp/include
 test_tetengo_json_LDFLAGS = \
-    -L${top_builddir}/library/json/c/src
+    -L${top_builddir}/library/json/c/src \
+    -L${top_builddir}/library/text/cpp/src
 test_tetengo_json_LDADD = \
     -ltetengo.json \
+    -ltetengo.text.cpp \
     ${BOOST_UNIT_TEST_FRAMEWORK_LIB}
 test_tetengo_json_DEPENDENCIES = \
-    ${top_builddir}/library/json/c/src/libtetengo.json.la
+    ${top_builddir}/library/json/c/src/libtetengo.json.la \
+    ${top_builddir}/library/text/cpp/src/libtetengo.text.noinst.la
 test_tetengo_json_SOURCES = ${headers} ${sources}
 
 TESTS = ${check_PROGRAMS}
