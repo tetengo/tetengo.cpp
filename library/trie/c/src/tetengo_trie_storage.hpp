@@ -50,13 +50,13 @@ public:
     const tetengo::trie::storage* p_cpp_storage() const
     {
         assert(!p_cpp_storage_referred || !p_cpp_storage_owned);
-        return p_cpp_storage_referred ? p_cpp_storage_referred : p_cpp_storage_owned.get();
+        return p_cpp_storage_referred ? p_cpp_storage_referred : std::to_address(p_cpp_storage_owned);
     }
 
     tetengo::trie::storage* p_cpp_storage()
     {
         assert(!p_cpp_storage_referred);
-        return p_cpp_storage_owned.get();
+        return std::to_address(p_cpp_storage_owned);
     }
 };
 

@@ -288,7 +288,7 @@ const tetengo_trie_storage_t* tetengo_trie_trie_getStorage(const tetengo_trie_tr
                 tetengo_trie_storage_createStorage(p_trie),
             };
         }
-        return p_trie->p_storage.get();
+        return std::to_address(p_trie->p_storage);
     }
     catch (...)
     {

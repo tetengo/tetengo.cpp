@@ -46,7 +46,7 @@ namespace tetengo::lattice
 
     const input* entry::p_key() const
     {
-        return m_p_key.get();
+        return std::to_address(m_p_key);
     }
 
     const std::any& entry::value() const

@@ -112,7 +112,7 @@ const tetengo_json_element_t* tetengo_json_jsonParser_peek(const tetengo_json_js
         }
 
         p_parser->p_current_element = std::make_unique<tetengo_json_element_t>(&p_parser->p_cpp_parser->peek());
-        return p_parser->p_current_element.get();
+        return std::to_address(p_parser->p_current_element);
     }
     catch (...)
     {

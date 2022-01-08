@@ -26,7 +26,7 @@ struct tetengo_json_element_tag
 
     explicit tetengo_json_element_tag(std::unique_ptr<tetengo::json::element>&& p_cpp_element) :
     p_cpp_element_holder{ std::move(p_cpp_element) },
-    p_cpp_element{ p_cpp_element_holder.get() },
+    p_cpp_element{ std::to_address(p_cpp_element_holder) },
     type{},
     file_location{}
     {}

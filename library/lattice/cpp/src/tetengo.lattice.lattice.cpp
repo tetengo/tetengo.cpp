@@ -167,7 +167,7 @@ namespace tetengo::lattice
 
             node eos_node{ node::eos(
                 std::size(m_graph) - 1,
-                p_preceding_edge_costs.get(),
+                std::to_address(p_preceding_edge_costs),
                 best_preceding_node_index_,
                 best_preceding_path_cost) };
             return std::make_pair(std::move(eos_node), std::move(p_preceding_edge_costs));
@@ -181,7 +181,7 @@ namespace tetengo::lattice
         {
             std::vector<std::unique_ptr<std::vector<int>>> p_node_preceding_edge_costs{};
             p_node_preceding_edge_costs.push_back(std::make_unique<std::vector<int>>());
-            std::vector<node> nodes{ node::bos(p_node_preceding_edge_costs[0].get()) };
+            std::vector<node> nodes{ node::bos(std::to_address(p_node_preceding_edge_costs[0])) };
             return graph_step{ 0, std::move(nodes), std::move(p_node_preceding_edge_costs) };
         }
 
