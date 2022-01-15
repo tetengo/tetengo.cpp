@@ -112,8 +112,7 @@ namespace tetengo::trie
         std::unique_ptr<double_array> subtrie(const std::string_view& key_prefix) const
         {
             const auto o_index = traverse(key_prefix);
-            return o_index ? std::make_unique<double_array>(m_p_storage->clone(), *o_index) :
-                             std::unique_ptr<double_array>{};
+            return o_index ? std::make_unique<double_array>(m_p_storage->clone(), *o_index) : nullptr;
         }
 
         const storage& get_storage() const

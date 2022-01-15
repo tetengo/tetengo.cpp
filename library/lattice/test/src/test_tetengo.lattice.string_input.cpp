@@ -513,7 +513,7 @@ BOOST_AUTO_TEST_CASE(append)
     {
         tetengo::lattice::string_input input{ "hoge" };
 
-        BOOST_CHECK_THROW(input.append(std::unique_ptr<tetengo::lattice::string_input>{}), std::invalid_argument);
+        BOOST_CHECK_THROW(input.append(nullptr), std::invalid_argument);
         BOOST_CHECK_THROW(input.append(std::make_unique<another_input>()), std::invalid_argument);
     }
 

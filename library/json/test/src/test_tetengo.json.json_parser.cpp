@@ -152,8 +152,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::json::json_parser parser{ std::move(p_reader), 42 };
     }
     {
-        BOOST_CHECK_THROW(
-            const tetengo::json::json_parser parser{ std::unique_ptr<tetengo::json::reader>{} }, std::invalid_argument);
+        BOOST_CHECK_THROW(const tetengo::json::json_parser parser{ nullptr }, std::invalid_argument);
     }
 
     {

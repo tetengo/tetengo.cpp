@@ -78,7 +78,7 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
                 BOOST_SCOPE_EXIT_END;
                 std::any cpp_entry_value{ entry.p_value };
                 cpp_entry_values.emplace_back(
-                    p_cpp_entry_key ? p_cpp_entry_key->cpp_input().clone() : std::unique_ptr<tetengo::lattice::input>{},
+                    p_cpp_entry_key ? p_cpp_entry_key->cpp_input().clone() : nullptr,
                     std::move(cpp_entry_value),
                     entry.cost);
             }
@@ -107,12 +107,10 @@ tetengo_lattice_vocabulary_t* tetengo_lattice_vocabulary_createUnorderedMapVocab
             BOOST_SCOPE_EXIT_END;
             std::any cpp_to_value{ connection_element.p_to->p_value };
             auto     cpp_key = std::make_pair(
-                tetengo::lattice::entry{ p_cpp_from_key ? p_cpp_from_key->cpp_input().clone() :
-                                                              std::unique_ptr<tetengo::lattice::input>{},
+                tetengo::lattice::entry{ p_cpp_from_key ? p_cpp_from_key->cpp_input().clone() : nullptr,
                                          std::move(cpp_from_value),
                                          connection_element.p_from->cost },
-                tetengo::lattice::entry{ p_cpp_to_key ? p_cpp_to_key->cpp_input().clone() :
-                                                            std::unique_ptr<tetengo::lattice::input>{},
+                tetengo::lattice::entry{ p_cpp_to_key ? p_cpp_to_key->cpp_input().clone() : nullptr,
                                          std::move(cpp_to_value),
                                          connection_element.p_to->cost });
 

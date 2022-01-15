@@ -16,7 +16,7 @@ namespace tetengo::lattice
 {
     const entry& entry::bos_eos()
     {
-        static const entry singleton{ std::unique_ptr<input>{}, std::any{}, 0 };
+        static const entry singleton{ nullptr, std::any{}, 0 };
         return singleton;
     }
 
@@ -27,13 +27,13 @@ namespace tetengo::lattice
     {}
 
     entry::entry(const entry_view& view) :
-    m_p_key{ view.p_key() ? view.p_key()->clone() : std::unique_ptr<input>{} },
+    m_p_key{ view.p_key() ? view.p_key()->clone() : nullptr },
     m_value{ *view.value() },
     m_cost{ view.cost() }
     {}
 
     entry::entry(const entry& another) :
-    m_p_key{ another.m_p_key ? another.m_p_key->clone() : std::unique_ptr<tetengo::lattice::input>{} },
+    m_p_key{ another.m_p_key ? another.m_p_key->clone() : nullptr },
     m_value{ another.m_value },
     m_cost{ another.m_cost }
     {}

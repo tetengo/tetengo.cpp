@@ -112,7 +112,7 @@ namespace
         }
         catch (const boost::interprocess::interprocess_exception&)
         {
-            return std::unique_ptr<boost::interprocess::file_mapping>{};
+            return nullptr;
         }
     }
 

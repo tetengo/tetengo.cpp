@@ -468,7 +468,7 @@ namespace tetengo::trie
             }();
             if (!p_trie_impl)
             {
-                return std::unique_ptr<trie>{};
+                return nullptr;
             }
             std::unique_ptr<trie> p_trie{ new trie{ std::move(p_trie_impl), m_key_serializer } };
             return p_trie;
