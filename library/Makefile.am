@@ -2,10 +2,10 @@
 # Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
+    platform_dependent \
     text \
     json \
     lattice \
-    platform_dependent \
     property \
     trie
 
