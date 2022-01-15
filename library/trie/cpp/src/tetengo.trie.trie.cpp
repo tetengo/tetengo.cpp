@@ -139,7 +139,7 @@ namespace tetengo::trie
             auto p_subtrie = m_p_double_array->subtrie(key_prefix);
             if (!p_subtrie)
             {
-                return std::unique_ptr<trie_impl>{};
+                return nullptr;
             }
             return std::make_unique<trie_impl>(std::move(p_subtrie));
         }

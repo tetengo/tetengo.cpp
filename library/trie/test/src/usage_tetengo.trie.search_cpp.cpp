@@ -16,7 +16,7 @@
 #include <string_view>
 #include <vector>
 
-#include <boost/stl_interfaces/iterator_interface.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/trie.hpp>

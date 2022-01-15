@@ -13,7 +13,7 @@
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
-#include <boost/stl_interfaces/iterator_interface.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 
 #include <tetengo/lattice/constraint.h>
 #include <tetengo/lattice/entry.h>
@@ -85,7 +85,7 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
         tetengo::lattice::node cpp_eos_node{ p_cpp_node_key ? &p_cpp_node_key->cpp_input() : nullptr,
                                              reinterpret_cast<const std::any*>(p_eos_node->value_handle),
                                              p_eos_node->preceding_step,
-                                             p_cpp_preceding_edge_costs.get(),
+                                             std::to_address(p_cpp_preceding_edge_costs),
                                              p_eos_node->best_preceding_node,
                                              p_eos_node->node_cost,
                                              p_eos_node->path_cost };

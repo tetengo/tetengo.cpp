@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <utility>
 
-#include <boost/stl_interfaces/iterator_interface.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 
 #include <tetengo/trie/storage.h>
 #include <tetengo/trie/trie.h>

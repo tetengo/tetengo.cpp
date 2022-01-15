@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(append)
     concrete_input input_{};
 
     input_.append(std::make_unique<concrete_input>());
-    BOOST_CHECK_THROW(input_.append(std::unique_ptr<concrete_input>{}), std::invalid_argument);
+    BOOST_CHECK_THROW(input_.append(nullptr), std::invalid_argument);
     BOOST_CHECK_THROW(input_.append(std::make_unique<concrete_input2>()), std::invalid_argument);
 }
 

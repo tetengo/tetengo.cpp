@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <compare> // IWYU pragma: keep
 #include <functional>
 #include <iterator>
 #include <stdexcept>

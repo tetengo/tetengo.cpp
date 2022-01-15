@@ -165,7 +165,8 @@ size_t tetengo_text_encoder_decode(
         {
             const auto& encoder =
                 dynamic_cast<const tetengo::text::encoder<tetengo::text::encoding::utf8>&>(p_encoder->cpp_encoder);
-            const auto decoded = encoder.decode(encoded_string);
+            static_assert(sizeof(char8_t) == sizeof(char));
+            const auto decoded = encoder.decode(reinterpret_cast<const char8_t*>(encoded_string));
             copy_string(decoded, string, string_capacity);
             return decoded.length();
         }

@@ -20,6 +20,8 @@
 
 #include <tetengo/json/reader.h>
 #include <tetengo/json/stream_reader.hpp>
+#include <tetengo/text/encoder.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 
 
 namespace
@@ -70,6 +72,12 @@ namespace
         const std::filesystem::path m_path;
     };
 
+    std::string to_internal_encoding_path_string(const std::filesystem::path& path)
+    {
+        static const tetengo::text::encoder<tetengo::text::encoding::utf8> encoder{};
+        return std::string{ encoder.decode(path.u8string()) };
+    }
+
 
 }
 
@@ -114,7 +122,8 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const temporary_file file{ stream_value };
 
-        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const p_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -133,7 +142,8 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const temporary_file file{ stream_value };
 
-        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 0);
+        const auto* const p_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 0);
         BOOST_TEST(!p_reader);
     }
 }
@@ -152,7 +162,8 @@ BOOST_AUTO_TEST_CASE(has_next)
     {
         const temporary_file file{ stream_value };
 
-        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const p_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -181,7 +192,8 @@ BOOST_AUTO_TEST_CASE(peek)
     {
         const temporary_file file{ stream_value };
 
-        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const p_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -272,7 +284,8 @@ BOOST_AUTO_TEST_CASE(next)
     {
         const temporary_file file{ stream_value };
 
-        auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        auto* const p_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -364,7 +377,8 @@ BOOST_AUTO_TEST_CASE(base_reader)
     {
         const temporary_file file{ stream_value };
 
-        const auto* const p_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
+        const auto* const p_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);

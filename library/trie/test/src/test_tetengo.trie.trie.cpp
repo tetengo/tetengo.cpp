@@ -4,6 +4,7 @@
     Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
 #include <any>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
@@ -21,7 +22,7 @@
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>
-#include <boost/stl_interfaces/iterator_interface.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 #include <boost/test/unit_test.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>

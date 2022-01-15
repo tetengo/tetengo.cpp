@@ -13,8 +13,6 @@
 
 #include <Windows.h>
 
-#include <boost/algorithm/string.hpp>
-
 #include <tetengo/text/encoder.hpp>
 #include <tetengo/text/encoding/utf16.hpp>
 
@@ -61,7 +59,7 @@ namespace
     {
         const auto msi_path = base_directory / msi_file_name;
         auto       parameters = std::wstring{ L"/i \"" } + msi_path.native() + std::wstring{ L"\"" };
-        if (boost::algorithm::starts_with(locale_name, "Japanese"))
+        if (locale_name.starts_with("Japanese"))
         {
             parameters += L" TRANSFORMS=\":ja.mst\"";
         }

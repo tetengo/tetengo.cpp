@@ -8,6 +8,7 @@
 #include <iterator>
 #include <memory>
 #include <string>
+#include <type_traits> // IWYU pragma: keep
 #include <unordered_map>
 #include <utility>
 

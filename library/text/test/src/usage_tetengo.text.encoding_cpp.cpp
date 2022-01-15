@@ -17,24 +17,24 @@
 
 namespace usage_tetengo::text
 {
-    constexpr char operator"" _c(unsigned long long value)
+    constexpr char8_t operator""_u8c(unsigned long long value)
     {
-        return static_cast<char>(value);
+        return static_cast<char8_t>(value);
     }
 
     void encoding()
     {
-        static const std::string utf8{
+        static const std::u8string utf8{
             // clang-format off
             // HIGH-SPEED TRAIN WITH BULLET NOSE
-            0xF0_c, 0x9F_c, 0x9A_c, 0x85_c, // U+1F685
+            0xF0_u8c, 0x9F_u8c, 0x9A_u8c, 0x85_u8c, // U+1F685
             // POLAR BEAR
-            0xF0_c, 0x9F_c, 0x90_c, 0xBB_c, // U+1F43B
-            0xE2_c, 0x80_c, 0x8D_c, // U+200D
-            0xE2_c, 0x9D_c, 0x84_c, // U+2744
-            0xEF_c, 0xB8_c, 0x8F_c, // U+FE0F
+            0xF0_u8c, 0x9F_u8c, 0x90_u8c, 0xBB_u8c, // U+1F43B
+            0xE2_u8c, 0x80_u8c, 0x8D_u8c, // U+200D
+            0xE2_u8c, 0x9D_u8c, 0x84_u8c, // U+2744
+            0xEF_u8c, 0xB8_u8c, 0x8F_u8c, // U+FE0F
             // SNOWFLAKE
-            0xE2_c, 0x9D_c, 0x84_c, // U+2744
+            0xE2_u8c, 0x9D_u8c, 0x84_u8c, // U+2744
             // clang-format on
         };
         static const std::u16string utf16{

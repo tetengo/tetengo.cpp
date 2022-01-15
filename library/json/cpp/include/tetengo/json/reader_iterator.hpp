@@ -76,9 +76,12 @@ namespace tetengo::json
         */
         reader_iterator& operator++();
 
-        //! Makes operator++(int) visible.
-        using boost::stl_interfaces::iterator_interface<reader_iterator, std::input_iterator_tag, char, char>::
-        operator++;
+        /*!
+            \brief Postincrements the iterator.
+
+            \return The iterator before the incrementation.
+        */
+        reader_iterator operator++(int);
 
 
     private:

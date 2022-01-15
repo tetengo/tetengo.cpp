@@ -58,11 +58,11 @@ iwyu: ${addsuffix .iwyuout, ${headers} ${sources}}
 	mv -f ${addsuffix .tmp, $@} $@
 
 %.cpp.iwyuout: %.cpp
-	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CXXFLAGS_IWYU} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 %.hpp.iwyuout: %.hpp
-	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CXXFLAGS} $< 2> ${addsuffix .tmp, $@} || true
+	${IWYU} ${IWYU_OPTS_CXX} ${CPPFLAGS} ${test_tetengo_lattice_CPPFLAGS} ${CXXFLAGS_IWYU} $< 2> ${addsuffix .tmp, $@} || true
 	mv -f ${addsuffix .tmp, $@} $@
 
 .PHONY: clean-iwyu

@@ -18,14 +18,16 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <type_traits> // IWYU pragma: keep
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
+#include <boost/iterator/iterator_traits.hpp> // IWYU pragma: keep
 #include <boost/lexical_cast.hpp>
-#include <boost/stl_interfaces/iterator_interface.hpp>
+#include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/input.hpp>
@@ -54,7 +56,9 @@ namespace
         }
         else
         {
-            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().decode(encoded) };
+            const std::u8string_view utf8_encoded{ reinterpret_cast<const char8_t*>(encoded.data()), encoded.length() };
+            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().decode(
+                utf8_encoded) };
         }
     }
 
@@ -67,7 +71,8 @@ namespace
         }
         else
         {
-            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_) };
+            const auto encoded = tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_);
+            return std::string{ reinterpret_cast<const char*>(encoded.data()), encoded.length() };
         }
     }
 

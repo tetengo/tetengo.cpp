@@ -227,7 +227,7 @@ const tetengo_json_reader_t* tetengo_json_reader_baseReader(const tetengo_json_r
 
         p_reader->p_base_reader_placeholder =
             std::make_unique<tetengo_json_reader_t>(&p_reader->cpp_reader().base_reader());
-        return p_reader->p_base_reader_placeholder.get();
+        return std::to_address(p_reader->p_base_reader_placeholder);
     }
     catch (...)
     {

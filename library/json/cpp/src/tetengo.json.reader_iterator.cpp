@@ -74,5 +74,12 @@ namespace tetengo::json
         return *this;
     }
 
+    reader_iterator reader_iterator::operator++(int)
+    {
+        reader_iterator original{ *this };
+        ++(*this);
+        return original;
+    }
+
 
 }

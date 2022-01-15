@@ -52,7 +52,8 @@ namespace
         }
         else
         {
-            return std::string{ tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_) };
+            const auto encoded = tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_);
+            return std::string{ reinterpret_cast<const char*>(encoded.data()), encoded.length() };
         }
     }
 

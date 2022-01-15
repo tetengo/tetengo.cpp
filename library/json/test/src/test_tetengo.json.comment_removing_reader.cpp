@@ -22,6 +22,8 @@
 #include <tetengo/json/reader.h>
 #include <tetengo/json/reader.hpp>
 #include <tetengo/json/stream_reader.hpp>
+#include <tetengo/text/encoder.hpp>
+#include <tetengo/text/encoding/utf8.hpp>
 
 
 namespace
@@ -101,6 +103,12 @@ namespace
         return p_reader;
     }
 
+    std::string to_internal_encoding_path_string(const std::filesystem::path& path)
+    {
+        static const tetengo::text::encoder<tetengo::text::encoding::utf8> encoder{};
+        return std::string{ encoder.decode(path.u8string()) };
+    }
+
 
 }
 
@@ -132,8 +140,9 @@ BOOST_AUTO_TEST_CASE(construction)
 
     {
         const temporary_file file{ stream_value0 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -147,14 +156,16 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         const temporary_file file{ stream_value0 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "");
         BOOST_TEST(!p_reader);
     }
     {
         const temporary_file file{ stream_value0 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, nullptr);
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, nullptr);
         BOOST_TEST(!p_reader);
     }
 }
@@ -184,8 +195,9 @@ BOOST_AUTO_TEST_CASE(has_next)
 
     {
         const temporary_file file{ stream_value0 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -197,8 +209,9 @@ BOOST_AUTO_TEST_CASE(has_next)
     }
     {
         const temporary_file file{ stream_value1 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -210,8 +223,9 @@ BOOST_AUTO_TEST_CASE(has_next)
     }
     {
         const temporary_file file{ stream_value2 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -248,8 +262,9 @@ BOOST_AUTO_TEST_CASE(peek)
 
     {
         const temporary_file file{ stream_value0 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -261,8 +276,9 @@ BOOST_AUTO_TEST_CASE(peek)
     }
     {
         const temporary_file file{ stream_value1 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -274,8 +290,9 @@ BOOST_AUTO_TEST_CASE(peek)
     }
     {
         const temporary_file file{ stream_value2 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -366,8 +383,9 @@ BOOST_AUTO_TEST_CASE(next)
 
     {
         const temporary_file file{ stream_value0 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -379,8 +397,9 @@ BOOST_AUTO_TEST_CASE(next)
     }
     {
         const temporary_file file{ stream_value1 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -392,8 +411,9 @@ BOOST_AUTO_TEST_CASE(next)
     }
     {
         const temporary_file file{ stream_value2 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -412,8 +432,9 @@ BOOST_AUTO_TEST_CASE(next)
     }
     {
         const temporary_file file{ stream_value3 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -432,8 +453,9 @@ BOOST_AUTO_TEST_CASE(next)
     }
     {
         const temporary_file file{ stream_value4 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -452,8 +474,9 @@ BOOST_AUTO_TEST_CASE(next)
     }
     {
         const temporary_file file{ stream_value5 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -472,8 +495,9 @@ BOOST_AUTO_TEST_CASE(next)
     }
     {
         const temporary_file file{ stream_value6 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        auto* const          p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
@@ -506,8 +530,9 @@ BOOST_AUTO_TEST_CASE(base_reader)
 
     {
         const temporary_file file{ stream_value0 };
-        auto* const          p_base_reader = tetengo_json_reader_createStreamReader(file.path().u8string().c_str(), 10);
-        const auto* const    p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
+        auto* const          p_base_reader =
+            tetengo_json_reader_createStreamReader(to_internal_encoding_path_string(file.path()).c_str(), 10);
+        const auto* const p_reader = tetengo_json_reader_createCommentRemovingReader(p_base_reader, "REM");
         BOOST_SCOPE_EXIT(p_reader)
         {
             tetengo_json_reader_destroy(p_reader);
