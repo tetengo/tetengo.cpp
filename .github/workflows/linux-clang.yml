@@ -16,7 +16,7 @@ env:
   CONCURRENT_BUILD:  4
   CLANG_COMMAND:     clang-11
   CLANGXX_COMMAND:   clang++-11
-  DOXYGEN_VER:       1.9.3
+  DOXYGEN_VER:       1.9.4
   DOXYGEN_CACHE_REV: 0
   BOOST_VER:         1_78_0
   BOOST_VER_DOT:     1.78.0
