@@ -18,7 +18,7 @@ env:
   BOOST_VER:                1_79_0
   BOOST_VER_DOT:            1.79.0
   BOOST_TOOLSET:            msvc-14.3
-  BOOST_CACHE_REV:          2
+  BOOST_CACHE_REV:          3
   EMBEDTRANSFORM_CACHE_REV: 0
 
 jobs:
@@ -40,6 +40,9 @@ jobs:
           cd .boost_build
           curl -L -o boost_${{ env.BOOST_VER }}.tar.gz https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
           tar -xf boost_${{ env.BOOST_VER }}.tar.gz
+          if not exist boost_${{ env.BOOST_VER }}\boost\predef\platform\windows_runtime.h (
+            curl -L -o boost_${{ env.BOOST_VER }}\boost\predef\platform\windows_runtime.h https://raw.githubusercontent.com/boostorg/predef/boost-${{ env.BOOST_VER_DOT }}/include/boost/predef/platform/windows_runtime.h
+          )
           echo > boost_${{ env.BOOST_VER }}\.expansion_finished
         )
   
