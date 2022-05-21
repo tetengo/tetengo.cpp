@@ -18,7 +18,7 @@ env:
   BOOST_VER:                1_79_0
   BOOST_VER_DOT:            1.79.0
   BOOST_TOOLSET:            msvc-14.3
-  BOOST_CACHE_REV:          4
+  BOOST_CACHE_REV:          5
   EMBEDTRANSFORM_CACHE_REV: 0
 
 jobs:
@@ -60,8 +60,8 @@ jobs:
     - name: Download the missing files
       shell: cmd
       run: |
-        if not exist boost_${{ env.BOOST_VER }}\boost\predef\platform\windows_runtime.h (
-          curl -L -o boost_${{ env.BOOST_VER }}\boost\predef\platform\windows_runtime.h https://raw.githubusercontent.com/boostorg/predef/boost-${{ env.BOOST_VER_DOT }}/include/boost/predef/platform/windows_runtime.h
+        if not exist .boost_build\boost_${{ env.BOOST_VER }}\boost\predef\platform\windows_runtime.h (
+          curl -L -o .boost_build\boost_${{ env.BOOST_VER }}\boost\predef\platform\windows_runtime.h https://raw.githubusercontent.com/boostorg/predef/boost-${{ env.BOOST_VER_DOT }}/include/boost/predef/platform/windows_runtime.h
         )
     
     - name: Cache Boost build
