@@ -14,8 +14,8 @@ on:
 
 env:
   CONCURRENT_BUILD:  4
-  CLANG_COMMAND:     clang-11
-  CLANGXX_COMMAND:   clang++-11
+  CLANG_COMMAND:     clang-14
+  CLANGXX_COMMAND:   clang++-14
   DOXYGEN_VER:       1.9.4
   DOXYGEN_CACHE_REV: 0
   BOOST_VER:         1_79_0
@@ -26,7 +26,7 @@ env:
 jobs:
   doxygen_build:
     name:    Doxygen Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Install dependencies
       shell: bash
@@ -64,7 +64,7 @@ jobs:
   
   boost_build:
     name:    Boost Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Cache Boost build
       uses: actions/cache@v2
@@ -89,7 +89,7 @@ jobs:
   
   doxygen:
     name:    Doxygen
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:   doxygen_build
     steps:
     - name: Install dependencies
@@ -98,7 +98,8 @@ jobs:
         sudo apt-get -y update
         sudo apt-get -y install \
           autoconf-archive \
-          clang-9 \
+          clang-13 \
+          clang-14 \
           dos2unix \
           graphviz \
           iwyu
@@ -146,7 +147,7 @@ jobs:
   
   lint:
     name:    Lint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:   boost_build
     steps:
     - name: Install dependencies
@@ -155,7 +156,8 @@ jobs:
         sudo apt-get -y update
         sudo apt-get -y install \
           autoconf-archive \
-          clang-9 \
+          clang-13 \
+          clang-14 \
           dos2unix \
           graphviz \
           iwyu
@@ -197,7 +199,7 @@ jobs:
   
   build:
     name:    Build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:   boost_build
     steps:
     - name: Install dependencies
@@ -206,7 +208,8 @@ jobs:
         sudo apt-get -y update
         sudo apt-get -y install \
           autoconf-archive \
-          clang-9 \
+          clang-13 \
+          clang-14 \
           dos2unix \
           graphviz \
           iwyu
@@ -261,7 +264,7 @@ jobs:
     
   artifact:
     name:    Artifact Collection
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:   [ doxygen, build ]
     steps:
     - name: Restore documents
