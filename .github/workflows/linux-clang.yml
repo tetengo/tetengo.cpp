@@ -21,7 +21,7 @@ env:
   BOOST_VER:         1_79_0
   BOOST_VER_DOT:     1.79.0
   BOOST_TOOLSET:     clang
-  BOOST_CACHE_REV:   0
+  BOOST_CACHE_REV:   1
 
 jobs:
   doxygen_build:
