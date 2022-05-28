@@ -7,6 +7,7 @@
 #if !defined(TIMETABLEVOCABULARY_HPP)
 #define TIMETABLEVOCABULARY_HPP
 
+#include <cstddef> // IWYU pragma: keep
 #include <istream>
 #include <memory>
 #include <optional>

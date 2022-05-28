@@ -15,7 +15,7 @@
 
 #include <errno.h>
 #include <iconv.h>
-#include <stddef.h>
+#include <stddef.h> // IWYU pragma: keep
 
 #include <boost/core/noncopyable.hpp>
 #include <boost/preprocessor.hpp>

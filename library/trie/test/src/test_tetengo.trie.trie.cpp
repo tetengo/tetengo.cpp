@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <any>
+#include <cstddef> // IWYU pragma: keep
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
 #include <functional>
@@ -17,8 +18,6 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
-
-#include <stddef.h>
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>

@@ -8,6 +8,7 @@
 #include <any>
 #include <cassert>
 #include <clocale>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <exception>
 #include <filesystem>
