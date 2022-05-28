@@ -4,6 +4,7 @@
     Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 */
 
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
@@ -14,8 +15,6 @@
 #include <string_view>
 #include <system_error>
 #include <vector>
-
-#include <stddef.h>
 
 #include <boost/core/noncopyable.hpp>
 #include <boost/preprocessor.hpp>
