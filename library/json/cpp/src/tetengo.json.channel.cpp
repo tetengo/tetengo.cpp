@@ -11,7 +11,6 @@
 #include <iterator>
 #include <memory>
 #include <mutex>
-#include <optional>
 #include <queue>
 #include <stdexcept>
 #include <utility>
@@ -53,7 +52,7 @@ namespace tetengo::json
                 return;
             }
 
-            m_queue.emplace(std::move(element_));
+            m_queue.emplace(std::make_unique<queue_element_type>(std::move(element_)));
 
             m_condition_variable.notify_all();
         }
@@ -69,7 +68,7 @@ namespace tetengo::json
                 return;
             }
 
-            m_queue.emplace(std::move(p_exception));
+            m_queue.emplace(std::make_unique<queue_element_type>(std::move(p_exception)));
 
             m_condition_variable.notify_all();
         }
@@ -121,18 +120,23 @@ namespace tetengo::json
             m_condition_variable.wait(lock, [this]() { return can_insert(); });
             if (!can_take() || m_queue.back())
             {
-                m_queue.push(std::nullopt);
+                m_queue.push(nullptr);
             }
             m_condition_variable.notify_all();
         }
 
 
     private:
+        // types
+
+        using queue_element_type = std::variant<element, std::exception_ptr>;
+
+
         // variables
 
         const std::size_t m_capacity;
 
-        std::queue<std::optional<std::variant<element, std::exception_ptr>>> m_queue;
+        std::queue<std::unique_ptr<queue_element_type>> m_queue;
 
         mutable std::mutex m_mutex;
 
