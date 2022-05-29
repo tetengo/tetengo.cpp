@@ -21,7 +21,7 @@ env:
   BOOST_VER:         1_79_0
   BOOST_VER_DOT:     1.79.0
   BOOST_TOOLSET:     clang
-  BOOST_CACHE_REV:   3
+  BOOST_CACHE_REV:   2
 
 jobs:
   doxygen_build:
@@ -66,13 +66,6 @@ jobs:
     name:    Boost Build
     runs-on: ubuntu-22.04
     steps:
-    - name: Install dependencies
-      shell: bash
-      run: |
-        sudo apt-get -y update
-        sudo apt-get -y install \
-          clang-14
-    
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
@@ -90,7 +83,7 @@ jobs:
           tar -xf boost_${{ env.BOOST_VER }}.tar.bz2
           cd boost_${{ env.BOOST_VER }}
           ./bootstrap.sh --with-toolset=${{ env.BOOST_TOOLSET }}
-          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static || :)
+          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static cflags="-fPIE" cxxflags="-fPIE"|| :)
           touch .build_finished
         fi
   

@@ -19,21 +19,13 @@ env:
   BOOST_VER:        1_79_0
   BOOST_VER_DOT:    1.79.0
   BOOST_TOOLSET:    gcc
-  BOOST_CACHE_REV:  2
+  BOOST_CACHE_REV:  1
 
 jobs:
   boost_build:
     name:    Boost Build
     runs-on: ubuntu-22.04
     steps:
-    - name: Install dependencies
-      shell: bash
-      run: |
-        sudo apt-get -y update
-        sudo apt-get -y install \
-          gcc-12 \
-          g++-12
-    
     - name: Cache Boost build
       uses: actions/cache@v2
       with:
