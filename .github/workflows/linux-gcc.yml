@@ -20,7 +20,7 @@ env:
   BOOST_VER_DOT:           1.79.0
   BOOST_BOOTSTRAP_TOOLSET: gcc
   BOOST_TOOLSET:           gcc-12
-  BOOST_CACHE_REV:         2
+  BOOST_CACHE_REV:         10
 
 jobs:
   boost_build:
