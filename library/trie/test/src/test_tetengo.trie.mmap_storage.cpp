@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cmath>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
@@ -16,8 +17,6 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
-
-#include <stddef.h>
 
 #include <boost/cstdint.hpp> // IWYU pragma: keep
 #include <boost/interprocess/file_mapping.hpp>
