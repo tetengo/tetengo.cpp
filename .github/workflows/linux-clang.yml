@@ -83,7 +83,7 @@ jobs:
           tar -xf boost_${{ env.BOOST_VER }}.tar.bz2
           cd boost_${{ env.BOOST_VER }}
           ./bootstrap.sh --with-toolset=${{ env.BOOST_TOOLSET }}
-          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static || :)
+          (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static cflags="-fPIE" cxxflags="-fPIE"|| :)
           touch .build_finished
         fi
   
