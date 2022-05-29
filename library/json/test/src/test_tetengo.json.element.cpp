@@ -4,7 +4,7 @@
     Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 */
 
-#include <algorithm>
+#include <algorithm> // IWYU pragma: keep
 #include <iterator>
 #include <stdexcept>
 #include <string>
