@@ -121,7 +121,8 @@ namespace tetengo::json
             m_condition_variable.wait(lock, [this]() { return can_insert(); });
             if (!can_take() || m_queue.back())
             {
-                m_queue.push(std::nullopt);
+                decltype(m_queue)::value_type nullopt_{};
+                m_queue.push(nullopt_);
             }
             m_condition_variable.notify_all();
         }

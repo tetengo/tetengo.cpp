@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <any>
 #include <clocale>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <exception>
 #include <filesystem>

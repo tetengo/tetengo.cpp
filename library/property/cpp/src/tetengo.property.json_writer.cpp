@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <filesystem>
 #include <iterator>
@@ -15,7 +16,7 @@
 #include <ostream>
 #include <string>
 #include <string_view>
-#include <type_traits>
+#include <type_traits> // IWYU pragma: keep
 #include <unordered_map>
 #include <utility>
 #include <variant>
