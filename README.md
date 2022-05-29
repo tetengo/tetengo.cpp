@@ -138,17 +138,19 @@ Doxygen will output the documents into the directory `doc`.
 
 #### Requirements
 
-- [Clang 11](https://clang.llvm.org/) or
-  [GCC 10](https://gcc.gnu.org/)
+- [Clang 11](https://clang.llvm.org/),
+  [Clang 14](https://clang.llvm.org/),
+  [GCC 10](https://gcc.gnu.org/) or
+  [GCC 12](https://gcc.gnu.org/)
 - [Boost C++ libraries 1.79.0](https://www.boost.org/)
 - [Doxygen 1.9.3](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
-- [include-what-you-use 0.12](https://include-what-you-use.org/) or
-  [include-what-you-use 0.15](https://include-what-you-use.org/)
+- [include-what-you-use 0.15](https://include-what-you-use.org/) or
+  [include-what-you-use 0.17](https://include-what-you-use.org/)
 - [Clang Format 11](https://clang.llvm.org/docs/ClangFormat.html)
 - [Dos2Unix](https://waterlan.home.xs4all.nl/dos2unix.html)
-- [Python 3.8](https://www.python.org/) or
-  [Python 3.9](https://www.python.org/)
+- [Python 3.9](https://www.python.org/) or
+  [Python 3.10](https://www.python.org/)
 - [mypy](http://www.mypy-lang.org/)
 - [Black](https://black.readthedocs.io/en/stable/)
 - [isort](https://pycqa.github.io/isort/)
