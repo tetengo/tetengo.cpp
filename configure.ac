@@ -193,9 +193,6 @@ AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
 AC_SUBST([LIBS], "-lstdc++fs -lstdc++ ${LIBS}")
 
 #### Header Checks ####
-AX_CXX_HAVE_STD
-AX_CXX_HAVE_STL
-
 AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
