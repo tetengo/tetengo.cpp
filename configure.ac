@@ -3,7 +3,7 @@
 
 #### General ####
 AC_PREREQ([2.69])
-AC_INIT([tetengo], [1.6.0], [https://github.com/tetengo])
+AC_INIT([tetengo], [1.6.1], [https://github.com/tetengo])
 AC_CONFIG_SRCDIR([precompiled/precompiled.h])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([--warnings=no-portability])
