@@ -55,7 +55,14 @@ clean-doc:
 distclean-local: clean-doc
 
 iwyu: ${SOURCE_SUBDIRS}
-	for f in $$(find -name "*.iwyuout"); do ${top_srcdir}/kogyan/tool/filter_iwyuout.py < $$f; done
+	IWYU_EXIT_CODE="0"; \
+	for f in $$(find -name "*.iwyuout"); \
+	do \
+	    ${top_srcdir}/kogyan/tool/filter_iwyuout.py < $$f; \
+	    IWYU_EXIT_CODE_ITER=$$?; \
+	    test "x$$IWYU_EXIT_CODE" == "x0" && IWYU_EXIT_CODE=$$IWYU_EXIT_CODE_ITER; \
+	done; \
+	exit $$IWYU_EXIT_CODE
 
 clean-iwyu: ${SOURCE_SUBDIRS}
 

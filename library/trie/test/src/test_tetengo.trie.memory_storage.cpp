@@ -7,6 +7,7 @@
 #include <any>
 #include <cassert>
 #include <cmath>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <filesystem>
 #include <fstream> // IWYU pragma: keep
@@ -16,8 +17,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include <stddef.h>
 
 #include <boost/cstdint.hpp> // IWYU pragma: keep
 #include <boost/preprocessor.hpp>

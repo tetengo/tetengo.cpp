@@ -7,13 +7,14 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <istream>
 #include <iterator>
 #include <limits>
 #include <memory>
 #include <optional>
-#include <type_traits> // IWYU pragma: keep
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -244,7 +245,8 @@ namespace tetengo::trie
                     }
                     else
                     {
-                        value_array.push_back(std::nullopt);
+                        std::remove_reference_t<decltype(value_array)>::value_type nullopt_{};
+                        value_array.push_back(std::move(nullopt_));
                     }
                 }
             }
@@ -262,7 +264,8 @@ namespace tetengo::trie
                             return e == uninitialized_byte();
                         }))
                     {
-                        value_array.push_back(std::nullopt);
+                        std::remove_reference_t<decltype(value_array)>::value_type nullopt_{};
+                        value_array.push_back(std::move(nullopt_));
                     }
                     else
                     {

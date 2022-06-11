@@ -6,6 +6,7 @@
 
 #include <any>
 #include <cassert>
+#include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <ios>
 #include <iterator>

@@ -107,9 +107,8 @@ AC_LANG([C++])
 
 #### Program Checks ####
 AC_PROG_CXX
-AC_PROG_CC_C99
+AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_LIBTOOL
 LT_INIT
 
 AC_ARG_WITH(
@@ -151,6 +150,9 @@ AC_ARG_WITH(
     BLACK=$withval
 )
 AC_CHECK_PROG(BLACK, black, black)
+test -z $BLACK && \
+    AC_MSG_WARN([You cannot format the python script files for lack of black.])
+
 AC_ARG_WITH(
     isort,
     AS_HELP_STRING([--with-isort=COMMAND], [Specify the isort command. Or uses `isort'.]),
@@ -158,7 +160,7 @@ AC_ARG_WITH(
 )
 AC_CHECK_PROG(ISORT, isort, isort)
 test -z $ISORT && \
-    AC_MSG_WARN([You cannot format the python script files for lack of black and/or isort.])
+    AC_MSG_WARN([You cannot format the python script files for lack of isort.])
 
 AC_ARG_WITH(
     mypy,
@@ -191,14 +193,10 @@ AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
 AC_SUBST([LIBS], "-lstdc++fs -lstdc++ ${LIBS}")
 
 #### Header Checks ####
-AC_CXX_HAVE_STD
-AC_CXX_HAVE_STL
-AC_HEADER_STDC
-
 AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
-AC_SUBST([CXXFLAGS_IWYU], "${CXXFLAGS} -std=c++2a -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CXXFLAGS_IWYU], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
 AC_SUBST([CXXFLAGS], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
 AC_SUBST([CFLAGS], "${CFLAGS} -std=c17 -Werror -Wall -Wextra -pedantic-errors")
 
