@@ -4,9 +4,9 @@
 
 TOOLS_DIR=`dirname $0`
 
-curl https://www.unicode.org/Public/13.0.0/ucd/EastAsianWidth.txt                 > $TOOLS_DIR/EastAsianWidth.txt
-curl https://www.unicode.org/Public/13.0.0/ucd/emoji/emoji-data.txt               > $TOOLS_DIR/emoji-data.txt
-curl http://www.unicode.org/Public/13.0.0/ucd/auxiliary/GraphemeBreakProperty.txt > $TOOLS_DIR/GraphemeBreakProperty.txt
+curl https://www.unicode.org/Public/14.0.0/ucd/EastAsianWidth.txt                 > $TOOLS_DIR/EastAsianWidth.txt
+curl https://www.unicode.org/Public/14.0.0/ucd/emoji/emoji-data.txt               > $TOOLS_DIR/emoji-data.txt
+curl http://www.unicode.org/Public/14.0.0/ucd/auxiliary/GraphemeBreakProperty.txt > $TOOLS_DIR/GraphemeBreakProperty.txt
 
 $TOOLS_DIR/make_character_property_map.py $TOOLS_DIR/EastAsianWidth.txt $TOOLS_DIR/emoji-data.txt $TOOLS_DIR/GraphemeBreakProperty.txt $TOOLS_DIR/character_property_map.txt
 
