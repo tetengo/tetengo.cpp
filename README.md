@@ -58,7 +58,7 @@ This library provides the following features:
 
 - A string encoding converter.
 - A grapheme splitter conforming to
-  [Unicode 13.0.0](https://unicode.org/versions/Unicode13.0.0/).
+  [Unicode 14.0.0](https://unicode.org/versions/Unicode14.0.0/).
 - [Detail
   description](https://www.tetengo.org/doc/namespacetetengo_1_1text.html)
 
