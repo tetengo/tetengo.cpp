@@ -8,10 +8,10 @@ import pathlib
 import re
 import shutil
 import sys
-from typing import List, Optional, Tuple
+from typing import Optional
 
 
-def main(args: List[str]) -> None:
+def main(args: list[str]) -> None:
     """The main function.
 
     Args:
@@ -23,12 +23,12 @@ def main(args: List[str]) -> None:
             file=sys.stderr,
         )
         sys.exit(0)
-    files: List[Tuple[pathlib.Path, pathlib.Path]] = _list_files(pathlib.Path(args[0]))
+    files: list[tuple[pathlib.Path, pathlib.Path]] = _list_files(pathlib.Path(args[0]))
     _copy_files(files, pathlib.Path(args[1]))
 
 
-def _list_files(source_path: pathlib.Path) -> List[Tuple[pathlib.Path, pathlib.Path]]:
-    files: List[Tuple[pathlib.Path, pathlib.Path]] = []
+def _list_files(source_path: pathlib.Path) -> list[tuple[pathlib.Path, pathlib.Path]]:
+    files: list[tuple[pathlib.Path, pathlib.Path]] = []
     with source_path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
             matched: Optional[re.Match[str]] = re.match(
@@ -57,7 +57,7 @@ def _list_files(source_path: pathlib.Path) -> List[Tuple[pathlib.Path, pathlib.P
 
 
 def _copy_files(
-    files: List[Tuple[pathlib.Path, pathlib.Path]], destination_root: pathlib.Path
+    files: list[tuple[pathlib.Path, pathlib.Path]], destination_root: pathlib.Path
 ) -> None:
     shutil.rmtree(destination_root, ignore_errors=True)
     for file in files:

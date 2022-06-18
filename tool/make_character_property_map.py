@@ -7,10 +7,10 @@
 import pathlib
 import re
 import sys
-from typing import List, Optional
+from typing import Optional
 
 
-def main(args: List[str]) -> None:
+def main(args: list[str]) -> None:
     """The main function.
 
     Args:
@@ -22,16 +22,16 @@ def main(args: List[str]) -> None:
             file=sys.stderr,
         )
         sys.exit(0)
-    east_asian_width_map: List[str] = _load_file(pathlib.Path(args[0]), "N")
-    emoji_data_map: List[str] = _load_file(pathlib.Path(args[1]), "N")
-    grapheme_map: List[str] = _load_file(pathlib.Path(args[2]), "Other")
+    east_asian_width_map: list[str] = _load_file(pathlib.Path(args[0]), "N")
+    emoji_data_map: list[str] = _load_file(pathlib.Path(args[1]), "N")
+    grapheme_map: list[str] = _load_file(pathlib.Path(args[2]), "Other")
     _save_file(
         pathlib.Path(args[3]), east_asian_width_map, emoji_data_map, grapheme_map
     )
 
 
-def _load_file(path: pathlib.Path, default_value: str) -> List[str]:
-    map: List[str] = [default_value for code in range(0x110000)]
+def _load_file(path: pathlib.Path, default_value: str) -> list[str]:
+    map: list[str] = [default_value for code in range(0x110000)]
     with path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
             line = _remove_comment(line)
@@ -64,9 +64,9 @@ def _remove_comment(line: str) -> str:
 
 def _save_file(
     path: pathlib.Path,
-    east_asian_width_map: List[str],
-    emoji_data_map: List[str],
-    grapheme_map: List[str],
+    east_asian_width_map: list[str],
+    emoji_data_map: list[str],
+    grapheme_map: list[str],
 ) -> None:
     with path.open(mode="w", newline="\r\n", encoding="UTF-8") as stream:
         previous_value: str = ""

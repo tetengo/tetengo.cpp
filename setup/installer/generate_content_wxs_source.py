@@ -9,10 +9,10 @@ import pathlib
 import re
 import sys
 import uuid
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 
-def main(args: List[str]) -> None:
+def main(args: list[str]) -> None:
     """The main function.
 
     Args:
@@ -48,8 +48,8 @@ def main(args: List[str]) -> None:
 
 def _load_files_to_install(
     path: pathlib.Path,
-) -> List[Tuple[str, pathlib.Path, pathlib.Path]]:
-    files: List[Tuple[str, pathlib.Path, pathlib.Path]] = []
+) -> list[tuple[str, pathlib.Path, pathlib.Path]]:
+    files: list[tuple[str, pathlib.Path, pathlib.Path]] = []
     with path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
             line = line.rstrip("\r\n")
@@ -68,8 +68,8 @@ def _load_files_to_install(
     return files
 
 
-def _load_envvars_to_install(path: pathlib.Path) -> List[Tuple[str, str, str]]:
-    envvars: List[Tuple[str, str, str]] = []
+def _load_envvars_to_install(path: pathlib.Path) -> list[tuple[str, str, str]]:
+    envvars: list[tuple[str, str, str]] = []
     with path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
             matched: Optional[re.Match[str]] = re.match(
@@ -82,7 +82,7 @@ def _load_envvars_to_install(path: pathlib.Path) -> List[Tuple[str, str, str]]:
 
 
 class _FileGuidMap:
-    _map: Dict[pathlib.Path, Tuple[str, bool]] = {}
+    _map: dict[pathlib.Path, tuple[str, bool]] = {}
 
     def __init__(self, file_guid_map_path: pathlib.Path, solution_path: pathlib.Path):
         with file_guid_map_path.open(mode="r", encoding="UTF-8") as stream:
@@ -111,9 +111,9 @@ class _FileGuidMap:
 
 
 def _make_content_wxs_source(
-    files_to_install: List[Tuple[str, pathlib.Path, pathlib.Path]],
+    files_to_install: list[tuple[str, pathlib.Path, pathlib.Path]],
     file_guid_map: _FileGuidMap,
-    envvars_to_install: List[Tuple[str, str, str]],
+    envvars_to_install: list[tuple[str, str, str]],
     content_wxs_source_path: pathlib.Path,
     solution_path: pathlib.Path,
 ) -> None:

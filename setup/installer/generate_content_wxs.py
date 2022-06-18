@@ -8,10 +8,10 @@ import io
 import pathlib
 import re
 import sys
-from typing import Dict, List, Optional, TextIO, Tuple
+from typing import Optional, TextIO
 
 
-def main(args: List[str]) -> None:
+def main(args: list[str]) -> None:
     """The main function.
 
     Args:
@@ -28,7 +28,7 @@ def main(args: List[str]) -> None:
     wxs_path = pathlib.Path(args[1])
 
     destination_tree: _DestinationDirectory = _build_destination_tree(source_path)
-    feature_map: Dict[str, List[str]] = _build_feature_map(destination_tree)
+    feature_map: dict[str, list[str]] = _build_feature_map(destination_tree)
     _save_wxs(destination_tree, feature_map, wxs_path)
 
 
@@ -76,17 +76,17 @@ class _DestinationDirectory:
 
     level: int
 
-    children: Dict
+    children: dict
 
-    files: List[File]
+    files: list[File]
 
-    envvars: List[EnvVar]
+    envvars: list[EnvVar]
 
     def __init__(self, id: str, name: str, level: int):
         self.id = id
         self.name = name
         self.level = level
-        self.children: Dict[str, _DestinationDirectory] = {}
+        self.children: dict[str, _DestinationDirectory] = {}
         self.files = []
         self.envvars = []
 
@@ -154,14 +154,14 @@ def _build_destination_tree(source_path: pathlib.Path) -> _DestinationDirectory:
     return destination_tree
 
 
-def _build_feature_map(destination_tree: _DestinationDirectory) -> Dict[str, List[str]]:
-    map: Dict[str, List[str]] = {}
+def _build_feature_map(destination_tree: _DestinationDirectory) -> dict[str, list[str]]:
+    map: dict[str, list[str]] = {}
     _build_feature_map_iter(destination_tree, map)
     return map
 
 
 def _build_feature_map_iter(
-    destination_tree: _DestinationDirectory, feature_map: Dict[str, List[str]]
+    destination_tree: _DestinationDirectory, feature_map: dict[str, list[str]]
 ) -> None:
     for file in destination_tree.files:
         if not file.feature in feature_map:
@@ -177,7 +177,7 @@ def _build_feature_map_iter(
 
 def _save_wxs(
     destination_tree: _DestinationDirectory,
-    feature_map: Dict[str, List[str]],
+    feature_map: dict[str, list[str]],
     wxs_path: pathlib.Path,
 ) -> None:
     preamble: str = """<?xml version="1.0" encoding="UTF-8"?>
@@ -248,7 +248,7 @@ def _write_directory_fragment_iter(
         print("{}</Directory>".format(indent), file=stream)
 
 
-def _write_feature_fragment(feature_map: Dict[str, List[str]], stream: TextIO):
+def _write_feature_fragment(feature_map: dict[str, list[str]], stream: TextIO) -> None:
     print('    <Fragment Id="Features">', file=stream)
     print('        <Feature Id="All">', file=stream)
     for feature in feature_map:
