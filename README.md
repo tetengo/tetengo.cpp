@@ -86,8 +86,8 @@ How to Build and Install
 - [Doxygen 1.9.4](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [WiX toolset 3.11.2](https://wixtoolset.org/)
-- [Python 3.7](https://www.python.org/) or
-  [Python 3.9](https://www.python.org/)
+- [Python 3.9](https://www.python.org/) or
+  [Python 3.10](https://www.python.org/)
 - [mypy](http://www.mypy-lang.org/)
 - [Black](https://black.readthedocs.io/en/stable/)
 - [isort](https://pycqa.github.io/isort/)
