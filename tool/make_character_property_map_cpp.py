@@ -6,10 +6,9 @@
 
 import pathlib
 import sys
-from typing import List
 
 
-def main(args: List[str]) -> None:
+def main(args: list[str]) -> None:
     """The main function.
 
     Args:
@@ -21,13 +20,13 @@ def main(args: List[str]) -> None:
             file=sys.stderr,
         )
         sys.exit(0)
-    elements: List[str] = _load_file(pathlib.Path(args[0]))
+    elements: list[str] = _load_file(pathlib.Path(args[0]))
     content: str = _make_cpp_source(elements)
     _save_file(pathlib.Path(args[1]), content)
 
 
-def _load_file(path: pathlib.Path) -> List[str]:
-    elements: List[str] = []
+def _load_file(path: pathlib.Path) -> list[str]:
+    elements: list[str] = []
     with path.open(mode="r") as stream:
         for line in stream:
             line = line.rstrip("\r\n")
@@ -106,7 +105,7 @@ def _to_grapheme_break_property(symbol: str) -> str:
         raise RuntimeError("Unknown grapheme: {}".format(symbol))
 
 
-def _make_cpp_source(elements: List[str]) -> str:
+def _make_cpp_source(elements: list[str]) -> str:
     content: str = """/*! \\file
     \\brief A character property map.
 
