@@ -8,7 +8,7 @@ import io
 import pathlib
 import re
 import sys
-from typing import Optional, TextIO
+from typing import Any, Optional, TextIO
 
 
 def main(args: list[str]) -> None:
@@ -76,7 +76,7 @@ class _DestinationDirectory:
 
     level: int
 
-    children: dict
+    children: dict[str, Any]
 
     files: list[File]
 

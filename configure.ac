@@ -170,6 +170,7 @@ AC_ARG_WITH(
 AC_CHECK_PROG(MYPY, mypy, mypy)
 test -z $MYPY && \
     AC_MSG_WARN([You cannot check the python script files for lack of mypy.])
+AC_SUBST([MYPY_OPTS], "--strict")
 
 AC_ARG_WITH(
     doxygen,

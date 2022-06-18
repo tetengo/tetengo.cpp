@@ -19,7 +19,7 @@ EXTRA_DIST = \
 
 
 mypy: ${script_files}
-	${MYPY} ${srcdir}
+	${MYPY} ${MYPY_OPTS} ${srcdir}
 
 format: ${script_files}
 	${BLACK} ${srcdir}
