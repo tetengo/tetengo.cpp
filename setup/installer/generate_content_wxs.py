@@ -5,9 +5,9 @@
 """
 
 import io
-import pathlib
 import re
 import sys
+from pathlib import Path
 from typing import Any, Optional, TextIO
 
 
@@ -24,8 +24,8 @@ def main(args: list[str]) -> None:
         )
         sys.exit(0)
 
-    source_path = pathlib.Path(args[0])
-    wxs_path = pathlib.Path(args[1])
+    source_path = Path(args[0])
+    wxs_path = Path(args[1])
 
     destination_tree: _DestinationDirectory = _build_destination_tree(source_path)
     feature_map: dict[str, list[str]] = _build_feature_map(destination_tree)
@@ -41,11 +41,9 @@ class File:
 
     guid: str
 
-    source: pathlib.Path
+    source: Path
 
-    def __init__(
-        self, id: str, name: str, feature: str, guid: str, source: pathlib.Path
-    ):
+    def __init__(self, id: str, name: str, feature: str, guid: str, source: Path):
         self.id = id
         self.name = name
         self.feature = feature
@@ -90,9 +88,7 @@ class _DestinationDirectory:
         self.files = []
         self.envvars = []
 
-    def add_file(
-        self, path: pathlib.Path, feature: str, guid: str, source_path: pathlib.Path
-    ) -> None:
+    def add_file(self, path: Path, feature: str, guid: str, source_path: Path) -> None:
         if len(path.parents) > 1:
             child_name: str = str(path.parents[len(path.parents) - 2])
             child_id: str = self.id + "." + child_name
@@ -101,7 +97,7 @@ class _DestinationDirectory:
                 self.children[child_name] = _DestinationDirectory(
                     child_id, child_name, self.level + 1
                 )
-            grandchild_path = pathlib.Path(str(path)[len(child_name) + 1 :])
+            grandchild_path = Path(str(path)[len(child_name) + 1 :])
             self.children[child_name].add_file(
                 grandchild_path, feature, guid, source_path
             )
@@ -116,7 +112,7 @@ class _DestinationDirectory:
         self.envvars.append(EnvVar(envvar_id, name, value, guid))
 
 
-def _build_destination_tree(source_path: pathlib.Path) -> _DestinationDirectory:
+def _build_destination_tree(source_path: Path) -> _DestinationDirectory:
     destination_tree = _DestinationDirectory("tetengo", "", 0)
     with source_path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
@@ -128,9 +124,9 @@ def _build_destination_tree(source_path: pathlib.Path) -> _DestinationDirectory:
                 kind_as_file: str = matched_as_file.group(1)
                 if kind_as_file == "file":
                     feature_as_file: str = matched_as_file.group(2)
-                    source_directory_as_file = pathlib.Path(matched_as_file.group(3))
-                    source_path_as_file = pathlib.Path(matched_as_file.group(4))
-                    destination_as_file = pathlib.Path(matched_as_file.group(5))
+                    source_directory_as_file = Path(matched_as_file.group(3))
+                    source_path_as_file = Path(matched_as_file.group(4))
+                    destination_as_file = Path(matched_as_file.group(5))
                     guid_as_file = matched_as_file.group(6)
                     destination_tree.add_file(
                         destination_as_file / source_path_as_file,
@@ -178,7 +174,7 @@ def _build_feature_map_iter(
 def _save_wxs(
     destination_tree: _DestinationDirectory,
     feature_map: dict[str, list[str]],
-    wxs_path: pathlib.Path,
+    wxs_path: Path,
 ) -> None:
     preamble: str = """<?xml version="1.0" encoding="UTF-8"?>
 <!--
