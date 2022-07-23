@@ -16,7 +16,7 @@ def main(args: list[str]) -> None:
     """The main function.
 
     Args:
-        args (list[str]): Program rguments
+        args: Program arguments
     """
     if len(args) < 4:
         print(
