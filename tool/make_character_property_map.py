@@ -4,9 +4,9 @@
     Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 """
 
-import pathlib
 import re
 import sys
+from pathlib import Path
 from typing import Optional
 
 
@@ -14,7 +14,7 @@ def main(args: list[str]) -> None:
     """The main function.
 
     Args:
-        args (list[str]): Program rguments
+        args: Program arguments
     """
     if len(args) < 3:
         print(
@@ -22,15 +22,13 @@ def main(args: list[str]) -> None:
             file=sys.stderr,
         )
         sys.exit(0)
-    east_asian_width_map: list[str] = _load_file(pathlib.Path(args[0]), "N")
-    emoji_data_map: list[str] = _load_file(pathlib.Path(args[1]), "N")
-    grapheme_map: list[str] = _load_file(pathlib.Path(args[2]), "Other")
-    _save_file(
-        pathlib.Path(args[3]), east_asian_width_map, emoji_data_map, grapheme_map
-    )
+    east_asian_width_map: list[str] = _load_file(Path(args[0]), "N")
+    emoji_data_map: list[str] = _load_file(Path(args[1]), "N")
+    grapheme_map: list[str] = _load_file(Path(args[2]), "Other")
+    _save_file(Path(args[3]), east_asian_width_map, emoji_data_map, grapheme_map)
 
 
-def _load_file(path: pathlib.Path, default_value: str) -> list[str]:
+def _load_file(path: Path, default_value: str) -> list[str]:
     map: list[str] = [default_value for code in range(0x110000)]
     with path.open(mode="r", encoding="UTF-8") as stream:
         for line in stream:
@@ -63,7 +61,7 @@ def _remove_comment(line: str) -> str:
 
 
 def _save_file(
-    path: pathlib.Path,
+    path: Path,
     east_asian_width_map: list[str],
     emoji_data_map: list[str],
     grapheme_map: list[str],

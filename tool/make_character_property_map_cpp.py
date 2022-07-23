@@ -4,15 +4,15 @@
     Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 """
 
-import pathlib
 import sys
+from pathlib import Path
 
 
 def main(args: list[str]) -> None:
     """The main function.
 
     Args:
-        args (list[str]): Program rguments
+        args: Program arguments
     """
     if len(args) < 2:
         print(
@@ -20,12 +20,12 @@ def main(args: list[str]) -> None:
             file=sys.stderr,
         )
         sys.exit(0)
-    elements: list[str] = _load_file(pathlib.Path(args[0]))
+    elements: list[str] = _load_file(Path(args[0]))
     content: str = _make_cpp_source(elements)
-    _save_file(pathlib.Path(args[1]), content)
+    _save_file(Path(args[1]), content)
 
 
-def _load_file(path: pathlib.Path) -> list[str]:
+def _load_file(path: Path) -> list[str]:
     elements: list[str] = []
     with path.open(mode="r") as stream:
         for line in stream:
@@ -140,7 +140,7 @@ namespace tetengo::text::grapheme_splitting
     return content
 
 
-def _save_file(path: pathlib.Path, content: str) -> None:
+def _save_file(path: Path, content: str) -> None:
     with path.open(mode="w", newline="\r\n") as stream:
         stream.write(content)
 
