@@ -33,17 +33,26 @@ def main(args: list[str]) -> None:
 
 
 class File:
-    id: str
+    """A file.
 
-    name: str
-
-    feature: str
-
-    guid: str
-
-    source: Path
+    Attributes:
+        id:      The ID.
+        name:    The name.
+        feature: The feature.
+        guid:    The GUID.
+        source:  The source.
+    """
 
     def __init__(self, id: str, name: str, feature: str, guid: str, source: Path):
+        """Creates a file.
+
+        Args:
+            id:      An ID.
+            name:    A name.
+            feature: A feature.
+            guid:    A GUID.
+            source:  A source.
+        """
         self.id = id
         self.name = name
         self.feature = feature
@@ -52,15 +61,24 @@ class File:
 
 
 class EnvVar:
-    id: str
+    """An environment variable.
 
-    name: str
-
-    value: str
-
-    guid: str
+    Attributes:
+        id:    The ID.
+        name:  The name.
+        value: The value.
+        guid:  The GUID.
+    """
 
     def __init__(self, id: str, name: str, value: str, guid: str):
+        """Creates an environment variable.
+
+        Args:
+            id:    The ID.
+            name:  The name.
+            value: The value.
+            guid:  The GUID.
+        """
         self.id = id
         self.name = name
         self.value = value
@@ -68,25 +86,13 @@ class EnvVar:
 
 
 class _DestinationDirectory:
-    id: str
-
-    name: str
-
-    level: int
-
-    children: dict[str, Any]
-
-    files: list[File]
-
-    envvars: list[EnvVar]
-
     def __init__(self, id: str, name: str, level: int):
         self.id = id
         self.name = name
         self.level = level
         self.children: dict[str, _DestinationDirectory] = {}
-        self.files = []
-        self.envvars = []
+        self.files: list[File] = []
+        self.envvars: list[EnvVar] = []
 
     def add_file(self, path: Path, feature: str, guid: str, source_path: Path) -> None:
         if len(path.parents) > 1:

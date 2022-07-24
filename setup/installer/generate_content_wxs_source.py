@@ -82,9 +82,8 @@ def _load_envvars_to_install(path: Path) -> list[tuple[str, str, str]]:
 
 
 class _FileGuidMap:
-    _map: dict[Path, tuple[str, bool]] = {}
-
     def __init__(self, file_guid_map_path: Path, solution_path: Path):
+        self._map: dict[Path, tuple[str, bool]] = {}
         with file_guid_map_path.open(mode="r", encoding="UTF-8") as stream:
             for line in stream:
                 line = line.rstrip("\r\n")
