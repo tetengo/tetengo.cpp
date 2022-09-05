@@ -42,8 +42,9 @@ namespace tetengo::json
         /*!
             \brief The primitive handler type.
 
-            \param type  A type.
-            \param value A value.
+            Parameters
+            - value: A value.
+            - type:  A type.
 
             \retval true  When the parsing is successful.
             \retval false Otherwise.
@@ -68,9 +69,10 @@ namespace tetengo::json
         /*!
             \brief The structure handler type.
 
-            \param type       A type.
-            \param open_close An open or close state.
-            \param value      A value.
+            Parameters
+            - type:       A type.
+            - open_close: An open or close state.
+            - value:      A value.
 
             \retval true  When the parsing is successful.
             \retval false Otherwise.

@@ -23,7 +23,7 @@ typedef struct tetengo_lattice_input_tag tetengo_lattice_input_t;
 /*!
     \brief Creates a string input.
 
-    \param value A value.
+    \param value: A value.
 
     \return A pointer to an string input. Or NULL when value is NULL.
 */
@@ -40,8 +40,9 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     /*!
         \brief The procedure for equality comparation.
 
-        \param p_context         A pointer to the context.
-        \param p_another_context A pointer to another input context.
+        Parameters
+        - p_context:         A pointer to the context.
+        - p_another_context: A pointer to another input context.
 
         \retval true  When p_context is equal to p_another_context.
         \retval false Otherwise.
@@ -51,7 +52,8 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     /*!
         \brief The procedure for hash value.
 
-        \param p_context A pointer to the context.
+        Parameters
+        - p_context: A pointer to the context.
 
         \return The hash value. Or (size_t)-1 when p_context is NULL.
     */
@@ -60,7 +62,8 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     /*!
         \brief The procedure for length.
 
-        \param p_context A pointer to the context.
+        Parameters
+        - p_context: A pointer to the context.
 
         \return The length. Or (size_t)-1 when p_context is NULL.
     */
@@ -69,9 +72,10 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     /*!
         \brief The procedure for creating a subrange context.
 
-        \param p_context A pointer to a superrange context.
-        \param offset    An offset.
-        \param length    A length.
+        Parameters
+        - p_context: A pointer to a superrange context.
+        - offset:    An offset.
+        - length:    A length.
 
         \return A pointer to a subrange context. Or offset and/or length are out of the range of the input.
     */
@@ -80,7 +84,8 @@ typedef struct tetengo_lattice_customInputDefinition_tag
     /*!
         \brief The procedure for destroying a subrange context.
 
-        \param p_context A pointer to a subrange context.
+        Parameters
+        - p_context: A pointer to a subrange context.
     */
     void (*destroy_subraneg_context_proc)(void* p_context);
 
@@ -89,8 +94,9 @@ typedef struct tetengo_lattice_customInputDefinition_tag
 
         The content in the context pointed by p_another_context may be moved into p_context.
 
-        \param p_context         A pointer to the context.
-        \param p_another_context A pointer to another input context.
+        Parameters
+        - p_context:         A pointer to the context.
+        - p_another_context: A pointer to another input context.
 
         \retval true  When p_another is appended to this input.
         \retval false Otherwise.

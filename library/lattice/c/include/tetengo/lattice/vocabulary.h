@@ -58,9 +58,10 @@ typedef struct tetengo_lattice_customVocabularyDefinition_tag
     /*!
         \brief The procedure for findEntries.
 
-        \param p_context A pointer to the context.
-        \param p_key     A pointer to a key.
-        \param p_entries The storage for output entries. Can be NULL.
+        Parameters
+        - p_context: A pointer to the context.
+        - p_key:     A pointer to a key.
+        - p_entries: The storage for output entries. Can be NULL.
 
         \return An entry count.
     */
@@ -72,10 +73,11 @@ typedef struct tetengo_lattice_customVocabularyDefinition_tag
     /*!
         \brief The procedure for findConnection.
 
-        \param p_context    A pointer to the context.
-        \param p_from       A pointer to an origin node.
-        \param p_to         A pointer to a destination entry.
-        \param p_connection The storage for an output connection.
+        Parameters
+        - p_context:    A pointer to the context.
+        - p_from:       A pointer to an origin node.
+        - p_to:         A pointer to a destination entry.
+        - p_connection: The storage for an output connection.
 
         \retval true  When an output connection is stored.
         \retval false Otherwise.
