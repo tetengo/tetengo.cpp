@@ -46,7 +46,8 @@ namespace tetengo::trie
             /*!
                 \brief Called when a key is adding.
 
-                \param serialized_key A serialized key.
+                Parameters
+                - serialized_key: A serialized key.
             */
             std::function<void(const std::string_view& serialized_key)> adding;
 
