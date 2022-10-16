@@ -36,7 +36,7 @@ jobs:
           g++-12
     
     - name: Cache Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build
         key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -71,12 +71,12 @@ jobs:
           g++-12
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build
         key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}

@@ -27,7 +27,7 @@ jobs:
     runs-on: windows-2022
     steps:
     - name: Cache Boost source
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}.tar.gz
         key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -47,16 +47,16 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Restore Boost source
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}.tar.gz
         key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -79,16 +79,16 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Restore Boost source
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}.tar.gz
         key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -111,16 +111,16 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Restore Boost source
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}.tar.gz
         key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -143,16 +143,16 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Restore Boost source
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}.tar.gz
         key: Windows-VisualCpp-BoostSource-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -175,21 +175,21 @@ jobs:
     needs:   boost_build_for_release_win32
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Release.Win32
         key: Windows-VisualCpp-product-release-Win32-${{ github.run_number }}
@@ -213,21 +213,21 @@ jobs:
     needs:   boost_build_for_debug_win32
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-debug-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Debug.Win32
         key: Windows-VisualCpp-product-debug-Win32-${{ github.run_number }}
@@ -251,21 +251,21 @@ jobs:
     needs:   boost_build_for_release_x64
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Release.x64
         key: Windows-VisualCpp-product-release-x64-${{ github.run_number }}
@@ -289,21 +289,21 @@ jobs:
     needs:   boost_build_for_debug_x64
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-debug-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Cache product
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Debug.x64
         key: Windows-VisualCpp-product-debug-x64-${{ github.run_number }}
@@ -326,7 +326,7 @@ jobs:
     runs-on: windows-2022
     steps:
     - name: Cache embedtransform
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .EmbedTransform
         key: Windows-VisualCpp-EmbedTransform-${{ env.EMBEDTRANSFORM_CACHE_REV }}
@@ -349,45 +349,45 @@ jobs:
     needs:   [ boost_build_for_release_Win32, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-release-Win32-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Restore embedtransform
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .EmbedTransform
         key: Windows-VisualCpp-EmbedTransform-${{ env.EMBEDTRANSFORM_CACHE_REV }}
     
     - name: Restore product for Release Win32
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Release.Win32
         key: Windows-VisualCpp-product-release-Win32-${{ github.run_number }}
     
     - name: Restore product for Debug Win32
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Debug.Win32
         key: Windows-VisualCpp-product-debug-Win32-${{ github.run_number }}
     
     - name: Restore product for Release x64
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Release.x64
         key: Windows-VisualCpp-product-release-x64-${{ github.run_number }}
     
     - name: Restore product for Debug x64
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Debug.x64
         key: Windows-VisualCpp-product-debug-x64-${{ github.run_number }}
@@ -401,7 +401,7 @@ jobs:
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x86 tetengo.setup.sln
     
     - name: Cache archive
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
         key: Windows-VisualCpp-archive-Win32-${{ github.run_number }}
@@ -417,45 +417,45 @@ jobs:
     needs:   [ boost_build_for_release_x64, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1.0
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .boost_build\boost_${{ env.BOOST_VER }}
         key: Windows-VisualCpp-Boost-release-x64-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
     
     - name: Restore embedtransform
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: .EmbedTransform
         key: Windows-VisualCpp-EmbedTransform-${{ env.EMBEDTRANSFORM_CACHE_REV }}
     
     - name: Restore product for Release Win32
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Release.Win32
         key: Windows-VisualCpp-product-release-Win32-${{ github.run_number }}
     
     - name: Restore product for Debug Win32
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Debug.Win32
         key: Windows-VisualCpp-product-debug-Win32-${{ github.run_number }}
     
     - name: Restore product for Release x64
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Release.x64
         key: Windows-VisualCpp-product-release-x64-${{ github.run_number }}
     
     - name: Restore product for Debug x64
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin\Debug.x64
         key: Windows-VisualCpp-product-debug-x64-${{ github.run_number }}
@@ -469,7 +469,7 @@ jobs:
         msbuild /t:Rebuild /m:1 /p:Configuration=Release;Platform=x64 tetengo.setup.sln
     
     - name: Cache archive
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: |
           bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
@@ -488,13 +488,13 @@ jobs:
     needs:   [ archive_for_win32, archive_for_x64 ]
     steps:
     - name: Restore archive for Win32
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: bin.setup\tetengo-windows-Win32-${{ env.TETENGO_VER }}.zip
         key: Windows-VisualCpp-archive-Win32-${{ github.run_number }}
     
     - name: Restore archive for x64
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: |
           bin.setup\tetengo-windows-x64-${{ env.TETENGO_VER }}.zip
@@ -510,7 +510,7 @@ jobs:
         move bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip artifacts
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: artifacts-windows
         path: artifacts
