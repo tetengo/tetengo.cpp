@@ -161,6 +161,7 @@ AC_ARG_WITH(
 AC_CHECK_PROG(ISORT, isort, isort)
 test -z $ISORT && \
     AC_MSG_WARN([You cannot format the python script files for lack of isort.])
+AC_SUBST([ISORT_OPTS], "--profile black")
 
 AC_ARG_WITH(
     mypy,
