@@ -16,4 +16,4 @@ mypy: ${script_files}
 
 format: ${script_files}
 	${BLACK} ${srcdir}
-	${ISORT} ${srcdir}
+	${ISORT} ${ISORT_OPTS} ${srcdir}
