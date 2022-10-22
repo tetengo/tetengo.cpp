@@ -55,8 +55,8 @@ $(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
 $(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
 	$(PYTHON) "$(WORKDIR)\generate_content_wxs.py" $** $@
 
-$(OBJDIR)\content_wxs_source.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\file_guid_map.txt $(WORKDIR)\envvars_to_install.txt
-	$(PYTHON) "$(WORKDIR)\generate_content_wxs_source.py" $** $@ $(SOLUTIONDIR)
+$(OBJDIR)\content_wxs_source.txt $(WORKDIR)\file_guid_map.txt: $(WORKDIR)\files_to_install.txt $(WORKDIR)\envvars_to_install.txt
+	$(PYTHON) "$(WORKDIR)\generate_content_wxs_source.py" $(WORKDIR)\files_to_install.txt $(WORKDIR)\file_guid_map.txt $(WORKDIR)\envvars_to_install.txt $@ $(SOLUTIONDIR)
 
 $(BINDIR)\setup.exe: $(TETENGOOUTDIR)\setup.exe
 	$(COPY) /y $** $@
