@@ -49,6 +49,7 @@ tetengo_lattice_constraintElement_createNodeConstraintElement(const tetengo_latt
         BOOST_SCOPE_EXIT_END;
         tetengo::lattice::node cpp_node{ p_node_key ? &p_node_key->cpp_input() : nullptr,
                                          reinterpret_cast<const std::any*>(p_node->value_handle),
+                                         0, // TODO: p_node->index_in_step,
                                          p_node->preceding_step,
                                          &cpp_preceding_edge_costs,
                                          p_node->best_preceding_node,
@@ -119,6 +120,7 @@ int tetengo_lattice_constraintElement_matches(
         BOOST_SCOPE_EXIT_END;
         const tetengo::lattice::node cpp_node{ p_node_key ? &p_node_key->cpp_input() : nullptr,
                                                reinterpret_cast<const std::any*>(p_node->value_handle),
+                                               0, // TODO: p_node->index_in_step,
                                                p_node->preceding_step,
                                                &cpp_preceding_edge_costs,
                                                p_node->best_preceding_node,

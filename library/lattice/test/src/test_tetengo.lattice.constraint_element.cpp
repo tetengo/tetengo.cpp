@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const tetengo::lattice::string_input key{ "mizuho" };
             const std::any                       value{ 42 };
             const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-            const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+            const tetengo::lattice::node         node_{ &key, &value, 0, 1, &preceding_edge_costs, 5, 24, 2424 };
 
             BOOST_TEST(element.matches(node_) < 0);
         }
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const tetengo::lattice::string_input key{ "sakura" };
             const std::any                       value{ 42 };
             const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-            const tetengo::lattice::node         node_{ &key, &value, 3, &preceding_edge_costs, 5, 24, 2424 };
+            const tetengo::lattice::node         node_{ &key, &value, 0, 3, &preceding_edge_costs, 5, 24, 2424 };
 
             BOOST_TEST(element.matches(node_) == 0);
         }
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const tetengo::lattice::string_input key{ "tsubame" };
             const std::any                       value{ 42 };
             const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-            const tetengo::lattice::node         node_{ &key, &value, 5, &preceding_edge_costs, 5, 24, 2424 };
+            const tetengo::lattice::node         node_{ &key, &value, 0, 5, &preceding_edge_costs, 5, 24, 2424 };
 
             BOOST_TEST(element.matches(node_) > 0);
         }

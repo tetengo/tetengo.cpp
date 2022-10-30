@@ -53,6 +53,7 @@ namespace
             cpp_path.emplace_back(
                 p_node_key ? &p_node_key->cpp_input() : nullptr,
                 reinterpret_cast<const std::any*>(p_node->value_handle),
+                0, // TODO: p_node->index_in_step,
                 p_node->preceding_step,
                 &cpp_preceding_edge_cost_lists.back(),
                 p_node->best_preceding_node,

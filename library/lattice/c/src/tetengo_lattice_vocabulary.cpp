@@ -349,6 +349,7 @@ bool tetengo_lattice_vocabulary_findConnection(
         BOOST_SCOPE_EXIT_END;
         const tetengo::lattice::node cpp_from{ p_cpp_from_key ? &p_cpp_from_key->cpp_input() : nullptr,
                                                reinterpret_cast<const std::any*>(p_from->value_handle),
+                                               0, // TODO: p_from->index_in_step,
                                                p_from->preceding_step,
                                                &cpp_preceding_edge_costs,
                                                p_from->best_preceding_node,

@@ -50,9 +50,9 @@ namespace
         static const tetengo::lattice::string_input      key_tsubame{ "tsubame" };
         static const std::vector<tetengo::lattice::node> singleton{
             tetengo::lattice::node::bos(&bos_preceding_edge_costs()),
-            tetengo::lattice::node{ &key_mizuho, &node_value(), 0, &preceding_edge_costs(), 0, 0, 0 },
-            tetengo::lattice::node{ &key_sakura, &node_value(), 1, &preceding_edge_costs(), 0, 0, 0 },
-            tetengo::lattice::node{ &key_tsubame, &node_value(), 2, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_mizuho, &node_value(), 0, 0, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_sakura, &node_value(), 0, 1, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_tsubame, &node_value(), 0, 2, &preceding_edge_costs(), 0, 0, 0 },
             tetengo::lattice::node::eos(3, &preceding_edge_costs(), 0, 0)
         };
         return singleton;

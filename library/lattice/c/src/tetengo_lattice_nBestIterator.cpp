@@ -84,6 +84,7 @@ tetengo_lattice_nBestIterator_t* tetengo_lattice_nBestIterator_create(
             p_eos_node->p_preceding_edge_costs + p_eos_node->preceding_edge_cost_count);
         tetengo::lattice::node cpp_eos_node{ p_cpp_node_key ? &p_cpp_node_key->cpp_input() : nullptr,
                                              reinterpret_cast<const std::any*>(p_eos_node->value_handle),
+                                             0, // TODO: p_eos_node->index_in_step,
                                              p_eos_node->preceding_step,
                                              std::to_address(p_cpp_preceding_edge_costs),
                                              p_eos_node->best_preceding_node,

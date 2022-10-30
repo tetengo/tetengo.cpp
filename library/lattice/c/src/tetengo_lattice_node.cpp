@@ -138,9 +138,9 @@ bool tetengo_lattice_node_toNode(
                                                       reinterpret_cast<const std::any*>(p_entry->value_handle),
                                                       p_entry->cost };
         const std::vector<int>       cpp_preceding_edge_costs{};
-        const tetengo::lattice::node cpp_node{
-            cpp_entry, preceding_step, &cpp_preceding_edge_costs, best_preceding_node, path_cost
-        };
+        const tetengo::lattice::node cpp_node{ cpp_entry,           0, // TODO: index_in_step
+                                               preceding_step,      &cpp_preceding_edge_costs,
+                                               best_preceding_node, path_cost };
 
         p_node->key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_node.p_key());
         p_node->value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
@@ -185,6 +185,7 @@ bool tetengo_lattice_node_equal(
         BOOST_SCOPE_EXIT_END;
         const tetengo::lattice::node cpp_one{ p_one_key ? &p_one_key->cpp_input() : nullptr,
                                               reinterpret_cast<const std::any*>(p_one->value_handle),
+                                              0, // TODO: p_one->index_in_step,
                                               p_one->preceding_step,
                                               &cpp_preceding_edge_costs_one,
                                               p_one->best_preceding_node,
@@ -201,6 +202,7 @@ bool tetengo_lattice_node_equal(
         BOOST_SCOPE_EXIT_END;
         const tetengo::lattice::node cpp_another{ p_another_key ? &p_another_key->cpp_input() : nullptr,
                                                   reinterpret_cast<const std::any*>(p_another->value_handle),
+                                                  0, // TODO: p_another->index_in_step,
                                                   p_another->preceding_step,
                                                   &cpp_preceding_edge_costs_another,
                                                   p_another->best_preceding_node,
@@ -235,6 +237,7 @@ bool tetengo_lattice_node_isBos(const tetengo_lattice_node_t* const p_node)
         BOOST_SCOPE_EXIT_END;
         const tetengo::lattice::node cpp_node{ p_node_key ? &p_node_key->cpp_input() : nullptr,
                                                reinterpret_cast<const std::any*>(p_node->value_handle),
+                                               0, // TODO: p_node->index_in_step,
                                                p_node->preceding_step,
                                                &cpp_preceding_edge_costs,
                                                p_node->best_preceding_node,

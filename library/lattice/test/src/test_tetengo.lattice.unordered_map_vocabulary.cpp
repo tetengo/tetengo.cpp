@@ -59,6 +59,7 @@ namespace
     {
         static const std::vector<int> preceding_edge_costs{};
         return tetengo::lattice::node{ entry,
+                                       0,
                                        std::numeric_limits<std::size_t>::max(),
                                        &preceding_edge_costs,
                                        std::numeric_limits<std::size_t>::max(),
