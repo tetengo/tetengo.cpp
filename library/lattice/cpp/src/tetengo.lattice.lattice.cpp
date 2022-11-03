@@ -143,7 +143,7 @@ namespace tetengo::lattice
 
                     nodes.emplace_back(
                         entry,
-                        nodes.size(),
+                        std::size(nodes),
                         i,
                         &preceding_edge_costs,
                         best_preceding_node_index_,
