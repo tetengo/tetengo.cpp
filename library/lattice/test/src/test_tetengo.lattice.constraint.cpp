@@ -123,6 +123,7 @@ namespace
 
         c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_node.p_key());
         c_node.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
+        c_node.index_in_step = cpp_node.index_in_step();
         c_node.preceding_step = cpp_node.preceding_step();
         c_node.p_preceding_edge_costs = std::data(cpp_node.preceding_edge_costs());
         c_node.preceding_edge_cost_count = std::size(cpp_node.preceding_edge_costs());
