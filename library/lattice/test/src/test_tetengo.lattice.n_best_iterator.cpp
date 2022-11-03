@@ -151,6 +151,27 @@ namespace
             entries, connections, cpp_entry_hash, cpp_entry_equal_to);
     }
 
+    int preceding_edge_cost(const tetengo::lattice::path& path_, const std::size_t node_index)
+    {
+        const auto& nodes = path_.nodes();
+        assert(!std::empty(nodes));
+        assert(0 < node_index && node_index < std::size(nodes));
+        return nodes[node_index].preceding_edge_costs()[nodes[node_index - 1].index_in_step()];
+    }
+
+    int recalc_path_cost(const tetengo::lattice::path& path_)
+    {
+        const auto& nodes = path_.nodes();
+        assert(!std::empty(nodes));
+        auto cost = nodes[0].node_cost();
+        for (std::size_t i = 1; i < std::size(nodes); ++i)
+        {
+            cost += preceding_edge_cost(path_, i);
+            cost += nodes[i].node_cost();
+        }
+        return cost;
+    }
+
     size_t c_entry_hash(const tetengo_lattice_entryView_t* const p_entry)
     {
         if (p_entry)
@@ -258,6 +279,28 @@ namespace
             c_entry_hash,
             c_entry_equal_to);
     }
+
+    int c_preceding_edge_cost(const std::vector<tetengo_lattice_node_t>& nodes, const std::size_t node_index)
+    {
+        assert(!std::empty(nodes));
+        assert(0 < node_index && node_index < std::size(nodes));
+        const auto preceding_index_in_step = nodes[node_index - 1].index_in_step;
+        assert(preceding_index_in_step < nodes[node_index].preceding_edge_cost_count);
+        return nodes[node_index].p_preceding_edge_costs[preceding_index_in_step];
+    }
+
+    int recalc_c_path_cost(const std::vector<tetengo_lattice_node_t>& nodes)
+    {
+        assert(!std::empty(nodes));
+        auto cost = nodes[0].node_cost;
+        for (std::size_t i = 1; i < std::size(nodes); ++i)
+        {
+            cost += c_preceding_edge_cost(nodes, i);
+            cost += nodes[i].node_cost;
+        }
+        return cost;
+    }
+
 }
 
 
@@ -690,7 +733,10 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 3U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "tsubame");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 600);
             BOOST_TEST(!path.nodes()[2].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 2) == 400);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         ++iterator;
@@ -699,7 +745,10 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 3U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "sakura");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 600);
             BOOST_TEST(!path.nodes()[2].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 2) == 400);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         iterator++;
@@ -708,8 +757,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 4U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "rapid811");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 700);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local817");
+            BOOST_TEST(preceding_edge_cost(path, 2) == 200);
             BOOST_TEST(!path.nodes()[3].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 3) == 600);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         ++iterator;
@@ -718,8 +771,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 4U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "local415");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 800);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local815");
+            BOOST_TEST(preceding_edge_cost(path, 2) == 500);
             BOOST_TEST(!path.nodes()[3].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 3) == 500);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         iterator++;
@@ -728,8 +785,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 4U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "kamome");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 800);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local815");
+            BOOST_TEST(preceding_edge_cost(path, 2) == 500);
             BOOST_TEST(!path.nodes()[3].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 3) == 500);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         ++iterator;
@@ -738,8 +799,12 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 4U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "ariake");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 700);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local817");
+            BOOST_TEST(preceding_edge_cost(path, 2) == 200);
             BOOST_TEST(!path.nodes()[3].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 3) == 600);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         iterator++;
@@ -748,7 +813,10 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 3U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "mizuho");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 600);
             BOOST_TEST(!path.nodes()[2].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 2) == 400);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         ++iterator;
@@ -757,9 +825,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 5U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "local415");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 800);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local813");
+            BOOST_TEST(preceding_edge_cost(path, 2) == 600);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[3].value()) == "local817");
+            BOOST_TEST(preceding_edge_cost(path, 3) == 300);
             BOOST_TEST(!path.nodes()[4].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 4) == 600);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         iterator++;
@@ -768,9 +841,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST_REQUIRE(std::size(path.nodes()) == 5U);
             BOOST_TEST(!path.nodes()[0].value().has_value());
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[1].value()) == "kamome");
+            BOOST_TEST(preceding_edge_cost(path, 1) == 800);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[2].value()) == "local813");
+            BOOST_TEST(preceding_edge_cost(path, 2) == 600);
             BOOST_TEST(std::any_cast<std::string>(path.nodes()[3].value()) == "local817");
+            BOOST_TEST(preceding_edge_cost(path, 3) == 300);
             BOOST_TEST(!path.nodes()[4].value().has_value());
+            BOOST_TEST(preceding_edge_cost(path, 4) == 600);
+            BOOST_TEST(recalc_path_cost(path) == path.cost());
         }
 
         ++iterator;
@@ -986,7 +1064,10 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "tsubame");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 600);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[2].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 400);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1008,7 +1089,10 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "sakura");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 600);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[2].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 400);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1030,10 +1114,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "rapid811");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 700);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[2].value_handle)) ==
                 "local817");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 200);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[3].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 3) == 600);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1055,10 +1143,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "local415");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 800);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[2].value_handle)) ==
                 "local815");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 500);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[3].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 3) == 500);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1080,10 +1172,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "kamome");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 800);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[2].value_handle)) ==
                 "local815");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 500);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[3].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 3) == 500);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1105,10 +1201,14 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "ariake");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 700);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[2].value_handle)) ==
                 "local817");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 200);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[3].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 3) == 600);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1130,7 +1230,10 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "mizuho");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 600);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[2].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 400);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1152,13 +1255,18 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "local415");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 800);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[2].value_handle)) ==
                 "local813");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 600);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[3].value_handle)) ==
                 "local817");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 3) == 300);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[4].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 4) == 600);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);
@@ -1180,13 +1288,18 @@ BOOST_AUTO_TEST_CASE(operator_increment)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "kamome");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 1) == 800);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[2].value_handle)) ==
                 "local813");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 2) == 600);
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[3].value_handle)) ==
                 "local817");
+            BOOST_TEST(c_preceding_edge_cost(nodes, 3) == 300);
             BOOST_TEST(!tetengo_lattice_entryView_valueOf(nodes[4].value_handle));
+            BOOST_TEST(c_preceding_edge_cost(nodes, 4) == 600);
+            BOOST_TEST(recalc_c_path_cost(nodes) == tetengo_lattice_path_cost(p_path));
         }
 
         tetengo_lattice_nBestIterator_next(p_iterator);

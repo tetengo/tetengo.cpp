@@ -157,14 +157,14 @@ BOOST_AUTO_TEST_CASE(construction)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
     }
     {
         const tetengo::lattice::string_input entry_key{ "mizuho" };
         const std::any                       entry_value{ 42 };
         const tetengo::lattice::entry_view   entry{ &entry_key, &entry_value, 24 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ entry, 1, &preceding_edge_costs, 5, 2424 };
+        const tetengo::lattice::node         node_{ entry, 53, 1, &preceding_edge_costs, 5, 2424 };
 
         BOOST_TEST(node_.p_key() == &entry_key);
         BOOST_TEST(std::any_cast<int>(node_.value()) == 42);
@@ -187,6 +187,7 @@ BOOST_AUTO_TEST_CASE(construction)
         [[maybe_unused]] const tetengo_lattice_node_t node{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
                                                                 &value),
+                                                            53,
                                                             1,
                                                             std::data(preceding_edge_costs),
                                                             std::size(preceding_edge_costs),
@@ -208,11 +209,12 @@ BOOST_AUTO_TEST_CASE(construction)
         const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         tetengo_lattice_node_t            node{};
         const auto                        result = tetengo_lattice_node_toNode(
-            &entry, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, &node);
+            &entry, 53, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, &node);
         BOOST_TEST_REQUIRE(result);
 
         BOOST_TEST(node.key_handle == entry.key_handle);
         BOOST_TEST(node.value_handle == entry.value_handle);
+        BOOST_TEST(node.index_in_step == 53U);
         BOOST_TEST(node.preceding_step == 1U);
         BOOST_TEST(node.p_preceding_edge_costs == std::data(preceding_edge_costs));
         BOOST_TEST(node.preceding_edge_cost_count == std::size(preceding_edge_costs));
@@ -234,7 +236,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         tetengo_lattice_node_t            node{};
         const auto                        result = tetengo_lattice_node_toNode(
-            &entry, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, &node);
+            &entry, 53, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, &node);
         BOOST_TEST_REQUIRE(result);
 
         BOOST_TEST(node.key_handle == entry.key_handle);
@@ -250,7 +252,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const std::vector<int> preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         tetengo_lattice_node_t node{};
         const auto             result = tetengo_lattice_node_toNode(
-            nullptr, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, &node);
+            nullptr, 53, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, &node);
         BOOST_TEST(!result);
     }
     {
@@ -265,11 +267,12 @@ BOOST_AUTO_TEST_CASE(construction)
                                                  reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
                                                  24 };
         tetengo_lattice_node_t            node{};
-        const auto                        result = tetengo_lattice_node_toNode(&entry, 1, nullptr, 0, 5, 2424, &node);
+        const auto result = tetengo_lattice_node_toNode(&entry, 53, 1, nullptr, 0, 5, 2424, &node);
         BOOST_TEST_REQUIRE(result);
 
         BOOST_TEST(node.key_handle == entry.key_handle);
         BOOST_TEST(node.value_handle == entry.value_handle);
+        BOOST_TEST(node.index_in_step == 53U);
         BOOST_TEST(node.preceding_step == 1U);
         BOOST_TEST(node.preceding_edge_cost_count == 0U);
         BOOST_TEST(node.best_preceding_node == 5U);
@@ -288,7 +291,7 @@ BOOST_AUTO_TEST_CASE(construction)
                                                  reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
                                                  24 };
         tetengo_lattice_node_t            node{};
-        const auto                        result = tetengo_lattice_node_toNode(&entry, 1, nullptr, 3, 5, 2424, &node);
+        const auto result = tetengo_lattice_node_toNode(&entry, 53, 1, nullptr, 3, 5, 2424, &node);
         BOOST_TEST(!result);
     }
     {
@@ -304,7 +307,7 @@ BOOST_AUTO_TEST_CASE(construction)
                                                  24 };
         const std::vector<int>            preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const auto                        result = tetengo_lattice_node_toNode(
-            &entry, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, nullptr);
+            &entry, 53, 1, std::data(preceding_edge_costs), std::size(preceding_edge_costs), 5, 2424, nullptr);
         BOOST_TEST(!result);
     }
 }
@@ -324,11 +327,11 @@ BOOST_AUTO_TEST_CASE(operator_equal)
 
         const std::any               value1{ 42 };
         const std::vector<int>       preceding_edge_costs1{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node node1{ &key, &value1, 1, &preceding_edge_costs1, 5, 24, 2424 };
+        const tetengo::lattice::node node1{ &key, &value1, 53, 1, &preceding_edge_costs1, 5, 24, 2424 };
 
         const std::any               value2{ 42 };
         const std::vector<int>       preceding_edge_costs2{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node node2{ &key, &value2, 1, &preceding_edge_costs2, 5, 24, 2424 };
+        const tetengo::lattice::node node2{ &key, &value2, 53, 1, &preceding_edge_costs2, 5, 24, 2424 };
 
         BOOST_CHECK(bos == bos);
         BOOST_CHECK(bos != eos);
@@ -359,6 +362,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         const std::vector<int>       preceding_edge_costs1{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node1{ tetengo_lattice_entryView_toKeyHandle(p_key1),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value1),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs1),
                                             std::size(preceding_edge_costs1),
@@ -376,6 +380,7 @@ BOOST_AUTO_TEST_CASE(operator_equal)
         const std::vector<int>       preceding_edge_costs2{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node2{ tetengo_lattice_entryView_toKeyHandle(p_key2),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value2),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs2),
                                             std::size(preceding_edge_costs2),
@@ -401,7 +406,7 @@ BOOST_AUTO_TEST_CASE(key)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
 
         BOOST_TEST_REQUIRE(node_.p_key());
         BOOST_TEST_REQUIRE(node_.p_key()->is<tetengo::lattice::string_input>());
@@ -419,6 +424,7 @@ BOOST_AUTO_TEST_CASE(key)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),
@@ -445,7 +451,7 @@ BOOST_AUTO_TEST_CASE(value)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
 
         BOOST_TEST(std::any_cast<int>(node_.value()) == 42);
     }
@@ -461,6 +467,7 @@ BOOST_AUTO_TEST_CASE(value)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),
@@ -472,6 +479,42 @@ BOOST_AUTO_TEST_CASE(value)
     }
 }
 
+BOOST_AUTO_TEST_CASE(index_in_step)
+{
+    BOOST_TEST_PASSPOINT();
+
+    {
+        const tetengo::lattice::string_input key{ "mizuho" };
+        const std::any                       value{ 42 };
+        const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
+
+        BOOST_TEST(node_.index_in_step() == 53U);
+    }
+
+    {
+        const auto* const p_key = tetengo_lattice_input_createStringInput("mizuho");
+        BOOST_SCOPE_EXIT(p_key)
+        {
+            tetengo_lattice_input_destroy(p_key);
+        }
+        BOOST_SCOPE_EXIT_END;
+        const std::any               value{ reinterpret_cast<const void*>("MIZUHO") };
+        const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
+        const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
+                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
+                                            1,
+                                            std::data(preceding_edge_costs),
+                                            std::size(preceding_edge_costs),
+                                            5,
+                                            24,
+                                            2424 };
+
+        BOOST_TEST(node_.index_in_step == 53U);
+    }
+}
+
 BOOST_AUTO_TEST_CASE(preceding_step)
 {
     BOOST_TEST_PASSPOINT();
@@ -480,7 +523,7 @@ BOOST_AUTO_TEST_CASE(preceding_step)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
 
         BOOST_TEST(node_.preceding_step() == 1U);
     }
@@ -496,6 +539,7 @@ BOOST_AUTO_TEST_CASE(preceding_step)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),
@@ -515,7 +559,7 @@ BOOST_AUTO_TEST_CASE(preceding_edge_costs)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
 
         BOOST_TEST(&node_.preceding_edge_costs() == &preceding_edge_costs);
     }
@@ -531,6 +575,7 @@ BOOST_AUTO_TEST_CASE(preceding_edge_costs)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),
@@ -551,7 +596,7 @@ BOOST_AUTO_TEST_CASE(best_preceding_node)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
 
         BOOST_TEST(node_.best_preceding_node() == 5U);
     }
@@ -567,6 +612,7 @@ BOOST_AUTO_TEST_CASE(best_preceding_node)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),
@@ -586,7 +632,7 @@ BOOST_AUTO_TEST_CASE(node_cost)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
 
         BOOST_TEST(node_.node_cost() == 24);
     }
@@ -602,6 +648,7 @@ BOOST_AUTO_TEST_CASE(node_cost)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),
@@ -621,7 +668,7 @@ BOOST_AUTO_TEST_CASE(path_cost)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        const tetengo::lattice::node         node_{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 };
+        const tetengo::lattice::node         node_{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 };
 
         BOOST_TEST(node_.path_cost() == 2424);
     }
@@ -637,6 +684,7 @@ BOOST_AUTO_TEST_CASE(path_cost)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),
@@ -664,7 +712,7 @@ BOOST_AUTO_TEST_CASE(is_bos)
         const tetengo::lattice::string_input key{ "mizuho" };
         const std::any                       value{ 42 };
         const std::vector<int>               preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
-        BOOST_TEST((!tetengo::lattice::node{ &key, &value, 1, &preceding_edge_costs, 5, 24, 2424 }.is_bos()));
+        BOOST_TEST((!tetengo::lattice::node{ &key, &value, 53, 1, &preceding_edge_costs, 5, 24, 2424 }.is_bos()));
     }
 
     {
@@ -692,6 +740,7 @@ BOOST_AUTO_TEST_CASE(is_bos)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node_{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                             reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                            53,
                                             1,
                                             std::data(preceding_edge_costs),
                                             std::size(preceding_edge_costs),

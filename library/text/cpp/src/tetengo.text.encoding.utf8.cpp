@@ -4,6 +4,7 @@
     Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
 */
 
+#include <iterator>
 #include <memory>
 
 #include <boost/core/noncopyable.hpp>
@@ -40,13 +41,14 @@ namespace tetengo::text::encoding
 
         encoded_string_type encode(const string_view_type& utf8) const
         {
-            return encoded_string_type{ reinterpret_cast<const encoded_string_type::value_type*>(utf8.data()),
+            return encoded_string_type{ reinterpret_cast<const encoded_string_type::value_type*>(std::data(utf8)),
                                         utf8.length() };
         }
 
         string_type decode(const encoded_string_view_type& string_) const
         {
-            return string_type{ reinterpret_cast<const string_type::value_type*>(string_.data()), string_.length() };
+            return string_type{ reinterpret_cast<const string_type::value_type*>(std::data(string_)),
+                                string_.length() };
         }
     };
 

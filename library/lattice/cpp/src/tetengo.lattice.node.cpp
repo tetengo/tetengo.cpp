@@ -17,6 +17,7 @@ namespace tetengo::lattice
     node node::bos(const std::vector<int>* const p_preceding_edge_costs)
     {
         return node{ entry_view::bos_eos(),
+                     0,
                      std::numeric_limits<std::size_t>::max(),
                      p_preceding_edge_costs,
                      std::numeric_limits<std::size_t>::max(),
@@ -29,7 +30,7 @@ namespace tetengo::lattice
         const std::size_t             best_preceding_node,
         const int                     path_cost)
     {
-        return node{ entry_view::bos_eos(), preceding_step, p_preceding_edge_costs, best_preceding_node, path_cost };
+        return node{ entry_view::bos_eos(), 0, preceding_step, p_preceding_edge_costs, best_preceding_node, path_cost };
     }
 
     bool node::is_bos() const

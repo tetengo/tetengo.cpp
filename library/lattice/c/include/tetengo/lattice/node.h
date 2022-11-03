@@ -29,6 +29,9 @@ typedef struct tetengo_lattice_node_tag
     /*! A value handle. */
     tetengo_lattice_entryView_valueHandle_t value_handle;
 
+    /*! An index in the step. */
+    size_t index_in_step;
+
     /*! An index of a preceding step. */
     size_t preceding_step;
 
@@ -90,6 +93,7 @@ bool tetengo_lattice_node_eos(
     \brief Makes a node from an entry.
 
     \param p_entry                A pointer to an entry.
+    \param index_in_step          An index of the step.
     \param preceding_step         An index of a preceding step.
     \param p_preceding_edge_costs A pointer to preceding edge costs.
     \param preceding_edge_count   A preceding edge count.
@@ -102,6 +106,7 @@ bool tetengo_lattice_node_eos(
 */
 bool tetengo_lattice_node_toNode(
     const tetengo_lattice_entryView_t* p_entry,
+    size_t                             index_in_step,
     size_t                             preceding_step,
     const int*                         p_preceding_edge_costs,
     size_t                             preceding_edge_count,

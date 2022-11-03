@@ -50,9 +50,9 @@ namespace
         static const tetengo::lattice::string_input      key_tsubame{ "tsubame" };
         static const std::vector<tetengo::lattice::node> singleton{
             tetengo::lattice::node::bos(&bos_preceding_edge_costs()),
-            tetengo::lattice::node{ &key_mizuho, &node_value(), 0, &preceding_edge_costs(), 0, 0, 0 },
-            tetengo::lattice::node{ &key_sakura, &node_value(), 1, &preceding_edge_costs(), 0, 0, 0 },
-            tetengo::lattice::node{ &key_tsubame, &node_value(), 2, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_mizuho, &node_value(), 0, 0, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_sakura, &node_value(), 0, 1, &preceding_edge_costs(), 0, 0, 0 },
+            tetengo::lattice::node{ &key_tsubame, &node_value(), 0, 2, &preceding_edge_costs(), 0, 0, 0 },
             tetengo::lattice::node::eos(3, &preceding_edge_costs(), 0, 0)
         };
         return singleton;
@@ -64,6 +64,7 @@ namespace
 
         c_node.key_handle = reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(cpp_node.p_key());
         c_node.value_handle = reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&cpp_node.value());
+        c_node.index_in_step = cpp_node.index_in_step();
         c_node.preceding_step = cpp_node.preceding_step();
         c_node.p_preceding_edge_costs = std::data(cpp_node.preceding_edge_costs());
         c_node.preceding_edge_cost_count = std::size(cpp_node.preceding_edge_costs());

@@ -65,6 +65,7 @@ namespace tetengo::lattice
 
             \param p_key                  A pointer to a key.
             \param p_value                A pointer to a value.
+            \param index_in_step          An index in the step.
             \param preceding_step         An index of a preceding step.
             \param p_preceding_edge_costs A pointer to preceding edge costs.
             \param best_preceding_node    An index of a best preceding node.
@@ -74,6 +75,7 @@ namespace tetengo::lattice
         constexpr node(
             const input*            p_key,
             const std::any*         p_value,
+            std::size_t             index_in_step,
             std::size_t             preceding_step,
             const std::vector<int>* p_preceding_edge_costs,
             std::size_t             best_preceding_node,
@@ -81,6 +83,7 @@ namespace tetengo::lattice
             int                     path_cost) :
         m_p_key{ p_key },
         m_p_value{ p_value },
+        m_index_in_step{ index_in_step },
         m_preceding_step{ preceding_step },
         m_p_preceding_edge_costs{ p_preceding_edge_costs },
         m_best_preceding_node{ best_preceding_node },
@@ -92,6 +95,7 @@ namespace tetengo::lattice
             \brief Creates a node from a vocabulary entry.
 
             \param entry                  An entry.
+            \param index_in_step          An index in the step.
             \param preceding_step         An index of a preceding step.
             \param p_preceding_edge_costs A pointer to preceding edge costs.
             \param best_preceding_node    An index of a best preceding node.
@@ -101,12 +105,13 @@ namespace tetengo::lattice
         */
         constexpr node(
             const entry_view&       entry,
+            std::size_t             index_in_step,
             std::size_t             preceding_step,
             const std::vector<int>* p_preceding_edge_costs,
             std::size_t             best_preceding_node,
             int                     path_cost) :
-        node{ entry.p_key(),       entry.value(), preceding_step, p_preceding_edge_costs,
-              best_preceding_node, entry.cost(),  path_cost }
+        node{ entry.p_key(),          entry.value(),       index_in_step, preceding_step,
+              p_preceding_edge_costs, best_preceding_node, entry.cost(),  path_cost }
         {}
 
 
@@ -151,6 +156,15 @@ namespace tetengo::lattice
             return *m_p_value;
         }
 
+        /*!
+            \brief Returns the index in the step.
+
+            \return The index in the step.
+        */
+        [[nodiscard]] constexpr std::size_t index_in_step() const
+        {
+            return m_index_in_step;
+        }
         /*!
             \brief Returns the index of the preceding step.
 
@@ -217,6 +231,8 @@ namespace tetengo::lattice
         const input* m_p_key;
 
         const std::any* m_p_value;
+
+        std::size_t m_index_in_step;
 
         std::size_t m_preceding_step;
 

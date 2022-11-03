@@ -380,6 +380,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             const std::vector<int> preceding_edge_costs{};
             BOOST_TEST(
                 nodes[0].value().has_value() == tetengo::lattice::node::bos(&preceding_edge_costs).value().has_value());
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step() == i);
+            }
         }
         {
             const auto& nodes = lattice_.nodes_at(1);
@@ -387,6 +391,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST_REQUIRE(std::size(nodes) == 2U);
             BOOST_TEST(std::any_cast<std::string>(nodes[0].value()) == "kamome");
             BOOST_TEST(std::any_cast<std::string>(nodes[1].value()) == "local415");
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step() == i);
+            }
         }
         {
             const auto& nodes = lattice_.nodes_at(2);
@@ -395,6 +403,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST(std::any_cast<std::string>(nodes[0].value()) == "ariake");
             BOOST_TEST(std::any_cast<std::string>(nodes[1].value()) == "rapid811");
             BOOST_TEST(std::any_cast<std::string>(nodes[2].value()) == "local813");
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step() == i);
+            }
         }
         {
             const auto& nodes = lattice_.nodes_at(3);
@@ -405,6 +417,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST(std::any_cast<std::string>(nodes[2].value()) == "tsubame");
             BOOST_TEST(std::any_cast<std::string>(nodes[3].value()) == "local815");
             BOOST_TEST(std::any_cast<std::string>(nodes[4].value()) == "local817");
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step() == i);
+            }
         }
         {
             BOOST_CHECK_THROW([[maybe_unused]] const auto& nodes = lattice_.nodes_at(4), std::out_of_range);
@@ -440,6 +456,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             tetengo_lattice_node_t bos{};
             tetengo_lattice_node_bos(std::data(preceding_edge_costs), std::size(preceding_edge_costs), &bos);
             BOOST_TEST(nodes[0].value_handle == bos.value_handle);
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step == i);
+            }
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 1, nullptr);
@@ -455,6 +475,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[1].value_handle)) ==
                 "local415");
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step == i);
+            }
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 2, nullptr);
@@ -473,6 +497,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[2].value_handle)) ==
                 "local813");
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step == i);
+            }
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 3, nullptr);
@@ -497,6 +525,10 @@ BOOST_AUTO_TEST_CASE(nodes_at)
             BOOST_TEST(
                 *reinterpret_cast<const std::string*>(tetengo_lattice_entryView_valueOf(nodes[4].value_handle)) ==
                 "local817");
+            for (std::size_t i = 0; i < std::size(nodes); ++i)
+            {
+                BOOST_TEST(nodes[i].index_in_step == i);
+            }
         }
         {
             const auto node_count = tetengo_lattice_lattice_nodesAt(p_lattice, 4, nullptr);
