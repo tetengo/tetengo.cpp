@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(find_entries)
     BOOST_TEST_REQUIRE(entry_count == 2U);
 
     std::vector<tetengo_lattice_entryView_t> entries(entry_count);
-    const auto entry_count_again = tetengo_lattice_vocabulary_findEntries(p_vocabulary, p_input, entries.data());
+    const auto entry_count_again = tetengo_lattice_vocabulary_findEntries(p_vocabulary, p_input, std::data(entries));
     BOOST_TEST(entry_count_again == entry_count);
     const auto* const p_entry_key0 = tetengo_lattice_entryView_createKeyOf(entries[0].key_handle);
     BOOST_SCOPE_EXIT(p_entry_key0)

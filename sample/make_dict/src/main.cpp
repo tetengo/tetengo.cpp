@@ -54,7 +54,7 @@ namespace
         else
         {
             const auto encoded = tetengo::text::encoder<tetengo::text::encoding::utf8>::instance().encode(string_);
-            return std::string{ reinterpret_cast<const char*>(encoded.data()), encoded.length() };
+            return std::string{ reinterpret_cast<const char*>(std::data(encoded)), encoded.length() };
         }
     }
 
