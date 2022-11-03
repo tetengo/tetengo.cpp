@@ -177,6 +177,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
     const tetengo_lattice_node_t from{ tetengo_lattice_entryView_toKeyHandle(p_key_from),
                                        reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value_from),
                                        0,
+                                       0,
                                        nullptr,
                                        0,
                                        0,

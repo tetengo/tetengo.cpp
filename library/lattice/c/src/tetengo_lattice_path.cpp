@@ -98,7 +98,7 @@ tetengo_lattice_path_create(const tetengo_lattice_node_t* const p_nodes, const s
             cpp_nodes.emplace_back(
                 p_cpp_node_key ? &p_cpp_node_key->cpp_input() : nullptr,
                 reinterpret_cast<const std::any*>(node.value_handle),
-                0, // TODO: node.index_in_step,
+                node.index_in_step,
                 node.preceding_step,
                 &cpp_preceding_edge_cost_list,
                 node.best_preceding_node,

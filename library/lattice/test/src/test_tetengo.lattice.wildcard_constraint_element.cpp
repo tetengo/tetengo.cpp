@@ -119,6 +119,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             const tetengo_lattice_node_t node{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                                reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                               0,
                                                1,
                                                std::data(preceding_edge_costs),
                                                std::size(preceding_edge_costs),
@@ -139,6 +140,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             const tetengo_lattice_node_t node{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                                reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                               0,
                                                3,
                                                std::data(preceding_edge_costs),
                                                std::size(preceding_edge_costs),
@@ -159,6 +161,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             const tetengo_lattice_node_t node{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                                reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                               0,
                                                5,
                                                std::data(preceding_edge_costs),
                                                std::size(preceding_edge_costs),
@@ -197,6 +200,7 @@ BOOST_AUTO_TEST_CASE(matches)
             const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
             const tetengo_lattice_node_t node{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                                reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                               0,
                                                1,
                                                std::data(preceding_edge_costs),
                                                std::size(preceding_edge_costs),
@@ -218,6 +222,7 @@ BOOST_AUTO_TEST_CASE(matches)
         const std::vector<int>       preceding_edge_costs{ 3, 1, 4, 1, 5, 9, 2, 6 };
         const tetengo_lattice_node_t node{ tetengo_lattice_entryView_toKeyHandle(p_key),
                                            reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(&value),
+                                           0,
                                            1,
                                            std::data(preceding_edge_costs),
                                            std::size(preceding_edge_costs),

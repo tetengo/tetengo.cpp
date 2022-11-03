@@ -637,6 +637,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
+                0,
                 std::numeric_limits<size_t>::max(),
                 std::data(preceding_edge_costs),
                 std::size(preceding_edge_costs),
@@ -673,6 +674,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
+                0,
                 std::numeric_limits<size_t>::max(),
                 std::data(preceding_edge_costs),
                 std::size(preceding_edge_costs),
@@ -711,6 +713,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
+                0,
                 std::numeric_limits<size_t>::max(),
                 std::data(preceding_edge_costs),
                 std::size(preceding_edge_costs),
@@ -764,6 +767,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
+                0,
                 std::numeric_limits<size_t>::max(),
                 std::data(preceding_edge_costs),
                 std::size(preceding_edge_costs),
@@ -800,6 +804,7 @@ BOOST_AUTO_TEST_CASE(find_connection)
             tetengo_lattice_node_t            node_mizuho{};
             BOOST_TEST_REQUIRE(tetengo_lattice_node_toNode(
                 &entry_mizuho,
+                0,
                 std::numeric_limits<size_t>::max(),
                 std::data(preceding_edge_costs),
                 std::size(preceding_edge_costs),

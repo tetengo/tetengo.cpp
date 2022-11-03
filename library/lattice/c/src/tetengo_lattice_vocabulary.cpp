@@ -222,6 +222,7 @@ namespace
             const tetengo_lattice_node_t c_from{ reinterpret_cast<tetengo_lattice_entryView_keyHandle_t>(from.p_key()),
                                                  reinterpret_cast<tetengo_lattice_entryView_valueHandle_t>(
                                                      &from.value()),
+                                                 from.index_in_step(),
                                                  from.preceding_step(),
                                                  std::data(from.preceding_edge_costs()),
                                                  std::size(from.preceding_edge_costs()),
@@ -349,7 +350,7 @@ bool tetengo_lattice_vocabulary_findConnection(
         BOOST_SCOPE_EXIT_END;
         const tetengo::lattice::node cpp_from{ p_cpp_from_key ? &p_cpp_from_key->cpp_input() : nullptr,
                                                reinterpret_cast<const std::any*>(p_from->value_handle),
-                                               0, // TODO: p_from->index_in_step,
+                                               p_from->index_in_step,
                                                p_from->preceding_step,
                                                &cpp_preceding_edge_costs,
                                                p_from->best_preceding_node,
