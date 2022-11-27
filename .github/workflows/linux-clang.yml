@@ -112,6 +112,11 @@ jobs:
           graphviz \
           iwyu
     
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    
     - name: Restore Doxygen build
       uses: actions/cache@v3
       with:
@@ -123,11 +128,6 @@ jobs:
       run: |
         cd .doxygen_build/doxygen-${{ env.DOXYGEN_VER }}/build
         sudo make -j ${{ env.CONCURRENT_BUILD }} install
-    
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        submodules: recursive
     
     - name: Configure
       shell: bash
