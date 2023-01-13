@@ -1,7 +1,7 @@
 /*! \file
     \brief A constraint.
 
-    Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_LATTICE_CONSTRAINT_HPP_)
