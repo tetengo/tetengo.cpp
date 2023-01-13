@@ -1,7 +1,7 @@
 /*! \file
     \brief A text encoder.
 
-    Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_PLATFORMDEPENDENT_TEXTENCODER_HPP)

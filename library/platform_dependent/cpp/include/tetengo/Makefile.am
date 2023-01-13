@@ -1,5 +1,5 @@
 # Automake Settings
-# Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
+# Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
 
 pkg_headers = \
     platform_dependent/propertyX.hpp \

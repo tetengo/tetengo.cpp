@@ -1,7 +1,7 @@
 /*! \file
     \brief The usage of grapheme splitting.
 
-    Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
 */
 
 #include "usage_tetengo.text.grapheme_split_cpp.hpp"
