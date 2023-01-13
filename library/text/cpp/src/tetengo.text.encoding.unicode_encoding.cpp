@@ -1,7 +1,7 @@
 /*! \file
     \brief A unicode encoding.
 
-    Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
 */
 
 #include <iterator>

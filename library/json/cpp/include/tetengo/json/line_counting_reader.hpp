@@ -1,7 +1,7 @@
 /*! \file
     \brief A line counting reader.
 
-    Copyright (C) 2019-2022 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_JSON_LINECOUNTINGREADER_HPP)
