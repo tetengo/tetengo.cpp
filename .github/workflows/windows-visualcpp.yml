@@ -15,8 +15,8 @@ on:
 env:
   TETENGO_VER:              1.9.0
   CONCURRENT_BUILD:         4
-  BOOST_VER:                1_80_0
-  BOOST_VER_DOT:            1.80.0
+  BOOST_VER:                1_81_0
+  BOOST_VER_DOT:            1.81.0
   BOOST_TOOLSET:            msvc-14.3
   BOOST_CACHE_REV:          0
   EMBEDTRANSFORM_CACHE_REV: 0
