@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
-#include <type_traits>
+#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 
