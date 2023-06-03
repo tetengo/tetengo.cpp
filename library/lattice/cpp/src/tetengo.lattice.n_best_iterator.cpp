@@ -17,6 +17,7 @@
 
 #include <boost/container_hash/hash.hpp>
 #include <boost/operators.hpp>
+#include <boost/type_traits/enable_if.hpp> // IWYU pragma: keep
 
 #include <tetengo/lattice/constraint.hpp>
 #include <tetengo/lattice/input.hpp>
