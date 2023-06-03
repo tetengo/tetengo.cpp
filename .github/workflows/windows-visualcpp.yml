@@ -13,7 +13,7 @@ on:
     branches: [ master ]
 
 env:
-  TETENGO_VER:              1.8.0
+  TETENGO_VER:              1.8.1
   CONCURRENT_BUILD:         4
   BOOST_VER:                1_82_0
   BOOST_VER_DOT:            1.82.0
