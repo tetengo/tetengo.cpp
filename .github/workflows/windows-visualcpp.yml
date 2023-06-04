@@ -351,6 +351,12 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     
+    - name: Install WiX
+      shell: cmd
+      run: |
+        dotnet tool install --global wix --version 4.0.0
+        wix extension add --global WixToolset.UI.wixext
+    
     - name: Checkout
       uses: actions/checkout@v3
       with:
@@ -418,6 +424,12 @@ jobs:
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
+    
+    - name: Install WiX
+      shell: cmd
+      run: |
+        dotnet tool install --global wix --version 4.0.0
+        wix extension add --global WixToolset.UI.wixext
     
     - name: Checkout
       uses: actions/checkout@v3
