@@ -85,7 +85,7 @@ How to Build and Install
 - [Boost C++ libraries 1.82.0](https://www.boost.org/)
 - [Doxygen 1.9.7](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
-- [WiX toolset 4.0.0](https://wixtoolset.org/)
+- [WiX toolset 4.0.1](https://wixtoolset.org/)
 - [Python 3.9](https://www.python.org/) or
   [Python 3.10](https://www.python.org/)
 - [mypy](http://www.mypy-lang.org/)
