@@ -7,10 +7,10 @@ name: Linux - GCC
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags:     [ v* ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   CONCURRENT_BUILD:        4

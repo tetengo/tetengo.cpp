@@ -7,10 +7,10 @@ name: Windows - Visual C++
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags:     [ v* ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   TETENGO_VER:              1.9.0
