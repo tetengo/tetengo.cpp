@@ -43,7 +43,7 @@ namespace
         return static_cast<char>(uc);
     }
 
-    static const std::string kumamoto1{ 0xE7_c, 0x86_c, 0x8A_c, 0x6_c, 0x9C_c, 0xAC_c }; // Kumamoto in Kanji in UTF-8
+    static const std::string kumamoto1{ 0xE7_c, 0x86_c, 0x8A_c, 0xE6_c, 0x9C_c, 0xAC_c }; // Kumamoto in Kanji in UTF-8
 
     static const std::string tamana1{ 0xE7_c, 0x8E_c, 0x89_c, 0xE5_c, 0x90_c, 0x8D_c }; // Tamana in Kanji in UTF-8
 
@@ -79,7 +79,7 @@ namespace
         0x00_c, 0x00_c, 0x00_c, 0x02_c, 
         0x00_c, 0x00_c, 0x00_c, 0x00_c, 
         0x00_c, 0x00_c, 0x00_c, 0x06_c, 
-        0xE7_c, 0x86_c, 0x8A_c, 0x06_c, 0x9C_c, 0xAC_c,
+        0xE7_c, 0x86_c, 0x8A_c, 0xE6_c, 0x9C_c, 0xAC_c,
         0x00_c, 0x00_c, 0x00_c, 0x06_c,
         0xE7_c, 0x8E_c, 0x89_c, 0xE5_c, 0x90_c, 0x8D_c,
         // clang-format on
@@ -1042,7 +1042,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
 
 BOOST_AUTO_TEST_CASE(subtrie)
 {
-    BOOST_TEST_PASSPOINT();
+     BOOST_TEST_PASSPOINT();
 
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
