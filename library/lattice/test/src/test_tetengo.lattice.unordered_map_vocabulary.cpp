@@ -51,10 +51,6 @@ namespace
 
     const std::string surface_sakura2{ 0xE3_c, 0x81_c, 0x95_c, 0xE3_c, 0x81_c, 0x8F_c, 0xE3_c, 0x82_c, 0x89_c };
 
-    const std::string key_tsubame{ 0xE3_c, 0x81_c, 0xA4_c, 0xE3_c, 0x81_c, 0xB0_c, 0xE3_c, 0x82_c, 0x81_c };
-
-    const std::string surface_tsubame{ 0xE7_c, 0x87_c, 0x95_c };
-
     tetengo::lattice::node make_node(const tetengo::lattice::entry_view& entry)
     {
         static const std::vector<int> preceding_edge_costs{};
