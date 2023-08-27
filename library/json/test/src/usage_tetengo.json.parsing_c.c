@@ -129,7 +129,8 @@ const char* to_string(const tetengo_json_element_t* const p_element)
     }
 
     // Obtains the element type category.
-    if (p_type->category == tetengo_json_element_typeCategory_primitive()) {}
+    if (p_type->category == tetengo_json_element_typeCategory_primitive())
+    {}
     else if (p_type->category == tetengo_json_element_typeCategory_structureOpen())
     {
         strcat(result, "open:");
