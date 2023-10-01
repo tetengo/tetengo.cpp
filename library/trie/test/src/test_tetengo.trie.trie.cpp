@@ -1042,7 +1042,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
 
 BOOST_AUTO_TEST_CASE(subtrie)
 {
-     BOOST_TEST_PASSPOINT();
+    BOOST_TEST_PASSPOINT();
 
     {
         const tetengo::trie::trie<std::wstring, copy_detector<std::string>> trie_{};
