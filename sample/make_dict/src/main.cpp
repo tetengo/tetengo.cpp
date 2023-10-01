@@ -202,10 +202,15 @@ namespace
     build_trie(const std::unordered_map<std::string, std::vector<std::pair<std::size_t, std::size_t>>>& word_offset_map)
     {
         std::cerr << "Building trie..." << std::endl;
+        std::vector<std::pair<std::string, std::vector<std::pair<std::size_t, std::size_t>>>> word_offset_vector
+        {
+            std::begin(word_offset_map), std::end(word_offset_map)
+        };
+        std::sort(std::begin(word_offset_vector), std::end(word_offset_vector));
         auto p_trie =
             std::make_unique<tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>>(
-                std::make_move_iterator(std::begin(word_offset_map)),
-                std::make_move_iterator(std::end(word_offset_map)),
+                std::make_move_iterator(std::begin(word_offset_vector)),
+                std::make_move_iterator(std::end(word_offset_vector)),
                 tetengo::trie::default_serializer<std::string_view>{ true },
                 tetengo::trie::trie<std::string_view, std::vector<std::pair<std::size_t, std::size_t>>>::
                     building_observer_set_type{ trie_building_observer{}, []() {} });
