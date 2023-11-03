@@ -17,8 +17,6 @@ namespace tetengo::lattice
 {
     /*!
         \brief A string input.
-
-        \tparam T A type.
     */
     class string_input : public input
     {
