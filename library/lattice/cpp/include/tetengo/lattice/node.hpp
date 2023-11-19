@@ -167,9 +167,9 @@ namespace tetengo::lattice
         }
 
         /*!
-            \brief Returns the index of the preceding step.
+            \brief Returns the preceding step.
 
-            \return The index of the preceding step.
+            \return The preceding step.
         */
         [[nodiscard]] constexpr std::size_t preceding_step() const
         {
