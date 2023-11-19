@@ -165,6 +165,7 @@ namespace tetengo::lattice
         {
             return m_index_in_step;
         }
+
         /*!
             \brief Returns the index of the preceding step.
 
