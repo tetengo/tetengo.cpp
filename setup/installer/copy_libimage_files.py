@@ -1,4 +1,4 @@
-#!  /usr/bin/env python3
+#! /usr/bin/env python
 """Copies the files for a library image
 
     Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
