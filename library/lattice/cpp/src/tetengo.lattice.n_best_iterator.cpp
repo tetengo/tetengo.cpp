@@ -12,11 +12,9 @@
 #include <memory>
 #include <queue>
 #include <stdexcept>
-#include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 
-#include <boost/container_hash/detail/hash_integral.hpp> // IWYU pragma: keep
 #include <boost/container_hash/hash.hpp>
 #include <boost/operators.hpp>
 #include <boost/type_traits/enable_if.hpp> // IWYU pragma: keep
