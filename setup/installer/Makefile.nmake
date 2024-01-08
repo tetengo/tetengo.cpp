@@ -12,7 +12,7 @@ WIXCOMMAND="wix"
 EMBEDTRANSFORMDIR="C:\Program Files (x86)\embedtransform\"
 !ENDIF
 EMBEDTRANSFORM="$(EMBEDTRANSFORMDIR)EmbedTransform.exe"
-PYTHON=python3
+PYTHON=py
 COPY=copy
 ECHO=echo
 MKDIR=mkdir
