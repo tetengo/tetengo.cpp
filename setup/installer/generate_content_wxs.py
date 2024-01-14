@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 """Generates content.wxs source
 
-    Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
 """
 
 import io
@@ -184,7 +184,7 @@ def _save_wxs(
 ) -> None:
     preamble: str = """<!--
   The installer content
-  Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
+  Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">"""
     postamble: str = """</Wix>"""
