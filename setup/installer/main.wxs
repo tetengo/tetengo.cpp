@@ -1,6 +1,6 @@
 ﻿<!--
   The installer main
-  Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
+  Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
     <Package Name="tetengo 1.9.0" Version="1.9.0" UpgradeCode="952185DF-9262-470C-959A-6CB9FE2182B5" Language="$(env.LANGUAGE)" Codepage="$(env.CODEPAGE)" Manufacturer="kaoru" ProductCode="B0067C08-2851-492F-9F65-938E004EFDBA">
