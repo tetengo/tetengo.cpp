@@ -42,7 +42,7 @@ jobs:
          fi
     
     - name: Cache Doxygen build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .doxygen_build
         key: Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}-${{ env.DOXYGEN_CACHE_REV }}
@@ -75,7 +75,7 @@ jobs:
           clang-14
     
     - name: Cache Boost build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .boost_build
         key: Linux-Clang-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -118,7 +118,7 @@ jobs:
         submodules: recursive
     
     - name: Restore Doxygen build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .doxygen_build
         key: Linux-Clang-Doxygen-${{ env.DOXYGEN_VER }}-${{ env.DOXYGEN_CACHE_REV }}
@@ -142,7 +142,7 @@ jobs:
         ../configure $DISTCHECK_CONFIGURE_FLAGS
     
     - name: Cache documents
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .doxygen/doc
         key: Linux-Clang-documents-${{ github.run_number }}
@@ -176,7 +176,7 @@ jobs:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .boost_build
         key: Linux-Clang-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -228,7 +228,7 @@ jobs:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .boost_build
         key: Linux-Clang-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -252,7 +252,7 @@ jobs:
         ../configure $DISTCHECK_CONFIGURE_FLAGS
     
     - name: Cache archives
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .build/tetengo-*
         key: Linux-Clang-archives-${{ github.run_number }}
@@ -276,13 +276,13 @@ jobs:
     needs:   [ doxygen, build ]
     steps:
     - name: Restore documents
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .doxygen/doc
         key: Linux-Clang-documents-${{ github.run_number }}
     
     - name: Restore archives
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .build/tetengo-*
         key: Linux-Clang-archives-${{ github.run_number }}
