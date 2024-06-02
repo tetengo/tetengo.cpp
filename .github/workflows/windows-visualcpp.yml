@@ -178,7 +178,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     
@@ -216,7 +216,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     
@@ -254,7 +254,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     
@@ -292,7 +292,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
     
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     
@@ -358,7 +358,7 @@ jobs:
         wix extension add --global WixToolset.UI.wixext
     
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     
@@ -432,7 +432,7 @@ jobs:
         wix extension add --global WixToolset.UI.wixext
     
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     
