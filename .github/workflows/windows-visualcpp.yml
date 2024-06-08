@@ -17,7 +17,7 @@ env:
   CONCURRENT_BUILD:         4
   BOOST_VER:                1_85_0
   BOOST_VER_DOT:            1.85.0
-  BOOST_TOOLSET:            msvc-14.3
+  BOOST_TOOLSET:            msvc
   BOOST_CACHE_REV:          0
   EMBEDTRANSFORM_CACHE_REV: 0
 
