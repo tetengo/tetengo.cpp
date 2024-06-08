@@ -46,6 +46,11 @@ jobs:
     runs-on: windows-2022
     needs:   boost_download
     steps:
+    - name: Install older build tool
+      uses: thepwrtank18/install-vs-components@v1
+      with:
+        components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
+    
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     
@@ -78,6 +83,11 @@ jobs:
     runs-on: windows-2022
     needs:   boost_download
     steps:
+    - name: Install older build tool
+      uses: thepwrtank18/install-vs-components@v1
+      with:
+        components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
+    
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     
@@ -110,6 +120,11 @@ jobs:
     runs-on: windows-2022
     needs:   boost_download
     steps:
+    - name: Install older build tool
+      uses: thepwrtank18/install-vs-components@v1
+      with:
+        components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
+    
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     
@@ -142,6 +157,11 @@ jobs:
     runs-on: windows-2022
     needs:   boost_download
     steps:
+    - name: Install older build tool
+      uses: thepwrtank18/install-vs-components@v1
+      with:
+        components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
+    
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     
