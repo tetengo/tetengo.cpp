@@ -47,7 +47,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Install older build tool
-      uses: thepwrtank18/install-vs-components@v1
+      uses: thepwrtank18/install-vs-components@v1.0.0
       with:
         components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
     
@@ -84,7 +84,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Install older build tool
-      uses: thepwrtank18/install-vs-components@v1
+      uses: thepwrtank18/install-vs-components@v1.0.0
       with:
         components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
     
@@ -121,7 +121,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Install older build tool
-      uses: thepwrtank18/install-vs-components@v1
+      uses: thepwrtank18/install-vs-components@v1.0.0
       with:
         components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
     
@@ -158,7 +158,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Install older build tool
-      uses: thepwrtank18/install-vs-components@v1
+      uses: thepwrtank18/install-vs-components@v1.0.0
       with:
         components: Microsoft.VisualStudio.ComponentGroup.VC.Tools.142.x86.x64
     
