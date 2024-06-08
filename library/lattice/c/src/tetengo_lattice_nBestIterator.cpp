@@ -4,6 +4,7 @@
     Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm>
 #include <any>
 #include <iterator>
 #include <memory>
