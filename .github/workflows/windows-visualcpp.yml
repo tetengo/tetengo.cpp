@@ -47,7 +47,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Restore Boost source
       uses: actions/cache@v4
@@ -79,7 +79,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Restore Boost source
       uses: actions/cache@v4
@@ -111,7 +111,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Restore Boost source
       uses: actions/cache@v4
@@ -143,7 +143,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Restore Boost source
       uses: actions/cache@v4
@@ -175,7 +175,7 @@ jobs:
     needs:   boost_build_for_release_win32
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Checkout
       uses: actions/checkout@v4
@@ -213,7 +213,7 @@ jobs:
     needs:   boost_build_for_debug_win32
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Checkout
       uses: actions/checkout@v4
@@ -251,7 +251,7 @@ jobs:
     needs:   boost_build_for_release_x64
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Checkout
       uses: actions/checkout@v4
@@ -289,7 +289,7 @@ jobs:
     needs:   boost_build_for_debug_x64
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Checkout
       uses: actions/checkout@v4
@@ -349,7 +349,7 @@ jobs:
     needs:   [ boost_build_for_release_Win32, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Install WiX
       shell: cmd
@@ -423,7 +423,7 @@ jobs:
     needs:   [ boost_build_for_release_x64, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      uses: microsoft/setup-msbuild@v2
     
     - name: Install WiX
       shell: cmd
