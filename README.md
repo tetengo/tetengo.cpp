@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 tetengo 1.8.1
+=======
+tetengo 1.9.0
+>>>>>>> main
 =============
 
 [TOC]
@@ -82,10 +86,15 @@ How to Build and Install
 #### Requirements
 
 - [Visual Studio 2022](https://visualstudio.microsoft.com/)
+<<<<<<< HEAD
 - [Boost C++ libraries 1.82.0](https://www.boost.org/)
 - [Doxygen 1.9.7](https://www.doxygen.nl/)
+=======
+- [Boost C++ libraries 1.86.0](https://www.boost.org/)
+- [Doxygen 1.12.0](https://www.doxygen.nl/)
+>>>>>>> main
 - [Graphviz](https://www.graphviz.org/)
-- [WiX toolset 3.11.2](https://wixtoolset.org/)
+- [WiX toolset 5.0.1](https://wixtoolset.org/)
 - [Python 3.9](https://www.python.org/) or
   [Python 3.10](https://www.python.org/)
 - [mypy](http://www.mypy-lang.org/)
@@ -109,7 +118,7 @@ Execute `setup.exe` in the archive..
 Clone the source files from GitHub:
 
 ```bat
-> git clone --recurse-submodules https://github.com/tetengo/tetengo.git
+> git clone --recurse-submodules https://github.com/tetengo/tetengo.cpp.git
 ```
 
 Open the file `tetengo.sln` in the work tree.
@@ -142,8 +151,13 @@ Doxygen will output the documents into the directory `doc`.
   [Clang 14](https://clang.llvm.org/),
   [GCC 10](https://gcc.gnu.org/) or
   [GCC 12](https://gcc.gnu.org/)
+<<<<<<< HEAD
 - [Boost C++ libraries 1.82.0](https://www.boost.org/)
 - [Doxygen 1.9.7](https://www.doxygen.nl/)
+=======
+- [Boost C++ libraries 1.86.0](https://www.boost.org/)
+- [Doxygen 1.12.0](https://www.doxygen.nl/)
+>>>>>>> main
 - [Graphviz](https://www.graphviz.org/)
 - [include-what-you-use 0.15](https://include-what-you-use.org/) or
   [include-what-you-use 0.17](https://include-what-you-use.org/)
@@ -182,7 +196,7 @@ $ tar -xf tetengo-X.Y.Z.tar.bz2
 Clone the source files from GitHub:
 
 ```shell-session
-$ git clone --recurse-submodules https://github.com/tetengo/tetengo.git
+$ git clone --recurse-submodules https://github.com/tetengo/tetengo.cpp.git
 ```
 
 Run the script `bootstrap.sh` in the top directory to generate the script
@@ -219,5 +233,5 @@ $ make doc
 Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
 
 This product is released under the MIT license.
-See [the COPYING file](https://github.com/tetengo/tetengo/blob/master/COPYING)
+See [the COPYING file](https://github.com/tetengo/tetengo.cpp/blob/master/COPYING)
 for details.

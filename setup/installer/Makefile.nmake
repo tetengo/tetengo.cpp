@@ -7,15 +7,12 @@ CONFIGURATION=Release
 SOLUTIONDIR=..\..
 WORKDIR=.
 
-WIXBINDIR="$(WIX)bin\"
-CANDLE="$(WIXBINDIR)candle.exe"
-LIGHT="$(WIXBINDIR)light.exe"
-TORCH="$(WIXBINDIR)torch.exe"
+WIXCOMMAND="wix"
 !IFNDEF EMBEDTRANSFORMDIR
-EMBEDTRANSFORMDIR=$(WIXBINDIR)
+EMBEDTRANSFORMDIR="C:\Program Files (x86)\embedtransform\"
 !ENDIF
 EMBEDTRANSFORM="$(EMBEDTRANSFORMDIR)EmbedTransform.exe"
-PYTHON=python3
+PYTHON=py
 COPY=copy
 ECHO=echo
 MKDIR=mkdir
@@ -36,21 +33,21 @@ $(BINDIR)\tetengo.msi: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\ja.mst
 	$(COPY) /y $(OBJDIR)\tetengo.msi $@
 
 $(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\tetengo.ja.msi
-	$(TORCH) -out $@ -wx -p -t language $**
+	$(WIXCOMMAND) msi transform -out $@ -p -t language $**
 
-$(OBJDIR)\tetengo.en.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:en-US $**
-
-$(OBJDIR)\tetengo.ja.msi: $(OBJDIR)\main.wixobj $(OBJDIR)\content.wixobj
-	$(LIGHT) -out $@ -wx -ext WixUIExtension -cultures:ja-JP $**
-
-$(OBJDIR)\main.wixobj: $(WORKDIR)\main.wxs
+$(OBJDIR)\tetengo.en.msi: $(WORKDIR)\main.wxs $(OBJDIR)\content.wxs
 	set WORKDIR=$(WORKDIR)
 	set PLATFORM=$(PLATFORM)
-	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
+	set LANGUAGE=1033
+	set CODEPAGE=1252
+	$(WIXCOMMAND) build -out $@ -ext WixToolset.UI.wixext -arch $(ARCH) -culture en-US $**
 
-$(OBJDIR)\content.wixobj: $(OBJDIR)\content.wxs
-	$(CANDLE) -out $@ -wx -arch $(ARCH) $**
+$(OBJDIR)\tetengo.ja.msi: $(WORKDIR)\main.wxs $(OBJDIR)\content.wxs
+	set WORKDIR=$(WORKDIR)
+	set PLATFORM=$(PLATFORM)
+	set LANGUAGE=1041
+	set CODEPAGE=932
+	$(WIXCOMMAND) build -out $@ -ext WixToolset.UI.wixext -arch $(ARCH) -culture ja-JP $**
 
 $(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
 	$(PYTHON) "$(WORKDIR)\generate_content_wxs.py" $** $@

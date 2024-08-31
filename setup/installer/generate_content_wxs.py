@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 """Generates content.wxs source
 
     Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
@@ -182,12 +182,11 @@ def _save_wxs(
     feature_map: dict[str, list[str]],
     wxs_path: Path,
 ) -> None:
-    preamble: str = """<?xml version="1.0" encoding="UTF-8"?>
-<!--
+    preamble: str = """<!--
   The installer content
   Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">"""
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">"""
     postamble: str = """</Wix>"""
     with wxs_path.open(mode="w", encoding="UTF-8") as stream:
         print(preamble, file=stream)

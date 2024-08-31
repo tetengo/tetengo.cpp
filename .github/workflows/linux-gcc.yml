@@ -7,17 +7,17 @@ name: Linux - GCC
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags:     [ v* ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   CONCURRENT_BUILD:        4
   GCC_COMMAND:             gcc-12
   GXX_COMMAND:             g++-12
-  BOOST_VER:               1_82_0
-  BOOST_VER_DOT:           1.82.0
+  BOOST_VER:               1_86_0
+  BOOST_VER_DOT:           1.86.0
   BOOST_BOOTSTRAP_TOOLSET: gcc
   BOOST_TOOLSET:           gcc-12
   BOOST_CACHE_REV:         0
@@ -36,7 +36,7 @@ jobs:
           g++-12
     
     - name: Cache Boost build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .boost_build
         key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}
@@ -71,12 +71,12 @@ jobs:
           g++-12
     
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
     
     - name: Restore Boost build
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .boost_build
         key: Linux-GCC-Boost-${{ env.BOOST_VER }}-${{ env.BOOST_CACHE_REV }}

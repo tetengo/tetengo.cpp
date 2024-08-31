@@ -3,7 +3,7 @@
 
 #### General ####
 AC_PREREQ([2.69])
-AC_INIT([tetengo], [1.8.1], [https://github.com/tetengo])
+AC_INIT([tetengo], [1.8.2], [https://github.com/tetengo/tetengo.cpp])
 AC_CONFIG_SRCDIR([precompiled/precompiled.h])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([--warnings=no-portability])
@@ -189,7 +189,7 @@ AC_SUBST([CFLAGS], "${CFLAGS} ${PTHREAD_CFLAGS}")
 AC_SUBST([CXXFLAGS], "${CXXFLAGS} ${PTHREAD_CFLAGS}")
 AC_SUBST([CC], "${PTHREAD_CC}")
 
-AX_BOOST_BASE([1.82.0])
+AX_BOOST_BASE([1.86.0])
 AX_BOOST_UNIT_TEST_FRAMEWORK
 AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
 AC_SUBST([LIBS], "-lstdc++fs -lstdc++ ${LIBS}")
