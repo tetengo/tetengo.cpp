@@ -1,6 +1,6 @@
 @echo off
 rem Makes character_property_map.cpp for tetengo::text
-rem Copyright (C) 2019-2023 kaoru  https://www.tetengo.org/
+rem Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
 
 curl https://www.unicode.org/Public/14.0.0/ucd/EastAsianWidth.txt                 > %~dp0\EastAsianWidth.txt
 curl https://www.unicode.org/Public/14.0.0/ucd/emoji/emoji-data.txt               > %~dp0\emoji-data.txt

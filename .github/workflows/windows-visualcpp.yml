@@ -1,6 +1,6 @@
 # GitHub Actions Workflow
 # Build with Visual C++ on Windows
-# Copyright 2019-2023 kaoru  https://www.tetengo.org/
+# Copyright 2019-2024 kaoru  https://www.tetengo.org/
 
 name: Windows - Visual C++
 
