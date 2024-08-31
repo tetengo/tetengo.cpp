@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-tetengo 1.8.1
-=======
-tetengo 1.9.0
->>>>>>> main
+tetengo 1.8.2
 =============
 
 [TOC]
@@ -86,13 +82,8 @@ How to Build and Install
 #### Requirements
 
 - [Visual Studio 2022](https://visualstudio.microsoft.com/)
-<<<<<<< HEAD
-- [Boost C++ libraries 1.82.0](https://www.boost.org/)
-- [Doxygen 1.9.7](https://www.doxygen.nl/)
-=======
 - [Boost C++ libraries 1.86.0](https://www.boost.org/)
 - [Doxygen 1.12.0](https://www.doxygen.nl/)
->>>>>>> main
 - [Graphviz](https://www.graphviz.org/)
 - [WiX toolset 5.0.1](https://wixtoolset.org/)
 - [Python 3.9](https://www.python.org/) or
@@ -151,13 +142,8 @@ Doxygen will output the documents into the directory `doc`.
   [Clang 14](https://clang.llvm.org/),
   [GCC 10](https://gcc.gnu.org/) or
   [GCC 12](https://gcc.gnu.org/)
-<<<<<<< HEAD
-- [Boost C++ libraries 1.82.0](https://www.boost.org/)
-- [Doxygen 1.9.7](https://www.doxygen.nl/)
-=======
 - [Boost C++ libraries 1.86.0](https://www.boost.org/)
 - [Doxygen 1.12.0](https://www.doxygen.nl/)
->>>>>>> main
 - [Graphviz](https://www.graphviz.org/)
 - [include-what-you-use 0.15](https://include-what-you-use.org/) or
   [include-what-you-use 0.17](https://include-what-you-use.org/)
