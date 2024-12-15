@@ -18,8 +18,8 @@ env:
   CLANGXX_COMMAND:         clang++-14
   DOXYGEN_VER:             1.12.0
   DOXYGEN_CACHE_REV:       0
-  BOOST_VER:               1_86_0
-  BOOST_VER_DOT:           1.86.0
+  BOOST_VER:               1_87_0
+  BOOST_VER_DOT:           1.87.0
   BOOST_BOOTSTRAP_TOOLSET: clang
   BOOST_TOOLSET:           clang-14
   BOOST_CACHE_REV:         0
