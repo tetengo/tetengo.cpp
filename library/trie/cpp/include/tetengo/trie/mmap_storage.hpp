@@ -1,7 +1,7 @@
 /*! \file
     \brief An mmap storage.
 
-    Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_TRIE_MMAPSTORAGE_HPP)
