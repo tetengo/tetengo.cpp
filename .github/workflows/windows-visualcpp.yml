@@ -38,7 +38,7 @@ jobs:
         if not exist .boost_build\boost_${{ env.BOOST_VER }}.tar.gz (
           mkdir .boost_build
           cd .boost_build
-          curl -L -o boost_${{ env.BOOST_VER }}.tar.gz https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
+          curl -L -o boost_${{ env.BOOST_VER }}.tar.gz https://archives.boost.io/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
         )
   
   boost_build_for_release_win32:
