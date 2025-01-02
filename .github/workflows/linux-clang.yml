@@ -291,14 +291,14 @@ jobs:
       shell: bash
       run: |
         pwd
-        ls -alR
-        mkdir -v artifacts
-        mv -v .doxygen/doc artifacts
-        mv -v .build/tetengo-* artifacts
-        ls -alR
+        ls -lR
+        mkdir -v .artifacts
+        mv -v .doxygen/doc .artifacts
+        mv -v .build/tetengo-* .artifacts
+        ls -lR
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: artifacts-linux
-        path: artifacts
+        path: .artifacts
