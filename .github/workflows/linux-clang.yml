@@ -290,12 +290,12 @@ jobs:
     - name: Move artifacts
       shell: bash
       run: |
-        mkdir .artifacts
-        mv .doxygen/doc .artifacts
-        mv .build/tetengo-* .artifacts
+        mkdir artifacts
+        mv .doxygen/doc artifacts
+        mv .build/tetengo-* artifacts
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: artifacts-linux
-        path: .artifacts
+        path: artifacts
