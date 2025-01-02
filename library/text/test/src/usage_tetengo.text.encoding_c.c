@@ -1,7 +1,7 @@
 /*! \file
     \brief The usage of character encoding conversion.
 
-    Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
 */
 
 #include "usage_tetengo.text.encoding_c.h"

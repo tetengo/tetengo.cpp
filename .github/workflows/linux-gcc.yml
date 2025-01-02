@@ -1,6 +1,6 @@
 # GitHub Actions Workflow
 # Build with GCC on Linux
-# Copyright 2019-2024 kaoru  https://www.tetengo.org/
+# Copyright 2019-2025 kaoru  https://www.tetengo.org/
 
 name: Linux - GCC
 
@@ -48,7 +48,7 @@ jobs:
         then
           mkdir -p .boost_build
           cd .boost_build
-          curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
+          curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://archives.boost.io/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
           tar xvf boost_${{ env.BOOST_VER }}.tar.bz2
           cd boost_${{ env.BOOST_VER }}
           ./bootstrap.sh --with-toolset=${{ env.BOOST_BOOTSTRAP_TOOLSET }}

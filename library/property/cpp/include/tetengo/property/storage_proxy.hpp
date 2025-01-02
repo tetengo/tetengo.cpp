@@ -1,7 +1,7 @@
 /*! \file
     \brief A storage proxy.
 
-    Copyright (C) 2019-2024 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_PROPERTY_STORAGEPROXY_HPP)
