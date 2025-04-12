@@ -15,8 +15,8 @@ on:
 env:
   TETENGO_VER:              1.9.0
   CONCURRENT_BUILD:         4
-  BOOST_VER:                1_87_0
-  BOOST_VER_DOT:            1.87.0
+  BOOST_VER:                1_88_0
+  BOOST_VER_DOT:            1.88.0
   BOOST_TOOLSET:            msvc-14.3
   BOOST_CACHE_REV:          0
   EMBEDTRANSFORM_CACHE_REV: 0
@@ -338,7 +338,8 @@ jobs:
         {
           New-Item -Path . -Name .EmbedTransform -ItemType directory
           Set-Location .EmbedTransform
-          Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
+          Invoke-WebRequest -Uri https://www.tetengo.org/archives/EmbedTransform.zip -OutFile EmbedTransform.zip
+          #Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
           Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
           New-Item -Path . -Name .download_finished -ItemType file
         }
@@ -355,7 +356,7 @@ jobs:
       shell: cmd
       run: |
         dotnet tool install --global wix --version 5.0.1
-        wix extension add --global WixToolset.UI.wixext
+        wix extension add --global WixToolset.UI.wixext/5.0.1
     
     - name: Checkout
       uses: actions/checkout@v4
@@ -429,7 +430,7 @@ jobs:
       shell: cmd
       run: |
         dotnet tool install --global wix --version 5.0.1
-        wix extension add --global WixToolset.UI.wixext
+        wix extension add --global WixToolset.UI.wixext/5.0.1
     
     - name: Checkout
       uses: actions/checkout@v4
