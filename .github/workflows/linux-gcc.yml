@@ -48,8 +48,10 @@ jobs:
         then
           mkdir -p .boost_build
           cd .boost_build
-          curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://archives.boost.io/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
-          tar xvf boost_${{ env.BOOST_VER }}.tar.bz2
+          curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://archives.boost.io/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.gz
+          tar xvf boost_${{ env.BOOST_VER }}.tar.gz
+          #curl -L -o boost_${{ env.BOOST_VER }}.tar.bz2 https://archives.boost.io/release/${{ env.BOOST_VER_DOT }}/source/boost_${{ env.BOOST_VER }}.tar.bz2
+          #tar xvf boost_${{ env.BOOST_VER }}.tar.bz2
           cd boost_${{ env.BOOST_VER }}
           ./bootstrap.sh --with-toolset=${{ env.BOOST_BOOTSTRAP_TOOLSET }}
           (./b2 -j ${{ env.CONCURRENT_BUILD }} toolset=${{ env.BOOST_TOOLSET }} variant=release link=static || :)
