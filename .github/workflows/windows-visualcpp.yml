@@ -356,7 +356,7 @@ jobs:
       shell: cmd
       run: |
         dotnet tool install --global wix --version 5.0.1
-        wix extension add --global WixToolset.UI.wixext
+        wix extension add --global WixToolset.UI.wixext/5.0.1
     
     - name: Checkout
       uses: actions/checkout@v4
