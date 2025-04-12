@@ -355,8 +355,8 @@ jobs:
     - name: Install WiX
       shell: cmd
       run: |
-        dotnet tool install --global wix --version 5.0.1
-        wix extension add --global WixToolset.UI.wixext/5.0.1
+        dotnet tool install --global wix --version 6.0.0
+        wix extension add --global WixToolset.UI.wixext/6.0.0
     
     - name: Checkout
       uses: actions/checkout@v4
@@ -429,8 +429,8 @@ jobs:
     - name: Install WiX
       shell: cmd
       run: |
-        dotnet tool install --global wix --version 5.0.1
-        wix extension add --global WixToolset.UI.wixext/5.0.1
+        dotnet tool install --global wix --version 6.0.0
+        wix extension add --global WixToolset.UI.wixext/6.0.0
     
     - name: Checkout
       uses: actions/checkout@v4
