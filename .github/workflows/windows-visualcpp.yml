@@ -338,7 +338,8 @@ jobs:
         {
           New-Item -Path . -Name .EmbedTransform -ItemType directory
           Set-Location .EmbedTransform
-          Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
+          Invoke-WebRequest -Uri https://www.tetengo.org/archives/EmbedTransform.zip -OutFile EmbedTransform.zip
+          #Invoke-WebRequest -Uri https://www.firegiant.com/system/files/samples/EmbedTransform.zip -OutFile EmbedTransform.zip
           Expand-Archive -Path EmbedTransform.zip -DestinationPath EmbedTransform
           New-Item -Path . -Name .download_finished -ItemType file
         }
