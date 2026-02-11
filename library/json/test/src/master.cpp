@@ -1,7 +1,7 @@
-﻿/*! \file
+/*! \file
     \brief The master test suite.
 
-    $12026 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
 #define BOOST_TEST_MODULE "tetengo-json.test"

@@ -1,7 +1,7 @@
-﻿/*! \file
+/*! \file
     \brief A line counting reader.
 
-    $12026 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
 #include <filesystem>

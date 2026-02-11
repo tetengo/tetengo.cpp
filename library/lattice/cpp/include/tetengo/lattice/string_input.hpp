@@ -1,7 +1,7 @@
-﻿/*! \file
+/*! \file
     \brief A string input.
 
-    $12026 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_LATTICE_STRINGINPUT_HPP)

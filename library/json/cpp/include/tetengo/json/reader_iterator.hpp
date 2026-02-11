@@ -1,7 +1,7 @@
-﻿/*! \file
+/*! \file
     \brief A reader iterato.
 
-    $12026 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_JSON_READERITERATOR_HPP)

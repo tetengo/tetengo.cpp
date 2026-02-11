@@ -1,7 +1,7 @@
-﻿/*! \file
+/*! \file
     \brief An entry.
 
-    $12026 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(TETENGO_LATTICE_ENTRY_H)

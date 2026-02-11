@@ -1,4 +1,4 @@
-﻿// Microsoft Visual C++ generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -71,7 +71,7 @@ BEGIN
             VALUE "FileDescription", "An install bootstrapper."
             VALUE "FileVersion", "1.9.0"
             VALUE "InternalName", "setup.exe"
-            VALUE "LegalCopyright", "$12026 kaoru"
+            VALUE "LegalCopyright", "Copyright (C) 2019-2026 kaoru"
             VALUE "OriginalFilename", "setup.exe"
             VALUE "ProductName", "tetengo"
             VALUE "ProductVersion", "1.9.0"
