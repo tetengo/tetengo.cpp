@@ -1,7 +1,7 @@
 /*! \file
     \brief An input.
 
-    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
 #include "tetengo_lattice_input.hpp"

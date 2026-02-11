@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 """Generates content.wxs source
 
-    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 """
 
 import glob

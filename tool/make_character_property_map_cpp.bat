@@ -1,6 +1,6 @@
 @echo off
 rem Makes character_property_map.cpp for tetengo::text
-rem Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+rem Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 
 set PYTHON=py
 

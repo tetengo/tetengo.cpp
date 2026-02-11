@@ -1,7 +1,7 @@
 /*! \file
     \brief The usage of JSON parsing.
 
-    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+    Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
 #include "usage_tetengo.json.parsing_c.h"
