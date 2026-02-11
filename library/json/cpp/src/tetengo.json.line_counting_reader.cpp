@@ -1,7 +1,7 @@
-/*! \file
+﻿/*! \file
     \brief A line counting reader.
 
-    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+    $12026 kaoru  https://www.tetengo.org/
 */
 
 #include <cassert>

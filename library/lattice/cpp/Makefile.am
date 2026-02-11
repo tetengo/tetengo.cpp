@@ -1,5 +1,5 @@
-# Automake Settings
-# Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+﻿# Automake Settings
+# $12026 kaoru  https://www.tetengo.org/
 
 SUBDIRS = \
     include \

@@ -1,7 +1,7 @@
-/*! \file
+﻿/*! \file
     \brief A reader iterator.
 
-    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+    $12026 kaoru  https://www.tetengo.org/
 */
 
 #include <memory>

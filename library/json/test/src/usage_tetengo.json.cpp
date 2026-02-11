@@ -1,7 +1,7 @@
-/*! \file
+﻿/*! \file
     \brief The usage test of tetengo::json.
 
-    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+    $12026 kaoru  https://www.tetengo.org/
 */
 
 

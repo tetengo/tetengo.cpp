@@ -1,7 +1,7 @@
-/*! \file
+﻿/*! \file
     \brief A JSON grammar.
 
-    Copyright (C) 2019-2025 kaoru  https://www.tetengo.org/
+    $12026 kaoru  https://www.tetengo.org/
 */
 
 #if !defined(IWYU) // Boost.Spirit crashes IWYU 0.11
