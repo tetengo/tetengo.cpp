@@ -15,16 +15,17 @@ on:
 env:
   TETENGO_VER:              1.9.0
   CONCURRENT_BUILD:         4
-  BOOST_VER:                1_88_0
-  BOOST_VER_DOT:            1.88.0
-  BOOST_TOOLSET:            msvc-14.3
+  BOOST_VER:                1_91_0
+  BOOST_VER_DOT:            1.91.0
+  BOOST_TOOLSET:            msvc-14.5
   BOOST_CACHE_REV:          0
+  WIX_VER:                  7.0.0
   EMBEDTRANSFORM_CACHE_REV: 0
 
 jobs:
   boost_download:
     name:    Boost Download
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     steps:
     - name: Cache Boost source
       uses: actions/cache@v4
@@ -43,7 +44,7 @@ jobs:
   
   boost_build_for_release_win32:
     name:    Boost Buld for Release Win32
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
@@ -75,7 +76,7 @@ jobs:
   
   boost_build_for_debug_win32:
     name:    Boost Buld for Debug Win32
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
@@ -107,7 +108,7 @@ jobs:
   
   boost_build_for_release_x64:
     name:    Boost Buld for Release x64
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
@@ -139,7 +140,7 @@ jobs:
   
   boost_build_for_debug_x64:
     name:    Boost Buld for Debug x64
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
@@ -171,7 +172,7 @@ jobs:
   
   build_for_release_win32:
     name:    Build for Release Win32
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_build_for_release_win32
     steps:
     - name: Add msbuild to PATH
@@ -209,7 +210,7 @@ jobs:
     
   build_for_debug_win32:
     name:    Build for Debug Win32
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_build_for_debug_win32
     steps:
     - name: Add msbuild to PATH
@@ -247,7 +248,7 @@ jobs:
     
   build_for_release_x64:
     name:    Build for Release x64
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_build_for_release_x64
     steps:
     - name: Add msbuild to PATH
@@ -285,7 +286,7 @@ jobs:
     
   build_for_debug_x64:
     name:    Build for Debug x64
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   boost_build_for_debug_x64
     steps:
     - name: Add msbuild to PATH
@@ -323,7 +324,7 @@ jobs:
     
   embedtransform_download:
     name:    EmbedTransform Download
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     steps:
     - name: Cache embedtransform
       uses: actions/cache@v4
@@ -346,8 +347,8 @@ jobs:
   
   archive_for_win32:
     name:    Setup and Archive Build for Win32
-    runs-on: windows-2022
-    needs:   [ boost_build_for_release_Win32, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
+    runs-on: windows-2025-vs2026
+    needs:   [ boost_build_for_release_win32, embedtransform_download, build_for_release_win32, build_for_debug_win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
@@ -355,8 +356,8 @@ jobs:
     - name: Install WiX
       shell: cmd
       run: |
-        dotnet tool install --global wix --version 6.0.0
-        wix extension add --global WixToolset.UI.wixext/6.0.0
+        dotnet tool install --global wix --version ${{ env.WIX_VER }}
+        wix extension add --global WixToolset.UI.wixext/${{ env.WIX_VER }}
     
     - name: Checkout
       uses: actions/checkout@v4
@@ -420,8 +421,8 @@ jobs:
     
   archive_for_x64:
     name:    Setup and Archive Build for x64
-    runs-on: windows-2022
-    needs:   [ boost_build_for_release_x64, embedtransform_download, build_for_release_Win32, build_for_debug_Win32, build_for_release_x64, build_for_debug_x64 ]
+    runs-on: windows-2025-vs2026
+    needs:   [ boost_build_for_release_x64, embedtransform_download, build_for_release_win32, build_for_debug_win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
@@ -497,7 +498,7 @@ jobs:
     
   artifact:
     name:    Artifact Collection
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     needs:   [ archive_for_win32, archive_for_x64 ]
     steps:
     - name: Restore archive for Win32
