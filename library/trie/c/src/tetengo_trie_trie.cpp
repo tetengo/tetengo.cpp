@@ -16,7 +16,7 @@
 
 #include <stddef.h>
 
-#include <boost/move/detail/type_traits.hpp>
+#include <boost/move/detail/type_traits.hpp> // IWYU pragma: keep
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.h>

@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include <boost/move/detail/type_traits.hpp>
+#include <boost/move/detail/type_traits.hpp> // IWYU pragma: keep
 #include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 
 #include <tetengo/trie/storage.h>
