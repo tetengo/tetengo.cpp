@@ -1,0 +1,46 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/executable/">
+    <Project Path="executable/setup/setup.vcxproj" Id="5cdc9199-a26f-4204-91ad-e90c8c21697a" />
+  </Folder>
+  <Folder Name="/library/" />
+  <Folder Name="/library/json/">
+    <Project Path="library/json/c/tetengo.json.vcxproj" Id="6a37648e-2203-4052-91df-b8f2b2c26a04" />
+    <Project Path="library/json/cpp/tetengo.json.cpp.vcxproj" Id="cba672b4-259e-4bd2-9072-1d34cf941d4c" />
+    <Project Path="library/json/test/test_tetengo.json.vcxproj" Id="0aaf49d5-d4fe-4cda-bbc3-a1cdc25f8816" />
+  </Folder>
+  <Folder Name="/library/lattice/">
+    <Project Path="library/lattice/c/tetengo.lattice.vcxproj" Id="2ee3983d-a0e0-429f-bc2f-5d46c93e1c81" />
+    <Project Path="library/lattice/cpp/tetengo.lattice.cpp.vcxproj" Id="65c6d977-ac51-4e28-8b15-178fbdf69168" />
+    <Project Path="library/lattice/test/test_tetengo.lattice.vcxproj" Id="3fed617d-365b-4dea-acc0-21a60741ebd3" />
+  </Folder>
+  <Folder Name="/library/platform_dependent/">
+    <Project Path="library/platform_dependent/cpp/tetengo.platform_dependent.cpp.vcxproj" Id="3aaea971-dc2b-40d6-830c-b0d6a3368a7a" />
+    <Project Path="library/platform_dependent/test/test_tetengo.platform_dependent.vcxproj" Id="3c7661ca-2b8c-47a6-a722-fc9dde182425" />
+  </Folder>
+  <Folder Name="/library/property/">
+    <Project Path="library/property/c/tetengo.property.vcxproj" Id="21380636-4355-4aed-8a76-8b6a9fba5650" />
+    <Project Path="library/property/cpp/tetengo.property.cpp.vcxproj" Id="4356ff6a-22d4-4835-8321-145998f26d68" />
+    <Project Path="library/property/test/test_tetengo.property.vcxproj" Id="770bc269-b483-424a-bf64-adc43d81f5be" />
+  </Folder>
+  <Folder Name="/library/text/">
+    <Project Path="library/text/c/tetengo.text.vcxproj" Id="49971358-a731-4c16-943a-c66735f3b342" />
+    <Project Path="library/text/cpp/tetengo.text.cpp.vcxproj" Id="be228a1e-25d5-4825-89b4-c3513f1dc559" />
+    <Project Path="library/text/test/test_tetengo.text.vcxproj" Id="52acd25c-c27c-475c-9e47-46a24719b163" />
+  </Folder>
+  <Folder Name="/library/trie/">
+    <Project Path="library/trie/c/tetengo.trie.vcxproj" Id="e14d072f-631b-4e87-bc03-57437306cd34" />
+    <Project Path="library/trie/cpp/tetengo.trie.cpp.vcxproj" Id="a755f6bf-9964-4608-a0c8-9f7557d14a09" />
+    <Project Path="library/trie/test/test_tetengo.trie.vcxproj" Id="584c5f3e-3956-4bc8-a1f7-6a8a09edfdfb" />
+  </Folder>
+  <Folder Name="/sample/">
+    <Project Path="sample/json2timetable/json2timetable.vcxproj" Id="eb5e3c27-4233-4bb2-a64a-66962eb663ad" />
+    <Project Path="sample/make_dict/make_dict.vcxproj" Id="d23815a4-4916-4c12-8dfa-cf6f4a8e51bb" />
+    <Project Path="sample/search_dict/search_dict.vcxproj" Id="15803b5c-8845-4325-819b-b09e40b8826e" />
+    <Project Path="sample/search_dict_c/search_dict_c.vcxproj" Id="6287fa8d-837b-4adc-9dbb-5a7cf18f9546" />
+    <Project Path="sample/transfer_trains/transfer_trains.vcxproj" Id="8b106cc4-b645-4a2b-9807-38c8d185d40a" />
+  </Folder>
+</Solution>
