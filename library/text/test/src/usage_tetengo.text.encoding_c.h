@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void usage_tetengo_text_encoding();
+void usage_tetengo_text_encoding(void);
 
 
 #if defined(__cplusplus)

@@ -25,7 +25,7 @@ static void done_observer(void* const p_context)
     strcat((char*)p_context, "DONE");
 }
 
-void usage_tetengo_trie_search()
+void usage_tetengo_trie_search(void)
 {
     // Prepares initial elements.
     const int initial_values[] = {

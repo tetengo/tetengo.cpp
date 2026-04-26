@@ -111,21 +111,21 @@ void tetengo_property_storage_save(const tetengo_property_storage_t* p_storage);
 
     \return A pointer to a storage loader.
 */
-tetengo_property_storageLoader_t* tetengo_property_storageLoader_createMemoryStorageLoader();
+tetengo_property_storageLoader_t* tetengo_property_storageLoader_createMemoryStorageLoader(void);
 
 /*!
     \brief Creates a file storage loader.
 
     \return A pointer to a storage loader.
 */
-tetengo_property_storageLoader_t* tetengo_property_storageLoader_createFileStorageLoader();
+tetengo_property_storageLoader_t* tetengo_property_storageLoader_createFileStorageLoader(void);
 
 /*!
     \brief Creates a Windows registry storage loader.
 
     \return A pointer to a storage loader.
 */
-tetengo_property_storageLoader_t* tetengo_property_storageLoader_createWindowsRegistoryStorageLoader();
+tetengo_property_storageLoader_t* tetengo_property_storageLoader_createWindowsRegistoryStorageLoader(void);
 
 /*!
     \brief Creates a storage loader proxy.

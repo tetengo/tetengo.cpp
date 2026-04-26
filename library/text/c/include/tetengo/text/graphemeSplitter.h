@@ -41,7 +41,7 @@ typedef struct tetengo_text_grapheme_tag
 
     \return A pointer to a grapheme splitter.
 */
-tetengo_text_graphemeSplitter_t* tetengo_text_graphemeSplitter_create();
+tetengo_text_graphemeSplitter_t* tetengo_text_graphemeSplitter_create(void);
 
 /*!
     \brief Destroys a grapheme splitter.

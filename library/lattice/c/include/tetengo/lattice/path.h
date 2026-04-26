@@ -27,7 +27,7 @@ typedef struct tetengo_lattice_path_tag tetengo_lattice_path_t;
 
     \return A pointer to a path. Or NULL when p_nodes is NULL.
 */
-tetengo_lattice_path_t* tetengo_lattice_path_createEmpty();
+tetengo_lattice_path_t* tetengo_lattice_path_createEmpty(void);
 
 /*!
     \brief Creates a path.

@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void usage_tetengo_lattice_viterbi();
+void usage_tetengo_lattice_viterbi(void);
 
 
 #if defined(__cplusplus)

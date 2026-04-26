@@ -30,7 +30,7 @@ typedef struct tetengo_lattice_constraint_tag tetengo_lattice_constraint_t;
 
     \return A pointer to an empty constraint.
 */
-tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty();
+tetengo_lattice_constraint_t* tetengo_lattice_constraint_createEmpty(void);
 
 /*!
     \brief Creates a constraint.

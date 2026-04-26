@@ -17,11 +17,11 @@
 #include <tetengo/property/storage.h>
 
 
-static const char* setting_file_path();
+static const char* setting_file_path(void);
 
 static int file_exists(const char* path);
 
-void usage_tetengo_property_saveLoad()
+void usage_tetengo_property_saveLoad(void)
 {
     assert(!file_exists(setting_file_path()));
 
@@ -83,7 +83,7 @@ void usage_tetengo_property_saveLoad()
     tetengo_property_propertySet_destroy(p_props_for_setting);
 }
 
-static const char* setting_file_path()
+static const char* setting_file_path(void)
 {
     static char path[4096] = { '\0' };
     if (path[0] == '\0')

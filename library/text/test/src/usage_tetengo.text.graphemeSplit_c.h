@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void usage_tetengo_text_graphemeSplit();
+void usage_tetengo_text_graphemeSplit(void);
 
 
 #if defined(__cplusplus)

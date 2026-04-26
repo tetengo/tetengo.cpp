@@ -16,7 +16,7 @@
 
 static int equal(const unsigned short* string1, const unsigned short* string2);
 
-void usage_tetengo_text_encoding()
+void usage_tetengo_text_encoding(void)
 {
     static const char utf8[] = {
         // clang-format off

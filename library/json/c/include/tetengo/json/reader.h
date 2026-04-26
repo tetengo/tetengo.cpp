@@ -45,7 +45,7 @@ typedef struct tetengo_json_location_tag
 
     \return The default buffer capacity.
 */
-size_t tetengo_json_reader_streamReaderDefaultBufferCapacity();
+size_t tetengo_json_reader_streamReaderDefaultBufferCapacity(void);
 
 /*!
     \brief Creates a stream reader.

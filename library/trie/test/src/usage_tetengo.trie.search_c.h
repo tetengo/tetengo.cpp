@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void usage_tetengo_trie_search();
+void usage_tetengo_trie_search(void);
 
 
 #if defined(__cplusplus)

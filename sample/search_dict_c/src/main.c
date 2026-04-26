@@ -174,7 +174,7 @@ static void to_array_of_lex_span(
     }
 }
 
-static tetengo_text_encoder_encoding_t select_encoding()
+static tetengo_text_encoder_encoding_t select_encoding(void)
 {
     const char* const locale = setlocale(LC_CTYPE, NULL);
     if (locale && strcmp(locale, "Japanese_Japan.932") == 0)
