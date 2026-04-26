@@ -8,9 +8,9 @@
 #include <memory>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include <boost/move/detail/type_traits.hpp>
-
 #include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 
 #include <tetengo/trie/storage.h>
@@ -18,8 +18,6 @@
 #include <tetengo/trie/trie.hpp>
 #include <tetengo/trie/trieIterator.h>
 #include <tetengo/trie/trie_iterator.hpp>
-
-#include <vector>
 
 #include "tetengo_trie_trie.hpp"
 

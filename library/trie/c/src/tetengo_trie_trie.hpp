@@ -14,8 +14,8 @@
 
 #include <boost/interprocess/file_mapping.hpp>
 
-#include <tetengo/trie/storage.h>
 #include <tetengo/trie/default_serializer.hpp> // IWYU pragma: keep
+#include <tetengo/trie/storage.h>
 #include <tetengo/trie/trie.hpp>
 
 #include "tetengo_trie_storage.hpp"

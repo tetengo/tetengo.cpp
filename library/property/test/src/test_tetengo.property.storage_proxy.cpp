@@ -5,6 +5,7 @@
 */
 
 #include <cstdint>
+#include <filesystem>
 #include <iterator>
 #include <memory>
 #include <optional>
@@ -20,7 +21,6 @@
 #include <boost/scope_exit.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <filesystem>
 #include <tetengo/property/memory_storage.hpp>
 #include <tetengo/property/storage.h>
 #include <tetengo/property/storage.hpp>

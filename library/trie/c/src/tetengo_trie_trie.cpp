@@ -5,7 +5,6 @@
 */
 
 #include <algorithm>
-#include <boost/move/detail/type_traits.hpp>
 #include <functional>
 #include <iterator>
 #include <memory>
@@ -16,6 +15,8 @@
 #include <vector>
 
 #include <stddef.h>
+
+#include <boost/move/detail/type_traits.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/storage.h>
