@@ -51,7 +51,7 @@ namespace
     public:
         // constructors and destructors
 
-        concrete_vocabulary(){};
+        concrete_vocabulary() {};
 
         virtual ~concrete_vocabulary() = default;
 

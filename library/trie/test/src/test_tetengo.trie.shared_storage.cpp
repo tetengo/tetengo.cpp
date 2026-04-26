@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         const auto                              p_input_stream = create_input_stream();
         const tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::string> string_deserializer{ false };
             return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
         } };
         const tetengo::trie::shared_storage storage_{ *p_input_stream, deserializer };
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const auto p_input_stream = create_broken_input_stream();
 
         const tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::string> string_deserializer{ false };
             return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
         } };
         BOOST_CHECK_THROW(
