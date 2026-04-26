@@ -15,9 +15,6 @@
 
 namespace tetengo::lattice
 {
-    class node;
-
-
     /*!
         \brief A wildcard constraint element.
     */

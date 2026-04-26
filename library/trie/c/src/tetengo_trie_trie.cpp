@@ -5,6 +5,7 @@
 */
 
 #include <algorithm>
+#include <boost/move/detail/type_traits.hpp>
 #include <functional>
 #include <iterator>
 #include <memory>

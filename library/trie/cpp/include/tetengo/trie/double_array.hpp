@@ -19,11 +19,10 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/trie/double_array_iterator.hpp>
-
-
 namespace tetengo::trie
 {
+    class double_array_iterator;
+
     class storage;
 
 

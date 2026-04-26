@@ -14,15 +14,13 @@
 #include <utility>
 #include <vector>
 
-#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
 
 namespace tetengo::lattice
 {
-    class connection;
-    class input;
-    class node;
+    class entry;
+    class entry_view;
 
 
     /*!

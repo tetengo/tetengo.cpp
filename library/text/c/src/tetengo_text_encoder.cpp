@@ -10,7 +10,6 @@
 #include <iterator>
 #include <stdexcept>
 #include <string>
-#include <string_view>
 
 #include <tetengo/text/encoder.h>
 #include <tetengo/text/encoder.hpp>

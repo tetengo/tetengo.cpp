@@ -22,12 +22,15 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/trie/default_serializer.hpp>
+#include <tetengo/trie/default_serializer.hpp> // IWYU pragma: keep
 #include <tetengo/trie/trie_iterator.hpp>
 
 
 namespace tetengo::trie
 {
+    template <typename Object, typename>
+    class default_serializer;
+
     class double_array;
     class storage;
 
@@ -220,7 +223,7 @@ namespace tetengo::trie
         \tparam Value         A value type.
         \tparam KeySerializer A key serializer type.
     */
-    template <typename Key, typename Value, typename KeySerializer = default_serializer<Key>>
+    template <typename Key, typename Value, typename KeySerializer = default_serializer<Key, void>>
     class trie : private boost::noncopyable
     {
     public:
@@ -272,7 +275,7 @@ namespace tetengo::trie
 
             \param key_serializer A key serializer.
         */
-        explicit trie(const key_serializer_type& key_serializer = default_serializer<key_type>{ true }) :
+        explicit trie(const key_serializer_type& key_serializer = default_serializer<key_type, void>{ true }) :
         m_impl{},
         m_key_serializer{ key_serializer }
         {}
@@ -287,7 +290,7 @@ namespace tetengo::trie
         */
         explicit trie(
             std::initializer_list<std::pair<key_type, value_type>> elements,
-            const key_serializer_type&        key_serializer = default_serializer<key_type>{ true },
+            const key_serializer_type&        key_serializer = default_serializer<key_type, void>{ true },
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key<true>(std::begin(elements), std::end(elements), key_serializer),
@@ -311,7 +314,7 @@ namespace tetengo::trie
         trie(
             InputIterator                     first,
             InputIterator                     last,
-            const key_serializer_type&        key_serializer = default_serializer<key_type>{ true },
+            const key_serializer_type&        key_serializer = default_serializer<key_type, void>{ true },
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key<false>(first, last, key_serializer), building_observer_set, double_array_density_factor },
@@ -333,7 +336,7 @@ namespace tetengo::trie
         trie(
             std::move_iterator<InputIterator> first,
             std::move_iterator<InputIterator> last,
-            const key_serializer_type&        key_serializer = default_serializer<key_type>{ true },
+            const key_serializer_type&        key_serializer = default_serializer<key_type, void>{ true },
             const building_observer_set_type& building_observer_set = null_building_observer_set(),
             std::size_t                       double_array_density_factor = default_double_array_density_factor()) :
         m_impl{ serialize_key<true>(first, last, key_serializer), building_observer_set, double_array_density_factor },
@@ -348,7 +351,7 @@ namespace tetengo::trie
         */
         explicit trie(
             std::unique_ptr<storage>&& p_storage,
-            const key_serializer_type& key_serializer = default_serializer<key_type>{ true }) :
+            const key_serializer_type& key_serializer = default_serializer<key_type, void>{ true }) :
         m_impl{ std::move(p_storage) },
         m_key_serializer{ key_serializer }
         {}

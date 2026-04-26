@@ -14,7 +14,6 @@
 #include <memory>
 #include <optional>
 #include <stdexcept>
-#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -22,6 +21,7 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
+#include <boost/move/detail/type_traits.hpp>
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/mmap_storage.hpp>

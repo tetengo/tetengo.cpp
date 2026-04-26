@@ -21,7 +21,6 @@
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/path.h>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
 

@@ -4,7 +4,6 @@
     Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
-#include <algorithm>
 #include <any>
 #include <cassert>
 #include <cstddef>
@@ -29,7 +28,6 @@
 #include <tetengo/lattice/input.hpp>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/node.hpp>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/unordered_map_vocabulary.hpp>
 #include <tetengo/lattice/vocabulary.h>
 #include <tetengo/lattice/vocabulary.hpp>

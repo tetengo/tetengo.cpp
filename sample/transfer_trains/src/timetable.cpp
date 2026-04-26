@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
+#include <functional>
 #include <istream>
 #include <iterator>
 #include <limits>
@@ -21,6 +22,7 @@
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
+#include <boost/container/detail/std_fwd.hpp>
 #include <boost/core/noncopyable.hpp>
 #include <boost/lexical_cast.hpp>
 

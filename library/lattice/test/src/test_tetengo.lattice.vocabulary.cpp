@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <iterator>
 #include <limits>
-#include <memory>
 #include <string>
 #include <vector>
 

@@ -9,6 +9,7 @@
 #include <fstream>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include <boost/core/noncopyable.hpp>

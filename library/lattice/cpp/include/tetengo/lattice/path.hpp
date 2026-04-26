@@ -9,7 +9,7 @@
 
 #include <vector>
 
-#include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/node.hpp> // IWYU pragma: keep
 
 
 namespace tetengo::lattice
