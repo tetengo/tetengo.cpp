@@ -27,8 +27,8 @@ EXTRA_DIST = \
     ${data_files} \
     bootstrap.sh \
     Doxyfile \
-    tetengo.sln \
-    tetengo.setup.sln
+    tetengo.slnx \
+    tetengo.setup.slnx
 
 
 nobase_pkgdata_DATA = \

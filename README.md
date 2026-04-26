@@ -111,13 +111,13 @@ Clone the source files from GitHub:
 > git clone --recurse-submodules https://github.com/tetengo/tetengo.cpp.git
 ```
 
-Open the file `tetengo.sln` in the work tree.
+Open the file `tetengo.slnx` in the work tree.
 
 Execute the menu command [Build]-[Build Solution] in Visual Studio.
 
 #### Building setup
 
-Open the file `tetengo.setup.sln` in the work tree, and execute the menu
+Open the file `tetengo.setup.slnx` in the work tree, and execute the menu
 command [Build]-[Build Solution] in Visual Studio.
 
 `setup.exe` and `tetengo.msi` will be created under the `bin.setup` folder in
