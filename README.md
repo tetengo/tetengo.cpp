@@ -82,7 +82,7 @@ How to Build and Install
 #### Requirements
 
 - [Visual Studio 2022](https://visualstudio.microsoft.com/)
-- [Boost C++ libraries 1.88.0](https://www.boost.org/)
+- [Boost C++ libraries 1.91.0](https://www.boost.org/)
 - [Doxygen 1.13.2](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [WiX toolset 6.0.0](https://wixtoolset.org/)
@@ -138,11 +138,9 @@ Doxygen will output the documents into the directory `doc`.
 
 #### Requirements
 
-- [Clang 11](https://clang.llvm.org/),
-  [Clang 14](https://clang.llvm.org/),
-  [GCC 10](https://gcc.gnu.org/) or
-  [GCC 12](https://gcc.gnu.org/)
-- [Boost C++ libraries 1.88.0](https://www.boost.org/)
+- [Clang 18](https://clang.llvm.org/) or
+  [GCC 14](https://gcc.gnu.org/)
+- [Boost C++ libraries 1.91.0](https://www.boost.org/)
 - [Doxygen 1.13.2](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [include-what-you-use 0.15](https://include-what-you-use.org/) or
