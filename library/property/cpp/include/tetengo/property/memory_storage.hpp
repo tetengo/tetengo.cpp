@@ -7,6 +7,7 @@
 #if !defined(TETENGO_PROPERTY_MEMORYSTORAGE_HPP)
 #define TETENGO_PROPERTY_MEMORYSTORAGE_HPP
 
+#include <filesystem> // IWYU pragma: keep
 #include <memory>
 
 #include <tetengo/property/storage.hpp>

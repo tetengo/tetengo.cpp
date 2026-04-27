@@ -15,6 +15,9 @@
 
 namespace tetengo::lattice
 {
+    class node; // IWYU pragma: keep
+
+
     /*!
         \brief A wildcard constraint element.
     */

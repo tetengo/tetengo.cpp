@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <memory>
 #include <stdexcept>
-#include <string>
+#include <string> // IWYU pragma: keep
 #include <utility>
 
 #include <boost/preprocessor.hpp>

@@ -4,13 +4,14 @@
     Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
+#include <algorithm> // IWYU pragma: keep
 #include <any>
 #include <cassert>
 #include <cstddef>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string>
+#include <string> // IWYU pragma: keep
 #include <type_traits> // IWYU pragma: keep
 #include <utility>
 #include <vector>

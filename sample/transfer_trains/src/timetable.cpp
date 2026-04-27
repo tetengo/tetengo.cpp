@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <any>
 #include <cassert>
-#include <functional>
+#include <functional> // IWYU pragma: keep
 #include <istream>
 #include <iterator>
 #include <limits>

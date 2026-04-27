@@ -7,6 +7,7 @@
 #if !defined(TETENGO_TRIE_MMAPSTORAGE_HPP)
 #define TETENGO_TRIE_MMAPSTORAGE_HPP
 
+#include <any> // IWYU pragma: keep
 #include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <istream>

@@ -7,6 +7,7 @@
 #if !defined(TETENGO_TRIE_SHAREDSTORAGE_HPP)
 #define TETENGO_TRIE_SHAREDSTORAGE_HPP
 
+#include <any> // IWYU pragma: keep
 #include <cstddef> // IWYU pragma: keep
 #include <cstdint>
 #include <istream>
@@ -18,6 +19,7 @@
 namespace tetengo::trie
 {
     class value_deserializer;
+    class value_serializer; // IWYU pragma: keep
 
 
     /*!

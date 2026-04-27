@@ -5,7 +5,7 @@
 */
 
 #include <any>
-#include <string>
+#include <string> // IWYU pragma: keep
 #include <vector>
 
 #include <boost/preprocessor.hpp>

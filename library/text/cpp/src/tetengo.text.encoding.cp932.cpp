@@ -5,7 +5,7 @@
 */
 
 #include <memory>
-#include <string>
+#include <string> // IWYU pragma: keep
 
 #include <boost/core/noncopyable.hpp>
 

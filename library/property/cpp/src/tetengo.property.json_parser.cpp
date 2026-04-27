@@ -16,6 +16,7 @@
 #include <string_view>
 #include <unordered_map>
 #include <utility>
+#include <variant> // IWYU pragma: keep
 
 #include <boost/core/noncopyable.hpp>
 

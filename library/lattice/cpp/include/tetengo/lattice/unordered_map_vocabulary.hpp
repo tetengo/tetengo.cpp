@@ -19,8 +19,11 @@
 
 namespace tetengo::lattice
 {
+    class connection; // IWYU pragma: keep
     class entry;
     class entry_view;
+    class input; // IWYU pragma: keep
+    class node; // IWYU pragma: keep
 
 
     /*!

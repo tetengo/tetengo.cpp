@@ -23,7 +23,7 @@
 #include <tetengo/json/channel.hpp>
 #include <tetengo/json/comment_removing_reader.hpp>
 #include <tetengo/json/element.hpp>
-#include <tetengo/json/file_location.hpp>
+#include "tetengo/json/file_location.hpp" // IWYU pragma: keep
 #include <tetengo/json/json_grammar.hpp>
 #include <tetengo/json/json_parser.hpp>
 #include <tetengo/json/line_counting_reader.hpp>

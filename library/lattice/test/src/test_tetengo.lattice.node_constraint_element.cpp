@@ -6,7 +6,7 @@
 
 #include <any>
 #include <iterator>
-#include <string>
+#include <string> // IWYU pragma: keep
 #include <utility>
 #include <vector>
 
