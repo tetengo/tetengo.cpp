@@ -5,6 +5,7 @@
 */
 
 #include <any>
+#include <algorithm> // IWYU pragma: keep
 #include <cassert>
 #include <cstddef>
 #include <iterator>

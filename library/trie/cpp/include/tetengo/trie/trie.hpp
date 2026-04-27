@@ -29,7 +29,7 @@
 namespace tetengo::trie
 {
     template <typename Object, typename>
-    class default_serializer;
+    class default_serializer; // IWYU pragma: keep
 
     class double_array;
     class storage;
