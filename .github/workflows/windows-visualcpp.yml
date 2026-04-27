@@ -358,6 +358,8 @@ jobs:
       run: |
         dotnet tool install --global wix --version ${{ env.WIX_VER }}
         wix extension add --global WixToolset.UI.wixext/${{ env.WIX_VER }}
+      env:
+        WIX_OSMF_EULA_AGREEMENT: 1
     
     - name: Checkout
       uses: actions/checkout@v6
@@ -430,8 +432,10 @@ jobs:
     - name: Install WiX
       shell: cmd
       run: |
-        dotnet tool install --global wix --version 6.0.0
-        wix extension add --global WixToolset.UI.wixext/6.0.0
+        dotnet tool install --global wix --version ${{ env.WIX_VER }}
+        wix extension add --global WixToolset.UI.wixext/${{ env.WIX_VER }}
+      env:
+        WIX_OSMF_EULA_AGREEMENT: 1
     
     - name: Checkout
       uses: actions/checkout@v6
