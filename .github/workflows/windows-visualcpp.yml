@@ -48,7 +48,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Restore Boost source
       uses: actions/cache@v5
@@ -80,7 +80,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Restore Boost source
       uses: actions/cache@v5
@@ -112,7 +112,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Restore Boost source
       uses: actions/cache@v5
@@ -144,7 +144,7 @@ jobs:
     needs:   boost_download
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Restore Boost source
       uses: actions/cache@v5
@@ -176,10 +176,10 @@ jobs:
     needs:   boost_build_for_release_win32
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -214,10 +214,10 @@ jobs:
     needs:   boost_build_for_debug_win32
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -252,10 +252,10 @@ jobs:
     needs:   boost_build_for_release_x64
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -290,10 +290,10 @@ jobs:
     needs:   boost_build_for_debug_x64
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -351,7 +351,7 @@ jobs:
     needs:   [ boost_build_for_release_win32, embedtransform_download, build_for_release_win32, build_for_debug_win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Install WiX
       shell: cmd
@@ -360,7 +360,7 @@ jobs:
         wix extension add --global WixToolset.UI.wixext/${{ env.WIX_VER }}
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -425,7 +425,7 @@ jobs:
     needs:   [ boost_build_for_release_x64, embedtransform_download, build_for_release_win32, build_for_debug_win32, build_for_release_x64, build_for_debug_x64 ]
     steps:
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
     
     - name: Install WiX
       shell: cmd
@@ -434,7 +434,7 @@ jobs:
         wix extension add --global WixToolset.UI.wixext/6.0.0
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -524,7 +524,7 @@ jobs:
         move bin.libimage\tetengo-windows-libimage-x64-${{ env.TETENGO_VER }}.zip artifacts
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: artifacts-windows
         path: artifacts

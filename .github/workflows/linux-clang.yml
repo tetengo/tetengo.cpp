@@ -114,7 +114,7 @@ jobs:
           iwyu
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -171,7 +171,7 @@ jobs:
           iwyu
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -222,7 +222,7 @@ jobs:
           iwyu
     
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     
@@ -294,7 +294,7 @@ jobs:
         mv .build/tetengo-* artifacts
     
     - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: artifacts-linux
         path: artifacts
