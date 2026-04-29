@@ -199,12 +199,12 @@ AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
 AC_SUBST([LIBS], "-lstdc++fs -lstdc++ ${LIBS}")
 
 #### Header Checks ####
-AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
+AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${PTHREAD_CFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS_IWYU], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
-AC_SUBST([CXXFLAGS], "${CXXFLAGS} ${PTHREAD_CFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
-AC_SUBST([CFLAGS], "${CFLAGS} ${PTHREAD_CFLAGS} -std=c17 -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CXXFLAGS], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CFLAGS], "${CFLAGS} -std=c17 -Werror -Wall -Wextra -pedantic-errors")
 
 #### Output ####
 AC_OUTPUT
