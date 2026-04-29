@@ -189,7 +189,8 @@ AS_IF(
     [${CXX} --version 2>/dev/null | grep -qi clang],
     [test "x${PTHREAD_CFLAGS}" = "x-pthread" && AX_PTHREAD_LINK_CFLAGS=""]
 )
-AC_SUBST([LIBS], "${AX_PTHREAD_LINK_CFLAGS} ${PTHREAD_LIBS} ${LIBS}")
+AC_SUBST([LDFLAGS], "${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}")
+AC_SUBST([LIBS], "${PTHREAD_LIBS} ${LIBS}")
 AC_SUBST([CC], "${PTHREAD_CC}")
 
 AX_BOOST_BASE([1.88.0])
@@ -202,8 +203,8 @@ AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS_IWYU], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
-AC_SUBST([CXXFLAGS], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
-AC_SUBST([CFLAGS], "${CFLAGS} -std=c17 -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CXXFLAGS], "${CXXFLAGS} ${PTHREAD_CFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
+AC_SUBST([CFLAGS], "${CFLAGS} ${PTHREAD_CFLAGS} -std=c17 -Werror -Wall -Wextra -pedantic-errors")
 
 #### Output ####
 AC_OUTPUT
