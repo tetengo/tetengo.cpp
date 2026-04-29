@@ -189,7 +189,7 @@ AS_IF(
     [${CXX} --version 2>/dev/null | grep -qi clang],
     [test "x${PTHREAD_CFLAGS}" = "x-pthread" && AX_PTHREAD_LINK_CFLAGS=""]
 )
-AC_SUBST([LDFLAGS], "${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}")
+LDFLAGS="${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}"
 AC_SUBST([LIBS], "${PTHREAD_LIBS} ${LIBS}")
 AC_SUBST([CC], "${PTHREAD_CC}")
 
