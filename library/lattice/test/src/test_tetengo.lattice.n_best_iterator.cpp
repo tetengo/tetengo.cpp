@@ -4,8 +4,8 @@
     Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 */
 
-#include <any>
 #include <algorithm> // IWYU pragma: keep
+#include <any>
 #include <cassert>
 #include <cstddef>
 #include <iterator>

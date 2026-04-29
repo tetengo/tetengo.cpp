@@ -21,7 +21,6 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
-#include <boost/move/detail/type_traits.hpp> // IWYU pragma: keep
 
 #include <tetengo/trie/default_serializer.hpp>
 #include <tetengo/trie/mmap_storage.hpp>

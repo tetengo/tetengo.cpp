@@ -25,7 +25,6 @@
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/container/detail/std_fwd.hpp> // IWYU pragma: keep
 #include <boost/format.hpp>
 #include <boost/iterator/iterator_traits.hpp> // IWYU pragma: keep
 #include <boost/lexical_cast.hpp>

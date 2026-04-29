@@ -22,7 +22,6 @@
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/container/detail/std_fwd.hpp> // IWYU pragma: keep
 #include <boost/core/noncopyable.hpp>
 #include <boost/lexical_cast.hpp>
 
