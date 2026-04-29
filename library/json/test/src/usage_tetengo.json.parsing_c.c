@@ -20,7 +20,7 @@
 int         make_json_file(const char* text, const char* path);
 const char* to_string(const tetengo_json_element_t* p_element);
 
-void usage_tetengo_json_parsing()
+void usage_tetengo_json_parsing(void)
 {
     // clang-format off
     static const char* const json_text =

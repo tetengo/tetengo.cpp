@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void usage_tetengo_property_saveLoad();
+void usage_tetengo_property_saveLoad(void);
 
 
 #if defined(__cplusplus)

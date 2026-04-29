@@ -9,8 +9,7 @@
 #include <cstddef>
 #include <iterator>
 #include <stdexcept>
-#include <string>
-#include <string_view>
+#include <string> // IWYU pragma: keep
 
 #include <tetengo/text/encoder.h>
 #include <tetengo/text/encoder.hpp>

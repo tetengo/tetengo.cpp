@@ -45,7 +45,7 @@ typedef char path_character_type;
 
     \return The check value for a vacant element.
 */
-uint8_t tetengo_trie_storage_vacantCheckValue();
+uint8_t tetengo_trie_storage_vacantCheckValue(void);
 
 /*!
     \brief Creates a storage.

@@ -7,7 +7,7 @@
 #include <vector>
 
 #include <tetengo/lattice/connection.hpp>
-#include <tetengo/lattice/entry.hpp>
+#include <tetengo/lattice/entry.hpp> // IWYU pragma: keep
 #include <tetengo/lattice/vocabulary.hpp>
 
 

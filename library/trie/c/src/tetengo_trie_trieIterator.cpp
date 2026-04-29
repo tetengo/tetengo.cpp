@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep
 

@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
-#include <string>
+#include <string> // IWYU pragma: keep
 
 #include <boost/preprocessor.hpp>
 #include <boost/scope_exit.hpp>

@@ -11,12 +11,11 @@
 
 #include <boost/core/noncopyable.hpp>
 
-#include <tetengo/lattice/entry.hpp>
-
 
 namespace tetengo::lattice
 {
     class connection;
+    class entry_view;
     class input;
     class node;
 

@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="setup/installer/installer.vcxproj" Id="cc786ca7-fa79-4f28-b59b-ff76be47992f" />
+</Solution>

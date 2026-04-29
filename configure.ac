@@ -184,18 +184,22 @@ test -z $DOXYGEN && \
 
 #### Library Checks ####
 AX_PTHREAD
+AX_PTHREAD_LINK_CFLAGS="${PTHREAD_CFLAGS}"
+AS_IF(
+    [${CXX} --version 2>/dev/null | grep -qi clang],
+    [test "x${PTHREAD_CFLAGS}" = "x-pthread" && AX_PTHREAD_LINK_CFLAGS=""]
+)
+LDFLAGS="${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}"
 AC_SUBST([LIBS], "${PTHREAD_LIBS} ${LIBS}")
-AC_SUBST([CFLAGS], "${CFLAGS} ${PTHREAD_CFLAGS}")
-AC_SUBST([CXXFLAGS], "${CXXFLAGS} ${PTHREAD_CFLAGS}")
 AC_SUBST([CC], "${PTHREAD_CC}")
 
-AX_BOOST_BASE([1.88.0])
+AX_BOOST_BASE([1.91.0])
 AX_BOOST_UNIT_TEST_FRAMEWORK
 AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
 AC_SUBST([LIBS], "-lstdc++fs -lstdc++ ${LIBS}")
 
 #### Header Checks ####
-AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
+AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${PTHREAD_CFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS_IWYU], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")

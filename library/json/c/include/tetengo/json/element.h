@@ -24,70 +24,70 @@ typedef struct tetengo_json_element_tag tetengo_json_element_t;
 
     \return The type name.
 */
-int tetengo_json_element_typeName_string();
+int tetengo_json_element_typeName_string(void);
 
 /*!
     \brief Returns the type name of number.
 
     \return The type name.
 */
-int tetengo_json_element_typeName_number();
+int tetengo_json_element_typeName_number(void);
 
 /*!
     \brief Returns the type name of boolean.
 
     \return The type name.
 */
-int tetengo_json_element_typeName_boolean();
+int tetengo_json_element_typeName_boolean(void);
 
 /*!
     \brief Returns the type name of null.
 
     \return The type name.
 */
-int tetengo_json_element_typeName_null();
+int tetengo_json_element_typeName_null(void);
 
 /*!
     \brief Returns the type name of object.
 
     \return The type name.
 */
-int tetengo_json_element_typeName_object();
+int tetengo_json_element_typeName_object(void);
 
 /*!
     \brief Returns the type name of member.
 
     \return The type name.
 */
-int tetengo_json_element_typeName_member();
+int tetengo_json_element_typeName_member(void);
 
 /*!
     \brief Returns the type name of array.
 
     \return The type name.
 */
-int tetengo_json_element_typeName_array();
+int tetengo_json_element_typeName_array(void);
 
 /*!
     \brief Returns the type category of primitive.
 
     \return The type category.
 */
-int tetengo_json_element_typeCategory_primitive();
+int tetengo_json_element_typeCategory_primitive(void);
 
 /*!
     \brief Returns the type category of opening structure.
 
     \return The type category.
 */
-int tetengo_json_element_typeCategory_structureOpen();
+int tetengo_json_element_typeCategory_structureOpen(void);
 
 /*!
     \brief Returns the type category of closing structure.
 
     \return The type category.
 */
-int tetengo_json_element_typeCategory_structureClose();
+int tetengo_json_element_typeCategory_structureClose(void);
 
 /*! The type type. */
 typedef struct tetengo_json_element_type_tag

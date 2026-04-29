@@ -48,7 +48,7 @@ static void destroy_string(const void* const p_departure)
     free((void*)p_departure);
 }
 
-static const arrayList_t* create_departure_list()
+static const arrayList_t* create_departure_list(void)
 {
     arrayList_t* const p_departure_list = arrayList_create(destroy_string);
     return p_departure_list;

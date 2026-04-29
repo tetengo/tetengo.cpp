@@ -11,6 +11,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iterator> // IWYU pragma: keep
 #include <memory>
 #include <string_view>
 #include <unordered_set>

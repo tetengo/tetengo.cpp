@@ -5,11 +5,8 @@
 */
 
 #include <iterator>
-#include <map>
 #include <regex>
-#include <sstream>
 #include <string>
-#include <vector>
 
 #include <boost/preprocessor.hpp>
 #include <boost/test/unit_test.hpp>

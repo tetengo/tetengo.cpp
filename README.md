@@ -81,13 +81,12 @@ How to Build and Install
 
 #### Requirements
 
-- [Visual Studio 2022](https://visualstudio.microsoft.com/)
-- [Boost C++ libraries 1.88.0](https://www.boost.org/)
-- [Doxygen 1.13.2](https://www.doxygen.nl/)
+- [Visual Studio 2026](https://visualstudio.microsoft.com/)
+- [Boost C++ libraries 1.91.0](https://www.boost.org/)
+- [Doxygen 1.16.1](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
-- [WiX toolset 6.0.0](https://wixtoolset.org/)
-- [Python 3.9](https://www.python.org/) or
-  [Python 3.10](https://www.python.org/)
+- [WiX toolset 7.0.0](https://wixtoolset.org/)
+- [Python 3.12](https://www.python.org/)
 - [mypy](http://www.mypy-lang.org/)
 - [Black](https://black.readthedocs.io/en/stable/)
 - [isort](https://pycqa.github.io/isort/)
@@ -112,13 +111,13 @@ Clone the source files from GitHub:
 > git clone --recurse-submodules https://github.com/tetengo/tetengo.cpp.git
 ```
 
-Open the file `tetengo.sln` in the work tree.
+Open the file `tetengo.slnx` in the work tree.
 
 Execute the menu command [Build]-[Build Solution] in Visual Studio.
 
 #### Building setup
 
-Open the file `tetengo.setup.sln` in the work tree, and execute the menu
+Open the file `tetengo.setup.slnx` in the work tree, and execute the menu
 command [Build]-[Build Solution] in Visual Studio.
 
 `setup.exe` and `tetengo.msi` will be created under the `bin.setup` folder in
@@ -138,19 +137,15 @@ Doxygen will output the documents into the directory `doc`.
 
 #### Requirements
 
-- [Clang 11](https://clang.llvm.org/),
-  [Clang 14](https://clang.llvm.org/),
-  [GCC 10](https://gcc.gnu.org/) or
-  [GCC 12](https://gcc.gnu.org/)
-- [Boost C++ libraries 1.88.0](https://www.boost.org/)
-- [Doxygen 1.13.2](https://www.doxygen.nl/)
+- [Clang 18](https://clang.llvm.org/) or
+  [GCC 14](https://gcc.gnu.org/)
+- [Boost C++ libraries 1.91.0](https://www.boost.org/)
+- [Doxygen 1.16.1](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
-- [include-what-you-use 0.15](https://include-what-you-use.org/) or
-  [include-what-you-use 0.17](https://include-what-you-use.org/)
-- [Clang Format 11](https://clang.llvm.org/docs/ClangFormat.html)
+- [include-what-you-use](https://include-what-you-use.org/)
+- [Clang Format](https://clang.llvm.org/docs/ClangFormat.html)
 - [Dos2Unix](https://waterlan.home.xs4all.nl/dos2unix.html)
-- [Python 3.9](https://www.python.org/) or
-  [Python 3.10](https://www.python.org/)
+- [Python 3.12](https://www.python.org/)
 - [mypy](http://www.mypy-lang.org/)
 - [Black](https://black.readthedocs.io/en/stable/)
 - [isort](https://pycqa.github.io/isort/)

@@ -107,7 +107,7 @@ tetengo_lattice_entry_keyHandle_t tetengo_lattice_entry_toKeyHandle(const teteng
 
     \return The pointer to the BOS/EOS entry.
 */
-const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos();
+const tetengo_lattice_entryView_t* tetengo_lattice_entryView_bosEos(void);
 
 /*!
     \brief Creates an entry view key by a handle.

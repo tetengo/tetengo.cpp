@@ -16,7 +16,6 @@
 #include <stdexcept>
 #include <utility>
 #include <variant>
-#include <vector>
 
 #include <boost/core/noncopyable.hpp>
 

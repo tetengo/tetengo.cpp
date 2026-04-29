@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <memory>
-#include <optional>
+#include <optional> // IWYU pragma: keep
 #include <string>
 
 #include <tetengo/property/storage.hpp>

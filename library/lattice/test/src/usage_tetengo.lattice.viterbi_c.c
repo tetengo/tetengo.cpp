@@ -21,14 +21,13 @@
 #include <tetengo/lattice/nBestIterator.h>
 #include <tetengo/lattice/node.h>
 #include <tetengo/lattice/path.h>
-#include <tetengo/lattice/stringView.h>
 #include <tetengo/lattice/vocabulary.h>
 
 
-tetengo_lattice_vocabulary_t* build_vocabulary();
+tetengo_lattice_vocabulary_t* build_vocabulary(void);
 const char*                   to_string(const tetengo_lattice_path_t* p_path);
 
-void usage_tetengo_lattice_viterbi()
+void usage_tetengo_lattice_viterbi(void)
 {
     /*
         Makes the following lattice and searches it.
@@ -144,7 +143,7 @@ entry_equal_to(const tetengo_lattice_entryView_t* const p_entry1, const tetengo_
     return equality;
 }
 
-tetengo_lattice_vocabulary_t* build_vocabulary()
+tetengo_lattice_vocabulary_t* build_vocabulary(void)
 {
     // The contents of the vocabulary.
     const tetengo_lattice_input_t* const    p_entry_key_a = tetengo_lattice_input_createStringInput("a");

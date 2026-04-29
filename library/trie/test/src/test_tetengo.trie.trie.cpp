@@ -270,12 +270,12 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::begin(content), std::end(content) };
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
     }
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         auto                                    p_input_stream = create_input_stream();
         const tetengo::trie::value_deserializer value_deserializer_{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::string> string_deserializer{ false };
             return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
         } };
         auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE(construction)
     {
         auto                                    p_input_stream = create_input_stream();
         const tetengo::trie::value_deserializer value_deserializer_{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::string> string_deserializer{ false };
             return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
         } };
         auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);
@@ -503,7 +503,7 @@ BOOST_AUTO_TEST_CASE(empty)
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
@@ -596,7 +596,7 @@ BOOST_AUTO_TEST_CASE(size)
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
@@ -712,7 +712,7 @@ BOOST_AUTO_TEST_CASE(contains)
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
@@ -848,7 +848,7 @@ BOOST_AUTO_TEST_CASE(find)
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
@@ -971,7 +971,7 @@ BOOST_AUTO_TEST_CASE(begin_end)
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
@@ -1124,7 +1124,7 @@ BOOST_AUTO_TEST_CASE(subtrie)
     }
     {
         std::vector<std::pair<std::string_view, std::string>>    content{ { "Kumamoto", kumamoto1 },
-                                                                       { "Tamana", tamana1 } };
+                                                                          { "Tamana", tamana1 } };
         const tetengo::trie::trie<std::string_view, std::string> trie_{ std::make_move_iterator(std::begin(content)),
                                                                         std::make_move_iterator(std::end(content)) };
 
@@ -1249,7 +1249,7 @@ BOOST_AUTO_TEST_CASE(get_storage)
     {
         auto                                    p_input_stream = create_input_stream();
         const tetengo::trie::value_deserializer value_deserializer_{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::string>string_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::string> string_deserializer{ false };
             return string_deserializer(std::string{ std::begin(serialized), std::end(serialized) });
         } };
         auto p_storage = std::make_unique<tetengo::trie::memory_storage>(*p_input_stream, value_deserializer_);

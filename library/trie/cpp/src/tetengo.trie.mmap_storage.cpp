@@ -14,7 +14,6 @@
 #include <memory>
 #include <optional>
 #include <stdexcept>
-#include <type_traits>
 #include <unordered_map>
 #include <utility>
 #include <vector>

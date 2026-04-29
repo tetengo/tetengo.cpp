@@ -33,21 +33,21 @@ $(BINDIR)\tetengo.msi: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\ja.mst
 	$(COPY) /y $(OBJDIR)\tetengo.msi $@
 
 $(OBJDIR)\ja.mst: $(OBJDIR)\tetengo.en.msi $(OBJDIR)\tetengo.ja.msi
-	$(WIXCOMMAND) msi transform -out $@ -p -t language $**
+	$(WIXCOMMAND) msi -acceptEula wix7 transform -out $@ -p -t language $**
 
 $(OBJDIR)\tetengo.en.msi: $(WORKDIR)\main.wxs $(OBJDIR)\content.wxs
 	set WORKDIR=$(WORKDIR)
 	set PLATFORM=$(PLATFORM)
 	set LANGUAGE=1033
 	set CODEPAGE=1252
-	$(WIXCOMMAND) build -out $@ -ext WixToolset.UI.wixext -arch $(ARCH) -culture en-US $**
+	$(WIXCOMMAND) build -acceptEula wix7 -out $@ -ext WixToolset.UI.wixext -arch $(ARCH) -culture en-US $**
 
 $(OBJDIR)\tetengo.ja.msi: $(WORKDIR)\main.wxs $(OBJDIR)\content.wxs
 	set WORKDIR=$(WORKDIR)
 	set PLATFORM=$(PLATFORM)
 	set LANGUAGE=1041
 	set CODEPAGE=932
-	$(WIXCOMMAND) build -out $@ -ext WixToolset.UI.wixext -arch $(ARCH) -culture ja-JP $**
+	$(WIXCOMMAND) build -acceptEula wix7 -out $@ -ext WixToolset.UI.wixext -arch $(ARCH) -culture ja-JP $**
 
 $(OBJDIR)\content.wxs: $(OBJDIR)\content_wxs_source.txt
 	$(PYTHON) "$(WORKDIR)\generate_content_wxs.py" $** $@

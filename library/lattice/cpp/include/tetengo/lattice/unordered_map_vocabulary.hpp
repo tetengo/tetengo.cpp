@@ -14,15 +14,16 @@
 #include <utility>
 #include <vector>
 
-#include <tetengo/lattice/entry.hpp>
 #include <tetengo/lattice/vocabulary.hpp>
 
 
 namespace tetengo::lattice
 {
-    class connection;
-    class input;
-    class node;
+    class connection; // IWYU pragma: keep
+    class entry;
+    class entry_view;
+    class input; // IWYU pragma: keep
+    class node; // IWYU pragma: keep
 
 
     /*!

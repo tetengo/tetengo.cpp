@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <iterator>
 #include <limits>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -51,7 +50,7 @@ namespace
     public:
         // constructors and destructors
 
-        concrete_vocabulary(){};
+        concrete_vocabulary() {};
 
         virtual ~concrete_vocabulary() = default;
 

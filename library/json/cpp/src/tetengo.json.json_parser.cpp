@@ -28,6 +28,8 @@
 #include <tetengo/json/line_counting_reader.hpp>
 #include <tetengo/json/reader.hpp>
 
+#include "tetengo/json/file_location.hpp" // IWYU pragma: keep
+
 
 namespace tetengo::json
 {

@@ -11,9 +11,9 @@
 #include <filesystem>
 #include <fstream>
 #include <functional>
-#include <ios>
 #include <iterator>
 #include <memory>
+#include <sstream>
 #include <stdexcept>
 #include <utility>
 #include <vector>
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 5, file_size, std::move(deserializer) };
@@ -274,7 +274,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         BOOST_CHECK_THROW(
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         BOOST_CHECK_THROW(
@@ -310,7 +310,7 @@ BOOST_AUTO_TEST_CASE(construction)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         BOOST_CHECK_THROW(
@@ -404,7 +404,7 @@ BOOST_AUTO_TEST_CASE(base_check_size)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -422,7 +422,7 @@ BOOST_AUTO_TEST_CASE(base_check_size)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 5, file_size, std::move(deserializer) };
@@ -486,7 +486,7 @@ BOOST_AUTO_TEST_CASE(base_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -505,7 +505,7 @@ BOOST_AUTO_TEST_CASE(base_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 5, file_size, std::move(deserializer) };
@@ -621,7 +621,7 @@ BOOST_AUTO_TEST_CASE(set_base_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -685,7 +685,7 @@ BOOST_AUTO_TEST_CASE(check_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -704,7 +704,7 @@ BOOST_AUTO_TEST_CASE(check_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 5, file_size, std::move(deserializer) };
@@ -801,7 +801,7 @@ BOOST_AUTO_TEST_CASE(set_check_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -847,7 +847,7 @@ BOOST_AUTO_TEST_CASE(value_count)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -865,7 +865,7 @@ BOOST_AUTO_TEST_CASE(value_count)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 5, file_size, std::move(deserializer) };
@@ -929,7 +929,7 @@ BOOST_AUTO_TEST_CASE(value_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -954,7 +954,7 @@ BOOST_AUTO_TEST_CASE(value_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 5, file_size, std::move(deserializer) };
@@ -1051,7 +1051,7 @@ BOOST_AUTO_TEST_CASE(add_value_at)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -1117,7 +1117,7 @@ BOOST_AUTO_TEST_CASE(filling_rate)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -1163,7 +1163,7 @@ BOOST_AUTO_TEST_CASE(serialize)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -1234,7 +1234,7 @@ BOOST_AUTO_TEST_CASE(clone)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 0, file_size, std::move(deserializer) };
@@ -1255,7 +1255,7 @@ BOOST_AUTO_TEST_CASE(clone)
         const boost::interprocess::file_mapping file_mapping{ file_path.c_str(), boost::interprocess::read_only };
         const auto                        file_size = static_cast<std::size_t>(std::filesystem::file_size(file_path));
         tetengo::trie::value_deserializer deserializer{ [](const std::vector<char>& serialized) {
-            static const tetengo::trie::default_deserializer<std::uint32_t>uint32_deserializer{ false };
+            static const tetengo::trie::default_deserializer<std::uint32_t> uint32_deserializer{ false };
             return uint32_deserializer(serialized);
         } };
         const tetengo::trie::mmap_storage storage{ file_mapping, 5, file_size, std::move(deserializer) };

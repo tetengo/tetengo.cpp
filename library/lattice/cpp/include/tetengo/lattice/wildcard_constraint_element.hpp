@@ -15,7 +15,7 @@
 
 namespace tetengo::lattice
 {
-    class node;
+    class node; // IWYU pragma: keep
 
 
     /*!

@@ -5,6 +5,7 @@
 */
 
 #include <cstdint>
+#include <filesystem>
 #include <iterator>
 #include <memory>
 #include <optional>

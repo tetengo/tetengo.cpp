@@ -8,7 +8,7 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
-#include <string>
+#include <string> // IWYU pragma: keep
 #include <string_view>
 #include <utility>
 

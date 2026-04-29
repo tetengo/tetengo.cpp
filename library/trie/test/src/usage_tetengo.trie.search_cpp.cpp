@@ -14,6 +14,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <utility> // IWYU pragma: keep
 #include <vector>
 
 #include <boost/stl_interfaces/iterator_interface.hpp> // IWYU pragma: keep

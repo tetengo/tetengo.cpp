@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include <tetengo/lattice/node.hpp>
+#include <tetengo/lattice/node.hpp> // IWYU pragma: keep
 #include <tetengo/lattice/path.hpp>
 
 

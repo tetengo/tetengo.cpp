@@ -17,11 +17,11 @@
 
 static void save_current_locale(int category, char* storage, size_t storage_capacity);
 
-static const char* japanese_locale_name();
+static const char* japanese_locale_name(void);
 
-static const char* english_locale_name();
+static const char* english_locale_name(void);
 
-void usage_tetengo_text_graphemeSplit()
+void usage_tetengo_text_graphemeSplit(void)
 {
     static const char string[] = {
         // clang-format off
@@ -125,7 +125,7 @@ static void save_current_locale(const int category, char* const storage, const s
     }
 }
 
-static const char* japanese_locale_name()
+static const char* japanese_locale_name(void)
 {
 #if defined(_WIN32)
     return "Japanese_Japan.932";
@@ -134,7 +134,7 @@ static const char* japanese_locale_name()
 #endif
 }
 
-static const char* english_locale_name()
+static const char* english_locale_name(void)
 {
 #if defined(_WIN32)
     return "English_United States.1252";
