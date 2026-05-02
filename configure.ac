@@ -184,10 +184,15 @@ test -z $DOXYGEN && \
 
 #### Library Checks ####
 AX_PTHREAD
-AX_PTHREAD_LINK_CFLAGS="${PTHREAD_CFLAGS}"
+AX_PTHREAD_LINK_CFLAGS=""
+AS_CASE(
+    [" ${PTHREAD_CFLAGS} "],
+    [*" -pthread "*], [AX_PTHREAD_LINK_CFLAGS="-pthread"],
+    [*" -pthreads "*], [AX_PTHREAD_LINK_CFLAGS="-pthreads"]
+)
 AS_IF(
-    [${CXX} --version 2>/dev/null | grep -qi clang],
-    [test "x${PTHREAD_CFLAGS}" = "x-pthread" && AX_PTHREAD_LINK_CFLAGS=""]
+    [test -n "${AX_PTHREAD_LINK_CFLAGS}"],
+    [LDFLAGS="${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}"]
 )
 LDFLAGS="${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}"
 AC_SUBST([LIBS], "${PTHREAD_LIBS} ${LIBS}")
