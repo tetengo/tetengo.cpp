@@ -185,9 +185,10 @@ test -z $DOXYGEN && \
 #### Library Checks ####
 AX_PTHREAD
 AX_PTHREAD_LINK_CFLAGS=""
-AS_IF(
-    [test "x${PTHREAD_CFLAGS}" = "x-pthread" || test "x${PTHREAD_CFLAGS}" = "x-pthreads"],
-    [AX_PTHREAD_LINK_CFLAGS="${PTHREAD_CFLAGS}"]
+AS_CASE(
+    [" ${PTHREAD_CFLAGS} "],
+    [*" -pthread "*], [AX_PTHREAD_LINK_CFLAGS="-pthread"],
+    [*" -pthreads "*], [AX_PTHREAD_LINK_CFLAGS="-pthreads"]
 )
 AS_IF(
     [test -n "${AX_PTHREAD_LINK_CFLAGS}"],
