@@ -3,7 +3,7 @@
   Copyright (C) 2019-2026 kaoru  https://www.tetengo.org/
 -->
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-    <Package Name="tetengo 1.9.0" Version="1.9.0" UpgradeCode="952185DF-9262-470C-959A-6CB9FE2182B5" Language="$(env.LANGUAGE)" Codepage="$(env.CODEPAGE)" Manufacturer="kaoru" ProductCode="B0067C08-2851-492F-9F65-938E004EFDBA">
+    <Package Name="tetengo 1.9.1" Version="1.9.1" UpgradeCode="952185DF-9262-470C-959A-6CB9FE2182B5" Language="$(env.LANGUAGE)" Codepage="$(env.CODEPAGE)" Manufacturer="kaoru" ProductCode="DB3CAFE1-5E43-4524-A72C-0376EE586165">
         <SummaryInformation Description="tetengo Installer" Manufacturer="kaoru" />
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
