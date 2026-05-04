@@ -184,17 +184,6 @@ test -z $DOXYGEN && \
 
 #### Library Checks ####
 AX_PTHREAD
-AX_PTHREAD_LINK_CFLAGS=""
-AS_CASE(
-    [" ${PTHREAD_CFLAGS} "],
-    [*" -pthread "*], [AX_PTHREAD_LINK_CFLAGS="-pthread"],
-    [*" -pthreads "*], [AX_PTHREAD_LINK_CFLAGS="-pthreads"]
-)
-AS_IF(
-    [test -n "${AX_PTHREAD_LINK_CFLAGS}"],
-    [LDFLAGS="${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}"]
-)
-LDFLAGS="${AX_PTHREAD_LINK_CFLAGS} ${LDFLAGS}"
 AC_SUBST([LIBS], "${PTHREAD_LIBS} ${LIBS}")
 AC_SUBST([CC], "${PTHREAD_CC}")
 
@@ -204,7 +193,7 @@ AC_SUBST([LDFLAGS], "${LDFLAGS} ${BOOST_LDFLAGS}")
 AC_SUBST([LIBS], "-lstdc++fs -lstdc++ ${LIBS}")
 
 #### Header Checks ####
-AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${PTHREAD_CFLAGS} ${BOOST_CPPFLAGS}")
+AC_SUBST([CPPFLAGS], "${CPPFLAGS} ${BOOST_CPPFLAGS}")
 
 #### Compilation Options ####
 AC_SUBST([CXXFLAGS_IWYU], "${CXXFLAGS} -std=c++20 -Werror -Wall -Wextra -pedantic-errors")
