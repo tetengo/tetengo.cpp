@@ -83,7 +83,7 @@ How to Build and Install
 
 - [Visual Studio 2026](https://visualstudio.microsoft.com/)
 - [Boost C++ libraries 1.91.0](https://www.boost.org/)
-- [Doxygen 1.16.1](https://www.doxygen.nl/)
+- [Doxygen 1.17.0](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [WiX toolset 7.0.0](https://wixtoolset.org/)
 - [Python 3.12](https://www.python.org/)
@@ -140,7 +140,7 @@ Doxygen will output the documents into the directory `doc`.
 - [Clang 18](https://clang.llvm.org/) or
   [GCC 14](https://gcc.gnu.org/)
 - [Boost C++ libraries 1.91.0](https://www.boost.org/)
-- [Doxygen 1.16.1](https://www.doxygen.nl/)
+- [Doxygen 1.17.0](https://www.doxygen.nl/)
 - [Graphviz](https://www.graphviz.org/)
 - [include-what-you-use](https://include-what-you-use.org/)
 - [Clang Format](https://clang.llvm.org/docs/ClangFormat.html)
